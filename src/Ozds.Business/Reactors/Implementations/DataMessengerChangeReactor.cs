@@ -25,7 +25,7 @@ public class DataMessengerChangeHandler(
   public override async Task AfterStartAsync(
     CancellationToken cancellationToken)
   {
-    var page = 1;
+    var page = 0;
     var result = await auditableQueries
       .Read<MessengerModel>(page, cancellationToken);
     while (result.Items.Count > 0)

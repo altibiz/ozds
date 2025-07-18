@@ -124,6 +124,11 @@ public class OzdsFakeAltibizArguments : IOzdsFakeArguments
 {
 }
 
+public class OzdsFakeBypassArguments : IOzdsFakeArguments
+{
+  public int Timeout_s { get; set; } = 60;
+}
+
 public static class OzdsFakeArguments
 {
   public static IOzdsFakeArguments? Parse(string[] args)

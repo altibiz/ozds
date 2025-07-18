@@ -53,7 +53,9 @@ public class PushService(
           arguments.MessengerId,
           ids,
           10000,
-          arguments.Realtime ? "realtime" : "buffer"
+          arguments.Realtime
+            ? PushClientBufferBehavior.Realtime
+            : PushClientBufferBehavior.Buffer
         ));
   }
 

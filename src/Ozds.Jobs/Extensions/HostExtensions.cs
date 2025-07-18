@@ -8,6 +8,7 @@ using Ozds.Jobs.Mutations.Abstractions;
 using Ozds.Jobs.Observers.Abstractions;
 using Ozds.Jobs.Options;
 using Ozds.Jobs.Queries.Abstractions;
+using Ozds.Jobs.Scheduler;
 using Ozds.Jobs.Services;
 using Quartz;
 
@@ -24,8 +25,13 @@ public static class HostExtensions
     builder.AddManagers();
     builder.AddQueries();
     builder.AddMutations();
-    builder.AddServices();
     builder.AddJobs();
+
+    if (ConfigureOzdsJobsOptions.WithServices(builder.Configuration))
+    {
+      builder.AddServices();
+    }
+
     return builder;
   }
 
@@ -52,6 +58,10 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
+    builder.Services.AddSingleton<OzdsSchedulerFactory>();
+    builder.Services.AddHostedService(
+      x => x
+        .GetRequiredService<OzdsSchedulerFactory>());
     builder.Services.AddSingletonAssignableTo(typeof(IJobManager));
     return builder;
   }
@@ -84,6 +94,8 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
+    builder.Services.AddQuartz();
+
     builder.Services.AddPooledDbContextFactory<JobsDbContext>(
       (services, options) =>
       {
@@ -108,7 +120,5 @@ public static class HostExtensions
               .Throw(RelationalEventId.MultipleCollectionIncludeWarning));
         }
       });
-
-    builder.Services.AddQuartz();
   }
 }

@@ -2,6 +2,7 @@ using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using Ozds.Data.Context;
+using Ozds.Data.Entities;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
@@ -21,6 +22,135 @@ public class MeasurementMutations(
   MeasurementProcedures procedures
 ) : IMutations
 {
+  public async Task DeleteMeasurementsOlderThan(
+    DateTimeOffset threshold,
+    CancellationToken cancellationToken
+  )
+  {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+
+    await DeleteMeasurementsOlderThan(
+      context,
+      threshold,
+      cancellationToken
+    );
+  }
+
+  private async Task DeleteMeasurementsOlderThan(
+    DataDbContext context,
+    DateTimeOffset threshold,
+    CancellationToken cancellationToken
+  )
+  {
+    if (context.Database.CurrentTransaction is not null)
+    {
+      await ExecuteDeleteMeasurementsOlderThan(
+        context,
+        threshold,
+        cancellationToken
+      );
+    }
+    else
+    {
+      while (true)
+      {
+        try
+        {
+          var isolationLevel = IsolationLevel.RepeatableRead;
+
+          await using var transaction = await context.Database
+            .BeginTransactionAsync(isolationLevel, cancellationToken);
+
+          await ExecuteDeleteMeasurementsOlderThan(
+            context,
+            threshold,
+            cancellationToken
+          );
+
+          await context.Database
+            .CommitTransactionAsync(cancellationToken);
+
+          break;
+        }
+        catch (PostgresException ex)
+        {
+          if (context.Database.CurrentTransaction is { } transaction)
+          {
+            await transaction.RollbackAsync(cancellationToken);
+          }
+
+          // NOTE: 40001 = could not serialize access due to
+          // read/write dependencies among transactions
+          // NOTE: 40P01 = deadlock detected
+          if (ex.SqlState == "40001" || ex.SqlState == "40P01")
+          {
+            // NOTE: not logging exception because it prints way too much
+#pragma warning disable S6667 // Logging in a catch clause should pass the caught exception as a parameter.
+            logger.LogDebug(
+              "Retying delete of measurements older than {Threshold} because of serialization issues...",
+              threshold);
+#pragma warning restore S6667 // Logging in a catch clause should pass the caught exception as a parameter.
+            continue;
+          }
+
+          throw;
+        }
+        catch (NpgsqlException ex)
+        {
+          if (ex.InnerException is TimeoutException)
+          {
+            // NOTE: not logging exception because it prints way too much
+#pragma warning disable S6667 // Logging in a catch clause should pass the caught exception as a parameter.
+            logger.LogDebug(
+              "Retying delete of measurements older than {Threshold}",
+              threshold);
+#pragma warning restore S6667 // Logging in a catch clause should pass the caught exception as a parameter.
+
+            continue;
+          }
+
+          throw;
+        }
+        catch (Exception)
+        {
+          if (context.Database.CurrentTransaction is { } transaction)
+          {
+            await transaction.RollbackAsync(cancellationToken);
+          }
+
+          throw;
+        }
+      }
+    }
+  }
+
+  private static async Task ExecuteDeleteMeasurementsOlderThan(
+    DataDbContext context,
+    DateTimeOffset threshold,
+    CancellationToken cancellationToken
+  )
+  {
+    var measurementTypes = new[]
+    {
+      typeof(AbbB2xMeasurementEntity),
+      typeof(SchneideriEM3xxxMeasurementEntity)
+    };
+
+    foreach (var (measurementType, index) in measurementTypes.Select(
+      (x, i) => (x, i)))
+    {
+#pragma warning disable EF1002 // Risk of vulnerability to SQL injection.
+      await context.Database.ExecuteSqlRawAsync(
+        $"DELETE FROM {context.GetTableName(measurementType)} "
+        + $"WHERE timestamp < @p{index}",
+        [new NpgsqlParameter("@p" + index, threshold)],
+        cancellationToken
+      );
+#pragma warning restore EF1002 // Risk of vulnerability to SQL injection.
+    }
+  }
+
   public async Task<List<IMeasurementEntity>> CreateMeasurements(
     IEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken,
@@ -214,7 +344,7 @@ public class MeasurementMutations(
     List<IMeasurementEntity>? results = null;
     if (context.Database.CurrentTransaction is not null)
     {
-      results = await Execute(
+      results = await ExecuteCreateMeasurements(
         context,
         grouped,
         groupChunkSize,
@@ -232,7 +362,7 @@ public class MeasurementMutations(
           await using var transaction = await context.Database
             .BeginTransactionAsync(isolationLevel, cancellationToken);
 
-          results = await Execute(
+          results = await ExecuteCreateMeasurements(
             context,
             grouped,
             groupChunkSize,
@@ -362,7 +492,7 @@ public class MeasurementMutations(
       .ToList();
   }
 
-  private async Task<List<IMeasurementEntity>> Execute(
+  private async Task<List<IMeasurementEntity>> ExecuteCreateMeasurements(
     DataDbContext context,
     List<MeasurementGroup> groups,
     int groupChunkSize,
@@ -378,7 +508,7 @@ public class MeasurementMutations(
       {
         var json = context.CreateBulkJsonParameter(chunk);
         var jsonParameter = new JsonParameter(json);
-        var objects = await ExecuteChunk(
+        var objects = await ExecuteCreateMeasurementsChunk(
           context,
           index,
           jsonParameter,
@@ -393,7 +523,7 @@ public class MeasurementMutations(
     return results;
   }
 
-  private async Task<List<object>> ExecuteChunk(
+  private async Task<List<object>> ExecuteCreateMeasurementsChunk(
     DataDbContext context,
     int index,
     JsonParameter jsonParameter,

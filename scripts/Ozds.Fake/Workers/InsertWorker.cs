@@ -1,10 +1,10 @@
 using Ozds.Business.Aggregation;
 using Ozds.Business.Conversion;
 using Ozds.Fake.Client;
-using Ozds.Fake.Cloners;
+using Ozds.Fake.Cloning;
 using Ozds.Fake.Conversion;
 using Ozds.Fake.Extensions;
-using Ozds.Fake.Generators;
+using Ozds.Fake.Generation;
 using Ozds.Fake.Identification;
 using Ozds.Fake.Workers.Abstractions;
 

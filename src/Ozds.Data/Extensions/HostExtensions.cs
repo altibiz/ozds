@@ -24,9 +24,14 @@ public static class HostExtensions
     builder.AddQueries();
     builder.AddMutations();
     builder.AddProcedures();
-    builder.AddServices();
     builder.AddObservers();
     builder.AddDatabase();
+
+    if (ConfigureOzdsDataOptions.WithServices(builder.Configuration))
+    {
+      builder.AddServices();
+    }
+
     return builder;
   }
 
@@ -34,7 +39,7 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    builder.Services.ConfigureOptions<OzdsDataConfigureOptions>();
+    builder.Services.ConfigureOptions<ConfigureOzdsDataOptions>();
     return builder;
   }
 

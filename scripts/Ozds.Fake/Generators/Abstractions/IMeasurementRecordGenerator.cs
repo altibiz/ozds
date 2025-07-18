@@ -1,7 +1,7 @@
 using Ozds.Fake.Identification;
 using Ozds.Fake.Records.Abstractions;
 
-namespace Ozds.Fake.Generators.Abstractions;
+namespace Ozds.Fake.Generation.Abstractions;
 
 public interface IMeasurementRecordGenerator
 {

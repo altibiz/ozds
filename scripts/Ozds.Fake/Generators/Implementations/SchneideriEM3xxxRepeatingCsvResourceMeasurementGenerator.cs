@@ -1,7 +1,7 @@
-using Ozds.Fake.Generators.Base;
+using Ozds.Fake.Generation.Base;
 using Ozds.Fake.Records;
 
-namespace Ozds.Fake.Generators.Implementations;
+namespace Ozds.Fake.Generation.Implementations;
 
 public class SchneideriEM3xxxRepeatingCsvResourceMeasurementGenerator(
   IServiceProvider serviceProvider) :

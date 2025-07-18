@@ -152,7 +152,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
         meter =>
           meterIds.Contains(meter.Id))
       .ToHashSet();
-    var now = DateTimeOffset.UtcNow;
+    var now = ClockQueries.Now();
     _parameters.FromDate = now.Subtract(
       TimeQueries.ResolutionTimeSpan(
         _parameters.Resolution,

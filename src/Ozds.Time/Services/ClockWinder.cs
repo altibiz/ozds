@@ -28,14 +28,16 @@ public class ClockWinder(
     }
 
     rewindTimeStart = rewindTimeStart.ToUniversalTime();
-    Offset = rewindTimeStart - DateTimeOffset.UtcNow;
 
+    var now = DateTimeOffset.UtcNow;
+
+    Offset = rewindTimeStart - now;
     logger.LogWarning(
       "Rewind time start is set to {RewindTimeStart}. " +
       "Current time is {CurrentTime}. " +
       "Offset is {Offset}.",
       rewindTimeStart,
-      DateTimeOffset.UtcNow,
+      now,
       Offset
     );
 

@@ -24,7 +24,7 @@ public class DataNetworkUserChangeHandler(
   public override async Task AfterStartAsync(
     CancellationToken cancellationToken)
   {
-    var page = 1;
+    var page = 0;
     var networkUsers = await auditableQueries
       .Read<NetworkUserModel>(page, cancellationToken);
     while (networkUsers.Items.Count > 0)

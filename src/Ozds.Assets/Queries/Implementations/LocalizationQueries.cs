@@ -148,7 +148,7 @@ public class LocalizationQueries(
 
     var withTimezone = dateTimeOffset
       .Value
-      .ToOffset(timeQueries.GetOffset(dateTimeOffset.Value));
+      .ToOffset(timeQueries.GetCroatianOffset(dateTimeOffset.Value));
 
     return withTimezone.ToString("dd. MM. yyyy.", cultureInfo);
   }
@@ -164,7 +164,7 @@ public class LocalizationQueries(
 
     var withTimezone = dateTimeOffset
       .Value
-      .ToOffset(timeQueries.GetOffset(dateTimeOffset.Value));
+      .ToOffset(timeQueries.GetCroatianOffset(dateTimeOffset.Value));
 
     return withTimezone.ToString("dd. MM. yyyy. HH:mm", cultureInfo);
   }
@@ -173,7 +173,7 @@ public class LocalizationQueries(
     DateTimeOffset dateTimeOffset)
   {
     var a = dateTimeOffset.UtcDateTime.Add(
-      timeQueries.GetOffset(dateTimeOffset));
+      timeQueries.GetCroatianOffset(dateTimeOffset));
     return a;
   }
 

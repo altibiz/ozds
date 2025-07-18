@@ -1,12 +1,13 @@
 using System.Globalization;
 using Ozds.Jobs.Manager.Abstractions;
+using Ozds.Jobs.Scheduler;
 using Ozds.Time.Queries.Abstractions;
 using Quartz;
 
 namespace Ozds.Jobs.Managers.Implementations;
 
 public class MessengerJobManager(
-  ISchedulerFactory schedulerFactory,
+  OzdsSchedulerFactory schedulerFactory,
   ILogger<MessengerJobManager> logger,
   IClockQueries clock
 ) : IMessengerJobManager
@@ -86,12 +87,13 @@ public class MessengerJobManager(
 
   private IJobDetail CreateJob(string id)
   {
+    var now = clock.Now();
     return JobBuilder.Create<MessengerInactivityMonitorJob>()
       .WithIdentity(id, nameof(MessengerInactivityMonitorJob))
       .UsingJobData(nameof(MessengerInactivityMonitorJob.Id), id)
       .UsingJobData(
         nameof(MessengerInactivityMonitorJob.ScheduledAt),
-        DateTimeOffset.UtcNow.ToString("o", CultureInfo.InvariantCulture))
+        now.ToString("o", CultureInfo.InvariantCulture))
       .Build();
   }
 

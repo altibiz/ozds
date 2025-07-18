@@ -4,7 +4,13 @@ namespace Ozds.Time.Queries.Abstractions;
 
 public interface ITimeQueries : IQueries
 {
-  public TimeSpan GetOffset(DateTimeOffset forDate);
+  public TimeZoneInfo CroatianTimeZone { get; }
+
+  public TimeZoneInfo UtcTimeZone { get; }
+
+  public TimeSpan GetCroatianOffset(DateTimeOffset forDate);
+
+  public TimeSpan GetUtcOffset(DateTimeOffset forDate);
 
   public (DateTimeOffset, DateTimeOffset) GetMonthRange(
     DateTimeOffset dateTimeOffset
