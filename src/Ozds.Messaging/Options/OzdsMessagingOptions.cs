@@ -2,16 +2,6 @@ using Microsoft.Extensions.Options;
 
 namespace Ozds.Messaging.Options;
 
-public class OzdsMessagingEndpointOptions
-{
-  public string AcknowledgeNetworkUserInvoice { get; set; } = default!;
-}
-
-public class OzdsMessagingSagaOptions
-{
-  public string NetworkUserInvoiceState { get; set; } = default!;
-}
-
 public class OzdsMessagingOptions
 {
   public string ConnectionString { get; set; } = default!;
@@ -25,6 +15,18 @@ public class OzdsMessagingOptions
   public bool WithBus { get; set; } = true;
 
   public bool MigrateOnStartup { get; set; } = false;
+
+  public bool WithServices { get; set; } = true;
+}
+
+public class OzdsMessagingEndpointOptions
+{
+  public string AcknowledgeNetworkUserInvoice { get; set; } = default!;
+}
+
+public class OzdsMessagingSagaOptions
+{
+  public string NetworkUserInvoiceState { get; set; } = default!;
 }
 
 public interface IOzdsMessagingParsedConnectionString
@@ -88,6 +90,11 @@ public class ConfigureOzdsMessagingOptions(
   public static bool WithBus(IConfiguration configuration)
   {
     return configuration.GetValue<bool?>("Ozds:Messaging:WithBus") ?? true;
+  }
+
+  public static bool WithServices(IConfiguration configuration)
+  {
+    return configuration.GetValue<bool?>("Ozds:Messaging:WithServices") ?? true;
   }
 
   public static IOzdsMessagingParsedConnectionString ParseConnectionString(

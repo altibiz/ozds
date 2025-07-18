@@ -7,6 +7,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- measurement deletion job/manager/observer in `Ozds.Jobs`
+- measurement deletion reactor in `Ozds.Business`
+- needed faking classes for `Ozds.Server.Test` fixtures
+- `Ozds.Business` flag to start without reactors
+- project flags to start without services
+
+### Changed
+
+- `Ozds.Client.Test` to `Ozds.Server.Test` for E2E testing
+- model faking to `Ozds.Fake` for now
+- cleanup `Ozds.Fake` conversion
+- cleanup `Ozds.Fake` namespaces
+- cleanup script projects DI
+- cleanup some remaining uses of `DateTimeOffset.UtcNow`
+- catch `OperationCanceledException` in reactors/relays
+
+### Removed
+
+- `Ozds.Client.Test`
+
 ## [1.4.2] - 2025-07-09
 
 ### Added

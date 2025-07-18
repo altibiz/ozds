@@ -136,9 +136,10 @@ public class IotPushHandler(
       CategoryModel.Messenger,
       CategoryModel.MessengerPush
     ];
-    var error = validationResults is { }
-      ? string.Join("\n", validationResults
-        .Select(x => $"{x.MemberNames.First()}: {x.ErrorMessage}"))
+    var error = validationResults is not null
+      ? string.Join(
+        "\n", validationResults
+          .Select(x => $"{x.MemberNames.First()}: {x.ErrorMessage}"))
       : null;
     @event.Content = CreateEventContent(eventArgs, messenger, error);
     @event.Level = validationResults is null

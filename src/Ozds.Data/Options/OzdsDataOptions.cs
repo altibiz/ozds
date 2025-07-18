@@ -11,13 +11,20 @@ public class OzdsDataOptions
   public bool LogSql { get; set; } = false;
 
   public bool MigrateOnStartup { get; set; } = false;
+
+  public bool WithServices { get; set; } = true;
 }
 
-public class OzdsDataConfigureOptions(IConfiguration configuration)
+public class ConfigureOzdsDataOptions(IConfiguration configuration)
   : IConfigureOptions<OzdsDataOptions>
 {
   public void Configure(OzdsDataOptions options)
   {
     configuration.GetSection("Ozds:Data").Bind(options);
+  }
+
+  public static bool WithServices(IConfiguration configuration)
+  {
+    return configuration.GetValue<bool?>("Ozds:Data:WithServices") ?? true;
   }
 }

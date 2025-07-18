@@ -19,7 +19,7 @@ public class HtmlSanitizer
       if (sanitizedHtml != html)
       {
         return new ValidationResult(
-          "HTML contains invalid HTML",
+          $"HTML contains invalid HTML:{Environment.NewLine}{html}{Environment.NewLine}{sanitizedHtml}",
           new[] { nameof(html) });
       }
     }

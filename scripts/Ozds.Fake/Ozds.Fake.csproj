@@ -25,7 +25,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <PackageReference Include="EFCore.NamingConventions" />
-    <PackageReference Include="Moq" />
+    <PackageReference Include="Bogus" />
   </ItemGroup>
 
 </Project>

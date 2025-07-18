@@ -225,7 +225,6 @@ test-sln *args:
 test-ci *args:
     ls '{{ testdir }}' \
       | where $it.type == "dir" \
-      | where { not ($in.name | str ends-with "Ozds.Client.Test") } \
       | where { not ($in.name | str ends-with "Ozds.Server.Test") } \
       | each { \
           dotnet test \

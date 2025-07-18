@@ -15,10 +15,13 @@ using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Naming;
 using Ozds.Business.Naming.Abstractions;
 using Ozds.Business.Observers.Abstractions;
+using Ozds.Business.Options;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Business.Reactors.Abstractions;
 using Ozds.Business.Validation;
 using Ozds.Business.Validation.Abstractions;
+
+// TODO: without relays
 
 namespace Ozds.Business.Extensions;
 
@@ -29,14 +32,18 @@ public static class HostExtensions
   )
   {
     builder.AddOzdsBusinessPure();
-    builder.AddAnalysis();
     builder.AddObservers();
-    builder.AddReactors();
     builder.AddCaching();
-    builder.AddBuffers();
     builder.AddMutations();
     builder.AddQueries();
     builder.AddValidation();
+    builder.AddBuffers();
+
+    if (ConfigureOzdsBusinessOptions.WithReactors(builder.Configuration))
+    {
+      builder.AddReactors();
+    }
+
     return builder;
   }
 
@@ -44,11 +51,21 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
+    builder.AddOptions();
+    builder.AddAnalysis();
     builder.AddActivation();
     builder.AddAggregation();
     builder.AddConversion();
     builder.AddFinance();
     builder.AddNaming();
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddOptions(
+    this IHostApplicationBuilder builder
+  )
+  {
+    builder.Services.ConfigureOptions<ConfigureOzdsBusinessOptions>();
     return builder;
   }
 

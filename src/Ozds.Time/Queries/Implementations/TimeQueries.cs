@@ -5,9 +5,20 @@ namespace Ozds.Time.Queries.Implementations;
 
 public class TimeQueries : ITimeQueries
 {
-  public TimeSpan GetOffset(DateTimeOffset forDate)
+  public TimeZoneInfo CroatianTimeZone { get; } =
+    TimeConstants.CroatianTimeZone;
+
+  public TimeZoneInfo UtcTimeZone { get; } =
+    TimeConstants.UtcTimeZone;
+
+  public TimeSpan GetCroatianOffset(DateTimeOffset forDate)
   {
     return TimeConstants.CroatianTimeZone.GetUtcOffset(forDate);
+  }
+
+  public TimeSpan GetUtcOffset(DateTimeOffset forDate)
+  {
+    return TimeConstants.UtcTimeZone.GetUtcOffset(forDate);
   }
 
   public (DateTimeOffset, DateTimeOffset) GetMonthRange(

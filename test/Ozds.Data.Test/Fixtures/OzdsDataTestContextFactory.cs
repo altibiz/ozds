@@ -36,7 +36,7 @@ public static class OzdsDataTestContextFactory
   private const string PostgresPassword = "ozds";
 
   private const string PostgresReady =
-    "database system is ready to accept connections";
+    ".*listening on IPv4.*";
 
   public static async Task<OzdsDataTestContext> CreateOzdsDataTestContext(
     CancellationToken cancellationToken
@@ -62,12 +62,6 @@ public static class OzdsDataTestContextFactory
 
     await container.StartAsync(cancellationToken);
 
-    // NOTE: fuck Bill Gates
-    if (isWindows)
-    {
-      await Task.Delay(10_000, cancellationToken);
-    }
-
     var builder = Host.CreateApplicationBuilder();
     builder.Services.AddLogging();
     builder.Services.AddSingleton<IConfiguration>(
@@ -92,6 +86,8 @@ public static class OzdsDataTestContextFactory
 
         options.ConnectionString = connectionString.ToString();
         options.UseProxies = false;
+        options.WithServices = false;
+        options.LogSql = false;
       });
     builder.AddOzdsTime();
     builder.AddOzdsData();

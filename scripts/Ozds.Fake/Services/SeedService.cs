@@ -51,7 +51,7 @@ public class SeedService(
       arguments.MessengerId,
       ids,
       arguments.BatchSize,
-      "aggregate"
+      PushClientBufferBehavior.Aggregate
     );
   }
 }

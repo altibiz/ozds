@@ -1,4 +1,3 @@
-using Moq;
 using Ozds.Assets.Extensions;
 using Ozds.Business.Extensions;
 using Ozds.Data.Extensions;
@@ -12,8 +11,6 @@ using Ozds.Migration.Extensions;
 using Ozds.Report.Extensions;
 using Ozds.Time.Extensions;
 using Ozds.Users.Extensions;
-using MessagingMessageSender =
-  Ozds.Messaging.Sender.Abstractions.IMessageSender;
 
 namespace Ozds.Migration.Hosting;
 
@@ -25,15 +22,16 @@ public sealed class OzdsMigrationHost : IHost
   {
     var builder = Host.CreateApplicationBuilder();
 
-    builder.Configuration.AddConfiguration(
-      new ConfigurationBuilder()
-        .AddInMemoryCollection(
-          new Dictionary<string, string?>
-          {
-            { "Ozds:Users:WithAuth", "false" },
-            { "Ozds:Messaging:WithBus", "false" }
-          })
-        .Build());
+    builder.Configuration.AddInMemoryCollection(
+      new Dictionary<string, string?>
+      {
+        { "Ozds:Users:WithAuth", "false" },
+        { "Ozds:Messaging:WithBus", "false" },
+        { "Ozds:Messaging:WithServices", "false" },
+        { "Ozds:Jobs:WithServices", "false" },
+        { "Ozds:Business:WithReactors", "false" },
+        { "Ozds:Data:WithServices", "false" }
+      });
 
     builder
       .AddOzdsTime()
@@ -46,26 +44,8 @@ public sealed class OzdsMigrationHost : IHost
       .AddOzdsJobs()
       .AddOzdsEmail()
       .AddOzdsBusiness()
-      .AddOzdsIot();
-
-    // NOTE: hacks to enable most Ozds services working
-    builder.Services.AddSingleton(Mock.Of<MessagingMessageSender>());
-    foreach (var service in builder.Services
-      .Where(
-        service =>
-          service.ServiceType == typeof(IHostedService)
-          && !(service.ImplementationInstance?.GetType().Namespace
-            ?.StartsWith(nameof(Microsoft)) ?? false)
-          && !(service.ImplementationType?.Namespace
-            ?.StartsWith(nameof(Microsoft)) ?? false)
-          && !(service.ImplementationFactory?.Method?.Module.Name
-            ?.StartsWith(nameof(Microsoft)) ?? false))
-      .ToList())
-    {
-      builder.Services.Remove(service);
-    }
-
-    builder.AddOzdsMigration(arguments);
+      .AddOzdsIot()
+      .AddOzdsMigration(arguments);
 
     inner = builder.Build();
   }

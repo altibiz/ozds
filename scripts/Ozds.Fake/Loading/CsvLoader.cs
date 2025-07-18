@@ -1,0 +1,29 @@
+using System.Globalization;
+using CsvHelper;
+using Ozds.Fake.Loading.Abstractions;
+
+namespace Ozds.Fake.Loading;
+
+public class CsvLoader<TRecord> : ILoader<List<TRecord>>
+{
+  public List<TRecord> Load(Stream stream)
+  {
+    using var streamReader = new StreamReader(stream);
+    using var csvReader =
+      new CsvReader(streamReader, CultureInfo.InvariantCulture);
+    var result = csvReader.GetRecords<TRecord>();
+    return result.ToList();
+  }
+
+  public async Task<List<TRecord>> Load(
+    Stream stream,
+    CancellationToken cancellationToken
+  )
+  {
+    using var streamReader = new StreamReader(stream);
+    using var csvReader =
+      new CsvReader(streamReader, CultureInfo.InvariantCulture);
+    var result = csvReader.GetRecordsAsync<TRecord>(cancellationToken);
+    return await result.ToListAsync(cancellationToken);
+  }
+}

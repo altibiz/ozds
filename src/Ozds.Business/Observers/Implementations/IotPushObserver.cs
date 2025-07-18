@@ -58,7 +58,9 @@ public class IotPushPipe(
       {
         modelMeasurements.Add(
           PushRequestConverter
-            .ToMeasurement(meterPushRequest, measurementLocation.Id));
+            .ToMeasurement(
+              new MeterPushRequestWithMeasurementLocationId(
+                meterPushRequest, measurementLocation.Id)));
       }
     }
 

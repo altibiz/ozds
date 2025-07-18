@@ -91,33 +91,41 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
       }
     }
 
-    await foreach (var eventArgs in channel.Reader.ReadAllAsync(stoppingToken))
+    try
     {
-      await using var scope = factory.CreateAsyncScope();
-      var logger = scope.ServiceProvider.GetRequiredService<
-        ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
+      await foreach (var eventArgs in
+        channel.Reader.ReadAllAsync(stoppingToken))
+      {
+        await using var scope = factory.CreateAsyncScope();
+        var logger = scope.ServiceProvider.GetRequiredService<
+          ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
 
-      logger.LogDebug(
-        "Invoking handler {Handler} for reactor {Reactor} event {Event}",
-        typeof(THandler).Name,
-        GetType().Name,
-        eventArgs.GetType().Name
-      );
-      try
-      {
-        var handler = scope.ServiceProvider
-          .GetRequiredService<THandler>();
-        await handler.Handle(eventArgs, stoppingToken);
-      }
-      catch (Exception ex)
-      {
-        logger.LogError(
-          ex,
-          "Reactor {Reactor} handler {Handler} failed",
+        logger.LogDebug(
+          "Invoking handler {Handler} for reactor {Reactor} event {Event}",
+          typeof(THandler).Name,
           GetType().Name,
-          typeof(THandler).Name
+          eventArgs.GetType().Name
         );
+        try
+        {
+          var handler = scope.ServiceProvider
+            .GetRequiredService<THandler>();
+          await handler.Handle(eventArgs, stoppingToken);
+        }
+        catch (Exception ex)
+        {
+          logger.LogError(
+            ex,
+            "Reactor {Reactor} handler {Handler} failed",
+            GetType().Name,
+            typeof(THandler).Name
+          );
+        }
       }
+    }
+    catch (OperationCanceledException)
+    {
+      // NOTE: expected
     }
 
     {

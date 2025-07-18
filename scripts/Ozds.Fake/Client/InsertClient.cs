@@ -29,24 +29,24 @@ public class InsertClient(
       .ToList();
   }
 
-  public async Task Insert(
+  public async Task<List<IMeasurement>> Insert(
     IEnumerable<IMeasurement> measurements,
     CancellationToken cancellationToken
   )
   {
-    await mutations.CreateMeasurements(
+    return await mutations.CreateMeasurements(
       measurements,
       cancellationToken,
       false
     );
   }
 
-  public async Task Insert(
+  public async Task<List<IMeasurement>> Insert(
     IAsyncEnumerable<IMeasurement> measurements,
     CancellationToken cancellationToken
   )
   {
-    await mutations.CreateMeasurements(
+    return await mutations.CreateMeasurements(
       measurements,
       cancellationToken,
       false
