@@ -26,6 +26,14 @@ public abstract class ConcreteModelValidator<T>(
     return ValidateAsync((T)model, cancellationToken);
   }
 
+  public async Task<List<ValidationResult>> ValidateAsync(
+    IEnumerable<IModel> models,
+    CancellationToken cancellationToken
+  )
+  {
+    return await ValidateAsync(models.OfType<T>(), cancellationToken);
+  }
+
   public virtual Task<List<ValidationResult>> ValidateAsync(
     T model,
     CancellationToken cancellationToken
@@ -34,5 +42,20 @@ public abstract class ConcreteModelValidator<T>(
     var validationContext = new ValidationContext(model, serviceProvider, null);
     var validationResults = model.Validate(validationContext);
     return Task.FromResult(validationResults.ToList());
+  }
+
+  public virtual async Task<List<ValidationResult>> ValidateAsync(
+    IEnumerable<T> models,
+    CancellationToken cancellationToken
+  )
+  {
+    var validationResult = new List<ValidationResult>();
+    foreach (var model in models)
+    {
+      var validationResults = await ValidateAsync(model, cancellationToken);
+      validationResult.AddRange(validationResults);
+    }
+
+    return validationResult;
   }
 }

@@ -1,7 +1,6 @@
 using Ozds.Business.Queries;
 using Ozds.Fake.Arguments;
 using Ozds.Fake.Client;
-using Ozds.Fake.Extensions;
 using Ozds.Fake.Identification;
 using Ozds.Fake.Services.Base;
 using Ozds.Fake.Workers;
@@ -11,7 +10,8 @@ namespace Ozds.Fake.Services;
 public class InsertService(
   OzdsFakeInsertArguments arguments,
   IServiceProvider services,
-  ClockQueries clock
+  ClockQueries clock,
+  EnumerableQueries enumerable
 ) : ParallelEnumeratedService<InsertWorkerItem, InsertWorker>(services)
 {
   private readonly List<MeasurementLocationMeterId> ids = new();
@@ -49,9 +49,8 @@ public class InsertService(
     var interval = arguments.Interval.ToTimeSpan();
     var dateTo = clock.Timestamp();
     var dateFrom = dateTo.Subtract(interval);
-    var dateRange = new DateTimeOffsetRange(dateFrom, dateTo);
-    var splitInterval = (dateTo - dateFrom) / Environment.ProcessorCount;
-    foreach (var date in dateRange.Split(splitInterval))
+    foreach (var date in enumerable
+      .Split(dateFrom, dateTo, Environment.ProcessorCount))
     {
       yield return new InsertWorkerItem(
         date.DateFrom,

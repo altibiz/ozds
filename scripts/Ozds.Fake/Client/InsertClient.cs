@@ -6,7 +6,7 @@ namespace Ozds.Fake.Client;
 
 public class InsertClient(
   MeasurementMutations mutations,
-  MeasurementLocationQueries measurementLocationQueries,
+  AnalysisQueries analysisQueries,
   ClockQueries clock
 )
 {
@@ -16,8 +16,8 @@ public class InsertClient(
   )
   {
     var now = clock.Timestamp();
-    var analysisBases = await measurementLocationQueries
-      .ReadAnalysisBasisByLocationAndRepresentative(
+    var analysisBases = await analysisQueries
+      .ReadByLocationIdAndRepresentative(
         locationId,
         null,
         now,
@@ -34,7 +34,7 @@ public class InsertClient(
     CancellationToken cancellationToken
   )
   {
-    return await mutations.CreateMeasurements(
+    return await mutations.Create(
       measurements,
       cancellationToken,
       false
@@ -46,7 +46,7 @@ public class InsertClient(
     CancellationToken cancellationToken
   )
   {
-    return await mutations.CreateMeasurements(
+    return await mutations.Create(
       measurements,
       cancellationToken,
       false

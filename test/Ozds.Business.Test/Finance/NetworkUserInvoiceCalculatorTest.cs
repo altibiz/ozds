@@ -666,7 +666,7 @@ public class NetworkUserInvoiceCalculatorTest
           typeof(BlueLowNetworkUserCatalogueModel)).ToCustomization());
 
     var basis = fixture
-      .Build<NetworkUserInvoiceIssuingBasisModel>()
+      .Build<NetworkUserInvoiceBasisModel>()
       .With(x => x.FromDate, expected.Invoice.FromDate)
       .With(x => x.ToDate, expected.Invoice.ToDate)
       .With(x => x.Location, expected.Invoice.ArchivedLocation)

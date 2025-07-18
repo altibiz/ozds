@@ -1,17 +1,12 @@
 using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Ozds.Business.Conversion;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Models.Joins;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
+using Ozds.Business.Queries;
 using Ozds.Business.Reactors.Base;
-using Ozds.Data.Context;
-using Ozds.Data.Entities;
-using Ozds.Data.Entities.Base;
-using Ozds.Data.Extensions;
 using Ozds.Email.Sender.Abstractions;
 
 namespace Ozds.Business.Reactors.Implementations;
@@ -28,9 +23,8 @@ public class DataNotificationRecipientChangeReactor(
 }
 
 public class DataNotificationRecipientChangeHandler(
-  IDbContextFactory<DataDbContext> factory,
-  IEmailSender sender,
-  ModelEntityConverter converter
+  ModelQueries modelQueries,
+  IEmailSender sender
 ) : Handler<DataModelsChangedEventArgs>
 {
   public override async Task Handle(
@@ -47,41 +41,27 @@ public class DataNotificationRecipientChangeHandler(
       return;
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    var notifications = await modelQueries.ReadByIds<NotificationModel>(
+      recipients.Select(x => x.NotificationId),
+      cancellationToken);
 
-    var notifications = await context.Notifications
-      .Where(
-        context.PrimaryKeyIn<NotificationEntity>(
-          recipients
-            .Select(x => x.NotificationId)
-            .ToList()))
-      .ToListAsync(cancellationToken);
-
-    var representatives = await context.Representatives
-      .Where(
-        context.PrimaryKeyIn<RepresentativeEntity>(
-          recipients
-            .Select(x => x.RepresentativeId)
-            .ToList()))
-      .ToListAsync(cancellationToken);
+    var representatives = await modelQueries.ReadByIds<RepresentativeModel>(
+      recipients.Select(x => x.RepresentativeId),
+      cancellationToken
+    );
 
     var groups = recipients
       .GroupBy(x => x.NotificationId)
       .Select(
         x => new
         {
-          Notification = notifications
-            .FirstOrDefault(y => y.Id == x.Key) is { } notification
-            ? converter.ToModel<NotificationModel>(notification)
-            : null,
+          Notification = notifications.FirstOrDefault(y => y.Id == x.Key),
           Recipients = x.ToList(),
           Representatives = x
             .Select(
               y => representatives
                 .FirstOrDefault(z => z.Id == y.RepresentativeId))
-            .OfType<RepresentativeEntity>()
-            .Select(z => converter.ToModel<RepresentativeModel>(z))
+            .OfType<RepresentativeModel>()
             .ToList()
         });
 

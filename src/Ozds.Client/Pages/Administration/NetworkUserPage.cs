@@ -76,8 +76,8 @@ public partial class NetworkUserPage
     );
 
     var issuer = ScopedServices
-      .GetRequiredService<NetworkUserInvoiceIssuer>();
-    var invoice = await issuer.IssueNetworkUserInvoiceAsync(
+      .GetRequiredService<NetworkUserInvoiceMutations>();
+    var invoice = await issuer.Create(
       id,
       dateFrom,
       dateTo,

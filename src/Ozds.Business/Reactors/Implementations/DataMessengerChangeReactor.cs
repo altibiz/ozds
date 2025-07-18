@@ -1,3 +1,4 @@
+using Ozds.Business.Caching;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
@@ -19,7 +20,9 @@ public class DataMessengerChangeReactor(
 public class DataMessengerChangeHandler(
   IMessengerJobManager manager,
   AuditableQueries auditableQueries,
-  TimeQueries timeQueries
+  TimeQueries timeQueries,
+  MessengerCache messengerCache,
+  MessengerByMeterCache messengerByMeterCache
 ) : Handler<DataModelsChangedEventArgs>
 {
   public override async Task AfterStartAsync(
@@ -66,6 +69,9 @@ public class DataMessengerChangeHandler(
 
       if (entry.State is DataModelChangedState.Removed)
       {
+        await messengerCache.TryRemoveAsync(messenger, cancellationToken);
+        await messengerByMeterCache.TryRemoveAsync(
+          messenger, cancellationToken);
         await manager.UnscheduleInactivityMonitorJob(
           messenger.Id,
           cancellationToken);
@@ -73,6 +79,9 @@ public class DataMessengerChangeHandler(
 
       if (entry.State is DataModelChangedState.Modified)
       {
+        await messengerCache.TryUpdateAsync(messenger, cancellationToken);
+        await messengerByMeterCache.TryUpdateAsync(
+          messenger, cancellationToken);
         await manager.RescheduleInactivityMonitorJob(
           messenger.Id,
           timeQueries.PeriodTimeSpan(messenger.MaxInactivityPeriod),

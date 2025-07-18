@@ -11,9 +11,9 @@ namespace Ozds.Business.Mutations;
 public class ReportMutations(
   ReportReportQueries queries,
   ReportReportMutations mutations,
-  AuditableMutations auditableMutations,
-  ReadonlyMutations readonlyMutations,
   MeasurementMutations measurementMutations,
+  AuditableMutations auditableMutations,
+  ModelMutations modelMutations,
   ModelReportEntityConverter converter
 ) : IMutations
 {
@@ -70,20 +70,20 @@ public class ReportMutations(
 
       foreach (var model in models)
       {
-        if (model is IAuditable auditableModel)
+        if (model is IMeasurement measurementModel)
         {
-          await auditableMutations.Create(auditableModel, cancellationToken);
-        }
-        else if (model is IMeasurement measurementModel)
-        {
-          await measurementMutations.CreateMeasurements(
+          await measurementMutations.Create(
             [measurementModel],
             cancellationToken
           );
         }
-        else if (model is IReadonly readonlyModel)
+        else if (model is IAuditable auditableModel)
         {
-          await readonlyMutations.Create(readonlyModel, cancellationToken);
+          await auditableMutations.Create(auditableModel, cancellationToken);
+        }
+        else if (model is IModel actualModel)
+        {
+          await modelMutations.Create(actualModel, cancellationToken);
         }
       }
     }
@@ -109,20 +109,20 @@ public class ReportMutations(
 
       foreach (var model in models)
       {
-        if (model is IAuditable auditableModel)
+        if (model is IMeasurement measurementModel)
         {
-          await auditableMutations.Create(auditableModel, cancellationToken);
-        }
-        else if (model is IMeasurement measurementModel)
-        {
-          await measurementMutations.CreateMeasurements(
+          await measurementMutations.Create(
             [measurementModel],
             cancellationToken
           );
         }
-        else if (model is IReadonly readonlyModel)
+        else if (model is IAuditable auditableModel)
         {
-          await readonlyMutations.Create(readonlyModel, cancellationToken);
+          await auditableMutations.Create(auditableModel, cancellationToken);
+        }
+        else if (model is IModel actualModel)
+        {
+          await modelMutations.Create(actualModel, cancellationToken);
         }
       }
     }

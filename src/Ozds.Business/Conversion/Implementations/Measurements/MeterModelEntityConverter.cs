@@ -2,7 +2,9 @@ using Ozds.Business.Conversion.Base;
 using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Complex;
 using Ozds.Data.Entities.Base;
+using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Conversion.Implementations.Measurements;
@@ -28,6 +30,8 @@ public class MeterModelEntityConverter(IServiceProvider serviceProvider)
       .Select(phase => modelEntityConverter.ToEntity<PhaseEntity>(phase))
       .ToList();
     entity.MeasurementValidatorId = model.MeasurementValidatorId;
+    entity.MaxInactivityPeriod = modelEntityConverter.ToEntity<PeriodEntity>(
+      model.MaxInactivityPeriod);
   }
 
   public override void InitializeModel(
@@ -41,5 +45,7 @@ public class MeterModelEntityConverter(IServiceProvider serviceProvider)
       .Select(phase => modelEntityConverter.ToModel<PhaseModel>(phase))
       .ToHashSet();
     model.MeasurementValidatorId = entity.MeasurementValidatorId;
+    model.MaxInactivityPeriod = modelEntityConverter.ToModel<PeriodModel>(
+      entity.MaxInactivityPeriod);
   }
 }

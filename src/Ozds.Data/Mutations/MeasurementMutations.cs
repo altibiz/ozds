@@ -22,7 +22,7 @@ public class MeasurementMutations(
   MeasurementProcedures procedures
 ) : IMutations
 {
-  public async Task DeleteMeasurementsOlderThan(
+  public async Task DeleteOlderThan(
     DateTimeOffset threshold,
     CancellationToken cancellationToken
   )
@@ -30,14 +30,14 @@ public class MeasurementMutations(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
-    await DeleteMeasurementsOlderThan(
+    await DeleteOlderThan(
       context,
       threshold,
       cancellationToken
     );
   }
 
-  private async Task DeleteMeasurementsOlderThan(
+  private async Task DeleteOlderThan(
     DataDbContext context,
     DateTimeOffset threshold,
     CancellationToken cancellationToken
@@ -45,7 +45,7 @@ public class MeasurementMutations(
   {
     if (context.Database.CurrentTransaction is not null)
     {
-      await ExecuteDeleteMeasurementsOlderThan(
+      await ExecuteDeleteOlderThan(
         context,
         threshold,
         cancellationToken
@@ -62,7 +62,7 @@ public class MeasurementMutations(
           await using var transaction = await context.Database
             .BeginTransactionAsync(isolationLevel, cancellationToken);
 
-          await ExecuteDeleteMeasurementsOlderThan(
+          await ExecuteDeleteOlderThan(
             context,
             threshold,
             cancellationToken
@@ -125,7 +125,7 @@ public class MeasurementMutations(
     }
   }
 
-  private static async Task ExecuteDeleteMeasurementsOlderThan(
+  private static async Task ExecuteDeleteOlderThan(
     DataDbContext context,
     DateTimeOffset threshold,
     CancellationToken cancellationToken
@@ -151,7 +151,7 @@ public class MeasurementMutations(
     }
   }
 
-  public async Task<List<IMeasurementEntity>> CreateMeasurements(
+  public async Task<List<IMeasurementEntity>> Create(
     IEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken,
     bool triggerEvents = true
@@ -174,12 +174,13 @@ public class MeasurementMutations(
             .Select(
               measurement => new EntityChangingEntry(
                 EntityChangingState.Adding,
+                measurement,
                 measurement))
             .ToList()
         });
     }
 
-    var result = await CreateMeasurements(
+    var result = await Create(
       context,
       measurements,
       cancellationToken
@@ -194,6 +195,7 @@ public class MeasurementMutations(
             .Select(
               measurement => new EntityChangedEntry(
                 EntityChangedState.Added,
+                measurement,
                 measurement))
             .ToList()
         });
@@ -202,7 +204,7 @@ public class MeasurementMutations(
     return result;
   }
 
-  public async Task<List<IMeasurementEntity>> CreateMeasurements(
+  public async Task<List<IMeasurementEntity>> Create(
     IAsyncEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken,
     bool triggerEvents = true
@@ -226,18 +228,19 @@ public class MeasurementMutations(
             .Select(
               measurement => new EntityChangingEntry(
                 EntityChangingState.Adding,
+                measurement,
                 measurement))
             .ToList()
         });
     }
 
     var result = measurementsList is not null
-      ? await CreateMeasurements(
+      ? await Create(
         context,
         measurementsList,
         cancellationToken
       )
-      : await CreateMeasurements(
+      : await Create(
         context,
         measurements,
         cancellationToken
@@ -252,6 +255,7 @@ public class MeasurementMutations(
             .Select(
               measurement => new EntityChangedEntry(
                 EntityChangedState.Added,
+                measurement,
                 measurement))
             .ToList()
         });
@@ -260,7 +264,7 @@ public class MeasurementMutations(
     return result;
   }
 
-  private async Task<List<IMeasurementEntity>> CreateMeasurements(
+  private async Task<List<IMeasurementEntity>> Create(
     DataDbContext context,
     IEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken
@@ -291,11 +295,11 @@ public class MeasurementMutations(
       return new List<IMeasurementEntity>();
     }
 
-    return await CreateMeasurements(context, grouped, cancellationToken);
+    return await Create(context, grouped, cancellationToken);
   }
 
   // NOTE: internal because used in tests
-  internal async Task<List<IMeasurementEntity>> CreateMeasurements(
+  internal async Task<List<IMeasurementEntity>> Create(
     DataDbContext context,
     IAsyncEnumerable<IMeasurementEntity> measurements,
     CancellationToken cancellationToken
@@ -331,10 +335,10 @@ public class MeasurementMutations(
       return new List<IMeasurementEntity>();
     }
 
-    return await CreateMeasurements(context, grouped, cancellationToken);
+    return await Create(context, grouped, cancellationToken);
   }
 
-  private async Task<List<IMeasurementEntity>> CreateMeasurements(
+  private async Task<List<IMeasurementEntity>> Create(
     DataDbContext context,
     List<MeasurementGroup> grouped,
     CancellationToken cancellationToken
@@ -344,7 +348,7 @@ public class MeasurementMutations(
     List<IMeasurementEntity>? results = null;
     if (context.Database.CurrentTransaction is not null)
     {
-      results = await ExecuteCreateMeasurements(
+      results = await ExecuteCreate(
         context,
         grouped,
         groupChunkSize,
@@ -362,7 +366,7 @@ public class MeasurementMutations(
           await using var transaction = await context.Database
             .BeginTransactionAsync(isolationLevel, cancellationToken);
 
-          results = await ExecuteCreateMeasurements(
+          results = await ExecuteCreate(
             context,
             grouped,
             groupChunkSize,
@@ -492,7 +496,7 @@ public class MeasurementMutations(
       .ToList();
   }
 
-  private async Task<List<IMeasurementEntity>> ExecuteCreateMeasurements(
+  private async Task<List<IMeasurementEntity>> ExecuteCreate(
     DataDbContext context,
     List<MeasurementGroup> groups,
     int groupChunkSize,
@@ -508,7 +512,7 @@ public class MeasurementMutations(
       {
         var json = context.CreateBulkJsonParameter(chunk);
         var jsonParameter = new JsonParameter(json);
-        var objects = await ExecuteCreateMeasurementsChunk(
+        var objects = await ExecuteCreateChunk(
           context,
           index,
           jsonParameter,
@@ -523,7 +527,7 @@ public class MeasurementMutations(
     return results;
   }
 
-  private async Task<List<object>> ExecuteCreateMeasurementsChunk(
+  private async Task<List<object>> ExecuteCreateChunk(
     DataDbContext context,
     int index,
     JsonParameter jsonParameter,

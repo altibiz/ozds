@@ -11,11 +11,11 @@ public class DuplexAbsTest
     {
       (
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasureSum<decimal>(-5),
-          new SinglePhasicMeasureSum<decimal>(-3)),
+          new SinglePhasicSumMeasure<decimal>(-5),
+          new SinglePhasicSumMeasure<decimal>(-3)),
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasureSum<decimal>(5),
-          new SinglePhasicMeasureSum<decimal>(3))
+          new SinglePhasicSumMeasure<decimal>(5),
+          new SinglePhasicSumMeasure<decimal>(3))
       ),
       (
         new ImportExportDuplexMeasure<decimal>(
@@ -26,8 +26,8 @@ public class DuplexAbsTest
           new TriPhasicMeasure<decimal>(4, 5, 6))
       ),
       (
-        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(-2)),
-        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(2))
+        new AnyDuplexMeasure<decimal>(new SinglePhasicSumMeasure<decimal>(-2)),
+        new AnyDuplexMeasure<decimal>(new SinglePhasicSumMeasure<decimal>(2))
       ),
       (new NullDuplexMeasure<decimal>(), new NullDuplexMeasure<decimal>())
     };

@@ -38,4 +38,21 @@ public class MessengerQueries(
 
     return items.ToPaginatedList(count);
   }
+
+  public async Task<MessengerEntity?> ReadByMeterId(
+    string meterId,
+    CancellationToken cancellationToken
+  )
+  {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+
+    var messenger = await context.Meters
+      .Where(context.PrimaryKeyEquals<MeterEntity>(meterId))
+      .Include(x => x.Messenger)
+      .Select(x => x.Messenger)
+      .FirstOrDefaultAsync(cancellationToken);
+
+    return messenger;
+  }
 }

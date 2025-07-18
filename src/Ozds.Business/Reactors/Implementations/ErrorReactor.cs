@@ -18,8 +18,7 @@ public class ErrorReactor(
 
 public class ErrorHandler(
   ModelActivator activator,
-  NotificationMutations notificationMutations,
-  ReadonlyMutations readonlyMutations,
+  ModelMutations mutations,
   ClockQueries clock
 ) : Handler<ErrorEventArgs>
 {
@@ -51,7 +50,7 @@ public class ErrorHandler(
       CategoryModel.All,
       CategoryModel.Error
     };
-    @event.Id = await readonlyMutations.Create(@event, cancellationToken);
+    await mutations.Create(@event, cancellationToken);
 
     var notification = activator.Activate<SystemNotificationModel>();
     notification.Title = "Exception";
@@ -68,8 +67,7 @@ public class ErrorHandler(
       TopicModel.All,
       TopicModel.Error
     };
-    notification.Id = await notificationMutations
-      .Create(notification, cancellationToken);
+    await mutations.Create(notification, cancellationToken);
   }
 
   private sealed record EventContent(

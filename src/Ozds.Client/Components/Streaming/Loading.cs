@@ -218,7 +218,7 @@ public partial class Loading<T> : OzdsComponentBase
         _state = _state.WithValue(
           (T?)await ScopedServices
             .GetRequiredService<AuditableQueries>()
-            .ReadSingleDynamic(typeof(T), Id, CancellationToken));
+            .ReadById(typeof(T), Id, CancellationToken));
       }
       catch (Exception e)
       {
@@ -226,14 +226,14 @@ public partial class Loading<T> : OzdsComponentBase
       }
     }
 
-    if (Id is not null && typeof(T).IsAssignableTo(typeof(IReadonly)))
+    if (Id is not null && typeof(T).IsAssignableTo(typeof(IModel)))
     {
       try
       {
         _state = _state.WithValue(
           (T?)await ScopedServices
-            .GetRequiredService<ReadonlyQueries>()
-            .ReadSingleDynamic(typeof(T), Id, CancellationToken));
+            .GetRequiredService<ModelQueries>()
+            .ReadById(typeof(T), Id, CancellationToken));
       }
       catch (Exception e)
       {

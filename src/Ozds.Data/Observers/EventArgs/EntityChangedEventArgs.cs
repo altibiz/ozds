@@ -9,7 +9,8 @@ public class EntitiesChangedEventArgs : System.EventArgs
 
 public sealed record EntityChangedEntry(
   EntityChangedState State,
-  IEntity Entity
+  IEntity Entity,
+  IEntity Original
 );
 
 public enum EntityChangedState

@@ -9,11 +9,11 @@ public class DuplexAnyTest
   {
     return new List<(DuplexMeasure<decimal>, PhasicMeasure<decimal>)>
     {
-      (new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(4)),
-        new SinglePhasicMeasureSum<decimal>(4)
+      (new NetDuplexMeasure<decimal>(new SinglePhasicSumMeasure<decimal>(4)),
+        new SinglePhasicSumMeasure<decimal>(4)
       ),
-      (new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(3)),
-        new SinglePhasicMeasureSum<decimal>(3)
+      (new AnyDuplexMeasure<decimal>(new SinglePhasicSumMeasure<decimal>(3)),
+        new SinglePhasicSumMeasure<decimal>(3)
       ),
       (new AnyDuplexMeasure<decimal>(new TriPhasicMeasure<decimal>(1, 2, 3)),
         new TriPhasicMeasure<decimal>(1, 2, 3)

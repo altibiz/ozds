@@ -18,7 +18,7 @@ public class JobsMonthlyNetworkUserBillingJobReactor(
 
 public class JobsMonthlyNetworkUserBillingJobHandler(
   AuditableQueries auditableQueries,
-  NetworkUserInvoiceIssuer issuer,
+  NetworkUserInvoiceMutations mutations,
   ClockQueries clockQueries,
   TimeQueries timeQueries
 ) : Handler<JobsBillingJobEventArgs>
@@ -28,7 +28,7 @@ public class JobsMonthlyNetworkUserBillingJobHandler(
     CancellationToken cancellationToken)
   {
     var networkUser = await auditableQueries
-      .ReadSingle<NetworkUserModel>(
+      .ReadById<NetworkUserModel>(
         eventArgs.NetworkUserId,
         cancellationToken);
     if (networkUser is null)
@@ -39,7 +39,7 @@ public class JobsMonthlyNetworkUserBillingJobHandler(
     var now = clockQueries.Timestamp();
     var startOfLastMonth = timeQueries.GetStartOfLastMonth(now);
     var startOfThisMonth = timeQueries.GetStartOfMonth(now);
-    await issuer.IssueNetworkUserInvoiceAsync(
+    await mutations.Create(
       networkUser.Id,
       startOfLastMonth,
       startOfThisMonth,

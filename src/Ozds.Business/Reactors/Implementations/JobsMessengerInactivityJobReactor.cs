@@ -1,18 +1,14 @@
 using System.Text;
 using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
 using Ozds.Business.Activation;
-using Ozds.Business.Conversion;
+using Ozds.Business.Caching;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
+using Ozds.Business.Mutations;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Queries;
 using Ozds.Business.Reactors.Base;
-using Ozds.Data.Context;
-using Ozds.Data.Entities;
-using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Business.Reactors.Implementations;
 
@@ -28,11 +24,11 @@ public class JobsMessengerInactivityJobReactor(
 }
 
 public class JobsMessengerInactivityJobHandler(
-  IDbContextFactory<DataDbContext> factory,
+  EventQueries eventQueries,
+  ModelMutations modelMutations,
   IHostEnvironment environment,
   ModelActivator activator,
-  ModelEntityConverter converter,
-  AuditableQueries auditableQueries
+  MessengerCache messengerCache
 ) : Handler<JobsMessengerJobEventArgs>
 {
   private static readonly JsonSerializerOptions
@@ -45,22 +41,17 @@ public class JobsMessengerInactivityJobHandler(
     JobsMessengerJobEventArgs eventArgs,
     CancellationToken cancellationToken)
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-
-    var messenger = await auditableQueries
-      .ReadSingle<MessengerModel>(eventArgs.Id, cancellationToken);
+    var messenger = await messengerCache.GetAsync(
+      eventArgs.Id,
+      cancellationToken);
     if (messenger is null)
     {
       return;
     }
 
-    var lastPushEvent = await context.Events
-      .OfType<MessengerEventEntity>()
-      .Where(x => x.MessengerId == messenger.Id)
-      .Where(x => x.Categories.Contains(CategoryEntity.MessengerPush))
-      .OrderByDescending(x => x.Timestamp)
-      .FirstOrDefaultAsync(cancellationToken);
+    var lastPushEvent = await eventQueries.ReadLastByMessengerId(
+      messenger.Id,
+      cancellationToken);
 
     var notification = activator.Activate<MessengerNotificationModel>();
     notification.MessengerId = messenger.Id;
@@ -85,7 +76,7 @@ public class JobsMessengerInactivityJobHandler(
 
     if (lastPushEvent is null)
     {
-      builder.AppendLine("Meter never pushed");
+      builder.AppendLine("Messenger never pushed");
     }
     else
     {
@@ -93,16 +84,13 @@ public class JobsMessengerInactivityJobHandler(
         lastPushEvent.Content,
         EventContentSerializationOptions
       );
-      builder.AppendLine($"Meter: \"{messenger.Title}\"");
+      builder.AppendLine($"Messenger: \"{messenger.Title}\"");
       builder.AppendLine($"Last pushed at: {lastPushEvent.Timestamp}");
       builder.AppendLine($"Last push details: {lastPushEventDetails}");
     }
 
     notification.Content = builder.ToString();
-    var notificationEntity =
-      converter.ToEntity<MessengerNotificationEntity>(notification);
-    context.Add(notificationEntity);
-    await context.SaveChangesAsync(cancellationToken);
-    notification.Id = notificationEntity.Id;
+
+    await modelMutations.Create(notification, cancellationToken);
   }
 }

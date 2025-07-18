@@ -33,7 +33,7 @@ namespace Ozds.Data.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "level_entity", new[] { "trace", "debug", "info", "warning", "error", "critical" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "phase_entity", new[] { "l1", "l2", "l3" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "role_entity", new[] { "operator_representative", "location_representative", "network_user_representative" });
-            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "topic_entity", new[] { "all", "messenger", "messenger_inactivity", "invalid_push", "error", "network_user_invoice_state" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "topic_entity", new[] { "all", "messenger", "messenger_inactivity", "meter", "meter_inactivity", "invalid_push", "error", "network_user_invoice_state" });
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "timescaledb");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
@@ -1573,6 +1573,19 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("measurement_validator_id");
 
+                    b.ComplexProperty<Dictionary<string, object>>("MaxInactivityPeriod", "Ozds.Data.Entities.Base.MeterEntity.MaxInactivityPeriod#PeriodEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<DurationEntity>("Duration")
+                                .HasColumnType("duration_entity")
+                                .HasColumnName("max_inactivity_period_duration");
+
+                            b1.Property<long>("Multiplier")
+                                .HasColumnType("bigint")
+                                .HasColumnName("max_inactivity_period_multiplier");
+                        });
+
                     b.HasKey("_stringId")
                         .HasName("pk_meters");
 
@@ -1722,6 +1735,19 @@ namespace Ozds.Data.Migrations
                                 .IsRequired()
                                 .HasColumnType("text")
                                 .HasColumnName("am_title");
+
+                            b1.ComplexProperty<Dictionary<string, object>>("MaxInactivityPeriod", "Ozds.Data.Entities.Base.NetworkUserCalculationEntity.ArchivedMeter#MeterEntity.MaxInactivityPeriod#PeriodEntity", b2 =>
+                                {
+                                    b2.IsRequired();
+
+                                    b2.Property<DurationEntity>("Duration")
+                                        .HasColumnType("duration_entity")
+                                        .HasColumnName("am_mip_duration");
+
+                                    b2.Property<long>("Multiplier")
+                                        .HasColumnType("bigint")
+                                        .HasColumnName("am_mip_multiplier");
+                                });
                         });
 
                     b.ComplexProperty<Dictionary<string, object>>("ArchivedNetworkUserMeasurementLocation", "Ozds.Data.Entities.Base.NetworkUserCalculationEntity.ArchivedNetworkUserMeasurementLocation#NetworkUserMeasurementLocationEntity", b1 =>
@@ -5054,6 +5080,23 @@ namespace Ozds.Data.Migrations
                     b.HasDiscriminator().HasValue("MessengerNotificationEntity");
                 });
 
+            modelBuilder.Entity("Ozds.Data.Entities.MeterNotificationEntity", b =>
+                {
+                    b.HasBaseType("Ozds.Data.Entities.Base.ResolvableNotificationEntity");
+
+                    b.Property<string>("MeterId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("meter_id");
+
+                    b.HasIndex("MeterId")
+                        .HasDatabaseName("ix_notifications_meter_id");
+
+                    b.ToTable("notifications", (string)null);
+
+                    b.HasDiscriminator().HasValue("MeterNotificationEntity");
+                });
+
             modelBuilder.Entity("Ozds.Data.Entities.AbbB2xAggregateEntity", b =>
                 {
                     b.HasOne("Ozds.Data.Entities.AbbB2xMeterEntity", "Meter")
@@ -5741,6 +5784,18 @@ namespace Ozds.Data.Migrations
                     b.Navigation("Messenger");
                 });
 
+            modelBuilder.Entity("Ozds.Data.Entities.MeterNotificationEntity", b =>
+                {
+                    b.HasOne("Ozds.Data.Entities.Base.MeterEntity", "Meter")
+                        .WithMany("InactivityNotifications")
+                        .HasForeignKey("MeterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_notifications_meters_meter_id");
+
+                    b.Navigation("Meter");
+                });
+
             modelBuilder.Entity("Ozds.Data.Entities.Base.EventEntity", b =>
                 {
                     b.Navigation("Notifications");
@@ -5762,6 +5817,8 @@ namespace Ozds.Data.Migrations
 
             modelBuilder.Entity("Ozds.Data.Entities.Base.MeterEntity", b =>
                 {
+                    b.Navigation("InactivityNotifications");
+
                     b.Navigation("MeasurementLocation");
 
                     b.Navigation("NetworkUserCalculations");

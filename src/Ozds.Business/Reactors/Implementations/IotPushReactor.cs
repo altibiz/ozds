@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using Ozds.Business.Activation;
 using Ozds.Business.Buffers;
+using Ozds.Business.Caching;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations;
 using Ozds.Business.Observers.Abstractions;
@@ -28,10 +28,11 @@ public class IotPushHandler(
   ModelValidator validator,
   ModelActivator activator,
   MeasurementBuffer buffer,
-  NotificationMutations notificationMutations,
-  AuditableQueries auditableQueries,
   IMessengerJobManager messengerJobManager,
-  ReadonlyMutations readonlyMutations,
+  IMeterJobManager meterJobManager,
+  MessengerCache messengerCache,
+  MeterCache meterCache,
+  ModelMutations modelMutations,
   ClockQueries clock,
   TimeQueries time
 ) : Handler<IotPushEventArgs>
@@ -73,7 +74,7 @@ public class IotPushHandler(
     var validationResults = new List<ValidationResult>();
     foreach (var measurement in measurements)
     {
-      var validationResult = await validator.ValidateAsync(
+      var validationResult = await validator.Validate(
         measurement,
         cancellationToken
       );
@@ -95,10 +96,9 @@ public class IotPushHandler(
     CancellationToken cancellationToken
   )
   {
-    var messenger = await auditableQueries
-      .ReadSingle<MessengerModel>(
-        eventArgs.MessengerId,
-        cancellationToken);
+    var messenger = await messengerCache.GetAsync(
+      eventArgs.MessengerId,
+      cancellationToken);
     if (messenger is null)
     {
       return;
@@ -109,6 +109,24 @@ public class IotPushHandler(
       time.PeriodTimeSpan(messenger.MaxInactivityPeriod),
       cancellationToken
     );
+
+    var meterIds = eventArgs.Measurements
+      .Select(x => x.MeterId)
+      .Distinct();
+    foreach (var meterId in meterIds)
+    {
+      var meter = await meterCache.GetAsync(meterId, cancellationToken);
+      if (meter is null)
+      {
+        return;
+      }
+
+      await meterJobManager.RescheduleInactivityMonitorJob(
+        meter.Id,
+        time.PeriodTimeSpan(meter.MaxInactivityPeriod),
+        cancellationToken
+      );
+    }
   }
 
   private async Task<string?> AddPushEvent(
@@ -118,10 +136,9 @@ public class IotPushHandler(
   {
     var now = clock.Timestamp();
 
-    var messenger = await auditableQueries
-      .ReadSingle<MessengerModel>(
-        eventArgs.MessengerId,
-        cancellationToken);
+    var messenger = await messengerCache.GetAsync(
+      eventArgs.MessengerId,
+      cancellationToken);
     if (messenger is null)
     {
       return null;
@@ -148,8 +165,7 @@ public class IotPushHandler(
     @event.Title = validationResults is null
       ? $"Messenger '{messenger.Title}' pushed"
       : $"Messenger '{messenger.Title}' pushed with validation errors";
-    @event.Id = await readonlyMutations
-      .Create(@event, cancellationToken);
+    await modelMutations.Create(@event, cancellationToken);
 
     return @event.Id;
   }
@@ -162,10 +178,9 @@ public class IotPushHandler(
   {
     var now = clock.Timestamp();
 
-    var messenger = await auditableQueries
-      .ReadSingle<MessengerModel>(
-        eventArgs.MessengerId,
-        cancellationToken);
+    var messenger = await messengerCache.GetAsync(
+      eventArgs.MessengerId,
+      cancellationToken);
     if (messenger is null)
     {
       return;
@@ -185,8 +200,7 @@ public class IotPushHandler(
       "\n", validationResults
         .Select(x => $"{x.MemberNames.First()}: {x.ErrorMessage}"));
     notification.EventId = eventId;
-    notification.Id = await notificationMutations
-      .Create(notification, cancellationToken);
+    await modelMutations.Create(notification, cancellationToken);
   }
 
   private static JsonDocument CreateEventContent(

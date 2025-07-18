@@ -12,7 +12,6 @@ public class OzdsFakeOptions
 public class OzdsFakeClientOptions
 {
   public string BaseUrl { get; set; } = default!;
-  public string ApiKey { get; set; } = default!;
 }
 
 public class OzdsFakeMessagingOptions

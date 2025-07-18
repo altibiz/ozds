@@ -286,13 +286,14 @@ docs:
 raspberryPi4 *args:
     {{ raspberryPi4 }} {{ args }}
 
-migrate project name:
+migrate project context name:
     @just clean
 
     dotnet ef \
       --startup-project '{{ servercsproj }}' \
       --project '{{ root }}/src/{{ project }}/{{ project }}.csproj' \
       migrations add \
+      --context '{{ context }}' \
       --output-dir Migrations \
       --namespace {{ project }}.Migrations \
       '{{ name }}'
@@ -301,7 +302,7 @@ migrate project name:
       ('{{ project }}.Migrations' | split row '.' | path join) + '/*') | \
       each { |x| mv -f $x '{{ root }}/src/{{ project }}/Migrations' } | ignore
 
-    @just migrate-continue '{{ project }}' '{{ name }}'
+    @just --yes migrate-continue '{{ project }}' '{{ context }}' '{{ name }}'
 
 [confirm("This will proceed with the migration and dump the database. Would you like to continue?")]
 migrate-continue project context name:

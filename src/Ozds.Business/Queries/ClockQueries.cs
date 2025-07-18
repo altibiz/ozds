@@ -1,3 +1,4 @@
+using Ozds.Business.Models.Complex;
 using Ozds.Business.Queries.Abstractions;
 using TimeClockQueries = Ozds.Time.Queries.Abstractions.IClockQueries;
 
@@ -17,5 +18,19 @@ public class ClockQueries(
   public virtual DateTimeOffset Now()
   {
     return timeClockQueries.Now();
+  }
+
+  public virtual IAsyncEnumerable<DateTimeOffsetRangeModel> Future(
+    TimeSpan interval,
+    CancellationToken cancellationToken
+  )
+  {
+    return timeClockQueries.Future(interval, cancellationToken)
+      .Select(
+        x => new DateTimeOffsetRangeModel
+        {
+          DateFrom = x.DateFrom,
+          DateTo = x.DateTo
+        });
   }
 }

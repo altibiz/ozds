@@ -13,13 +13,13 @@ public class ExpenditureConvertPrimitiveToFloatTest
       (new UsageExpenditureMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(5.1m),
-              new SinglePhasicMeasureSum<decimal>(3.1m)))),
+              new SinglePhasicSumMeasure<decimal>(5.1m),
+              new SinglePhasicSumMeasure<decimal>(3.1m)))),
         new UsageExpenditureMeasure<float>(
           new UnaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
-              new SinglePhasicMeasureSum<float>(5.1f),
-              new SinglePhasicMeasureSum<float>(3.1f))))
+              new SinglePhasicSumMeasure<float>(5.1f),
+              new SinglePhasicSumMeasure<float>(3.1f))))
       ),
 
       (new SupplyExpenditureMeasure<decimal>(
@@ -37,21 +37,21 @@ public class ExpenditureConvertPrimitiveToFloatTest
       (new DualExpenditureMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(1.1m),
-              new SinglePhasicMeasureSum<decimal>(2.1m))),
+              new SinglePhasicSumMeasure<decimal>(1.1m),
+              new SinglePhasicSumMeasure<decimal>(2.1m))),
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(3.1m),
-              new SinglePhasicMeasureSum<decimal>(4.1m)))),
+              new SinglePhasicSumMeasure<decimal>(3.1m),
+              new SinglePhasicSumMeasure<decimal>(4.1m)))),
         new DualExpenditureMeasure<float>(
           new UnaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
-              new SinglePhasicMeasureSum<float>(1.1f),
-              new SinglePhasicMeasureSum<float>(2.1f))),
+              new SinglePhasicSumMeasure<float>(1.1f),
+              new SinglePhasicSumMeasure<float>(2.1f))),
           new UnaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
-              new SinglePhasicMeasureSum<float>(3.1f),
-              new SinglePhasicMeasureSum<float>(4.1f))))
+              new SinglePhasicSumMeasure<float>(3.1f),
+              new SinglePhasicSumMeasure<float>(4.1f))))
       ),
 
       (new NullExpenditureMeasure<decimal>(),

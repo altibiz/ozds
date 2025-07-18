@@ -19,7 +19,7 @@ public class DataNotificationChangeReactor(
 
 public class DataNotificationChangeHandler(
   NotificationQueries notificationQueries,
-  JoinMutations joinMutations,
+  ModelMutations modelMutations,
   INotificationRecipientCreatedPublisher notificationCreatedPublisher
 ) : Handler<DataModelsChangedEventArgs>
 {
@@ -37,10 +37,8 @@ public class DataNotificationChangeHandler(
       return;
     }
 
-    // TODO: fetch representative also so it can be used for sending emails!
-
     var recipients = new List<NotificationRecipientModel>();
-    // NOTE: most likely it will be only one so it probably not N+1
+    // FIXME: N + 1
     foreach (var notification in notifications)
     {
       var notificationRecipients = await notificationQueries
@@ -58,10 +56,6 @@ public class DataNotificationChangeHandler(
       }
     }
 
-    // FIXME: this one is N+1
-    foreach (var recipient in recipients)
-    {
-      await joinMutations.Create(recipient, cancellationToken);
-    }
+    await modelMutations.Create(recipients, cancellationToken);
   }
 }

@@ -1,10 +1,6 @@
 using Ozds.Business.Conversion;
-using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Models.Base;
-using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data.Entities;
 using DataMeasurementLocationQueries =
   Ozds.Data.Queries.MeasurementLocationQueries;
 
@@ -15,12 +11,12 @@ public class MeasurementLocationQueries(
   ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
-  public async Task<IMeasurementLocation?> ReadMeasurementLocationByMeter(
+  public async Task<IMeasurementLocation?> ReadByMeterId(
     string meterId,
     CancellationToken cancellationToken
   )
   {
-    var entity = await queries.ReadMeasurementLocationByMeter(
+    var entity = await queries.ReadByMeterId(
       meterId,
       cancellationToken
     );
@@ -29,26 +25,14 @@ public class MeasurementLocationQueries(
       : modelEntityConverter.ToModel<IMeasurementLocation>(entity);
   }
 
-  public async Task<IMeter?> ReadMeterByMeasurementLocation(
-    string measurementLocationId,
-    CancellationToken cancellationToken
-  )
-  {
-    var entity = await queries.ReadMeterByMeasurementLocation(
-      measurementLocationId,
-      cancellationToken
-    );
-    return entity is null ? null : modelEntityConverter.ToModel<IMeter>(entity);
-  }
-
   public async Task<
     List<IMeasurementLocation>
-  > ReadMeasurementLocationByNetworkUser(
+  > ReadNetworkUserId(
     string networkUserId,
     CancellationToken cancellationToken
   )
   {
-    var entities = await queries.ReadMeasurementLocationByNetworkUser(
+    var entities = await queries.ReadByNetworkUserId(
       networkUserId,
       cancellationToken
     );
@@ -59,62 +43,17 @@ public class MeasurementLocationQueries(
 
   public async Task<
     List<IMeasurementLocation>
-  > ReadMeasurementLocationByLocation(
+  > ReadByLocationId(
     string locationId,
     CancellationToken cancellationToken
   )
   {
-    var entities = await queries.ReadMeasurementLocationByLocation(
+    var entities = await queries.ReadByLocationId(
       locationId,
       cancellationToken
     );
     return entities
       .Select(modelEntityConverter.ToModel<IMeasurementLocation>)
-      .ToList();
-  }
-
-  public async Task<List<AnalysisBasisModel>>
-    ReadAnalysisBasisByLocationAndRepresentative(
-      string? locationId,
-      RepresentativeModel? representative,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
-  {
-    var representativeEntity = representative is null
-      ? null
-      : modelEntityConverter
-        .ToEntity<RepresentativeEntity>(representative);
-
-    var entities = await queries
-      .ReadAnalysisBasesByLocationAndRepresentative(
-        locationId,
-        representativeEntity,
-        fromDate,
-        toDate,
-        cancellationToken
-      );
-
-    return entities
-      .Select(
-        entity => new AnalysisBasisModel
-        {
-          Representative = representative,
-          FromDate = fromDate,
-          ToDate = toDate,
-          Location = modelEntityConverter
-            .ToModel<LocationModel>(entity.Location),
-          NetworkUser = modelEntityConverter
-            .ToModel<NetworkUserModel>(entity.NetworkUser),
-          MeasurementLocation = modelEntityConverter
-            .ToModel<MeasurementLocationModel>(entity.MeasurementLocation),
-          Meter = modelEntityConverter.ToModel<MeterModel>(entity.Meter),
-          Calculations = [],
-          Invoices = [],
-          LastMeasurement = null,
-          MonthlyAggregates = []
-        })
       .ToList();
   }
 }

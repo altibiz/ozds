@@ -28,7 +28,7 @@ public class CreateMeasurementsTest
     var expected = await factory.CreateMany(cancellationToken);
 
     var stopwatch = Stopwatch.StartNew();
-    await mutations.CreateMeasurements(
+    await mutations.Create(
       expected,
       cancellationToken
     );
@@ -53,7 +53,7 @@ public class CreateMeasurementsTest
       cancellationToken);
 
     var stopwatch = Stopwatch.StartNew();
-    var actual = await mutations.CreateMeasurements(
+    var actual = await mutations.Create(
       expected,
       cancellationToken
     );
@@ -80,7 +80,7 @@ public class CreateMeasurementsTest
     var measurements = await factory.CreateDerivedNull(cancellationToken);
 
     var byproduct = (await mutations
-        .CreateMeasurements(
+        .Create(
           measurements,
           cancellationToken))
       .OrderBy(

@@ -127,16 +127,8 @@ public record class TriPhasicMeasure<T>(
   IMultiplyOperators<T, T, T>,
   IDivisionOperators<T, T, T>;
 
-public record class SinglePhasicMeasure<T>(T Value) : PhasicMeasure<T>
-  where T : struct,
-  IComparisonOperators<T, T, bool>,
-  IAdditionOperators<T, T, T>,
-  ISubtractionOperators<T, T, T>,
-  IMultiplyOperators<T, T, T>,
-  IDivisionOperators<T, T, T>;
-
-public record class SinglePhasicMeasureSum<T>(T Value)
-  : SinglePhasicMeasure<T>(Value)
+public record class SinglePhasicSumMeasure<T>(T Value)
+  : PhasicMeasure<T>
   where T : struct,
   IComparisonOperators<T, T, bool>,
   IAdditionOperators<T, T, T>,
@@ -171,7 +163,7 @@ public abstract record class PhasicMeasure<T>
           composite.Measures.OrderBy(
               measure => measure switch
               {
-                SinglePhasicMeasureSum<T> => 0,
+                SinglePhasicSumMeasure<T> => 0,
                 TriPhasicMeasure<T> => 1,
                 _ => 2
               })
@@ -184,7 +176,7 @@ public abstract record class PhasicMeasure<T>
           instantaneous.Avg.PhaseSum(),
         CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhaseSum(),
         TriPhasicMeasure<T> tri => tri.ValueL1 + tri.ValueL2 + tri.ValueL3,
-        SinglePhasicMeasureSum<T> single => single.Value,
+        SinglePhasicSumMeasure<T> single => single.Value,
         _ => (T)Convert.ChangeType(0, typeof(T))
       };
     }
@@ -199,7 +191,7 @@ public abstract record class PhasicMeasure<T>
             measure => measure switch
             {
               TriPhasicMeasure<T> => 0,
-              SinglePhasicMeasureSum<T> => 1,
+              SinglePhasicSumMeasure<T> => 1,
               _ => 2
             })
           .Select(measure => measure.PhaseAverage())
@@ -212,7 +204,8 @@ public abstract record class PhasicMeasure<T>
       CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhaseAverage(),
       TriPhasicMeasure<T> tri => (tri.ValueL1 + tri.ValueL2 + tri.ValueL3)
         / (T)Convert.ChangeType(3, typeof(T)),
-      SinglePhasicMeasureSum<T> single => single.Value,
+      SinglePhasicSumMeasure<T> single => single.Value
+        / (T)Convert.ChangeType(3, typeof(T)),
       _ => (T)Convert.ChangeType(0, typeof(T))
     };
   }
@@ -227,7 +220,7 @@ public abstract record class PhasicMeasure<T>
               measure => measure switch
               {
                 TriPhasicMeasure<T> => 0,
-                SinglePhasicMeasureSum<T> => 1,
+                SinglePhasicSumMeasure<T> => 1,
                 _ => 2
               })
             .Select(measure => measure.PhasePeak())
@@ -243,7 +236,8 @@ public abstract record class PhasicMeasure<T>
           : tri.ValueL2 > tri.ValueL3
             ? tri.ValueL2
             : tri.ValueL3,
-        SinglePhasicMeasureSum<T> single => single.Value,
+        SinglePhasicSumMeasure<T> single => single.Value
+          / (T)Convert.ChangeType(3, typeof(T)),
         _ => (T)Convert.ChangeType(0, typeof(T))
       };
     }
@@ -259,7 +253,7 @@ public abstract record class PhasicMeasure<T>
               measure => measure switch
               {
                 TriPhasicMeasure<T> => 0,
-                SinglePhasicMeasureSum<T> => 1,
+                SinglePhasicSumMeasure<T> => 1,
                 _ => 2
               })
             .Select(measure => measure.PhaseTrough())
@@ -276,34 +270,11 @@ public abstract record class PhasicMeasure<T>
           : tri.ValueL2 < tri.ValueL3
             ? tri.ValueL2
             : tri.ValueL3,
-        SinglePhasicMeasureSum<T> single => single.Value,
+        SinglePhasicSumMeasure<T> single => single.Value
+          / (T)Convert.ChangeType(3, typeof(T)),
         _ => (T)Convert.ChangeType(0, typeof(T))
       };
     }
-  }
-
-  public SinglePhasicMeasureSum<T> PhaseSingle()
-  {
-    return this switch
-    {
-      CompositePhasicMeasure<T> composite => composite.Measures.OrderBy(
-          measure => measure switch
-          {
-            SinglePhasicMeasureSum<T> => 0,
-            TriPhasicMeasure<T> => 1,
-            _ => 2
-          })
-        .Select(measure => measure.PhaseSingle())
-        .FirstOrDefault(
-          single => !EqualityComparer<T>.Default.Equals(
-            single.Value, (T)Convert.ChangeType(0, typeof(T))),
-          new SinglePhasicMeasureSum<T>(default)),
-      InstantaneousPhaseMeasure<T> instantaneous => instantaneous.Avg
-        .PhaseSingle(),
-      CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhaseSingle(),
-      SinglePhasicMeasureSum<T> single => single,
-      _ => new SinglePhasicMeasureSum<T>(default)
-    };
   }
 
   public TriPhasicMeasure<T> PhaseSplit()
@@ -314,7 +285,7 @@ public abstract record class PhasicMeasure<T>
           measure => measure switch
           {
             TriPhasicMeasure<T> => 0,
-            SinglePhasicMeasureSum<T> => 1,
+            SinglePhasicSumMeasure<T> => 1,
             _ => 2
           })
         .Select(measure => measure.PhaseSplit())
@@ -332,7 +303,7 @@ public abstract record class PhasicMeasure<T>
       InstantaneousPhaseMeasure<T> instantaneous =>
         instantaneous.Avg.PhaseSplit(),
       CumulativePhasicMeasure<T> cumulative => cumulative.Diff().PhaseSplit(),
-      SinglePhasicMeasureSum<T> single => new TriPhasicMeasure<T>(
+      SinglePhasicSumMeasure<T> single => new TriPhasicMeasure<T>(
         single.Value / (T)Convert.ChangeType(3, typeof(T)),
         single.Value / (T)Convert.ChangeType(3, typeof(T)),
         single.Value / (T)Convert.ChangeType(3, typeof(T))),
@@ -484,8 +455,8 @@ public abstract record class PhasicMeasure<T>
         (TConverted)Convert.ChangeType(tri.ValueL1, typeof(TConverted)),
         (TConverted)Convert.ChangeType(tri.ValueL2, typeof(TConverted)),
         (TConverted)Convert.ChangeType(tri.ValueL3, typeof(TConverted))),
-      SinglePhasicMeasureSum<T> single => new
-        SinglePhasicMeasureSum<TConverted>(
+      SinglePhasicSumMeasure<T> single => new
+        SinglePhasicSumMeasure<TConverted>(
           (TConverted)Convert.ChangeType(single.Value, typeof(TConverted))),
       _ => new NullPhasicMeasure<TConverted>()
     };
@@ -512,7 +483,7 @@ public abstract record class PhasicMeasure<T>
         selector(tri.ValueL1),
         selector(tri.ValueL2),
         selector(tri.ValueL3)),
-      SinglePhasicMeasureSum<T> single => new SinglePhasicMeasureSum<T>(
+      SinglePhasicSumMeasure<T> single => new SinglePhasicSumMeasure<T>(
         selector(single.Value)),
       _ => Null
     };
@@ -538,7 +509,7 @@ public abstract record class PhasicMeasure<T>
       TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(
         tri.ValueL1 * rhs,
         tri.ValueL2 * rhs, tri.ValueL3 * rhs),
-      SinglePhasicMeasureSum<T> single => new SinglePhasicMeasureSum<T>(
+      SinglePhasicSumMeasure<T> single => new SinglePhasicSumMeasure<T>(
         single.Value *
         rhs),
       _ => Null
@@ -565,7 +536,7 @@ public abstract record class PhasicMeasure<T>
       TriPhasicMeasure<T> tri => new TriPhasicMeasure<T>(
         tri.ValueL1 / rhs,
         tri.ValueL2 / rhs, tri.ValueL3 / rhs),
-      SinglePhasicMeasureSum<T> single => new SinglePhasicMeasureSum<T>(
+      SinglePhasicSumMeasure<T> single => new SinglePhasicSumMeasure<T>(
         single.Value /
         rhs),
       _ => Null
@@ -592,9 +563,9 @@ public abstract record class PhasicMeasure<T>
         TriPhasicMeasure<T>(
           triLhs.ValueL1 + triRhs.ValueL1,
           triLhs.ValueL2 + triRhs.ValueL2, triLhs.ValueL3 + triRhs.ValueL3),
-      (SinglePhasicMeasureSum<T> singleLhs, SinglePhasicMeasureSum<T> singleRhs)
+      (SinglePhasicSumMeasure<T> singleLhs, SinglePhasicSumMeasure<T> singleRhs)
         =>
-        new SinglePhasicMeasureSum<T>(singleLhs.Value + singleRhs.Value),
+        new SinglePhasicSumMeasure<T>(singleLhs.Value + singleRhs.Value),
       _ => Null
     };
   }
@@ -619,9 +590,9 @@ public abstract record class PhasicMeasure<T>
         TriPhasicMeasure<T>(
           triLhs.ValueL1 - triRhs.ValueL1,
           triLhs.ValueL2 - triRhs.ValueL2, triLhs.ValueL3 - triRhs.ValueL3),
-      (SinglePhasicMeasureSum<T> singleLhs, SinglePhasicMeasureSum<T> singleRhs)
+      (SinglePhasicSumMeasure<T> singleLhs, SinglePhasicSumMeasure<T> singleRhs)
         =>
-        new SinglePhasicMeasureSum<T>(singleLhs.Value - singleRhs.Value),
+        new SinglePhasicSumMeasure<T>(singleLhs.Value - singleRhs.Value),
       _ => Null
     };
   }
@@ -646,9 +617,9 @@ public abstract record class PhasicMeasure<T>
         TriPhasicMeasure<T>(
           triLhs.ValueL1 * triRhs.ValueL1,
           triLhs.ValueL2 * triRhs.ValueL2, triLhs.ValueL3 * triRhs.ValueL3),
-      (SinglePhasicMeasureSum<T> singleLhs, SinglePhasicMeasureSum<T> singleRhs)
+      (SinglePhasicSumMeasure<T> singleLhs, SinglePhasicSumMeasure<T> singleRhs)
         =>
-        new SinglePhasicMeasureSum<T>(singleLhs.Value * singleRhs.Value),
+        new SinglePhasicSumMeasure<T>(singleLhs.Value * singleRhs.Value),
       _ => Null
     };
   }

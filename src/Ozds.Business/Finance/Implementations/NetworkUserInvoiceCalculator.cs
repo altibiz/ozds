@@ -15,7 +15,7 @@ public class NetworkUserInvoiceCalculator(
     _calculationCalculator = calculationCalculator;
 
   public CalculatedNetworkUserInvoiceModel Calculate(
-    NetworkUserInvoiceIssuingBasisModel basis
+    NetworkUserInvoiceBasisModel basis
   )
   {
     var calculations = basis.NetworkUserCalculationBases

@@ -107,7 +107,8 @@ public class EntityChangesPublishingInterceptor(
 
     foreach (var entry in context.ChangeTracker.Entries())
     {
-      if (entry.Entity is not IEntity entity)
+      if (entry.Entity is not IEntity entity ||
+        entry.OriginalValues.ToObject() is not IEntity original)
       {
         continue;
       }
@@ -128,7 +129,8 @@ public class EntityChangesPublishingInterceptor(
             EntityState.Deleted => EntityChanges.Deleted,
             _ => throw new NotImplementedException()
           },
-          entity));
+          entity,
+          original));
     }
 
     return entries;
@@ -152,7 +154,8 @@ public class EntityChangesPublishingInterceptor(
                 EntityChanges.Deleted => EntityChangingState.Removing,
                 _ => throw new NotImplementedException()
               },
-              entry.Entity
+              entry.Entity,
+              entry.Original
             )
           )
           .ToList()
@@ -177,7 +180,8 @@ public class EntityChangesPublishingInterceptor(
                 EntityChanges.Deleted => EntityChangedState.Removed,
                 _ => throw new NotImplementedException()
               },
-              entry.Entity
+              entry.Entity,
+              entry.Original
             )
           )
           .ToList()
@@ -193,6 +197,7 @@ public class EntityChangesPublishingInterceptor(
 
   private sealed record EntityChangesEntry(
     EntityChanges State,
-    IEntity Entity
+    IEntity Entity,
+    IEntity Original
   );
 }

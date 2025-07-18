@@ -16,7 +16,7 @@ public class DataMeasurementValidatorChangeReactor(
 }
 
 public class DataMeasurementValidatorChangeHandler(
-  ValidationCache cache
+  MeasurementValidatorByMeterCache cache
 ) : Handler<DataModelsChangedEventArgs>
 {
   public override async Task Handle(

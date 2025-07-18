@@ -48,7 +48,8 @@ public class SchneideriEM3xxxAggregateModelReportEntityConverter(
       .TariffBinary()
       .T1
       .DuplexImport()
-      .PhasePeak();
+      .AggregateMax()
+      .PhaseSum();
   }
 
   public override void InitializeModel(

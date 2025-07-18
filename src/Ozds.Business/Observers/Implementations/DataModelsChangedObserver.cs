@@ -51,7 +51,8 @@ public class DataModelsChangedPipe(
             EntityChangedState.Removed => DataModelChangedState.Removed,
             _ => throw new NotImplementedException()
           },
-          ModelEntityConverter.ToModel<IModel>(entity.Entity)
+          ModelEntityConverter.ToModel<IModel>(entity.Entity),
+          ModelEntityConverter.ToModel<IModel>(entity.Original)
         )
       );
     }

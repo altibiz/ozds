@@ -16,7 +16,7 @@ public class DataMeasurementLocationChangeReactor(
 }
 
 public class DataMeasurementLocationChangeHandler(
-  MeasurementLocationCache cache
+  MeasurementLocationByMeterCache cache
 ) : Handler<DataModelsChangedEventArgs>
 {
   public override async Task Handle(

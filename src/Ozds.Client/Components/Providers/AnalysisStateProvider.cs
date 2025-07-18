@@ -70,8 +70,8 @@ public partial class AnalysisStateProvider : OzdsComponentBase
 
   private async Task FetchAnalysisBasesAsync()
   {
-    var measurementLocationQueries = ScopedServices
-      .GetRequiredService<MeasurementLocationQueries>();
+    var analysisQueries = ScopedServices
+      .GetRequiredService<AnalysisQueries>();
     var measurementQueries = ScopedServices
       .GetRequiredService<MeasurementQueries>();
     var financialQueries = ScopedServices
@@ -80,8 +80,8 @@ public partial class AnalysisStateProvider : OzdsComponentBase
     var now = ClockQueries.Now();
     var startOfMonthLastYear = TimeQueries.GetStartOfMonthLastYear(now);
 
-    var analysisBases = await measurementLocationQueries
-      .ReadAnalysisBasisByLocationAndRepresentative(
+    var analysisBases = await analysisQueries
+      .ReadByLocationIdAndRepresentative(
         LocationState.Location?.Id,
         RepresentativeState.Representative,
         startOfMonthLastYear,

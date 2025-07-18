@@ -12,22 +12,22 @@ public class BillingQueries(
   ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
-  public async Task<NetworkUserInvoiceIssuingBasisModel>
-    IssuingBasisForNetworkUser(
+  public async Task<NetworkUserInvoiceBasisModel>
+    ReadInvoiceBasisForNetworkUser(
       string networkUserId,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
       CancellationToken cancellationToken
     )
   {
-    var entity = await queries.ReadIssuingBasisForNetworkUser(
+    var entity = await queries.ReadInvoiceBasisForNetworkUser(
       networkUserId,
       fromDate,
       toDate,
       cancellationToken
     );
 
-    return new NetworkUserInvoiceIssuingBasisModel
+    return new NetworkUserInvoiceBasisModel
     {
       Location = modelEntityConverter.ToModel<LocationModel>(entity.Location),
       NetworkUser = modelEntityConverter.ToModel<NetworkUserModel>(
