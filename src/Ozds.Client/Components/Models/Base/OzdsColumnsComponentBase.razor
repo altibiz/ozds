@@ -18,6 +18,8 @@
   {
     return Nest(
       @<PropertyColumn
+         Filterable="true"
+         Sortable="true"
          T="TPrefix"
          TProperty="string"
          Title="@(Translate(Label(next)))"
@@ -28,6 +30,8 @@
   {
     return Nest(
       @<PropertyColumn
+         Filterable="true"
+         Sortable="true"
          T="TPrefix"
          TProperty="Enum"
          Title="@(Translate(Label(next)))"
@@ -39,6 +43,8 @@
     var nextFunc = next.Compile();
     return Nest(
       @<PropertyColumn
+         Filterable="true"
+         Sortable="true"
          T="TPrefix"
          TProperty="decimal?"
          Title="@(Translate(Label(next)))"
@@ -61,6 +67,8 @@
     var nextFunc = next.Compile();
     return Nest(
       @<PropertyColumn
+         Filterable="true"
+         Sortable="true"
          T="TPrefix"
          TProperty="IEnumerable<T>"
          Title="@(Translate(Label(next)))"
@@ -83,6 +91,8 @@
     var nextFunc = next.Compile();
     return Nest(
       @<PropertyColumn
+         Filterable="true"
+         Sortable="true"
          T="TPrefix"
          TProperty="DateTimeOffset?"
          Title="@(Translate(Label(next)))"
@@ -105,6 +115,8 @@
     var nextFunc = next.Compile();
     return Nest(
       @<PropertyColumn
+         Filterable="true"
+         Sortable="true"
          T="TPrefix"
          TProperty="T"
          Title="@(Translate(Label(next)))"
@@ -127,6 +139,8 @@
   {
     return Nest(
       @<PropertyColumn
+         Filterable="true"
+         Sortable="true"
          T="TPrefix"
          TProperty="T"
          Title="@(Translate(Label(next)))"
@@ -137,6 +151,8 @@
   {
     return Nest(
       @<PropertyColumn
+         Filterable="true"
+         Sortable="true"
          T="TPrefix"
          TProperty="T"
          Title="@(Translate(Label(next)))"
@@ -148,6 +164,8 @@
     var nextFunc = next.Compile();
     return Nest(
       @<PropertyColumn
+         Filterable="true"
+         Sortable="true"
          T="TPrefix"
          TProperty="T"
          Title="@(Translate(Label(next)))"
@@ -168,6 +186,8 @@
     var nextFunc = next.Compile();
     return Nest(
       @<PropertyColumn
+         Filterable="true"
+         Sortable="true"
          T="TPrefix"
          TProperty="T"
          Title="@(Translate(Label(next)))"
@@ -190,6 +210,8 @@
     var nextFunc = next.Compile();
     return Nest(
       @<TemplateColumn
+         Filterable="true"
+         Sortable="true"
          T="TPrefix"
          Title="@(Translate(Label(next.Suffix(x => x!.Title)!)))">
         <CellTemplate>
@@ -211,6 +233,8 @@
     var nextFunc = next.Compile();
     return Nest(
       @<TemplateColumn
+         Filterable="true"
+         Sortable="true"
          T="TPrefix"
          Title="@(Translate(Label(next)))">
         <CellTemplate>

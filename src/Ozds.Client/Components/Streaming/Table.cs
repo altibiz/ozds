@@ -40,8 +40,9 @@ public partial class Table<T> : OzdsComponentBase
   [Parameter]
   public RenderFragment<IEnumerable<T>>? Columns { get; set; } = default!;
 
-  [Parameter]
-  public int PageCount { get; set; } = QueryConstants.DefaultPageCount;
+  public int PageCount => string.IsNullOrWhiteSpace(searchString)
+       ? QueryConstants.DefaultPageCount
+       : QueryConstants.DefaultLargePageCount;
 
   [Parameter]
   public bool DynamicTitle { get; set; } = false;
@@ -134,15 +135,16 @@ public partial class Table<T> : OzdsComponentBase
 
   private async Task<GridData<T>> OnDataGridServerData(GridState<T> state)
   {
+    var smartPageNumber = !string.IsNullOrEmpty(searchString) ? 0 : state.Page;
     PaginatedList<T> result;
 
     if (PageAsync is not null)
     {
-      result = await PageAsync(state.Page);
+      result = await PageAsync(smartPageNumber);
     }
     else
     {
-      result = await Fetch(state.Page);
+      result = await Fetch(smartPageNumber);
     }
 
     model = result;
@@ -155,7 +157,8 @@ public partial class Table<T> : OzdsComponentBase
 
   private async Task<PaginatedList<T>> OnPagingPage(int pageNumber)
   {
-    var result = await Fetch(pageNumber);
+    var smartPageNumber = !string.IsNullOrEmpty(searchString) ? 0 : pageNumber;
+    var result = await Fetch(smartPageNumber);
     model = result;
     return result;
   }
