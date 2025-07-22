@@ -210,8 +210,6 @@
     var nextFunc = next.Compile();
     return Nest(
       @<TemplateColumn
-         Filterable="true"
-         Sortable="true"
          T="TPrefix"
          Title="@(Translate(Label(next.Suffix(x => x!.Title)!)))">
         <CellTemplate>
@@ -233,8 +231,6 @@
     var nextFunc = next.Compile();
     return Nest(
       @<TemplateColumn
-         Filterable="true"
-         Sortable="true"
          T="TPrefix"
          Title="@(Translate(Label(next)))">
         <CellTemplate>
