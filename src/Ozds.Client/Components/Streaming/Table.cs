@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Ozds.Business.Analysis.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;
@@ -75,18 +76,28 @@ public partial class Table<T> : OzdsComponentBase
 
   private async Task<GridData<T>> OnDataGridServerData(GridState<T> state)
   {
-    PaginatedList<T> result;
-    if (typeof(T).IsAssignableTo(typeof(IAuditable)) && !string.IsNullOrEmpty(searchString))
+    PaginatedList<T> result = new PaginatedList<T>([], 0);
+    if (!string.IsNullOrEmpty(searchString))
     {
-      result = await SearchRead(searchString, state.Page);
+      if (typeof(T).IsAssignableTo(typeof(IAuditable)))
+      {
+        result = await AuditableSearch(searchString, state.Page);
+      }
+      else if (typeof(T).IsAssignableTo(typeof(IAnalysis)))
+      {
+        result = AnalysisSearch(state.Page);
+      }
     }
-    else if (PageAsync is not null)
+    else if(result == new PaginatedList<T>([], 0) || string.IsNullOrEmpty(searchString))
     {
-      result = await PageAsync(state.Page);
-    }
-    else
-    {
-      result = await Fetch(state.Page);
+      if (PageAsync is not null)
+      {
+        result = await PageAsync(state.Page);
+      }
+      else
+      {
+        result = await Fetch(state.Page);
+      }
     }
     model = result;
 
@@ -212,27 +223,84 @@ public partial class Table<T> : OzdsComponentBase
     return pi;
   }
 
-  private async Task<PaginatedList<T>> SearchRead(string searchText, int pageNumber)
+  private async Task<PaginatedList<T>> AuditableSearch(string searchText, int pageNumber)
   {
-      var auditableQueries = ScopedServices.GetRequiredService<AuditableQueries>();
+    var auditableQueries = ScopedServices.GetRequiredService<AuditableQueries>();
 
-      Expression<Func<object, bool>>? whereExpr = o => ((IAuditableEntity)o)
-                           .Title
-                           .Contains(searchText);
+    Expression<Func<object, bool>>? whereExpr = o => ((IAuditableEntity)o)
+                         .Title
+                         .Contains(searchText);
 
-      var page = await auditableQueries.ComplexReadDynamic(
-        modelType: typeof(T),
-        pageNumber: pageNumber,
-        cancellationToken: CancellationToken,
-        pageCount: PageCount,
-        where: whereExpr,
-        orderByDesc: null,
-        orderByAsc: null
+    var page = await auditableQueries.ComplexReadDynamic(
+      modelType: typeof(T),
+      pageNumber: pageNumber,
+      cancellationToken: CancellationToken,
+      pageCount: PageCount,
+      where: whereExpr,
+      orderByDesc: null,
+      orderByAsc: null
+    );
+
+    return new PaginatedList<T>(
+      page.Items.Cast<T>().ToList(),
+      page.TotalCount
+    );
+  }
+  private PaginatedList<T> AnalysisSearch(int pageNumber)
+  {
+    if (Model is { } nonNullModel)
+    {
+      var pageItems = nonNullModel
+          .Where(AnalysisFilter)
+          .Skip(pageNumber * PageCount)
+          .Take(PageCount)
+          .ToList();
+
+      var result = new PaginatedList<T>(
+        pageItems,
+        pageItems.Count
       );
+      return result;
+    }
+    return new PaginatedList<T>([], 0);
+  }
 
-      return new PaginatedList<T>(
-        page.Items.Cast<T>().ToList(),
-        page.TotalCount
-      );
+  private bool AnalysisFilter(T value)
+  {
+    if (value is null)
+    {
+      return false;
+    }
+
+    if (value is IIdentifiable rootIdent && rootIdent.Title.Contains(searchString!, StringComparison.OrdinalIgnoreCase))
+    {
+      return true;
+    }
+
+    if (value is IIdentifiable)
+    {
+      return false;
+    }
+
+    var props = value.GetType()
+      .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+      .Where(p => p.CanRead);
+
+    foreach (var prop in props)
+    {
+      var propVal = prop.GetValue(value);
+      if (propVal == null)
+      {
+        continue;
+      }
+
+      if (propVal is IIdentifiable childIdent
+        && childIdent.Title.Contains(searchString!, StringComparison.OrdinalIgnoreCase))
+      {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

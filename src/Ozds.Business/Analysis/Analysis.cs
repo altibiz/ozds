@@ -1,3 +1,4 @@
+using Ozds.Business.Analysis.Abstractions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
@@ -9,7 +10,7 @@ public record MonthlyAnalysis(
   Load Load,
   Consumption Consumption,
   List<IMeasurement> Measurements
-);
+) : IAnalysis;
 
 public record Analysis(
   Load Load,
@@ -17,18 +18,18 @@ public record Analysis(
   Consumption ThisMonthConsumption,
   List<MonthlyAnalysis> Monthly,
   Expenses LastMonthExpenses
-);
+) : IAnalysis;
 
 public record LocationAnalysis(
   LocationModel Location,
   Analysis Analysis
-);
+) : IAnalysis;
 
 public record NetworkUserAnalysis(
   LocationModel Location,
   NetworkUserModel NetworkUser,
   Analysis Analysis
-);
+) : IAnalysis;
 
 public record MeasurementLocationAnalysis(
   LocationModel Location,
@@ -36,7 +37,7 @@ public record MeasurementLocationAnalysis(
   MeasurementLocationModel MeasurementLocation,
   MeterModel Meter,
   Analysis Analysis
-);
+) : IAnalysis;
 
 public record MeterAnalysis(
   LocationModel Location,
@@ -44,7 +45,7 @@ public record MeterAnalysis(
   MeasurementLocationModel MeasurementLocation,
   MeterModel Meter,
   Analysis Analysis
-);
+) : IAnalysis;
 
 public record Consumption(
   DateTimeOffset Timestamp,

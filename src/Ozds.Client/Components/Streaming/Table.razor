@@ -2,6 +2,8 @@
 
 @typeparam T
 @using MudBlazor
+@using Ozds.Business.Analysis.Abstractions
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Models
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -17,26 +19,25 @@
       <MudText Typo="Typo.h6">
         @title
       </MudText>
-      <MudTextField
-        Class="mt-3"
-        T="string"
-        Value="@searchString"
-        DebounceInterval="500"
-        OnDebounceIntervalElapsed="@OnPagingSearch"
-        Placeholder="@Translate("Search")"
-        Adornment="Adornment.Start"
-        Immediate="true"
-        AdornmentIcon="@Icons.Material.Filled.Search"
-        IconSize="Size.Medium"/>
+      @if(typeof(T).IsAssignableTo(typeof(IAuditable)) || typeof(T).IsAssignableTo(typeof(IAnalysis))){
+        <MudTextField
+          Class="mt-3"
+          T="string"
+          Value="@searchString"
+          DebounceInterval="500"
+          OnDebounceIntervalElapsed="@OnPagingSearch"
+          Placeholder="@Translate("Search")"
+          Adornment="Adornment.Start"
+          Immediate="true"
+          AdornmentIcon="@Icons.Material.Filled.Search"
+          IconSize="Size.Medium"/>
+      }
       <Paging PageCount="@PageCount" T="T" PageAsync="@OnPagingPage">
 
         <Found Context="page">
 
           @foreach (var item in page.Items)
           {
-            @* if (!FilterItem(item))
-              continue; *@
-
             <MudPaper Class="pa-4 mb-2" Elevation="1">
               <TableCollapse>
                 <Summary>
@@ -80,6 +81,8 @@
             @title
           </MudText>
           <MudSpacer/>
+
+        @if(typeof(T).IsAssignableTo(typeof(IAuditable)) || typeof(T).IsAssignableTo(typeof(IAnalysis))){
           <MudTextField
             T="string"
             Value="@searchString"
@@ -91,6 +94,7 @@
             AdornmentIcon="@Icons.Material.Filled.Search"
             IconSize="Size.Medium">
           </MudTextField>
+        }
         </ToolBarContent>
         <Columns>
           @if (Columns is null)
