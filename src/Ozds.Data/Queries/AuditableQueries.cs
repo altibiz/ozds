@@ -114,7 +114,8 @@ public class AuditableQueries(
       .CreateDbContextAsync(cancellationToken);
     var queryable = context
       .GetQueryable<IAuditableEntity>(entityType)
-      .Where(context.PrimaryKeyIn<IAuditableEntity>(ids));
+      .Where(context.PrimaryKeyIn(entityType, ids))
+      .OfType<IAuditableEntity>();
 
     var filtered = deleted
       ? queryable.Where(x => x.IsDeleted)
