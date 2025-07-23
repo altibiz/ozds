@@ -57,6 +57,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - adjustments to frontend for new queries and mutations
 - data archival fix for enums
 - test adjustments for new query, mutation, measure names
+- fix dev mail auth
 
 ### Removed
 
