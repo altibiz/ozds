@@ -25,6 +25,22 @@ public class MeasurementLocationQueries(
       : modelEntityConverter.ToModel<IMeasurementLocation>(entity);
   }
 
+  public async Task<List<IMeasurementLocation?>> ReadByMeterIdsOrdered(
+    IEnumerable<string> meterIds,
+    CancellationToken cancellationToken
+  )
+  {
+    var entities = await queries.ReadByMeterIdsOrdered(
+      meterIds,
+      cancellationToken
+    );
+    return entities
+      .Select(entity => entity is null
+        ? null
+        : modelEntityConverter.ToModel<IMeasurementLocation>(entity))
+      .ToList();
+  }
+
   public async Task<
     List<IMeasurementLocation>
   > ReadNetworkUserId(

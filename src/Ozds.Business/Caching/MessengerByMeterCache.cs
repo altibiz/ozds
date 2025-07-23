@@ -22,6 +22,21 @@ public class MessengerByMeterCache(
     return meter?.Id;
   }
 
+  protected override async Task<IReadOnlyCollection<string?>>
+    GetKeysFromDataSourceAsync(
+      IReadOnlyCollection<IMessenger> values,
+      CancellationToken cancellationToken)
+  {
+    await using var scope = factory.CreateAsyncScope();
+    var queries = scope.ServiceProvider
+      .GetRequiredService<MeterQueries>();
+    var meters = await queries.ReadByMessengerIdsOrdered(
+      values.Select(x => x.Id),
+      cancellationToken
+    );
+    return meters.Select(x => x?.Id).ToList();
+  }
+
   protected override async Task<IMessenger?>
     GetValueFromDataSourceAsync(
       string key,
@@ -35,5 +50,16 @@ public class MessengerByMeterCache(
       cancellationToken
     );
     return messenger;
+  }
+
+  protected override async Task<IReadOnlyCollection<IMessenger?>>
+    GetValuesFromDataSourceAsync(
+      IReadOnlyCollection<string> keys,
+      CancellationToken cancellationToken)
+  {
+    await using var scope = factory.CreateAsyncScope();
+    var queries = scope.ServiceProvider
+      .GetRequiredService<MessengerQueries>();
+    return await queries.ReadByMeterIdsOrdered(keys, cancellationToken);
   }
 }

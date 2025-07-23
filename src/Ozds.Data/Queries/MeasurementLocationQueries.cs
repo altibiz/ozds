@@ -31,6 +31,46 @@ public class MeasurementLocationQueries(
     return measurementLocation;
   }
 
+  public async Task<List<IMeasurementLocationEntity?>> ReadByMeterIdsOrdered(
+    IEnumerable<string> meterIds,
+    CancellationToken cancellationToken
+  )
+  {
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
+
+    var intermediaries = await context
+      .MeasurementLocations.Where(
+        context.ForeignKeyIn<MeasurementLocationEntity>(
+          nameof(MeasurementLocationEntity.Meter),
+          meterIds
+        )
+      )
+      .Select(x => new ReadByMeterIdsIntermediary
+      {
+        Meter = x.Meter,
+        MeasurementLocation = x
+      })
+      .ToDictionaryAsync(
+        x => x.Meter.Id,
+        x => x,
+        cancellationToken);
+
+    return meterIds
+      .Select(id =>
+      {
+        if (intermediaries.TryGetValue(id, out var intermediary))
+        {
+          return intermediary.MeasurementLocation;
+        }
+
+        return default;
+      })
+      .Cast<IMeasurementLocationEntity?>()
+      .ToList();
+  }
+
   public async Task<
       List<IMeasurementLocationEntity>>
     ReadByNetworkUserId(
@@ -86,5 +126,12 @@ public class MeasurementLocationQueries(
       .ToListAsync(cancellationToken);
 
     return measurementLocations;
+  }
+
+  private sealed class ReadByMeterIdsIntermediary
+  {
+    public required MeterEntity Meter { get; init; }
+
+    public required MeasurementLocationEntity MeasurementLocation { get; init; }
   }
 }

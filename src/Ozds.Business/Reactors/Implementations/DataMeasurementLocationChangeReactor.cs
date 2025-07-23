@@ -23,21 +23,24 @@ public class DataMeasurementLocationChangeHandler(
     DataModelsChangedEventArgs eventArgs,
     CancellationToken cancellationToken)
   {
-    foreach (var entry in eventArgs.Models)
+    var modified = eventArgs.Models
+      .Where(x => x.State == DataModelChangedState.Modified)
+      .Select(x => x.Model)
+      .OfType<IMeasurementLocation>()
+      .ToList();
+    if (modified.Count > 0)
     {
-      if (entry.Model is not IMeasurementLocation measurementLocation)
-      {
-        continue;
-      }
+      await cache.TryUpdateAsync(modified, cancellationToken);
+    }
 
-      if (entry.State is not DataModelChangedState.Modified)
-      {
-        await cache.TryUpdateAsync(measurementLocation, cancellationToken);
-      }
-      else if (entry.State is DataModelChangedState.Removed)
-      {
-        await cache.TryRemoveAsync(measurementLocation, cancellationToken);
-      }
+    var removed = eventArgs.Models
+      .Where(x => x.State == DataModelChangedState.Removed)
+      .Select(x => x.Model)
+      .OfType<IMeasurementLocation>()
+      .ToList();
+    if (removed.Count > 0)
+    {
+      await cache.TryRemoveAsync(removed, cancellationToken);
     }
   }
 }

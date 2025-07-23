@@ -10,12 +10,12 @@ public class ValidationQueries(
   ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
-  public async Task<IMeasurementValidator?> ReadMeasurementValidatorByMeter(
+  public async Task<IMeasurementValidator?> ReadMeasurementValidatorByMeterId(
     string meterId,
     CancellationToken cancellationToken
   )
   {
-    var entity = await queries.ReadMeasurementValidatorByMeter(
+    var entity = await queries.ReadMeasurementValidatorByMeterId(
       meterId,
       cancellationToken);
     if (entity is null)
@@ -28,29 +28,31 @@ public class ValidationQueries(
     return model;
   }
 
-  public async Task<List<IMeasurementValidator>>
-    ReadMeasurementValidatorsByMeters(
+  public async Task<List<IMeasurementValidator?>>
+    ReadMeasurementValidatorsByMeterIdsOrdered(
       IEnumerable<string> meterIds,
       CancellationToken cancellationToken
     )
   {
-    var entities = await queries.ReadMeasurementValidatorByMeters(
+    var entities = await queries.ReadMeasurementValidatorsByMeterIdsOrdered(
       meterIds,
       cancellationToken);
 
     var models = entities
-      .Select(modelEntityConverter.ToModel<IMeasurementValidator>)
+      .Select(entity => entity is null
+        ? null
+        : modelEntityConverter.ToModel<IMeasurementValidator>(entity))
       .ToList();
 
     return models;
   }
 
-  public async Task<IMeter?> ReadMeterByMeasurementValidator(
+  public async Task<IMeter?> ReadMeterByMeasurementValidatorId(
     string validatorId,
     CancellationToken cancellationToken
   )
   {
-    var entity = await queries.ReadMeterByMeasurementValidator(
+    var entity = await queries.ReadMeterByMeasurementValidatorId(
       validatorId,
       cancellationToken);
     if (entity is null)
@@ -62,17 +64,19 @@ public class ValidationQueries(
     return model;
   }
 
-  public async Task<List<IMeter>> ReadMetersByMeasurementValidators(
+  public async Task<List<IMeter?>> ReadMetersByMeasurementValidatorIdsOrdered(
     IEnumerable<string> validatorIds,
     CancellationToken cancellationToken
   )
   {
-    var entities = await queries.ReadMetersByMeasurementValidators(
+    var entities = await queries.ReadMetersByMeasurementValidatorIdsOrdered(
       validatorIds,
       cancellationToken);
 
     var models = entities
-      .Select(modelEntityConverter.ToModel<IMeter>)
+      .Select(entity => entity is null
+        ? null
+        : modelEntityConverter.ToModel<IMeter>(entity))
       .ToList();
 
     return models;

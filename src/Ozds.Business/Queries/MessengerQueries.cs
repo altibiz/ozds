@@ -47,4 +47,23 @@ public class MessengerQueries(
 
     return model;
   }
+
+  public async Task<List<IMessenger?>> ReadByMeterIdsOrdered(
+    IEnumerable<string> meterIds,
+    CancellationToken cancellationToken
+  )
+  {
+    var entities = await queries.ReadByMeterIdsOrdered(
+      meterIds,
+      cancellationToken
+    );
+
+    var models = entities
+      .Select(entity => entity is null
+        ? null
+        : modelEntityConverter.ToModel<IMessenger>(entity))
+      .ToList();
+
+    return models;
+  }
 }

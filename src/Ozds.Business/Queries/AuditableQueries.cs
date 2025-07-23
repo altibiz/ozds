@@ -91,6 +91,49 @@ public class AuditableQueries(
       .ToList();
   }
 
+  public async Task<List<T?>> ReadByIdsOrdered<T>(
+    IEnumerable<string> ids,
+    CancellationToken cancellationToken,
+    bool deleted = false
+  )
+    where T : class, IAuditable
+  {
+    var models = await ReadByIdsOrdered(
+      typeof(T),
+      ids,
+      cancellationToken,
+      deleted
+    );
+    return models.Cast<T?>().ToList();
+  }
+
+  public async Task<List<object?>> ReadByIdsOrdered(
+    Type modelType,
+    IEnumerable<string> ids,
+    CancellationToken cancellationToken,
+    bool deleted = false
+  )
+  {
+    if (!modelType.IsAssignableTo(typeof(IAuditable)))
+    {
+      throw new InvalidOperationException(
+        $"Type {modelType} is not assignable to {typeof(IAuditable)}");
+    }
+
+    var entities = await queries.ReadByIdsOrdered(
+      modelEntityConverter.EntityType(modelType),
+      ids,
+      cancellationToken,
+      deleted
+    );
+
+    return entities
+      .Select(entity => entity is null
+        ? null
+        : modelEntityConverter.ToModel(entity))
+      .ToList();
+  }
+
   public async Task<PaginatedList<T>> Read<T>(
     int pageNumber,
     CancellationToken cancellationToken,

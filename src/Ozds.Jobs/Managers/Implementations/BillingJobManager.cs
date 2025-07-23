@@ -27,6 +27,16 @@ public class BillingJobManager(
       cancellationToken);
   }
 
+  public Task EnsureMonthlyBillingJobs(
+    IEnumerable<string> networkUserIds,
+    CancellationToken cancellationToken
+  )
+  {
+    return Ensure(
+      networkUserIds.Select(x => new BillingJobContext(x)),
+      cancellationToken);
+  }
+
   public Task RescheduleMonthlyBillingJob(
     string networkUserId,
     CancellationToken cancellationToken
@@ -37,6 +47,15 @@ public class BillingJobManager(
       cancellationToken);
   }
 
+  public Task RescheduleMonthlyBillingJobs(
+    IEnumerable<string> networkUserIds,
+    CancellationToken cancellationToken)
+  {
+    return Reschedule(
+      networkUserIds.Select(x => new BillingJobContext(x)),
+      cancellationToken);
+  }
+
   public Task UnscheduleMonthlyBillingJob(
     string networkUserId,
     CancellationToken cancellationToken
@@ -44,6 +63,16 @@ public class BillingJobManager(
   {
     return Unschedule(
       new BillingJobContext(networkUserId),
+      cancellationToken);
+  }
+
+  public Task UnscheduleMonthlyBillingJobs(
+    IEnumerable<string> networkUserIds,
+    CancellationToken cancellationToken
+  )
+  {
+    return Unschedule(
+      networkUserIds.Select(x => new BillingJobContext(x)),
       cancellationToken);
   }
 

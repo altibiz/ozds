@@ -81,6 +81,65 @@ public class AuditableQueries(
     return items.OfType<object>().ToList();
   }
 
+  public async Task<List<T?>> ReadByIdsOrdered<T>(
+    IEnumerable<string> ids,
+    CancellationToken cancellationToken,
+    bool deleted = false
+  )
+    where T : class, IAuditableEntity
+  {
+    var entities = await ReadByIdsOrdered(
+      typeof(T),
+      ids,
+      cancellationToken,
+      deleted
+    );
+    return entities.Cast<T?>().ToList();
+  }
+
+  public async Task<List<object?>> ReadByIdsOrdered(
+    Type entityType,
+    IEnumerable<string> ids,
+    CancellationToken cancellationToken,
+    bool deleted = false
+  )
+  {
+    if (!entityType.IsAssignableTo(typeof(IAuditableEntity)))
+    {
+      throw new InvalidOperationException(
+        $"Type {entityType} is not assignable to {typeof(IAuditableEntity)}");
+    }
+
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+    var queryable = context
+      .GetQueryable<IAuditableEntity>(entityType)
+      .Where(context.PrimaryKeyIn<IAuditableEntity>(ids));
+
+    var filtered = deleted
+      ? queryable.Where(x => x.IsDeleted)
+      : queryable.Where(x => !x.IsDeleted);
+
+    var items = await filtered
+      .ToDictionaryAsync(
+        x => x.Id,
+        x => x,
+        cancellationToken);
+
+    return ids
+      .Select(id =>
+      {
+        if (items.TryGetValue(id, out var item))
+        {
+          return item;
+        }
+
+        return default;
+      })
+      .Cast<object?>()
+      .ToList();
+  }
+
   public async Task<PaginatedList<T>> Read<T>(
     int pageNumber,
     CancellationToken cancellationToken,

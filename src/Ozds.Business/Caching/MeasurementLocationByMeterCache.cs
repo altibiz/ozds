@@ -22,6 +22,21 @@ public class MeasurementLocationByMeterCache(
     return meter?.Id;
   }
 
+  protected override async Task<IReadOnlyCollection<string?>>
+    GetKeysFromDataSourceAsync(
+      IReadOnlyCollection<IMeasurementLocation> values,
+      CancellationToken cancellationToken)
+  {
+    await using var scope = factory.CreateAsyncScope();
+    var queries = scope.ServiceProvider
+      .GetRequiredService<MeterQueries>();
+    var meters = await queries.ReadByMeasurementLocationIdsOrdered(
+      values.Select(x => x.Id),
+      cancellationToken
+    );
+    return meters.Select(x => x?.Id).ToList();
+  }
+
   protected override async Task<IMeasurementLocation?>
     GetValueFromDataSourceAsync(
       string key,
@@ -32,6 +47,21 @@ public class MeasurementLocationByMeterCache(
       .GetRequiredService<MeasurementLocationQueries>();
     var measurementLocation = await queries.ReadByMeterId(
       key,
+      cancellationToken
+    );
+    return measurementLocation;
+  }
+
+  protected override async Task<IReadOnlyCollection<IMeasurementLocation?>>
+    GetValuesFromDataSourceAsync(
+      IReadOnlyCollection<string> keys,
+      CancellationToken cancellationToken)
+  {
+    await using var scope = factory.CreateAsyncScope();
+    var queries = scope.ServiceProvider
+      .GetRequiredService<MeasurementLocationQueries>();
+    var measurementLocation = await queries.ReadByMeterIdsOrdered(
+      keys,
       cancellationToken
     );
     return measurementLocation;

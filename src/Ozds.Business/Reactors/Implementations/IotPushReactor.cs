@@ -42,7 +42,7 @@ public class IotPushHandler(
     CancellationToken cancellationToken
   )
   {
-    await RescheduleInactivityMonitorJob(eventArgs, cancellationToken);
+    await RescheduleInactivityMonitorJobs(eventArgs, cancellationToken);
 
     var validationResults = await Validate(
       eventArgs.Measurements,
@@ -71,19 +71,12 @@ public class IotPushHandler(
     CancellationToken cancellationToken
   )
   {
-    var validationResults = new List<ValidationResult>();
-    foreach (var measurement in measurements)
-    {
-      var validationResult = await validator.Validate(
-        measurement,
-        cancellationToken
-      );
+    var validationResults = await validator.Validate(
+      measurements,
+      cancellationToken
+    );
 
-      validationResults.AddRange(
-        validationResult);
-    }
-
-    if (validationResults.Count is not 0)
+    if (validationResults.Count > 0)
     {
       return validationResults;
     }
@@ -91,7 +84,7 @@ public class IotPushHandler(
     return null;
   }
 
-  private async Task RescheduleInactivityMonitorJob(
+  private async Task RescheduleInactivityMonitorJobs(
     IotPushEventArgs eventArgs,
     CancellationToken cancellationToken
   )
@@ -99,31 +92,24 @@ public class IotPushHandler(
     var messenger = await messengerCache.GetAsync(
       eventArgs.MessengerId,
       cancellationToken);
-    if (messenger is null)
+    if (messenger is { })
     {
-      return;
+      await messengerJobManager.RescheduleInactivityMonitorJob(
+        new(messenger.Id, time.PeriodTimeSpan(messenger.MaxInactivityPeriod)),
+        cancellationToken
+      );
     }
-
-    await messengerJobManager.RescheduleInactivityMonitorJob(
-      messenger.Id,
-      time.PeriodTimeSpan(messenger.MaxInactivityPeriod),
-      cancellationToken
-    );
 
     var meterIds = eventArgs.Measurements
       .Select(x => x.MeterId)
       .Distinct();
-    foreach (var meterId in meterIds)
+    var meters = await meterCache.GetAsync(meterIds, cancellationToken);
+    if (meters.Count > 0)
     {
-      var meter = await meterCache.GetAsync(meterId, cancellationToken);
-      if (meter is null)
-      {
-        return;
-      }
-
-      await meterJobManager.RescheduleInactivityMonitorJob(
-        meter.Id,
-        time.PeriodTimeSpan(meter.MaxInactivityPeriod),
+      await meterJobManager.RescheduleInactivityMonitorJobs(
+        meters.Select(x => new MeterInactivityMonitorDetails(
+          x.Id,
+          time.PeriodTimeSpan(x.MaxInactivityPeriod))),
         cancellationToken
       );
     }

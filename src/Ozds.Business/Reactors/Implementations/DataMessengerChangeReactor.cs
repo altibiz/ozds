@@ -33,14 +33,12 @@ public class DataMessengerChangeHandler(
       .Read<MessengerModel>(page, cancellationToken);
     while (result.Items.Count > 0)
     {
-      foreach (var messenger in result.Items)
-      {
-        await manager.EnsureInactivityMonitorJob(
-          messenger.Id,
-          timeQueries.PeriodTimeSpan(messenger.MaxInactivityPeriod),
-          cancellationToken
-        );
-      }
+      await manager.EnsureInactivityMonitorJobs(
+        result.Items.Select(x => new MessengerInactivityMonitorDetails(
+          x.Id,
+          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
+        cancellationToken
+      );
 
       result = await auditableQueries
         .Read<MessengerModel>(++page, cancellationToken);
@@ -51,43 +49,54 @@ public class DataMessengerChangeHandler(
     DataModelsChangedEventArgs eventArgs,
     CancellationToken cancellationToken)
   {
-    foreach (var entry in eventArgs.Models)
+    var added = eventArgs.Models
+      .Where(x => x.State == DataModelChangedState.Added)
+      .Select(x => x.Model)
+      .OfType<MessengerModel>()
+      .ToList();
+    if (added.Count > 0)
     {
-      if (entry.Model is not MessengerModel messenger)
-      {
-        continue;
-      }
+      await manager.EnsureInactivityMonitorJobs(
+        added.Select(x => new MessengerInactivityMonitorDetails(
+          x.Id,
+          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
+        cancellationToken
+      );
+    }
 
-      if (entry.State is DataModelChangedState.Added)
-      {
-        await manager.EnsureInactivityMonitorJob(
-          messenger.Id,
-          timeQueries.PeriodTimeSpan(messenger.MaxInactivityPeriod),
-          cancellationToken
-        );
-      }
+    var modified = eventArgs.Models
+      .Where(x => x.State == DataModelChangedState.Modified)
+      .Select(x => x.Model)
+      .OfType<MessengerModel>()
+      .ToList();
+    if (modified.Count > 0)
+    {
+      await messengerCache.TryUpdateAsync(modified, cancellationToken);
+      await messengerByMeterCache.TryUpdateAsync(modified, cancellationToken);
+      await manager.RescheduleInactivityMonitorJobs(
+        modified.Select(x => new MessengerInactivityMonitorDetails(
+          x.Id,
+          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
+        cancellationToken
+      );
+    }
 
-      if (entry.State is DataModelChangedState.Removed)
+    var removed = eventArgs.Models
+      .Where(x => x.State == DataModelChangedState.Removed)
+      .Select(x => x.Model)
+      .OfType<MessengerModel>()
+      .ToList();
+    if (removed.Count > 0)
+    {
+      await messengerCache.TryRemoveAsync(removed, cancellationToken);
+      foreach (var id in removed.Select(x => x.Id))
       {
-        await messengerCache.TryRemoveAsync(messenger, cancellationToken);
-        await messengerByMeterCache.TryRemoveAsync(
-          messenger, cancellationToken);
-        await manager.UnscheduleInactivityMonitorJob(
-          messenger.Id,
-          cancellationToken);
+        messengerByMeterCache.TryRemove(id);
       }
-
-      if (entry.State is DataModelChangedState.Modified)
-      {
-        await messengerCache.TryUpdateAsync(messenger, cancellationToken);
-        await messengerByMeterCache.TryUpdateAsync(
-          messenger, cancellationToken);
-        await manager.RescheduleInactivityMonitorJob(
-          messenger.Id,
-          timeQueries.PeriodTimeSpan(messenger.MaxInactivityPeriod),
-          cancellationToken
-        );
-      }
+      await manager.UnscheduleInactivityMonitorJobs(
+        removed.Select(x => x.Id),
+        cancellationToken
+      );
     }
   }
 }

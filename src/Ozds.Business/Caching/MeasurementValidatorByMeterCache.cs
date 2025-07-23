@@ -16,10 +16,24 @@ public class MeasurementValidatorByMeterCache(
     await using var scope = factory.CreateAsyncScope();
     var queries = scope.ServiceProvider
       .GetRequiredService<ValidationQueries>();
-    var meter = await queries.ReadMeterByMeasurementValidator(
+    var meter = await queries.ReadMeterByMeasurementValidatorId(
       value.Id,
       cancellationToken);
     return meter?.Id;
+  }
+
+  protected override async Task<IReadOnlyCollection<string?>>
+    GetKeysFromDataSourceAsync(
+      IReadOnlyCollection<IMeasurementValidator> values,
+      CancellationToken cancellationToken)
+  {
+    await using var scope = factory.CreateAsyncScope();
+    var queries = scope.ServiceProvider
+      .GetRequiredService<ValidationQueries>();
+    var meters = await queries.ReadMetersByMeasurementValidatorIdsOrdered(
+      values.Select(x => x.Id),
+      cancellationToken);
+    return meters.Select(x => x?.Id).ToList();
   }
 
   protected override async Task<IMeasurementValidator?>
@@ -32,7 +46,20 @@ public class MeasurementValidatorByMeterCache(
     var queries = scope.ServiceProvider
       .GetRequiredService<ValidationQueries>();
     var model = await queries
-      .ReadMeasurementValidatorByMeter(key, cancellationToken);
+      .ReadMeasurementValidatorByMeterId(key, cancellationToken);
     return model;
+  }
+
+  protected override async Task<IReadOnlyCollection<IMeasurementValidator?>>
+    GetValuesFromDataSourceAsync(
+      IReadOnlyCollection<string> keys,
+      CancellationToken cancellationToken)
+  {
+    await using var scope = factory.CreateAsyncScope();
+    var queries = scope.ServiceProvider
+      .GetRequiredService<ValidationQueries>();
+    var models = await queries
+      .ReadMeasurementValidatorsByMeterIdsOrdered(keys, cancellationToken);
+    return models;
   }
 }

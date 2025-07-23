@@ -22,6 +22,22 @@ public class MeterQueries(
     return entity is null ? null : modelEntityConverter.ToModel<IMeter>(entity);
   }
 
+  public async Task<List<IMeter?>> ReadByMeasurementLocationIdsOrdered(
+    IEnumerable<string> measurementLocationIds,
+    CancellationToken cancellationToken
+  )
+  {
+    var entities = await queries.ReadByMeasurementLocationIdsOrdered(
+      measurementLocationIds,
+      cancellationToken
+    );
+    return entities
+      .Select(entity => entity is null
+        ? null
+        : modelEntityConverter.ToModel<IMeter>(entity))
+      .ToList();
+  }
+
   public async Task<IMeter?> ReadByMessengerId(
     string messengerId,
     CancellationToken cancellationToken
@@ -32,5 +48,21 @@ public class MeterQueries(
       cancellationToken
     );
     return entity is null ? null : modelEntityConverter.ToModel<IMeter>(entity);
+  }
+
+  public async Task<List<IMeter?>> ReadByMessengerIdsOrdered(
+    IEnumerable<string> messengerIds,
+    CancellationToken cancellationToken
+  )
+  {
+    var entities = await queries.ReadByMessengerIdsOrdered(
+      messengerIds,
+      cancellationToken
+    );
+    return entities
+      .Select(entity => entity is null
+        ? null
+        : modelEntityConverter.ToModel<IMeter>(entity))
+      .ToList();
   }
 }

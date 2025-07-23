@@ -15,6 +15,18 @@ public class MeterCache(
     return Task.FromResult(value.Id)!;
   }
 
+  protected override Task<IReadOnlyCollection<string?>>
+    GetKeysFromDataSourceAsync(
+      IReadOnlyCollection<IMeter> values,
+      CancellationToken cancellationToken)
+  {
+    return Task.FromResult(values
+      .Select(x => x.Id)
+      .Cast<string?>()
+      .ToList()
+      as IReadOnlyCollection<string?>);
+  }
+
   protected override async Task<IMeter?>
     GetValueFromDataSourceAsync(
       string key,
@@ -25,5 +37,18 @@ public class MeterCache(
       .GetRequiredService<AuditableQueries>();
     var model = await queries.ReadById<IMeter>(key, cancellationToken);
     return model;
+  }
+
+  protected override async Task<IReadOnlyCollection<IMeter?>>
+    GetValuesFromDataSourceAsync(
+      IReadOnlyCollection<string> keys,
+      CancellationToken cancellationToken)
+  {
+    await using var scope = factory.CreateAsyncScope();
+    var queries = scope.ServiceProvider
+      .GetRequiredService<AuditableQueries>();
+    var models = await queries.ReadByIdsOrdered<IMeter>(
+      keys, cancellationToken);
+    return models;
   }
 }
