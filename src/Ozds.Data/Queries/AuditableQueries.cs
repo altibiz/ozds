@@ -127,15 +127,16 @@ public class AuditableQueries(
         cancellationToken);
 
     return ids
-      .Select(id =>
-      {
-        if (items.TryGetValue(id, out var item))
+      .Select(
+        id =>
         {
-          return item;
-        }
+          if (items.TryGetValue(id, out var item))
+          {
+            return item;
+          }
 
-        return default;
-      })
+          return default;
+        })
       .Cast<object?>()
       .ToList();
   }

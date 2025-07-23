@@ -44,9 +44,12 @@ public class ArchivalJobManager(
     ArchivalJobContext context
   )
   {
-    return [new TriggerKey(
-      nameof(DailyMeasurementDeletionJob),
-      nameof(DailyMeasurementDeletionJob))];
+    return
+    [
+      new TriggerKey(
+        nameof(DailyMeasurementDeletionJob),
+        nameof(DailyMeasurementDeletionJob))
+    ];
   }
 
   protected override IJobDetail CreateJob(ArchivalJobContext context)
@@ -67,11 +70,11 @@ public class ArchivalJobManager(
   )
   {
     return builder
-     .WithCronSchedule(
-       options.Value.Archival.DailyMeasurementDeletionCron,
-       x => x
-         .WithMisfireHandlingInstructionFireAndProceed()
-         .InTimeZone(time.CroatianTimeZone))
-     .Build();
+      .WithCronSchedule(
+        options.Value.Archival.DailyMeasurementDeletionCron,
+        x => x
+          .WithMisfireHandlingInstructionFireAndProceed()
+          .InTimeZone(time.CroatianTimeZone))
+      .Build();
   }
 }

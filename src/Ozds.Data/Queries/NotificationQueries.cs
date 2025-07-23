@@ -163,15 +163,17 @@ public class NotificationQueries(
       .ToListAsync();
 
     return notifications
-      .SelectMany(notification => representatives
-        .Where(representative => representative.Topics
-          .Exists(t => notification.Topics.Contains(t)))
-        .Select(
-          representative => new NotificationRecipientEntity
-          {
-            NotificationId = notification.Id,
-            RepresentativeId = representative.Id
-          }))
+      .SelectMany(
+        notification => representatives
+          .Where(
+            representative => representative.Topics
+              .Exists(t => notification.Topics.Contains(t)))
+          .Select(
+            representative => new NotificationRecipientEntity
+            {
+              NotificationId = notification.Id,
+              RepresentativeId = representative.Id
+            }))
       .ToList();
   }
 }

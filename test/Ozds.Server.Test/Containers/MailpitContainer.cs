@@ -110,8 +110,9 @@ public sealed class MailpitContainer : IComposableService<MailpitContainer>
       .WithWaitStrategy(wait)
       .Build();
 
-    return Task.FromResult(new MailpitContainer(
-      container, host, hostSmtpPort, hostHttpPort));
+    return Task.FromResult(
+      new MailpitContainer(
+        container, host, hostSmtpPort, hostHttpPort));
   }
 
   public Task Configure(

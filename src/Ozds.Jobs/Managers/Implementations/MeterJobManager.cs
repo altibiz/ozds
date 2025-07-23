@@ -30,10 +30,11 @@ public class MeterJobManager(
     CancellationToken cancellationToken)
   {
     return Ensure(
-      details.Select(details =>
-        new MeterJobContext(
-          details.MeterId,
-          details.InactivityDuration)),
+      details.Select(
+        details =>
+          new MeterJobContext(
+            details.MeterId,
+            details.InactivityDuration)),
       cancellationToken);
   }
 
@@ -51,10 +52,11 @@ public class MeterJobManager(
     CancellationToken cancellationToken)
   {
     return Reschedule(
-      details.Select(details =>
-        new MeterJobContext(
-          details.MeterId,
-          details.InactivityDuration)),
+      details.Select(
+        details =>
+          new MeterJobContext(
+            details.MeterId,
+            details.InactivityDuration)),
       cancellationToken);
   }
 
@@ -109,9 +111,12 @@ public class MeterJobManager(
     MeterJobContext context
   )
   {
-    return [new TriggerKey(
-      context.MeterId,
-      nameof(MeterInactivityMonitorJob)
-    )];
+    return
+    [
+      new TriggerKey(
+        context.MeterId,
+        nameof(MeterInactivityMonitorJob)
+      )
+    ];
   }
 }

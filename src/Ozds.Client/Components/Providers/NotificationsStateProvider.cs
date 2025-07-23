@@ -86,9 +86,11 @@ public partial class NotificationsStateProvider : OzdsComponentBase
   )
   {
     if (!args.NotificationRecipients
-      .Any(x => x.Recipients
-        .Any(y => y.RepresentativeId
-          == RepresentativeState.Representative.Id)))
+      .Any(
+        x => x.Recipients
+          .Any(
+            y => y.RepresentativeId
+              == RepresentativeState.Representative.Id)))
     {
       return;
     }
@@ -97,9 +99,11 @@ public partial class NotificationsStateProvider : OzdsComponentBase
       () =>
       {
         var notifications = args.NotificationRecipients
-          .Where(x => x.Recipients
-            .Any(y => y.RepresentativeId
-              == RepresentativeState.Representative.Id))
+          .Where(
+            x => x.Recipients
+              .Any(
+                y => y.RepresentativeId
+                  == RepresentativeState.Representative.Id))
           .Select(x => x.Notification)
           .ToList();
         _state.Notifications.AddRange(notifications);

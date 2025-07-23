@@ -20,11 +20,12 @@ public class MessengerCache(
       IReadOnlyCollection<IMessenger> values,
       CancellationToken cancellationToken)
   {
-    return Task.FromResult(values
-      .Select(x => x.Id)
-      .Cast<string?>()
-      .ToList()
-      as IReadOnlyCollection<string?>);
+    return Task.FromResult(
+      values
+          .Select(x => x.Id)
+          .Cast<string?>()
+          .ToList()
+        as IReadOnlyCollection<string?>);
   }
 
   protected override async Task<IMessenger?>
@@ -39,7 +40,7 @@ public class MessengerCache(
     return model;
   }
 
-  protected async override Task<IReadOnlyCollection<IMessenger?>>
+  protected override async Task<IReadOnlyCollection<IMessenger?>>
     GetValuesFromDataSourceAsync(
       IReadOnlyCollection<string> keys,
       CancellationToken cancellationToken)

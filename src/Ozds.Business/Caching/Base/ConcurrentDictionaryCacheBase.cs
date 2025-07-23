@@ -36,18 +36,19 @@ public abstract class ConcurrentDictionaryCacheBase<TKey, TValue> : ICache
     var keysList = keys.ToList();
 
     var values = keysList
-      .Select(key =>
-      {
-        if (cache.TryGetValue(key, out var value))
+      .Select(
+        key =>
         {
-          return value;
-        }
+          if (cache.TryGetValue(key, out var value))
+          {
+            return value;
+          }
 
-        return default;
-      })
+          return default;
+        })
       .ToList();
 
-    if (values.TrueForAll(x => x is { }))
+    if (values.TrueForAll(x => x is not null))
     {
       return values!;
     }
@@ -55,15 +56,16 @@ public abstract class ConcurrentDictionaryCacheBase<TKey, TValue> : ICache
     var missing = await GetValuesFromDataSourceAsync(
       keysList
         .Zip(values)
-        .Select(x =>
-        {
-          var (key, value) = x;
-          return new
+        .Select(
+          x =>
           {
-            Key = key,
-            Value = value
-          };
-        })
+            var (key, value) = x;
+            return new
+            {
+              Key = key,
+              Value = value
+            };
+          })
         .Where(x => x.Value is null)
         .Select(x => x.Key)
         .ToList(),
@@ -144,34 +146,36 @@ public abstract class ConcurrentDictionaryCacheBase<TKey, TValue> : ICache
 
     return keys
       .Zip(valueList)
-      .Select(x =>
-      {
-        var (key, value) = x;
-        return new
+      .Select(
+        x =>
         {
-          Key = key,
-          Value = value
-        };
-      })
-      .Select(x =>
-      {
-        if (x.Key is null)
+          var (key, value) = x;
+          return new
+          {
+            Key = key,
+            Value = value
+          };
+        })
+      .Select(
+        x =>
         {
-          return default;
-        }
+          if (x.Key is null)
+          {
+            return default;
+          }
 
-        if (!cache.TryGetValue(x.Key, out var old))
-        {
-          return default;
-        }
+          if (!cache.TryGetValue(x.Key, out var old))
+          {
+            return default;
+          }
 
-        if (!cache.TryUpdate(x.Key, x.Value, old))
-        {
-          return default;
-        }
+          if (!cache.TryUpdate(x.Key, x.Value, old))
+          {
+            return default;
+          }
 
-        return old;
-      })
+          return old;
+        })
       .ToList();
   }
 
@@ -215,41 +219,45 @@ public abstract class ConcurrentDictionaryCacheBase<TKey, TValue> : ICache
 
     return keys
       .Zip(values)
-      .Select(x =>
-      {
-        var (key, value) = x;
-        return new
+      .Select(
+        x =>
         {
-          Key = key,
-          Value = value
-        };
-      })
-      .Select(x =>
-      {
-        if (x.Key is null)
+          var (key, value) = x;
+          return new
+          {
+            Key = key,
+            Value = value
+          };
+        })
+      .Select(
+        x =>
         {
-          return default;
-        }
+          if (x.Key is null)
+          {
+            return default;
+          }
 
-        if (!cache.TryRemove(x.Key, out var old))
-        {
-          return default;
-        }
+          if (!cache.TryRemove(x.Key, out var old))
+          {
+            return default;
+          }
 
-        return old;
-      })
+          return old;
+        })
       .ToList();
   }
 
-  protected abstract Task<IReadOnlyCollection<TKey?>> GetKeysFromDataSourceAsync(
-    IReadOnlyCollection<TValue> values,
-    CancellationToken cancellationToken
-  );
+  protected abstract Task<IReadOnlyCollection<TKey?>>
+    GetKeysFromDataSourceAsync(
+      IReadOnlyCollection<TValue> values,
+      CancellationToken cancellationToken
+    );
 
-  protected abstract Task<IReadOnlyCollection<TValue?>> GetValuesFromDataSourceAsync(
-    IReadOnlyCollection<TKey> keys,
-    CancellationToken cancellationToken
-  );
+  protected abstract Task<IReadOnlyCollection<TValue?>>
+    GetValuesFromDataSourceAsync(
+      IReadOnlyCollection<TKey> keys,
+      CancellationToken cancellationToken
+    );
 
   protected abstract Task<TKey?> GetKeyFromDataSourceAsync(
     TValue value,

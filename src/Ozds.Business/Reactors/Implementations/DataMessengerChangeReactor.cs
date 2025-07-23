@@ -34,9 +34,10 @@ public class DataMessengerChangeHandler(
     while (result.Items.Count > 0)
     {
       await manager.EnsureInactivityMonitorJobs(
-        result.Items.Select(x => new MessengerInactivityMonitorDetails(
-          x.Id,
-          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
+        result.Items.Select(
+          x => new MessengerInactivityMonitorDetails(
+            x.Id,
+            timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
         cancellationToken
       );
 
@@ -57,9 +58,10 @@ public class DataMessengerChangeHandler(
     if (added.Count > 0)
     {
       await manager.EnsureInactivityMonitorJobs(
-        added.Select(x => new MessengerInactivityMonitorDetails(
-          x.Id,
-          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
+        added.Select(
+          x => new MessengerInactivityMonitorDetails(
+            x.Id,
+            timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
         cancellationToken
       );
     }
@@ -74,9 +76,10 @@ public class DataMessengerChangeHandler(
       await messengerCache.TryUpdateAsync(modified, cancellationToken);
       await messengerByMeterCache.TryUpdateAsync(modified, cancellationToken);
       await manager.RescheduleInactivityMonitorJobs(
-        modified.Select(x => new MessengerInactivityMonitorDetails(
-          x.Id,
-          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
+        modified.Select(
+          x => new MessengerInactivityMonitorDetails(
+            x.Id,
+            timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
         cancellationToken
       );
     }
@@ -93,6 +96,7 @@ public class DataMessengerChangeHandler(
       {
         messengerByMeterCache.TryRemove(id);
       }
+
       await manager.UnscheduleInactivityMonitorJobs(
         removed.Select(x => x.Id),
         cancellationToken

@@ -32,9 +32,10 @@ public class MeterQueries(
       cancellationToken
     );
     return entities
-      .Select(entity => entity is null
-        ? null
-        : modelEntityConverter.ToModel<IMeter>(entity))
+      .Select(
+        entity => entity is null
+          ? null
+          : modelEntityConverter.ToModel<IMeter>(entity))
       .ToList();
   }
 
@@ -60,9 +61,10 @@ public class MeterQueries(
       cancellationToken
     );
     return entities
-      .Select(entity => entity is null
-        ? null
-        : modelEntityConverter.ToModel<IMeter>(entity))
+      .Select(
+        entity => entity is null
+          ? null
+          : modelEntityConverter.ToModel<IMeter>(entity))
       .ToList();
   }
 }

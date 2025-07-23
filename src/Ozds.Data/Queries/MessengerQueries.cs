@@ -67,26 +67,28 @@ public class MessengerQueries(
     var intermediaries = await context.Meters
       .Where(context.PrimaryKeyIn<MeterEntity>(meterIds))
       .Include(x => x.Messenger)
-      .Select(x => new ReadByMeterIdsIntermediary
-      {
-        Meter = x,
-        Messenger = x.Messenger
-      })
+      .Select(
+        x => new ReadByMeterIdsIntermediary
+        {
+          Meter = x,
+          Messenger = x.Messenger
+        })
       .ToDictionaryAsync(
         x => x.Meter.Id,
         x => x,
         cancellationToken);
 
     return meterIds
-      .Select(id =>
-      {
-        if (intermediaries.TryGetValue(id, out var intermediary))
+      .Select(
+        id =>
         {
-          return intermediary.Messenger;
-        }
+          if (intermediaries.TryGetValue(id, out var intermediary))
+          {
+            return intermediary.Messenger;
+          }
 
-        return default;
-      })
+          return default;
+        })
       .ToList();
   }
 

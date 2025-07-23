@@ -30,10 +30,11 @@ public class MessengerJobManager(
     CancellationToken cancellationToken)
   {
     return Ensure(
-      details.Select(details =>
-        new MessengerJobContext(
-          details.MessengerId,
-          details.InactivityDuration)),
+      details.Select(
+        details =>
+          new MessengerJobContext(
+            details.MessengerId,
+            details.InactivityDuration)),
       cancellationToken);
   }
 
@@ -51,10 +52,11 @@ public class MessengerJobManager(
     CancellationToken cancellationToken)
   {
     return Reschedule(
-      details.Select(details =>
-        new MessengerJobContext(
-          details.MessengerId,
-          details.InactivityDuration)),
+      details.Select(
+        details =>
+          new MessengerJobContext(
+            details.MessengerId,
+            details.InactivityDuration)),
       cancellationToken);
   }
 
@@ -108,9 +110,12 @@ public class MessengerJobManager(
   protected override IReadOnlyCollection<TriggerKey> CreateTriggerKeys(
     MessengerJobContext context)
   {
-    return [new TriggerKey(
-      context.MessengerId,
-      nameof(MessengerInactivityMonitorJob)
-    )];
+    return
+    [
+      new TriggerKey(
+        context.MessengerId,
+        nameof(MessengerInactivityMonitorJob)
+      )
+    ];
   }
 }

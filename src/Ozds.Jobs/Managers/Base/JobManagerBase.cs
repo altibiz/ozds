@@ -8,10 +8,6 @@ namespace Ozds.Jobs.Managers.Base;
 public abstract class JobManagerBase<TContext>
   : IJobManager
 {
-  protected OzdsSchedulerFactory SchedulerFactory { get; init; }
-
-  protected ILogger Logger { get; init; }
-
   protected JobManagerBase(
     IServiceProvider serviceProvider
   )
@@ -20,9 +16,13 @@ public abstract class JobManagerBase<TContext>
       .GetRequiredService<OzdsSchedulerFactory>();
 
     Logger = (serviceProvider
-    .GetRequiredService(typeof(ILogger<>).MakeGenericType(GetType()))
+        .GetRequiredService(typeof(ILogger<>).MakeGenericType(GetType()))
       as ILogger)!;
   }
+
+  protected OzdsSchedulerFactory SchedulerFactory { get; init; }
+
+  protected ILogger Logger { get; init; }
 
   protected async Task Ensure(
     TContext context,
@@ -49,7 +49,7 @@ public abstract class JobManagerBase<TContext>
       await scheduler.ScheduleJob(
         job,
         triggers,
-        replace: false,
+        false,
         cancellationToken
       );
     }
@@ -80,14 +80,16 @@ public abstract class JobManagerBase<TContext>
 
     var jobsWithTriggers = contexts
       .Zip(triggerKeys)
-      .Select(x => {
-        var (context, triggerKeys) = x;
-        return new
+      .Select(
+        x =>
         {
-          Job = CreateJob(context),
-          Triggers = CreateTriggers(context, triggerKeys)
-        };
-      })
+          var (context, triggerKeys) = x;
+          return new
+          {
+            Job = CreateJob(context),
+            Triggers = CreateTriggers(context, triggerKeys)
+          };
+        })
       .ToDictionary(x => x.Job, x => x.Triggers)
       .AsReadOnly();
 
@@ -97,7 +99,7 @@ public abstract class JobManagerBase<TContext>
 
       await scheduler.ScheduleJobs(
         jobsWithTriggers,
-        replace: false,
+        false,
         cancellationToken
       );
     }
@@ -134,7 +136,7 @@ public abstract class JobManagerBase<TContext>
     await scheduler.ScheduleJob(
       job,
       triggers,
-      replace: true,
+      true,
       cancellationToken
     );
   }
@@ -156,14 +158,16 @@ public abstract class JobManagerBase<TContext>
 
     var jobsWithTriggers = contexts
       .Zip(triggerKeys)
-      .Select(x => {
-        var (context, triggerKeys) = x;
-        return new
+      .Select(
+        x =>
         {
-          Job = CreateJob(context),
-          Triggers = CreateTriggers(context, triggerKeys)
-        };
-      })
+          var (context, triggerKeys) = x;
+          return new
+          {
+            Job = CreateJob(context),
+            Triggers = CreateTriggers(context, triggerKeys)
+          };
+        })
       .ToDictionary(x => x.Job, x => x.Triggers)
       .AsReadOnly();
 
@@ -171,7 +175,7 @@ public abstract class JobManagerBase<TContext>
 
     await scheduler.ScheduleJobs(
       jobsWithTriggers,
-      replace: true,
+      true,
       cancellationToken
     );
   }
@@ -199,7 +203,7 @@ public abstract class JobManagerBase<TContext>
     await scheduler.ScheduleJob(
       job,
       triggers,
-      replace: true,
+      true,
       cancellationToken
     );
   }
@@ -234,9 +238,10 @@ public abstract class JobManagerBase<TContext>
   {
     triggerKeys ??= CreateTriggerKeys(context);
     return triggerKeys
-      .Select(key => CreateTrigger(
-        TriggerBuilder.Create().WithIdentity(key),
-        context))
+      .Select(
+        key => CreateTrigger(
+          TriggerBuilder.Create().WithIdentity(key),
+          context))
       .ToList();
   }
 

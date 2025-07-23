@@ -47,26 +47,28 @@ public class MeasurementLocationQueries(
           meterIds
         )
       )
-      .Select(x => new ReadByMeterIdsIntermediary
-      {
-        Meter = x.Meter,
-        MeasurementLocation = x
-      })
+      .Select(
+        x => new ReadByMeterIdsIntermediary
+        {
+          Meter = x.Meter,
+          MeasurementLocation = x
+        })
       .ToDictionaryAsync(
         x => x.Meter.Id,
         x => x,
         cancellationToken);
 
     return meterIds
-      .Select(id =>
-      {
-        if (intermediaries.TryGetValue(id, out var intermediary))
+      .Select(
+        id =>
         {
-          return intermediary.MeasurementLocation;
-        }
+          if (intermediaries.TryGetValue(id, out var intermediary))
+          {
+            return intermediary.MeasurementLocation;
+          }
 
-        return default;
-      })
+          return default;
+        })
       .Cast<IMeasurementLocationEntity?>()
       .ToList();
   }

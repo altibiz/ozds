@@ -47,26 +47,28 @@ public class MeterQueries(
         )
       )
       .Include(x => x.Meter)
-      .Select(x => new ReadByMeasurementLocationIdsIntermediary
-      {
-        MeasurementLocation = x,
-        Meter = x.Meter,
-      })
+      .Select(
+        x => new ReadByMeasurementLocationIdsIntermediary
+        {
+          MeasurementLocation = x,
+          Meter = x.Meter
+        })
       .ToDictionaryAsync(
         x => x.MeasurementLocation.Id,
         x => x,
         cancellationToken);
 
     return measurementLocationIds
-      .Select(id =>
-      {
-        if (intermediaries.TryGetValue(id, out var intermediary))
+      .Select(
+        id =>
         {
-          return intermediary.Meter;
-        }
+          if (intermediaries.TryGetValue(id, out var intermediary))
+          {
+            return intermediary.Meter;
+          }
 
-        return default;
-      })
+          return default;
+        })
       .Cast<IMeterEntity?>()
       .ToList();
   }
@@ -116,27 +118,29 @@ public class MeterQueries(
         )
       )
       .Include(x => x.Messenger)
-      .Select(x => new ReadByMessengerIdsIntermediary
-      {
-        // NOTE: id has to be one of the provided ones
-        Messenger = x.Messenger!,
-        Meter = x
-      })
+      .Select(
+        x => new ReadByMessengerIdsIntermediary
+        {
+          // NOTE: id has to be one of the provided ones
+          Messenger = x.Messenger!,
+          Meter = x
+        })
       .ToDictionaryAsync(
         x => x.Messenger.Id,
         x => x,
         cancellationToken);
 
     return meters
-      .Select(meter =>
-      {
-        if (intermediaries.TryGetValue(meter.Id, out var intermediary))
+      .Select(
+        meter =>
         {
-          return intermediary.Messenger;
-        }
+          if (intermediaries.TryGetValue(meter.Id, out var intermediary))
+          {
+            return intermediary.Messenger;
+          }
 
-        return default;
-      })
+          return default;
+        })
       .Cast<IMeterEntity>()
       .ToList();
   }

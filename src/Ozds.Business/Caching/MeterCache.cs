@@ -20,11 +20,12 @@ public class MeterCache(
       IReadOnlyCollection<IMeter> values,
       CancellationToken cancellationToken)
   {
-    return Task.FromResult(values
-      .Select(x => x.Id)
-      .Cast<string?>()
-      .ToList()
-      as IReadOnlyCollection<string?>);
+    return Task.FromResult(
+      values
+          .Select(x => x.Id)
+          .Cast<string?>()
+          .ToList()
+        as IReadOnlyCollection<string?>);
   }
 
   protected override async Task<IMeter?>

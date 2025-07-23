@@ -35,9 +35,10 @@ public class MeasurementLocationQueries(
       cancellationToken
     );
     return entities
-      .Select(entity => entity is null
-        ? null
-        : modelEntityConverter.ToModel<IMeasurementLocation>(entity))
+      .Select(
+        entity => entity is null
+          ? null
+          : modelEntityConverter.ToModel<IMeasurementLocation>(entity))
       .ToList();
   }
 

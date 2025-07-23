@@ -128,9 +128,10 @@ public class AuditableQueries(
     );
 
     return entities
-      .Select(entity => entity is null
-        ? null
-        : modelEntityConverter.ToModel(entity))
+      .Select(
+        entity => entity is null
+          ? null
+          : modelEntityConverter.ToModel(entity))
       .ToList();
   }
 

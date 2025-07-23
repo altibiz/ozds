@@ -92,10 +92,11 @@ public class IotPushHandler(
     var messenger = await messengerCache.GetAsync(
       eventArgs.MessengerId,
       cancellationToken);
-    if (messenger is { })
+    if (messenger is not null)
     {
       await messengerJobManager.RescheduleInactivityMonitorJob(
-        new(messenger.Id, time.PeriodTimeSpan(messenger.MaxInactivityPeriod)),
+        new MessengerInactivityMonitorDetails(
+          messenger.Id, time.PeriodTimeSpan(messenger.MaxInactivityPeriod)),
         cancellationToken
       );
     }
@@ -107,9 +108,10 @@ public class IotPushHandler(
     if (meters.Count > 0)
     {
       await meterJobManager.RescheduleInactivityMonitorJobs(
-        meters.Select(x => new MeterInactivityMonitorDetails(
-          x.Id,
-          time.PeriodTimeSpan(x.MaxInactivityPeriod))),
+        meters.Select(
+          x => new MeterInactivityMonitorDetails(
+            x.Id,
+            time.PeriodTimeSpan(x.MaxInactivityPeriod))),
         cancellationToken
       );
     }

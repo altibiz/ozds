@@ -1,5 +1,4 @@
 using Ozds.Business.Models.Base;
-using Ozds.Business.Models.Joins;
 using Ozds.Business.Mutations;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
@@ -39,18 +38,20 @@ public class DataNotificationChangeHandler(
 
     var recipients = await notificationQueries.Recipients(notifications);
 
-    notificationCreatedPublisher.Publish(new()
-    {
-      NotificationRecipients = recipients
-        .GroupBy(x => x.NotificationId)
-        .Select(x =>
-          new NotificationRecipientsCreatedEventArgsNotificationRecipients
-          {
-            Notification = notifications.First(y => y.Id == x.Key),
-            Recipients = x.ToList()
-          })
-        .ToList()
-    });
+    notificationCreatedPublisher.Publish(
+      new NotificationRecipientsCreatedEventArgs
+      {
+        NotificationRecipients = recipients
+          .GroupBy(x => x.NotificationId)
+          .Select(
+            x =>
+              new NotificationRecipientsCreatedEventArgsNotificationRecipients
+              {
+                Notification = notifications.First(y => y.Id == x.Key),
+                Recipients = x.ToList()
+              })
+          .ToList()
+      });
 
     await modelMutations.Create(recipients, cancellationToken);
   }

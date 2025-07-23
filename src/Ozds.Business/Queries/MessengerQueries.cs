@@ -59,9 +59,10 @@ public class MessengerQueries(
     );
 
     var models = entities
-      .Select(entity => entity is null
-        ? null
-        : modelEntityConverter.ToModel<IMessenger>(entity))
+      .Select(
+        entity => entity is null
+          ? null
+          : modelEntityConverter.ToModel<IMessenger>(entity))
       .ToList();
 
     return models;

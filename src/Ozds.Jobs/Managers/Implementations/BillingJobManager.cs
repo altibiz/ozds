@@ -16,7 +16,7 @@ public class BillingJobManager(
   ITimeQueries time,
   IOptions<OzdsJobsOptions> options
 ) : JobManagerBase<BillingJobContext>(serviceProvider),
-    IBillingJobManager
+  IBillingJobManager
 {
   public Task EnsureMonthlyBillingJob(
     string networkUserId,
@@ -97,10 +97,13 @@ public class BillingJobManager(
     BillingJobContext context
   )
   {
-    return [new TriggerKey(
-      context.NetworkUserId,
-      nameof(MonthlyNetworkUserBillingJob)
-    )];
+    return
+    [
+      new TriggerKey(
+        context.NetworkUserId,
+        nameof(MonthlyNetworkUserBillingJob)
+      )
+    ];
   }
 
   protected override ITrigger CreateTrigger(
@@ -109,11 +112,11 @@ public class BillingJobManager(
   )
   {
     return builder
-     .WithCronSchedule(
-       options.Value.Billing.MonthlyBillingCron,
-       x => x
-         .WithMisfireHandlingInstructionFireAndProceed()
-         .InTimeZone(time.CroatianTimeZone))
-     .Build();
+      .WithCronSchedule(
+        options.Value.Billing.MonthlyBillingCron,
+        x => x
+          .WithMisfireHandlingInstructionFireAndProceed()
+          .InTimeZone(time.CroatianTimeZone))
+      .Build();
   }
 }

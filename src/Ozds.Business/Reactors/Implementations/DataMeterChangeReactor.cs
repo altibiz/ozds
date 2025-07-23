@@ -37,9 +37,10 @@ public class DataMeterChangeHandler(
     while (result.Items.Count > 0)
     {
       await manager.EnsureInactivityMonitorJobs(
-        result.Items.Select(x => new MeterInactivityMonitorDetails(
-          x.Id,
-          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
+        result.Items.Select(
+          x => new MeterInactivityMonitorDetails(
+            x.Id,
+            timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
         cancellationToken
       );
 
@@ -63,9 +64,10 @@ public class DataMeterChangeHandler(
     if (added.Count > 0)
     {
       await manager.EnsureInactivityMonitorJobs(
-        added.Select(x => new MeterInactivityMonitorDetails(
-          x.Id,
-          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
+        added.Select(
+          x => new MeterInactivityMonitorDetails(
+            x.Id,
+            timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
         cancellationToken
       );
     }
@@ -84,10 +86,12 @@ public class DataMeterChangeHandler(
         messengerByMeterCache.TryRemove(id);
         measurementValidatorByMeterCache.TryRemove(id);
       }
+
       await manager.RescheduleInactivityMonitorJobs(
-        modified.Select(x => new MeterInactivityMonitorDetails(
-          x.Id,
-          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
+        modified.Select(
+          x => new MeterInactivityMonitorDetails(
+            x.Id,
+            timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
         cancellationToken
       );
     }
@@ -106,6 +110,7 @@ public class DataMeterChangeHandler(
         messengerByMeterCache.TryRemove(id);
         measurementValidatorByMeterCache.TryRemove(id);
       }
+
       await manager.UnscheduleInactivityMonitorJobs(
         removed.Select(x => x.Id),
         cancellationToken
