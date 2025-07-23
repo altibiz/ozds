@@ -1,7 +1,6 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
 
 namespace Ozds.Server.Test.Containers;
@@ -19,8 +18,6 @@ public sealed class MailpitContainer : IComposableService<MailpitContainer>
   private const string MailpitReady =
     """.*\[http\] accessible via.*""";
 
-  private readonly string authFilePath;
-
   private readonly IContainer container;
 
 #pragma warning disable S4487 // Unread "private" fields should be removed
@@ -31,23 +28,17 @@ public sealed class MailpitContainer : IComposableService<MailpitContainer>
 
   private readonly int hostSmtpPort;
 
-  private readonly string tmpDir;
-
   private MailpitContainer(
     IContainer container,
     string host,
     int hostSmtpPort,
-    int hostHttpPort,
-    string tmpDir,
-    string authFilePath
+    int hostHttpPort
   )
   {
     this.container = container;
     this.host = host;
     this.hostSmtpPort = hostSmtpPort;
     this.hostHttpPort = hostHttpPort;
-    this.tmpDir = tmpDir;
-    this.authFilePath = authFilePath;
   }
 
   public string NetworkConnectionString
@@ -89,7 +80,7 @@ public sealed class MailpitContainer : IComposableService<MailpitContainer>
     }
   }
 
-  public static async Task<MailpitContainer> Create(
+  public static Task<MailpitContainer> Create(
     ContainerNetwork network,
     CancellationToken cancellationToken
   )
@@ -103,14 +94,6 @@ public sealed class MailpitContainer : IComposableService<MailpitContainer>
         .ForUnixContainer()
         .UntilMessageIsLogged(MailpitReady);
 
-    var tmpDir = Path.Combine(
-      Path.GetTempPath(),
-      $"ozds-client-test-mailpit-{Guid.NewGuid()}"
-    );
-    Directory.CreateDirectory(tmpDir);
-    var authFilePath = Path.Combine(tmpDir, "mailpit.auth");
-    await File.WriteAllTextAsync(authFilePath, string.Empty, cancellationToken);
-
     var host = network.Host<MailpitContainer>();
     var hostSmtpPort = network.Port<MailpitContainer>("smtp");
     var hostHttpPort = network.Port<MailpitContainer>("http");
@@ -120,30 +103,23 @@ public sealed class MailpitContainer : IComposableService<MailpitContainer>
       .WithHostname(host)
       .WithPortBinding(hostSmtpPort, MailpitSmtpPort)
       .WithPortBinding(hostHttpPort, MailpitHttpPort)
-      .WithEnvironment("MP_UI_AUTH_FILE", "/etc/mailpit/mailpit.auth")
-      .WithBindMount(
-        authFilePath,
-        "/etc/mailpit/mailpit.auth",
-        AccessMode.ReadWrite
-      )
+      .WithEnvironment("MP_UI_AUTH", $"{MailpitUser}:{MailpitPassword}")
+      .WithEnvironment("MP_SEND_API_AUTH", $"{MailpitUser}:{MailpitPassword}")
+      .WithEnvironment("MP_SMTP_AUTH", $"{MailpitUser}:{MailpitPassword}")
+      .WithEnvironment("MP_SMTP_AUTH_ALLOW_INSECURE", "true")
       .WithWaitStrategy(wait)
       .Build();
 
-    return new MailpitContainer(
-      container, host, hostSmtpPort, hostHttpPort, tmpDir, authFilePath);
+    return Task.FromResult(new MailpitContainer(
+      container, host, hostSmtpPort, hostHttpPort));
   }
 
-  public async Task Configure(
+  public Task Configure(
     ServiceComposition composition,
     CancellationToken cancellationToken
   )
   {
-    var bcryptHash = ServiceCryptography.BcryptHash(MailpitPassword);
-    await File.WriteAllTextAsync(
-      authFilePath,
-      $"{MailpitUser}:{bcryptHash}",
-      cancellationToken
-    );
+    return Task.CompletedTask;
   }
 
   public async Task Start(CancellationToken cancellationToken)
@@ -161,6 +137,5 @@ public sealed class MailpitContainer : IComposableService<MailpitContainer>
   public async ValueTask DisposeAsync()
   {
     await container.DisposeAsync();
-    Directory.Delete(tmpDir, true);
   }
 }
