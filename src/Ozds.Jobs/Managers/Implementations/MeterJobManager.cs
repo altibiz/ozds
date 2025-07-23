@@ -1,125 +1,117 @@
 using System.Globalization;
 using Ozds.Jobs.Manager.Abstractions;
-using Ozds.Jobs.Scheduler;
+using Ozds.Jobs.Managers.Base;
 using Ozds.Time.Queries.Abstractions;
 using Quartz;
 
 namespace Ozds.Jobs.Managers.Implementations;
 
+public sealed record MeterJobContext(
+  string MeterId,
+  TimeSpan InactivityDuration
+);
+
 public class MeterJobManager(
-  OzdsSchedulerFactory schedulerFactory,
-  ILogger<MeterJobManager> logger,
+  IServiceProvider serviceProvider,
   IClockQueries clock
-) : IMeterJobManager
+) : JobManagerBase<MeterJobContext>(serviceProvider), IMeterJobManager
 {
-  public async Task EnsureInactivityMonitorJob(
-    string id,
-    TimeSpan inactivityDuration,
+  public Task EnsureInactivityMonitorJob(
+    MeterInactivityMonitorDetails details,
     CancellationToken cancellationToken)
   {
-    logger.LogDebug(
-      "Ensuring {Group} job for {Id} with inactivity duration {Duration}",
-      nameof(MeterInactivityMonitorJob),
-      id,
-      inactivityDuration
-    );
-
-    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
-
-    var triggerKey = new TriggerKey(id, nameof(MeterInactivityMonitorJob));
-    if (!await scheduler.CheckExists(triggerKey, cancellationToken))
-    {
-      var job = CreateJob(id);
-      var trigger = CreateTrigger(id, inactivityDuration);
-      await scheduler.ScheduleJob(job, trigger, cancellationToken);
-    }
+    return Ensure(
+      new MeterJobContext(details.MeterId, details.InactivityDuration),
+      cancellationToken);
   }
 
-  public async Task RescheduleInactivityMonitorJob(
-    string id,
-    TimeSpan inactivityDuration,
+  public Task EnsureInactivityMonitorJobs(
+    IEnumerable<MeterInactivityMonitorDetails> details,
     CancellationToken cancellationToken)
   {
-    logger.LogDebug(
-      "Rescheduling {Group} job for {Id} with inactivity duration {Duration}",
-      nameof(MeterInactivityMonitorJob),
-      id,
-      inactivityDuration
-    );
-
-    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
-
-    var triggerKey = new TriggerKey(id, nameof(MeterInactivityMonitorJob));
-    var trigger = CreateTrigger(id, inactivityDuration);
-
-    if (await scheduler.CheckExists(triggerKey, cancellationToken))
-    {
-      await scheduler.UnscheduleJob(triggerKey, cancellationToken);
-      var job = CreateJob(id);
-      await scheduler.ScheduleJob(job, trigger, cancellationToken);
-    }
-    else
-    {
-      var job = CreateJob(id);
-      await scheduler.ScheduleJob(job, trigger, cancellationToken);
-    }
+    return Ensure(
+      details.Select(details =>
+        new MeterJobContext(
+          details.MeterId,
+          details.InactivityDuration)),
+      cancellationToken);
   }
 
-  public async Task UnscheduleInactivityMonitorJob(
+  public Task RescheduleInactivityMonitorJob(
+    MeterInactivityMonitorDetails details,
+    CancellationToken cancellationToken)
+  {
+    return Reschedule(
+      new MeterJobContext(details.MeterId, details.InactivityDuration),
+      cancellationToken);
+  }
+
+  public Task RescheduleInactivityMonitorJobs(
+    IEnumerable<MeterInactivityMonitorDetails> details,
+    CancellationToken cancellationToken)
+  {
+    return Reschedule(
+      details.Select(details =>
+        new MeterJobContext(
+          details.MeterId,
+          details.InactivityDuration)),
+      cancellationToken);
+  }
+
+  public Task UnscheduleInactivityMonitorJob(
     string id,
     CancellationToken cancellationToken)
   {
-    logger.LogDebug(
-      "Unscheduling {Group} job for {Id}",
-      nameof(MeterInactivityMonitorJob),
-      id
-    );
-
-    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
-
-    var triggerKey = new TriggerKey(id, nameof(MeterInactivityMonitorJob));
-
-    if (await scheduler.CheckExists(triggerKey, cancellationToken))
-    {
-      await scheduler.UnscheduleJob(triggerKey, cancellationToken);
-    }
+    return Unschedule(
+      new MeterJobContext(id, TimeSpan.Zero),
+      cancellationToken);
   }
 
-  private IJobDetail CreateJob(string id)
+  public Task UnscheduleInactivityMonitorJobs(
+    IEnumerable<string> ids,
+    CancellationToken cancellationToken)
+  {
+    return Unschedule(
+      ids.Select(id => new MeterJobContext(id, TimeSpan.Zero)),
+      cancellationToken);
+  }
+
+  protected override IJobDetail CreateJob(MeterJobContext context)
   {
     var now = clock.Now();
+
     return JobBuilder.Create<MeterInactivityMonitorJob>()
-      .WithIdentity(id, nameof(MeterInactivityMonitorJob))
-      .UsingJobData(nameof(MeterInactivityMonitorJob.Id), id)
+      .UsingJobData(
+        nameof(MeterInactivityMonitorJob.Id),
+        context.MeterId)
       .UsingJobData(
         nameof(MeterInactivityMonitorJob.ScheduledAt),
         now.ToString("o", CultureInfo.InvariantCulture))
       .Build();
   }
 
-  private ITrigger CreateTrigger(string id, TimeSpan inactivityDuration)
+  protected override ITrigger CreateTrigger(
+    TriggerBuilder builder,
+    MeterJobContext context)
   {
     var now = clock.Now();
-    var startAt = now.Add(inactivityDuration);
+    var startAt = now.Add(context.InactivityDuration);
 
-    logger.LogDebug(
-      "{Now} Creating trigger for {Group} job"
-      + " for {Id} with inactivity duration {Duration}"
-      + " starting at {StartAt}",
-      now,
-      nameof(MeterInactivityMonitorJob),
-      id,
-      inactivityDuration,
-      startAt
-    );
-
-    return TriggerBuilder.Create()
-      .WithIdentity(id, nameof(MeterInactivityMonitorJob))
-      .ForJob(id, nameof(MeterInactivityMonitorJob))
+    return builder
       .StartAt(startAt)
       .WithSimpleSchedule(
         x => x
           .WithMisfireHandlingInstructionNextWithExistingCount())
       .Build();
+  }
+
+  protected override IReadOnlyCollection<TriggerKey> CreateTriggerKeys(
+    MeterJobContext context
+  )
+  {
+    return [new TriggerKey(
+      context.MeterId,
+      nameof(MeterInactivityMonitorJob)
+    )];
   }
 }
