@@ -73,10 +73,10 @@ public class EventQueries(
     int pageCount = QueryConstants.DefaultPageCount
   )
   {
-    if (!entityType.IsAssignableTo(typeof(IAuditableEntity)))
+    if (!entityType.IsAssignableTo(typeof(IAuditEventEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(IAuditableEntity)}");
+        $"Type {entityType} is not assignable to {typeof(IAuditEventEntity)}");
     }
 
     var auditableEntityId = auditableEntity.Id;
@@ -84,7 +84,7 @@ public class EventQueries(
       auditableEntity.GetType(),
       cancellationToken);
     var auditableEntityTable = await ReadAuditEntityTableName(
-      auditableEntityType.GetType(),
+      auditableEntity.GetType(),
       cancellationToken
     );
 
