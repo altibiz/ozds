@@ -109,7 +109,8 @@ public class ValidationQueries(
             }))
       .ToDictionaryAsync(
         x => x.MeasurementValidatorId,
-        x => x);
+        x => x,
+        cancellationToken);
 
     return validatorIds
       .Select(
