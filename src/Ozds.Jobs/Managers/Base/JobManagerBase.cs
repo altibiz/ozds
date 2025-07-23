@@ -29,15 +29,6 @@ public abstract class JobManagerBase<TContext>
     CancellationToken cancellationToken)
   {
     var triggerKeys = CreateTriggerKeys(context);
-    var triggerKeysJson = JsonSerializer.Serialize(
-      triggerKeys,
-      JobManagerBaseExtensions.JsonOptions
-    );
-
-    Logger.LogDebug(
-      "Ensuring job for {TriggerKeys}",
-      triggerKeysJson
-    );
 
     var job = CreateJob(context);
     var triggers = CreateTriggers(context);
@@ -52,14 +43,28 @@ public abstract class JobManagerBase<TContext>
         false,
         cancellationToken
       );
+
+      if (Logger.IsEnabled(LogLevel.Debug))
+      {
+        var json = ToJson(triggerKeys, triggers);
+
+        Logger.LogDebug(
+          "Endsured job for {TriggerKeys}",
+          json
+        );
+      }
     }
     catch (ObjectAlreadyExistsException ex)
     {
-      Logger.LogDebug(
-        ex,
-        "Job already exists for {TriggerKeys}",
-        triggerKeysJson
-      );
+      if (Logger.IsEnabled(LogLevel.Debug))
+      {
+        var json = ToJson(triggerKeys, triggers);
+        Logger.LogDebug(
+          ex,
+          "Job already exists for {TriggerKeys}",
+          json
+        );
+      }
     }
   }
 
@@ -68,15 +73,6 @@ public abstract class JobManagerBase<TContext>
     CancellationToken cancellationToken)
   {
     var triggerKeys = contexts.Select(CreateTriggerKeys).ToList();
-    var triggerKeysJson = JsonSerializer.Serialize(
-      triggerKeys,
-      JobManagerBaseExtensions.JsonOptions
-    );
-
-    Logger.LogDebug(
-      "Ensuring jobs for {TriggerKeys}",
-      triggerKeysJson
-    );
 
     var jobsWithTriggers = contexts
       .Zip(triggerKeys)
@@ -102,14 +98,27 @@ public abstract class JobManagerBase<TContext>
         false,
         cancellationToken
       );
+
+      if (Logger.IsEnabled(LogLevel.Debug))
+      {
+        var json = ToJson(triggerKeys, jobsWithTriggers);
+        Logger.LogDebug(
+          "Ensured jobs for {TriggerKeys}",
+          json
+        );
+      }
     }
     catch (ObjectAlreadyExistsException ex)
     {
-      Logger.LogDebug(
-        ex,
-        "Jobs already exist for {TriggerKeys}",
-        triggerKeysJson
-      );
+      if (Logger.IsEnabled(LogLevel.Debug))
+      {
+        var json = ToJson(triggerKeys, jobsWithTriggers);
+        Logger.LogDebug(
+          ex,
+          "Jobs already exist for {TriggerKeys}",
+          json
+        );
+      }
     }
   }
 
@@ -118,15 +127,6 @@ public abstract class JobManagerBase<TContext>
     CancellationToken cancellationToken)
   {
     var triggerKeys = CreateTriggerKeys(context);
-    var triggerKeysJson = JsonSerializer.Serialize(
-      triggerKeys,
-      JobManagerBaseExtensions.JsonOptions
-    );
-
-    Logger.LogDebug(
-      "Ensuring job for {TriggerKeys}",
-      triggerKeysJson
-    );
 
     var job = CreateJob(context);
     var triggers = CreateTriggers(context);
@@ -139,6 +139,15 @@ public abstract class JobManagerBase<TContext>
       true,
       cancellationToken
     );
+
+    if (Logger.IsEnabled(LogLevel.Debug))
+    {
+      var json = ToJson(triggerKeys, triggers);
+      Logger.LogDebug(
+        "Rescheduled job for {TriggerKeys}",
+        json
+      );
+    }
   }
 
   protected async Task Reschedule(
@@ -146,15 +155,6 @@ public abstract class JobManagerBase<TContext>
     CancellationToken cancellationToken)
   {
     var triggerKeys = contexts.Select(CreateTriggerKeys).ToList();
-    var triggerKeysJson = JsonSerializer.Serialize(
-      triggerKeys,
-      JobManagerBaseExtensions.JsonOptions
-    );
-
-    Logger.LogDebug(
-      "Ensuring jobs for {TriggerKeys}",
-      triggerKeysJson
-    );
 
     var jobsWithTriggers = contexts
       .Zip(triggerKeys)
@@ -178,6 +178,15 @@ public abstract class JobManagerBase<TContext>
       true,
       cancellationToken
     );
+
+    if (Logger.IsEnabled(LogLevel.Debug))
+    {
+      var json = ToJson(triggerKeys, jobsWithTriggers);
+      Logger.LogDebug(
+        "Rescheduled jobs for {TriggerKeys}",
+        json
+      );
+    }
   }
 
   public async Task Unschedule(
@@ -185,15 +194,6 @@ public abstract class JobManagerBase<TContext>
     CancellationToken cancellationToken)
   {
     var triggerKeys = CreateTriggerKeys(context);
-    var triggerKeysJson = JsonSerializer.Serialize(
-      triggerKeys,
-      JobManagerBaseExtensions.JsonOptions
-    );
-
-    Logger.LogDebug(
-      "Ensuring job for {TriggerKeys}",
-      triggerKeysJson
-    );
 
     var job = CreateJob(context);
     var triggers = CreateTriggers(context);
@@ -206,6 +206,15 @@ public abstract class JobManagerBase<TContext>
       true,
       cancellationToken
     );
+
+    if (Logger.IsEnabled(LogLevel.Debug))
+    {
+      var json = ToJson(triggerKeys, triggers);
+      Logger.LogDebug(
+        "Unscheduled job for {TriggerKeys}",
+        json
+      );
+    }
   }
 
   protected async Task Unschedule(
@@ -213,15 +222,6 @@ public abstract class JobManagerBase<TContext>
     CancellationToken cancellationToken)
   {
     var triggerKeys = contexts.SelectMany(CreateTriggerKeys).ToList();
-    var triggerKeysJson = JsonSerializer.Serialize(
-      triggerKeys,
-      JobManagerBaseExtensions.JsonOptions
-    );
-
-    Logger.LogDebug(
-      "Ensuring jobs for {TriggerKeys}",
-      triggerKeysJson
-    );
 
     var scheduler = await SchedulerFactory.GetScheduler(cancellationToken);
 
@@ -229,6 +229,19 @@ public abstract class JobManagerBase<TContext>
       triggerKeys,
       cancellationToken
     );
+
+    if (Logger.IsEnabled(LogLevel.Debug))
+    {
+      var json = JsonSerializer.Serialize(
+        triggerKeys,
+        JobManagerBaseExtensions.JsonOptions
+      );
+
+      Logger.LogDebug(
+        "Unscheduled jobs for {TriggerKeys}",
+        json
+      );
+    }
   }
 
   protected IReadOnlyCollection<ITrigger> CreateTriggers(
@@ -254,6 +267,55 @@ public abstract class JobManagerBase<TContext>
     TriggerBuilder builder,
     TContext context
   );
+
+  private string ToJson(
+    List<IReadOnlyCollection<TriggerKey>> triggerKeys,
+    IReadOnlyCollection<KeyValuePair<IJobDetail, IReadOnlyCollection<ITrigger>>>
+      jobsWithTriggers
+  )
+  {
+    var json = JsonSerializer.Serialize(
+      triggerKeys
+        .Zip(jobsWithTriggers)
+        .Select(x =>
+        {
+          var (triggerKeys, jobWithTriggers) = x;
+
+          var firstTriggerKey = triggerKeys.First();
+          var firstTrigger = jobWithTriggers.Value.First();
+
+          return new
+          {
+            firstTriggerKey.Group,
+            firstTriggerKey.Name,
+            Fire = firstTrigger.GetNextFireTimeUtc()
+          };
+        }),
+      JobManagerBaseExtensions.JsonOptions
+    );
+
+    return json;
+  }
+
+  private string ToJson(
+    IReadOnlyCollection<TriggerKey> triggerKeys,
+    IReadOnlyCollection<ITrigger> triggers
+  )
+  {
+    var firstTriggerKey = triggerKeys.First();
+    var firstTrigger = triggers.First();
+    var json = JsonSerializer.Serialize(
+      new
+      {
+        firstTriggerKey.Group,
+        firstTriggerKey.Name,
+        Fire = firstTrigger.GetNextFireTimeUtc()
+      },
+      JobManagerBaseExtensions.JsonOptions
+    );
+
+    return json;
+  }
 }
 
 public static class JobManagerBaseExtensions
