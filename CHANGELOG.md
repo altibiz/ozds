@@ -59,6 +59,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - test adjustments for new query, mutation, measure names
 - fix dev mail auth
 - fix notification n + 1
+- job managers to use job manager base
 
 ### Removed
 
