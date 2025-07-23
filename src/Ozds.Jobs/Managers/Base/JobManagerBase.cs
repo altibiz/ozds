@@ -66,6 +66,18 @@ public abstract class JobManagerBase<TContext>
         );
       }
     }
+    catch (JobPersistenceException ex)
+    {
+      if (Logger.IsEnabled(LogLevel.Debug))
+      {
+        var json = ToJson(triggerKeys, triggers);
+        Logger.LogDebug(
+          ex,
+          "Job already exists for {TriggerKeys}",
+          json
+        );
+      }
+    }
   }
 
   protected async Task Ensure(
@@ -116,6 +128,18 @@ public abstract class JobManagerBase<TContext>
         Logger.LogDebug(
           ex,
           "Jobs already exist for {TriggerKeys}",
+          json
+        );
+      }
+    }
+    catch (JobPersistenceException ex)
+    {
+      if (Logger.IsEnabled(LogLevel.Debug))
+      {
+        var json = ToJson(triggerKeys, jobsWithTriggers);
+        Logger.LogDebug(
+          ex,
+          "Jobs already exists for {TriggerKeys}",
           json
         );
       }
