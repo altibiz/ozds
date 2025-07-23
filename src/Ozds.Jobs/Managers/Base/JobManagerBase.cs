@@ -292,7 +292,7 @@ public abstract class JobManagerBase<TContext>
     TContext context
   );
 
-  private string ToJson(
+  private static string ToJson(
     List<IReadOnlyCollection<TriggerKey>> triggerKeys,
     IReadOnlyCollection<KeyValuePair<IJobDetail, IReadOnlyCollection<ITrigger>>>
       jobsWithTriggers
@@ -322,7 +322,7 @@ public abstract class JobManagerBase<TContext>
     return json;
   }
 
-  private string ToJson(
+  private static string ToJson(
     IReadOnlyCollection<TriggerKey> triggerKeys,
     IReadOnlyCollection<ITrigger> triggers
   )
