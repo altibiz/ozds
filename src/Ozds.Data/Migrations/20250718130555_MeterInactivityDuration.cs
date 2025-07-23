@@ -77,6 +77,15 @@ namespace Ozds.Data.Migrations
                 principalTable: "meters",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.Sql(@"
+                UPDATE meters
+                SET
+                    max_inactivity_period_duration = messengers.max_inactivity_period_duration,
+                    max_inactivity_period_multiplier = messengers.max_inactivity_period_multiplier
+                FROM messengers
+                WHERE meters.messenger_id = messengers.id;
+            ");
         }
 
         /// <inheritdoc />
