@@ -49,7 +49,7 @@ public abstract class JobManagerBase<TContext>
         var json = ToJson(triggerKeys, triggers);
 
         Logger.LogDebug(
-          "Endsured job for {TriggerKeys}",
+          "Ensured job for {TriggerKeys}",
           json
         );
       }
@@ -301,20 +301,21 @@ public abstract class JobManagerBase<TContext>
     var json = JsonSerializer.Serialize(
       triggerKeys
         .Zip(jobsWithTriggers)
-        .Select(x =>
-        {
-          var (triggerKeys, jobWithTriggers) = x;
-
-          var firstTriggerKey = triggerKeys.First();
-          var firstTrigger = jobWithTriggers.Value.First();
-
-          return new
+        .Select(
+          x =>
           {
-            firstTriggerKey.Group,
-            firstTriggerKey.Name,
-            Fire = firstTrigger.GetNextFireTimeUtc()
-          };
-        }),
+            var (triggerKeys, jobWithTriggers) = x;
+
+            var firstTriggerKey = triggerKeys.First();
+            var firstTrigger = jobWithTriggers.Value.First();
+
+            return new
+            {
+              firstTriggerKey.Group,
+              firstTriggerKey.Name,
+              Fire = firstTrigger.GetNextFireTimeUtc()
+            };
+          }),
       JobManagerBaseExtensions.JsonOptions
     );
 
