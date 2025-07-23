@@ -8,6 +8,7 @@ using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Client.Components.Base;
 using Ozds.Data.Entities.Abstractions;
+using Ozds.Data.Entities.Abstractions;
 
 namespace Ozds.Client.Components.Streaming;
 
@@ -44,6 +45,7 @@ public partial class Table<T> : OzdsComponentBase
   public RenderFragment<IEnumerable<T>>? Columns { get; set; } = default!;
 
   public int PageCount => QueryConstants.DefaultPageCount;
+  public int PageCount => QueryConstants.DefaultPageCount;
 
   [Parameter]
   public bool DynamicTitle { get; set; } = false;
@@ -69,8 +71,10 @@ public partial class Table<T> : OzdsComponentBase
   }
 
   private async Task OnDataGridSearch(string newSearchString)
+  private async Task OnDataGridSearch(string newSearchString)
   {
     searchString = newSearchString;
+    await (dataGrid?.ReloadServerData() ?? Task.CompletedTask);
     await (dataGrid?.ReloadServerData() ?? Task.CompletedTask);
   }
 
@@ -88,7 +92,7 @@ public partial class Table<T> : OzdsComponentBase
         result = AnalysisSearch(state.Page);
       }
     }
-    else if(result == new PaginatedList<T>([], 0) || string.IsNullOrEmpty(searchString))
+    else if (result == new PaginatedList<T>([], 0) || string.IsNullOrEmpty(searchString))
     {
       if (PageAsync is not null)
       {
@@ -133,12 +137,14 @@ public partial class Table<T> : OzdsComponentBase
     return new GridData<T>
     {
       Items = result.Items,
+      Items = result.Items,
       TotalItems = result.TotalCount
     };
   }
 
   private async Task<PaginatedList<T>> OnPagingPage(int pageNumber)
   {
+    var result = await Fetch(pageNumber);
     var result = await Fetch(pageNumber);
     model = result;
     return result;

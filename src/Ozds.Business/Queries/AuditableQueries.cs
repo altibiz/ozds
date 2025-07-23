@@ -299,4 +299,126 @@ public class AuditableQueries(
       ? null
       : modelEntityConverter.ToModel<IAuditable>(entity);
   }
+
+  public async Task<PaginatedList<object>> ComplexReadDynamic(
+    Type modelType,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount,
+    Expression<Func<object, bool>>? where = null,
+    Expression<Func<object, object>>? orderByDesc = null,
+    Expression<Func<object, object>>? orderByAsc = null
+  )
+  {
+    if (!modelType.IsAssignableTo(typeof(IAuditable)))
+    {
+      throw new InvalidOperationException(
+        $"Type {modelType} is not assignable to {typeof(IAuditable)}");
+    }
+
+    var entityType = modelEntityConverter.EntityType(modelType);
+    var entities = await queries.ReadDynamic(
+      entityType,
+      pageNumber,
+      cancellationToken,
+      pageCount,
+      where,
+      orderByDesc,
+      orderByAsc
+    );
+
+    return entities.Items
+      .Select(modelEntityConverter.ToModel)
+      .ToPaginatedList(entities.TotalCount);
+  }
+
+  public async Task<PaginatedList<object>> ComplexReadDynamic(
+    Type modelType,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount,
+    Expression<Func<object, bool>>? where = null,
+    Expression<Func<object, object>>? orderByDesc = null,
+    Expression<Func<object, object>>? orderByAsc = null
+  )
+  {
+    if (!modelType.IsAssignableTo(typeof(IAuditable)))
+    {
+      throw new InvalidOperationException(
+        $"Type {modelType} is not assignable to {typeof(IAuditable)}");
+    }
+
+    var entityType = modelEntityConverter.EntityType(modelType);
+    var entities = await queries.ReadDynamic(
+      entityType,
+      pageNumber,
+      cancellationToken,
+      pageCount,
+      where,
+      orderByDesc,
+      orderByAsc
+    );
+
+    return entities.Items
+      .Select(modelEntityConverter.ToModel)
+      .ToPaginatedList(entities.TotalCount);
+  }
+
+  public async Task<IAuditable?> ReadByEvent(
+    IAuditEvent auditEvent,
+    CancellationToken cancellationToken
+  )
+  {
+    var original = await entityQueries.ReadById<IAuditEventEntity>(
+      auditEvent.Id,
+      cancellationToken);
+    if (original is null)
+    {
+      return null;
+    }
+
+    var type = await eventQueries.ReadAuditEntityType(
+      original.AuditableEntityType,
+      cancellationToken);
+    var entity = await queries.ReadById(
+      type,
+      original.AuditableEntityId,
+      cancellationToken);
+
+    return entity is null
+      ? null
+      : modelEntityConverter.ToModel<IAuditable>(entity);
+  }
+
+  public async Task<PaginatedList<object>> ComplexReadDynamic(
+    Type modelType,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount,
+    Expression<Func<object, bool>>? where = null,
+    Expression<Func<object, object>>? orderByDesc = null,
+    Expression<Func<object, object>>? orderByAsc = null
+  )
+  {
+    if (!modelType.IsAssignableTo(typeof(IAuditable)))
+    {
+      throw new InvalidOperationException(
+        $"Type {modelType} is not assignable to {typeof(IAuditable)}");
+    }
+
+    var entityType = modelEntityConverter.EntityType(modelType);
+    var entities = await queries.ReadDynamic(
+      entityType,
+      pageNumber,
+      cancellationToken,
+      pageCount,
+      where,
+      orderByDesc,
+      orderByAsc
+    );
+
+    return entities.Items
+      .Select(modelEntityConverter.ToModel)
+      .ToPaginatedList(entities.TotalCount);
+  }
 }
