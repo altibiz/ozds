@@ -174,7 +174,6 @@ public class MeasurementMutations(
             .Select(
               measurement => new EntityChangingEntry(
                 EntityChangingState.Adding,
-                measurement,
                 measurement))
             .ToList()
         });
@@ -195,7 +194,6 @@ public class MeasurementMutations(
             .Select(
               measurement => new EntityChangedEntry(
                 EntityChangedState.Added,
-                measurement,
                 measurement))
             .ToList()
         });
@@ -228,7 +226,6 @@ public class MeasurementMutations(
             .Select(
               measurement => new EntityChangingEntry(
                 EntityChangingState.Adding,
-                measurement,
                 measurement))
             .ToList()
         });
@@ -255,7 +252,6 @@ public class MeasurementMutations(
             .Select(
               measurement => new EntityChangedEntry(
                 EntityChangedState.Added,
-                measurement,
                 measurement))
             .ToList()
         });

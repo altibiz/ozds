@@ -9,8 +9,7 @@ public class DataModelsChangingEventArgs : System.EventArgs
 
 public sealed record DataModelChangingEntry(
   DataModelChangingState State,
-  IModel Model,
-  IModel Original
+  IModel Model
 );
 
 public enum DataModelChangingState
