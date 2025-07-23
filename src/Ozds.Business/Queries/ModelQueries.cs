@@ -72,7 +72,9 @@ public class ModelQueries(
       cancellationToken
     );
 
-    return entities.OfType<object>().ToList();
+    return entities
+      .Select(modelEntityConverter.ToModel)
+      .ToList();
   }
 
   public async Task<PaginatedList<T>> Read<T>(

@@ -1,6 +1,6 @@
 using System.Text;
 using Ozds.Business.Models;
-using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Models.Joins;
 using Ozds.Business.Observers.Abstractions;
@@ -41,7 +41,7 @@ public class DataNotificationRecipientChangeHandler(
       return;
     }
 
-    var notifications = await modelQueries.ReadByIds<NotificationModel>(
+    var notifications = await modelQueries.ReadByIds<INotification>(
       recipients.Select(x => x.NotificationId),
       cancellationToken);
 
