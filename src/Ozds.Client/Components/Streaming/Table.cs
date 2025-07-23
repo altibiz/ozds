@@ -6,6 +6,7 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Client.Components.Base;
+using Ozds.Data.Entities.Abstractions;
 
 namespace Ozds.Client.Components.Streaming;
 
@@ -41,9 +42,7 @@ public partial class Table<T> : OzdsComponentBase
   [Parameter]
   public RenderFragment<IEnumerable<T>>? Columns { get; set; } = default!;
 
-  public int PageCount => string.IsNullOrWhiteSpace(searchString)
-       ? QueryConstants.DefaultPageCount
-       : QueryConstants.DefaultLargePageCount;
+  public int PageCount => QueryConstants.DefaultPageCount;
 
   [Parameter]
   public bool DynamicTitle { get; set; } = false;
@@ -62,90 +61,32 @@ public partial class Table<T> : OzdsComponentBase
     return dataGrid?.ReloadServerData() ?? Task.CompletedTask;
   }
 
-  private bool FilterItem(T value)
-  {
-    if (Filter is not null)
-    {
-      return Filter(value);
-    }
-
-    if (value is null)
-    {
-      return false;
-    }
-
-    if (string.IsNullOrEmpty(searchString))
-    {
-      return true;
-    }
-
-    if (value is IIdentifiable rootIdent && ContainsSearch(rootIdent.Title))
-    {
-      return true;
-    }
-
-    if (value is IIdentifiable)
-    {
-      return false;
-    }
-
-    var props = value.GetType()
-      .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-      .Where(p => p.CanRead);
-
-    foreach (var prop in props)
-    {
-      var propVal = prop.GetValue(value);
-      if (propVal == null)
-      {
-        continue;
-      }
-
-      if (propVal is IIdentifiable childIdent
-        && ContainsSearch(childIdent.Title))
-      {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  private bool ContainsSearch(string? text)
-  {
-    if (string.IsNullOrWhiteSpace(searchString))
-    {
-      return true;
-    }
-
-    return !string.IsNullOrEmpty(text)
-      && text.Contains(searchString, StringComparison.OrdinalIgnoreCase);
-  }
-
   private Task OnPagingSearch(string newSearchString)
   {
     searchString = newSearchString;
     return Task.CompletedTask;
   }
 
-  private Task OnDataGridSearch(string newSearchString)
+  private async Task OnDataGridSearch(string newSearchString)
   {
     searchString = newSearchString;
-    return dataGrid?.ReloadServerData() ?? Task.CompletedTask;
+    await (dataGrid?.ReloadServerData() ?? Task.CompletedTask);
   }
 
   private async Task<GridData<T>> OnDataGridServerData(GridState<T> state)
   {
-    var smartPageNumber = !string.IsNullOrEmpty(searchString) ? 0 : state.Page;
     PaginatedList<T> result;
-
-    if (PageAsync is not null)
+    if (typeof(T).IsAssignableTo(typeof(IAuditable)) && !string.IsNullOrEmpty(searchString))
     {
-      result = await PageAsync(smartPageNumber);
+      result = await SearchRead(searchString, state.Page);
+    }
+    else if (PageAsync is not null)
+    {
+      result = await PageAsync(state.Page);
     }
     else
     {
-      result = await Fetch(smartPageNumber);
+      result = await Fetch(state.Page);
     }
     model = result;
 
@@ -180,15 +121,14 @@ public partial class Table<T> : OzdsComponentBase
 
     return new GridData<T>
     {
-      Items = result.Items.Where(FilterItem),
+      Items = result.Items,
       TotalItems = result.TotalCount
     };
   }
 
   private async Task<PaginatedList<T>> OnPagingPage(int pageNumber)
   {
-    var smartPageNumber = !string.IsNullOrEmpty(searchString) ? 0 : pageNumber;
-    var result = await Fetch(smartPageNumber);
+    var result = await Fetch(pageNumber);
     model = result;
     return result;
   }
@@ -270,5 +210,29 @@ public partial class Table<T> : OzdsComponentBase
     }
 
     return pi;
+  }
+
+  private async Task<PaginatedList<T>> SearchRead(string searchText, int pageNumber)
+  {
+      var auditableQueries = ScopedServices.GetRequiredService<AuditableQueries>();
+
+      Expression<Func<object, bool>>? whereExpr = o => ((IAuditableEntity)o)
+                           .Title
+                           .Contains(searchText);
+
+      var page = await auditableQueries.ComplexReadDynamic(
+        modelType: typeof(T),
+        pageNumber: pageNumber,
+        cancellationToken: CancellationToken,
+        pageCount: PageCount,
+        where: whereExpr,
+        orderByDesc: null,
+        orderByAsc: null
+      );
+
+      return new PaginatedList<T>(
+        page.Items.Cast<T>().ToList(),
+        page.TotalCount
+      );
   }
 }
