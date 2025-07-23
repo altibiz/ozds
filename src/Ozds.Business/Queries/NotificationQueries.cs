@@ -124,4 +124,16 @@ public class NotificationQueries(
       .Select(modelEntityConverter.ToModel<NotificationRecipientModel>)
       .ToList();
   }
+
+  public async Task<List<NotificationRecipientModel>> Recipients(
+    IEnumerable<INotification> notifications)
+  {
+    var entities = notifications
+      .Select(modelEntityConverter.ToEntity<INotificationEntity>);
+    var recipients = await queries.Recipients(entities);
+
+    return recipients
+      .Select(modelEntityConverter.ToModel<NotificationRecipientModel>)
+      .ToList();
+  }
 }

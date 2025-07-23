@@ -37,24 +37,20 @@ public class DataNotificationChangeHandler(
       return;
     }
 
-    var recipients = new List<NotificationRecipientModel>();
-    // FIXME: N + 1
-    foreach (var notification in notifications)
+    var recipients = await notificationQueries.Recipients(notifications);
+
+    notificationCreatedPublisher.Publish(new()
     {
-      var notificationRecipients = await notificationQueries
-        .Recipients(notification);
-      recipients.AddRange(notificationRecipients);
-      foreach (var notificationRecipient in notificationRecipients)
-      {
-        var notificationCreatedEventArgs =
-          new NotificationRecipientCreatedEventArgs
+      NotificationRecipients = recipients
+        .GroupBy(x => x.NotificationId)
+        .Select(x =>
+          new NotificationRecipientsCreatedEventArgsNotificationRecipients
           {
-            Notification = notification,
-            Recipient = notificationRecipient
-          };
-        notificationCreatedPublisher.Publish(notificationCreatedEventArgs);
-      }
-    }
+            Notification = notifications.First(y => y.Id == x.Key),
+            Recipients = x.ToList()
+          })
+        .ToList()
+    });
 
     await modelMutations.Create(recipients, cancellationToken);
   }
