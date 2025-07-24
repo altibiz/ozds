@@ -12,39 +12,6 @@ public class NotificationQueries(
   IDbContextFactory<DataDbContext> factory
 ) : IQueries
 {
-  public async Task<T?> ReadSingle<T>(
-    Type type,
-    string id,
-    CancellationToken cancellationToken
-  )
-    where T : INotificationEntity
-  {
-    var entity = await ReadSingleDynamic(type, id, cancellationToken);
-    return (T?)entity;
-  }
-
-  public async Task<INotificationEntity?> ReadSingleDynamic(
-    Type type,
-    string id,
-    CancellationToken cancellationToken
-  )
-  {
-    if (!type.IsAssignableTo(typeof(INotificationEntity)))
-    {
-      throw new ArgumentException(
-        "Type must be a concrete type of NotificationEntity",
-        nameof(type)
-      );
-    }
-
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-
-    return (INotificationEntity?)await context.Notifications
-      .Where(context.PrimaryKeyEquals(type, id))
-      .FirstOrDefaultAsync(cancellationToken);
-  }
-
   public async Task<PaginatedList<T>> ReadForRecipient<T>(
     string representativeId,
     bool seen,
@@ -182,6 +149,31 @@ public class NotificationQueries(
           NotificationId = notification.Id,
           RepresentativeId = representative.Id
         })
+      .ToList();
+  }
+
+  public async Task<List<NotificationRecipientEntity>> Recipients(
+    IEnumerable<INotificationEntity> notifications)
+  {
+    await using var context = await factory.CreateDbContextAsync();
+
+    var topics = notifications.SelectMany(x => x.Topics);
+    var representatives = await context.Representatives
+      .Where(r => r.Topics.Any(t => topics.Contains(t)))
+      .ToListAsync();
+
+    return notifications
+      .SelectMany(
+        notification => representatives
+          .Where(
+            representative => representative.Topics
+              .Exists(t => notification.Topics.Contains(t)))
+          .Select(
+            representative => new NotificationRecipientEntity
+            {
+              NotificationId = notification.Id,
+              RepresentativeId = representative.Id
+            }))
       .ToList();
   }
 }

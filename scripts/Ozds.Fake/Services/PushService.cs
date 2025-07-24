@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Ozds.Business.Queries;
 using Ozds.Fake.Arguments;
 using Ozds.Fake.Client;
@@ -45,12 +44,14 @@ public class PushService(
     CancellationToken cancellationToken
   )
   {
-    return Future(TimeSpan.FromSeconds(arguments.Interval_s), cancellationToken)
+    return clock
+      .Future(TimeSpan.FromSeconds(arguments.Interval_s), cancellationToken)
       .Select(
         range => new PushWorkerItem(
           range.DateFrom,
           range.DateTo,
           arguments.MessengerId,
+          arguments.MessengerApiKey,
           ids,
           10000,
           arguments.Realtime
@@ -58,29 +59,4 @@ public class PushService(
             : PushClientBufferBehavior.Buffer
         ));
   }
-
-  private async IAsyncEnumerable<DateTimeOffsetRange> Future(
-    TimeSpan interval,
-    [EnumeratorCancellation] CancellationToken cancellationToken
-  )
-  {
-    var dateTo = clock.Now();
-    while (true)
-    {
-      if (cancellationToken.IsCancellationRequested)
-      {
-        break;
-      }
-
-      await Task.Delay(interval, cancellationToken);
-      var dateFrom = dateTo;
-      dateTo = clock.Now();
-      yield return new DateTimeOffsetRange(dateFrom, dateTo);
-    }
-  }
-
-  private sealed record DateTimeOffsetRange(
-    DateTimeOffset DateFrom,
-    DateTimeOffset DateTo
-  );
 }

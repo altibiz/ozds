@@ -31,7 +31,7 @@ public class LifecycleReactor(
       try
       {
         var mutations = scope.ServiceProvider
-          .GetRequiredService<ReadonlyMutations>();
+          .GetRequiredService<ModelMutations>();
         var activator = scope.ServiceProvider
           .GetRequiredService<ModelActivator>();
         var content = new StartupEventContent();
@@ -53,7 +53,7 @@ public class LifecycleReactor(
       try
       {
         var mutations = scope.ServiceProvider
-          .GetRequiredService<ReadonlyMutations>();
+          .GetRequiredService<ModelMutations>();
         var activator = scope.ServiceProvider
           .GetRequiredService<ModelActivator>();
         var content = new ShutdownEventContent();

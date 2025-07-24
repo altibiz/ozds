@@ -58,7 +58,8 @@ public record class AbbB2xMeasurementRecord : MeasurementRecord
                     ActiveEnergyL2ImportT0_Wh,
                     ActiveEnergyL3ImportT0_Wh
                   ),
-                  new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT0_Wh)
+                  new SinglePhasicSumMeasure<decimal>(
+                    ActiveEnergyTotalImportT0_Wh)
                 ]),
                 new CompositePhasicMeasure<decimal>(
                 [
@@ -67,17 +68,20 @@ public record class AbbB2xMeasurementRecord : MeasurementRecord
                     ActiveEnergyL2ExportT0_Wh,
                     ActiveEnergyL3ExportT0_Wh
                   ),
-                  new SinglePhasicMeasure<decimal>(ActiveEnergyTotalExportT0_Wh)
+                  new SinglePhasicSumMeasure<decimal>(
+                    ActiveEnergyTotalExportT0_Wh)
                 ])
               )
             ),
             new BinaryTariffMeasure<decimal>(
               new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT1_Wh),
+                new SinglePhasicSumMeasure<decimal>(
+                  ActiveEnergyTotalImportT1_Wh),
                 PhasicMeasure<decimal>.Null
               ),
               new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT2_Wh),
+                new SinglePhasicSumMeasure<decimal>(
+                  ActiveEnergyTotalImportT2_Wh),
                 PhasicMeasure<decimal>.Null
               )
             )
@@ -86,17 +90,21 @@ public record class AbbB2xMeasurementRecord : MeasurementRecord
           [
             new UnaryTariffMeasure<decimal>(
               new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT0_Wh),
-                new SinglePhasicMeasure<decimal>(ActiveEnergyTotalExportT0_Wh)
+                new SinglePhasicSumMeasure<decimal>(
+                  ActiveEnergyTotalImportT0_Wh),
+                new SinglePhasicSumMeasure<decimal>(
+                  ActiveEnergyTotalExportT0_Wh)
               )
             ),
             new BinaryTariffMeasure<decimal>(
               new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT1_Wh),
+                new SinglePhasicSumMeasure<decimal>(
+                  ActiveEnergyTotalImportT1_Wh),
                 PhasicMeasure<decimal>.Null
               ),
               new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicMeasure<decimal>(ActiveEnergyTotalImportT2_Wh),
+                new SinglePhasicSumMeasure<decimal>(
+                  ActiveEnergyTotalImportT2_Wh),
                 PhasicMeasure<decimal>.Null
               )
             )
@@ -123,7 +131,7 @@ public record class AbbB2xMeasurementRecord : MeasurementRecord
                   ReactiveEnergyL2ImportT0_VARh,
                   ReactiveEnergyL3ImportT0_VARh
                 ),
-                new SinglePhasicMeasure<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   ReactiveEnergyTotalImportT0_VARh)
               ]),
               new CompositePhasicMeasure<decimal>(
@@ -133,16 +141,17 @@ public record class AbbB2xMeasurementRecord : MeasurementRecord
                   ReactiveEnergyL2ExportT0_VARh,
                   ReactiveEnergyL3ExportT0_VARh
                 ),
-                new SinglePhasicMeasure<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   ReactiveEnergyTotalExportT0_VARh)
               ])
             )
           )
           : new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasure<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ReactiveEnergyTotalImportT0_VARh),
-              new SinglePhasicMeasure<decimal>(ReactiveEnergyTotalExportT0_VARh)
+              new SinglePhasicSumMeasure<decimal>(
+                ReactiveEnergyTotalExportT0_VARh)
             )
           );
     }

@@ -1,125 +1,117 @@
 using System.Globalization;
 using Microsoft.Extensions.Options;
 using Ozds.Jobs.Manager.Abstractions;
+using Ozds.Jobs.Managers.Base;
 using Ozds.Jobs.Options;
-using Ozds.Jobs.Scheduler;
 using Ozds.Time.Queries.Abstractions;
 using Quartz;
 
 namespace Ozds.Jobs.Managers.Implementations;
 
+public sealed record BillingJobContext(string NetworkUserId);
+
 public class BillingJobManager(
-  OzdsSchedulerFactory schedulerFactory,
-  ILogger<BillingJobManager> logger,
+  IServiceProvider serviceProvider,
   IClockQueries clock,
   ITimeQueries time,
   IOptions<OzdsJobsOptions> options
-)
-  : IBillingJobManager
+) : JobManagerBase<BillingJobContext>(serviceProvider),
+  IBillingJobManager
 {
-  public async Task EnsureMonthlyBillingJob(
+  public Task EnsureMonthlyBillingJob(
     string networkUserId,
     CancellationToken cancellationToken)
   {
-    logger.LogDebug(
-      "Ensuring {Group} monthly billing job"
-      + " for network user {NetworkUserId}",
-      nameof(MonthlyNetworkUserBillingJob),
-      networkUserId
-    );
-
-    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
-
-    var triggerKey = new TriggerKey(
-      networkUserId, nameof(MonthlyNetworkUserBillingJob));
-    if (!await scheduler.CheckExists(triggerKey, cancellationToken))
-    {
-      var job = CreateJob(networkUserId);
-      var trigger = CreateTrigger(networkUserId);
-
-      await scheduler.ScheduleJob(job, trigger, cancellationToken);
-    }
+    return Ensure(
+      new BillingJobContext(networkUserId),
+      cancellationToken);
   }
 
-  public async Task RescheduleMonthlyBillingJob(
+  public Task EnsureMonthlyBillingJobs(
+    IEnumerable<string> networkUserIds,
+    CancellationToken cancellationToken
+  )
+  {
+    return Ensure(
+      networkUserIds.Select(x => new BillingJobContext(x)),
+      cancellationToken);
+  }
+
+  public Task RescheduleMonthlyBillingJob(
     string networkUserId,
     CancellationToken cancellationToken
   )
   {
-    logger.LogDebug(
-      "Rescheduling {Group} monthly billing job"
-      + " for network user {NetworkUserId}",
-      nameof(MonthlyNetworkUserBillingJob),
-      networkUserId
-    );
-
-    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
-
-    var triggerKey = new TriggerKey(
-      networkUserId, nameof(MonthlyNetworkUserBillingJob));
-
-    if (await scheduler.CheckExists(triggerKey, cancellationToken))
-    {
-      var trigger = CreateTrigger(networkUserId);
-      await scheduler.RescheduleJob(triggerKey, trigger, cancellationToken);
-    }
-    else
-    {
-      await EnsureMonthlyBillingJob(networkUserId, cancellationToken);
-    }
+    return Reschedule(
+      new BillingJobContext(networkUserId),
+      cancellationToken);
   }
 
-  public async Task UnscheduleMonthlyBillingJob(
+  public Task RescheduleMonthlyBillingJobs(
+    IEnumerable<string> networkUserIds,
+    CancellationToken cancellationToken)
+  {
+    return Reschedule(
+      networkUserIds.Select(x => new BillingJobContext(x)),
+      cancellationToken);
+  }
+
+  public Task UnscheduleMonthlyBillingJob(
     string networkUserId,
     CancellationToken cancellationToken
   )
   {
-    logger.LogDebug(
-      "Unscheduling {Group} monthly billing job"
-      + " for network user {NetworkUserId}",
-      nameof(MonthlyNetworkUserBillingJob),
-      networkUserId
-    );
-
-    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
-
-    var triggerKey = new TriggerKey(
-      networkUserId, nameof(MonthlyNetworkUserBillingJob));
-
-    if (await scheduler.CheckExists(triggerKey, cancellationToken))
-    {
-      await scheduler.UnscheduleJob(triggerKey, cancellationToken);
-    }
+    return Unschedule(
+      new BillingJobContext(networkUserId),
+      cancellationToken);
   }
 
-  private IJobDetail CreateJob(string id)
+  public Task UnscheduleMonthlyBillingJobs(
+    IEnumerable<string> networkUserIds,
+    CancellationToken cancellationToken
+  )
+  {
+    return Unschedule(
+      networkUserIds.Select(x => new BillingJobContext(x)),
+      cancellationToken);
+  }
+
+  protected override IJobDetail CreateJob(BillingJobContext context)
   {
     var now = clock.Now();
 
     return JobBuilder.Create<MonthlyNetworkUserBillingJob>()
-      .WithIdentity(id, nameof(MonthlyNetworkUserBillingJob))
-      .UsingJobData(nameof(MonthlyNetworkUserBillingJob.NetworkUserId), id)
+      .WithIdentity(
+        context.NetworkUserId,
+        nameof(MonthlyNetworkUserBillingJob))
+      .UsingJobData(
+        nameof(MonthlyNetworkUserBillingJob.NetworkUserId),
+        context.NetworkUserId)
       .UsingJobData(
         nameof(MonthlyNetworkUserBillingJob.ScheduledAt),
         now.ToString("o", CultureInfo.InvariantCulture))
       .Build();
   }
 
-  private ITrigger CreateTrigger(string id)
+  protected override IReadOnlyCollection<TriggerKey> CreateTriggerKeys(
+    BillingJobContext context
+  )
   {
-    var now = clock.Now();
+    return
+    [
+      new TriggerKey(
+        context.NetworkUserId,
+        nameof(MonthlyNetworkUserBillingJob)
+      )
+    ];
+  }
 
-    logger.LogDebug(
-      "{Now} Creating trigger for {Group} monthly billing job"
-      + " for network user {NetworkUserId}",
-      now,
-      nameof(MonthlyNetworkUserBillingJob),
-      id
-    );
-
-    return TriggerBuilder.Create()
-      .WithIdentity(id, nameof(MonthlyNetworkUserBillingJob))
-      .ForJob(id, nameof(MonthlyNetworkUserBillingJob))
+  protected override ITrigger CreateTrigger(
+    TriggerBuilder builder,
+    BillingJobContext context
+  )
+  {
+    return builder
       .WithCronSchedule(
         options.Value.Billing.MonthlyBillingCron,
         x => x

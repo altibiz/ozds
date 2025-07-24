@@ -146,6 +146,9 @@ public static class HostExtensions
   {
     builder.Services.AddTransientAssignableTo(typeof(IMeterNamingConvention));
     builder.Services.AddSingleton(typeof(MeterNamingConvention));
+    builder.Services.AddTransientAssignableTo(
+      typeof(IMessengerNamingConvention));
+    builder.Services.AddSingleton(typeof(MessengerNamingConvention));
     return builder;
   }
 

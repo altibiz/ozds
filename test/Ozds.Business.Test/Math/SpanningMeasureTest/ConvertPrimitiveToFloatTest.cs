@@ -12,21 +12,21 @@ public class ConvertPrimitiveToFloatTest
       (new MinMaxSpanningMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(5),
-              new SinglePhasicMeasureSum<decimal>(3))),
+              new SinglePhasicSumMeasure<decimal>(5),
+              new SinglePhasicSumMeasure<decimal>(3))),
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(10),
-              new SinglePhasicMeasureSum<decimal>(6)))),
+              new SinglePhasicSumMeasure<decimal>(10),
+              new SinglePhasicSumMeasure<decimal>(6)))),
         new MinMaxSpanningMeasure<float>(
           new UnaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
-              new SinglePhasicMeasureSum<float>(5f),
-              new SinglePhasicMeasureSum<float>(3f))),
+              new SinglePhasicSumMeasure<float>(5f),
+              new SinglePhasicSumMeasure<float>(3f))),
           new UnaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
-              new SinglePhasicMeasureSum<float>(10f),
-              new SinglePhasicMeasureSum<float>(6f))))
+              new SinglePhasicSumMeasure<float>(10f),
+              new SinglePhasicSumMeasure<float>(6f))))
       ),
 
       (new AvgSpanningMeasure<decimal>(
@@ -44,13 +44,13 @@ public class ConvertPrimitiveToFloatTest
       (new PeakSpanningMeasure<decimal>(
           new UnaryTariffMeasure<decimal>(
             new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(7),
-              new SinglePhasicMeasureSum<decimal>(8)))),
+              new SinglePhasicSumMeasure<decimal>(7),
+              new SinglePhasicSumMeasure<decimal>(8)))),
         new PeakSpanningMeasure<float>(
           new UnaryTariffMeasure<float>(
             new ImportExportDuplexMeasure<float>(
-              new SinglePhasicMeasureSum<float>(7f),
-              new SinglePhasicMeasureSum<float>(8f))))
+              new SinglePhasicSumMeasure<float>(7f),
+              new SinglePhasicSumMeasure<float>(8f))))
       ),
 
       (new NullSpanningMeasure<decimal>(), new NullSpanningMeasure<float>())

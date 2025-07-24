@@ -31,15 +31,15 @@ public partial class DeveloperPage : OzdsComponentBase
   private async Task OnPdfClick()
   {
     var invoice = await ScopedServices
-      .GetRequiredService<ReadonlyQueries>()
+      .GetRequiredService<ModelQueries>()
       .Read<NetworkUserInvoiceModel>(
         0,
         CancellationToken.None
       );
 
     var calculated = await ScopedServices
-      .GetRequiredService<CalculatedInvoiceQueries>()
-      .ReadCalculatedNetworkUserInvoice(
+      .GetRequiredService<InvoiceQueries>()
+      .ReadCalculatedById(
         invoice.Items.First().Id,
         CancellationToken.None
       );

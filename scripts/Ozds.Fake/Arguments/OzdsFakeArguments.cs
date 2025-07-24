@@ -39,6 +39,11 @@ public class OzdsFakePushArguments : IOzdsFakeArguments
   [Option('m', "messenger-id", Required = false, HelpText = "Messenger ID.")]
   public string MessengerId { get; set; } = "pidgeon";
 
+  [Option(
+    'a', "messenger-api-key", Required = false,
+    HelpText = "Messenger API key.")]
+  public string MessengerApiKey { get; set; } = "pidgeon";
+
   [Option('e', "meter-ids", Required = false, HelpText = "Meter IDs.")]
   public IEnumerable<string> MeterIds { get; set; } = [];
 
@@ -71,6 +76,11 @@ public class OzdsFakeSeedArguments : IOzdsFakeArguments
 
   [Option('m', "messenger-id", Required = false, HelpText = "Messenger ID.")]
   public string MessengerId { get; set; } = "pidgeon";
+
+  [Option(
+    'a', "messenger-api-key", Required = false,
+    HelpText = "Messenger API key.")]
+  public string MessengerApiKey { get; set; } = "pidgeon";
 
   [Option('e', "meter-ids", Required = false, HelpText = "Meter IDs.")]
   public IEnumerable<string> MeterIds { get; set; } = [];

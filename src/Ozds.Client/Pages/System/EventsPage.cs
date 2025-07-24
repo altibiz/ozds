@@ -19,6 +19,6 @@ public partial class EventsPage : OzdsComponentBase
   {
     return await ScopedServices
       .GetRequiredService<EventQueries>()
-      .ReadByMinLevel<IEvent>(_minLevel, page, CancellationToken);
+      .Read<IEvent>(_minLevel, page, CancellationToken);
   }
 }

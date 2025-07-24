@@ -1,5 +1,7 @@
 @namespace Ozds.Client.Components.Models
+@using MudBlazor
 @using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Fields
 @inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Abstractions.IMeter>
 
 @(Base<IIdentifiable>())
@@ -11,5 +13,11 @@
 @Field(x => x.ConnectionPower_W)
 
 @Field(x => x.Phases)
+
+<DetailsField Title="@(Translate("Max inactivity"))">
+  <MudText>
+    @TranslatePeriod(Model.MaxInactivityPeriod)
+  </MudText>
+</DetailsField>
 
 @(Base<IAuditable>())

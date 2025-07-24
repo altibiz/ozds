@@ -16,6 +16,24 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - needed faking classes for `Ozds.Server.Test` fixtures
 - `Ozds.Business` flag to start without reactors
 - project flags to start without services
+- add correction by validator in record correction
+- messenger naming conventions
+- max inactivity duration to meters
+- meter notification model/entity
+- messenger by meter cache
+- messenger cache
+- meter cache
+- meter and meter inactivity topics
+- ModelQueries and ModelMutations for generic queries and mutations
+- bulk queries and mutations for model and auditable queries and mutations
+- meter inactivity job, reactor, manager, observer, relay, field
+- original entity/model to entity/model change pub/sub
+- max inactivity period to meters and topic enum members migration
+- messenger inactivity job reactor test
+- meter inactivity job reactor test
+- e2e test fixture configuration
+- e2e test cancellation extensions
+- MeterQueries
 
 ### Changed
 
@@ -26,10 +44,40 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - cleanup script projects DI
 - cleanup some remaining uses of `DateTimeOffset.UtcNow`
 - catch `OperationCanceledException` in reactors/relays
+- messenger API key in `Ozds.Fake` through arguments rather than config
+- extracted AnalysisQueries
+- simplified some query names
+- add API key header in `Ozds.Fake` push client
+- record correction adjustments
+- reporting conversion corrections
+- measurement validation corrections
+- messenger id validation by convention
+- enumerable queries in `Ozds.Time` instead of extension methods
+- validation fixes and validation over multiple models
+- adjustments to frontend for new queries and mutations
+- data archival fix for enums
+- test adjustments for new query, mutation, measure names
+- fix dev mail auth
+- fix notification n + 1
+- job managers to use job manager base
+- cleaned up some N + 1 reactors
 
 ### Removed
 
 - `Ozds.Client.Test`
+- SinglePhasicMeasure in favor of SinglePhasicSumMeasure
+- PhasicMeasure.PhaseSingle because it was never used and was confusing
+- CalculatedInvoiceMutations in favor of NetworkUserInvoiceMutations
+- NetworkUserInvoiceIssuer in favor of NetworkUserInvoiceMutations
+- JoinMutations in favor of ModelMutations
+- ReadonlyMutations in favor of ModelMutations
+- ReadonlyQueries in favor of ModelQueries
+- dynamic queries
+- uses of DataDbContext in reactors
+- AddRecipients in NotificationMutations
+- notification recipients on network user invoice messages in favor of reactor
+- TestReadonlyFixture as it was never used
+- PhaseSingle test
 
 ## [1.4.2] - 2025-07-09
 

@@ -408,6 +408,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        ~DateTimeOffsetRange
+      </Key>
+      <Metadata>
+        Type 'Ozds.Business.Models.Complex.DateTimeOffsetRangeModel'
+      </Metadata>
+      <Value>
+        Date time offset range
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         ~DerivedAggregateMeasure
       </Key>
       <Metadata>
@@ -868,6 +879,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        ~MeterNotification
+      </Key>
+      <Metadata>
+        Type 'Ozds.Business.Models.MeterNotificationModel'
+      </Metadata>
+      <Value>
+        Meter notification
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         ~Model
       </Key>
       <Metadata>
@@ -994,13 +1016,13 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        ~NetworkUserInvoiceIssuingBasis
+        ~NetworkUserInvoiceBasis
       </Key>
       <Metadata>
-        Type 'Ozds.Business.Models.Composite.NetworkUserInvoiceIssuingBasisModel'
+        Type 'Ozds.Business.Models.Composite.NetworkUserInvoiceBasisModel'
       </Metadata>
       <Value>
-        Invoice issuing basis
+        Network user invoice basis
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -1891,8 +1913,8 @@
         ~CalculationItemBasisModel.Aggregates.ActiveEnergy_Wh
         NetworkUserCalculationBasisModel.Aggregates.ActiveEnergy_Wh
         ~NetworkUserCalculationBasisModel.Aggregates.ActiveEnergy_Wh
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.ActiveEnergy_Wh
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.ActiveEnergy_Wh
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.ActiveEnergy_Wh
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.ActiveEnergy_Wh
         EnergyCardReportBasisModel.MinAggregate.ActiveEnergy_Wh
         EnergyCardReportBasisModel.MaxAggregate.ActiveEnergy_Wh
         ~EnergyCardReportBasisModel.MinAggregate.ActiveEnergy_Wh
@@ -2210,12 +2232,12 @@
         NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT0_kWh
         ReportBasisModel.Catalogue.Obis.ActiveEnergyTotalImportT0_kWh
         ~ReportBasisModel.Catalogue.Obis.ActiveEnergyTotalImportT0_kWh
         EnergyCardReportBasisModel.Catalogue.Obis.ActiveEnergyTotalImportT0_kWh
@@ -2375,12 +2397,12 @@
         NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT1_kWh
         ReportBasisModel.Catalogue.Obis.ActiveEnergyTotalImportT1_kWh
         ~ReportBasisModel.Catalogue.Obis.ActiveEnergyTotalImportT1_kWh
         EnergyCardReportBasisModel.Catalogue.Obis.ActiveEnergyTotalImportT1_kWh
@@ -2525,10 +2547,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.ActiveEnergyTotalImportT1Price_EUR
         NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.ActiveEnergyTotalImportT1Price_EUR
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.ActiveEnergyTotalImportT1Price_EUR
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.ActiveEnergyTotalImportT1Price_EUR
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.ActiveEnergyTotalImportT1Price_EUR
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.ActiveEnergyTotalImportT1Price_EUR
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.ActiveEnergyTotalImportT1Price_EUR
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.ActiveEnergyTotalImportT1Price_EUR
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.ActiveEnergyTotalImportT1Price_EUR
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.ActiveEnergyTotalImportT1Price_EUR
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.ActiveEnergyTotalImportT1Price_EUR
         StatefulNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.ActiveEnergyTotalImportT1Price_EUR
         ~StatefulNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.ActiveEnergyTotalImportT1Price_EUR
         NetworkUserCalculationModel.ArchivedSupplyRegulatoryCatalogue.ActiveEnergyTotalImportT1Price_EUR
@@ -2613,12 +2635,12 @@
         NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActiveEnergyTotalImportT2_kWh
         ReportBasisModel.Catalogue.Obis.ActiveEnergyTotalImportT2_kWh
         ~ReportBasisModel.Catalogue.Obis.ActiveEnergyTotalImportT2_kWh
         EnergyCardReportBasisModel.Catalogue.Obis.ActiveEnergyTotalImportT2_kWh
@@ -2762,10 +2784,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.ActiveEnergyTotalImportT2Price_EUR
         NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.ActiveEnergyTotalImportT2Price_EUR
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.ActiveEnergyTotalImportT2Price_EUR
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.ActiveEnergyTotalImportT2Price_EUR
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.ActiveEnergyTotalImportT2Price_EUR
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.ActiveEnergyTotalImportT2Price_EUR
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.ActiveEnergyTotalImportT2Price_EUR
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.ActiveEnergyTotalImportT2Price_EUR
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.ActiveEnergyTotalImportT2Price_EUR
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.ActiveEnergyTotalImportT2Price_EUR
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.ActiveEnergyTotalImportT2Price_EUR
         StatefulNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.ActiveEnergyTotalImportT2Price_EUR
         ~StatefulNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.ActiveEnergyTotalImportT2Price_EUR
         NetworkUserCalculationModel.ArchivedSupplyRegulatoryCatalogue.ActiveEnergyTotalImportT2Price_EUR
@@ -2974,8 +2996,8 @@
         ~CalculationItemBasisModel.Aggregates.ActivePower_W
         NetworkUserCalculationBasisModel.Aggregates.ActivePower_W
         ~NetworkUserCalculationBasisModel.Aggregates.ActivePower_W
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.ActivePower_W
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.ActivePower_W
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.ActivePower_W
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.ActivePower_W
         EnergyCardReportBasisModel.MinAggregate.ActivePower_W
         EnergyCardReportBasisModel.MaxAggregate.ActivePower_W
         ~EnergyCardReportBasisModel.MinAggregate.ActivePower_W
@@ -3199,12 +3221,12 @@
         NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Obis.ActivePowerTotalImportT1_kW
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.Obis.ActivePowerTotalImportT1_kW
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Obis.ActivePowerTotalImportT1_kW
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Obis.ActivePowerTotalImportT1_kW
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActivePowerTotalImportT1_kW
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActivePowerTotalImportT1_kW
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Obis.ActivePowerTotalImportT1_kW
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActivePowerTotalImportT1_kW
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActivePowerTotalImportT1_kW
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Obis.ActivePowerTotalImportT1_kW
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActivePowerTotalImportT1_kW
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActivePowerTotalImportT1_kW
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Obis.ActivePowerTotalImportT1_kW
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ActivePowerTotalImportT1_kW
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ActivePowerTotalImportT1_kW
         ReportBasisModel.Catalogue.Obis.ActivePowerTotalImportT1_kW
         ~ReportBasisModel.Catalogue.Obis.ActivePowerTotalImportT1_kW
         EnergyCardReportBasisModel.Catalogue.Obis.ActivePowerTotalImportT1_kW
@@ -3346,8 +3368,8 @@
 
         Property 'Aggregates' of type 'Ozds.Business.Models.Composite.NetworkUserCalculationBasisModel' with overrides:
         ~NetworkUserCalculationBasisModel.Aggregates
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates
 
         Property 'Aggregates' of type 'Ozds.Business.Models.Composite.LoadCurveReportBasisModel' with overrides:
         ~LoadCurveReportBasisModel.Aggregates
@@ -3394,6 +3416,8 @@
         Property 'All' of type 'Ozds.Business.Models.Enums.TopicModel' with overrides:
         MessengerNotificationModel.Topics.All
         ~MessengerNotificationModel.Topics.All
+        MeterNotificationModel.Topics.All
+        ~MeterNotificationModel.Topics.All
         NetworkUserInvoiceNotificationModel.Topics.All
         ~NetworkUserInvoiceNotificationModel.Topics.All
         RepresentativeModel.Topics.All
@@ -3447,10 +3471,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedLocation.AltiBizSubProjectCode
         NetworkUserCalculationBasisModel.Location.AltiBizSubProjectCode
         ~NetworkUserCalculationBasisModel.Location.AltiBizSubProjectCode
-        NetworkUserInvoiceIssuingBasisModel.Location.AltiBizSubProjectCode
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.AltiBizSubProjectCode
-        ~NetworkUserInvoiceIssuingBasisModel.Location.AltiBizSubProjectCode
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.AltiBizSubProjectCode
+        NetworkUserInvoiceBasisModel.Location.AltiBizSubProjectCode
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.AltiBizSubProjectCode
+        ~NetworkUserInvoiceBasisModel.Location.AltiBizSubProjectCode
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.AltiBizSubProjectCode
         ReportBasisModel.Location.AltiBizSubProjectCode
         ~ReportBasisModel.Location.AltiBizSubProjectCode
         EnergyCardReportBasisModel.Location.AltiBizSubProjectCode
@@ -3480,10 +3504,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedNetworkUser.AltiBizSubProjectCode
         NetworkUserCalculationBasisModel.NetworkUser.AltiBizSubProjectCode
         ~NetworkUserCalculationBasisModel.NetworkUser.AltiBizSubProjectCode
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.AltiBizSubProjectCode
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.AltiBizSubProjectCode
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.AltiBizSubProjectCode
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.AltiBizSubProjectCode
+        NetworkUserInvoiceBasisModel.NetworkUser.AltiBizSubProjectCode
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.AltiBizSubProjectCode
+        ~NetworkUserInvoiceBasisModel.NetworkUser.AltiBizSubProjectCode
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.AltiBizSubProjectCode
         NetworkUserWithRepresentativesModel.NetworkUser.AltiBizSubProjectCode
         ~NetworkUserWithRepresentativesModel.NetworkUser.AltiBizSubProjectCode
         ReportBasisModel.NetworkUser.AltiBizSubProjectCode
@@ -4149,8 +4173,8 @@
         ~CalculationItemBasisModel.Aggregates.ApparentEnergy_VAh
         NetworkUserCalculationBasisModel.Aggregates.ApparentEnergy_VAh
         ~NetworkUserCalculationBasisModel.Aggregates.ApparentEnergy_VAh
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.ApparentEnergy_VAh
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.ApparentEnergy_VAh
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.ApparentEnergy_VAh
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.ApparentEnergy_VAh
         EnergyCardReportBasisModel.MinAggregate.ApparentEnergy_VAh
         EnergyCardReportBasisModel.MaxAggregate.ApparentEnergy_VAh
         ~EnergyCardReportBasisModel.MinAggregate.ApparentEnergy_VAh
@@ -4260,8 +4284,8 @@
         ~CalculationItemBasisModel.Aggregates.ApparentPower_VA
         NetworkUserCalculationBasisModel.Aggregates.ApparentPower_VA
         ~NetworkUserCalculationBasisModel.Aggregates.ApparentPower_VA
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.ApparentPower_VA
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.ApparentPower_VA
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.ApparentPower_VA
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.ApparentPower_VA
         EnergyCardReportBasisModel.MinAggregate.ApparentPower_VA
         EnergyCardReportBasisModel.MaxAggregate.ApparentPower_VA
         ~EnergyCardReportBasisModel.MinAggregate.ApparentPower_VA
@@ -4571,10 +4595,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedNetworkUser.AutomaticallyApproveInvoices
         NetworkUserCalculationBasisModel.NetworkUser.AutomaticallyApproveInvoices
         ~NetworkUserCalculationBasisModel.NetworkUser.AutomaticallyApproveInvoices
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.AutomaticallyApproveInvoices
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.AutomaticallyApproveInvoices
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.AutomaticallyApproveInvoices
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.AutomaticallyApproveInvoices
+        NetworkUserInvoiceBasisModel.NetworkUser.AutomaticallyApproveInvoices
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.AutomaticallyApproveInvoices
+        ~NetworkUserInvoiceBasisModel.NetworkUser.AutomaticallyApproveInvoices
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.AutomaticallyApproveInvoices
         NetworkUserWithRepresentativesModel.NetworkUser.AutomaticallyApproveInvoices
         ~NetworkUserWithRepresentativesModel.NetworkUser.AutomaticallyApproveInvoices
         ReportBasisModel.NetworkUser.AutomaticallyApproveInvoices
@@ -4855,10 +4879,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedLocation.BlueLowNetworkUserCatalogueId
         NetworkUserCalculationBasisModel.Location.BlueLowNetworkUserCatalogueId
         ~NetworkUserCalculationBasisModel.Location.BlueLowNetworkUserCatalogueId
-        NetworkUserInvoiceIssuingBasisModel.Location.BlueLowNetworkUserCatalogueId
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.BlueLowNetworkUserCatalogueId
-        ~NetworkUserInvoiceIssuingBasisModel.Location.BlueLowNetworkUserCatalogueId
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.BlueLowNetworkUserCatalogueId
+        NetworkUserInvoiceBasisModel.Location.BlueLowNetworkUserCatalogueId
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.BlueLowNetworkUserCatalogueId
+        ~NetworkUserInvoiceBasisModel.Location.BlueLowNetworkUserCatalogueId
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.BlueLowNetworkUserCatalogueId
         ReportBasisModel.Location.BlueLowNetworkUserCatalogueId
         ~ReportBasisModel.Location.BlueLowNetworkUserCatalogueId
         EnergyCardReportBasisModel.Location.BlueLowNetworkUserCatalogueId
@@ -4926,10 +4950,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.BusinessUsageFeePrice_EUR
         NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.BusinessUsageFeePrice_EUR
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.BusinessUsageFeePrice_EUR
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.BusinessUsageFeePrice_EUR
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.BusinessUsageFeePrice_EUR
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.BusinessUsageFeePrice_EUR
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.BusinessUsageFeePrice_EUR
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.BusinessUsageFeePrice_EUR
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.BusinessUsageFeePrice_EUR
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.BusinessUsageFeePrice_EUR
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.BusinessUsageFeePrice_EUR
         StatefulNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.BusinessUsageFeePrice_EUR
         ~StatefulNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.BusinessUsageFeePrice_EUR
         NetworkUserCalculationModel.ArchivedSupplyRegulatoryCatalogue.BusinessUsageFeePrice_EUR
@@ -5013,8 +5037,8 @@
         ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedNetworkUserMeasurementLocation.CalculationRemark
         NetworkUserCalculationBasisModel.MeasurementLocation.CalculationRemark
         ~NetworkUserCalculationBasisModel.MeasurementLocation.CalculationRemark
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.CalculationRemark
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.CalculationRemark
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.CalculationRemark
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.CalculationRemark
         ReportBasisModel.MeasurementLocation.CalculationRemark
         ~ReportBasisModel.MeasurementLocation.CalculationRemark
         EnergyCardReportBasisModel.MeasurementLocation.CalculationRemark
@@ -5080,8 +5104,8 @@
         ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.Capabilities
         NetworkUserCalculationBasisModel.Meter.Capabilities
         ~NetworkUserCalculationBasisModel.Meter.Capabilities
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.Capabilities
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.Capabilities
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.Capabilities
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.Capabilities
         ReportBasisModel.Meter.Capabilities
         ~ReportBasisModel.Meter.Capabilities
         EnergyCardReportBasisModel.Meter.Capabilities
@@ -5262,14 +5286,14 @@
         NetworkUserCalculationBasisModel.NetworkUser.LegalPerson.City
         ~NetworkUserCalculationBasisModel.Location.LegalPerson.City
         ~NetworkUserCalculationBasisModel.NetworkUser.LegalPerson.City
-        NetworkUserInvoiceIssuingBasisModel.Location.LegalPerson.City
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.LegalPerson.City
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LegalPerson.City
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.City
-        ~NetworkUserInvoiceIssuingBasisModel.Location.LegalPerson.City
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.LegalPerson.City
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LegalPerson.City
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.City
+        NetworkUserInvoiceBasisModel.Location.LegalPerson.City
+        NetworkUserInvoiceBasisModel.NetworkUser.LegalPerson.City
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LegalPerson.City
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.City
+        ~NetworkUserInvoiceBasisModel.Location.LegalPerson.City
+        ~NetworkUserInvoiceBasisModel.NetworkUser.LegalPerson.City
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LegalPerson.City
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.City
         NetworkUserWithRepresentativesModel.NetworkUser.LegalPerson.City
         ~NetworkUserWithRepresentativesModel.NetworkUser.LegalPerson.City
         ReportBasisModel.Location.LegalPerson.City
@@ -5444,8 +5468,8 @@
         ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.ConnectionPower_W
         NetworkUserCalculationBasisModel.Meter.ConnectionPower_W
         ~NetworkUserCalculationBasisModel.Meter.ConnectionPower_W
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.ConnectionPower_W
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.ConnectionPower_W
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.ConnectionPower_W
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.ConnectionPower_W
         ReportBasisModel.Meter.ConnectionPower_W
         ~ReportBasisModel.Meter.ConnectionPower_W
         EnergyCardReportBasisModel.Meter.ConnectionPower_W
@@ -5524,6 +5548,8 @@
         Property 'Content' of type 'Ozds.Business.Models.Abstractions.INotification' with overrides:
         MessengerNotificationModel.Content
         ~MessengerNotificationModel.Content
+        MeterNotificationModel.Content
+        ~MeterNotificationModel.Content
         NetworkUserInvoiceNotificationModel.Content
         ~NetworkUserInvoiceNotificationModel.Content
         SystemNotificationModel.Content
@@ -5585,8 +5611,8 @@
         ~CalculationItemBasisModel.Aggregates.Count
         NetworkUserCalculationBasisModel.Aggregates.Count
         ~NetworkUserCalculationBasisModel.Aggregates.Count
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Count
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Count
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Count
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Count
         EnergyCardReportBasisModel.MinAggregate.Count
         EnergyCardReportBasisModel.MaxAggregate.Count
         ~EnergyCardReportBasisModel.MinAggregate.Count
@@ -5744,24 +5770,24 @@
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.CreatedById
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.CreatedById
         ~NetworkUserCalculationBasisModel.Meter.CreatedById
-        NetworkUserInvoiceIssuingBasisModel.Location.CreatedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.CreatedById
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.CreatedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.CreatedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.CreatedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.CreatedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.CreatedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.CreatedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.CreatedById
-        ~NetworkUserInvoiceIssuingBasisModel.Location.CreatedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.CreatedById
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.CreatedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.CreatedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.CreatedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.CreatedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.CreatedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.CreatedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.CreatedById
+        NetworkUserInvoiceBasisModel.Location.CreatedById
+        NetworkUserInvoiceBasisModel.NetworkUser.CreatedById
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.CreatedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.CreatedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.CreatedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.CreatedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.CreatedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.CreatedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.CreatedById
+        ~NetworkUserInvoiceBasisModel.Location.CreatedById
+        ~NetworkUserInvoiceBasisModel.NetworkUser.CreatedById
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.CreatedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.CreatedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.CreatedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.CreatedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.CreatedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.CreatedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.CreatedById
         NetworkUserWithRepresentativesModel.NetworkUser.CreatedById
         NetworkUserWithRepresentativesModel.Representatives.CreatedById
         ~NetworkUserWithRepresentativesModel.NetworkUser.CreatedById
@@ -5986,24 +6012,24 @@
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.CreatedOn
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.CreatedOn
         ~NetworkUserCalculationBasisModel.Meter.CreatedOn
-        NetworkUserInvoiceIssuingBasisModel.Location.CreatedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.CreatedOn
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.CreatedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.CreatedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.CreatedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.CreatedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.CreatedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.CreatedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.CreatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.Location.CreatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.CreatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.CreatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.CreatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.CreatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.CreatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.CreatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.CreatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.CreatedOn
+        NetworkUserInvoiceBasisModel.Location.CreatedOn
+        NetworkUserInvoiceBasisModel.NetworkUser.CreatedOn
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.CreatedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.CreatedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.CreatedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.CreatedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.CreatedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.CreatedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.CreatedOn
+        ~NetworkUserInvoiceBasisModel.Location.CreatedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUser.CreatedOn
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.CreatedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.CreatedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.CreatedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.CreatedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.CreatedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.CreatedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.CreatedOn
         NetworkUserWithRepresentativesModel.NetworkUser.CreatedOn
         NetworkUserWithRepresentativesModel.Representatives.CreatedOn
         ~NetworkUserWithRepresentativesModel.NetworkUser.CreatedOn
@@ -6234,8 +6260,8 @@
         ~CalculationItemBasisModel.Aggregates.Current_A
         NetworkUserCalculationBasisModel.Aggregates.Current_A
         ~NetworkUserCalculationBasisModel.Aggregates.Current_A
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Current_A
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Current_A
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Current_A
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Current_A
         EnergyCardReportBasisModel.MinAggregate.Current_A
         EnergyCardReportBasisModel.MaxAggregate.Current_A
         ~EnergyCardReportBasisModel.MinAggregate.Current_A
@@ -6417,6 +6443,41 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        DateFrom
+      </Key>
+      <Metadata>
+        Property 'DateFrom' of type 'Ozds.Business.Models.Complex.DateTimeOffsetRangeModel' with overrides:
+        ~DateTimeOffsetRangeModel.DateFrom
+      </Metadata>
+      <Value>
+        Date from
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        DateTimeOffsetRange
+      </Key>
+      <Metadata>
+        Type 'Ozds.Business.Models.Complex.DateTimeOffsetRangeModel'
+      </Metadata>
+      <Value>
+        Date time offset range
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        DateTo
+      </Key>
+      <Metadata>
+        Property 'DateTo' of type 'Ozds.Business.Models.Complex.DateTimeOffsetRangeModel' with overrides:
+        ~DateTimeOffsetRangeModel.DateTo
+      </Metadata>
+      <Value>
+        To date
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Day
       </Key>
       <Metadata>
@@ -6441,8 +6502,8 @@
         ~CalculationItemBasisModel.Aggregates.Interval.Day
         NetworkUserCalculationBasisModel.Aggregates.Interval.Day
         ~NetworkUserCalculationBasisModel.Aggregates.Interval.Day
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Interval.Day
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Interval.Day
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Interval.Day
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Interval.Day
         EnergyCardReportBasisModel.MinAggregate.Interval.Day
         EnergyCardReportBasisModel.MaxAggregate.Interval.Day
         ~EnergyCardReportBasisModel.MinAggregate.Interval.Day
@@ -6459,21 +6520,63 @@
         ~IAggregate.Interval.Day
 
         Property 'Day' of type 'Ozds.Business.Models.Enums.DurationModel' with overrides:
+        AbbB2xMeterModel.MaxInactivityPeriod.Duration.Day
+        ~AbbB2xMeterModel.MaxInactivityPeriod.Duration.Day
+        BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Day
+        ~BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Day
         PidgeonMessengerModel.MaxInactivityPeriod.Duration.Day
         PidgeonMessengerModel.PushDelayPeriod.Duration.Day
         ~PidgeonMessengerModel.MaxInactivityPeriod.Duration.Day
         ~PidgeonMessengerModel.PushDelayPeriod.Duration.Day
+        RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Day
+        ~RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Day
+        SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration.Day
+        ~SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration.Day
+        WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Day
+        ~WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Day
+        WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Day
+        ~WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Day
         ~DurationModel.Day
+        AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration.Day
+        ~AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration.Day
+        CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration.Day
+        ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration.Day
+        NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration.Day
+        ~NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration.Day
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration.Day
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration.Day
+        ReportBasisModel.Meter.MaxInactivityPeriod.Duration.Day
+        ~ReportBasisModel.Meter.MaxInactivityPeriod.Duration.Day
+        EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration.Day
+        ~EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration.Day
+        AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration.Day
+        ~AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration.Day
+        LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration.Day
+        ~LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration.Day
         PeriodModel.Duration.Day
         ~PeriodModel.Duration.Day
         MessengerModel.MaxInactivityPeriod.Duration.Day
         MessengerModel.PushDelayPeriod.Duration.Day
         ~MessengerModel.MaxInactivityPeriod.Duration.Day
         ~MessengerModel.PushDelayPeriod.Duration.Day
+        MeterModel.MaxInactivityPeriod.Duration.Day
+        ~MeterModel.MaxInactivityPeriod.Duration.Day
+        NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Day
+        ~NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Day
+        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration.Day
+        ~NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration.Day
         IMessenger.MaxInactivityPeriod.Duration.Day
         IMessenger.PushDelayPeriod.Duration.Day
         ~IMessenger.MaxInactivityPeriod.Duration.Day
         ~IMessenger.PushDelayPeriod.Duration.Day
+        IMeter.MaxInactivityPeriod.Duration.Day
+        ~IMeter.MaxInactivityPeriod.Duration.Day
+        INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration.Day
+        ~INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration.Day
+        MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration.Day
+        ~MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration.Day
+        MeterAnalysis.Meter.MaxInactivityPeriod.Duration.Day
+        ~MeterAnalysis.Meter.MaxInactivityPeriod.Duration.Day
 
         Property 'Day' of type 'Ozds.Business.Models.Enums.ResolutionModel' with overrides:
         ~ResolutionModel.Day
@@ -6629,24 +6732,24 @@
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.DeletedById
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.DeletedById
         ~NetworkUserCalculationBasisModel.Meter.DeletedById
-        NetworkUserInvoiceIssuingBasisModel.Location.DeletedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.DeletedById
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.DeletedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.DeletedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.DeletedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.DeletedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.DeletedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.DeletedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.DeletedById
-        ~NetworkUserInvoiceIssuingBasisModel.Location.DeletedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.DeletedById
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.DeletedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.DeletedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.DeletedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.DeletedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.DeletedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.DeletedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.DeletedById
+        NetworkUserInvoiceBasisModel.Location.DeletedById
+        NetworkUserInvoiceBasisModel.NetworkUser.DeletedById
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.DeletedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.DeletedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.DeletedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.DeletedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.DeletedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.DeletedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.DeletedById
+        ~NetworkUserInvoiceBasisModel.Location.DeletedById
+        ~NetworkUserInvoiceBasisModel.NetworkUser.DeletedById
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.DeletedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.DeletedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.DeletedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.DeletedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.DeletedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.DeletedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.DeletedById
         NetworkUserWithRepresentativesModel.NetworkUser.DeletedById
         NetworkUserWithRepresentativesModel.Representatives.DeletedById
         ~NetworkUserWithRepresentativesModel.NetworkUser.DeletedById
@@ -6871,24 +6974,24 @@
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.DeletedOn
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.DeletedOn
         ~NetworkUserCalculationBasisModel.Meter.DeletedOn
-        NetworkUserInvoiceIssuingBasisModel.Location.DeletedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.DeletedOn
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.DeletedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.DeletedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.DeletedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.DeletedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.DeletedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.DeletedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.DeletedOn
-        ~NetworkUserInvoiceIssuingBasisModel.Location.DeletedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.DeletedOn
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.DeletedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.DeletedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.DeletedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.DeletedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.DeletedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.DeletedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.DeletedOn
+        NetworkUserInvoiceBasisModel.Location.DeletedOn
+        NetworkUserInvoiceBasisModel.NetworkUser.DeletedOn
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.DeletedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.DeletedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.DeletedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.DeletedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.DeletedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.DeletedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.DeletedOn
+        ~NetworkUserInvoiceBasisModel.Location.DeletedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUser.DeletedOn
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.DeletedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.DeletedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.DeletedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.DeletedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.DeletedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.DeletedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.DeletedOn
         NetworkUserWithRepresentativesModel.NetworkUser.DeletedOn
         NetworkUserWithRepresentativesModel.Representatives.DeletedOn
         ~NetworkUserWithRepresentativesModel.NetworkUser.DeletedOn
@@ -7041,8 +7144,8 @@
         ~CalculationItemBasisModel.Aggregates.DerivedActivePower_W
         NetworkUserCalculationBasisModel.Aggregates.DerivedActivePower_W
         ~NetworkUserCalculationBasisModel.Aggregates.DerivedActivePower_W
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.DerivedActivePower_W
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.DerivedActivePower_W
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.DerivedActivePower_W
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.DerivedActivePower_W
         EnergyCardReportBasisModel.MinAggregate.DerivedActivePower_W
         EnergyCardReportBasisModel.MaxAggregate.DerivedActivePower_W
         ~EnergyCardReportBasisModel.MinAggregate.DerivedActivePower_W
@@ -7229,8 +7332,8 @@
         ~CalculationItemBasisModel.Aggregates.DerivedApparentPower_VA
         NetworkUserCalculationBasisModel.Aggregates.DerivedApparentPower_VA
         ~NetworkUserCalculationBasisModel.Aggregates.DerivedApparentPower_VA
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.DerivedApparentPower_VA
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.DerivedApparentPower_VA
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.DerivedApparentPower_VA
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.DerivedApparentPower_VA
         EnergyCardReportBasisModel.MinAggregate.DerivedApparentPower_VA
         EnergyCardReportBasisModel.MaxAggregate.DerivedApparentPower_VA
         ~EnergyCardReportBasisModel.MinAggregate.DerivedApparentPower_VA
@@ -7265,8 +7368,8 @@
         ~CalculationItemBasisModel.Aggregates.DerivedReactivePower_VAR
         NetworkUserCalculationBasisModel.Aggregates.DerivedReactivePower_VAR
         ~NetworkUserCalculationBasisModel.Aggregates.DerivedReactivePower_VAR
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.DerivedReactivePower_VAR
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.DerivedReactivePower_VAR
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.DerivedReactivePower_VAR
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.DerivedReactivePower_VAR
         EnergyCardReportBasisModel.MinAggregate.DerivedReactivePower_VAR
         EnergyCardReportBasisModel.MaxAggregate.DerivedReactivePower_VAR
         ~EnergyCardReportBasisModel.MinAggregate.DerivedReactivePower_VAR
@@ -7494,19 +7597,61 @@
       </Key>
       <Metadata>
         Property 'Duration' of type 'Ozds.Business.Models.Complex.PeriodModel' with overrides:
+        AbbB2xMeterModel.MaxInactivityPeriod.Duration
+        ~AbbB2xMeterModel.MaxInactivityPeriod.Duration
+        BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration
+        ~BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration
         PidgeonMessengerModel.MaxInactivityPeriod.Duration
         PidgeonMessengerModel.PushDelayPeriod.Duration
         ~PidgeonMessengerModel.MaxInactivityPeriod.Duration
         ~PidgeonMessengerModel.PushDelayPeriod.Duration
+        RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration
+        ~RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration
+        SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration
+        ~SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration
+        WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration
+        ~WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration
+        WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration
+        ~WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration
+        AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration
+        ~AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration
+        CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration
+        ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration
+        NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration
+        ~NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration
+        ReportBasisModel.Meter.MaxInactivityPeriod.Duration
+        ~ReportBasisModel.Meter.MaxInactivityPeriod.Duration
+        EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration
+        ~EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration
+        AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration
+        ~AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration
+        LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration
+        ~LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration
         ~PeriodModel.Duration
         MessengerModel.MaxInactivityPeriod.Duration
         MessengerModel.PushDelayPeriod.Duration
         ~MessengerModel.MaxInactivityPeriod.Duration
         ~MessengerModel.PushDelayPeriod.Duration
+        MeterModel.MaxInactivityPeriod.Duration
+        ~MeterModel.MaxInactivityPeriod.Duration
+        NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration
+        ~NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration
+        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration
+        ~NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration
         IMessenger.MaxInactivityPeriod.Duration
         IMessenger.PushDelayPeriod.Duration
         ~IMessenger.MaxInactivityPeriod.Duration
         ~IMessenger.PushDelayPeriod.Duration
+        IMeter.MaxInactivityPeriod.Duration
+        ~IMeter.MaxInactivityPeriod.Duration
+        INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration
+        ~INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration
+        MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration
+        ~MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration
+        MeterAnalysis.Meter.MaxInactivityPeriod.Duration
+        ~MeterAnalysis.Meter.MaxInactivityPeriod.Duration
 
         Type 'Ozds.Business.Models.Enums.DurationModel'
       </Metadata>
@@ -7624,14 +7769,14 @@
         NetworkUserCalculationBasisModel.NetworkUser.LegalPerson.Email
         ~NetworkUserCalculationBasisModel.Location.LegalPerson.Email
         ~NetworkUserCalculationBasisModel.NetworkUser.LegalPerson.Email
-        NetworkUserInvoiceIssuingBasisModel.Location.LegalPerson.Email
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.LegalPerson.Email
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LegalPerson.Email
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.Email
-        ~NetworkUserInvoiceIssuingBasisModel.Location.LegalPerson.Email
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.LegalPerson.Email
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LegalPerson.Email
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.Email
+        NetworkUserInvoiceBasisModel.Location.LegalPerson.Email
+        NetworkUserInvoiceBasisModel.NetworkUser.LegalPerson.Email
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LegalPerson.Email
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.Email
+        ~NetworkUserInvoiceBasisModel.Location.LegalPerson.Email
+        ~NetworkUserInvoiceBasisModel.NetworkUser.LegalPerson.Email
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LegalPerson.Email
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.Email
         NetworkUserWithRepresentativesModel.NetworkUser.LegalPerson.Email
         ~NetworkUserWithRepresentativesModel.NetworkUser.LegalPerson.Email
         ReportBasisModel.Location.LegalPerson.Email
@@ -7839,6 +7984,8 @@
         Property 'Error' of type 'Ozds.Business.Models.Enums.TopicModel' with overrides:
         MessengerNotificationModel.Topics.Error
         ~MessengerNotificationModel.Topics.Error
+        MeterNotificationModel.Topics.Error
+        ~MeterNotificationModel.Topics.Error
         NetworkUserInvoiceNotificationModel.Topics.Error
         ~NetworkUserInvoiceNotificationModel.Topics.Error
         RepresentativeModel.Topics.Error
@@ -7897,6 +8044,8 @@
         Property 'EventId' of type 'Ozds.Business.Models.Abstractions.INotification' with overrides:
         MessengerNotificationModel.EventId
         ~MessengerNotificationModel.EventId
+        MeterNotificationModel.EventId
+        ~MeterNotificationModel.EventId
         NetworkUserInvoiceNotificationModel.EventId
         ~NetworkUserInvoiceNotificationModel.EventId
         SystemNotificationModel.EventId
@@ -8175,11 +8324,11 @@
 
         Property 'FromDate' of type 'Ozds.Business.Models.Composite.NetworkUserCalculationBasisModel' with overrides:
         ~NetworkUserCalculationBasisModel.FromDate
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.FromDate
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.FromDate
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.FromDate
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.FromDate
 
-        Property 'FromDate' of type 'Ozds.Business.Models.Composite.NetworkUserInvoiceIssuingBasisModel' with overrides:
-        ~NetworkUserInvoiceIssuingBasisModel.FromDate
+        Property 'FromDate' of type 'Ozds.Business.Models.Composite.NetworkUserInvoiceBasisModel' with overrides:
+        ~NetworkUserInvoiceBasisModel.FromDate
       </Metadata>
       <Value>
         From date
@@ -8224,21 +8373,63 @@
       </Key>
       <Metadata>
         Property 'Hour' of type 'Ozds.Business.Models.Enums.DurationModel' with overrides:
+        AbbB2xMeterModel.MaxInactivityPeriod.Duration.Hour
+        ~AbbB2xMeterModel.MaxInactivityPeriod.Duration.Hour
+        BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
+        ~BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
         PidgeonMessengerModel.MaxInactivityPeriod.Duration.Hour
         PidgeonMessengerModel.PushDelayPeriod.Duration.Hour
         ~PidgeonMessengerModel.MaxInactivityPeriod.Duration.Hour
         ~PidgeonMessengerModel.PushDelayPeriod.Duration.Hour
+        RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
+        ~RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
+        SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration.Hour
+        ~SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration.Hour
+        WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
+        ~WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
+        WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
+        ~WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
         ~DurationModel.Hour
+        AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration.Hour
+        ~AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration.Hour
+        CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
+        ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
+        NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration.Hour
+        ~NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration.Hour
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration.Hour
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration.Hour
+        ReportBasisModel.Meter.MaxInactivityPeriod.Duration.Hour
+        ~ReportBasisModel.Meter.MaxInactivityPeriod.Duration.Hour
+        EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration.Hour
+        ~EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration.Hour
+        AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration.Hour
+        ~AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration.Hour
+        LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration.Hour
+        ~LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration.Hour
         PeriodModel.Duration.Hour
         ~PeriodModel.Duration.Hour
         MessengerModel.MaxInactivityPeriod.Duration.Hour
         MessengerModel.PushDelayPeriod.Duration.Hour
         ~MessengerModel.MaxInactivityPeriod.Duration.Hour
         ~MessengerModel.PushDelayPeriod.Duration.Hour
+        MeterModel.MaxInactivityPeriod.Duration.Hour
+        ~MeterModel.MaxInactivityPeriod.Duration.Hour
+        NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
+        ~NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
+        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
+        ~NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
         IMessenger.MaxInactivityPeriod.Duration.Hour
         IMessenger.PushDelayPeriod.Duration.Hour
         ~IMessenger.MaxInactivityPeriod.Duration.Hour
         ~IMessenger.PushDelayPeriod.Duration.Hour
+        IMeter.MaxInactivityPeriod.Duration.Hour
+        ~IMeter.MaxInactivityPeriod.Duration.Hour
+        INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
+        ~INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration.Hour
+        MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration.Hour
+        ~MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration.Hour
+        MeterAnalysis.Meter.MaxInactivityPeriod.Duration.Hour
+        ~MeterAnalysis.Meter.MaxInactivityPeriod.Duration.Hour
 
         Property 'Hour' of type 'Ozds.Business.Models.Enums.ResolutionModel' with overrides:
         ~ResolutionModel.Hour
@@ -8313,6 +8504,8 @@
         ~MessengerEventModel.Id
         MessengerNotificationModel.Id
         ~MessengerNotificationModel.Id
+        MeterNotificationModel.Id
+        ~MeterNotificationModel.Id
         NetworkUserInvoiceModel.ArchivedLocation.Id
         NetworkUserInvoiceModel.ArchivedNetworkUser.Id
         NetworkUserInvoiceModel.ArchivedRegulatoryCatalogue.Id
@@ -8427,24 +8620,24 @@
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.Id
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Id
         ~NetworkUserCalculationBasisModel.Meter.Id
-        NetworkUserInvoiceIssuingBasisModel.Location.Id
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.Id
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Id
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.Id
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.Id
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.Id
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Id
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Id
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.Id
-        ~NetworkUserInvoiceIssuingBasisModel.Location.Id
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.Id
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Id
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.Id
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.Id
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.Id
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Id
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Id
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.Id
+        NetworkUserInvoiceBasisModel.Location.Id
+        NetworkUserInvoiceBasisModel.NetworkUser.Id
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Id
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.Id
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.Id
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.Id
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Id
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Id
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.Id
+        ~NetworkUserInvoiceBasisModel.Location.Id
+        ~NetworkUserInvoiceBasisModel.NetworkUser.Id
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Id
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.Id
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.Id
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.Id
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Id
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Id
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.Id
         NetworkUserWithRepresentativesModel.NetworkUser.Id
         NetworkUserWithRepresentativesModel.Representatives.Id
         ~NetworkUserWithRepresentativesModel.NetworkUser.Id
@@ -8710,8 +8903,8 @@
         ~CalculationItemBasisModel.Aggregates.Interval
         NetworkUserCalculationBasisModel.Aggregates.Interval
         ~NetworkUserCalculationBasisModel.Aggregates.Interval
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Interval
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Interval
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Interval
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Interval
         EnergyCardReportBasisModel.MinAggregate.Interval
         EnergyCardReportBasisModel.MaxAggregate.Interval
         ~EnergyCardReportBasisModel.MinAggregate.Interval
@@ -8740,6 +8933,8 @@
         Property 'InvalidPush' of type 'Ozds.Business.Models.Enums.TopicModel' with overrides:
         MessengerNotificationModel.Topics.InvalidPush
         ~MessengerNotificationModel.Topics.InvalidPush
+        MeterNotificationModel.Topics.InvalidPush
+        ~MeterNotificationModel.Topics.InvalidPush
         NetworkUserInvoiceNotificationModel.Topics.InvalidPush
         ~NetworkUserInvoiceNotificationModel.Topics.InvalidPush
         RepresentativeModel.Topics.InvalidPush
@@ -8842,10 +9037,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedNetworkUser.InvoiceRemark
         NetworkUserCalculationBasisModel.NetworkUser.InvoiceRemark
         ~NetworkUserCalculationBasisModel.NetworkUser.InvoiceRemark
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.InvoiceRemark
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.InvoiceRemark
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.InvoiceRemark
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.InvoiceRemark
+        NetworkUserInvoiceBasisModel.NetworkUser.InvoiceRemark
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.InvoiceRemark
+        ~NetworkUserInvoiceBasisModel.NetworkUser.InvoiceRemark
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.InvoiceRemark
         NetworkUserWithRepresentativesModel.NetworkUser.InvoiceRemark
         ~NetworkUserWithRepresentativesModel.NetworkUser.InvoiceRemark
         ReportBasisModel.NetworkUser.InvoiceRemark
@@ -9069,24 +9264,24 @@
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.IsDeleted
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.IsDeleted
         ~NetworkUserCalculationBasisModel.Meter.IsDeleted
-        NetworkUserInvoiceIssuingBasisModel.Location.IsDeleted
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.IsDeleted
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.IsDeleted
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.IsDeleted
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.IsDeleted
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.IsDeleted
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.IsDeleted
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.IsDeleted
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.IsDeleted
-        ~NetworkUserInvoiceIssuingBasisModel.Location.IsDeleted
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.IsDeleted
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.IsDeleted
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.IsDeleted
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.IsDeleted
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.IsDeleted
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.IsDeleted
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.IsDeleted
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.IsDeleted
+        NetworkUserInvoiceBasisModel.Location.IsDeleted
+        NetworkUserInvoiceBasisModel.NetworkUser.IsDeleted
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.IsDeleted
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.IsDeleted
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.IsDeleted
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.IsDeleted
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.IsDeleted
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.IsDeleted
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.IsDeleted
+        ~NetworkUserInvoiceBasisModel.Location.IsDeleted
+        ~NetworkUserInvoiceBasisModel.NetworkUser.IsDeleted
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.IsDeleted
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.IsDeleted
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.IsDeleted
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.IsDeleted
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.IsDeleted
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.IsDeleted
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.IsDeleted
         NetworkUserWithRepresentativesModel.NetworkUser.IsDeleted
         NetworkUserWithRepresentativesModel.Representatives.IsDeleted
         ~NetworkUserWithRepresentativesModel.NetworkUser.IsDeleted
@@ -9411,8 +9606,8 @@
         ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.Phases.L1
         NetworkUserCalculationBasisModel.Meter.Phases.L1
         ~NetworkUserCalculationBasisModel.Meter.Phases.L1
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.Phases.L1
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.Phases.L1
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.Phases.L1
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.Phases.L1
         ReportBasisModel.Meter.Phases.L1
         ~ReportBasisModel.Meter.Phases.L1
         EnergyCardReportBasisModel.Meter.Phases.L1
@@ -9465,8 +9660,8 @@
         ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.Phases.L2
         NetworkUserCalculationBasisModel.Meter.Phases.L2
         ~NetworkUserCalculationBasisModel.Meter.Phases.L2
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.Phases.L2
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.Phases.L2
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.Phases.L2
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.Phases.L2
         ReportBasisModel.Meter.Phases.L2
         ~ReportBasisModel.Meter.Phases.L2
         EnergyCardReportBasisModel.Meter.Phases.L2
@@ -9519,8 +9714,8 @@
         ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.Phases.L3
         NetworkUserCalculationBasisModel.Meter.Phases.L3
         ~NetworkUserCalculationBasisModel.Meter.Phases.L3
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.Phases.L3
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.Phases.L3
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.Phases.L3
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.Phases.L3
         ReportBasisModel.Meter.Phases.L3
         ~ReportBasisModel.Meter.Phases.L3
         EnergyCardReportBasisModel.Meter.Phases.L3
@@ -9746,24 +9941,24 @@
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.LastUpdatedById
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.LastUpdatedById
         ~NetworkUserCalculationBasisModel.Meter.LastUpdatedById
-        NetworkUserInvoiceIssuingBasisModel.Location.LastUpdatedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.LastUpdatedById
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.LastUpdatedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LastUpdatedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LastUpdatedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.LastUpdatedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.LastUpdatedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.LastUpdatedById
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.LastUpdatedById
-        ~NetworkUserInvoiceIssuingBasisModel.Location.LastUpdatedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.LastUpdatedById
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.LastUpdatedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LastUpdatedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LastUpdatedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.LastUpdatedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.LastUpdatedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.LastUpdatedById
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.LastUpdatedById
+        NetworkUserInvoiceBasisModel.Location.LastUpdatedById
+        NetworkUserInvoiceBasisModel.NetworkUser.LastUpdatedById
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.LastUpdatedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LastUpdatedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LastUpdatedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.LastUpdatedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.LastUpdatedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.LastUpdatedById
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.LastUpdatedById
+        ~NetworkUserInvoiceBasisModel.Location.LastUpdatedById
+        ~NetworkUserInvoiceBasisModel.NetworkUser.LastUpdatedById
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.LastUpdatedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LastUpdatedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LastUpdatedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.LastUpdatedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.LastUpdatedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.LastUpdatedById
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.LastUpdatedById
         NetworkUserWithRepresentativesModel.NetworkUser.LastUpdatedById
         NetworkUserWithRepresentativesModel.Representatives.LastUpdatedById
         ~NetworkUserWithRepresentativesModel.NetworkUser.LastUpdatedById
@@ -9988,24 +10183,24 @@
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.LastUpdatedOn
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.LastUpdatedOn
         ~NetworkUserCalculationBasisModel.Meter.LastUpdatedOn
-        NetworkUserInvoiceIssuingBasisModel.Location.LastUpdatedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.LastUpdatedOn
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.LastUpdatedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LastUpdatedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LastUpdatedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.LastUpdatedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.LastUpdatedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.LastUpdatedOn
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.LastUpdatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.Location.LastUpdatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.LastUpdatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.LastUpdatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LastUpdatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LastUpdatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.LastUpdatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.LastUpdatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.LastUpdatedOn
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.LastUpdatedOn
+        NetworkUserInvoiceBasisModel.Location.LastUpdatedOn
+        NetworkUserInvoiceBasisModel.NetworkUser.LastUpdatedOn
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.LastUpdatedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LastUpdatedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LastUpdatedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.LastUpdatedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.LastUpdatedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.LastUpdatedOn
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.LastUpdatedOn
+        ~NetworkUserInvoiceBasisModel.Location.LastUpdatedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUser.LastUpdatedOn
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.LastUpdatedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LastUpdatedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LastUpdatedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.LastUpdatedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.LastUpdatedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.LastUpdatedOn
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.LastUpdatedOn
         NetworkUserWithRepresentativesModel.NetworkUser.LastUpdatedOn
         NetworkUserWithRepresentativesModel.Representatives.LastUpdatedOn
         ~NetworkUserWithRepresentativesModel.NetworkUser.LastUpdatedOn
@@ -10158,10 +10353,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedLocation.LegalPerson
         NetworkUserCalculationBasisModel.Location.LegalPerson
         ~NetworkUserCalculationBasisModel.Location.LegalPerson
-        NetworkUserInvoiceIssuingBasisModel.Location.LegalPerson
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LegalPerson
-        ~NetworkUserInvoiceIssuingBasisModel.Location.LegalPerson
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LegalPerson
+        NetworkUserInvoiceBasisModel.Location.LegalPerson
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LegalPerson
+        ~NetworkUserInvoiceBasisModel.Location.LegalPerson
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LegalPerson
         ReportBasisModel.Location.LegalPerson
         ~ReportBasisModel.Location.LegalPerson
         EnergyCardReportBasisModel.Location.LegalPerson
@@ -10191,10 +10386,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedNetworkUser.LegalPerson
         NetworkUserCalculationBasisModel.NetworkUser.LegalPerson
         ~NetworkUserCalculationBasisModel.NetworkUser.LegalPerson
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.LegalPerson
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.LegalPerson
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson
+        NetworkUserInvoiceBasisModel.NetworkUser.LegalPerson
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson
+        ~NetworkUserInvoiceBasisModel.NetworkUser.LegalPerson
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson
         NetworkUserWithRepresentativesModel.NetworkUser.LegalPerson
         ~NetworkUserWithRepresentativesModel.NetworkUser.LegalPerson
         ReportBasisModel.NetworkUser.LegalPerson
@@ -10448,10 +10643,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedNetworkUser.LocationId
         NetworkUserCalculationBasisModel.NetworkUser.LocationId
         ~NetworkUserCalculationBasisModel.NetworkUser.LocationId
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.LocationId
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LocationId
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.LocationId
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LocationId
+        NetworkUserInvoiceBasisModel.NetworkUser.LocationId
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LocationId
+        ~NetworkUserInvoiceBasisModel.NetworkUser.LocationId
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LocationId
         NetworkUserWithRepresentativesModel.NetworkUser.LocationId
         ~NetworkUserWithRepresentativesModel.NetworkUser.LocationId
         ReportBasisModel.NetworkUser.LocationId
@@ -10787,6 +10982,8 @@
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Measurements/Messengers/MessengerDetails.razor' line 12 column 24
         From file 'Ozds.Client/Components/Models/Implementations/Measurements/Messengers/MessengerEdit.razor' line 19 column 4
+        From file 'Ozds.Client/Components/Models/Implementations/Measurements/Meters/MeterDetails.razor' line 17 column 24
+        From file 'Ozds.Client/Components/Models/Implementations/Measurements/Meters/MeterEdit.razor' line 24 column 4
       </Metadata>
       <Value>
         Maximum inactivity
@@ -11160,6 +11357,49 @@
         MaxInactivityPeriod
       </Key>
       <Metadata>
+        Property 'MaxInactivityPeriod' of type 'Ozds.Business.Models.Abstractions.IMeter' with overrides:
+        AbbB2xMeterModel.MaxInactivityPeriod
+        ~AbbB2xMeterModel.MaxInactivityPeriod
+        BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod
+        ~BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod
+        RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod
+        ~RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod
+        SchneideriEM3xxxMeterModel.MaxInactivityPeriod
+        ~SchneideriEM3xxxMeterModel.MaxInactivityPeriod
+        WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod
+        ~WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod
+        WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod
+        ~WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod
+        AnalysisBasisModel.Meter.MaxInactivityPeriod
+        ~AnalysisBasisModel.Meter.MaxInactivityPeriod
+        CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod
+        ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod
+        NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod
+        ~NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod
+        ReportBasisModel.Meter.MaxInactivityPeriod
+        ~ReportBasisModel.Meter.MaxInactivityPeriod
+        EnergyCardReportBasisModel.Meter.MaxInactivityPeriod
+        ~EnergyCardReportBasisModel.Meter.MaxInactivityPeriod
+        AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod
+        ~AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod
+        LoadCurveReportBasisModel.Meter.MaxInactivityPeriod
+        ~LoadCurveReportBasisModel.Meter.MaxInactivityPeriod
+        MeterModel.MaxInactivityPeriod
+        ~MeterModel.MaxInactivityPeriod
+        NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod
+        ~NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod
+        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod
+        ~NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod
+        ~IMeter.MaxInactivityPeriod
+        INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod
+        ~INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod
+        MeasurementLocationAnalysis.Meter.MaxInactivityPeriod
+        ~MeasurementLocationAnalysis.Meter.MaxInactivityPeriod
+        MeterAnalysis.Meter.MaxInactivityPeriod
+        ~MeterAnalysis.Meter.MaxInactivityPeriod
+
         Property 'MaxInactivityPeriod' of type 'Ozds.Business.Models.Abstractions.IMessenger' with overrides:
         PidgeonMessengerModel.MaxInactivityPeriod
         ~PidgeonMessengerModel.MaxInactivityPeriod
@@ -11470,8 +11710,8 @@
 
         Property 'MeasurementLocation' of type 'Ozds.Business.Models.Composite.NetworkUserCalculationBasisModel' with overrides:
         ~NetworkUserCalculationBasisModel.MeasurementLocation
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation
 
         Property 'MeasurementLocation' of type 'Ozds.Business.Models.Composite.ReportBasisModel' with overrides:
         ~ReportBasisModel.MeasurementLocation
@@ -11585,8 +11825,8 @@
         ~CalculationItemBasisModel.Aggregates.MeasurementLocationId
         NetworkUserCalculationBasisModel.Aggregates.MeasurementLocationId
         ~NetworkUserCalculationBasisModel.Aggregates.MeasurementLocationId
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.MeasurementLocationId
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.MeasurementLocationId
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.MeasurementLocationId
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.MeasurementLocationId
         EnergyCardReportBasisModel.MinAggregate.MeasurementLocationId
         EnergyCardReportBasisModel.MaxAggregate.MeasurementLocationId
         ~EnergyCardReportBasisModel.MinAggregate.MeasurementLocationId
@@ -11716,8 +11956,8 @@
         ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MeasurementValidatorId
         NetworkUserCalculationBasisModel.Meter.MeasurementValidatorId
         ~NetworkUserCalculationBasisModel.Meter.MeasurementValidatorId
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.MeasurementValidatorId
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.MeasurementValidatorId
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MeasurementValidatorId
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MeasurementValidatorId
         ReportBasisModel.Meter.MeasurementValidatorId
         ~ReportBasisModel.Meter.MeasurementValidatorId
         EnergyCardReportBasisModel.Meter.MeasurementValidatorId
@@ -11819,8 +12059,8 @@
         ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MessengerId
         NetworkUserCalculationBasisModel.Meter.MessengerId
         ~NetworkUserCalculationBasisModel.Meter.MessengerId
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.MessengerId
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.MessengerId
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MessengerId
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MessengerId
         ReportBasisModel.Meter.MessengerId
         ~ReportBasisModel.Meter.MessengerId
         EnergyCardReportBasisModel.Meter.MessengerId
@@ -11861,6 +12101,8 @@
         Property 'MessengerInactivity' of type 'Ozds.Business.Models.Enums.TopicModel' with overrides:
         MessengerNotificationModel.Topics.MessengerInactivity
         ~MessengerNotificationModel.Topics.MessengerInactivity
+        MeterNotificationModel.Topics.MessengerInactivity
+        ~MeterNotificationModel.Topics.MessengerInactivity
         NetworkUserInvoiceNotificationModel.Topics.MessengerInactivity
         ~NetworkUserInvoiceNotificationModel.Topics.MessengerInactivity
         RepresentativeModel.Topics.MessengerInactivity
@@ -12031,8 +12273,8 @@
         ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedUsageNetworkUserCatalogue.MeterFeePrice_EUR
         NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.MeterFeePrice_EUR
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.MeterFeePrice_EUR
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.MeterFeePrice_EUR
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.MeterFeePrice_EUR
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.MeterFeePrice_EUR
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.MeterFeePrice_EUR
         ReportBasisModel.Catalogue.MeterFeePrice_EUR
         ~ReportBasisModel.Catalogue.MeterFeePrice_EUR
         EnergyCardReportBasisModel.Catalogue.MeterFeePrice_EUR
@@ -12114,8 +12356,8 @@
         ~CalculationItemBasisModel.Aggregates.MeterId
         NetworkUserCalculationBasisModel.Aggregates.MeterId
         ~NetworkUserCalculationBasisModel.Aggregates.MeterId
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.MeterId
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.MeterId
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.MeterId
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.MeterId
         EnergyCardReportBasisModel.MinAggregate.MeterId
         EnergyCardReportBasisModel.MaxAggregate.MeterId
         ~EnergyCardReportBasisModel.MinAggregate.MeterId
@@ -12180,8 +12422,8 @@
         ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedNetworkUserMeasurementLocation.MeterId
         NetworkUserCalculationBasisModel.MeasurementLocation.MeterId
         ~NetworkUserCalculationBasisModel.MeasurementLocation.MeterId
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.MeterId
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.MeterId
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.MeterId
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.MeterId
         ReportBasisModel.MeasurementLocation.MeterId
         ~ReportBasisModel.MeasurementLocation.MeterId
         EnergyCardReportBasisModel.MeasurementLocation.MeterId
@@ -12206,9 +12448,61 @@
 
         Property 'MeterId' of type 'Ozds.Business.Models.LoadCurveReportModel' with overrides:
         ~LoadCurveReportModel.MeterId
+
+        Property 'MeterId' of type 'Ozds.Business.Models.MeterNotificationModel' with overrides:
+        ~MeterNotificationModel.MeterId
       </Metadata>
       <Value>
         Meter identifier
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        MeterInactivity
+      </Key>
+      <Metadata>
+        Property 'MeterInactivity' of type 'Ozds.Business.Models.Enums.TopicModel' with overrides:
+        MessengerNotificationModel.Topics.MeterInactivity
+        ~MessengerNotificationModel.Topics.MeterInactivity
+        MeterNotificationModel.Topics.MeterInactivity
+        ~MeterNotificationModel.Topics.MeterInactivity
+        NetworkUserInvoiceNotificationModel.Topics.MeterInactivity
+        ~NetworkUserInvoiceNotificationModel.Topics.MeterInactivity
+        RepresentativeModel.Topics.MeterInactivity
+        ~RepresentativeModel.Topics.MeterInactivity
+        SystemNotificationModel.Topics.MeterInactivity
+        ~SystemNotificationModel.Topics.MeterInactivity
+        ~TopicModel.MeterInactivity
+        AnalysisBasisModel.Representative.Topics.MeterInactivity
+        ~AnalysisBasisModel.Representative.Topics.MeterInactivity
+        MaybeRepresentingUserModel.Representative.Topics.MeterInactivity
+        ~MaybeRepresentingUserModel.Representative.Topics.MeterInactivity
+        NetworkUserWithRepresentativesModel.Representatives.Topics.MeterInactivity
+        ~NetworkUserWithRepresentativesModel.Representatives.Topics.MeterInactivity
+        RepresentingUserModel.Representative.Topics.MeterInactivity
+        ~RepresentingUserModel.Representative.Topics.MeterInactivity
+        NotificationModel.Topics.MeterInactivity
+        ~NotificationModel.Topics.MeterInactivity
+        ReadonlyNotificationModel.Topics.MeterInactivity
+        ~ReadonlyNotificationModel.Topics.MeterInactivity
+        ResolvableNotificationModel.Topics.MeterInactivity
+        ~ResolvableNotificationModel.Topics.MeterInactivity
+        INotification.Topics.MeterInactivity
+        ~INotification.Topics.MeterInactivity
+      </Metadata>
+      <Value>
+        Meter inactivity
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        MeterNotification
+      </Key>
+      <Metadata>
+        Type 'Ozds.Business.Models.MeterNotificationModel'
+      </Metadata>
+      <Value>
+        Meter notification
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -12962,21 +13256,63 @@
       </Key>
       <Metadata>
         Property 'Minute' of type 'Ozds.Business.Models.Enums.DurationModel' with overrides:
+        AbbB2xMeterModel.MaxInactivityPeriod.Duration.Minute
+        ~AbbB2xMeterModel.MaxInactivityPeriod.Duration.Minute
+        BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
+        ~BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
         PidgeonMessengerModel.MaxInactivityPeriod.Duration.Minute
         PidgeonMessengerModel.PushDelayPeriod.Duration.Minute
         ~PidgeonMessengerModel.MaxInactivityPeriod.Duration.Minute
         ~PidgeonMessengerModel.PushDelayPeriod.Duration.Minute
+        RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
+        ~RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
+        SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration.Minute
+        ~SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration.Minute
+        WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
+        ~WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
+        WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
+        ~WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
         ~DurationModel.Minute
+        AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration.Minute
+        ~AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration.Minute
+        CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
+        ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
+        NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration.Minute
+        ~NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration.Minute
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration.Minute
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration.Minute
+        ReportBasisModel.Meter.MaxInactivityPeriod.Duration.Minute
+        ~ReportBasisModel.Meter.MaxInactivityPeriod.Duration.Minute
+        EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration.Minute
+        ~EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration.Minute
+        AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration.Minute
+        ~AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration.Minute
+        LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration.Minute
+        ~LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration.Minute
         PeriodModel.Duration.Minute
         ~PeriodModel.Duration.Minute
         MessengerModel.MaxInactivityPeriod.Duration.Minute
         MessengerModel.PushDelayPeriod.Duration.Minute
         ~MessengerModel.MaxInactivityPeriod.Duration.Minute
         ~MessengerModel.PushDelayPeriod.Duration.Minute
+        MeterModel.MaxInactivityPeriod.Duration.Minute
+        ~MeterModel.MaxInactivityPeriod.Duration.Minute
+        NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
+        ~NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
+        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
+        ~NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
         IMessenger.MaxInactivityPeriod.Duration.Minute
         IMessenger.PushDelayPeriod.Duration.Minute
         ~IMessenger.MaxInactivityPeriod.Duration.Minute
         ~IMessenger.PushDelayPeriod.Duration.Minute
+        IMeter.MaxInactivityPeriod.Duration.Minute
+        ~IMeter.MaxInactivityPeriod.Duration.Minute
+        INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
+        ~INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration.Minute
+        MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration.Minute
+        ~MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration.Minute
+        MeterAnalysis.Meter.MaxInactivityPeriod.Duration.Minute
+        ~MeterAnalysis.Meter.MaxInactivityPeriod.Duration.Minute
 
         Property 'Minute' of type 'Ozds.Business.Models.Enums.ResolutionModel' with overrides:
         ~ResolutionModel.Minute
@@ -13081,8 +13417,8 @@
         ~CalculationItemBasisModel.Aggregates.Interval.Month
         NetworkUserCalculationBasisModel.Aggregates.Interval.Month
         ~NetworkUserCalculationBasisModel.Aggregates.Interval.Month
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Interval.Month
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Interval.Month
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Interval.Month
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Interval.Month
         EnergyCardReportBasisModel.MinAggregate.Interval.Month
         EnergyCardReportBasisModel.MaxAggregate.Interval.Month
         ~EnergyCardReportBasisModel.MinAggregate.Interval.Month
@@ -13099,21 +13435,63 @@
         ~IAggregate.Interval.Month
 
         Property 'Month' of type 'Ozds.Business.Models.Enums.DurationModel' with overrides:
+        AbbB2xMeterModel.MaxInactivityPeriod.Duration.Month
+        ~AbbB2xMeterModel.MaxInactivityPeriod.Duration.Month
+        BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Month
+        ~BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Month
         PidgeonMessengerModel.MaxInactivityPeriod.Duration.Month
         PidgeonMessengerModel.PushDelayPeriod.Duration.Month
         ~PidgeonMessengerModel.MaxInactivityPeriod.Duration.Month
         ~PidgeonMessengerModel.PushDelayPeriod.Duration.Month
+        RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Month
+        ~RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Month
+        SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration.Month
+        ~SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration.Month
+        WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Month
+        ~WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Month
+        WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Month
+        ~WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Month
         ~DurationModel.Month
+        AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration.Month
+        ~AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration.Month
+        CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration.Month
+        ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration.Month
+        NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration.Month
+        ~NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration.Month
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration.Month
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration.Month
+        ReportBasisModel.Meter.MaxInactivityPeriod.Duration.Month
+        ~ReportBasisModel.Meter.MaxInactivityPeriod.Duration.Month
+        EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration.Month
+        ~EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration.Month
+        AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration.Month
+        ~AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration.Month
+        LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration.Month
+        ~LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration.Month
         PeriodModel.Duration.Month
         ~PeriodModel.Duration.Month
         MessengerModel.MaxInactivityPeriod.Duration.Month
         MessengerModel.PushDelayPeriod.Duration.Month
         ~MessengerModel.MaxInactivityPeriod.Duration.Month
         ~MessengerModel.PushDelayPeriod.Duration.Month
+        MeterModel.MaxInactivityPeriod.Duration.Month
+        ~MeterModel.MaxInactivityPeriod.Duration.Month
+        NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Month
+        ~NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Month
+        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration.Month
+        ~NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration.Month
         IMessenger.MaxInactivityPeriod.Duration.Month
         IMessenger.PushDelayPeriod.Duration.Month
         ~IMessenger.MaxInactivityPeriod.Duration.Month
         ~IMessenger.PushDelayPeriod.Duration.Month
+        IMeter.MaxInactivityPeriod.Duration.Month
+        ~IMeter.MaxInactivityPeriod.Duration.Month
+        INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration.Month
+        ~INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration.Month
+        MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration.Month
+        ~MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration.Month
+        MeterAnalysis.Meter.MaxInactivityPeriod.Duration.Month
+        ~MeterAnalysis.Meter.MaxInactivityPeriod.Duration.Month
 
         Property 'Month' of type 'Ozds.Business.Models.Enums.ResolutionModel' with overrides:
         ~ResolutionModel.Month
@@ -13271,14 +13649,14 @@
         NetworkUserCalculationBasisModel.NetworkUser.LegalPerson.Name
         ~NetworkUserCalculationBasisModel.Location.LegalPerson.Name
         ~NetworkUserCalculationBasisModel.NetworkUser.LegalPerson.Name
-        NetworkUserInvoiceIssuingBasisModel.Location.LegalPerson.Name
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.LegalPerson.Name
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LegalPerson.Name
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.Name
-        ~NetworkUserInvoiceIssuingBasisModel.Location.LegalPerson.Name
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.LegalPerson.Name
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LegalPerson.Name
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.Name
+        NetworkUserInvoiceBasisModel.Location.LegalPerson.Name
+        NetworkUserInvoiceBasisModel.NetworkUser.LegalPerson.Name
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LegalPerson.Name
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.Name
+        ~NetworkUserInvoiceBasisModel.Location.LegalPerson.Name
+        ~NetworkUserInvoiceBasisModel.NetworkUser.LegalPerson.Name
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LegalPerson.Name
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.Name
         NetworkUserWithRepresentativesModel.NetworkUser.LegalPerson.Name
         ~NetworkUserWithRepresentativesModel.NetworkUser.LegalPerson.Name
         ReportBasisModel.Location.LegalPerson.Name
@@ -13544,11 +13922,11 @@
 
         Property 'NetworkUser' of type 'Ozds.Business.Models.Composite.NetworkUserCalculationBasisModel' with overrides:
         ~NetworkUserCalculationBasisModel.NetworkUser
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser
 
-        Property 'NetworkUser' of type 'Ozds.Business.Models.Composite.NetworkUserInvoiceIssuingBasisModel' with overrides:
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser
+        Property 'NetworkUser' of type 'Ozds.Business.Models.Composite.NetworkUserInvoiceBasisModel' with overrides:
+        ~NetworkUserInvoiceBasisModel.NetworkUser
 
         Property 'NetworkUser' of type 'Ozds.Business.Models.Composite.NetworkUserWithRepresentativesModel' with overrides:
         ~NetworkUserWithRepresentativesModel.NetworkUser
@@ -13606,8 +13984,8 @@
         NetworkUserCalculationBases
       </Key>
       <Metadata>
-        Property 'NetworkUserCalculationBases' of type 'Ozds.Business.Models.Composite.NetworkUserInvoiceIssuingBasisModel' with overrides:
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases
+        Property 'NetworkUserCalculationBases' of type 'Ozds.Business.Models.Composite.NetworkUserInvoiceBasisModel' with overrides:
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases
       </Metadata>
       <Value>
         Calculation bases
@@ -13683,8 +14061,8 @@
         ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedNetworkUserMeasurementLocation.NetworkUserCatalogueId
         NetworkUserCalculationBasisModel.MeasurementLocation.NetworkUserCatalogueId
         ~NetworkUserCalculationBasisModel.MeasurementLocation.NetworkUserCatalogueId
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.NetworkUserCatalogueId
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.NetworkUserCatalogueId
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.NetworkUserCatalogueId
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.NetworkUserCatalogueId
         ReportBasisModel.MeasurementLocation.NetworkUserCatalogueId
         ~ReportBasisModel.MeasurementLocation.NetworkUserCatalogueId
         EnergyCardReportBasisModel.MeasurementLocation.NetworkUserCatalogueId
@@ -13731,8 +14109,8 @@
         ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedNetworkUserMeasurementLocation.NetworkUserId
         NetworkUserCalculationBasisModel.MeasurementLocation.NetworkUserId
         ~NetworkUserCalculationBasisModel.MeasurementLocation.NetworkUserId
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.NetworkUserId
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.NetworkUserId
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.NetworkUserId
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.NetworkUserId
         ReportBasisModel.MeasurementLocation.NetworkUserId
         ~ReportBasisModel.MeasurementLocation.NetworkUserId
         EnergyCardReportBasisModel.MeasurementLocation.NetworkUserId
@@ -13777,6 +14155,17 @@
       </Metadata>
       <Value>
         Network user invoice
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        NetworkUserInvoiceBasis
+      </Key>
+      <Metadata>
+        Type 'Ozds.Business.Models.Composite.NetworkUserInvoiceBasisModel'
+      </Metadata>
+      <Value>
+        Invoice basis
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -13827,17 +14216,6 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        NetworkUserInvoiceIssuingBasis
-      </Key>
-      <Metadata>
-        Type 'Ozds.Business.Models.Composite.NetworkUserInvoiceIssuingBasisModel'
-      </Metadata>
-      <Value>
-        Network user invoice issuing basis
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         NetworkUserInvoiceNotification
       </Key>
       <Metadata>
@@ -13855,6 +14233,8 @@
         Property 'NetworkUserInvoiceState' of type 'Ozds.Business.Models.Enums.TopicModel' with overrides:
         MessengerNotificationModel.Topics.NetworkUserInvoiceState
         ~MessengerNotificationModel.Topics.NetworkUserInvoiceState
+        MeterNotificationModel.Topics.NetworkUserInvoiceState
+        ~MeterNotificationModel.Topics.NetworkUserInvoiceState
         NetworkUserInvoiceNotificationModel.Topics.NetworkUserInvoiceState
         ~NetworkUserInvoiceNotificationModel.Topics.NetworkUserInvoiceState
         RepresentativeModel.Topics.NetworkUserInvoiceState
@@ -14269,12 +14649,12 @@
         NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Obis
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.Obis
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Obis
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Obis
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Obis
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Obis
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Obis
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis
         ReportBasisModel.Catalogue.Obis
         ~ReportBasisModel.Catalogue.Obis
         EnergyCardReportBasisModel.Catalogue.Obis
@@ -14563,8 +14943,8 @@
         ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.Phases
         NetworkUserCalculationBasisModel.Meter.Phases
         ~NetworkUserCalculationBasisModel.Meter.Phases
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.Phases
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.Phases
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.Phases
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.Phases
         ReportBasisModel.Meter.Phases
         ~ReportBasisModel.Meter.Phases
         EnergyCardReportBasisModel.Meter.Phases
@@ -14648,14 +15028,14 @@
         NetworkUserCalculationBasisModel.NetworkUser.LegalPerson.PhoneNumber
         ~NetworkUserCalculationBasisModel.Location.LegalPerson.PhoneNumber
         ~NetworkUserCalculationBasisModel.NetworkUser.LegalPerson.PhoneNumber
-        NetworkUserInvoiceIssuingBasisModel.Location.LegalPerson.PhoneNumber
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.LegalPerson.PhoneNumber
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LegalPerson.PhoneNumber
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.PhoneNumber
-        ~NetworkUserInvoiceIssuingBasisModel.Location.LegalPerson.PhoneNumber
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.LegalPerson.PhoneNumber
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LegalPerson.PhoneNumber
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.PhoneNumber
+        NetworkUserInvoiceBasisModel.Location.LegalPerson.PhoneNumber
+        NetworkUserInvoiceBasisModel.NetworkUser.LegalPerson.PhoneNumber
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LegalPerson.PhoneNumber
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.PhoneNumber
+        ~NetworkUserInvoiceBasisModel.Location.LegalPerson.PhoneNumber
+        ~NetworkUserInvoiceBasisModel.NetworkUser.LegalPerson.PhoneNumber
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LegalPerson.PhoneNumber
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.PhoneNumber
         NetworkUserWithRepresentativesModel.NetworkUser.LegalPerson.PhoneNumber
         ~NetworkUserWithRepresentativesModel.NetworkUser.LegalPerson.PhoneNumber
         ReportBasisModel.Location.LegalPerson.PhoneNumber
@@ -14828,14 +15208,14 @@
         NetworkUserCalculationBasisModel.NetworkUser.LegalPerson.PostalCode
         ~NetworkUserCalculationBasisModel.Location.LegalPerson.PostalCode
         ~NetworkUserCalculationBasisModel.NetworkUser.LegalPerson.PostalCode
-        NetworkUserInvoiceIssuingBasisModel.Location.LegalPerson.PostalCode
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.LegalPerson.PostalCode
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LegalPerson.PostalCode
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.PostalCode
-        ~NetworkUserInvoiceIssuingBasisModel.Location.LegalPerson.PostalCode
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.LegalPerson.PostalCode
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LegalPerson.PostalCode
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.PostalCode
+        NetworkUserInvoiceBasisModel.Location.LegalPerson.PostalCode
+        NetworkUserInvoiceBasisModel.NetworkUser.LegalPerson.PostalCode
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LegalPerson.PostalCode
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.PostalCode
+        ~NetworkUserInvoiceBasisModel.Location.LegalPerson.PostalCode
+        ~NetworkUserInvoiceBasisModel.NetworkUser.LegalPerson.PostalCode
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LegalPerson.PostalCode
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.PostalCode
         NetworkUserWithRepresentativesModel.NetworkUser.LegalPerson.PostalCode
         ~NetworkUserWithRepresentativesModel.NetworkUser.LegalPerson.PostalCode
         ReportBasisModel.Location.LegalPerson.PostalCode
@@ -15305,7 +15685,7 @@
         Push delay period
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Measurements/Messengers/MessengerEdit.razor' line 25 column 4
+        From file 'Ozds.Client/Components/Models/Implementations/Measurements/Messengers/MessengerEdit.razor' line 24 column 4
       </Metadata>
       <Value>
         Push delay period
@@ -15353,8 +15733,8 @@
         ~CalculationItemBasisModel.Aggregates.Interval.QuarterHour
         NetworkUserCalculationBasisModel.Aggregates.Interval.QuarterHour
         ~NetworkUserCalculationBasisModel.Aggregates.Interval.QuarterHour
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Interval.QuarterHour
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Interval.QuarterHour
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Interval.QuarterHour
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Interval.QuarterHour
         EnergyCardReportBasisModel.MinAggregate.Interval.QuarterHour
         EnergyCardReportBasisModel.MaxAggregate.Interval.QuarterHour
         ~EnergyCardReportBasisModel.MinAggregate.Interval.QuarterHour
@@ -15397,8 +15777,8 @@
         ~CalculationItemBasisModel.Aggregates.QuarterHourCount
         NetworkUserCalculationBasisModel.Aggregates.QuarterHourCount
         ~NetworkUserCalculationBasisModel.Aggregates.QuarterHourCount
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.QuarterHourCount
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.QuarterHourCount
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.QuarterHourCount
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.QuarterHourCount
         EnergyCardReportBasisModel.MinAggregate.QuarterHourCount
         EnergyCardReportBasisModel.MaxAggregate.QuarterHourCount
         ~EnergyCardReportBasisModel.MinAggregate.QuarterHourCount
@@ -15534,8 +15914,8 @@
         ~CalculationItemBasisModel.Aggregates.ReactiveEnergy_VARh
         NetworkUserCalculationBasisModel.Aggregates.ReactiveEnergy_VARh
         ~NetworkUserCalculationBasisModel.Aggregates.ReactiveEnergy_VARh
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.ReactiveEnergy_VARh
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.ReactiveEnergy_VARh
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.ReactiveEnergy_VARh
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.ReactiveEnergy_VARh
         EnergyCardReportBasisModel.MinAggregate.ReactiveEnergy_VARh
         EnergyCardReportBasisModel.MaxAggregate.ReactiveEnergy_VARh
         ~EnergyCardReportBasisModel.MinAggregate.ReactiveEnergy_VARh
@@ -15812,12 +16192,12 @@
         NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
         ReportBasisModel.Catalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
         ~ReportBasisModel.Catalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
         EnergyCardReportBasisModel.Catalogue.Obis.ReactiveEnergyTotalExportT0_kVARh
@@ -15945,12 +16325,12 @@
         NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
         ReportBasisModel.Catalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
         ~ReportBasisModel.Catalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
         EnergyCardReportBasisModel.Catalogue.Obis.ReactiveEnergyTotalImportT0_kVARh
@@ -16373,8 +16753,8 @@
         ~CalculationItemBasisModel.Aggregates.ReactivePower_VAR
         NetworkUserCalculationBasisModel.Aggregates.ReactivePower_VAR
         ~NetworkUserCalculationBasisModel.Aggregates.ReactivePower_VAR
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.ReactivePower_VAR
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.ReactivePower_VAR
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.ReactivePower_VAR
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.ReactivePower_VAR
         EnergyCardReportBasisModel.MinAggregate.ReactivePower_VAR
         EnergyCardReportBasisModel.MaxAggregate.ReactivePower_VAR
         ~EnergyCardReportBasisModel.MinAggregate.ReactivePower_VAR
@@ -16568,10 +16948,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedLocation.RedLowNetworkUserCatalogueId
         NetworkUserCalculationBasisModel.Location.RedLowNetworkUserCatalogueId
         ~NetworkUserCalculationBasisModel.Location.RedLowNetworkUserCatalogueId
-        NetworkUserInvoiceIssuingBasisModel.Location.RedLowNetworkUserCatalogueId
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.RedLowNetworkUserCatalogueId
-        ~NetworkUserInvoiceIssuingBasisModel.Location.RedLowNetworkUserCatalogueId
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.RedLowNetworkUserCatalogueId
+        NetworkUserInvoiceBasisModel.Location.RedLowNetworkUserCatalogueId
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.RedLowNetworkUserCatalogueId
+        ~NetworkUserInvoiceBasisModel.Location.RedLowNetworkUserCatalogueId
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.RedLowNetworkUserCatalogueId
         ReportBasisModel.Location.RedLowNetworkUserCatalogueId
         ~ReportBasisModel.Location.RedLowNetworkUserCatalogueId
         EnergyCardReportBasisModel.Location.RedLowNetworkUserCatalogueId
@@ -16632,8 +17012,8 @@
 
         Type 'Ozds.Business.Models.RegulatoryCatalogueModel'
 
-        Property 'RegulatoryCatalogue' of type 'Ozds.Business.Models.Composite.NetworkUserInvoiceIssuingBasisModel' with overrides:
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue
+        Property 'RegulatoryCatalogue' of type 'Ozds.Business.Models.Composite.NetworkUserInvoiceBasisModel' with overrides:
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue
 
         Type 'Ozds.Business.Models.Abstractions.IRegulatoryCatalogue'
       </Metadata>
@@ -16656,10 +17036,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedLocation.RegulatoryCatalogueId
         NetworkUserCalculationBasisModel.Location.RegulatoryCatalogueId
         ~NetworkUserCalculationBasisModel.Location.RegulatoryCatalogueId
-        NetworkUserInvoiceIssuingBasisModel.Location.RegulatoryCatalogueId
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.RegulatoryCatalogueId
-        ~NetworkUserInvoiceIssuingBasisModel.Location.RegulatoryCatalogueId
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.RegulatoryCatalogueId
+        NetworkUserInvoiceBasisModel.Location.RegulatoryCatalogueId
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.RegulatoryCatalogueId
+        ~NetworkUserInvoiceBasisModel.Location.RegulatoryCatalogueId
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.RegulatoryCatalogueId
         ReportBasisModel.Location.RegulatoryCatalogueId
         ~ReportBasisModel.Location.RegulatoryCatalogueId
         EnergyCardReportBasisModel.Location.RegulatoryCatalogueId
@@ -16792,10 +17172,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.RenewableEnergyFeePrice_EUR
         NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.RenewableEnergyFeePrice_EUR
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.RenewableEnergyFeePrice_EUR
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.RenewableEnergyFeePrice_EUR
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.RenewableEnergyFeePrice_EUR
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.RenewableEnergyFeePrice_EUR
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.RenewableEnergyFeePrice_EUR
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.RenewableEnergyFeePrice_EUR
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.RenewableEnergyFeePrice_EUR
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.RenewableEnergyFeePrice_EUR
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.RenewableEnergyFeePrice_EUR
         StatefulNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.RenewableEnergyFeePrice_EUR
         ~StatefulNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.RenewableEnergyFeePrice_EUR
         NetworkUserCalculationModel.ArchivedSupplyRegulatoryCatalogue.RenewableEnergyFeePrice_EUR
@@ -16977,6 +17357,8 @@
         Property 'ResolvedById' of type 'Ozds.Business.Models.Abstractions.IResolvableNotification' with overrides:
         MessengerNotificationModel.ResolvedById
         ~MessengerNotificationModel.ResolvedById
+        MeterNotificationModel.ResolvedById
+        ~MeterNotificationModel.ResolvedById
         ResolvableNotificationModel.ResolvedById
         ~ResolvableNotificationModel.ResolvedById
         ~IResolvableNotification.ResolvedById
@@ -16993,6 +17375,8 @@
         Property 'ResolvedOn' of type 'Ozds.Business.Models.Abstractions.IResolvableNotification' with overrides:
         MessengerNotificationModel.ResolvedOn
         ~MessengerNotificationModel.ResolvedOn
+        MeterNotificationModel.ResolvedOn
+        ~MeterNotificationModel.ResolvedOn
         ResolvableNotificationModel.ResolvedOn
         ~ResolvableNotificationModel.ResolvedOn
         ~IResolvableNotification.ResolvedOn
@@ -17158,21 +17542,63 @@
       </Key>
       <Metadata>
         Property 'Second' of type 'Ozds.Business.Models.Enums.DurationModel' with overrides:
+        AbbB2xMeterModel.MaxInactivityPeriod.Duration.Second
+        ~AbbB2xMeterModel.MaxInactivityPeriod.Duration.Second
+        BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Second
+        ~BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Second
         PidgeonMessengerModel.MaxInactivityPeriod.Duration.Second
         PidgeonMessengerModel.PushDelayPeriod.Duration.Second
         ~PidgeonMessengerModel.MaxInactivityPeriod.Duration.Second
         ~PidgeonMessengerModel.PushDelayPeriod.Duration.Second
+        RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Second
+        ~RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Second
+        SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration.Second
+        ~SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration.Second
+        WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Second
+        ~WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Second
+        WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Second
+        ~WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Second
         ~DurationModel.Second
+        AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration.Second
+        ~AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration.Second
+        CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration.Second
+        ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration.Second
+        NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration.Second
+        ~NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration.Second
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration.Second
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration.Second
+        ReportBasisModel.Meter.MaxInactivityPeriod.Duration.Second
+        ~ReportBasisModel.Meter.MaxInactivityPeriod.Duration.Second
+        EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration.Second
+        ~EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration.Second
+        AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration.Second
+        ~AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration.Second
+        LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration.Second
+        ~LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration.Second
         PeriodModel.Duration.Second
         ~PeriodModel.Duration.Second
         MessengerModel.MaxInactivityPeriod.Duration.Second
         MessengerModel.PushDelayPeriod.Duration.Second
         ~MessengerModel.MaxInactivityPeriod.Duration.Second
         ~MessengerModel.PushDelayPeriod.Duration.Second
+        MeterModel.MaxInactivityPeriod.Duration.Second
+        ~MeterModel.MaxInactivityPeriod.Duration.Second
+        NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Second
+        ~NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Second
+        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration.Second
+        ~NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration.Second
         IMessenger.MaxInactivityPeriod.Duration.Second
         IMessenger.PushDelayPeriod.Duration.Second
         ~IMessenger.MaxInactivityPeriod.Duration.Second
         ~IMessenger.PushDelayPeriod.Duration.Second
+        IMeter.MaxInactivityPeriod.Duration.Second
+        ~IMeter.MaxInactivityPeriod.Duration.Second
+        INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration.Second
+        ~INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration.Second
+        MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration.Second
+        ~MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration.Second
+        MeterAnalysis.Meter.MaxInactivityPeriod.Duration.Second
+        ~MeterAnalysis.Meter.MaxInactivityPeriod.Duration.Second
       </Metadata>
       <Value>
         Second
@@ -17303,14 +17729,14 @@
         NetworkUserCalculationBasisModel.NetworkUser.LegalPerson.SocialSecurityNumber
         ~NetworkUserCalculationBasisModel.Location.LegalPerson.SocialSecurityNumber
         ~NetworkUserCalculationBasisModel.NetworkUser.LegalPerson.SocialSecurityNumber
-        NetworkUserInvoiceIssuingBasisModel.Location.LegalPerson.SocialSecurityNumber
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.LegalPerson.SocialSecurityNumber
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LegalPerson.SocialSecurityNumber
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.SocialSecurityNumber
-        ~NetworkUserInvoiceIssuingBasisModel.Location.LegalPerson.SocialSecurityNumber
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.LegalPerson.SocialSecurityNumber
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.LegalPerson.SocialSecurityNumber
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.SocialSecurityNumber
+        NetworkUserInvoiceBasisModel.Location.LegalPerson.SocialSecurityNumber
+        NetworkUserInvoiceBasisModel.NetworkUser.LegalPerson.SocialSecurityNumber
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LegalPerson.SocialSecurityNumber
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.SocialSecurityNumber
+        ~NetworkUserInvoiceBasisModel.Location.LegalPerson.SocialSecurityNumber
+        ~NetworkUserInvoiceBasisModel.NetworkUser.LegalPerson.SocialSecurityNumber
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.LegalPerson.SocialSecurityNumber
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.LegalPerson.SocialSecurityNumber
         NetworkUserWithRepresentativesModel.NetworkUser.LegalPerson.SocialSecurityNumber
         ~NetworkUserWithRepresentativesModel.NetworkUser.LegalPerson.SocialSecurityNumber
         ReportBasisModel.Location.LegalPerson.SocialSecurityNumber
@@ -17508,6 +17934,8 @@
         Property 'Summary' of type 'Ozds.Business.Models.Abstractions.INotification' with overrides:
         MessengerNotificationModel.Summary
         ~MessengerNotificationModel.Summary
+        MeterNotificationModel.Summary
+        ~MeterNotificationModel.Summary
         NetworkUserInvoiceNotificationModel.Summary
         ~NetworkUserInvoiceNotificationModel.Summary
         SystemNotificationModel.Summary
@@ -17888,8 +18316,8 @@
 
         Property 'SupplyRegulatoryCatalogue' of type 'Ozds.Business.Models.Composite.NetworkUserCalculationBasisModel' with overrides:
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue
       </Metadata>
       <Value>
         Regulatory catalogue
@@ -18294,10 +18722,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.TaxRate_Percent
         NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.TaxRate_Percent
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.TaxRate_Percent
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.TaxRate_Percent
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.TaxRate_Percent
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.TaxRate_Percent
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.TaxRate_Percent
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.TaxRate_Percent
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.TaxRate_Percent
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.TaxRate_Percent
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.TaxRate_Percent
         StatefulNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.TaxRate_Percent
         ~StatefulNetworkUserInvoiceModel.Invoice.ArchivedRegulatoryCatalogue.TaxRate_Percent
         NetworkUserCalculationModel.ArchivedSupplyRegulatoryCatalogue.TaxRate_Percent
@@ -18462,8 +18890,8 @@
         ~CalculationItemBasisModel.Aggregates.Timestamp
         NetworkUserCalculationBasisModel.Aggregates.Timestamp
         ~NetworkUserCalculationBasisModel.Aggregates.Timestamp
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Timestamp
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Timestamp
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Timestamp
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Timestamp
         EnergyCardReportBasisModel.MinAggregate.Timestamp
         EnergyCardReportBasisModel.MaxAggregate.Timestamp
         ~EnergyCardReportBasisModel.MinAggregate.Timestamp
@@ -18520,6 +18948,8 @@
         Property 'Timestamp' of type 'Ozds.Business.Models.Abstractions.INotification' with overrides:
         MessengerNotificationModel.Timestamp
         ~MessengerNotificationModel.Timestamp
+        MeterNotificationModel.Timestamp
+        ~MeterNotificationModel.Timestamp
         NetworkUserInvoiceNotificationModel.Timestamp
         ~NetworkUserInvoiceNotificationModel.Timestamp
         SystemNotificationModel.Timestamp
@@ -18662,6 +19092,8 @@
         ~MessengerEventModel.Title
         MessengerNotificationModel.Title
         ~MessengerNotificationModel.Title
+        MeterNotificationModel.Title
+        ~MeterNotificationModel.Title
         NetworkUserInvoiceModel.ArchivedLocation.Title
         NetworkUserInvoiceModel.ArchivedNetworkUser.Title
         NetworkUserInvoiceModel.ArchivedRegulatoryCatalogue.Title
@@ -18776,24 +19208,24 @@
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue.Title
         ~NetworkUserCalculationBasisModel.SupplyRegulatoryCatalogue.Title
         ~NetworkUserCalculationBasisModel.Meter.Title
-        NetworkUserInvoiceIssuingBasisModel.Location.Title
-        NetworkUserInvoiceIssuingBasisModel.NetworkUser.Title
-        NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Title
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.Title
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.Title
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.Title
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Title
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Title
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.Title
-        ~NetworkUserInvoiceIssuingBasisModel.Location.Title
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUser.Title
-        ~NetworkUserInvoiceIssuingBasisModel.RegulatoryCatalogue.Title
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.Title
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.NetworkUser.Title
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.MeasurementLocation.Title
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Title
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Title
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Meter.Title
+        NetworkUserInvoiceBasisModel.Location.Title
+        NetworkUserInvoiceBasisModel.NetworkUser.Title
+        NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Title
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.Title
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.Title
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.Title
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Title
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Title
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.Title
+        ~NetworkUserInvoiceBasisModel.Location.Title
+        ~NetworkUserInvoiceBasisModel.NetworkUser.Title
+        ~NetworkUserInvoiceBasisModel.RegulatoryCatalogue.Title
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.Title
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.NetworkUser.Title
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.MeasurementLocation.Title
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue.Title
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.SupplyRegulatoryCatalogue.Title
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.Title
         NetworkUserWithRepresentativesModel.NetworkUser.Title
         NetworkUserWithRepresentativesModel.Representatives.Title
         ~NetworkUserWithRepresentativesModel.NetworkUser.Title
@@ -19024,11 +19456,11 @@
 
         Property 'ToDate' of type 'Ozds.Business.Models.Composite.NetworkUserCalculationBasisModel' with overrides:
         ~NetworkUserCalculationBasisModel.ToDate
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.ToDate
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.ToDate
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.ToDate
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.ToDate
 
-        Property 'ToDate' of type 'Ozds.Business.Models.Composite.NetworkUserInvoiceIssuingBasisModel' with overrides:
-        ~NetworkUserInvoiceIssuingBasisModel.ToDate
+        Property 'ToDate' of type 'Ozds.Business.Models.Composite.NetworkUserInvoiceBasisModel' with overrides:
+        ~NetworkUserInvoiceBasisModel.ToDate
       </Metadata>
       <Value>
         To date
@@ -19066,6 +19498,8 @@
         Property 'Topics' of type 'Ozds.Business.Models.Abstractions.INotification' with overrides:
         MessengerNotificationModel.Topics
         ~MessengerNotificationModel.Topics
+        MeterNotificationModel.Topics
+        ~MeterNotificationModel.Topics
         NetworkUserInvoiceNotificationModel.Topics
         ~NetworkUserInvoiceNotificationModel.Topics
         SystemNotificationModel.Topics
@@ -20171,8 +20605,8 @@
 
         Property 'UsageNetworkUserCatalogue' of type 'Ozds.Business.Models.Composite.NetworkUserCalculationBasisModel' with overrides:
         ~NetworkUserCalculationBasisModel.UsageNetworkUserCatalogue
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.UsageNetworkUserCatalogue
       </Metadata>
       <Value>
         Usage network user catalogue
@@ -20389,8 +20823,8 @@
         ~CalculationItemBasisModel.Aggregates.Voltage_V
         NetworkUserCalculationBasisModel.Aggregates.Voltage_V
         ~NetworkUserCalculationBasisModel.Aggregates.Voltage_V
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Voltage_V
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Aggregates.Voltage_V
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Voltage_V
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Aggregates.Voltage_V
         EnergyCardReportBasisModel.MinAggregate.Voltage_V
         EnergyCardReportBasisModel.MaxAggregate.Voltage_V
         ~EnergyCardReportBasisModel.MinAggregate.Voltage_V
@@ -20540,21 +20974,63 @@
       </Key>
       <Metadata>
         Property 'Week' of type 'Ozds.Business.Models.Enums.DurationModel' with overrides:
+        AbbB2xMeterModel.MaxInactivityPeriod.Duration.Week
+        ~AbbB2xMeterModel.MaxInactivityPeriod.Duration.Week
+        BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Week
+        ~BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Week
         PidgeonMessengerModel.MaxInactivityPeriod.Duration.Week
         PidgeonMessengerModel.PushDelayPeriod.Duration.Week
         ~PidgeonMessengerModel.MaxInactivityPeriod.Duration.Week
         ~PidgeonMessengerModel.PushDelayPeriod.Duration.Week
+        RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Week
+        ~RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Week
+        SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration.Week
+        ~SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration.Week
+        WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Week
+        ~WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Week
+        WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Week
+        ~WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Week
         ~DurationModel.Week
+        AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration.Week
+        ~AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration.Week
+        CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration.Week
+        ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration.Week
+        NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration.Week
+        ~NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration.Week
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration.Week
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration.Week
+        ReportBasisModel.Meter.MaxInactivityPeriod.Duration.Week
+        ~ReportBasisModel.Meter.MaxInactivityPeriod.Duration.Week
+        EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration.Week
+        ~EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration.Week
+        AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration.Week
+        ~AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration.Week
+        LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration.Week
+        ~LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration.Week
         PeriodModel.Duration.Week
         ~PeriodModel.Duration.Week
         MessengerModel.MaxInactivityPeriod.Duration.Week
         MessengerModel.PushDelayPeriod.Duration.Week
         ~MessengerModel.MaxInactivityPeriod.Duration.Week
         ~MessengerModel.PushDelayPeriod.Duration.Week
+        MeterModel.MaxInactivityPeriod.Duration.Week
+        ~MeterModel.MaxInactivityPeriod.Duration.Week
+        NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Week
+        ~NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Week
+        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration.Week
+        ~NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration.Week
         IMessenger.MaxInactivityPeriod.Duration.Week
         IMessenger.PushDelayPeriod.Duration.Week
         ~IMessenger.MaxInactivityPeriod.Duration.Week
         ~IMessenger.PushDelayPeriod.Duration.Week
+        IMeter.MaxInactivityPeriod.Duration.Week
+        ~IMeter.MaxInactivityPeriod.Duration.Week
+        INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration.Week
+        ~INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration.Week
+        MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration.Week
+        ~MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration.Week
+        MeterAnalysis.Meter.MaxInactivityPeriod.Duration.Week
+        ~MeterAnalysis.Meter.MaxInactivityPeriod.Duration.Week
 
         Property 'Week' of type 'Ozds.Business.Models.Enums.ResolutionModel' with overrides:
         ~ResolutionModel.Week
@@ -20639,10 +21115,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedLocation.WhiteLowNetworkUserCatalogueId
         NetworkUserCalculationBasisModel.Location.WhiteLowNetworkUserCatalogueId
         ~NetworkUserCalculationBasisModel.Location.WhiteLowNetworkUserCatalogueId
-        NetworkUserInvoiceIssuingBasisModel.Location.WhiteLowNetworkUserCatalogueId
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.WhiteLowNetworkUserCatalogueId
-        ~NetworkUserInvoiceIssuingBasisModel.Location.WhiteLowNetworkUserCatalogueId
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.WhiteLowNetworkUserCatalogueId
+        NetworkUserInvoiceBasisModel.Location.WhiteLowNetworkUserCatalogueId
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.WhiteLowNetworkUserCatalogueId
+        ~NetworkUserInvoiceBasisModel.Location.WhiteLowNetworkUserCatalogueId
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.WhiteLowNetworkUserCatalogueId
         ReportBasisModel.Location.WhiteLowNetworkUserCatalogueId
         ~ReportBasisModel.Location.WhiteLowNetworkUserCatalogueId
         EnergyCardReportBasisModel.Location.WhiteLowNetworkUserCatalogueId
@@ -20707,10 +21183,10 @@
         ~CalculatedNetworkUserInvoiceModel.Invoice.ArchivedLocation.WhiteMediumNetworkUserCatalogueId
         NetworkUserCalculationBasisModel.Location.WhiteMediumNetworkUserCatalogueId
         ~NetworkUserCalculationBasisModel.Location.WhiteMediumNetworkUserCatalogueId
-        NetworkUserInvoiceIssuingBasisModel.Location.WhiteMediumNetworkUserCatalogueId
-        NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.WhiteMediumNetworkUserCatalogueId
-        ~NetworkUserInvoiceIssuingBasisModel.Location.WhiteMediumNetworkUserCatalogueId
-        ~NetworkUserInvoiceIssuingBasisModel.NetworkUserCalculationBases.Location.WhiteMediumNetworkUserCatalogueId
+        NetworkUserInvoiceBasisModel.Location.WhiteMediumNetworkUserCatalogueId
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.WhiteMediumNetworkUserCatalogueId
+        ~NetworkUserInvoiceBasisModel.Location.WhiteMediumNetworkUserCatalogueId
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Location.WhiteMediumNetworkUserCatalogueId
         ReportBasisModel.Location.WhiteMediumNetworkUserCatalogueId
         ~ReportBasisModel.Location.WhiteMediumNetworkUserCatalogueId
         EnergyCardReportBasisModel.Location.WhiteMediumNetworkUserCatalogueId
@@ -20742,25 +21218,67 @@
         Property 'Year' of type 'Ozds.Report.Entities.EnergyCardEntity' with overrides:
         ~EnergyCardEntity.Year
 
-        Property 'Year' of type 'Ozds.Business.Models.EnergyCardReportModel' with overrides:
-        ~EnergyCardReportModel.Year
-
         Property 'Year' of type 'Ozds.Business.Models.Enums.DurationModel' with overrides:
+        AbbB2xMeterModel.MaxInactivityPeriod.Duration.Year
+        ~AbbB2xMeterModel.MaxInactivityPeriod.Duration.Year
+        BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Year
+        ~BlueLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Year
         PidgeonMessengerModel.MaxInactivityPeriod.Duration.Year
         PidgeonMessengerModel.PushDelayPeriod.Duration.Year
         ~PidgeonMessengerModel.MaxInactivityPeriod.Duration.Year
         ~PidgeonMessengerModel.PushDelayPeriod.Duration.Year
+        RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Year
+        ~RedLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Year
+        SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration.Year
+        ~SchneideriEM3xxxMeterModel.MaxInactivityPeriod.Duration.Year
+        WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Year
+        ~WhiteLowNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Year
+        WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Year
+        ~WhiteMediumNetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Year
         ~DurationModel.Year
+        AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration.Year
+        ~AnalysisBasisModel.Meter.MaxInactivityPeriod.Duration.Year
+        CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration.Year
+        ~CalculatedNetworkUserInvoiceModel.Calculations.ArchivedMeter.MaxInactivityPeriod.Duration.Year
+        NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration.Year
+        ~NetworkUserCalculationBasisModel.Meter.MaxInactivityPeriod.Duration.Year
+        NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration.Year
+        ~NetworkUserInvoiceBasisModel.NetworkUserCalculationBases.Meter.MaxInactivityPeriod.Duration.Year
+        ReportBasisModel.Meter.MaxInactivityPeriod.Duration.Year
+        ~ReportBasisModel.Meter.MaxInactivityPeriod.Duration.Year
+        EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration.Year
+        ~EnergyCardReportBasisModel.Meter.MaxInactivityPeriod.Duration.Year
+        AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration.Year
+        ~AccountingPeriodReportBasisModel.Meter.MaxInactivityPeriod.Duration.Year
+        LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration.Year
+        ~LoadCurveReportBasisModel.Meter.MaxInactivityPeriod.Duration.Year
         PeriodModel.Duration.Year
         ~PeriodModel.Duration.Year
         MessengerModel.MaxInactivityPeriod.Duration.Year
         MessengerModel.PushDelayPeriod.Duration.Year
         ~MessengerModel.MaxInactivityPeriod.Duration.Year
         ~MessengerModel.PushDelayPeriod.Duration.Year
+        MeterModel.MaxInactivityPeriod.Duration.Year
+        ~MeterModel.MaxInactivityPeriod.Duration.Year
+        NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Year
+        ~NetworkUserCalculationModel.ArchivedMeter.MaxInactivityPeriod.Duration.Year
+        NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration.Year
+        ~NetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.ArchivedMeter.MaxInactivityPeriod.Duration.Year
         IMessenger.MaxInactivityPeriod.Duration.Year
         IMessenger.PushDelayPeriod.Duration.Year
         ~IMessenger.MaxInactivityPeriod.Duration.Year
         ~IMessenger.PushDelayPeriod.Duration.Year
+        IMeter.MaxInactivityPeriod.Duration.Year
+        ~IMeter.MaxInactivityPeriod.Duration.Year
+        INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration.Year
+        ~INetworkUserCalculation.ArchivedMeter.MaxInactivityPeriod.Duration.Year
+        MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration.Year
+        ~MeasurementLocationAnalysis.Meter.MaxInactivityPeriod.Duration.Year
+        MeterAnalysis.Meter.MaxInactivityPeriod.Duration.Year
+        ~MeterAnalysis.Meter.MaxInactivityPeriod.Duration.Year
+
+        Property 'Year' of type 'Ozds.Business.Models.EnergyCardReportModel' with overrides:
+        ~EnergyCardReportModel.Year
 
         Property 'Year' of type 'Ozds.Business.Models.Enums.ResolutionModel' with overrides:
         ~ResolutionModel.Year

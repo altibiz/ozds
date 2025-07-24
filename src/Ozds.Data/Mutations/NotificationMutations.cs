@@ -13,29 +13,6 @@ public class NotificationMutations(
   IClockQueries clock
 ) : IMutations
 {
-  public async Task Create(
-    INotificationEntity entity,
-    CancellationToken cancellationToken
-  )
-  {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-
-    context.Add(entity);
-    await context.SaveChangesAsync(cancellationToken);
-  }
-
-  public async Task AddRecipients(
-    IReadOnlyCollection<NotificationRecipientEntity> recipients,
-    CancellationToken cancellationToken
-  )
-  {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-    context.NotificationRecipients.AddRange(recipients);
-    await context.SaveChangesAsync(cancellationToken);
-  }
-
   public async Task<NotificationRecipientEntity?> MarkNotificationAsSeen(
     string notificationId,
     string representativeId,

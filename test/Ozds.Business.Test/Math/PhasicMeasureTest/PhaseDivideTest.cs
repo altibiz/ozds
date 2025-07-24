@@ -10,8 +10,8 @@ public class PhaseDivideTest
   {
     return new List<(PhasicMeasure<decimal>, decimal, PhasicMeasure<decimal>)>
     {
-      (new SinglePhasicMeasureSum<decimal>(10), 2,
-        new SinglePhasicMeasureSum<decimal>(5)
+      (new SinglePhasicSumMeasure<decimal>(10), 2,
+        new SinglePhasicSumMeasure<decimal>(5)
       ),
 
       (new TriPhasicMeasure<decimal>(9, 6, 3), 3,

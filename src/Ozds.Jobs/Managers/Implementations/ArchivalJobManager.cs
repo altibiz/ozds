@@ -1,142 +1,80 @@
 using System.Globalization;
 using Microsoft.Extensions.Options;
 using Ozds.Jobs.Manager.Abstractions;
+using Ozds.Jobs.Managers.Base;
 using Ozds.Jobs.Options;
-using Ozds.Jobs.Scheduler;
 using Ozds.Time.Queries.Abstractions;
 using Quartz;
 
 namespace Ozds.Jobs.Managers.Implementations;
 
+#pragma warning disable S2094 // Classes should not be empty
+public sealed record ArchivalJobContext;
+#pragma warning restore S2094 // Classes should not be empty
+
 public class ArchivalJobManager(
-  OzdsSchedulerFactory schedulerFactory,
-  ILogger<ArchivalJobManager> logger,
+  IServiceProvider serviceProvider,
   IClockQueries clock,
   ITimeQueries time,
   IOptions<OzdsJobsOptions> options
 )
-  : IArchivalJobManager
+  : JobManagerBase<ArchivalJobContext>(serviceProvider), IArchivalJobManager
 {
-  public async Task EnsureDailyMeasurementDeletionJob(
+  public Task EnsureDailyMeasurementDeletionJob(
     CancellationToken cancellationToken)
   {
-    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
-
-    var triggerKey = CreateTriggerKey();
-
-    logger.LogDebug(
-      "Ensuring {Group} daily deletion job",
-      triggerKey.Group
-    );
-
-    if (!await scheduler.CheckExists(triggerKey, cancellationToken))
-    {
-      var job = CreateJob();
-      var trigger = CreateTrigger();
-
-      await scheduler.ScheduleJob(job, trigger, cancellationToken);
-
-      logger.LogDebug(
-        "Created {Cron} trigger for {Group} firing at {Fire}",
-        options.Value.Archival.DailyMeasurementDeletionCron,
-        triggerKey.Group,
-        trigger.GetNextFireTimeUtc()
-      );
-    }
+    return Ensure(new ArchivalJobContext(), cancellationToken);
   }
 
-  public async Task RescheduleDailyMeasurementDeletionJob(
+  public Task RescheduleDailyMeasurementDeletionJob(
     CancellationToken cancellationToken
   )
   {
-    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
-
-    var triggerKey = CreateTriggerKey();
-
-    logger.LogDebug(
-      "Rescheduling {Group} daily deletion job",
-      triggerKey.Group
-    );
-
-    if (await scheduler.CheckExists(triggerKey, cancellationToken))
-    {
-      var trigger = CreateTrigger();
-
-      await scheduler.RescheduleJob(triggerKey, trigger, cancellationToken);
-
-      logger.LogDebug(
-        "Rescheduled {Cron} trigger for {Group} firing at {Fire}",
-        options.Value.Archival.DailyMeasurementDeletionCron,
-        triggerKey.Group,
-        trigger.GetNextFireTimeUtc()
-      );
-    }
-    else
-    {
-      await EnsureDailyMeasurementDeletionJob(cancellationToken);
-    }
+    return Reschedule(new ArchivalJobContext(), cancellationToken);
   }
 
-  public async Task UnscheduleDailyMeasurementDeletionJob(
+  public Task UnscheduleDailyMeasurementDeletionJob(
     CancellationToken cancellationToken
   )
   {
-    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
-
-    var triggerKey = CreateTriggerKey();
-
-    logger.LogDebug(
-      "Unscheduling {Group} daily deletion job",
-      triggerKey.Group
-    );
-
-    if (await scheduler.CheckExists(triggerKey, cancellationToken))
-    {
-      await scheduler.UnscheduleJob(triggerKey, cancellationToken);
-
-      logger.LogDebug(
-        "Unscheduled {Cron} trigger for {Group}",
-        options.Value.Archival.DailyMeasurementDeletionCron,
-        triggerKey.Group
-      );
-    }
+    return Unschedule(new ArchivalJobContext(), cancellationToken);
   }
 
-  private IJobDetail CreateJob()
+  protected override IReadOnlyCollection<TriggerKey> CreateTriggerKeys(
+    ArchivalJobContext context
+  )
+  {
+    return
+    [
+      new TriggerKey(
+        nameof(DailyMeasurementDeletionJob),
+        nameof(DailyMeasurementDeletionJob))
+    ];
+  }
+
+  protected override IJobDetail CreateJob(ArchivalJobContext context)
   {
     return JobBuilder.Create<DailyMeasurementDeletionJob>()
-      .WithIdentity(CreateJobKey())
+      .WithIdentity(
+        nameof(DailyMeasurementDeletionJob),
+        nameof(DailyMeasurementDeletionJob))
       .UsingJobData(
         nameof(DailyMeasurementDeletionJob.ScheduledAt),
         clock.Now().ToString("o", CultureInfo.InvariantCulture))
       .Build();
   }
 
-  private ITrigger CreateTrigger()
+  protected override ITrigger CreateTrigger(
+    TriggerBuilder builder,
+    ArchivalJobContext context
+  )
   {
-    return TriggerBuilder.Create()
-      .WithIdentity(CreateTriggerKey())
-      .ForJob(CreateJobKey())
-      .StartNow()
+    return builder
       .WithCronSchedule(
         options.Value.Archival.DailyMeasurementDeletionCron,
         x => x
           .WithMisfireHandlingInstructionFireAndProceed()
           .InTimeZone(time.CroatianTimeZone))
       .Build();
-  }
-
-  private TriggerKey CreateTriggerKey()
-  {
-    return new TriggerKey(
-      nameof(DailyMeasurementDeletionJob),
-      nameof(DailyMeasurementDeletionJob));
-  }
-
-  private JobKey CreateJobKey()
-  {
-    return new JobKey(
-      nameof(DailyMeasurementDeletionJob),
-      nameof(DailyMeasurementDeletionJob));
   }
 }

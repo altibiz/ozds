@@ -5,12 +5,11 @@ namespace Ozds.Business.Models.Base;
 
 // TODO: clearer property naming scheme
 
-public class MeasurementValidatorModel : AuditableModel
+public class MeasurementValidatorModel : AuditableModel, IMeasurementValidator
 {
 }
 
-public class MeasurementValidatorModel<T> : MeasurementValidatorModel,
-  IMeasurementValidator
+public class MeasurementValidatorModel<T> : MeasurementValidatorModel
   where T : IMeasurement
 {
   public override IEnumerable<ValidationResult> Validate(

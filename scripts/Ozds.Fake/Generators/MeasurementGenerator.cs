@@ -1,4 +1,4 @@
-using Ozds.Fake.Extensions;
+using Ozds.Business.Queries;
 using Ozds.Fake.Generation.Abstractions;
 using Ozds.Fake.Identification;
 using Ozds.Fake.Records.Abstractions;
@@ -34,16 +34,18 @@ public class MeasurementRecordGenerator(
     CancellationToken cancellationToken
   )
   {
-    return ids
-      .GroupBy(id => GetGenerator(id.MeterId))
-      .Select(
-        group => group.Key.BatchMeasurementRecords(
-          dateFrom,
-          dateTo,
-          group,
-          cancellationToken
-        ))
-      .Concat(cancellationToken);
+    var enumerable = _serviceProvider.GetRequiredService<EnumerableQueries>();
+    return enumerable.Concat(
+      ids
+        .GroupBy(id => GetGenerator(id.MeterId))
+        .Select(
+          group => group.Key.BatchMeasurementRecords(
+            dateFrom,
+            dateTo,
+            group,
+            cancellationToken
+          )),
+      cancellationToken);
   }
 
   private IMeasurementRecordGenerator GetGenerator(

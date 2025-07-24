@@ -1,5 +1,4 @@
 using Ozds.Business.Models.Base;
-using Ozds.Business.Models.Joins;
 using Ozds.Business.Mutations;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
@@ -19,7 +18,7 @@ public class DataNotificationChangeReactor(
 
 public class DataNotificationChangeHandler(
   NotificationQueries notificationQueries,
-  JoinMutations joinMutations,
+  ModelMutations modelMutations,
   INotificationRecipientCreatedPublisher notificationCreatedPublisher
 ) : Handler<DataModelsChangedEventArgs>
 {
@@ -37,31 +36,23 @@ public class DataNotificationChangeHandler(
       return;
     }
 
-    // TODO: fetch representative also so it can be used for sending emails!
+    var recipients = await notificationQueries.Recipients(notifications);
 
-    var recipients = new List<NotificationRecipientModel>();
-    // NOTE: most likely it will be only one so it probably not N+1
-    foreach (var notification in notifications)
-    {
-      var notificationRecipients = await notificationQueries
-        .Recipients(notification);
-      recipients.AddRange(notificationRecipients);
-      foreach (var notificationRecipient in notificationRecipients)
+    notificationCreatedPublisher.Publish(
+      new NotificationRecipientsCreatedEventArgs
       {
-        var notificationCreatedEventArgs =
-          new NotificationRecipientCreatedEventArgs
-          {
-            Notification = notification,
-            Recipient = notificationRecipient
-          };
-        notificationCreatedPublisher.Publish(notificationCreatedEventArgs);
-      }
-    }
+        NotificationRecipients = recipients
+          .GroupBy(x => x.NotificationId)
+          .Select(
+            x =>
+              new NotificationRecipientsCreatedEventArgsNotificationRecipients
+              {
+                Notification = notifications.First(y => y.Id == x.Key),
+                Recipients = x.ToList()
+              })
+          .ToList()
+      });
 
-    // FIXME: this one is N+1
-    foreach (var recipient in recipients)
-    {
-      await joinMutations.Create(recipient, cancellationToken);
-    }
+    await modelMutations.Create(recipients, cancellationToken);
   }
 }

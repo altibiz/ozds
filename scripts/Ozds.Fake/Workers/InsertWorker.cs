@@ -1,9 +1,9 @@
 using Ozds.Business.Aggregation;
 using Ozds.Business.Conversion;
+using Ozds.Business.Queries;
 using Ozds.Fake.Client;
 using Ozds.Fake.Cloning;
 using Ozds.Fake.Conversion;
-using Ozds.Fake.Extensions;
 using Ozds.Fake.Generation;
 using Ozds.Fake.Identification;
 using Ozds.Fake.Workers.Abstractions;
@@ -24,7 +24,8 @@ public class InsertWorker(
   MeasurementAggregateConverter aggregateConverter,
   AggregateUpserter aggregateUpserter,
   MeasurementCloner cloner,
-  InsertClient client
+  InsertClient client,
+  EnumerableQueries enumerable
 ) : IEnumeratedBackgroundServiceWorker<InsertWorkerItem>
 {
   public async Task ExecuteAsync(
@@ -65,8 +66,8 @@ public class InsertWorker(
       stoppingToken
     );
 
-    await foreach (var batch in cloned
-      .Batch(item.BatchSize, stoppingToken))
+    await foreach (var batch in enumerable
+      .Batch(cloned, item.BatchSize, stoppingToken))
     {
       await client.Insert(batch, stoppingToken);
     }

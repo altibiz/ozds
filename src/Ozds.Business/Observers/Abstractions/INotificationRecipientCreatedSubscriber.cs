@@ -4,6 +4,6 @@ namespace Ozds.Business.Observers.Abstractions;
 
 public interface INotificationRecipientCreatedSubscriber
   : ISubscriber<INotificationRecipientCreatedPublisher,
-    NotificationRecipientCreatedEventArgs>
+    NotificationRecipientsCreatedEventArgs>
 {
 }

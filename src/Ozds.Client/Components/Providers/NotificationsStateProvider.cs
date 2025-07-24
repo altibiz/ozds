@@ -82,11 +82,15 @@ public partial class NotificationsStateProvider : OzdsComponentBase
 
   private void OnNotificationRecipientCreated(
     object? sender,
-    NotificationRecipientCreatedEventArgs args
+    NotificationRecipientsCreatedEventArgs args
   )
   {
-    if (args.Recipient.RepresentativeId
-      != RepresentativeState.Representative.Id)
+    if (!args.NotificationRecipients
+      .Any(
+        x => x.Recipients
+          .Any(
+            y => y.RepresentativeId
+              == RepresentativeState.Representative.Id)))
     {
       return;
     }
@@ -94,7 +98,15 @@ public partial class NotificationsStateProvider : OzdsComponentBase
     InvokeAsync(
       () =>
       {
-        _state.Notifications.Add(args.Notification);
+        var notifications = args.NotificationRecipients
+          .Where(
+            x => x.Recipients
+              .Any(
+                y => y.RepresentativeId
+                  == RepresentativeState.Representative.Id))
+          .Select(x => x.Notification)
+          .ToList();
+        _state.Notifications.AddRange(notifications);
         StateHasChanged();
       });
   }

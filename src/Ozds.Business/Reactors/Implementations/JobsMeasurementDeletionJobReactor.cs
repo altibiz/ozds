@@ -40,7 +40,7 @@ public class JobsMeasurementDeletionJobHandler(
         TimeSpan.FromSeconds(
           options.Value.Reactor.MeasurementDeletionJobIntervalSeconds));
 
-    await mutations.DeleteMeasurementsOlderThan(
+    await mutations.DeleteOlderThan(
       dateFrom,
       cancellationToken
     );

@@ -16,9 +16,9 @@ public class AbbB2xMeasurementValidatorModelFaker(
   {
     base.Initialize(model, faker);
 
-    model.MinVoltage_V = faker.Random.Decimal(0, 240);
+    model.MinVoltage_V = faker.Random.Decimal(0, 200);
     model.MaxVoltage_V = faker.Random.Decimal(model.MinVoltage_V, 240 * 10);
-    model.MinCurrent_A = faker.Random.Decimal(0, 1000);
+    model.MinCurrent_A = faker.Random.Decimal(0, 10);
     model.MaxCurrent_A = faker.Random.Decimal(model.MinCurrent_A, 1000 * 10);
     model.MinActivePower_W = faker.Random.Decimal(0, 1000);
     model.MaxActivePower_W =

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
+using Ozds.Data.Entities.Composite;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 using Ozds.Data.Queries.Abstractions;
@@ -70,5 +71,30 @@ public class InvoiceQueries(
     return items
       .OfType<NetworkUserInvoiceEntity>()
       .ToPaginatedList(count);
+  }
+
+  public async Task<CalculatedNetworkUserInvoiceEntity?>
+    ReadCalculatedNetworkUserInvoice(
+      string id,
+      CancellationToken cancellationToken
+    )
+  {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+
+    var invoice = await context.NetworkUserInvoices
+      .Where(context.PrimaryKeyEquals<NetworkUserInvoiceEntity>(id))
+      .Include(invoice => invoice.NetworkUserCalculations)
+      .FirstOrDefaultAsync(cancellationToken);
+    if (invoice is null)
+    {
+      return null;
+    }
+
+    return new CalculatedNetworkUserInvoiceEntity
+    {
+      Calculations = invoice.NetworkUserCalculations.ToList(),
+      Invoice = invoice
+    };
   }
 }

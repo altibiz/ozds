@@ -45,8 +45,6 @@ public class
     if (
       memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Voltage_V)
       &&
-      measurement.Voltage_V.TariffUnary().DuplexAny().PhaseSum()
-      < MinVoltage_V * 3 &&
       measurement.Voltage_V.TariffUnary().DuplexAny().PhaseTrough()
       < MinVoltage_V
     )
@@ -61,8 +59,6 @@ public class
     if (
       memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Voltage_V)
       &&
-      measurement.Voltage_V.TariffUnary().DuplexAny().PhaseSum()
-      > MaxVoltage_V * 3 &&
       measurement.Voltage_V.TariffUnary().DuplexAny().PhasePeak() > MaxVoltage_V
     )
     {
@@ -76,8 +72,6 @@ public class
     if (
       memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Current_A)
       &&
-      measurement.Current_A.TariffUnary().DuplexAny().PhaseSum()
-      < MinCurrent_A * 3 &&
       measurement.Current_A.TariffUnary().DuplexAny().PhaseTrough()
       < MinCurrent_A
     )
@@ -92,8 +86,6 @@ public class
     if (
       memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Current_A)
       &&
-      measurement.Current_A.TariffUnary().DuplexAny().PhaseSum()
-      > MaxCurrent_A * 3 &&
       measurement.Current_A.TariffUnary().DuplexAny().PhasePeak() > MaxCurrent_A
     )
     {
@@ -107,10 +99,8 @@ public class
     if (
       memberName is null
         or nameof(SchneideriEM3xxxMeasurementModel.ActivePower_W) &&
-      measurement.ActivePower_W.TariffUnary().DuplexAny().PhaseSum() <
-      MinActivePower_W * 3 &&
-      measurement.ActivePower_W.TariffUnary().DuplexAny().PhaseTrough() <
-      MinActivePower_W
+      measurement.ActivePower_W.TariffUnary().DuplexAny().PhaseTrough()
+      < MinActivePower_W
     )
     {
       yield return new ValidationResult(
@@ -123,10 +113,8 @@ public class
     if (
       memberName is null
         or nameof(SchneideriEM3xxxMeasurementModel.ActivePower_W) &&
-      measurement.ActivePower_W.TariffUnary().DuplexAny().PhaseSum() >
-      MaxActivePower_W * 3 &&
-      measurement.ActivePower_W.TariffUnary().DuplexAny().PhasePeak() >
-      MaxActivePower_W
+      measurement.ActivePower_W.TariffUnary().DuplexAny().PhasePeak()
+      > MaxActivePower_W
     )
     {
       yield return new ValidationResult(
@@ -139,10 +127,8 @@ public class
     if (
       memberName is null
         or nameof(SchneideriEM3xxxMeasurementModel.ReactivePower_VAR) &&
-      measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhaseSum() <
-      MinReactivePower_VAR * 3 &&
-      measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhaseTrough() <
-      MinReactivePower_VAR
+      measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhaseTrough()
+      < MinReactivePower_VAR
     )
     {
       yield return new ValidationResult(
@@ -155,10 +141,8 @@ public class
     if (
       memberName is null
         or nameof(SchneideriEM3xxxMeasurementModel.ReactivePower_VAR) &&
-      measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhaseSum() >
-      MaxReactivePower_VAR * 3 &&
-      measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhasePeak() >
-      MaxReactivePower_VAR
+      measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhasePeak()
+      > MaxReactivePower_VAR
     )
     {
       yield return new ValidationResult(
@@ -171,10 +155,8 @@ public class
     if (
       memberName is null
         or nameof(SchneideriEM3xxxMeasurementModel.ApparentPower_VA) &&
-      measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhaseSum() <
-      MinApparentPower_VA * 3 &&
-      measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhaseTrough() <
-      MinApparentPower_VA
+      measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhaseTrough()
+      < MinApparentPower_VA
     )
     {
       yield return new ValidationResult(
@@ -187,10 +169,8 @@ public class
     if (
       memberName is null
         or nameof(SchneideriEM3xxxMeasurementModel.ApparentPower_VA) &&
-      measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhaseSum() >
-      MaxApparentPower_VA * 3 &&
-      measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhasePeak() >
-      MaxApparentPower_VA
+      measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhasePeak()
+      > MaxApparentPower_VA
     )
     {
       yield return new ValidationResult(

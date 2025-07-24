@@ -79,7 +79,7 @@ public partial class Paging<T> : OzdsComponentBase
         : Page is null && typeof(T).IsAssignableTo(typeof(IAuditable))
           ? () => ScopedServices
             .GetRequiredService<AuditableQueries>()
-            .ReadDynamic(
+            .Read(
               typeof(T),
               _pageNumber,
               CancellationToken,
@@ -91,10 +91,10 @@ public partial class Paging<T> : OzdsComponentBase
                 : x.Result.Items
                   .OfType<T>()
                   .ToPaginatedList(x.Result.TotalCount))
-          : Page is null && typeof(T).IsAssignableTo(typeof(IReadonly))
+          : Page is null && typeof(T).IsAssignableTo(typeof(IModel))
             ? () => ScopedServices
-              .GetRequiredService<ReadonlyQueries>()
-              .ReadDynamic(
+              .GetRequiredService<ModelQueries>()
+              .Read(
                 typeof(T),
                 _pageNumber,
                 CancellationToken,

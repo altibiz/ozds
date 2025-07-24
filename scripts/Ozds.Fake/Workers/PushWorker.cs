@@ -2,7 +2,6 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Queries;
 using Ozds.Fake.Client;
 using Ozds.Fake.Conversion;
-using Ozds.Fake.Extensions;
 using Ozds.Fake.Generation;
 using Ozds.Fake.Identification;
 using Ozds.Fake.Packing;
@@ -14,6 +13,7 @@ public record PushWorkerItem(
   DateTimeOffset DateFrom,
   DateTimeOffset DateTo,
   string MessengerId,
+  string MessengerApiKey,
   List<MeasurementLocationMeterId> Ids,
   int BatchSize,
   PushClientBufferBehavior BufferBehavior
@@ -25,7 +25,8 @@ public class PushWorker(
   PushRequestMeasurementConverter pushRequestConverter,
   MessengerPushRequestPacker packer,
   PushClient client,
-  ClockQueries clock
+  ClockQueries clock,
+  EnumerableQueries enumerable
 ) : IEnumeratedBackgroundServiceWorker<PushWorkerItem>
 {
   public async Task ExecuteAsync(
@@ -49,8 +50,8 @@ public class PushWorker(
       stoppingToken
     );
 
-    await foreach (var batch in requests
-      .Batch(item.BatchSize, stoppingToken))
+    await foreach (var batch in enumerable
+      .Batch(requests, item.BatchSize, stoppingToken))
     {
       var request = await packer.Pack(
         item.MessengerId,
@@ -61,6 +62,7 @@ public class PushWorker(
 
       await client.Push(
         item.MessengerId,
+        item.MessengerApiKey,
         item.BufferBehavior,
         request,
         stoppingToken

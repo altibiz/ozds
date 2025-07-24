@@ -7,7 +7,7 @@ namespace Ozds.Business.Validation.Implementations;
 
 public class MeasurementValidator(
   IServiceProvider serviceProvider,
-  ValidationCache cache
+  MeasurementValidatorByMeterCache cache
 ) : ConcreteModelValidator<IMeasurement>(serviceProvider)
 {
   public override async Task<List<ValidationResult>> ValidateAsync(

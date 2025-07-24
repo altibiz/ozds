@@ -29,12 +29,9 @@ public class DataNetworkUserChangeHandler(
       .Read<NetworkUserModel>(page, cancellationToken);
     while (networkUsers.Items.Count > 0)
     {
-      foreach (var networkUser in networkUsers.Items)
-      {
-        await manager.EnsureMonthlyBillingJob(
-          networkUser.Id,
-          cancellationToken);
-      }
+      await manager.EnsureMonthlyBillingJobs(
+        networkUsers.Items.Select(x => x.Id),
+        cancellationToken);
 
       networkUsers = await auditableQueries
         .Read<NetworkUserModel>(++page, cancellationToken);
@@ -45,33 +42,40 @@ public class DataNetworkUserChangeHandler(
     DataModelsChangedEventArgs eventArgs,
     CancellationToken cancellationToken)
   {
-    foreach (var entry in eventArgs.Models)
+    var added = eventArgs.Models
+      .Where(x => x.State == DataModelChangedState.Added)
+      .Select(x => x.Model)
+      .OfType<NetworkUserModel>()
+      .ToList();
+    if (added.Count > 0)
     {
-      if (entry.Model is not NetworkUserModel networkUser)
-      {
-        continue;
-      }
+      await manager.EnsureMonthlyBillingJobs(
+        added.Select(x => x.Id),
+        cancellationToken);
+    }
 
-      if (entry.State is DataModelChangedState.Added)
-      {
-        await manager.EnsureMonthlyBillingJob(
-          networkUser.Id,
-          cancellationToken);
-      }
+    var modified = eventArgs.Models
+      .Where(x => x.State == DataModelChangedState.Modified)
+      .Select(x => x.Model)
+      .OfType<NetworkUserModel>()
+      .ToList();
+    if (modified.Count > 0)
+    {
+      await manager.RescheduleMonthlyBillingJobs(
+        modified.Select(x => x.Id),
+        cancellationToken);
+    }
 
-      if (entry.State is DataModelChangedState.Removed)
-      {
-        await manager.UnscheduleMonthlyBillingJob(
-          networkUser.Id,
-          cancellationToken);
-      }
-
-      if (entry.State is DataModelChangedState.Modified)
-      {
-        await manager.RescheduleMonthlyBillingJob(
-          networkUser.Id,
-          cancellationToken);
-      }
+    var removed = eventArgs.Models
+      .Where(x => x.State == DataModelChangedState.Removed)
+      .Select(x => x.Model)
+      .OfType<NetworkUserModel>()
+      .ToList();
+    if (removed.Count > 0)
+    {
+      await manager.UnscheduleMonthlyBillingJobs(
+        removed.Select(x => x.Id),
+        cancellationToken);
     }
   }
 }

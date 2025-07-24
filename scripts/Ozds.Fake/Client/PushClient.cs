@@ -33,12 +33,14 @@ public class PushClient(
 
   public async Task Push(
     string messengerId,
+    string messengerApiKey,
     PushClientBufferBehavior bufferBehavior,
     IMessengerPushRequestEntity request,
     CancellationToken cancellationToken
   )
   {
     var client = httpClientFactory.CreateClient(Name);
+    client.DefaultRequestHeaders.Add("X-Api-Key", messengerApiKey);
     client.DefaultRequestHeaders.Add(
       "X-Buffer-Behavior", bufferBehavior.ToValue());
 

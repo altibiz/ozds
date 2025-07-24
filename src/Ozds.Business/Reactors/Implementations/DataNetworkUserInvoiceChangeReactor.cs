@@ -7,6 +7,8 @@ using Ozds.Business.Reactors.Base;
 using Ozds.Messaging.Contracts;
 using Ozds.Messaging.Sender.Abstractions;
 
+// FIXME: N + 1
+
 namespace Ozds.Business.Reactors.Implementations;
 
 public class DataNetworkUserInvoiceChangeReactor(

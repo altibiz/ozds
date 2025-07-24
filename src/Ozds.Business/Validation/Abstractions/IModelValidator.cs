@@ -11,4 +11,9 @@ public interface IValidator
     IModel model,
     CancellationToken cancellationToken
   );
+
+  public Task<List<ValidationResult>> ValidateAsync(
+    IEnumerable<IModel> models,
+    CancellationToken cancellationToken
+  );
 }

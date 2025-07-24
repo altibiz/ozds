@@ -10,8 +10,8 @@ public class PhaseMultiplyTest
   {
     return new List<(PhasicMeasure<decimal>, decimal, PhasicMeasure<decimal>)>
     {
-      (new SinglePhasicMeasureSum<decimal>(5), 2,
-        new SinglePhasicMeasureSum<decimal>(10)
+      (new SinglePhasicSumMeasure<decimal>(5), 2,
+        new SinglePhasicSumMeasure<decimal>(10)
       ),
 
       (new TriPhasicMeasure<decimal>(1, 2, 3), 3,

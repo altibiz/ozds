@@ -1,5 +1,4 @@
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Models.Base;
 using Ozds.Business.Mutations;
 using Ozds.Fake.Faking;
 using Ozds.Server.Test.Containers;
@@ -29,11 +28,7 @@ public class TestAuditableFixture(
       configure(auditable);
     }
 
-    var id = await mutations.Create(auditable, cancellationToken);
-    if (auditable is IdentifiableModel identifiable)
-    {
-      identifiable.Id = id;
-    }
+    await mutations.Create(auditable, cancellationToken);
 
     return auditable;
   }
@@ -62,11 +57,7 @@ public class TestAuditableFixture(
       configure(auditable);
     }
 
-    var id = await mutations.Create(auditable, cancellationToken);
-    if (auditable is IdentifiableModel identifiable)
-    {
-      identifiable.Id = id;
-    }
+    await mutations.Create(auditable, cancellationToken);
 
     return auditable;
   }

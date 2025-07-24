@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Ozds.Business.Capabilities.Abstractions;
 using Ozds.Business.Capabilities.Implementations;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Complex;
 using Ozds.Business.Naming;
 
 namespace Ozds.Business.Models.Base;
@@ -19,6 +20,9 @@ public class MeterModel : AuditableModel, IMeter
 
   [Required]
   public required HashSet<PhaseModel> Phases { get; set; } = [];
+
+  [Required]
+  public required PeriodModel MaxInactivityPeriod { get; set; }
 
   public virtual ICapabilities Capabilities
   {

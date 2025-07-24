@@ -44,14 +44,14 @@ public abstract class
       return new MinMaxSpanningMeasure<decimal>(
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(ReactiveImportMin_kVARh),
-            new SinglePhasicMeasure<decimal>(ReactiveExportMin_kVARh)
+            new SinglePhasicSumMeasure<decimal>(ReactiveImportMin_kVARh),
+            new SinglePhasicSumMeasure<decimal>(ReactiveExportMin_kVARh)
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(ReactiveImportMax_kVARh),
-            new SinglePhasicMeasure<decimal>(ReactiveExportMax_kVARh)
+            new SinglePhasicSumMeasure<decimal>(ReactiveImportMax_kVARh),
+            new SinglePhasicSumMeasure<decimal>(ReactiveExportMax_kVARh)
           )
         )
       );
@@ -74,7 +74,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemModel
       return new UsageExpenditureMeasure<decimal>(
         new UnaryTariffMeasure<decimal>(
           new AnyDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(Price_EUR)
+            new SinglePhasicSumMeasure<decimal>(Price_EUR)
           )
         )
       );

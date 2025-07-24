@@ -37,12 +37,18 @@ public class TestMeasurementLocationFixture(
     var networkUserFixture = new TestNetworkUserFixture(composition);
 
     var networkUser = await networkUserFixture
-      .Create(cancellationToken);
+      .Create(cancellationToken, configurator.ConfigureNetworkUser);
 
     var meterFixture = new TestMeterFixture(composition);
 
     var meter = await meterFixture
-      .Create(cancellationToken, configurator.Meter);
+      .Create(
+        cancellationToken,
+        x =>
+        {
+          x.WithMeter(y => y.MessengerId = networkUser.Messenger.Id);
+          configurator.ConfigureMeter(x);
+        });
 
     var auditableFixture = new TestAuditableFixture(composition);
 
@@ -54,6 +60,7 @@ public class TestMeasurementLocationFixture(
           m.MeterId = meter.Meter.Id;
           m.NetworkUserCatalogueId = configurator
             .GetNetworkUserCatalogueId(networkUser.Location);
+          configurator.ConfigureMeasurementLocation(m);
         });
 
     return new MeasurementLocationWithNetworkUserAndMeter(
@@ -73,7 +80,22 @@ public class TestMeasurementLocationFixture(
 
   public class Configurator
   {
-    public Action<TestMeterFixture.Configurator> Meter { get; private set; } =
+    public Action<TestMeterFixture.Configurator> ConfigureMeter
+    {
+      get;
+      private set;
+    } =
+      _ => { };
+
+    public Action<TestNetworkUserFixture.Configurator> ConfigureNetworkUser
+    {
+      get;
+      private set;
+    } =
+      _ => { };
+
+    public Action<NetworkUserMeasurementLocationModel>
+      ConfigureMeasurementLocation { get; private set; } =
       _ => { };
 
     public Func<LocationModel, string> GetNetworkUserCatalogueId
@@ -86,7 +108,24 @@ public class TestMeasurementLocationFixture(
     public Configurator WithMeter(
       Action<TestMeterFixture.Configurator> configure)
     {
-      Meter = configure;
+      var prior = ConfigureMeter;
+      ConfigureMeter = x =>
+      {
+        prior(x);
+        configure(x);
+      };
+      return this;
+    }
+
+    public Configurator WithNetworkUser(
+      Action<TestNetworkUserFixture.Configurator> configure)
+    {
+      var prior = ConfigureNetworkUser;
+      ConfigureNetworkUser = x =>
+      {
+        prior(x);
+        configure(x);
+      };
       return this;
     }
 
@@ -95,6 +134,18 @@ public class TestMeasurementLocationFixture(
     )
     {
       GetNetworkUserCatalogueId = getNetworkUserCatalogueId;
+      return this;
+    }
+
+    public Configurator WithMeasurementLocation(
+      Action<NetworkUserMeasurementLocationModel> configure)
+    {
+      var prior = ConfigureMeasurementLocation;
+      ConfigureMeasurementLocation = x =>
+      {
+        prior(x);
+        configure(x);
+      };
       return this;
     }
   }

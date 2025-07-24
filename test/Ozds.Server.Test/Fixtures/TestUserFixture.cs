@@ -100,8 +100,8 @@ public class TestUserFixture(
       cancellationToken
     );
 
-    var joinMutations = scope.ServiceProvider
-      .GetRequiredService<JoinMutations>();
+    var modelMutations = scope.ServiceProvider
+      .GetRequiredService<ModelMutations>();
     if (locations is not null)
     {
       foreach (var location in locations)
@@ -111,7 +111,7 @@ public class TestUserFixture(
           RepresentativeId = representative.Id,
           LocationId = location.Id
         };
-        await joinMutations.Create(
+        await modelMutations.Create(
           locationRepresentative,
           cancellationToken
         );
@@ -127,7 +127,7 @@ public class TestUserFixture(
           RepresentativeId = representative.Id,
           NetworkUserId = networkUser.Id
         };
-        await joinMutations.Create(
+        await modelMutations.Create(
           networkUserRepresentative,
           cancellationToken
         );

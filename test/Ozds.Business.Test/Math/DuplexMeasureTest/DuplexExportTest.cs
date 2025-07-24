@@ -10,9 +10,9 @@ public class DuplexExportTest
     return new List<(DuplexMeasure<decimal>, PhasicMeasure<decimal>)>
     {
       (new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasureSum<decimal>(5),
-          new SinglePhasicMeasureSum<decimal>(3)),
-        new SinglePhasicMeasureSum<decimal>(3)
+          new SinglePhasicSumMeasure<decimal>(5),
+          new SinglePhasicSumMeasure<decimal>(3)),
+        new SinglePhasicSumMeasure<decimal>(3)
       ),
       (new ImportExportDuplexMeasure<decimal>(
           new TriPhasicMeasure<decimal>(6, 8, 10),

@@ -25,8 +25,8 @@ public partial class NetworkUserInvoicePreviewDocumentPage : OzdsComponentBase
     var (from, to) = TimeQueries.GetMonthRange(Year, Month);
 
     var invoice = await ScopedServices
-      .GetRequiredService<NetworkUserInvoiceIssuer>()
-      .PreviewNetworkUserInvoiceAsync(
+      .GetRequiredService<NetworkUserInvoiceMutations>()
+      .Preview(
         NetworkUserId,
         from,
         to,

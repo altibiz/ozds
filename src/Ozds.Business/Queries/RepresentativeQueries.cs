@@ -35,7 +35,7 @@ public class RepresentativeQueries(
     }
 
     var representative = await dataAuditableQueries
-      .ReadSingle<RepresentativeEntity>(user.Id, cancellationToken);
+      .ReadById<RepresentativeEntity>(user.Id, cancellationToken);
     if (representative is null)
     {
       return new MaybeRepresentingUserModel
@@ -103,7 +103,7 @@ public class RepresentativeQueries(
     }
 
     var representative = await dataAuditableQueries
-      .ReadSingle<RepresentativeEntity>(user.Id, cancellationToken);
+      .ReadById<RepresentativeEntity>(user.Id, cancellationToken);
     if (representative is null)
     {
       return new MaybeRepresentingUserModel
@@ -151,7 +151,7 @@ public class RepresentativeQueries(
   )
   {
     var representative = await dataAuditableQueries
-      .ReadSingle<RepresentativeEntity>(id, cancellationToken);
+      .ReadById<RepresentativeEntity>(id, cancellationToken);
 
     return representative is null
       ? null

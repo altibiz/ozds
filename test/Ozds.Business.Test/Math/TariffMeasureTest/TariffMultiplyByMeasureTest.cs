@@ -12,16 +12,16 @@ public class TariffMultiplyByMeasureTest
     {
       (new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(5),
-            new SinglePhasicMeasureSum<decimal>(3))),
+            new SinglePhasicSumMeasure<decimal>(5),
+            new SinglePhasicSumMeasure<decimal>(3))),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(2),
-            new SinglePhasicMeasureSum<decimal>(1))),
+            new SinglePhasicSumMeasure<decimal>(2),
+            new SinglePhasicSumMeasure<decimal>(1))),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(10),
-            new SinglePhasicMeasureSum<decimal>(3)))
+            new SinglePhasicSumMeasure<decimal>(10),
+            new SinglePhasicSumMeasure<decimal>(3)))
       ),
       (new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
@@ -38,25 +38,25 @@ public class TariffMultiplyByMeasureTest
       ),
       (new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(1),
-            new SinglePhasicMeasureSum<decimal>(2)),
+            new SinglePhasicSumMeasure<decimal>(1),
+            new SinglePhasicSumMeasure<decimal>(2)),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(3),
-            new SinglePhasicMeasureSum<decimal>(4))),
+            new SinglePhasicSumMeasure<decimal>(3),
+            new SinglePhasicSumMeasure<decimal>(4))),
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(2),
-            new SinglePhasicMeasureSum<decimal>(3)),
+            new SinglePhasicSumMeasure<decimal>(2),
+            new SinglePhasicSumMeasure<decimal>(3)),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(4),
-            new SinglePhasicMeasureSum<decimal>(5))),
+            new SinglePhasicSumMeasure<decimal>(4),
+            new SinglePhasicSumMeasure<decimal>(5))),
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(2),
-            new SinglePhasicMeasureSum<decimal>(6)),
+            new SinglePhasicSumMeasure<decimal>(2),
+            new SinglePhasicSumMeasure<decimal>(6)),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(12),
-            new SinglePhasicMeasureSum<decimal>(20)))
+            new SinglePhasicSumMeasure<decimal>(12),
+            new SinglePhasicSumMeasure<decimal>(20)))
       ),
       (new NullTariffMeasure<decimal>(), new NullTariffMeasure<decimal>(),
         new NullTariffMeasure<decimal>()

@@ -12,13 +12,13 @@ public class TariffMultiplyByScalarTest
     {
       (new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(5),
-            new SinglePhasicMeasureSum<decimal>(3))),
+            new SinglePhasicSumMeasure<decimal>(5),
+            new SinglePhasicSumMeasure<decimal>(3))),
         2,
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(10),
-            new SinglePhasicMeasureSum<decimal>(6)))
+            new SinglePhasicSumMeasure<decimal>(10),
+            new SinglePhasicSumMeasure<decimal>(6)))
       ),
 
       (new UnaryTariffMeasure<decimal>(
@@ -34,19 +34,19 @@ public class TariffMultiplyByScalarTest
 
       (new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(1),
-            new SinglePhasicMeasureSum<decimal>(2)),
+            new SinglePhasicSumMeasure<decimal>(1),
+            new SinglePhasicSumMeasure<decimal>(2)),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(3),
-            new SinglePhasicMeasureSum<decimal>(4))),
+            new SinglePhasicSumMeasure<decimal>(3),
+            new SinglePhasicSumMeasure<decimal>(4))),
         2,
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(2),
-            new SinglePhasicMeasureSum<decimal>(4)),
+            new SinglePhasicSumMeasure<decimal>(2),
+            new SinglePhasicSumMeasure<decimal>(4)),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(6),
-            new SinglePhasicMeasureSum<decimal>(8)))
+            new SinglePhasicSumMeasure<decimal>(6),
+            new SinglePhasicSumMeasure<decimal>(8)))
       ),
 
       (new NullTariffMeasure<decimal>(), 2, new NullTariffMeasure<decimal>())
