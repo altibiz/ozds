@@ -8,6 +8,7 @@ public class PhasePeakTest
   {
     return new List<PhasicMeasure<decimal>>
     {
+      new SinglePhasicSumMeasure<decimal>(18),
       new TriPhasicMeasure<decimal>(1, 5.9m, 6),
       new TriPhasicMeasure<decimal>(0, -12, 6)
     };
@@ -17,7 +18,7 @@ public class PhasePeakTest
   {
     return new List<PhasicMeasure<decimal>>
     {
-      new SinglePhasicMeasureSum<decimal>(0),
+      new SinglePhasicSumMeasure<decimal>(0),
       new TriPhasicMeasure<decimal>(0, 0, 0),
       new NullPhasicMeasure<decimal>()
     };

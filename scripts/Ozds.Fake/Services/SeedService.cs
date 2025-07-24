@@ -49,6 +49,7 @@ public class SeedService(
       dateFrom,
       dateTo,
       arguments.MessengerId,
+      arguments.MessengerApiKey,
       ids,
       arguments.BatchSize,
       PushClientBufferBehavior.Aggregate

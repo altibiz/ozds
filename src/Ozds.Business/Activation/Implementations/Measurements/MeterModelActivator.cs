@@ -1,6 +1,7 @@
 using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Complex;
 using Ozds.Business.Naming;
 
 namespace Ozds.Business.Activation.Implementations.Measurements;
@@ -13,6 +14,9 @@ public class MeterModelActivator(IServiceProvider serviceProvider)
   private readonly MeterNamingConvention meterNamingConvention =
     serviceProvider.GetRequiredService<MeterNamingConvention>();
 
+  private readonly ModelActivator modelActivator =
+    serviceProvider.GetRequiredService<ModelActivator>();
+
   public override void Initialize(MeterModel model)
   {
     base.Initialize(model);
@@ -21,5 +25,6 @@ public class MeterModelActivator(IServiceProvider serviceProvider)
     model.MessengerId = null;
     model.MeasurementValidatorId = "0";
     model.Id = meterNamingConvention.IdPrefixForMeterType(model.GetType());
+    model.MaxInactivityPeriod = modelActivator.Activate<PeriodModel>();
   }
 }

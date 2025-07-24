@@ -13,18 +13,18 @@ public class MeasurementMutations(
   ILogger<MeasurementMutations> logger
 ) : IMutations
 {
-  public async Task DeleteMeasurementsOlderThan(
+  public async Task DeleteOlderThan(
     DateTimeOffset threshold,
     CancellationToken cancellationToken
   )
   {
-    await mutations.DeleteMeasurementsOlderThan(
+    await mutations.DeleteOlderThan(
       threshold,
       cancellationToken
     );
   }
 
-  public async Task<List<IMeasurement>> CreateMeasurements(
+  public async Task<List<IMeasurement>> Create(
     IEnumerable<IMeasurement> measurements,
     CancellationToken cancellationToken,
     bool triggerEvents = true
@@ -34,7 +34,7 @@ public class MeasurementMutations(
       .ToEntities<IMeasurementEntity>(measurements);
 
     var stopwatch = Stopwatch.StartNew();
-    var result = await mutations.CreateMeasurements(
+    var result = await mutations.Create(
       entities,
       cancellationToken,
       triggerEvents
@@ -52,7 +52,7 @@ public class MeasurementMutations(
     return models;
   }
 
-  public async Task<List<IMeasurement>> CreateMeasurements(
+  public async Task<List<IMeasurement>> Create(
     IAsyncEnumerable<IMeasurement> measurements,
     CancellationToken cancellationToken,
     bool triggerEvents = true
@@ -64,7 +64,7 @@ public class MeasurementMutations(
         cancellationToken);
 
     var stopwatch = Stopwatch.StartNew();
-    var result = await mutations.CreateMeasurements(
+    var result = await mutations.Create(
       entities,
       cancellationToken,
       triggerEvents

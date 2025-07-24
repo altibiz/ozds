@@ -1,21 +1,19 @@
 using Ozds.Business.Conversion;
+using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Entities.Base;
-using DataAuditableQueries = Ozds.Data.Queries.AuditableQueries;
-using DataReadonlyQueries = Ozds.Data.Queries.ReadonlyQueries;
+using DataEventQueries = Ozds.Data.Queries.EventQueries;
 
 namespace Ozds.Business.Queries;
 
 public class EventQueries(
-  DataReadonlyQueries queries,
-  DataAuditableQueries auditableQueries,
+  DataEventQueries queries,
   ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
-  public async Task<PaginatedList<T>> ReadByMinLevel<T>(
+  public async Task<PaginatedList<T>> Read<T>(
     LevelModel minLevel,
     int pageNumber,
     CancellationToken cancellationToken,
@@ -23,20 +21,24 @@ public class EventQueries(
   )
     where T : class, IEvent
   {
-    var models = await ReadByMinLevelDynamic(
-      typeof(T),
-      minLevel,
+    var entityType = modelEntityConverter.EntityType(typeof(T));
+
+    var minLevelEntity = minLevel.ToEntity();
+
+    var models = await queries.Read(
+      entityType,
+      minLevelEntity,
       pageNumber,
       cancellationToken,
       pageCount
     );
 
     return models.Items
-      .OfType<T>()
+      .Select(modelEntityConverter.ToModel<T>)
       .ToPaginatedList(models.TotalCount);
   }
 
-  public async Task<PaginatedList<IEvent>> ReadByMinLevelDynamic(
+  public async Task<PaginatedList<object>> Read(
     Type modelType,
     LevelModel minLevel,
     int pageNumber,
@@ -51,18 +53,18 @@ public class EventQueries(
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
+
     var minLevelEntity = minLevel.ToEntity();
 
-    var entities = await queries.ReadDynamic(
+    var entities = await queries.Read(
       entityType,
+      minLevelEntity,
       pageNumber,
       cancellationToken,
-      pageCount,
-      entity => ((EventEntity)entity).Level >= minLevelEntity
-    );
+      pageCount);
 
     return entities.Items
-      .Select(modelEntityConverter.ToModel<IEvent>)
+      .Select(modelEntityConverter.ToModel<object>)
       .ToPaginatedList(entities.TotalCount);
   }
 
@@ -101,27 +103,17 @@ public class EventQueries(
         $"Type {modelType} is not assignable to {typeof(IAuditEvent)}");
     }
 
-    var auditableEntityType = modelEntityConverter.EntityType(
-      auditable.GetType());
-    var entityTableName = await auditableQueries
-        .ReadEntityTableName(auditableEntityType, cancellationToken)
-      ?? throw new InvalidOperationException(
-        $"Type {auditableEntityType} doesn't have a table");
-    var entityTypeName = await auditableQueries
-        .ReadEntityTypeName(auditableEntityType, cancellationToken)
-      ?? throw new InvalidOperationException(
-        $"Type {auditableEntityType} doesn't have a type name");
-
     var entityType = modelEntityConverter.EntityType(modelType);
-    var entities = await queries.ReadDynamic(
+
+    var auditableEntity = modelEntityConverter
+      .ToEntity<IAuditableEntity>(auditable);
+
+    var entities = await queries.ReadAuditEventsDynamic(
       entityType,
+      auditableEntity,
       pageNumber,
       cancellationToken,
-      pageCount,
-      entity =>
-        ((AuditEventEntity)entity).AuditableEntityId == auditable.Id
-        && ((AuditEventEntity)entity).AuditableEntityType == entityTypeName
-        && ((AuditEventEntity)entity).AuditableEntityTable == entityTableName
+      pageCount
     );
 
     return entities.Items
@@ -129,29 +121,15 @@ public class EventQueries(
       .ToPaginatedList(entities.TotalCount);
   }
 
-  public async Task<IAuditable?> ReadAuditable(
-    IAuditEvent auditEvent,
+  public async Task<MessengerEventModel?> ReadLastByMessengerId(
+    string id,
     CancellationToken cancellationToken
   )
   {
-    var original = await queries.ReadSingle<IAuditEventEntity>(
-      auditEvent.Id,
-      cancellationToken);
-    if (original is null)
-    {
-      return null;
-    }
-
-    var type = await auditableQueries.ReadEntityType(
-      original.AuditableEntityType,
-      cancellationToken);
-    var entity = await auditableQueries.ReadSingleDynamic(
-      type,
-      original.AuditableEntityId,
-      cancellationToken);
+    var entity = await queries.ReadLastByMessengerId(id, cancellationToken);
 
     return entity is null
       ? null
-      : modelEntityConverter.ToModel<IAuditable>(entity);
+      : modelEntityConverter.ToModel<MessengerEventModel>(entity);
   }
 }

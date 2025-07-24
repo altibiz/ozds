@@ -191,8 +191,6 @@ public static class HostExtensions
 
         options.Timeout = TimeSpan.FromSeconds(timeout_s);
         options.BaseAddress = new Uri(clientOptions.BaseUrl);
-        options.DefaultRequestHeaders.Add(
-          "X-Api-Key", clientOptions.ApiKey);
       });
     builder.Services.AddScoped(typeof(PushClient));
     builder.Services.AddScoped(typeof(InsertClient));

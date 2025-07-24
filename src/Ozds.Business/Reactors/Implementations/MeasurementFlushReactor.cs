@@ -27,7 +27,7 @@ public class MeasurementFlushHandler(
     CancellationToken cancellationToken)
   {
     var measurements = eventArgs.Measurements;
-    await mutations.CreateMeasurements(measurements, cancellationToken);
+    await mutations.Create(measurements, cancellationToken);
   }
 
   public override async Task BeforeStopAsync(
@@ -35,6 +35,6 @@ public class MeasurementFlushHandler(
   )
   {
     var flushed = buffer.Flush(true);
-    await mutations.CreateMeasurements(flushed, cancellationToken);
+    await mutations.Create(flushed, cancellationToken);
   }
 }

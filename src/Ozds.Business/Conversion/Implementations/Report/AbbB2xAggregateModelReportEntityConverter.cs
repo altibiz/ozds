@@ -48,7 +48,8 @@ public class AbbB2xAggregateModelReportEntityConverter(
       .TariffBinary()
       .T1
       .DuplexImport()
-      .PhasePeak();
+      .AggregateMax()
+      .PhaseSum();
   }
 
   public override void InitializeModel(

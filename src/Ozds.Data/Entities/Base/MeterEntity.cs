@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Entities.Abstractions;
+using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 
@@ -19,6 +20,9 @@ public class MeterEntity
     NetworkUserCalculations { get; set; } =
     default!;
 
+  public virtual ICollection<MeterNotificationEntity>
+    InactivityNotifications { get; set; } = default!;
+
   public virtual MeasurementValidatorEntity MeasurementValidator { get; set; } =
     default!;
 
@@ -29,6 +33,8 @@ public class MeterEntity
   public float ConnectionPower_W { get; set; } = default!;
 
   public List<PhaseEntity> Phases { get; set; } = default!;
+
+  public PeriodEntity MaxInactivityPeriod { get; set; } = default!;
 
   public virtual string MeasurementValidatorId
   {
@@ -87,6 +93,12 @@ public class
     builder
       .Property("_measurementValidatorId")
       .HasColumnName("measurement_validator_id");
+
+    builder
+      .HasMany(nameof(MeterEntity.InactivityNotifications))
+      .WithOne(nameof(MeterNotificationEntity.Meter));
+
+    builder.ComplexProperty(nameof(MeterEntity.MaxInactivityPeriod));
 
     if (entity != typeof(MeterEntity))
     {

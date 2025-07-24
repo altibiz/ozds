@@ -9,6 +9,8 @@ public enum TopicEntity
   All,
   Messenger,
   MessengerInactivity,
+  Meter,
+  MeterInactivity,
   InvalidPush,
   Error,
   NetworkUserInvoiceState

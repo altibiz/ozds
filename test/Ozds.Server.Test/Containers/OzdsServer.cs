@@ -239,6 +239,10 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
           {
             "Ozds:Users:Ldap:UserEmailAttribute",
             composition.Lldap.UserEmailAttribute
+          },
+          {
+            "Ozds:Fake:Client:BaseUrl",
+            HttpBaseUrl
           }
         };
 

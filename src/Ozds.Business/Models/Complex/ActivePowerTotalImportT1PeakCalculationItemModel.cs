@@ -20,7 +20,7 @@ public abstract class
       return new PeakSpanningMeasure<decimal>(
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(Peak_kW),
+            new SinglePhasicSumMeasure<decimal>(Peak_kW),
             PhasicMeasure<decimal>.Null
           ),
           DuplexMeasure<decimal>.Null
@@ -45,7 +45,7 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemModel
       return new UsageExpenditureMeasure<decimal>(
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(Price_EUR),
+            new SinglePhasicSumMeasure<decimal>(Price_EUR),
             PhasicMeasure<decimal>.Null
           ),
           DuplexMeasure<decimal>.Null

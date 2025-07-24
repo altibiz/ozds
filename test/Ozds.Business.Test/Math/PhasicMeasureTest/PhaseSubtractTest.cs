@@ -10,9 +10,9 @@ public class PhaseSubtractTest
     return new List<(PhasicMeasure<decimal>, PhasicMeasure<decimal>,
       PhasicMeasure<decimal>)>
     {
-      (new SinglePhasicMeasureSum<decimal>(8),
-        new SinglePhasicMeasureSum<decimal>(3),
-        new SinglePhasicMeasureSum<decimal>(5)
+      (new SinglePhasicSumMeasure<decimal>(8),
+        new SinglePhasicSumMeasure<decimal>(3),
+        new SinglePhasicSumMeasure<decimal>(5)
       ),
 
       (new TriPhasicMeasure<decimal>(10, 7, 4),
@@ -21,7 +21,7 @@ public class PhaseSubtractTest
       ),
 
       (new NullPhasicMeasure<decimal>(),
-        new SinglePhasicMeasureSum<decimal>(2),
+        new SinglePhasicSumMeasure<decimal>(2),
         new NullPhasicMeasure<decimal>()
       )
     };

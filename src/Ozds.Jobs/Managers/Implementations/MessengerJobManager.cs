@@ -1,125 +1,121 @@
 using System.Globalization;
 using Ozds.Jobs.Manager.Abstractions;
-using Ozds.Jobs.Scheduler;
+using Ozds.Jobs.Managers.Base;
 using Ozds.Time.Queries.Abstractions;
 using Quartz;
 
 namespace Ozds.Jobs.Managers.Implementations;
 
+public sealed record MessengerJobContext(
+  string MessengerId,
+  TimeSpan InactivityDuration
+);
+
 public class MessengerJobManager(
-  OzdsSchedulerFactory schedulerFactory,
-  ILogger<MessengerJobManager> logger,
+  IServiceProvider serviceProvider,
   IClockQueries clock
-) : IMessengerJobManager
+) : JobManagerBase<MessengerJobContext>(serviceProvider), IMessengerJobManager
 {
-  public async Task EnsureInactivityMonitorJob(
-    string id,
-    TimeSpan inactivityDuration,
+  public Task EnsureInactivityMonitorJob(
+    MessengerInactivityMonitorDetails details,
     CancellationToken cancellationToken)
   {
-    logger.LogDebug(
-      "Ensuring {Group} job for {Id} with inactivity duration {Duration}",
-      nameof(MessengerInactivityMonitorJob),
-      id,
-      inactivityDuration
-    );
-
-    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
-
-    var triggerKey = new TriggerKey(id, nameof(MessengerInactivityMonitorJob));
-    if (!await scheduler.CheckExists(triggerKey, cancellationToken))
-    {
-      var job = CreateJob(id);
-      var trigger = CreateTrigger(id, inactivityDuration);
-      await scheduler.ScheduleJob(job, trigger, cancellationToken);
-    }
+    return Ensure(
+      new MessengerJobContext(details.MessengerId, details.InactivityDuration),
+      cancellationToken);
   }
 
-  public async Task RescheduleInactivityMonitorJob(
-    string id,
-    TimeSpan inactivityDuration,
+  public Task EnsureInactivityMonitorJobs(
+    IEnumerable<MessengerInactivityMonitorDetails> details,
     CancellationToken cancellationToken)
   {
-    logger.LogDebug(
-      "Rescheduling {Group} job for {Id} with inactivity duration {Duration}",
-      nameof(MessengerInactivityMonitorJob),
-      id,
-      inactivityDuration
-    );
-
-    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
-
-    var triggerKey = new TriggerKey(id, nameof(MessengerInactivityMonitorJob));
-    var trigger = CreateTrigger(id, inactivityDuration);
-
-    if (await scheduler.CheckExists(triggerKey, cancellationToken))
-    {
-      await scheduler.UnscheduleJob(triggerKey, cancellationToken);
-      var job = CreateJob(id);
-      await scheduler.ScheduleJob(job, trigger, cancellationToken);
-    }
-    else
-    {
-      var job = CreateJob(id);
-      await scheduler.ScheduleJob(job, trigger, cancellationToken);
-    }
+    return Ensure(
+      details.Select(
+        details =>
+          new MessengerJobContext(
+            details.MessengerId,
+            details.InactivityDuration)),
+      cancellationToken);
   }
 
-  public async Task UnscheduleInactivityMonitorJob(
+  public Task RescheduleInactivityMonitorJob(
+    MessengerInactivityMonitorDetails details,
+    CancellationToken cancellationToken)
+  {
+    return Reschedule(
+      new MessengerJobContext(details.MessengerId, details.InactivityDuration),
+      cancellationToken);
+  }
+
+  public Task RescheduleInactivityMonitorJobs(
+    IEnumerable<MessengerInactivityMonitorDetails> details,
+    CancellationToken cancellationToken)
+  {
+    return Reschedule(
+      details.Select(
+        details =>
+          new MessengerJobContext(
+            details.MessengerId,
+            details.InactivityDuration)),
+      cancellationToken);
+  }
+
+  public Task UnscheduleInactivityMonitorJob(
     string id,
     CancellationToken cancellationToken)
   {
-    logger.LogDebug(
-      "Unscheduling {Group} job for {Id}",
-      nameof(MessengerInactivityMonitorJob),
-      id
-    );
-
-    var scheduler = await schedulerFactory.GetScheduler(cancellationToken);
-
-    var triggerKey = new TriggerKey(id, nameof(MessengerInactivityMonitorJob));
-
-    if (await scheduler.CheckExists(triggerKey, cancellationToken))
-    {
-      await scheduler.UnscheduleJob(triggerKey, cancellationToken);
-    }
+    return Unschedule(
+      new MessengerJobContext(id, TimeSpan.Zero),
+      cancellationToken);
   }
 
-  private IJobDetail CreateJob(string id)
+  public Task UnscheduleInactivityMonitorJobs(
+    IEnumerable<string> ids,
+    CancellationToken cancellationToken)
+  {
+    return Unschedule(
+      ids.Select(id => new MessengerJobContext(id, TimeSpan.Zero)),
+      cancellationToken);
+  }
+
+  protected override IJobDetail CreateJob(MessengerJobContext context)
   {
     var now = clock.Now();
+
     return JobBuilder.Create<MessengerInactivityMonitorJob>()
-      .WithIdentity(id, nameof(MessengerInactivityMonitorJob))
-      .UsingJobData(nameof(MessengerInactivityMonitorJob.Id), id)
+      .UsingJobData(
+        nameof(MessengerInactivityMonitorJob.Id),
+        context.MessengerId)
       .UsingJobData(
         nameof(MessengerInactivityMonitorJob.ScheduledAt),
         now.ToString("o", CultureInfo.InvariantCulture))
       .Build();
   }
 
-  private ITrigger CreateTrigger(string id, TimeSpan inactivityDuration)
+  protected override ITrigger CreateTrigger(
+    TriggerBuilder builder,
+    MessengerJobContext context)
   {
     var now = clock.Now();
-    var startAt = now.Add(inactivityDuration);
+    var startAt = now.Add(context.InactivityDuration);
 
-    logger.LogDebug(
-      "{Now} Creating trigger for {Group} job"
-      + " for {Id} with inactivity duration {Duration}"
-      + " starting at {StartAt}",
-      now,
-      nameof(MessengerInactivityMonitorJob),
-      id,
-      inactivityDuration,
-      startAt
-    );
-
-    return TriggerBuilder.Create()
-      .WithIdentity(id, nameof(MessengerInactivityMonitorJob))
-      .ForJob(id, nameof(MessengerInactivityMonitorJob))
+    return builder
       .StartAt(startAt)
       .WithSimpleSchedule(
         x => x
           .WithMisfireHandlingInstructionNextWithExistingCount())
       .Build();
+  }
+
+  protected override IReadOnlyCollection<TriggerKey> CreateTriggerKeys(
+    MessengerJobContext context)
+  {
+    return
+    [
+      new TriggerKey(
+        context.MessengerId,
+        nameof(MessengerInactivityMonitorJob)
+      )
+    ];
   }
 }

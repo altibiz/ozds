@@ -41,13 +41,13 @@ public class WhiteLowNetworkUserCalculationModel
       return new MinMaxSpanningMeasure<decimal>(
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageActiveEnergyTotalImportT1
                 .Min_kWh),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageActiveEnergyTotalImportT2
                 .Min_kWh),
             new NullPhasicMeasure<decimal>()
@@ -55,13 +55,13 @@ public class WhiteLowNetworkUserCalculationModel
         ),
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageActiveEnergyTotalImportT2
                 .Max_kWh),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageActiveEnergyTotalImportT2
                 .Max_kWh),
             new NullPhasicMeasure<decimal>()
@@ -78,13 +78,13 @@ public class WhiteLowNetworkUserCalculationModel
       return new DualExpenditureMeasure<decimal>(
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageActiveEnergyTotalImportT1
                 .Price_EUR),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageActiveEnergyTotalImportT2
                 .Price_EUR),
             new NullPhasicMeasure<decimal>()
@@ -92,13 +92,13 @@ public class WhiteLowNetworkUserCalculationModel
         ),
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               SupplyActiveEnergyTotalImportT1
                 .Price_EUR),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               SupplyActiveEnergyTotalImportT2
                 .Price_EUR),
             new NullPhasicMeasure<decimal>()
@@ -115,17 +115,17 @@ public class WhiteLowNetworkUserCalculationModel
       return new MinMaxSpanningMeasure<decimal>(
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageReactiveEnergyTotalRampedT0.ReactiveImportMin_kVARh),
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageReactiveEnergyTotalRampedT0.ReactiveExportMin_kVARh)
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageReactiveEnergyTotalRampedT0.ReactiveImportMax_kVARh),
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageReactiveEnergyTotalRampedT0.ReactiveExportMax_kVARh)
           )
         )
@@ -140,7 +140,7 @@ public class WhiteLowNetworkUserCalculationModel
       return new UsageExpenditureMeasure<decimal>(
         new UnaryTariffMeasure<decimal>(
           new AnyDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageReactiveEnergyTotalRampedT0.Price_EUR)
           )
         )

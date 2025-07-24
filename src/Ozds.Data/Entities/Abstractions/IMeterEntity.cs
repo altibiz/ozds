@@ -1,3 +1,4 @@
+using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Data.Entities.Abstractions;
@@ -11,4 +12,6 @@ public interface IMeterEntity : IAuditableEntity
   public List<PhaseEntity> Phases { get; }
 
   public string MeasurementValidatorId { get; }
+
+  public PeriodEntity MaxInactivityPeriod { get; }
 }

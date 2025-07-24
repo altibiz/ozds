@@ -5,7 +5,7 @@ using Ozds.Business.Observers.EventArgs;
 namespace Ozds.Business.Observers.Implementations;
 
 public class NotificationCreatedObserver :
-  Observer<NotificationRecipientCreatedEventArgs>,
+  Observer<NotificationRecipientsCreatedEventArgs>,
   INotificationRecipientCreatedPublisher,
   INotificationRecipientCreatedSubscriber
 {

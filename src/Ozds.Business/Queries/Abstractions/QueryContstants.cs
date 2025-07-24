@@ -10,4 +10,6 @@ public static class QueryConstants
 
   // Set at 5000 because otherwise reduces aggregate resolution too early
   public const int DefaultMeasurementPageCount = 5000;
+
+  public const int DefaultReactorPageCount = 1000;
 }

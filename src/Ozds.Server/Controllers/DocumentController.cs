@@ -7,8 +7,8 @@ namespace Ozds.Server.Controllers;
 
 [Authorize]
 public class DocumentController(
-  CalculatedInvoiceQueries calculatedInvoiceQueries,
-  NetworkUserInvoiceIssuer networkUserInvoiceIssuer,
+  InvoiceQueries queries,
+  NetworkUserInvoiceMutations mutations,
   DocumentMutations documentMutations,
   LocalizationQueries localizationQueries,
   TimeQueries time
@@ -21,7 +21,7 @@ public class DocumentController(
   )
   {
     var invoice =
-      await calculatedInvoiceQueries.ReadCalculatedNetworkUserInvoice(
+      await queries.ReadCalculatedById(
         id,
         cancellationToken
       );
@@ -60,7 +60,7 @@ public class DocumentController(
   {
     var (start, end) = time.GetMonthRange(year, month);
 
-    var invoice = await networkUserInvoiceIssuer.PreviewNetworkUserInvoiceAsync(
+    var invoice = await mutations.Preview(
       networkUserId,
       start,
       end,

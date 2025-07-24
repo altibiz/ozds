@@ -2,55 +2,6 @@
 
 ```mermaid
 erDiagram
-    Document {
-        text Content
-        bigint Id PK
-        character_varying Type
-        bigint Version
-    }
-
-    Identifiers {
-        character_varying dimension PK
-        bigint nextval
-    }
-
-    UserByClaimIndex {
-        character_varying ClaimType
-        character_varying ClaimValue
-        bigint DocumentId FK
-        integer Id PK
-    }
-
-    UserByLoginInfoIndex {
-        bigint DocumentId FK
-        integer Id PK
-        character_varying LoginProvider
-        character_varying ProviderKey
-    }
-
-    UserByRoleNameIndex {
-        integer Count
-        integer Id PK
-        character_varying RoleName
-    }
-
-    UserByRoleNameIndex_Document {
-        bigint DocumentId FK
-        bigint UserByRoleNameIndexId FK
-    }
-
-    UserIndex {
-        integer AccessFailedCount
-        bigint DocumentId FK
-        integer Id PK
-        boolean IsEnabled
-        boolean IsLockoutEnabled
-        timestamp_without_time_zone LockoutEndUtc
-        character_varying NormalizedEmail
-        character_varying NormalizedUserName
-        character_varying UserId
-    }
-
     __OzdsDataDbContext {
         character_varying migration_id PK
         character_varying product_version
@@ -426,6 +377,8 @@ erDiagram
         character_varying kind
         text last_updated_by_id FK
         timestamp_with_time_zone last_updated_on
+        duration_entity max_inactivity_period_duration
+        bigint max_inactivity_period_multiplier
         bigint measurement_validator_id FK
         text messenger_id FK
         ARRAY phases
@@ -443,6 +396,8 @@ erDiagram
         text am_last_updated_by_id
         timestamp_with_time_zone am_last_updated_on
         text am_messenger_id
+        duration_entity am_mip_duration
+        bigint am_mip_multiplier
         ARRAY am_phases
         text am_title
         text anuml_calculation_remark
@@ -705,6 +660,7 @@ erDiagram
         bigint invoice_id FK
         character_varying kind
         text messenger_id FK
+        text meter_id FK
         text resolved_by_id FK
         timestamp_with_time_zone resolved_on
         text summary
@@ -1046,11 +1002,6 @@ erDiagram
         real voltage_l3_any_t0_v
     }
 
-    UserByClaimIndex }o--|| Document : "DocumentId"
-    UserByLoginInfoIndex }o--|| Document : "DocumentId"
-    UserByRoleNameIndex_Document }o--|| Document : "DocumentId"
-    UserIndex }o--|| Document : "DocumentId"
-    UserByRoleNameIndex_Document }o--|| UserByRoleNameIndex : "UserByRoleNameIndexId"
     abb_b2x_aggregates }o--|| measurement_locations : "measurement_location_id"
     abb_b2x_aggregates }o--|| meters : "meter_id"
     abb_b2x_measurements }o--|| measurement_locations : "measurement_location_id"
@@ -1092,6 +1043,7 @@ erDiagram
     meters }o--|| representatives : "deleted_by_id"
     meters }o--|| representatives : "last_updated_by_id"
     network_user_calculations }o--|| meters : "meter_id"
+    notifications }o--|| meters : "meter_id"
     schneider_iem3xxx_aggregates }o--|| meters : "meter_id"
     schneider_iem3xxx_measurements }o--|| meters : "meter_id"
     network_user_calculations }o--|| network_user_catalogues : "usage_network_user_catalogue_id"

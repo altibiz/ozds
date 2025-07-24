@@ -11,14 +11,14 @@ public class DuplexMultiplyByMeasureTest
       DuplexMeasure<decimal>)>
     {
       (new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasureSum<decimal>(5),
-          new SinglePhasicMeasureSum<decimal>(3)),
+          new SinglePhasicSumMeasure<decimal>(5),
+          new SinglePhasicSumMeasure<decimal>(3)),
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasureSum<decimal>(2),
-          new SinglePhasicMeasureSum<decimal>(1)),
+          new SinglePhasicSumMeasure<decimal>(2),
+          new SinglePhasicSumMeasure<decimal>(1)),
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasureSum<decimal>(10),
-          new SinglePhasicMeasureSum<decimal>(3))
+          new SinglePhasicSumMeasure<decimal>(10),
+          new SinglePhasicSumMeasure<decimal>(3))
       ),
 
       (new ImportExportDuplexMeasure<decimal>(
@@ -32,14 +32,14 @@ public class DuplexMultiplyByMeasureTest
           new TriPhasicMeasure<decimal>(4, 10, 18))
       ),
 
-      (new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(4)),
-        new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(3)),
-        new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(12))
+      (new NetDuplexMeasure<decimal>(new SinglePhasicSumMeasure<decimal>(4)),
+        new NetDuplexMeasure<decimal>(new SinglePhasicSumMeasure<decimal>(3)),
+        new NetDuplexMeasure<decimal>(new SinglePhasicSumMeasure<decimal>(12))
       ),
 
-      (new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(3)),
-        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(4)),
-        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(12))
+      (new AnyDuplexMeasure<decimal>(new SinglePhasicSumMeasure<decimal>(3)),
+        new AnyDuplexMeasure<decimal>(new SinglePhasicSumMeasure<decimal>(4)),
+        new AnyDuplexMeasure<decimal>(new SinglePhasicSumMeasure<decimal>(12))
       ),
 
       (new NullDuplexMeasure<decimal>(), new NullDuplexMeasure<decimal>(),

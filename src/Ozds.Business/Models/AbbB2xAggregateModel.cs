@@ -447,18 +447,18 @@ public class AbbB2xAggregateModel : AggregateModel
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new CumulativePhasicMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ActiveEnergyTotalImportT1_Wh.Min),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ActiveEnergyTotalImportT1_Wh.Max)
             ),
             PhasicMeasure<decimal>.Null
           ),
           new ImportExportDuplexMeasure<decimal>(
             new CumulativePhasicMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ActiveEnergyTotalImportT2_Wh.Min),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ActiveEnergyTotalImportT2_Wh.Max)
             ),
             PhasicMeasure<decimal>.Null
@@ -474,7 +474,7 @@ public class AbbB2xAggregateModel : AggregateModel
                   ActiveEnergyL2ImportT0_Wh.Min,
                   ActiveEnergyL3ImportT0_Wh.Min
                 ),
-                new SinglePhasicMeasureSum<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   ActiveEnergyTotalImportT0_Wh.Min)
               ]),
               new CompositePhasicMeasure<decimal>(
@@ -484,7 +484,7 @@ public class AbbB2xAggregateModel : AggregateModel
                   ActiveEnergyL2ImportT0_Wh.Max,
                   ActiveEnergyL3ImportT0_Wh.Max
                 ),
-                new SinglePhasicMeasureSum<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   ActiveEnergyTotalImportT0_Wh.Max)
               ])
             ),
@@ -496,7 +496,7 @@ public class AbbB2xAggregateModel : AggregateModel
                   ActiveEnergyL2ExportT0_Wh.Min,
                   ActiveEnergyL3ExportT0_Wh.Min
                 ),
-                new SinglePhasicMeasureSum<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   ActiveEnergyTotalExportT0_Wh.Min)
               ]),
               new CompositePhasicMeasure<decimal>(
@@ -506,7 +506,7 @@ public class AbbB2xAggregateModel : AggregateModel
                   ActiveEnergyL2ExportT0_Wh.Max,
                   ActiveEnergyL3ExportT0_Wh.Max
                 ),
-                new SinglePhasicMeasureSum<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   ActiveEnergyTotalExportT0_Wh.Max)
               ])
             )
@@ -530,7 +530,7 @@ public class AbbB2xAggregateModel : AggregateModel
                 ReactiveEnergyL2ImportT0_VARh.Min,
                 ReactiveEnergyL3ImportT0_VARh.Min
               ),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ReactiveEnergyTotalImportT0_VARh.Min)
             ]),
             new CompositePhasicMeasure<decimal>(
@@ -540,7 +540,7 @@ public class AbbB2xAggregateModel : AggregateModel
                 ReactiveEnergyL2ImportT0_VARh.Max,
                 ReactiveEnergyL3ImportT0_VARh.Max
               ),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ReactiveEnergyTotalImportT0_VARh.Max)
             ])
           ),
@@ -552,7 +552,7 @@ public class AbbB2xAggregateModel : AggregateModel
                 ReactiveEnergyL2ExportT0_VARh.Min,
                 ReactiveEnergyL3ExportT0_VARh.Min
               ),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ReactiveEnergyTotalExportT0_VARh.Min)
             ]),
             new CompositePhasicMeasure<decimal>(
@@ -562,7 +562,7 @@ public class AbbB2xAggregateModel : AggregateModel
                 ReactiveEnergyL2ExportT0_VARh.Max,
                 ReactiveEnergyL3ExportT0_VARh.Max
               ),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ReactiveEnergyTotalExportT0_VARh.Max)
             ])
           )
@@ -585,12 +585,12 @@ public class AbbB2xAggregateModel : AggregateModel
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new InstantaneousPhaseMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalImportT1_W.Avg),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalImportT1_W.Min),
               DerivedActivePowerTotalImportT1_W.MinTimestamp,
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalImportT1_W.Max),
               DerivedActivePowerTotalImportT1_W.MaxTimestamp
             ),
@@ -598,12 +598,12 @@ public class AbbB2xAggregateModel : AggregateModel
           ),
           new ImportExportDuplexMeasure<decimal>(
             new InstantaneousPhaseMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalImportT2_W.Avg),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalImportT2_W.Min),
               DerivedActivePowerTotalImportT2_W.MinTimestamp,
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalImportT2_W.Max),
               DerivedActivePowerTotalImportT2_W.MaxTimestamp
             ),
@@ -620,7 +620,7 @@ public class AbbB2xAggregateModel : AggregateModel
                   DerivedActivePowerL2ImportT0_W.Avg,
                   DerivedActivePowerL3ImportT0_W.Avg
                 ),
-                new SinglePhasicMeasureSum<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   DerivedActivePowerTotalImportT0_W.Avg)
               ]),
               new CompositePhasicMeasure<decimal>(
@@ -630,7 +630,7 @@ public class AbbB2xAggregateModel : AggregateModel
                   DerivedActivePowerL2ImportT0_W.Min,
                   DerivedActivePowerL3ImportT0_W.Min
                 ),
-                new SinglePhasicMeasureSum<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   DerivedActivePowerTotalImportT0_W.Min)
               ]),
               DerivedActivePowerTotalImportT0_W.MinTimestamp,
@@ -641,7 +641,7 @@ public class AbbB2xAggregateModel : AggregateModel
                   DerivedActivePowerL2ImportT0_W.Max,
                   DerivedActivePowerL3ImportT0_W.Max
                 ),
-                new SinglePhasicMeasureSum<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   DerivedActivePowerTotalImportT0_W.Max)
               ]),
               DerivedActivePowerTotalImportT0_W.MaxTimestamp
@@ -654,7 +654,7 @@ public class AbbB2xAggregateModel : AggregateModel
                   DerivedActivePowerL2ExportT0_W.Avg,
                   DerivedActivePowerL3ExportT0_W.Avg
                 ),
-                new SinglePhasicMeasureSum<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   DerivedActivePowerTotalExportT0_W.Avg)
               ]),
               new CompositePhasicMeasure<decimal>(
@@ -664,7 +664,7 @@ public class AbbB2xAggregateModel : AggregateModel
                   DerivedActivePowerL2ExportT0_W.Min,
                   DerivedActivePowerL3ExportT0_W.Min
                 ),
-                new SinglePhasicMeasureSum<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   DerivedActivePowerTotalExportT0_W.Min)
               ]),
               DerivedActivePowerTotalExportT0_W.MinTimestamp,
@@ -675,7 +675,7 @@ public class AbbB2xAggregateModel : AggregateModel
                   DerivedActivePowerL2ExportT0_W.Max,
                   DerivedActivePowerL3ExportT0_W.Max
                 ),
-                new SinglePhasicMeasureSum<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   DerivedActivePowerTotalExportT0_W.Max)
               ]),
               DerivedActivePowerTotalExportT0_W.MaxTimestamp
@@ -700,7 +700,7 @@ public class AbbB2xAggregateModel : AggregateModel
                 DerivedReactivePowerL2ImportT0_VAR.Avg,
                 DerivedReactivePowerL3ImportT0_VAR.Avg
               ),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedReactivePowerTotalImportT0_VAR.Avg)
             ]),
             new CompositePhasicMeasure<decimal>(
@@ -710,7 +710,7 @@ public class AbbB2xAggregateModel : AggregateModel
                 DerivedReactivePowerL2ImportT0_VAR.Min,
                 DerivedReactivePowerL3ImportT0_VAR.Min
               ),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedReactivePowerTotalImportT0_VAR.Min)
             ]),
             DerivedReactivePowerTotalImportT0_VAR.MinTimestamp,
@@ -721,7 +721,7 @@ public class AbbB2xAggregateModel : AggregateModel
                 DerivedReactivePowerL2ImportT0_VAR.Max,
                 DerivedReactivePowerL3ImportT0_VAR.Max
               ),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedReactivePowerTotalImportT0_VAR.Max)
             ]),
             DerivedReactivePowerTotalImportT0_VAR.MaxTimestamp
@@ -734,7 +734,7 @@ public class AbbB2xAggregateModel : AggregateModel
                 DerivedReactivePowerL2ExportT0_VAR.Avg,
                 DerivedReactivePowerL3ExportT0_VAR.Avg
               ),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedReactivePowerTotalExportT0_VAR.Avg)
             ]),
             new CompositePhasicMeasure<decimal>(
@@ -744,7 +744,7 @@ public class AbbB2xAggregateModel : AggregateModel
                 DerivedReactivePowerL2ExportT0_VAR.Min,
                 DerivedReactivePowerL3ExportT0_VAR.Min
               ),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedReactivePowerTotalExportT0_VAR.Min)
             ]),
             DerivedReactivePowerTotalExportT0_VAR.MinTimestamp,
@@ -755,7 +755,7 @@ public class AbbB2xAggregateModel : AggregateModel
                 DerivedReactivePowerL2ExportT0_VAR.Max,
                 DerivedReactivePowerL3ExportT0_VAR.Max
               ),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedReactivePowerTotalExportT0_VAR.Max)
             ]),
             DerivedReactivePowerTotalExportT0_VAR.MaxTimestamp

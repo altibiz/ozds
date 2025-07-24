@@ -13,8 +13,8 @@ public class BillingQueries(
   IDbContextFactory<DataDbContext> factory
 ) : IQueries
 {
-  public async Task<NetworkUserInvoiceIssuingBasisEntity>
-    ReadIssuingBasisForNetworkUser(
+  public async Task<NetworkUserInvoiceBasisEntity>
+    ReadInvoiceBasisForNetworkUser(
       string networkUserId,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
@@ -40,7 +40,7 @@ public class BillingQueries(
       cancellationToken
     );
 
-    return new NetworkUserInvoiceIssuingBasisEntity
+    return new NetworkUserInvoiceBasisEntity
     {
       Location = networkUser.Location,
       NetworkUser = networkUser,

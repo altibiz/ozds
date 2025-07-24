@@ -14,8 +14,8 @@ public partial class NetworkUserInvoiceDocumentPage : OzdsComponentBase
   private async Task<CalculatedNetworkUserInvoiceModelWithHtml?> OnLoadAsync()
   {
     var invoice = await ScopedServices
-      .GetRequiredService<CalculatedInvoiceQueries>()
-      .ReadCalculatedNetworkUserInvoice(Id, CancellationToken);
+      .GetRequiredService<InvoiceQueries>()
+      .ReadCalculatedById(Id, CancellationToken);
     if (invoice is null)
     {
       return null;

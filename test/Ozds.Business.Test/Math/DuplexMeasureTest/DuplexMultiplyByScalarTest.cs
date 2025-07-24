@@ -11,12 +11,12 @@ public class DuplexMultiplyByScalarTest
     return new List<(DuplexMeasure<decimal>, decimal, DuplexMeasure<decimal>)>
     {
       (new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasureSum<decimal>(5),
-          new SinglePhasicMeasureSum<decimal>(3)),
+          new SinglePhasicSumMeasure<decimal>(5),
+          new SinglePhasicSumMeasure<decimal>(3)),
         2,
         new ImportExportDuplexMeasure<decimal>(
-          new SinglePhasicMeasureSum<decimal>(10),
-          new SinglePhasicMeasureSum<decimal>(6))
+          new SinglePhasicSumMeasure<decimal>(10),
+          new SinglePhasicSumMeasure<decimal>(6))
       ),
 
       (new ImportExportDuplexMeasure<decimal>(
@@ -28,14 +28,14 @@ public class DuplexMultiplyByScalarTest
           new TriPhasicMeasure<decimal>(8, 10, 12))
       ),
 
-      (new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(4)),
+      (new NetDuplexMeasure<decimal>(new SinglePhasicSumMeasure<decimal>(4)),
         3,
-        new NetDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(12))
+        new NetDuplexMeasure<decimal>(new SinglePhasicSumMeasure<decimal>(12))
       ),
 
-      (new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(3)),
+      (new AnyDuplexMeasure<decimal>(new SinglePhasicSumMeasure<decimal>(3)),
         4,
-        new AnyDuplexMeasure<decimal>(new SinglePhasicMeasureSum<decimal>(12))
+        new AnyDuplexMeasure<decimal>(new SinglePhasicSumMeasure<decimal>(12))
       ),
 
       (new NullDuplexMeasure<decimal>(), 2, new NullDuplexMeasure<decimal>())

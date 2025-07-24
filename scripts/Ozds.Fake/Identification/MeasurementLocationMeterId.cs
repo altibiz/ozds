@@ -5,12 +5,12 @@ namespace Ozds.Fake.Identification;
 // TODO: this/calling code should be using naming conventions
 // for the meter model stuff
 
-public record struct MeasurementLocationMeterId(
+public record class MeasurementLocationMeterId(
   string MeasurementLocationId,
   string MeterId
 )
 {
-  public readonly string MeterModel
+  public string MeterModel
   {
     get { return string.Join('-', MeterId.Split('-').Take(2)); }
   }
@@ -22,6 +22,12 @@ public record struct MeasurementLocationMeterId(
     return new MeasurementLocationMeterId(parts[0], parts[1]);
   }
 }
+
+public record class MeasurementLocationMeterIdWithValidator(
+  string MeasurementLocationId,
+  string MeterId,
+  IMeasurementValidator Validator
+) : MeasurementLocationMeterId(MeasurementLocationId, MeterId);
 
 public static class IMeasurementExtensions
 {

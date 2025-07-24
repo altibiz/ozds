@@ -50,16 +50,28 @@ public abstract class
         break;
       }
 
-      var withCorrectedMeterId = _corrector.CorrectMeterId(
+      _corrector.CorrectMeterId(
         record,
         id.MeterId
       );
-      var withCorrectedMeasurementLocationId =
-        _corrector.CorrectMeasurementLocationId(
-          withCorrectedMeterId,
-          id.MeasurementLocationId
+
+      _corrector.CorrectMeasurementLocationId(
+        record,
+        id.MeasurementLocationId
+      );
+
+      if (id is MeasurementLocationMeterIdWithValidator
+        {
+          Validator: { } validator
+        })
+      {
+        _corrector.CorrectValidation(
+          record,
+          validator
         );
-      yield return withCorrectedMeasurementLocationId;
+      }
+
+      yield return record;
     }
   }
 
@@ -93,16 +105,28 @@ public abstract class
 
       foreach (var id in ids)
       {
-        var withCorrectedMeterId = _corrector.CorrectMeterId(
+        _corrector.CorrectMeterId(
           record,
           id.MeterId
         );
-        var withCorrectedMeasurementLocationId =
-          _corrector.CorrectMeasurementLocationId(
-            withCorrectedMeterId,
-            id.MeasurementLocationId
+
+        _corrector.CorrectMeasurementLocationId(
+          record,
+          id.MeasurementLocationId
+        );
+
+        if (id is MeasurementLocationMeterIdWithValidator
+          {
+            Validator: { } validator
+          })
+        {
+          _corrector.CorrectValidation(
+            record,
+            validator
           );
-        yield return withCorrectedMeasurementLocationId;
+        }
+
+        yield return record;
       }
     }
   }
@@ -142,17 +166,17 @@ public abstract class
             && record.Timestamp < dateToCsv))
       {
         var timestamp = currentDateFrom + (record.Timestamp - dateFromCsv);
-        var withCorrectedTimestamp = _corrector.CorrectTimestamp(
-          record,
+        var copied = _corrector.CopyRecord(record);
+        _corrector.CorrectTimestamp(
+          copied,
           timestamp
         );
-        var withCorrectedCumulatives = _corrector.CorrectCumulatives(
-          timestamp,
-          withCorrectedTimestamp,
+        _corrector.CorrectCumulatives(
+          copied,
           firstRecord,
           lastRecord
         );
-        yield return withCorrectedCumulatives;
+        yield return copied;
       }
 
       timeSpan -= dateToCsv - dateFromCsv;

@@ -292,14 +292,14 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
       return new UnaryTariffMeasure<decimal>(
         new NetDuplexMeasure<decimal>(
           new InstantaneousPhaseMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               ReactivePowerTotalNetT0_VAR.Avg
             ),
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               ReactivePowerTotalNetT0_VAR.Min
             ),
             ReactivePowerTotalNetT0_VAR.MinTimestamp,
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               ReactivePowerTotalNetT0_VAR.Max
             ),
             ReactivePowerTotalNetT0_VAR.MaxTimestamp
@@ -316,14 +316,14 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
       return new UnaryTariffMeasure<decimal>(
         new NetDuplexMeasure<decimal>(
           new InstantaneousPhaseMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               ApparentPowerTotalNetT0_VA.Avg
             ),
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               ApparentPowerTotalNetT0_VA.Min
             ),
             ApparentPowerTotalNetT0_VA.MinTimestamp,
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               ApparentPowerTotalNetT0_VA.Max
             ),
             ApparentPowerTotalNetT0_VA.MaxTimestamp
@@ -342,18 +342,18 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new CumulativePhasicMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ActiveEnergyTotalImportT1_Wh.Min),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ActiveEnergyTotalImportT1_Wh.Max)
             ),
             PhasicMeasure<decimal>.Null
           ),
           new ImportExportDuplexMeasure<decimal>(
             new CumulativePhasicMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ActiveEnergyTotalImportT2_Wh.Min),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ActiveEnergyTotalImportT2_Wh.Max)
             ),
             PhasicMeasure<decimal>.Null
@@ -362,15 +362,15 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new CumulativePhasicMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ActiveEnergyTotalImportT0_Wh.Min),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ActiveEnergyTotalImportT0_Wh.Max)
             ),
             new CumulativePhasicMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ActiveEnergyTotalExportT0_Wh.Max),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 ActiveEnergyTotalExportT0_Wh.Min)
             )
           )
@@ -386,15 +386,15 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
       return new UnaryTariffMeasure<decimal>(
         new ImportExportDuplexMeasure<decimal>(
           new CumulativePhasicMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               ReactiveEnergyTotalImportT0_VARh.Min),
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               ReactiveEnergyTotalImportT0_VARh.Max)
           ),
           new CumulativePhasicMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               ReactiveEnergyTotalExportT0_VARh.Max),
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               ReactiveEnergyTotalExportT0_VARh.Min)
           )
         )
@@ -416,12 +416,12 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new InstantaneousPhaseMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalImportT1_W.Avg),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalImportT1_W.Min),
               DerivedActivePowerTotalImportT1_W.MinTimestamp,
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalImportT1_W.Max),
               DerivedActivePowerTotalImportT1_W.MaxTimestamp
             ),
@@ -429,12 +429,12 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
           ),
           new ImportExportDuplexMeasure<decimal>(
             new InstantaneousPhaseMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalImportT2_W.Avg),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalImportT2_W.Min),
               DerivedActivePowerTotalImportT2_W.MinTimestamp,
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalImportT2_W.Max),
               DerivedActivePowerTotalImportT2_W.MaxTimestamp
             ),
@@ -451,7 +451,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
                   DerivedActivePowerL2ImportT0_W.Avg,
                   DerivedActivePowerL3ImportT0_W.Avg
                 ),
-                new SinglePhasicMeasureSum<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   DerivedActivePowerTotalImportT0_W.Avg)
               ]),
               new CompositePhasicMeasure<decimal>(
@@ -461,7 +461,7 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
                   DerivedActivePowerL2ImportT0_W.Min,
                   DerivedActivePowerL3ImportT0_W.Min
                 ),
-                new SinglePhasicMeasureSum<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   DerivedActivePowerTotalImportT0_W.Min)
               ]),
               DerivedActivePowerTotalImportT0_W.MinTimestamp,
@@ -472,18 +472,18 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
                   DerivedActivePowerL2ImportT0_W.Max,
                   DerivedActivePowerL3ImportT0_W.Max
                 ),
-                new SinglePhasicMeasureSum<decimal>(
+                new SinglePhasicSumMeasure<decimal>(
                   DerivedActivePowerTotalImportT0_W.Max)
               ]),
               DerivedActivePowerTotalImportT0_W.MaxTimestamp
             ),
             new InstantaneousPhaseMeasure<decimal>(
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalExportT0_W.Avg),
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalExportT0_W.Min),
               DerivedActivePowerTotalExportT0_W.MinTimestamp,
-              new SinglePhasicMeasureSum<decimal>(
+              new SinglePhasicSumMeasure<decimal>(
                 DerivedActivePowerTotalExportT0_W.Max),
               DerivedActivePowerTotalExportT0_W.MaxTimestamp
             )
@@ -500,22 +500,22 @@ public class SchneideriEM3xxxAggregateModel : AggregateModel
       return new UnaryTariffMeasure<decimal>(
         new ImportExportDuplexMeasure<decimal>(
           new InstantaneousPhaseMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               DerivedReactivePowerTotalImportT0_VAR.Avg),
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               DerivedReactivePowerTotalImportT0_VAR.Min),
             DerivedReactivePowerTotalImportT0_VAR.MinTimestamp,
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               DerivedReactivePowerTotalImportT0_VAR.Max),
             DerivedReactivePowerTotalImportT0_VAR.MaxTimestamp
           ),
           new InstantaneousPhaseMeasure<decimal>(
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               DerivedReactivePowerTotalExportT0_VAR.Avg),
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               DerivedReactivePowerTotalExportT0_VAR.Min),
             DerivedReactivePowerTotalExportT0_VAR.MinTimestamp,
-            new SinglePhasicMeasureSum<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               DerivedReactivePowerTotalExportT0_VAR.Max),
             DerivedReactivePowerTotalExportT0_VAR.MaxTimestamp
           )

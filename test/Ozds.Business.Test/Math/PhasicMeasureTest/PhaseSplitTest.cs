@@ -8,15 +8,15 @@ public class PhaseSplitTest
   {
     return new List<PhasicMeasure<decimal>>
     {
-      new SinglePhasicMeasureSum<decimal>(18),
+      new SinglePhasicSumMeasure<decimal>(18),
       new CompositePhasicMeasure<decimal>(
       [
-        new SinglePhasicMeasureSum<decimal>(3),
+        new SinglePhasicSumMeasure<decimal>(3),
         new TriPhasicMeasure<decimal>(6, 6, 6)
       ]),
       new CompositePhasicMeasure<decimal>(
       [
-        new SinglePhasicMeasureSum<decimal>(18),
+        new SinglePhasicSumMeasure<decimal>(18),
         new TriPhasicMeasure<decimal>(0, 0, 0)
       ]),
       new TriPhasicMeasure<decimal>(6, 6, 6)
@@ -27,10 +27,10 @@ public class PhaseSplitTest
   {
     return new List<PhasicMeasure<decimal>>
     {
-      new SinglePhasicMeasureSum<decimal>(0),
+      new SinglePhasicSumMeasure<decimal>(0),
       new CompositePhasicMeasure<decimal>(
       [
-        new SinglePhasicMeasureSum<decimal>(0),
+        new SinglePhasicSumMeasure<decimal>(0),
         new TriPhasicMeasure<decimal>(0, 0, 0)
       ]),
       new TriPhasicMeasure<decimal>(0, 0, 0),

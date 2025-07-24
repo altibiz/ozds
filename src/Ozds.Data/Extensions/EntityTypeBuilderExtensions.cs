@@ -116,7 +116,10 @@ public static class EntityTypeBuilderExtensions
       .ComplexType
       .ClrType
       .GetProperties()
-      .Where(property => property.PropertyType.Name.EndsWith("Entity"))
+      .Where(
+        property =>
+          property.PropertyType.Name.EndsWith("Entity")
+          && !property.PropertyType.IsEnum)
       .Except(propertiesToIgnore)
       .ToList();
 

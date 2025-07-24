@@ -1,3 +1,4 @@
+using Ozds.Business.Models.Abstractions;
 using Ozds.Fake.Correction.Abstractions;
 using Ozds.Fake.Records.Abstractions;
 
@@ -8,6 +9,12 @@ namespace Ozds.Fake.Correction;
 public class RecordCorrector(IServiceProvider serviceProvider)
 {
   private readonly IServiceProvider _serviceProvider = serviceProvider;
+
+  public IMeasurementRecord CopyRecord(IMeasurementRecord record)
+  {
+    var corrector = GetCorrector(record.GetType());
+    return corrector.CopyRecord(record);
+  }
 
   public IMeasurementRecord CorrectMeterId(
     IMeasurementRecord measurementRecord,
@@ -41,7 +48,6 @@ public class RecordCorrector(IServiceProvider serviceProvider)
   }
 
   public IMeasurementRecord CorrectCumulatives(
-    DateTimeOffset timestamp,
     IMeasurementRecord measurementRecord,
     IMeasurementRecord firstMeasurementRecord,
     IMeasurementRecord lastMeasurementRecord
@@ -50,10 +56,22 @@ public class RecordCorrector(IServiceProvider serviceProvider)
     var corrector = GetCorrector(measurementRecord.GetType());
 
     return corrector.CorrectCumulatives(
-      timestamp,
       measurementRecord,
       firstMeasurementRecord,
       lastMeasurementRecord
+    );
+  }
+
+  public IMeasurementRecord CorrectValidation(
+    IMeasurementRecord measurementRecord,
+    IMeasurementValidator validator
+  )
+  {
+    var corrector = GetCorrector(measurementRecord.GetType());
+
+    return corrector.CorrectValidation(
+      measurementRecord,
+      validator
     );
   }
 

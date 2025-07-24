@@ -30,4 +30,41 @@ public class MessengerQueries(
 
     return models;
   }
+
+  public async Task<IMessenger?> ReadByMeterId(
+    string meterId,
+    CancellationToken cancellationToken
+  )
+  {
+    var entity = await queries.ReadByMeterId(
+      meterId,
+      cancellationToken
+    );
+
+    var model = entity is null
+      ? null
+      : modelEntityConverter.ToModel<IMessenger>(entity);
+
+    return model;
+  }
+
+  public async Task<List<IMessenger?>> ReadByMeterIdsOrdered(
+    IEnumerable<string> meterIds,
+    CancellationToken cancellationToken
+  )
+  {
+    var entities = await queries.ReadByMeterIdsOrdered(
+      meterIds,
+      cancellationToken
+    );
+
+    var models = entities
+      .Select(
+        entity => entity is null
+          ? null
+          : modelEntityConverter.ToModel<IMessenger>(entity))
+      .ToList();
+
+    return models;
+  }
 }

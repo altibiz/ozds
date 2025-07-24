@@ -17,7 +17,7 @@ public class PhaseAverageTest
   {
     return new List<PhasicMeasure<decimal>>
     {
-      new SinglePhasicMeasureSum<decimal>(0),
+      new SinglePhasicSumMeasure<decimal>(0),
       new TriPhasicMeasure<decimal>(0, 0, 0),
       new NullPhasicMeasure<decimal>()
     };

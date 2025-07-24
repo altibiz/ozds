@@ -1,5 +1,6 @@
 using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Queries;
 using Ozds.Business.Validation;
@@ -17,13 +18,13 @@ public class AuditableMutations(
 )
   : IMutations
 {
-  public async Task<string> Create(
+  public async Task Create(
     IAuditable model,
     CancellationToken cancellationToken
   )
   {
     var validationResults = await validator
-      .ValidateAsync(model, cancellationToken);
+      .Validate(model, cancellationToken);
     if (validationResults.Count > 0)
     {
       var result = string.Join(Environment.NewLine, validationResults);
@@ -40,7 +41,45 @@ public class AuditableMutations(
 
     await mutations.Create(entity, cancellationToken);
 
-    return entity.Id;
+    if (model is IdentifiableModel identifiableModel)
+    {
+      identifiableModel.Id = entity.Id;
+    }
+  }
+
+  public async Task Create(
+    IEnumerable<IModel> models,
+    CancellationToken cancellationToken
+  )
+  {
+    var validationResults = await validator
+      .Validate(models, cancellationToken);
+    if (validationResults.Count > 0)
+    {
+      var result = string.Join(Environment.NewLine, validationResults);
+      throw new InvalidOperationException(
+        $"Model {models.GetType()} failed validation {result}"
+      );
+    }
+
+    var representativeId = await representativeQueries
+      .ReadAuthenticatedRepresentativeId(cancellationToken);
+
+    var entities = modelEntityConverter.ToEntities<IAuditableEntity>(models);
+    foreach (var entity in entities)
+    {
+      entity.RepresentativeId = representativeId;
+    }
+
+    await mutations.Create(entities, cancellationToken);
+
+    foreach (var (model, entity) in models.Zip(entities))
+    {
+      if (model is IdentifiableModel identifiableModel)
+      {
+        identifiableModel.Id = entity.Id;
+      }
+    }
   }
 
   public async Task Update(
@@ -49,7 +88,7 @@ public class AuditableMutations(
   )
   {
     var validationResults = await validator
-      .ValidateAsync(model, cancellationToken);
+      .Validate(model, cancellationToken);
     if (validationResults.Count > 0)
     {
       var result = string.Join(Environment.NewLine, validationResults);
@@ -73,7 +112,7 @@ public class AuditableMutations(
   )
   {
     var validationResults = await validator
-      .ValidateAsync(model, cancellationToken);
+      .Validate(model, cancellationToken);
     if (validationResults.Count > 0)
     {
       var result = string.Join(Environment.NewLine, validationResults);
@@ -97,7 +136,7 @@ public class AuditableMutations(
   )
   {
     var validationResults = await validator
-      .ValidateAsync(model, cancellationToken);
+      .Validate(model, cancellationToken);
     if (validationResults.Count > 0)
     {
       var result = string.Join(Environment.NewLine, validationResults);

@@ -9,7 +9,7 @@ public class PhaseAbsTest
   {
     return new List<PhasicMeasure<decimal>>
     {
-      new SinglePhasicMeasureSum<decimal>(6)
+      new SinglePhasicSumMeasure<decimal>(6)
     };
   }
 
@@ -28,7 +28,7 @@ public class PhaseAbsTest
   {
     return new List<PhasicMeasure<decimal>>
     {
-      new SinglePhasicMeasureSum<decimal>(0)
+      new SinglePhasicSumMeasure<decimal>(0)
     };
   }
 
@@ -47,7 +47,7 @@ public class PhaseAbsTest
   public void ReturnsAbsSinglePhaseSix(PhasicMeasure<decimal> x)
   {
     x.PhaseAbs().Should()
-      .BeEquivalentTo(new SinglePhasicMeasureSum<decimal>(6));
+      .BeEquivalentTo(new SinglePhasicSumMeasure<decimal>(6));
   }
 
   [Test]
@@ -63,7 +63,7 @@ public class PhaseAbsTest
   public void ReturnsAbsSinglePhaseZero(PhasicMeasure<decimal> x)
   {
     x.PhaseAbs().Should()
-      .BeEquivalentTo(new SinglePhasicMeasureSum<decimal>(0));
+      .BeEquivalentTo(new SinglePhasicSumMeasure<decimal>(0));
   }
 
   [Test]

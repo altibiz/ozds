@@ -179,10 +179,10 @@ public partial class Table<T> : OzdsComponentBase
       return result;
     }
 
-    if (typeof(T).IsAssignableTo(typeof(IReadonly)))
+    if (typeof(T).IsAssignableTo(typeof(IModel)))
     {
       var result = await ScopedServices
-        .GetRequiredService<ReadonlyQueries>()
+        .GetRequiredService<ModelQueries>()
         .Read<T>(
           pageNumber,
           CancellationToken,

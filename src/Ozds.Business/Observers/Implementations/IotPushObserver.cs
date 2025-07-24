@@ -31,7 +31,7 @@ public class IotPushRelay(
 }
 
 public class IotPushPipe(
-  MeasurementLocationCache Cache,
+  MeasurementLocationByMeterCache Cache,
   PushRequestMeasurementConverter PushRequestConverter
 ) : IPipe<PushEventArgs, IotPushEventArgs>
 {

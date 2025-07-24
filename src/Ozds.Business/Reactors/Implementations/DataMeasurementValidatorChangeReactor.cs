@@ -16,28 +16,31 @@ public class DataMeasurementValidatorChangeReactor(
 }
 
 public class DataMeasurementValidatorChangeHandler(
-  ValidationCache cache
+  MeasurementValidatorByMeterCache cache
 ) : Handler<DataModelsChangedEventArgs>
 {
   public override async Task Handle(
     DataModelsChangedEventArgs eventArgs,
     CancellationToken cancellationToken)
   {
-    foreach (var entry in eventArgs.Models)
+    var modified = eventArgs.Models
+      .Where(x => x.State == DataModelChangedState.Modified)
+      .Select(x => x.Model)
+      .OfType<IMeasurementValidator>()
+      .ToList();
+    if (modified.Count > 0)
     {
-      if (entry.Model is not IMeasurementValidator validator)
-      {
-        continue;
-      }
+      await cache.TryUpdateAsync(modified, cancellationToken);
+    }
 
-      if (entry.State is not DataModelChangedState.Modified)
-      {
-        await cache.TryUpdateAsync(validator, cancellationToken);
-      }
-      else if (entry.State is DataModelChangedState.Removed)
-      {
-        await cache.TryRemoveAsync(validator, cancellationToken);
-      }
+    var removed = eventArgs.Models
+      .Where(x => x.State == DataModelChangedState.Removed)
+      .Select(x => x.Model)
+      .OfType<IMeasurementValidator>()
+      .ToList();
+    if (removed.Count > 0)
+    {
+      await cache.TryRemoveAsync(removed, cancellationToken);
     }
   }
 }

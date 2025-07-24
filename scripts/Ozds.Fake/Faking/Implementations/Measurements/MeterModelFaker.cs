@@ -1,6 +1,7 @@
 using Bogus;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Complex;
 using Ozds.Business.Naming;
 using Ozds.Fake.Faking.Base;
 
@@ -12,6 +13,9 @@ public class MeterModelFaker(
 {
   private readonly MeterNamingConvention meterNamingConvention =
     serviceProvider.GetRequiredService<MeterNamingConvention>();
+
+  private readonly ModelFaker modelFaker =
+    serviceProvider.GetRequiredService<ModelFaker>();
 
   public override void Initialize(MeterModel model, Faker faker)
   {
@@ -26,5 +30,6 @@ public class MeterModelFaker(
     model.Id = meterNamingConvention.IdPrefixForMeterType(model.GetType())
       + "-"
       + string.Join(string.Empty, faker.Random.Digits(7));
+    model.MaxInactivityPeriod = modelFaker.Fake<PeriodModel>();
   }
 }

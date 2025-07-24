@@ -27,7 +27,14 @@ public class TestMeterFixture(
     var auditableFixture = new TestAuditableFixture(composition);
 
     var measurementValidator = await auditableFixture
-        .Create(configurator.MeasurementValidatorType, cancellationToken)
+        .Create(
+          configurator.MeasurementValidatorType,
+          cancellationToken,
+          measurementValidator =>
+          {
+            configurator.ConfigureMeasurementValidator(
+              (measurementValidator as MeasurementValidatorModel)!);
+          })
       as MeasurementValidatorModel;
     if (measurementValidator is null)
     {
@@ -39,10 +46,12 @@ public class TestMeterFixture(
 
     var meter = await auditableFixture
       .Create(
-        configurator.MeterType, cancellationToken,
+        configurator.MeterType,
+        cancellationToken,
         m =>
         {
           (m as MeterModel)!.MeasurementValidatorId = measurementValidator.Id;
+          configurator.ConfigureMeter((m as MeterModel)!);
         }) as MeterModel;
     if (meter is null)
     {
@@ -63,12 +72,32 @@ public class TestMeterFixture(
     public Type MeasurementValidatorType { get; private set; } =
       typeof(SchneideriEM3xxxMeasurementValidatorModel);
 
+    public Action<MeasurementValidatorModel> ConfigureMeasurementValidator
+    {
+      get;
+      private set;
+    } = _ => { };
+
     public Type MeterType { get; private set; } =
       typeof(SchneideriEM3xxxMeterModel);
+
+    public Action<MeterModel> ConfigureMeter { get; private set; } = _ => { };
 
     public Configurator WithMeterType(Type meterType)
     {
       MeterType = meterType;
+      return this;
+    }
+
+    public Configurator WithMeter(
+      Action<MeterModel> configure)
+    {
+      var prior = ConfigureMeter;
+      ConfigureMeter = x =>
+      {
+        prior(x);
+        configure(x);
+      };
       return this;
     }
 
@@ -77,6 +106,18 @@ public class TestMeterFixture(
     )
     {
       MeasurementValidatorType = measurementValidatorType;
+      return this;
+    }
+
+    public Configurator WithMeasurementValidator(
+      Action<MeasurementValidatorModel> configure)
+    {
+      var prior = ConfigureMeasurementValidator;
+      ConfigureMeasurementValidator = x =>
+      {
+        prior(x);
+        configure(x);
+      };
       return this;
     }
   }

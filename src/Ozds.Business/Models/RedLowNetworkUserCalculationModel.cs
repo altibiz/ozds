@@ -46,13 +46,13 @@ public class RedLowNetworkUserCalculationModel
       return new MinMaxSpanningMeasure<decimal>(
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageActiveEnergyTotalImportT1
                 .Min_kWh),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageActiveEnergyTotalImportT2
                 .Min_kWh),
             new NullPhasicMeasure<decimal>()
@@ -60,13 +60,13 @@ public class RedLowNetworkUserCalculationModel
         ),
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageActiveEnergyTotalImportT2
                 .Max_kWh),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageActiveEnergyTotalImportT2
                 .Max_kWh),
             new NullPhasicMeasure<decimal>()
@@ -83,13 +83,13 @@ public class RedLowNetworkUserCalculationModel
       return new DualExpenditureMeasure<decimal>(
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageActiveEnergyTotalImportT1
                 .Price_EUR),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageActiveEnergyTotalImportT2
                 .Price_EUR),
             new NullPhasicMeasure<decimal>()
@@ -97,13 +97,13 @@ public class RedLowNetworkUserCalculationModel
         ),
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               SupplyActiveEnergyTotalImportT1
                 .Price_EUR),
             new NullPhasicMeasure<decimal>()
           ),
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               SupplyActiveEnergyTotalImportT2
                 .Price_EUR),
             new NullPhasicMeasure<decimal>()
@@ -120,17 +120,17 @@ public class RedLowNetworkUserCalculationModel
       return new MinMaxSpanningMeasure<decimal>(
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageReactiveEnergyTotalRampedT0.ReactiveImportMin_kVARh),
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageReactiveEnergyTotalRampedT0.ReactiveExportMin_kVARh)
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageReactiveEnergyTotalRampedT0.ReactiveImportMax_kVARh),
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageReactiveEnergyTotalRampedT0.ReactiveExportMax_kVARh)
           )
         )
@@ -145,7 +145,7 @@ public class RedLowNetworkUserCalculationModel
       return new UsageExpenditureMeasure<decimal>(
         new UnaryTariffMeasure<decimal>(
           new AnyDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageReactiveEnergyTotalRampedT0.Price_EUR
             )
           )
@@ -161,7 +161,7 @@ public class RedLowNetworkUserCalculationModel
       return new PeakSpanningMeasure<decimal>(
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageActivePowerTotalImportT1Peak
                 .Amount_kW),
             new NullPhasicMeasure<decimal>()
@@ -179,7 +179,7 @@ public class RedLowNetworkUserCalculationModel
       return new UsageExpenditureMeasure<decimal>(
         new BinaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
               UsageActivePowerTotalImportT1Peak
                 .Price_EUR),
             new NullPhasicMeasure<decimal>()

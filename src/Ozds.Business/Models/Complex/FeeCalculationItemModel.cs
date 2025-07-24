@@ -16,7 +16,7 @@ public abstract class FeeCalculationItemModel : CalculationItemModel
       return new AvgSpanningMeasure<decimal>(
         new UnaryTariffMeasure<decimal>(
           new AnyDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(Amount_N)
+            new SinglePhasicSumMeasure<decimal>(Amount_N)
           )
         )
       );
@@ -38,7 +38,7 @@ public class UsageMeterFeeCalculationItemModel : FeeCalculationItemModel
       return new UsageExpenditureMeasure<decimal>(
         new UnaryTariffMeasure<decimal>(
           new AnyDuplexMeasure<decimal>(
-            new SinglePhasicMeasure<decimal>(Price_EUR)
+            new SinglePhasicSumMeasure<decimal>(Price_EUR)
           )
         )
       );

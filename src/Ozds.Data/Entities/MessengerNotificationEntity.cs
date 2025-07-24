@@ -18,7 +18,7 @@ public class MessengerInactivityNotificationEntityConfiguration :
   {
     builder
       .HasOne(nameof(MessengerNotificationEntity.Messenger))
-      .WithOne(nameof(MessengerEntity.InactivityNotifications))
+      .WithMany(nameof(MessengerEntity.InactivityNotifications))
       .HasForeignKey(nameof(MessengerNotificationEntity.MessengerId));
   }
 }
