@@ -45,7 +45,6 @@ public partial class Table<T> : OzdsComponentBase
   public RenderFragment<IEnumerable<T>>? Columns { get; set; } = default!;
 
   public int PageCount => QueryConstants.DefaultPageCount;
-  public int PageCount => QueryConstants.DefaultPageCount;
 
   [Parameter]
   public bool DynamicTitle { get; set; } = false;
@@ -71,10 +70,8 @@ public partial class Table<T> : OzdsComponentBase
   }
 
   private async Task OnDataGridSearch(string newSearchString)
-  private async Task OnDataGridSearch(string newSearchString)
   {
     searchString = newSearchString;
-    await (dataGrid?.ReloadServerData() ?? Task.CompletedTask);
     await (dataGrid?.ReloadServerData() ?? Task.CompletedTask);
   }
 
@@ -105,38 +102,37 @@ public partial class Table<T> : OzdsComponentBase
     }
     model = result;
 
-    var sortDef = state.SortDefinitions.FirstOrDefault();
-    if (sortDef is not null && dataGrid is not null)
-    {
-      var col = dataGrid.RenderedColumns
-          .First(c => c.PropertyName == sortDef.SortBy);
+    // var sortDef = state.SortDefinitions.FirstOrDefault();
+    // if (sortDef is not null && dataGrid is not null)
+    // {
+    //   var col = dataGrid.RenderedColumns
+    //       .First(c => c.PropertyName == sortDef.SortBy);
 
-      var colType = col.GetType();
-      var propPropInfo = colType.GetProperty(
-          "Property",
-          BindingFlags.Instance | BindingFlags.Public
-      );
-      if (propPropInfo == null)
-      {
-        throw new InvalidOperationException(
-              $"Column type {colType.Name} has no public ‘Property’ parameter"
-          );
-      }
+    //   var colType = col.GetType();
+    //   var propPropInfo = colType.GetProperty(
+    //       "Property",
+    //       BindingFlags.Instance | BindingFlags.Public
+    //   );
+    //   if (propPropInfo == null)
+    //   {
+    //     throw new InvalidOperationException(
+    //           $"Column type {colType.Name} has no public ‘Property’ parameter"
+    //       );
+    //   }
 
-      var lambda = (LambdaExpression?)propPropInfo.GetValue(col);
-      if (lambda == null)
-      {
-        throw new InvalidOperationException(
-              "The column’s Property parameter was null—are you sure this is a PropertyColumn?"
-          );
-      }
+    //   var lambda = (LambdaExpression?)propPropInfo.GetValue(col);
+    //   if (lambda == null)
+    //   {
+    //     throw new InvalidOperationException(
+    //           "The column’s Property parameter was null—are you sure this is a PropertyColumn?"
+    //       );
+    //   }
 
-      var pi = GetPropertyInfoFromExpression(lambda);
-    }
+    //   var pi = GetPropertyInfoFromExpression(lambda);
+    // }
 
     return new GridData<T>
     {
-      Items = result.Items,
       Items = result.Items,
       TotalItems = result.TotalCount
     };
@@ -144,7 +140,6 @@ public partial class Table<T> : OzdsComponentBase
 
   private async Task<PaginatedList<T>> OnPagingPage(int pageNumber)
   {
-    var result = await Fetch(pageNumber);
     var result = await Fetch(pageNumber);
     model = result;
     return result;
@@ -199,37 +194,37 @@ public partial class Table<T> : OzdsComponentBase
     return new PaginatedList<T>([], 0);
   }
 
-  private static PropertyInfo GetPropertyInfoFromExpression(LambdaExpression lambda)
-  {
-    Expression body = lambda.Body;
-    if (body is ConditionalExpression cond)
-    {
-      body = cond.IfFalse;
-    }
+  // private static PropertyInfo GetPropertyInfoFromExpression(LambdaExpression lambda)
+  // {
+  //   Expression body = lambda.Body;
+  //   if (body is ConditionalExpression cond)
+  //   {
+  //     body = cond.IfFalse;
+  //   }
 
-    while (body is UnaryExpression u &&
-           (u.NodeType == ExpressionType.Convert ||
-            u.NodeType == ExpressionType.ConvertChecked))
-    {
-      body = u.Operand;
-    }
+  //   while (body is UnaryExpression u &&
+  //          (u.NodeType == ExpressionType.Convert ||
+  //           u.NodeType == ExpressionType.ConvertChecked))
+  //   {
+  //     body = u.Operand;
+  //   }
 
-    if (body is not MemberExpression member)
-    {
-      throw new InvalidOperationException(
-          $"Expression is not a member access: {body.GetType().Name}");
-    }
+  //   if (body is not MemberExpression member)
+  //   {
+  //     throw new InvalidOperationException(
+  //         $"Expression is not a member access: {body.GetType().Name}");
+  //   }
 
-    if (member.Member is not PropertyInfo pi)
-    {
-      throw new InvalidOperationException(
-          $"Member '{member.Member.Name}' is not a property");
-    }
+  //   if (member.Member is not PropertyInfo pi)
+  //   {
+  //     throw new InvalidOperationException(
+  //         $"Member '{member.Member.Name}' is not a property");
+  //   }
 
-    return pi;
-  }
+  //   return pi;
+  // }
 
-  private async Task<PaginatedList<T>> AuditableSearch(string searchText, int pageNumber)
+  private async Task<PaginatedList<T>> AuditableSearch(string searchText, int tablePageNumber)
   {
     var auditableQueries = ScopedServices.GetRequiredService<AuditableQueries>();
 
@@ -237,14 +232,13 @@ public partial class Table<T> : OzdsComponentBase
                          .Title
                          .Contains(searchText);
 
-    var page = await auditableQueries.ComplexReadDynamic(
+    var page = await auditableQueries.ReadByTitle(
       modelType: typeof(T),
-      pageNumber: pageNumber,
+      title: searchText,
+      pageNumber: tablePageNumber,
       cancellationToken: CancellationToken,
       pageCount: PageCount,
-      where: whereExpr,
-      orderByDesc: null,
-      orderByAsc: null
+      deleted: Deleted
     );
 
     return new PaginatedList<T>(
@@ -256,15 +250,17 @@ public partial class Table<T> : OzdsComponentBase
   {
     if (Model is { } nonNullModel)
     {
-      var pageItems = nonNullModel
+      var items = nonNullModel
           .Where(AnalysisFilter)
+          .ToList();
+      var pagedItems = items
           .Skip(pageNumber * PageCount)
           .Take(PageCount)
           .ToList();
 
       var result = new PaginatedList<T>(
-        pageItems,
-        pageItems.Count
+        pagedItems,
+        items.Count
       );
       return result;
     }

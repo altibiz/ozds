@@ -121,36 +121,4 @@ public class ModelQueries(
       .Select(modelEntityConverter.ToModel)
       .ToPaginatedList(entities.TotalCount);
   }
-
-  public async Task<PaginatedList<object>> ComplexReadDynamic(
-    Type modelType,
-    int pageNumber,
-    CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount,
-    Expression<Func<object, bool>>? where = null,
-    Expression<Func<object, object>>? orderByDesc = null,
-    Expression<Func<object, object>>? orderByAsc = null
-  )
-  {
-    if (!modelType.IsAssignableTo(typeof(IAuditable)))
-    {
-      throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IAuditable)}");
-    }
-
-    var entityType = modelEntityConverter.EntityType(modelType);
-    var entities = await queries.ReadDynamic(
-      entityType,
-      pageNumber,
-      cancellationToken,
-      pageCount,
-      where,
-      orderByDesc,
-      orderByAsc
-    );
-
-    return entities.Items
-      .Select(modelEntityConverter.ToModel)
-      .ToPaginatedList(entities.TotalCount);
-  }
 }
