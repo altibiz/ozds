@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -7,12 +6,13 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Client.Components.Base;
-using Ozds.Data.Entities.Abstractions;
 
 namespace Ozds.Client.Components.Streaming;
 
 public partial class Table<T> : OzdsComponentBase
 {
+  private int _lastPageCount = 0;
+
   private MudDataGrid<T>? dataGrid;
 
   private PaginatedList<T> model = new([], 0);
@@ -43,9 +43,7 @@ public partial class Table<T> : OzdsComponentBase
   [Parameter]
   public RenderFragment<IEnumerable<T>>? Columns { get; set; } = default!;
 
-  private int _pageCount = QueryConstants.DefaultPageCount;
-  public int PageCount => _pageCount;
-  private int _lastPageCount = 0;
+  public int PageCount { get; private set; } = QueryConstants.DefaultPageCount;
 
   [Parameter]
   public bool DynamicTitle { get; set; } = false;
@@ -67,23 +65,25 @@ public partial class Table<T> : OzdsComponentBase
   protected override async Task OnAfterRenderAsync(bool firstRender)
   {
     if (firstRender && dataGrid is not null)
-      {
-          _lastPageCount = _pageCount;
-          await dataGrid.SetRowsPerPageAsync(_pageCount);
+    {
+      _lastPageCount = PageCount;
+      await dataGrid.SetRowsPerPageAsync(PageCount);
 
-          dataGrid.PagerStateHasChangedEvent += async () =>
-          {
-              var current = dataGrid.RowsPerPage;
-              if (current == _lastPageCount)
-            {
-              return;
-            }
-              _lastPageCount = current;
-              _pageCount = current;
-              await dataGrid.ReloadServerData();
-              StateHasChanged();
-          };
-      }
+      dataGrid.PagerStateHasChangedEvent += async () =>
+      {
+        var current = dataGrid.RowsPerPage;
+        if (current == _lastPageCount)
+        {
+          return;
+        }
+
+        _lastPageCount = current;
+        PageCount = current;
+        await dataGrid.ReloadServerData();
+        StateHasChanged();
+      };
+    }
+
     await base.OnAfterRenderAsync(firstRender);
   }
 
@@ -101,7 +101,7 @@ public partial class Table<T> : OzdsComponentBase
 
   private async Task<GridData<T>> OnDataGridServerData(GridState<T> state)
   {
-    PaginatedList<T> result = new PaginatedList<T>([], 0);
+    var result = new PaginatedList<T>([], 0);
     if (!string.IsNullOrEmpty(searchString))
     {
       if (typeof(T).IsAssignableTo(typeof(IIdentifiable)))
@@ -113,7 +113,8 @@ public partial class Table<T> : OzdsComponentBase
         result = AnalysisSearch(state.Page);
       }
     }
-    else if (result == new PaginatedList<T>([], 0) || string.IsNullOrEmpty(searchString))
+    else if (result == new PaginatedList<T>([], 0)
+      || string.IsNullOrEmpty(searchString))
     {
       if (PageAsync is not null)
       {
@@ -124,6 +125,7 @@ public partial class Table<T> : OzdsComponentBase
         result = await Fetch(state.Page);
       }
     }
+
     model = result;
 
     return new GridData<T>
@@ -189,16 +191,18 @@ public partial class Table<T> : OzdsComponentBase
     return new PaginatedList<T>([], 0);
   }
 
-  private async Task<PaginatedList<T>> IdentifiableSearch(string searchText, int tablePageNumber)
+  private async Task<PaginatedList<T>> IdentifiableSearch(
+    string searchText,
+    int tablePageNumber)
   {
     var modelQueries = ScopedServices.GetRequiredService<ModelQueries>();
 
     var page = await modelQueries.ReadByTitle(
-      modelType: typeof(T),
-      title: searchText,
-      pageNumber: tablePageNumber,
-      cancellationToken: CancellationToken,
-      pageCount: PageCount
+      typeof(T),
+      searchText,
+      tablePageNumber,
+      CancellationToken,
+      PageCount
     );
 
     return new PaginatedList<T>(
@@ -206,17 +210,18 @@ public partial class Table<T> : OzdsComponentBase
       page.TotalCount
     );
   }
+
   private PaginatedList<T> AnalysisSearch(int pageNumber)
   {
     if (Model is { } nonNullModel)
     {
       var items = nonNullModel
-          .Where(AnalysisFilter)
-          .ToList();
+        .Where(AnalysisFilter)
+        .ToList();
       var pagedItems = items
-          .Skip(pageNumber * PageCount)
-          .Take(PageCount)
-          .ToList();
+        .Skip(pageNumber * PageCount)
+        .Take(PageCount)
+        .ToList();
 
       var result = new PaginatedList<T>(
         pagedItems,
@@ -224,6 +229,7 @@ public partial class Table<T> : OzdsComponentBase
       );
       return result;
     }
+
     return new PaginatedList<T>([], 0);
   }
 
@@ -234,7 +240,8 @@ public partial class Table<T> : OzdsComponentBase
       return false;
     }
 
-    if (value is IIdentifiable rootIdent && rootIdent.Title.Contains(searchString!, StringComparison.OrdinalIgnoreCase))
+    if (value is IIdentifiable rootIdent && rootIdent.Title.Contains(
+      searchString!, StringComparison.OrdinalIgnoreCase))
     {
       return true;
     }
@@ -257,7 +264,8 @@ public partial class Table<T> : OzdsComponentBase
       }
 
       if (propVal is IIdentifiable childIdent
-        && childIdent.Title.Contains(searchString!, StringComparison.OrdinalIgnoreCase))
+        && childIdent.Title.Contains(
+          searchString!, StringComparison.OrdinalIgnoreCase))
       {
         return true;
       }

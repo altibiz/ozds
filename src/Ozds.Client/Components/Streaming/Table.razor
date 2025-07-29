@@ -19,7 +19,8 @@
       <MudText Typo="Typo.h6">
         @title
       </MudText>
-      @if(typeof(T).IsAssignableTo(typeof(IIdentifiable)) || typeof(T).IsAssignableTo(typeof(IAnalysis))){
+      @if (typeof(T).IsAssignableTo(typeof(IIdentifiable)) || typeof(T).IsAssignableTo(typeof(IAnalysis)))
+      {
         <MudTextField
           Class="mt-3"
           T="string"
@@ -79,19 +80,20 @@
           </MudText>
           <MudSpacer/>
 
-        @if(typeof(T).IsAssignableTo(typeof(IIdentifiable)) || typeof(T).IsAssignableTo(typeof(IAnalysis))){
-          <MudTextField
-            T="string"
-            Value="@searchString"
-            DebounceInterval="500"
-            OnDebounceIntervalElapsed="@OnDataGridSearch"
-            Placeholder="@Translate("Search")"
-            Adornment="Adornment.Start"
-            Immediate="true"
-            AdornmentIcon="@Icons.Material.Filled.Search"
-            IconSize="Size.Medium">
-          </MudTextField>
-        }
+          @if (typeof(T).IsAssignableTo(typeof(IIdentifiable)) || typeof(T).IsAssignableTo(typeof(IAnalysis)))
+          {
+            <MudTextField
+              T="string"
+              Value="@searchString"
+              DebounceInterval="500"
+              OnDebounceIntervalElapsed="@OnDataGridSearch"
+              Placeholder="@Translate("Search")"
+              Adornment="Adornment.Start"
+              Immediate="true"
+              AdornmentIcon="@Icons.Material.Filled.Search"
+              IconSize="Size.Medium">
+            </MudTextField>
+          }
         </ToolBarContent>
         <Columns>
           @if (Columns is null)

@@ -10,6 +10,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Added
+
 - search functionality for Analysis and Identifiable's in Tables
 - choosing page count
 

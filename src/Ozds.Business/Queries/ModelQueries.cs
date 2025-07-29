@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
@@ -121,6 +120,7 @@ public class ModelQueries(
       .Select(modelEntityConverter.ToModel)
       .ToPaginatedList(entities.TotalCount);
   }
+
   public async Task<PaginatedList<object>> ReadByTitle(
     Type modelType,
     string title,
@@ -146,10 +146,10 @@ public class ModelQueries(
     );
 
     var models = page.Items
-                     .Select(modelEntityConverter.ToModel)
-                     .ToList();
+      .Select(modelEntityConverter.ToModel)
+      .ToList();
 
     return models
-           .ToPaginatedList(page.TotalCount);
+      .ToPaginatedList(page.TotalCount);
   }
 }
