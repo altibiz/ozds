@@ -121,7 +121,6 @@ public class ModelQueries(
       .Select(modelEntityConverter.ToModel)
       .ToPaginatedList(entities.TotalCount);
   }
-
   public async Task<PaginatedList<object>> ReadByTitle(
     Type modelType,
     string title,

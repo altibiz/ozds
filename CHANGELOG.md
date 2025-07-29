@@ -10,6 +10,12 @@ and adheres to [Semantic Versioning](https://semver.org/).
 ## [Unreleased]
 
 ### Added
+- search functionality for Analysis and Identifiable's in Tables
+- choosing page count
+
+## [1.5.0] - 2025-07-28
+
+### Added
 
 - measurement deletion job/manager/observer in `Ozds.Jobs`
 - measurement deletion reactor in `Ozds.Business`
@@ -34,8 +40,6 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - e2e test fixture configuration
 - e2e test cancellation extensions
 - MeterQueries
-- search functionality for Analysis and Identifiable's in Tables
-- choosing page count
 
 ### Changed
 
@@ -460,6 +464,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.5.0]: https://github.com/altibiz/ozds/compare/1.4.2...1.5.0
 [1.4.2]: https://github.com/altibiz/ozds/compare/1.4.1...1.4.2
 [1.4.1]: https://github.com/altibiz/ozds/compare/1.4.0...1.4.1
 [1.4.0]: https://github.com/altibiz/ozds/compare/1.3.1...1.4.0

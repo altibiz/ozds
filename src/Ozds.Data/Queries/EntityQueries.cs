@@ -120,7 +120,6 @@ public class EntityQueries(
 
     return items.OfType<object>().ToPaginatedList(count);
   }
-
   public async Task<PaginatedList<object>> ReadByTitle(
     Type modelType,
     string title,
