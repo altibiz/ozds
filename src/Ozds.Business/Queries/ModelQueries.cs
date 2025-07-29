@@ -121,4 +121,36 @@ public class ModelQueries(
       .Select(modelEntityConverter.ToModel)
       .ToPaginatedList(entities.TotalCount);
   }
+
+  public async Task<PaginatedList<object>> ReadByTitle(
+    Type modelType,
+    string title,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
+  {
+    if (!typeof(IIdentifiable).IsAssignableFrom(modelType))
+    {
+      throw new InvalidOperationException(
+        $"Type {modelType} does not implement {nameof(IIdentifiable)}");
+    }
+
+    var entityType = modelEntityConverter.EntityType(modelType);
+
+    var page = await queries.ReadByTitle(
+      entityType,
+      title,
+      pageNumber,
+      cancellationToken,
+      pageCount
+    );
+
+    var models = page.Items
+                     .Select(modelEntityConverter.ToModel)
+                     .ToList();
+
+    return models
+           .ToPaginatedList(page.TotalCount);
+  }
 }

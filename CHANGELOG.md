@@ -34,6 +34,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - e2e test fixture configuration
 - e2e test cancellation extensions
 - MeterQueries
+- search functionality for Analysis and Identifiable's in Tables
+- choosing page count
 
 ### Changed
 

@@ -195,47 +195,4 @@ public class AuditableQueries(
 
     return items.OfType<object>().ToPaginatedList(count);
   }
-
-  public async Task<PaginatedList<object>> ReadByTitle(
-    Type entityType,
-    string title,
-    int pageNumber,
-    CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount,
-    bool deleted = false
-  )
-  {
-    if (!entityType.IsAssignableTo(typeof(IAuditableEntity)))
-    {
-      throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(IAuditableEntity)}"
-      );
-    }
-
-    await using var context = await factory.CreateDbContextAsync(cancellationToken);
-
-    var queryable = context
-      .GetQueryable<IAuditableEntity>(entityType);
-
-    var filtered = deleted
-      ? queryable.Where(x => x.IsDeleted)
-      : queryable.Where(x => !x.IsDeleted);
-
-    var withTitle = filtered.Where(x => x.Title.Contains(title));
-
-    var ordered = withTitle
-      .OrderByDescending(x => x.DeletedOn)
-      .ThenByDescending(x => x.LastUpdatedOn)
-      .ThenByDescending(x => x.CreatedOn);
-
-    var total = await withTitle.CountAsync(cancellationToken);
-    var items = await ordered
-      .Skip(pageNumber * pageCount)
-      .Take(pageCount)
-      .ToListAsync(cancellationToken);
-
-    return items
-      .OfType<object>()
-      .ToPaginatedList(total);
-  }
 }

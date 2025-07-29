@@ -209,34 +209,4 @@ public class AuditableQueries(
       ? null
       : modelEntityConverter.ToModel<IAuditable>(entity);
   }
-
-  public async Task<PaginatedList<object>> ReadByTitle(
-    Type modelType,
-    string title,
-    int pageNumber,
-    CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount,
-    bool deleted = false
-  )
-  {
-    if (!modelType.IsAssignableTo(typeof(IAuditable)))
-    {
-      throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IAuditable)}");
-    }
-
-    var entityType = modelEntityConverter.EntityType(modelType);
-    var entities = await queries.ReadByTitle(
-       entityType,
-       title,
-       pageNumber,
-       cancellationToken,
-       pageCount,
-       deleted
-    );
-
-    return entities.Items
-      .Select(modelEntityConverter.ToModel)
-      .ToPaginatedList(entities.TotalCount);
-  }
 }

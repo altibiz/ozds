@@ -19,7 +19,7 @@
       <MudText Typo="Typo.h6">
         @title
       </MudText>
-      @if(typeof(T).IsAssignableTo(typeof(IAuditable)) || typeof(T).IsAssignableTo(typeof(IAnalysis))){
+      @if(typeof(T).IsAssignableTo(typeof(IIdentifiable)) || typeof(T).IsAssignableTo(typeof(IAnalysis))){
         <MudTextField
           Class="mt-3"
           T="string"
@@ -70,9 +70,6 @@
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
       <MudDataGrid
         T="T"
-        Filterable="true"
-        FilterMode="DataGridFilterMode.Simple"
-        SortMode="@SortMode.Single"
         ServerData="@OnDataGridServerData"
         RowsPerPage="@PageCount"
         @ref="@dataGrid">
@@ -82,7 +79,7 @@
           </MudText>
           <MudSpacer/>
 
-        @if(typeof(T).IsAssignableTo(typeof(IAuditable)) || typeof(T).IsAssignableTo(typeof(IAnalysis))){
+        @if(typeof(T).IsAssignableTo(typeof(IIdentifiable)) || typeof(T).IsAssignableTo(typeof(IAnalysis))){
           <MudTextField
             T="string"
             Value="@searchString"
@@ -107,7 +104,7 @@
           }
         </Columns>
         <PagerContent>
-          <MudDataGridPager PageSizeSelector="false" T="T"/>
+          <MudDataGridPager T="T"/>
         </PagerContent>
       </MudDataGrid>
     </MudHidden>
