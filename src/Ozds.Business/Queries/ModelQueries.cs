@@ -129,12 +129,6 @@ public class ModelQueries(
     int pageCount = QueryConstants.DefaultPageCount
   )
   {
-    if (!typeof(IIdentifiable).IsAssignableFrom(modelType))
-    {
-      throw new InvalidOperationException(
-        $"Type {modelType} does not implement {nameof(IIdentifiable)}");
-    }
-
     var entityType = modelEntityConverter.EntityType(modelType);
 
     var page = await queries.ReadByTitle(

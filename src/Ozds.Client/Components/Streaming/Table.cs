@@ -80,7 +80,6 @@ public partial class Table<T> : OzdsComponentBase
         _lastPageCount = current;
         PageCount = current;
         await dataGrid.ReloadServerData();
-        StateHasChanged();
       };
     }
 
