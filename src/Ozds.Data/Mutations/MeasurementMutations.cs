@@ -137,19 +137,21 @@ public class MeasurementMutations(
       typeof(SchneideriEM3xxxMeasurementEntity)
     };
 
-    foreach (var (measurementType, index) in measurementTypes.Select(
-      (x, i) => (x, i)))
+    var retentionPeriod = DateTimeOffset.UtcNow - threshold;
+    var intervalString = $"{retentionPeriod.TotalDays:F0} days";
+
+    foreach (var measurementType in measurementTypes)
     {
+      var tableName = context.GetTableName(measurementType);
 #pragma warning disable EF1002 // Risk of vulnerability to SQL injection.
       await context.Database.ExecuteSqlRawAsync(
-        $"DELETE FROM {context.GetTableName(measurementType)} "
-        + $"WHERE timestamp < @p{index}",
-        [new NpgsqlParameter("@p" + index, threshold)],
+        $"SELECT drop_chunks('{tableName}', INTERVAL '{intervalString}')",
         cancellationToken
       );
 #pragma warning restore EF1002 // Risk of vulnerability to SQL injection.
     }
   }
+
 
   public async Task<List<IMeasurementEntity>> Create(
     IEnumerable<IMeasurementEntity> measurements,
