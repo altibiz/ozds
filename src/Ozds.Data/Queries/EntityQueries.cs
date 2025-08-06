@@ -120,4 +120,41 @@ public class EntityQueries(
 
     return items.OfType<object>().ToPaginatedList(count);
   }
+
+  public async Task<PaginatedList<object>> ReadByTitle(
+    Type modelType,
+    string title,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
+  {
+    if (!modelType.IsAssignableTo(typeof(IIdentifiableEntity)))
+    {
+      throw new InvalidOperationException(
+        $"Type {modelType} is not assignable to {typeof(IIdentifiableEntity)}"
+      );
+    }
+
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+
+    var queryable = context
+      .GetQueryable<IIdentifiableEntity>(modelType);
+
+    var filtered = queryable.Where(x => x.Title.Contains(title));
+
+    var ordered = filtered
+      .OrderByDescending(context.PrimaryKeyOf(modelType));
+
+    var total = await filtered.CountAsync(cancellationToken);
+    var items = await ordered
+      .Skip(pageNumber * pageCount)
+      .Take(pageCount)
+      .ToListAsync(cancellationToken);
+
+    return items
+      .OfType<object>()
+      .ToPaginatedList(total);
+  }
 }

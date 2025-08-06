@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Ozds.Business.Analysis.Abstractions;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;
@@ -10,6 +11,8 @@ namespace Ozds.Client.Components.Streaming;
 
 public partial class Table<T> : OzdsComponentBase
 {
+  private int _lastPageCount = 0;
+
   private MudDataGrid<T>? dataGrid;
 
   private PaginatedList<T> model = new([], 0);
@@ -40,8 +43,7 @@ public partial class Table<T> : OzdsComponentBase
   [Parameter]
   public RenderFragment<IEnumerable<T>>? Columns { get; set; } = default!;
 
-  [Parameter]
-  public int PageCount { get; set; } = QueryConstants.DefaultPageCount;
+  public int PageCount { get; private set; } = QueryConstants.DefaultPageCount;
 
   [Parameter]
   public bool DynamicTitle { get; set; } = false;
@@ -60,64 +62,28 @@ public partial class Table<T> : OzdsComponentBase
     return dataGrid?.ReloadServerData() ?? Task.CompletedTask;
   }
 
-  private bool FilterItem(T value)
+  protected override async Task OnAfterRenderAsync(bool firstRender)
   {
-    if (Filter is not null)
+    if (firstRender && dataGrid is not null)
     {
-      return Filter(value);
-    }
+      _lastPageCount = PageCount;
+      await dataGrid.SetRowsPerPageAsync(PageCount);
 
-    if (value is null)
-    {
-      return false;
-    }
-
-    if (string.IsNullOrEmpty(searchString))
-    {
-      return true;
-    }
-
-    if (value is IIdentifiable rootIdent && ContainsSearch(rootIdent.Title))
-    {
-      return true;
-    }
-
-    if (value is IIdentifiable)
-    {
-      return false;
-    }
-
-    var props = value.GetType()
-      .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-      .Where(p => p.CanRead);
-
-    foreach (var prop in props)
-    {
-      var propVal = prop.GetValue(value);
-      if (propVal == null)
+      dataGrid.PagerStateHasChangedEvent += async () =>
       {
-        continue;
-      }
+        var current = dataGrid.RowsPerPage;
+        if (current == _lastPageCount)
+        {
+          return;
+        }
 
-      if (propVal is IIdentifiable childIdent
-        && ContainsSearch(childIdent.Title))
-      {
-        return true;
-      }
+        _lastPageCount = current;
+        PageCount = current;
+        await dataGrid.ReloadServerData();
+      };
     }
 
-    return false;
-  }
-
-  private bool ContainsSearch(string? text)
-  {
-    if (string.IsNullOrWhiteSpace(searchString))
-    {
-      return true;
-    }
-
-    return !string.IsNullOrEmpty(text)
-      && text.Contains(searchString, StringComparison.OrdinalIgnoreCase);
+    await base.OnAfterRenderAsync(firstRender);
   }
 
   private Task OnPagingSearch(string newSearchString)
@@ -126,29 +92,44 @@ public partial class Table<T> : OzdsComponentBase
     return Task.CompletedTask;
   }
 
-  private Task OnDataGridSearch(string newSearchString)
+  private async Task OnDataGridSearch(string newSearchString)
   {
     searchString = newSearchString;
-    return dataGrid?.ReloadServerData() ?? Task.CompletedTask;
+    await (dataGrid?.ReloadServerData() ?? Task.CompletedTask);
   }
 
   private async Task<GridData<T>> OnDataGridServerData(GridState<T> state)
   {
-    PaginatedList<T> result;
-
-    if (PageAsync is not null)
+    var result = new PaginatedList<T>([], 0);
+    if (!string.IsNullOrEmpty(searchString))
     {
-      result = await PageAsync(state.Page);
+      if (typeof(T).IsAssignableTo(typeof(IIdentifiable)))
+      {
+        result = await IdentifiableSearch(searchString, state.Page);
+      }
+      else if (typeof(T).IsAssignableTo(typeof(IAnalysis)))
+      {
+        result = AnalysisSearch(state.Page);
+      }
     }
-    else
+    else if (result == new PaginatedList<T>([], 0)
+      || string.IsNullOrEmpty(searchString))
     {
-      result = await Fetch(state.Page);
+      if (PageAsync is not null)
+      {
+        result = await PageAsync(state.Page);
+      }
+      else
+      {
+        result = await Fetch(state.Page);
+      }
     }
 
     model = result;
+
     return new GridData<T>
     {
-      Items = result.Items.Where(FilterItem),
+      Items = result.Items,
       TotalItems = result.TotalCount
     };
   }
@@ -207,5 +188,88 @@ public partial class Table<T> : OzdsComponentBase
     }
 
     return new PaginatedList<T>([], 0);
+  }
+
+  private async Task<PaginatedList<T>> IdentifiableSearch(
+    string searchText,
+    int tablePageNumber)
+  {
+    var modelQueries = ScopedServices.GetRequiredService<ModelQueries>();
+
+    var page = await modelQueries.ReadByTitle(
+      typeof(T),
+      searchText,
+      tablePageNumber,
+      CancellationToken,
+      PageCount
+    );
+
+    return new PaginatedList<T>(
+      page.Items.Cast<T>().ToList(),
+      page.TotalCount
+    );
+  }
+
+  private PaginatedList<T> AnalysisSearch(int pageNumber)
+  {
+    if (Model is { } nonNullModel)
+    {
+      var items = nonNullModel
+        .Where(AnalysisFilter)
+        .ToList();
+      var pagedItems = items
+        .Skip(pageNumber * PageCount)
+        .Take(PageCount)
+        .ToList();
+
+      var result = new PaginatedList<T>(
+        pagedItems,
+        items.Count
+      );
+      return result;
+    }
+
+    return new PaginatedList<T>([], 0);
+  }
+
+  private bool AnalysisFilter(T value)
+  {
+    if (value is null)
+    {
+      return false;
+    }
+
+    if (value is IIdentifiable rootIdent && rootIdent.Title.Contains(
+      searchString!, StringComparison.OrdinalIgnoreCase))
+    {
+      return true;
+    }
+
+    if (value is IIdentifiable)
+    {
+      return false;
+    }
+
+    var props = value.GetType()
+      .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+      .Where(p => p.CanRead);
+
+    foreach (var prop in props)
+    {
+      var propVal = prop.GetValue(value);
+      if (propVal == null)
+      {
+        continue;
+      }
+
+      if (propVal is IIdentifiable childIdent
+        && childIdent.Title.Contains(
+          searchString!, StringComparison.OrdinalIgnoreCase))
+      {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

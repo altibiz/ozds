@@ -2,6 +2,8 @@
 
 @typeparam T
 @using MudBlazor
+@using Ozds.Business.Analysis.Abstractions
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Models
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
@@ -17,27 +19,26 @@
       <MudText Typo="Typo.h6">
         @title
       </MudText>
+      @if (typeof(T).IsAssignableTo(typeof(IIdentifiable)) || typeof(T).IsAssignableTo(typeof(IAnalysis)))
+      {
+        <MudTextField
+          Class="mt-3"
+          T="string"
+          Value="@searchString"
+          DebounceInterval="500"
+          OnDebounceIntervalElapsed="@OnPagingSearch"
+          Placeholder="@Translate("Search")"
+          Adornment="Adornment.Start"
+          Immediate="true"
+          AdornmentIcon="@Icons.Material.Filled.Search"
+          IconSize="Size.Medium"/>
+      }
       <Paging PageCount="@PageCount" T="T" PageAsync="@OnPagingPage">
+
         <Found Context="page">
-          @if (page.TotalCount > page.Items.Count)
-          {
-            <MudTextField
-              Class="mt-3"
-              T="string"
-              Value="@searchString"
-              ValueChanged="@OnPagingSearch"
-              Placeholder="@Translate("Search")"
-              Adornment="Adornment.Start"
-              Immediate="true"
-              AdornmentIcon="@Icons.Material.Filled.Search"
-              IconSize="Size.Medium"/>
-          }
 
           @foreach (var item in page.Items)
           {
-            if (!FilterItem(item))
-              continue;
-
             <MudPaper Class="pa-4 mb-2" Elevation="1">
               <TableCollapse>
                 <Summary>
@@ -70,8 +71,6 @@
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
       <MudDataGrid
         T="T"
-        Filterable="true"
-        SortMode="@SortMode.None"
         ServerData="@OnDataGridServerData"
         RowsPerPage="@PageCount"
         @ref="@dataGrid">
@@ -80,16 +79,21 @@
             @title
           </MudText>
           <MudSpacer/>
-          <MudTextField
-            T="string"
-            Value="@searchString"
-            ValueChanged="@OnDataGridSearch"
-            Placeholder="@Translate("Search")"
-            Adornment="Adornment.Start"
-            Immediate="true"
-            AdornmentIcon="@Icons.Material.Filled.Search"
-            IconSize="Size.Medium">
-          </MudTextField>
+
+          @if (typeof(T).IsAssignableTo(typeof(IIdentifiable)) || typeof(T).IsAssignableTo(typeof(IAnalysis)))
+          {
+            <MudTextField
+              T="string"
+              Value="@searchString"
+              DebounceInterval="500"
+              OnDebounceIntervalElapsed="@OnDataGridSearch"
+              Placeholder="@Translate("Search")"
+              Adornment="Adornment.Start"
+              Immediate="true"
+              AdornmentIcon="@Icons.Material.Filled.Search"
+              IconSize="Size.Medium">
+            </MudTextField>
+          }
         </ToolBarContent>
         <Columns>
           @if (Columns is null)
@@ -102,7 +106,7 @@
           }
         </Columns>
         <PagerContent>
-          <MudDataGridPager PageSizeSelector="false" T="T"/>
+          <MudDataGridPager T="T"/>
         </PagerContent>
       </MudDataGrid>
     </MudHidden>

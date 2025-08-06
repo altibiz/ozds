@@ -216,6 +216,8 @@
       </Key>
       <Metadata>
         Type 'Ozds.Business.Analysis.Analysis'
+
+        Type 'Ozds.Business.Analysis.Abstractions.IAnalysis'
       </Metadata>
       <Value>
         Analize
@@ -4048,6 +4050,8 @@
 
         Property 'Analysis' of type 'Ozds.Business.Analysis.MeterAnalysis' with overrides:
         ~MeterAnalysis.Analysis
+
+        Type 'Ozds.Business.Analysis.Abstractions.IAnalysis'
       </Metadata>
       <Value>
         Analiza
@@ -17573,8 +17577,8 @@
         Search
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/Table.razor' line 29 column 29
-        From file 'Ozds.Client/Components/Streaming/Table.razor' line 87 column 27
+        From file 'Ozds.Client/Components/Streaming/Table.razor' line 30 column 25
+        From file 'Ozds.Client/Components/Streaming/Table.razor' line 90 column 29
       </Metadata>
       <Value>
         Pretraži
