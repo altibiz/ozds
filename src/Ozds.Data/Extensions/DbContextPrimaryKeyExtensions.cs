@@ -224,7 +224,7 @@ public static class DbContextPrimaryKeyExtensions
             ?? throw new InvalidOperationException(
               $"No field info found for {property}"));
       var convertedId = Expression.Constant(
-        Convert.ChangeType(idValue, property.ClrType));
+        ConversionExtensions.ChangeKeyType(idValue, property.ClrType));
 
       var equalsExpression = Expression.Equal(propertyExpression, convertedId);
 
@@ -269,7 +269,7 @@ public static class DbContextPrimaryKeyExtensions
               ?? throw new InvalidOperationException(
                 $"No field info found for {property}"));
         var convertedIdPart = Expression.Constant(
-          Convert.ChangeType(idPart, property.ClrType));
+          ConversionExtensions.ChangeKeyType(idPart, property.ClrType));
 
         var equalsExpression =
           Expression.Equal(propertyExpression, convertedIdPart);

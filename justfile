@@ -131,6 +131,29 @@ translate:
       -o {{ translationsen }} \
       -r
 
+sdk:
+    dotnet nswag openapi2csclient \
+      /input:"http://localhost:5000/api/v1/openapi.json" \
+      /output:"{{ root }}/src/Ozds.Sdk/Client/V1/OzdsApiV1Client.cs" \
+      /namespace:Ozds.Sdk.Client.V1 \
+      /generateClientInterfaces:true \
+      /generateClientClasses:true \
+      /className:OzdsApiV1Client \
+      /clientClassAccessModifier:internal \
+      /jsonLibrary:SystemTextJson \
+      /jsonPolymorphicSerializationStyle:SystemTextJson \
+      /useHttpClientCreationMethod:true \
+      /useBaseUrl:false \
+      /generateSyncMethods:true \
+      /generateResponseClasses:true \
+      /responseClass:"OzdsApiV1{controller}Response" \
+      /generateExceptionClasses:true \
+      /exceptionClass:"OzdsApiV1{controller}Exception" \
+      /generateContractsOutput:true \
+      /contractsNamespace:Ozds.Sdk.Contracts.V1 \
+      /contractsOutput:"{{ root }}/src/Ozds.Sdk/Contracts/V1/OzdsApiV1Contracts.cs" \
+      /newLineBehavior:LF
+
 measurements *args:
     python -m scripts.database.measurements {{ args }}
 
@@ -227,19 +250,29 @@ test-ci *args:
       | where $it.type == "dir" \
       | where { not ($in.name | str ends-with "Ozds.Server.Test") } \
       | each { \
-          dotnet test \
+          print ($in.name | path basename); \
+          let result = (dotnet test \
             $"($in.name)/($in.name | path basename).csproj" \
-            {{ args }} \
-        }
+            {{ args }}) | complete; \
+          print $result.stdout; \
+          print $result.stderr; \
+          if $result.exit_code != 0 { exit 1; }; \
+        } \
+      | ignore
 
 test *args:
     ls '{{ testdir }}' \
       | where $it.type == "dir" \
       | each { \
-          dotnet test \
+          print ($in.name | path basename); \
+          let result = (dotnet test \
             $"($in.name)/($in.name | path basename).csproj" \
-            {{ args }} \
-        }
+            {{ args }}) | complete; \
+          print $result.stdout; \
+          print $result.stderr; \
+          if $result.exit_code != 0 { exit 1; }; \
+        } \
+      | ignore
 
 publish *args:
     rm -rf '{{ artifacts }}'

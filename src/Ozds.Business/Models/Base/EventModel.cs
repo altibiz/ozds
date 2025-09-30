@@ -6,7 +6,7 @@ using IEvent = Ozds.Business.Models.Abstractions.IEvent;
 
 namespace Ozds.Business.Models.Base;
 
-public class EventModel : IdentifiableModel, IEvent
+public abstract class EventModel : IdentifiableModel, IEvent
 {
   [Required]
   public required List<CategoryModel> Categories { get; set; }
@@ -23,6 +23,11 @@ public class EventModel : IdentifiableModel, IEvent
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {
+    foreach (var validationResult in base.Validate(validationContext))
+    {
+      yield return validationResult;
+    }
+
     if (validationContext.ObjectInstance != this)
     {
       yield break;

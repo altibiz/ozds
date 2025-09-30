@@ -7,4 +7,43 @@
   [Parameter]
   public RenderFragment ChildContent { get; set; } = default!;
 
+  public static RenderFragment Combine(
+    params RenderFragment[] fragments
+  )
+  {
+    return @<Fragment>
+      @foreach (var fragment in fragments)
+      {
+        @fragment
+      }
+    </Fragment>;
+  }
+
+  public static RenderFragment String(
+    string @string
+  )
+  {
+    return @<Fragment>
+      @(@string)
+    </Fragment>;
+  }
+
+  public static readonly RenderFragment Empty = @<Fragment></Fragment>;
+
+  public static RenderFragment Nest(
+    int level,
+    RenderFragment fragment
+  )
+  {
+    return Enumerable
+      .Range(0, level)
+      .Aggregate(
+        fragment, (acc, _) =>
+          @<Fragment>
+            <Fragment>
+              @acc
+            </Fragment>
+          </Fragment>);
+  }
+
 }

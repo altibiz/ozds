@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 

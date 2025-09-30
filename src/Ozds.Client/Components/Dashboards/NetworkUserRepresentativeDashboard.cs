@@ -1,8 +1,8 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Components;
 using Ozds.Business.Analysis;
 using Ozds.Business.Math;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 
@@ -26,7 +26,7 @@ public partial class NetworkUserRepresentativeDashboard : OzdsComponentBase
   // TODO: better way to do this
   private sealed class MonthlyMeasurement(
     List<IMeasurement> Aggregates
-  ) : IMeasurement
+  ) : Model, IMeasurement
   {
     public string MeterId
     {
@@ -102,12 +102,6 @@ public partial class NetworkUserRepresentativeDashboard : OzdsComponentBase
             Aggregates.First().ApparentEnergy_VAh,
             (x, y) => x.Add(y.ApparentEnergy_VAh));
       }
-    }
-
-    public IEnumerable<ValidationResult> Validate(
-      ValidationContext validationContext)
-    {
-      yield break;
     }
   }
 }

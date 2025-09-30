@@ -4,6 +4,7 @@ using Ozds.Business.Activation.Abstractions;
 using Ozds.Business.Aggregation;
 using Ozds.Business.Aggregation.Abstractions;
 using Ozds.Business.Analysis;
+using Ozds.Business.Authorization;
 using Ozds.Business.Buffers.Abstractions;
 using Ozds.Business.Caching.Abstractions;
 using Ozds.Business.Conversion;
@@ -18,6 +19,7 @@ using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Options;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Business.Reactors.Abstractions;
+using Ozds.Business.Reflection;
 using Ozds.Business.Validation;
 using Ozds.Business.Validation.Abstractions;
 
@@ -58,6 +60,8 @@ public static class HostExtensions
     builder.AddConversion();
     builder.AddFinance();
     builder.AddNaming();
+    builder.AddReflection();
+    builder.AddAuthorization();
     return builder;
   }
 
@@ -98,6 +102,9 @@ public static class HostExtensions
     builder.Services.AddTransientAssignableTo(
       typeof(IModelReportEntityConverter));
     builder.Services.AddSingleton(typeof(ModelReportEntityConverter));
+    builder.Services.AddTransientAssignableTo(
+      typeof(IModelUserEntityConverter));
+    builder.Services.AddSingleton(typeof(ModelUserEntityConverter));
     builder.Services.AddTransientAssignableTo(
       typeof(IMeasurementAggregateConverter));
     builder.Services.AddSingleton(typeof(MeasurementAggregateConverter));
@@ -203,6 +210,22 @@ public static class HostExtensions
   )
   {
     builder.Services.AddSingletonAssignableTo(typeof(IBuffer));
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddReflection(
+    this IHostApplicationBuilder builder
+  )
+  {
+    builder.Services.AddSingletonAssignableTo(typeof(ModelReflector));
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddAuthorization(
+    this IHostApplicationBuilder builder
+  )
+  {
+    builder.Services.AddSingleton(typeof(ApiKeyManager));
     return builder;
   }
 }

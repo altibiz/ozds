@@ -5,7 +5,6 @@ using Ozds.Business.Mutations.Abstractions;
 using Ozds.Business.Queries;
 using Ozds.Business.Validation;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Entities.Base;
 using DataAuditableMutations = Ozds.Data.Mutations.AuditableMutations;
 
 namespace Ozds.Business.Mutations;
@@ -29,7 +28,7 @@ public class AuditableMutations(
     {
       var result = string.Join(Environment.NewLine, validationResults);
       throw new InvalidOperationException(
-        $"Model {model.GetType()} {model.Id} failed validation {result}"
+        $"Model {model.GetType()} {model.AuditingId} failed validation {result}"
       );
     }
 
@@ -37,73 +36,14 @@ public class AuditableMutations(
       .ReadAuthenticatedRepresentativeId(cancellationToken);
 
     var entity = modelEntityConverter.ToEntity<IAuditableEntity>(model);
-    entity.RepresentativeId = representativeId;
+    entity.AuditingRepresentativeId = representativeId;
 
     await mutations.Create(entity, cancellationToken);
 
     if (model is IdentifiableModel identifiableModel)
     {
-      identifiableModel.Id = entity.Id;
+      identifiableModel.Id = entity.AuditingId;
     }
-  }
-
-  public async Task Create(
-    IEnumerable<IModel> models,
-    CancellationToken cancellationToken
-  )
-  {
-    var validationResults = await validator
-      .Validate(models, cancellationToken);
-    if (validationResults.Count > 0)
-    {
-      var result = string.Join(Environment.NewLine, validationResults);
-      throw new InvalidOperationException(
-        $"Model {models.GetType()} failed validation {result}"
-      );
-    }
-
-    var representativeId = await representativeQueries
-      .ReadAuthenticatedRepresentativeId(cancellationToken);
-
-    var entities = modelEntityConverter.ToEntities<IAuditableEntity>(models);
-    foreach (var entity in entities)
-    {
-      entity.RepresentativeId = representativeId;
-    }
-
-    await mutations.Create(entities, cancellationToken);
-
-    foreach (var (model, entity) in models.Zip(entities))
-    {
-      if (model is IdentifiableModel identifiableModel)
-      {
-        identifiableModel.Id = entity.Id;
-      }
-    }
-  }
-
-  public async Task Update(
-    IAuditable model,
-    CancellationToken cancellationToken
-  )
-  {
-    var validationResults = await validator
-      .Validate(model, cancellationToken);
-    if (validationResults.Count > 0)
-    {
-      var result = string.Join(Environment.NewLine, validationResults);
-      throw new InvalidOperationException(
-        $"Model {model.GetType()} {model.Id} failed validation {result}"
-      );
-    }
-
-    var representativeId = await representativeQueries
-      .ReadAuthenticatedRepresentativeId(cancellationToken);
-
-    var entity = modelEntityConverter.ToEntity<IAuditableEntity>(model);
-    entity.RepresentativeId = representativeId;
-
-    await mutations.Update(entity, cancellationToken);
   }
 
   public async Task Delete(
@@ -117,7 +57,7 @@ public class AuditableMutations(
     {
       var result = string.Join(Environment.NewLine, validationResults);
       throw new InvalidOperationException(
-        $"Model {model.GetType()} {model.Id} failed validation {result}"
+        $"Model {model.GetType()} {model.AuditingId} failed validation {result}"
       );
     }
 
@@ -125,47 +65,7 @@ public class AuditableMutations(
       .ReadAuthenticatedRepresentativeId(cancellationToken);
 
     var entity = modelEntityConverter.ToEntity<IAuditableEntity>(model);
-    entity.RepresentativeId = representativeId;
-
-    await mutations.Delete(entity, cancellationToken);
-  }
-
-  public async Task Restore(
-    IAuditable model,
-    CancellationToken cancellationToken
-  )
-  {
-    var validationResults = await validator
-      .Validate(model, cancellationToken);
-    if (validationResults.Count > 0)
-    {
-      var result = string.Join(Environment.NewLine, validationResults);
-      throw new InvalidOperationException(
-        $"Model {model.GetType()} {model.Id} failed validation {result}"
-      );
-    }
-
-    var representativeId = await representativeQueries
-      .ReadAuthenticatedRepresentativeId(cancellationToken);
-
-    var entity = modelEntityConverter.ToEntity<AuditableEntity>(model);
-    entity.RepresentativeId = representativeId;
-    entity.Restore = true;
-
-    await mutations.Create(entity, cancellationToken);
-  }
-
-  public async Task Forget(
-    IAuditable model,
-    CancellationToken cancellationToken
-  )
-  {
-    var representativeId = await representativeQueries
-      .ReadAuthenticatedRepresentativeId(cancellationToken);
-
-    var entity = modelEntityConverter.ToEntity<AuditableEntity>(model);
-    entity.Forget = true;
-    entity.RepresentativeId = representativeId;
+    entity.AuditingRepresentativeId = representativeId;
 
     await mutations.Delete(entity, cancellationToken);
   }

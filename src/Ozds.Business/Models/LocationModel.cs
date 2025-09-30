@@ -4,7 +4,7 @@ using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Models;
 
-public class LocationModel : AuditableModel
+public class LocationModel : TrackableModel
 {
   [Required]
   public required string WhiteMediumNetworkUserCatalogueId { get; set; }

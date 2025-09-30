@@ -26,13 +26,19 @@ namespace Ozds.Data.Migrations
                 .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "action_entity", new[] { "read", "list", "create", "update", "delete", "restore", "forget" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "aggregation_entity", new[] { "min", "max", "avg" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "audit_entity", new[] { "query", "creation", "modification", "deletion", "restoration", "forgetting" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "category_entity", new[] { "all", "messenger", "messenger_push", "audit", "error", "lifecycle" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "duplex_entity", new[] { "any", "net", "import", "export" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "duration_entity", new[] { "second", "minute", "hour", "day", "week", "month", "year" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "interval_entity", new[] { "quarter_hour", "day", "month" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "level_entity", new[] { "trace", "debug", "info", "warning", "error", "critical" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "measure_entity", new[] { "current", "voltage", "active_power", "reactive_power", "apparent_power", "active_energy", "reactive_energy", "apparent_energy" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "order_of_magnitude_entity", new[] { "giga", "mega", "kilo", "hecto", "deca", "deci", "centi", "milli", "micro", "nano" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "phase_entity", new[] { "l1", "l2", "l3" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "role_entity", new[] { "operator_representative", "location_representative", "network_user_representative" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "tariff_entity", new[] { "t0", "t1", "t2" });
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "topic_entity", new[] { "all", "messenger", "messenger_inactivity", "meter", "meter_inactivity", "invalid_push", "error", "network_user_invoice_state" });
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "timescaledb");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -1223,6 +1229,95 @@ namespace Ozds.Data.Migrations
                     b.HasAnnotation("TimescaleHypertable", "Timestamp,MeterId:number_partitions => 2");
                 });
 
+            modelBuilder.Entity("Ozds.Data.Entities.ApiKeyEntity", b =>
+                {
+                    b.Property<Guid>("_guidId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text")
+                        .HasColumnName("created_by_id");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("DeletedById")
+                        .HasColumnType("text")
+                        .HasColumnName("deleted_by_id");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_on");
+
+                    b.Property<DateTimeOffset?>("ExpiresOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_on");
+
+                    b.Property<string>("Hash")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("hash");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<string>("LastUpdatedById")
+                        .HasColumnType("text")
+                        .HasColumnName("last_updated_by_id");
+
+                    b.Property<DateTimeOffset?>("LastUpdatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_updated_on");
+
+                    b.Property<string>("PrincipalEntityId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("principal_entity_id");
+
+                    b.Property<string>("PrincipalEntityTable")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("principal_entity_table");
+
+                    b.Property<string>("PrincipalEntityType")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("principal_entity_type");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.HasKey("_guidId")
+                        .HasName("pk_api_keys");
+
+                    b.HasIndex("CreatedById")
+                        .HasDatabaseName("ix_api_keys_created_by_id");
+
+                    b.HasIndex("DeletedById")
+                        .HasDatabaseName("ix_api_keys_deleted_by_id");
+
+                    b.HasIndex("ExpiresOn")
+                        .HasDatabaseName("ix_api_keys_expires_on");
+
+                    b.HasIndex("LastUpdatedById")
+                        .HasDatabaseName("ix_api_keys_last_updated_by_id");
+
+                    b.HasIndex(new[] { "PrincipalEntityTable", "PrincipalEntityId" }, "ix_api_keys_principal_entity_table_principal_entity_id")
+                        .HasDatabaseName("ix_api_keys_principal_entity_table_principal_entity_id");
+
+                    b.HasIndex(new[] { "PrincipalEntityType", "PrincipalEntityId" }, "ix_api_keys_principal_entity_type_principal_entity_id")
+                        .HasDatabaseName("ix_api_keys_principal_entity_type_principal_entity_id");
+
+                    b.ToTable("api_keys", (string)null);
+                });
+
             modelBuilder.Entity("Ozds.Data.Entities.Base.EventEntity", b =>
                 {
                     b.Property<long>("_id")
@@ -2133,6 +2228,36 @@ namespace Ozds.Data.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("Ozds.Data.Entities.Joins.ApiKeyScopeEntity", b =>
+                {
+                    b.Property<Guid>("_apiKeyId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("api_key_id");
+
+                    b.Property<Guid>("_scopeId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("scope_id");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text")
+                        .HasColumnName("created_by_id");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.HasKey("_apiKeyId", "_scopeId")
+                        .HasName("pk_api_key_scopes");
+
+                    b.HasIndex("CreatedById")
+                        .HasDatabaseName("ix_api_key_scopes_created_by_id");
+
+                    b.HasIndex("_scopeId")
+                        .HasDatabaseName("ix_api_key_scopes__scope_id");
+
+                    b.ToTable("api_key_scopes", (string)null);
+                });
+
             modelBuilder.Entity("Ozds.Data.Entities.Joins.LocationRepresentativeEntity", b =>
                 {
                     b.Property<string>("RepresentativeId")
@@ -2143,8 +2268,19 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("location_id");
 
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text")
+                        .HasColumnName("created_by_id");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
                     b.HasKey("RepresentativeId", "_locationId")
                         .HasName("pk_location_representatives");
+
+                    b.HasIndex("CreatedById")
+                        .HasDatabaseName("ix_location_representatives_created_by_id");
 
                     b.HasIndex("_locationId")
                         .HasDatabaseName("ix_location_representatives__location_id");
@@ -2162,8 +2298,19 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("network_user_id");
 
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text")
+                        .HasColumnName("created_by_id");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
                     b.HasKey("RepresentativeId", "_networkUserId")
                         .HasName("pk_network_user_representatives");
+
+                    b.HasIndex("CreatedById")
+                        .HasDatabaseName("ix_network_user_representatives_created_by_id");
 
                     b.HasIndex("_networkUserId")
                         .HasDatabaseName("ix_network_user_representatives__network_user_id");
@@ -2827,6 +2974,99 @@ namespace Ozds.Data.Migrations
                         .HasDatabaseName("ix_network_user_invoices__network_user_id");
 
                     b.ToTable("network_user_invoices", (string)null);
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.RegisterEntity", b =>
+                {
+                    b.Property<long>("_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<long>("_id"));
+
+                    b.Property<AggregationEntity?>("Aggregation")
+                        .HasColumnType("aggregation_entity")
+                        .HasColumnName("aggregation");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text")
+                        .HasColumnName("created_by_id");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("DeletedById")
+                        .HasColumnType("text")
+                        .HasColumnName("deleted_by_id");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_on");
+
+                    b.Property<DuplexEntity?>("Duplex")
+                        .HasColumnType("duplex_entity")
+                        .HasColumnName("duplex");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<string>("LastUpdatedById")
+                        .HasColumnType("text")
+                        .HasColumnName("last_updated_by_id");
+
+                    b.Property<DateTimeOffset?>("LastUpdatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_updated_on");
+
+                    b.Property<MeasureEntity>("Measure")
+                        .HasColumnType("measure_entity")
+                        .HasColumnName("measure");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<OrderOfMagnitudeEntity?>("OrderOfMagnitude")
+                        .HasColumnType("order_of_magnitude_entity")
+                        .HasColumnName("order_of_magnitude");
+
+                    b.Property<PhaseEntity?>("Phase")
+                        .HasColumnType("phase_entity")
+                        .HasColumnName("phase");
+
+                    b.Property<TariffEntity?>("Tariff")
+                        .HasColumnType("tariff_entity")
+                        .HasColumnName("tariff");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.Property<Guid>("_scopeId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("scope_id");
+
+                    b.HasKey("_id")
+                        .HasName("pk_registers");
+
+                    b.HasIndex("CreatedById")
+                        .HasDatabaseName("ix_registers_created_by_id");
+
+                    b.HasIndex("DeletedById")
+                        .HasDatabaseName("ix_registers_deleted_by_id");
+
+                    b.HasIndex("LastUpdatedById")
+                        .HasDatabaseName("ix_registers_last_updated_by_id");
+
+                    b.HasIndex("_scopeId")
+                        .HasDatabaseName("ix_registers_scope_id");
+
+                    b.ToTable("registers", (string)null);
                 });
 
             modelBuilder.Entity("Ozds.Data.Entities.RegulatoryCatalogueEntity", b =>
@@ -3766,6 +4006,94 @@ namespace Ozds.Data.Migrations
                     b.ToTable("schneider_iem3xxx_measurements", (string)null);
 
                     b.HasAnnotation("TimescaleHypertable", "Timestamp,MeterId:number_partitions => 2");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.ScopeEntity", b =>
+                {
+                    b.Property<Guid>("_guidId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text")
+                        .HasColumnName("created_by_id");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("DeletedById")
+                        .HasColumnType("text")
+                        .HasColumnName("deleted_by_id");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_on");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(34)
+                        .HasColumnType("character varying(34)")
+                        .HasColumnName("kind");
+
+                    b.Property<string>("LastUpdatedById")
+                        .HasColumnType("text")
+                        .HasColumnName("last_updated_by_id");
+
+                    b.Property<DateTimeOffset?>("LastUpdatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_updated_on");
+
+                    b.Property<ActionEntity>("ScopeAction")
+                        .HasColumnType("action_entity")
+                        .HasColumnName("scope_action");
+
+                    b.Property<string>("ScopeEntityId")
+                        .HasColumnType("text")
+                        .HasColumnName("scope_entity_id");
+
+                    b.Property<string>("ScopeEntityTable")
+                        .HasColumnType("text")
+                        .HasColumnName("scope_entity_table");
+
+                    b.Property<string>("ScopeEntityType")
+                        .HasColumnType("text")
+                        .HasColumnName("scope_entity_type");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.HasKey("_guidId")
+                        .HasName("pk_scopes");
+
+                    b.HasIndex("CreatedById")
+                        .HasDatabaseName("ix_scopes_created_by_id");
+
+                    b.HasIndex("DeletedById")
+                        .HasDatabaseName("ix_scopes_deleted_by_id");
+
+                    b.HasIndex("LastUpdatedById")
+                        .HasDatabaseName("ix_scopes_last_updated_by_id");
+
+                    b.HasIndex(new[] { "ScopeEntityTable", "ScopeEntityId" }, "ix_scopes_scope_entity_table_scope_entity_id")
+                        .HasDatabaseName("ix_scopes_scope_entity_table_scope_entity_id");
+
+                    b.HasIndex(new[] { "ScopeEntityType", "ScopeEntityId" }, "ix_scopes_scope_entity_type_scope_entity_id")
+                        .HasDatabaseName("ix_scopes_scope_entity_type_scope_entity_id");
+
+                    b.ToTable("scopes", (string)null);
+
+                    b.HasDiscriminator<string>("Kind").HasValue("ScopeEntity");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Ozds.Data.Entities.Base.AuditEventEntity", b =>
@@ -5027,6 +5355,19 @@ namespace Ozds.Data.Migrations
                     b.HasDiscriminator().HasValue("NetworkUserInvoiceNotificationEntity");
                 });
 
+            modelBuilder.Entity("Ozds.Data.Entities.MeasurementScopeEntity", b =>
+                {
+                    b.HasBaseType("Ozds.Data.Entities.ScopeEntity");
+
+                    b.Property<IntervalEntity>("Interval")
+                        .HasColumnType("interval_entity")
+                        .HasColumnName("interval");
+
+                    b.ToTable("scopes", (string)null);
+
+                    b.HasDiscriminator().HasValue("MeasurementScopeEntity");
+                });
+
             modelBuilder.Entity("Ozds.Data.Entities.RepresentativeAuditEventEntity", b =>
                 {
                     b.HasBaseType("Ozds.Data.Entities.Base.AuditEventEntity");
@@ -5137,6 +5478,33 @@ namespace Ozds.Data.Migrations
                     b.Navigation("MeasurementLocation");
 
                     b.Navigation("Meter");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.ApiKeyEntity", b =>
+                {
+                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_api_keys_representatives_created_by_id");
+
+                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "DeletedBy")
+                        .WithMany()
+                        .HasForeignKey("DeletedById")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_api_keys_representatives_deleted_by_id");
+
+                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "LastUpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("LastUpdatedById")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_api_keys_representatives_last_updated_by_id");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("DeletedBy");
+
+                    b.Navigation("LastUpdatedBy");
                 });
 
             modelBuilder.Entity("Ozds.Data.Entities.Base.MeasurementLocationEntity", b =>
@@ -5367,8 +5735,42 @@ namespace Ozds.Data.Migrations
                     b.Navigation("Event");
                 });
 
+            modelBuilder.Entity("Ozds.Data.Entities.Joins.ApiKeyScopeEntity", b =>
+                {
+                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_api_key_scopes_representatives_created_by_id");
+
+                    b.HasOne("Ozds.Data.Entities.ApiKeyEntity", "ApiKey")
+                        .WithMany("ApiKeyScopes")
+                        .HasForeignKey("_apiKeyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_api_key_scopes_api_keys_api_key_id");
+
+                    b.HasOne("Ozds.Data.Entities.ScopeEntity", "Scope")
+                        .WithMany("ApiKeyScopes")
+                        .HasForeignKey("_scopeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_api_key_scopes_scopes_scope_id");
+
+                    b.Navigation("ApiKey");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Scope");
+                });
+
             modelBuilder.Entity("Ozds.Data.Entities.Joins.LocationRepresentativeEntity", b =>
                 {
+                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .HasConstraintName("fk_location_representatives_representatives_created_by_id");
+
                     b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "Representative")
                         .WithMany("LocationRepresentatives")
                         .HasForeignKey("RepresentativeId")
@@ -5383,6 +5785,8 @@ namespace Ozds.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_location_representatives_locations_location_id");
 
+                    b.Navigation("CreatedBy");
+
                     b.Navigation("Location");
 
                     b.Navigation("Representative");
@@ -5390,6 +5794,11 @@ namespace Ozds.Data.Migrations
 
             modelBuilder.Entity("Ozds.Data.Entities.Joins.NetworkUserRepresentativeEntity", b =>
                 {
+                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .HasConstraintName("fk_network_user_representatives_representatives_created_by_id");
+
                     b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "Representative")
                         .WithMany("NetworkUserRepresentatives")
                         .HasForeignKey("RepresentativeId")
@@ -5403,6 +5812,8 @@ namespace Ozds.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_network_user_representatives_network_users_network_user_id");
+
+                    b.Navigation("CreatedBy");
 
                     b.Navigation("NetworkUser");
 
@@ -5552,6 +5963,42 @@ namespace Ozds.Data.Migrations
                     b.Navigation("NetworkUser");
                 });
 
+            modelBuilder.Entity("Ozds.Data.Entities.RegisterEntity", b =>
+                {
+                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_registers_representatives_created_by_id");
+
+                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "DeletedBy")
+                        .WithMany()
+                        .HasForeignKey("DeletedById")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_registers_representatives_deleted_by_id");
+
+                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "LastUpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("LastUpdatedById")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_registers_representatives_last_updated_by_id");
+
+                    b.HasOne("Ozds.Data.Entities.MeasurementScopeEntity", "Scope")
+                        .WithMany("Registers")
+                        .HasForeignKey("_scopeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_registers_scopes_scope_id");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("DeletedBy");
+
+                    b.Navigation("LastUpdatedBy");
+
+                    b.Navigation("Scope");
+                });
+
             modelBuilder.Entity("Ozds.Data.Entities.RegulatoryCatalogueEntity", b =>
                 {
                     b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "CreatedBy")
@@ -5643,6 +6090,33 @@ namespace Ozds.Data.Migrations
                     b.Navigation("MeasurementLocation");
 
                     b.Navigation("Meter");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.ScopeEntity", b =>
+                {
+                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_scopes_representatives_created_by_id");
+
+                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "DeletedBy")
+                        .WithMany()
+                        .HasForeignKey("DeletedById")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_scopes_representatives_deleted_by_id");
+
+                    b.HasOne("Ozds.Data.Entities.RepresentativeEntity", "LastUpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("LastUpdatedById")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_scopes_representatives_last_updated_by_id");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("DeletedBy");
+
+                    b.Navigation("LastUpdatedBy");
                 });
 
             modelBuilder.Entity("Ozds.Data.Entities.MessengerEventEntity", b =>
@@ -5796,6 +6270,11 @@ namespace Ozds.Data.Migrations
                     b.Navigation("Meter");
                 });
 
+            modelBuilder.Entity("Ozds.Data.Entities.ApiKeyEntity", b =>
+                {
+                    b.Navigation("ApiKeyScopes");
+                });
+
             modelBuilder.Entity("Ozds.Data.Entities.Base.EventEntity", b =>
                 {
                     b.Navigation("Notifications");
@@ -5881,6 +6360,11 @@ namespace Ozds.Data.Migrations
                     b.Navigation("ResolvableNotifications");
                 });
 
+            modelBuilder.Entity("Ozds.Data.Entities.ScopeEntity", b =>
+                {
+                    b.Navigation("ApiKeyScopes");
+                });
+
             modelBuilder.Entity("Ozds.Data.Entities.NetworkUserMeasurementLocationEntity", b =>
                 {
                     b.Navigation("NetworkUserCalculations");
@@ -5926,6 +6410,11 @@ namespace Ozds.Data.Migrations
                     b.Navigation("Locations");
 
                     b.Navigation("NetworkUserCalculations");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.MeasurementScopeEntity", b =>
+                {
+                    b.Navigation("Registers");
                 });
 #pragma warning restore 612, 618
         }

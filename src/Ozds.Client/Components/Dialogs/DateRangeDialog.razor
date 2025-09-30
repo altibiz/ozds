@@ -2,19 +2,23 @@
 @using MudBlazor
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
+@{
+  var dateFormat = DateFormat();
+}
+
 <MudDialog>
   <DialogContent>
     <MudStack Spacing="2">
       <MudDatePicker
         Label="@Translate("Start Date")"
         @bind-Date="StartDate"
-        DateFormat="dd.MM.yyyy"
+        DateFormat="@dateFormat"
         MinDate="MinDate?.DateTime"
         MaxDate="MaxDate?.DateTime"/>
       <MudDatePicker
         Label="@Translate("End Date")"
         @bind-Date="EndDate"
-        DateFormat="dd.MM.yyyy"
+        DateFormat="@dateFormat"
         MinDate="MinDate?.DateTime"
         MaxDate="MaxDate?.DateTime"/>
     </MudStack>

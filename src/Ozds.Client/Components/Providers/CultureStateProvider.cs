@@ -1,6 +1,7 @@
 using System.Globalization;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Ozds.Client.Components.Base;
 using Ozds.Client.State;
 
@@ -25,6 +26,9 @@ public partial class CultureStateProvider : DisposableComponentBase
   [Inject]
   private ILocalStorageService LocalStorageService { get; set; } = default!;
 
+  [Inject]
+  private IJSRuntime JS { get; set; } = default!;
+
   protected override async Task OnParametersSetAsync()
   {
     var culture = Culture;
@@ -44,8 +48,19 @@ public partial class CultureStateProvider : DisposableComponentBase
       await SetCultureToLocalStorage(culture);
     }
 
+    var iana = await JS.InvokeAsync<string>("window.ozdsGetTimeZone");
+    var timeZone = iana is null
+      ? null
+      : TimeZoneInfo.FindSystemTimeZoneById(iana);
+
+    if (timeZone is null)
+    {
+      timeZone = TimeZoneInfo.Utc;
+    }
+
     _state = new CultureState(
       culture,
+      timeZone,
       async culture =>
       {
         await SetCultureToLocalStorage(culture);

@@ -11,13 +11,9 @@ public partial class NetworkUserInvoicePage
 {
   public async Task<StatefulNetworkUserInvoiceModel?> OnLoadAsync()
   {
-    var modelQueries = ScopedServices
-      .GetRequiredService<ModelQueries>();
-
-    var stateQueries = ScopedServices
-      .GetRequiredService<NetworkUserInvoiceStateQueries>();
-
-    var invoice = await modelQueries.ReadById<NetworkUserInvoiceModel>(
+    var identifiableQueries = ScopedServices
+      .GetRequiredService<IdentifiableQueries>();
+    var invoice = await identifiableQueries.ReadById<NetworkUserInvoiceModel>(
       Id,
       CancellationToken
     );
@@ -26,6 +22,8 @@ public partial class NetworkUserInvoicePage
       return default;
     }
 
+    var stateQueries = ScopedServices
+      .GetRequiredService<NetworkUserInvoiceStateQueries>();
     var state = await stateQueries.ReadAsync(
       Id,
       CancellationToken

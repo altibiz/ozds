@@ -1,5 +1,6 @@
 using Ozds.Fake.Arguments;
 using Ozds.Fake.Extensions;
+using Ozds.Sdk.Extensions;
 using Ozds.Server.Hosting;
 
 namespace Ozds.Server.Test.Containers;
@@ -243,6 +244,10 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
           {
             "Ozds:Fake:Client:BaseUrl",
             HttpBaseUrl
+          },
+          {
+            "Ozds:Sdk:BaseUrl",
+            HttpBaseUrl
           }
         };
 
@@ -262,6 +267,7 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
         }
 
         appBuilder.AddOzdsFake(new OzdsFakeBypassArguments());
+        appBuilder.AddOzdsSdk();
       });
 
     return Task.CompletedTask;

@@ -26,7 +26,17 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
   protected virtual Func<TPrefix, TModel?> CreateRaw()
   {
     var prefix = Prefix?.Compile() ?? (x => (TModel?)(object?)x);
-    return prefix;
+    return x =>
+    {
+      try
+      {
+        return prefix(x);
+      }
+      catch (Exception)
+      {
+        return default;
+      }
+    };
   }
 
   protected override Dictionary<string, object> CreateBaseParameters()

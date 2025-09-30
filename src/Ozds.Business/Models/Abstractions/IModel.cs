@@ -6,4 +6,5 @@ namespace Ozds.Business.Models.Abstractions;
 
 public interface IModel : IValidatableObject
 {
+  public bool Created { get; }
 }

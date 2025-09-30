@@ -6,7 +6,7 @@ using Ozds.Business.Queries;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class MeasurementModel : IMeasurement
+public abstract class MeasurementModel : Model, IMeasurement
 {
   public const string ValidatorKey = "MeasurementValidator";
 
@@ -36,9 +36,6 @@ public abstract class MeasurementModel : IMeasurement
   public abstract TariffMeasure<decimal> ReactiveEnergy_VARh { get; }
 
   public abstract TariffMeasure<decimal> ApparentEnergy_VAh { get; }
-
-  public abstract IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext);
 }
 
 #pragma warning disable S2326 // Unused type parameters should be removed
@@ -49,6 +46,11 @@ public abstract class MeasurementModel<T> : MeasurementModel
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {
+    foreach (var validationResult in base.Validate(validationContext))
+    {
+      yield return validationResult;
+    }
+
     if (validationContext.ObjectInstance != this)
     {
       yield break;

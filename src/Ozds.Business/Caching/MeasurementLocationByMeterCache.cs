@@ -6,7 +6,7 @@ namespace Ozds.Business.Caching;
 
 public class MeasurementLocationByMeterCache(
   IServiceScopeFactory factory
-) : ConcurrentDictionaryCacheBase<string, IMeasurementLocation>
+) : BatchedConcurrentDictionaryCacheBase<string, IMeasurementLocation>
 {
   protected override async Task<string?> GetKeyFromDataSourceAsync(
     IMeasurementLocation value,

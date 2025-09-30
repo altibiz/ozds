@@ -1,0 +1,9 @@
+@namespace Ozds.Client.Components.Models
+
+@typeparam TPrefix
+@typeparam TModel where TModel : Ozds.Business.Models.Abstractions.IJoin
+@inherits Ozds.Client.Components.Models.Base.OzdsColumnsComponentBase<TPrefix, TModel>
+
+@PolymorphicLinkColumn(x => x.LeftType, x => x.LeftId)
+
+@PolymorphicLinkColumn(x => x.RightType, x => x.RightId)

@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
 public abstract class IdentifiableEntity : IIdentifiableEntity
 {
+  protected Guid _guidId;
   protected long _id;
 
   protected string _stringId = default!;
@@ -15,7 +16,9 @@ public abstract class IdentifiableEntity : IIdentifiableEntity
 #pragma warning disable S3060 // "is" should not be used with "this"
     get => this is ICustomIdentifiableEntity
       ? _stringId
-      : _id.ToString();
+      : this is IGuidIdentifiableEntity
+        ? _guidId.ToString()
+        : _id.ToString();
 #pragma warning restore S3060 // "is" should not be used with "this"
     set
     {
@@ -23,6 +26,12 @@ public abstract class IdentifiableEntity : IIdentifiableEntity
       if (this is ICustomIdentifiableEntity)
       {
         _stringId = value;
+      }
+      else if (this is IGuidIdentifiableEntity)
+      {
+        _guidId = value is { } notNullValue
+          ? Guid.Parse(notNullValue)
+          : Guid.Empty;
       }
       else
       {
@@ -49,6 +58,10 @@ public class IdentifiableEntityConfiguration
       {
         builder.HasKey("_stringId");
       }
+      else if (entity.IsAssignableTo(typeof(IGuidIdentifiableEntity)))
+      {
+        builder.HasKey("_guidId");
+      }
       else
       {
         builder.HasKey("_id");
@@ -58,15 +71,28 @@ public class IdentifiableEntityConfiguration
     if (entity.IsAssignableTo(typeof(ICustomIdentifiableEntity)))
     {
       builder.Ignore("_id");
+      builder.Ignore("_guidId");
       builder
         .Property("_stringId")
         .HasColumnName("id")
         .HasColumnType("text")
         .ValueGeneratedNever();
     }
+    else if (entity.IsAssignableTo(typeof(IGuidIdentifiableEntity)))
+    {
+      builder.Ignore("_id");
+      builder.Ignore("_stringId");
+      builder
+        .Property("_guidId")
+        .HasColumnName("id")
+        .HasColumnType("uuid")
+        .HasDefaultValueSql("gen_random_uuid()")
+        .ValueGeneratedOnAdd();
+    }
     else
     {
       builder.Ignore("_stringId");
+      builder.Ignore("_guidId");
       builder
         .Property("_id")
         .HasColumnName("id")

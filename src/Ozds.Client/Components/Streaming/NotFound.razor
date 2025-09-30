@@ -7,5 +7,21 @@
 </HeadContent>
 
 <MudText Typo="Typo.h5">
-  @Translate("The resource you were looking for doesn't exist")
+  @if (Type is { } type)
+  {
+    @string.Format(
+      Translate("The resource of type {0} doesn't exist"),
+      Translate(type))
+  }
+  else
+  {
+    @Translate("The resource you were looking for doesn't exist")
+  }
 </MudText>
+
+@code {
+
+  [Parameter]
+  public Type? Type { get; set; }
+
+}

@@ -1,0 +1,18 @@
+@namespace Ozds.Client.Components.Models.Implementations.Administration
+
+@typeparam TPrefix
+@typeparam TModel where TModel : Ozds.Business.Models.ApiKeyModel
+@using Ozds.Business.Models.Base
+@using Ozds.Business.Reflection
+@inherits Ozds.Client.Components.Models.Base.OzdsEditComponentBase<TPrefix, TModel>
+
+@inject ModelReflector ModelReflector
+
+@(Base<IdentifiableModel>())
+
+@PolymorphicLinkField(
+  x => x.PrincipalModelType,
+  x => x.PrincipalModelId,
+  ModelReflector.PrincipalTypeList)
+
+@Field(x => x.ExpiresOn)

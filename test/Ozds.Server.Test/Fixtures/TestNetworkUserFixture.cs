@@ -32,13 +32,13 @@ public class TestNetworkUserFixture(
 
     var locationFixture = new TestLocationFixture(composition);
 
-    var auditableFixture = new TestAuditableFixture(composition);
+    var trackableFixture = new TestTrackableFixture(composition);
 
     var location = await locationFixture.Create(
       cancellationToken,
       configurator.ConfigureLocation);
 
-    var networkUser = await auditableFixture
+    var networkUser = await trackableFixture
       .Create<NetworkUserModel>(
         cancellationToken, n =>
         {

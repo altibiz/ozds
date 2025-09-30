@@ -11,7 +11,35 @@ public class NetworkUserQueries(
   ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
-  public async Task<NetworkUserModel?> ReadNetworkUserByRepresentativeId(
+  public async Task<PaginatedList<NetworkUserModel>>
+    ReadByRepresentativeId(
+      string representativeId,
+      int pageNumber,
+      CancellationToken cancellationToken,
+      int pageSize = QueryConstants.DefaultPageCount,
+      bool deleted = false,
+      string? title = null
+    )
+  {
+    var entities =
+      await dataNetworkUserQueries.ReadByRepresentativeId(
+        representativeId,
+        pageNumber,
+        cancellationToken,
+        pageSize,
+        deleted,
+        title
+      );
+
+    var models = entities
+      .Items
+      .Select(modelEntityConverter.ToModel<NetworkUserModel>)
+      .ToPaginatedList(entities.TotalCount);
+
+    return models;
+  }
+
+  public async Task<NetworkUserModel?> ReadIndirectByRepresentativeIdAndId(
     string representativeId,
     RoleModel role,
     string locationId,
@@ -19,13 +47,14 @@ public class NetworkUserQueries(
     bool deleted = false
   )
   {
-    var entity = await dataNetworkUserQueries.ReadNetworkUserByRepresentativeId(
-      representativeId,
-      role.ToEntity(),
-      locationId,
-      cancellationToken,
-      deleted
-    );
+    var entity =
+      await dataNetworkUserQueries.ReadIndirectByRepresentativeIdAndId(
+        representativeId,
+        role.ToEntity(),
+        locationId,
+        cancellationToken,
+        deleted
+      );
 
     var model = entity is null
       ? null
@@ -35,23 +64,25 @@ public class NetworkUserQueries(
   }
 
   public async Task<PaginatedList<NetworkUserModel>>
-    ReadNetworkUsersByRepresentativeId(
+    ReadIndirectByRepresentativeId(
       string representativeId,
       RoleModel role,
       int pageNumber,
       CancellationToken cancellationToken,
       int pageSize = QueryConstants.DefaultPageCount,
-      bool deleted = false
+      bool deleted = false,
+      string? title = null
     )
   {
     var entities =
-      await dataNetworkUserQueries.ReadNetworkUsersByRepresentativeId(
+      await dataNetworkUserQueries.ReadIndirectByRepresentativeId(
         representativeId,
         role.ToEntity(),
         pageNumber,
         cancellationToken,
         pageSize,
-        deleted
+        deleted,
+        title
       );
 
     var models = entities

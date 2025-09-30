@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations;
 using Ozds.Client.Components.Base;
 using Ozds.Client.Components.Dialogs;
@@ -10,16 +11,29 @@ namespace Ozds.Client.Components.Streaming;
 
 // TODO: memoize Loading parameters to prevent rerendering
 
-public partial class Mutating<T> : OzdsComponentBase
+public class Mutating<T> : MappedMutating<T, T>
   where T : notnull
 {
-  private bool _mutating;
+}
+
+public partial class MappedMutating<T, TMapped> : OzdsComponentBase
+  where T : notnull
+{
+  // NOTE: when creating start with edit
+  private bool creating = true;
+  private bool mutating;
+
+  [CascadingParameter]
+  public AnalysisState AnalysisState { get; set; } = default!;
 
   [Parameter]
   public T? Value { get; set; }
 
   [Parameter]
   public string? Id { get; set; } = default!;
+
+  [Parameter]
+  public Func<T, TMapped>? Map { get; set; } = default!;
 
   [Parameter]
   public RenderFragment? Progress { get; set; }
@@ -38,6 +52,12 @@ public partial class Mutating<T> : OzdsComponentBase
 
   [Parameter]
   public Func<Task<T>>? NewAsync { get; set; }
+
+  [Parameter]
+  public string? JoinActivationId { get; set; }
+
+  [Parameter]
+  public Type? JoinActivationSide { get; set; }
 
   [Parameter]
   public RenderFragment<string>? Error { get; set; }
@@ -73,22 +93,47 @@ public partial class Mutating<T> : OzdsComponentBase
   public Func<T, Task>? ForgetAsync { get; set; }
 
   [Parameter]
-  public RenderFragment<MutatingState<T>>? Label { get; set; } = default!;
+  public Func<T, ActionModel, RenderFragment>? OnSuccessMessage { get; set; }
 
   [Parameter]
-  public RenderFragment<MutatingState<T>> Details { get; set; } = default!;
+  public Func<T, ActionModel, Exception, RenderFragment>? OnFailureMessage
+  {
+    get;
+    set;
+  }
 
   [Parameter]
-  public RenderFragment<MutatingState<T>> Edit { get; set; } = default!;
+  public bool Reload { get; set; }
+
+  [Parameter]
+  public RenderFragment<MutatingState<T>>? Details { get; set; } = default!;
+
+  [Parameter]
+  public RenderFragment<MutatingState<T>>? Edit { get; set; } = default!;
+
+  [Parameter]
+  public RenderFragment<MutatingState<T>>? Footer { get; set; } = default!;
 
   [Parameter]
   public bool AsReadonly { get; set; } = false;
 
   [Parameter]
-  public string Class { get; set; } = default!;
+  public bool WithPreview { get; set; } = false;
 
   [Parameter]
-  public string Style { get; set; } = default!;
+  public bool WithTitle { get; set; } = false;
+
+  [Parameter]
+  public bool WithHeading { get; set; } = false;
+
+  [Parameter]
+  public bool NotFoundOnCreate { get; set; } = false;
+
+  [Parameter]
+  public string? Class { get; set; } = default!;
+
+  [Parameter]
+  public string? Style { get; set; } = default!;
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
@@ -98,6 +143,12 @@ public partial class Mutating<T> : OzdsComponentBase
 
   private async Task OnCreate(T model)
   {
+    object? toCreate = Map is { } map ? map(model) : model;
+
+    var title = toCreate is IIdentifiable identifiable
+      ? $" {identifiable.Title}"
+      : "";
+
     try
     {
       if (Create is not null)
@@ -108,7 +159,12 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         await CreateAsync(model);
       }
-      else if (model is IAuditable auditable)
+      else if (toCreate is ITrackable trackable)
+      {
+        var mutations = ScopedServices.GetRequiredService<TrackableMutations>();
+        await mutations.Create(trackable, CancellationToken);
+      }
+      else if (toCreate is IAuditable auditable)
       {
         var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
         await mutations.Create(auditable, CancellationToken);
@@ -121,19 +177,37 @@ public partial class Mutating<T> : OzdsComponentBase
     }
     catch (Exception ex)
     {
+      var failureMessage = OnFailureMessage is null
+        ? Fragment.String($":\n{ex.Message}")
+        : OnFailureMessage(model, ActionModel.Create, ex);
+
       await DialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
         {
           {
             nameof(MutatingResult.Body),
-            $"{Translate("Failed creating")}"
-            + $" {Translate(typeof(T))} - {ex.Message}"
+            Fragment.Combine(
+              Fragment.String(
+                Translate("Failed creating")
+                + " "
+                + Translate(typeof(T))
+                + title
+                + ". "),
+              failureMessage)
+          },
+          {
+            nameof(MutatingResult.NavigationBehavior),
+            null
           }
         },
         new DialogOptions { CloseOnEscapeKey = true });
       return;
     }
+
+    var successMessage = OnSuccessMessage is null
+      ? Fragment.Empty
+      : OnSuccessMessage(model, ActionModel.Create);
 
     await DialogService.ShowAsync<MutatingResult>(
       Translate("Success"),
@@ -141,7 +215,24 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         {
           nameof(MutatingResult.Body),
-          $"{Translate("Successfully created")} {Translate(typeof(T))}"
+          Fragment.Combine(
+            Fragment.String(
+              Translate("Successfully created")
+              + " "
+              + Translate(typeof(T))
+              + title
+              + ". "),
+            successMessage)
+        },
+        {
+          nameof(MutatingResult.NavigationBehavior),
+          Reload
+            ? MutatingResultNavigationBehavior.Reload
+            : MutatingResultNavigationBehavior.GoBack
+        },
+        {
+          nameof(MutatingResult.Exit),
+          (IMudDialogInstance _) => { AnalysisState.Reset(); }
         }
       },
       new DialogOptions { CloseOnEscapeKey = true });
@@ -149,6 +240,12 @@ public partial class Mutating<T> : OzdsComponentBase
 
   private async Task OnUpdate(T model)
   {
+    object? toUpdate = Map is { } map ? map(model) : model;
+
+    var title = toUpdate is IIdentifiable identifiable
+      ? $" {identifiable.Title}"
+      : "";
+
     try
     {
       if (Update is not null)
@@ -159,10 +256,10 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         await UpdateAsync(model);
       }
-      else if (model is IAuditable auditable)
+      else if (toUpdate is ITrackable trackable)
       {
-        var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-        await mutations.Update(auditable, CancellationToken);
+        var mutations = ScopedServices.GetRequiredService<TrackableMutations>();
+        await mutations.Update(trackable, CancellationToken);
       }
       else
       {
@@ -172,19 +269,37 @@ public partial class Mutating<T> : OzdsComponentBase
     }
     catch (Exception ex)
     {
+      var failureMessage = OnFailureMessage is null
+        ? Fragment.String($":\n{ex.Message}")
+        : OnFailureMessage(model, ActionModel.Update, ex);
+
       await DialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
         {
           {
             nameof(MutatingResult.Body),
-            $"{Translate("Failed updating")}"
-            + $" {Translate(typeof(T))} - {ex.Message}"
+            Fragment.Combine(
+              Fragment.String(
+                Translate("Failed updating")
+                + " "
+                + Translate(typeof(T))
+                + title
+                + ". "),
+              failureMessage)
+          },
+          {
+            nameof(MutatingResult.NavigationBehavior),
+            null
           }
         },
         new DialogOptions { CloseOnEscapeKey = true });
       return;
     }
+
+    var successMessage = OnSuccessMessage is null
+      ? Fragment.Empty
+      : OnSuccessMessage(model, ActionModel.Update);
 
     await DialogService.ShowAsync<MutatingResult>(
       Translate("Success"),
@@ -192,7 +307,24 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         {
           nameof(MutatingResult.Body),
-          $"{Translate("Successfully updated")} {Translate(typeof(T))}"
+          Fragment.Combine(
+            Fragment.String(
+              Translate("Successfully updated")
+              + " "
+              + Translate(typeof(T))
+              + title
+              + ". "),
+            successMessage)
+        },
+        {
+          nameof(MutatingResult.NavigationBehavior),
+          Reload
+            ? MutatingResultNavigationBehavior.Reload
+            : MutatingResultNavigationBehavior.GoBack
+        },
+        {
+          nameof(MutatingResult.Exit),
+          (IMudDialogInstance _) => { AnalysisState.Reset(); }
         }
       },
       new DialogOptions { CloseOnEscapeKey = true });
@@ -200,6 +332,12 @@ public partial class Mutating<T> : OzdsComponentBase
 
   private async Task OnDelete(T model)
   {
+    object? toDelete = Map is { } map ? map(model) : model;
+
+    var title = toDelete is IIdentifiable identifiable
+      ? $" {identifiable.Title}"
+      : "";
+
     try
     {
       if (Delete is not null)
@@ -210,7 +348,12 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         await DeleteAsync(model);
       }
-      else if (model is IAuditable auditable)
+      else if (toDelete is ITrackable trackable)
+      {
+        var mutations = ScopedServices.GetRequiredService<TrackableMutations>();
+        await mutations.Delete(trackable, CancellationToken);
+      }
+      else if (toDelete is IAuditable auditable)
       {
         var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
         await mutations.Delete(auditable, CancellationToken);
@@ -223,19 +366,37 @@ public partial class Mutating<T> : OzdsComponentBase
     }
     catch (Exception ex)
     {
+      var failureMessage = OnFailureMessage is null
+        ? Fragment.String($":\n{ex.Message}")
+        : OnFailureMessage(model, ActionModel.Delete, ex);
+
       await DialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
         {
           {
             nameof(MutatingResult.Body),
-            $"{Translate("Failed deleting")}"
-            + $" {Translate(typeof(T))} - {ex.Message}"
+            Fragment.Combine(
+              Fragment.String(
+                Translate("Failed deleting")
+                + " "
+                + Translate(typeof(T))
+                + title
+                + ". "),
+              failureMessage)
+          },
+          {
+            nameof(MutatingResult.NavigationBehavior),
+            null
           }
         },
         new DialogOptions { CloseOnEscapeKey = true });
       return;
     }
+
+    var successMessage = OnSuccessMessage is null
+      ? Fragment.Empty
+      : OnSuccessMessage(model, ActionModel.Delete);
 
     await DialogService.ShowAsync<MutatingResult>(
       Translate("Success"),
@@ -243,7 +404,24 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         {
           nameof(MutatingResult.Body),
-          $"{Translate("Successfully deleted")} {Translate(typeof(T))}"
+          Fragment.Combine(
+            Fragment.String(
+              Translate("Successfully deleted")
+              + " "
+              + Translate(typeof(T))
+              + title
+              + ". "),
+            successMessage)
+        },
+        {
+          nameof(MutatingResult.NavigationBehavior),
+          Reload
+            ? MutatingResultNavigationBehavior.Reload
+            : MutatingResultNavigationBehavior.GoBack
+        },
+        {
+          nameof(MutatingResult.Exit),
+          (IMudDialogInstance _) => { AnalysisState.Reset(); }
         }
       },
       new DialogOptions { CloseOnEscapeKey = true });
@@ -251,6 +429,12 @@ public partial class Mutating<T> : OzdsComponentBase
 
   private async Task OnRestore(T model)
   {
+    object? toRestore = Map is { } map ? map(model) : model;
+
+    var title = toRestore is IIdentifiable identifiable
+      ? $" {identifiable.Title}"
+      : "";
+
     try
     {
       if (Restore is not null)
@@ -261,10 +445,10 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         await RestoreAsync(model);
       }
-      else if (model is IAuditable auditable)
+      else if (toRestore is ITrackable trackable)
       {
-        var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-        await mutations.Restore(auditable, CancellationToken);
+        var mutations = ScopedServices.GetRequiredService<TrackableMutations>();
+        await mutations.Restore(trackable, CancellationToken);
       }
       else
       {
@@ -274,19 +458,37 @@ public partial class Mutating<T> : OzdsComponentBase
     }
     catch (Exception ex)
     {
+      var failureMessage = OnFailureMessage is null
+        ? Fragment.String($":\n{ex.Message}")
+        : OnFailureMessage(model, ActionModel.Restore, ex);
+
       await DialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
         {
           {
             nameof(MutatingResult.Body),
-            $"{Translate("Failed restoring")}"
-            + $" {Translate(typeof(T))} - {ex.Message}"
+            Fragment.Combine(
+              Fragment.String(
+                Translate("Failed restoring")
+                + " "
+                + Translate(typeof(T))
+                + title
+                + ". "),
+              failureMessage)
+          },
+          {
+            nameof(MutatingResult.NavigationBehavior),
+            null
           }
         },
         new DialogOptions { CloseOnEscapeKey = true });
       return;
     }
+
+    var successMessage = OnSuccessMessage is null
+      ? Fragment.Empty
+      : OnSuccessMessage(model, ActionModel.Restore);
 
     await DialogService.ShowAsync<MutatingResult>(
       Translate("Success"),
@@ -294,7 +496,24 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         {
           nameof(MutatingResult.Body),
-          $"{Translate("Successfully restored")} {Translate(typeof(T))}"
+          Fragment.Combine(
+            Fragment.String(
+              Translate("Successfully restored")
+              + " "
+              + Translate(typeof(T))
+              + title
+              + ". "),
+            successMessage)
+        },
+        {
+          nameof(MutatingResult.NavigationBehavior),
+          Reload
+            ? MutatingResultNavigationBehavior.Reload
+            : MutatingResultNavigationBehavior.GoBack
+        },
+        {
+          nameof(MutatingResult.Exit),
+          (IMudDialogInstance _) => { AnalysisState.Reset(); }
         }
       },
       new DialogOptions { CloseOnEscapeKey = true });
@@ -302,6 +521,12 @@ public partial class Mutating<T> : OzdsComponentBase
 
   private async Task OnForget(T model)
   {
+    object? toForget = Map is { } map ? map(model) : model;
+
+    var title = toForget is IIdentifiable identifiable
+      ? $" {identifiable.Title}"
+      : "";
+
     try
     {
       if (Forget is not null)
@@ -312,10 +537,10 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         await ForgetAsync(model);
       }
-      else if (model is IAuditable auditable)
+      else if (toForget is ITrackable trackable)
       {
-        var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
-        await mutations.Forget(auditable, CancellationToken);
+        var mutations = ScopedServices.GetRequiredService<TrackableMutations>();
+        await mutations.Forget(trackable, CancellationToken);
       }
       else
       {
@@ -325,19 +550,37 @@ public partial class Mutating<T> : OzdsComponentBase
     }
     catch (Exception ex)
     {
+      var failureMessage = OnFailureMessage is null
+        ? Fragment.String($":\n{ex.Message}")
+        : OnFailureMessage(model, ActionModel.Forget, ex);
+
       await DialogService.ShowAsync<MutatingResult>(
         Translate("Failure"),
         new DialogParameters
         {
           {
             nameof(MutatingResult.Body),
-            $"{Translate("Failed forgetting")}"
-            + $" {Translate(typeof(T))} - {ex.Message}"
+            Fragment.Combine(
+              Fragment.String(
+                Translate("Failed forgetting")
+                + " "
+                + Translate(typeof(T))
+                + title
+                + ". "),
+              failureMessage)
+          },
+          {
+            nameof(MutatingResult.NavigationBehavior),
+            null
           }
         },
         new DialogOptions { CloseOnEscapeKey = true });
       return;
     }
+
+    var successMessage = OnSuccessMessage is null
+      ? Fragment.Empty
+      : OnSuccessMessage(model, ActionModel.Forget);
 
     await DialogService.ShowAsync<MutatingResult>(
       Translate("Success"),
@@ -345,7 +588,24 @@ public partial class Mutating<T> : OzdsComponentBase
       {
         {
           nameof(MutatingResult.Body),
-          $"{Translate("Successfully forgotten")} {Translate(typeof(T))}"
+          Fragment.Combine(
+            Fragment.String(
+              Translate("Successfully forgotten")
+              + " "
+              + Translate(typeof(T))
+              + title
+              + ". "),
+            successMessage)
+        },
+        {
+          nameof(MutatingResult.NavigationBehavior),
+          Reload
+            ? MutatingResultNavigationBehavior.Reload
+            : MutatingResultNavigationBehavior.GoBack
+        },
+        {
+          nameof(MutatingResult.Exit),
+          (IMudDialogInstance _) => { AnalysisState.Reset(); }
         }
       },
       new DialogOptions { CloseOnEscapeKey = true });

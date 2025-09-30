@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
@@ -8,7 +8,7 @@ public class ResolvableNotificationEntity
   : NotificationEntity, IResolvableNotificationEntity
 {
   public virtual RepresentativeEntity? ResolvedBy { get; set; } = default!;
-  public string? RepresentativeId { get; set; }
+  public string? AuditingRepresentativeId { get; set; }
 
   public string? ResolvedById { get; set; } = default!;
 
@@ -27,6 +27,7 @@ public class ResolvableNotificationEntityModelConfiguration :
       .WithMany(nameof(RepresentativeEntity.ResolvableNotifications))
       .HasForeignKey(nameof(ResolvableNotificationEntity.ResolvedById));
 
-    builder.Ignore(nameof(ResolvableNotificationEntity.RepresentativeId));
+    builder.Ignore(
+      nameof(ResolvableNotificationEntity.AuditingRepresentativeId));
   }
 }

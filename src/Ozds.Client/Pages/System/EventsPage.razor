@@ -22,17 +22,21 @@ Allows = [RoleModel.OperatorRepresentative])]
   return;
 }
 
-<HeadContent>
-  <title>OZDS - @Translate("Events")</title>
-</HeadContent>
-
-<EnumPicker
-  T="LevelModel"
-  Title="@Translate("Minimal level")"
-  Label="@(level => Translate(level.ToString()))"
-  @bind-Value="@_minLevel"
-  Values="@(Enum.GetValues<LevelModel>().Where(l => Environment.IsDevelopment() ? l >= LevelModel.Trace : l >= LevelModel.Information))"/>
-
 <Table
   Class="mt-4"
-  PageAsync="@OnPageAsync"/>
+  PageAsync="@OnPageAsync"
+  WithTitle
+  WithHeading
+  @ref="table">
+  <Tools>
+    <div style="min-width: 300px">
+      <EnumPicker
+        T="LevelModel"
+        Title="@Translate("Minimal level")"
+        Label="@(level => Translate(level.ToString()))"
+        Value="@minLevel"
+        ValueChanged="@OnMinLevelChanged"
+        Values="@Levels"/>
+    </div>
+  </Tools>
+</Table>

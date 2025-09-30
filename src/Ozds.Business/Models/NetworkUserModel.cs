@@ -5,7 +5,7 @@ using Ozds.Business.Validation;
 
 namespace Ozds.Business.Models;
 
-public class NetworkUserModel : AuditableModel
+public class NetworkUserModel : TrackableModel
 {
   [Required]
   public required string LocationId { get; set; }

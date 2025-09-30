@@ -22,7 +22,11 @@ public partial class MeasurementsPage : OzdsComponentBase
   [Inject]
   private Analyzer Analyzer { get; set; } = default!;
 
-  private Task<PaginatedList<IMessenger>> OnMessengersPageAsync(int page)
+  private Task<PaginatedList<IMessenger>> OnMessengersPageAsync(
+    string search,
+    int pageNumber,
+    int pageCount
+  )
   {
     var queries = ScopedServices.GetRequiredService<MessengerQueries>();
 
@@ -30,8 +34,11 @@ public partial class MeasurementsPage : OzdsComponentBase
       LocationState.Location?.Id
       ?? throw new InvalidOperationException(
         $"Location is null for {nameof(MeasurementsPage)}"),
-      page,
-      CancellationToken
+      pageNumber,
+      CancellationToken,
+      pageCount,
+      false,
+      search
     );
   }
 }

@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class MeasurementValidatorEntity : AuditableEntity,
+public class MeasurementValidatorEntity : TrackableEntity,
   IMeasurementValidatorEntity
 {
   public virtual ICollection<MeterEntity> Meters { get; set; } =

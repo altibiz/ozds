@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Enums;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
 public class MeterEntity
-  : AuditableEntity, ICustomIdentifiableEntity, IMeterEntity
+  : TrackableEntity, ICustomIdentifiableEntity, IMeterEntity
 {
   private long _measurementValidatorId;
 

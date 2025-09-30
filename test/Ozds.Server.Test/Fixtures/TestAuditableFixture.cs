@@ -21,16 +21,16 @@ public class TestAuditableFixture(
     var faker = scope.ServiceProvider
       .GetRequiredService<ModelFaker>();
 
-    var auditable = faker.Fake<T>();
+    var trackable = faker.Fake<T>();
 
     if (configure is not null)
     {
-      configure(auditable);
+      configure(trackable);
     }
 
-    await mutations.Create(auditable, cancellationToken);
+    await mutations.Create(trackable, cancellationToken);
 
-    return auditable;
+    return trackable;
   }
 
   public async Task<object> Create(
@@ -45,20 +45,20 @@ public class TestAuditableFixture(
     var faker = scope.ServiceProvider
       .GetRequiredService<ModelFaker>();
 
-    if (faker.FakeDynamic(type) is not IAuditable auditable)
+    if (faker.FakeDynamic(type) is not IAuditable trackable)
     {
       throw new InvalidOperationException(
-        $"Cannot create auditable of type {type}"
+        $"Cannot create trackable of type {type}"
       );
     }
 
     if (configure is not null)
     {
-      configure(auditable);
+      configure(trackable);
     }
 
-    await mutations.Create(auditable, cancellationToken);
+    await mutations.Create(trackable, cancellationToken);
 
-    return auditable;
+    return trackable;
   }
 }

@@ -1,0 +1,13 @@
+@namespace Ozds.Client.Components.Models.Implementations.Administration
+
+@typeparam TPrefix
+@typeparam TModel where TModel : Ozds.Business.Models.MeasurementScopeModel
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Base
+@inherits Ozds.Client.Components.Models.Base.OzdsEditComponentBase<TPrefix, TModel>
+
+@(Base<IdentifiableModel>())
+
+@(Base<ScopeModel>())
+
+@Field(x => x.Interval)

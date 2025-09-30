@@ -1,5 +1,5 @@
 using Ozds.Business.Caching;
-using Ozds.Business.Models.Base;
+using Ozds.Business.Models;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Queries;
@@ -20,7 +20,7 @@ public class DataMeterChangeReactor(
 
 public class DataMeterChangeHandler(
   IMeterJobManager manager,
-  AuditableQueries auditableQueries,
+  TrackableQueries trackableQueries,
   TimeQueries timeQueries,
   MeterCache meterCache,
   MeasurementLocationByMeterCache measurementLocationByMeterCache,
@@ -32,7 +32,7 @@ public class DataMeterChangeHandler(
     CancellationToken cancellationToken)
   {
     var page = 0;
-    var result = await auditableQueries
+    var result = await trackableQueries
       .Read<MeterModel>(page, cancellationToken);
     while (result.Items.Count > 0)
     {
@@ -44,7 +44,7 @@ public class DataMeterChangeHandler(
         cancellationToken
       );
 
-      result = await auditableQueries
+      result = await trackableQueries
         .Read<MeterModel>(
           ++page,
           cancellationToken,

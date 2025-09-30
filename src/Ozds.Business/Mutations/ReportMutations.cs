@@ -12,7 +12,7 @@ public class ReportMutations(
   ReportReportQueries queries,
   ReportReportMutations mutations,
   MeasurementMutations measurementMutations,
-  AuditableMutations auditableMutations,
+  TrackableMutations trackableMutations,
   ModelMutations modelMutations,
   ModelReportEntityConverter converter
 ) : IMutations
@@ -77,9 +77,9 @@ public class ReportMutations(
             cancellationToken
           );
         }
-        else if (model is IAuditable auditableModel)
+        else if (model is ITrackable trackableModel)
         {
-          await auditableMutations.Create(auditableModel, cancellationToken);
+          await trackableMutations.Create(trackableModel, cancellationToken);
         }
         else if (model is IModel actualModel)
         {
@@ -116,9 +116,9 @@ public class ReportMutations(
             cancellationToken
           );
         }
-        else if (model is IAuditable auditableModel)
+        else if (model is ITrackable trackableModel)
         {
-          await auditableMutations.Create(auditableModel, cancellationToken);
+          await trackableMutations.Create(trackableModel, cancellationToken);
         }
         else if (model is IModel actualModel)
         {

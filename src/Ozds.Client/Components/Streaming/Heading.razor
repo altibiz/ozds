@@ -1,0 +1,102 @@
+@namespace Ozds.Client.Components.Streaming
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+@if (State is LoadingTitleState { LoadingState: { } LoadingState })
+{
+  if (LoadingState.Stage == LoadingStage.Created)
+  {
+    if (LoadingState.ObjectValue is IIdentifiable identifiable)
+    {
+      <MudText Typo="Typo.h5">@Translate("New") @Translate(LoadingState.Type): @identifiable.Title</MudText>
+    }
+    else
+    {
+      <MudText Typo="Typo.h5">@Translate("New") @Translate(LoadingState.Type)</MudText>
+    }
+  }
+  else if (LoadingState.Stage == LoadingStage.Found)
+  {
+    if (LoadingState.ObjectValue is IIdentifiable identifiable)
+    {
+      <MudText Typo="Typo.h5">@Translate(LoadingState.Type): @identifiable.Title</MudText>
+    }
+    else
+    {
+      <MudText Typo="Typo.h5">@Translate(LoadingState.Type)</MudText>
+    }
+  }
+  else if (LoadingState.Stage == LoadingStage.Loading)
+  {
+    <MudText Typo="Typo.h5">
+      @Translate("Loading") @(Translate(LoadingState.Type) + "...")
+    </MudText>
+  }
+  else if (LoadingState.Stage == LoadingStage.Unfound)
+  {
+    <MudText Typo="Typo.h5">
+      @Translate(LoadingState.Type) @Translate("not found")
+    </MudText>
+  }
+  else if (LoadingState.Stage == LoadingStage.Error)
+  {
+    <MudText Typo="Typo.h5">
+      @Translate("Error loading") @Translate(LoadingState.Type)
+    </MudText>
+  }
+
+  return;
+}
+
+@if (State is MutatingTitleState { MutatingState: { } mutatingState })
+{
+  if (mutatingState.Created)
+  {
+    if (mutatingState.ObjectModel is IIdentifiable identifiable)
+    {
+      <MudText Typo="Typo.h5">@Translate("New") @Translate(mutatingState.Type): @identifiable.Title</MudText>
+    }
+    else
+    {
+      <MudText Typo="Typo.h5">@Translate("New") @Translate(mutatingState.Type)</MudText>
+    }
+  }
+  else
+  {
+    if (mutatingState.ObjectModel is IIdentifiable identifiable)
+    {
+      <MudText Typo="Typo.h5">@Translate(mutatingState.Type): @identifiable.Title</MudText>
+    }
+    else
+    {
+      <MudText Typo="Typo.h5">@Translate(mutatingState.Type)</MudText>
+    }
+  }
+
+  return;
+}
+
+@if (State is PaginatedListTitleState { PaginatedList: { } paginatedList })
+{
+  <MudText Typo="Typo.h5">@Translate(paginatedList.Type, true)</MudText>
+
+  return;
+}
+
+@if (State is MudGridDataTitleState { MudGridData: { } mudGridData })
+{
+  <MudText Typo="Typo.h5">@Translate(mudGridData.Type, true)</MudText>
+
+  return;
+}
+
+<MudText Typo="Typo.h5">@Translate("Unknown")</MudText>
+
+@code {
+
+  [Parameter]
+  public TitleState State { get; set; } = default!;
+
+}

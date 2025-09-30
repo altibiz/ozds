@@ -25,7 +25,7 @@ RoleModel.NetworkUserRepresentative
     AnalysisState.AnalysisBases.Value);
 }
 
-<Table Model="@networkUsers"/>
+<Table Value="@networkUsers" WithHeading WithDeleted/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
@@ -38,6 +38,7 @@ RoleModel.NetworkUserRepresentative
     </Summary>
     <Details>
       <Details Model="@context.User"/>
+
       @if (context.Representative is { } representative)
       {
         <Details Model="@representative"/>
@@ -47,6 +48,7 @@ RoleModel.NetworkUserRepresentative
       <PrefixedColumns
         Models="@context"
         Prefix="@(x => x.User)"/>
+
       <PrefixedColumns
         Models="@context"
         Prefix="@(x => x.Representative)"/>

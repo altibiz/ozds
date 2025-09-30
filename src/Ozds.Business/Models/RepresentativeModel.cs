@@ -5,7 +5,7 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models;
 
-public class RepresentativeModel : AuditableModel
+public class RepresentativeModel : TrackableModel
 {
   [Required]
   public required RoleModel Role { get; set; }

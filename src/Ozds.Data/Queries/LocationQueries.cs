@@ -12,7 +12,51 @@ public class LocationQueries(
   IDbContextFactory<DataDbContext> factory
 ) : IQueries
 {
-  public async Task<LocationEntity?> ReadLocationByRepresentativeId(
+  public async Task<PaginatedList<LocationEntity>>
+    ReadByRepresentativeId(
+      string representativeId,
+      int pageNumber,
+      CancellationToken cancellationToken,
+      int pageSize = QueryConstants.DefaultPageCount,
+      bool deleted = false,
+      string? title = null
+    )
+  {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+
+    var filtered = context.LocationRepresentatives
+      .Where(
+        context.ForeignKeyEquals<LocationRepresentativeEntity>(
+          nameof(LocationRepresentativeEntity.Representative),
+          representativeId))
+      .Include(x => x.Location)
+      .Select(x => x.Location);
+
+    filtered = deleted
+      ? filtered.Where(x => x.IsDeleted)
+      : filtered.Where(x => !x.IsDeleted);
+
+    if (!string.IsNullOrWhiteSpace(title))
+    {
+      filtered = filtered.Where(x => x.Title.Contains(title));
+    }
+
+    var ordered = filtered
+      .OrderByDescending(x => x.LastUpdatedOn)
+      .OrderByDescending(x => x.CreatedOn)
+      .OrderByDescending(x => x.DeletedOn);
+
+    var count = await filtered.CountAsync(cancellationToken);
+    var items = await ordered
+      .Skip(pageNumber * pageSize)
+      .Take(pageSize)
+      .ToListAsync(cancellationToken);
+
+    return items.ToPaginatedList(count);
+  }
+
+  public async Task<LocationEntity?> ReadIndirectByRepresentativeIdAndId(
     string representativeId,
     RoleEntity role,
     string locationId,
@@ -53,14 +97,9 @@ public class LocationQueries(
       context
         .PrimaryKeyEquals<LocationEntity>(locationId));
 
-    if (!deleted)
-    {
-      filtered = filtered.Where(x => x.DeletedOn == null);
-    }
-    else
-    {
-      filtered = filtered.Where(x => x.DeletedOn != null);
-    }
+    filtered = deleted
+      ? filtered.Where(x => x.IsDeleted)
+      : filtered.Where(x => !x.IsDeleted);
 
     var item = await filtered
       .FirstOrDefaultAsync(cancellationToken);
@@ -69,13 +108,14 @@ public class LocationQueries(
   }
 
   public async Task<PaginatedList<LocationEntity>>
-    ReadLocationsByRepresentativeId(
+    ReadIndirectByRepresentativeId(
       string representativeId,
       RoleEntity role,
       int pageNumber,
       CancellationToken cancellationToken,
       int pageSize = QueryConstants.DefaultPageCount,
-      bool deleted = false
+      bool deleted = false,
+      string? title = null
     )
   {
     await using var context = await factory
@@ -107,13 +147,13 @@ public class LocationQueries(
       _ => throw new ArgumentOutOfRangeException(nameof(role))
     };
 
-    if (!deleted)
+    filtered = deleted
+      ? filtered.Where(x => x.IsDeleted)
+      : filtered.Where(x => !x.IsDeleted);
+
+    if (!string.IsNullOrWhiteSpace(title))
     {
-      filtered = filtered.Where(x => x.DeletedOn == null);
-    }
-    else
-    {
-      filtered = filtered.Where(x => x.DeletedOn != null);
+      filtered = filtered.Where(x => x.Title.Contains(title));
     }
 
     var ordered = filtered
@@ -132,7 +172,7 @@ public class LocationQueries(
   }
 
   public async Task<List<LocationEntity>>
-    ReadAllLocationsByRepresentativeId(
+    ReadAllIndirectByRepresentativeId(
       string representativeId,
       RoleEntity role,
       CancellationToken cancellationToken

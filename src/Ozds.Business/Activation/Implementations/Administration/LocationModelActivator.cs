@@ -7,7 +7,7 @@ namespace Ozds.Business.Activation.Implementations.Administration;
 
 public class LocationModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<LocationModel, AuditableModel>(
+) : InheritingModelActivator<LocationModel, TrackableModel>(
   serviceProvider
 )
 {

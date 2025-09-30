@@ -108,10 +108,10 @@ public class NetworkUserInvoiceMutations(
 
     foreach (var calculation in entity.Calculations)
     {
-      calculation.RepresentativeId = representativeId;
+      calculation.AuditingRepresentativeId = representativeId;
     }
 
-    entity.Invoice.RepresentativeId = representativeId;
+    entity.Invoice.AuditingRepresentativeId = representativeId;
 
     await mutations.CreateCalculatedInvoice(
       entity,

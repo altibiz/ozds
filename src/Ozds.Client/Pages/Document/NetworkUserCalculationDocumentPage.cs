@@ -14,7 +14,7 @@ public partial class NetworkUserCalculationDocumentPage : OzdsComponentBase
   private async Task<NetworkUserCalculationModelWithHtml?> OnLoadAsync()
   {
     var calculation = await ScopedServices
-      .GetRequiredService<ModelQueries>()
+      .GetRequiredService<IdentifiableQueries>()
       .ReadById<NetworkUserCalculationModel>(Id, CancellationToken);
     if (calculation is null)
     {

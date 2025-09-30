@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Entities.Joins;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class RepresentativeEntity : AuditableEntity, ICustomIdentifiableEntity
+public class RepresentativeEntity : TrackableEntity, ICustomIdentifiableEntity
 {
   public RoleEntity Role { get; set; }
 

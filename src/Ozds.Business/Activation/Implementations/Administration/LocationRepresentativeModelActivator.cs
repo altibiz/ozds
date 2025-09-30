@@ -6,7 +6,7 @@ namespace Ozds.Business.Activation.Implementations.System;
 
 public class LocationRepresentativeModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<LocationRepresentativeModel, JoinModel>(
+) : InheritingModelActivator<LocationRepresentativeModel, AuditableJoinModel>(
   serviceProvider
 )
 {

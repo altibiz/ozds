@@ -1,17 +1,12 @@
 using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
-using Ozds.Data.Entities.Abstractions;
 using DataAuditableQueries = Ozds.Data.Queries.AuditableQueries;
-using DataEntityQueries = Ozds.Data.Queries.EntityQueries;
-using DataEventQueries = Ozds.Data.Queries.EventQueries;
 
 namespace Ozds.Business.Queries;
 
 public class AuditableQueries(
   DataAuditableQueries queries,
-  DataEventQueries eventQueries,
-  DataEntityQueries entityQueries,
   ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
@@ -19,7 +14,7 @@ public class AuditableQueries(
     string id,
     CancellationToken cancellationToken
   )
-    where T : class, IAuditable
+    where T : class, IAuditableIdentifiable
   {
     var model = await ReadById(typeof(T), id, cancellationToken);
     return model is null ? default : (T)model;
@@ -31,10 +26,10 @@ public class AuditableQueries(
     CancellationToken cancellationToken
   )
   {
-    if (!modelType.IsAssignableTo(typeof(IAuditable)))
+    if (!modelType.IsAssignableTo(typeof(IAuditableIdentifiable)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IAuditable)}");
+        $"Type {modelType} is not assignable to {typeof(IAuditableIdentifiable)}");
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
@@ -51,16 +46,14 @@ public class AuditableQueries(
 
   public async Task<List<T>> ReadByIds<T>(
     IEnumerable<string> ids,
-    CancellationToken cancellationToken,
-    bool deleted = false
+    CancellationToken cancellationToken
   )
-    where T : class, IAuditable
+    where T : class, IAuditableIdentifiable
   {
     var models = await ReadByIds(
       typeof(T),
       ids,
-      cancellationToken,
-      deleted
+      cancellationToken
     );
     return models.OfType<T>().ToList();
   }
@@ -68,22 +61,20 @@ public class AuditableQueries(
   public async Task<List<object>> ReadByIds(
     Type modelType,
     IEnumerable<string> ids,
-    CancellationToken cancellationToken,
-    bool deleted = false
+    CancellationToken cancellationToken
   )
   {
-    if (!modelType.IsAssignableTo(typeof(IAuditable)))
+    if (!modelType.IsAssignableTo(typeof(IAuditableIdentifiable)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IAuditable)}");
+        $"Type {modelType} is not assignable to {typeof(IAuditableIdentifiable)}");
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
     var entities = await queries.ReadByIds(
       entityType,
       ids,
-      cancellationToken,
-      deleted
+      cancellationToken
     );
 
     return entities
@@ -93,16 +84,14 @@ public class AuditableQueries(
 
   public async Task<List<T?>> ReadByIdsOrdered<T>(
     IEnumerable<string> ids,
-    CancellationToken cancellationToken,
-    bool deleted = false
+    CancellationToken cancellationToken
   )
-    where T : class, IAuditable
+    where T : class, IAuditableIdentifiable
   {
     var models = await ReadByIdsOrdered(
       typeof(T),
       ids,
-      cancellationToken,
-      deleted
+      cancellationToken
     );
     return models.Cast<T?>().ToList();
   }
@@ -110,21 +99,19 @@ public class AuditableQueries(
   public async Task<List<object?>> ReadByIdsOrdered(
     Type modelType,
     IEnumerable<string> ids,
-    CancellationToken cancellationToken,
-    bool deleted = false
+    CancellationToken cancellationToken
   )
   {
-    if (!modelType.IsAssignableTo(typeof(IAuditable)))
+    if (!modelType.IsAssignableTo(typeof(IAuditableIdentifiable)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IAuditable)}");
+        $"Type {modelType} is not assignable to {typeof(IAuditableIdentifiable)}");
     }
 
     var entities = await queries.ReadByIdsOrdered(
       modelEntityConverter.EntityType(modelType),
       ids,
-      cancellationToken,
-      deleted
+      cancellationToken
     );
 
     return entities
@@ -135,19 +122,62 @@ public class AuditableQueries(
       .ToList();
   }
 
+  public async Task<PaginatedList<T>> ReadByTitle<T>(
+    string title,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
+    where T : class, ITrackableIdentifiable
+  {
+    var models = await ReadByTitle(
+      typeof(T),
+      title,
+      pageNumber,
+      cancellationToken,
+      pageCount);
+
+    return models.Items.OfType<T>().ToPaginatedList(models.TotalCount);
+  }
+
+  public async Task<PaginatedList<object>> ReadByTitle(
+    Type modelType,
+    string title,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
+  {
+    var entityType = modelEntityConverter.EntityType(modelType);
+
+    var page = await queries.ReadByTitle(
+      entityType,
+      title,
+      pageNumber,
+      cancellationToken,
+      pageCount
+    );
+
+    var models = page.Items
+      .Select(modelEntityConverter.ToModel)
+      .ToList();
+
+    return models
+      .ToPaginatedList(page.TotalCount);
+  }
+
   public async Task<PaginatedList<T>> Read<T>(
     int pageNumber,
     CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount,
-    bool deleted = false
+    int pageCount = QueryConstants.DefaultPageCount
   )
+    where T : class, IAuditable
   {
     var models = await Read(
       typeof(T),
       pageNumber,
       cancellationToken,
-      pageCount,
-      deleted
+      pageCount
     );
 
     return models.Items
@@ -159,8 +189,7 @@ public class AuditableQueries(
     Type modelType,
     int pageNumber,
     CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount,
-    bool deleted = false
+    int pageCount = QueryConstants.DefaultPageCount
   )
   {
     if (!modelType.IsAssignableTo(typeof(IAuditable)))
@@ -174,38 +203,11 @@ public class AuditableQueries(
       entityType,
       pageNumber,
       cancellationToken,
-      pageCount,
-      deleted
+      pageCount
     );
 
     return entities.Items
       .Select(modelEntityConverter.ToModel)
       .ToPaginatedList(entities.TotalCount);
-  }
-
-  public async Task<IAuditable?> ReadByEvent(
-    IAuditEvent auditEvent,
-    CancellationToken cancellationToken
-  )
-  {
-    var original = await entityQueries.ReadById<IAuditEventEntity>(
-      auditEvent.Id,
-      cancellationToken);
-    if (original is null)
-    {
-      return null;
-    }
-
-    var type = await eventQueries.ReadAuditEntityType(
-      original.AuditableEntityType,
-      cancellationToken);
-    var entity = await queries.ReadById(
-      type,
-      original.AuditableEntityId,
-      cancellationToken);
-
-    return entity is null
-      ? null
-      : modelEntityConverter.ToModel<IAuditable>(entity);
   }
 }

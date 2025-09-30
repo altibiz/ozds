@@ -30,7 +30,7 @@ public static class DbContextOptionsBuilderExtensions
     return builder.AddInterceptors(
       assembly
         .GetTypes()
-        .Where(type => type.IsSubclassOf(typeof(ServedSaveChangesInterceptor)))
+        .Where(type => type.IsSubclassOf(typeof(ServedInterceptor)))
         .Select(
           type =>
           {
@@ -46,7 +46,7 @@ public static class DbContextOptionsBuilderExtensions
             }
           })
         .Where(interceptor => interceptor is not null)
-        .OfType<ServedSaveChangesInterceptor>()
+        .OfType<ServedInterceptor>()
         .OrderBy(interceptor => interceptor.Order)
         .OfType<IInterceptor>()
         .ToArray());

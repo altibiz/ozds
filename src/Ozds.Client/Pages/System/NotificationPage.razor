@@ -7,53 +7,17 @@
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.INotification>
 
-@{
-  var value = NotificationsState.Notifications.Find(x => x.Id == Id);
-}
-
-@if (RepresentativeState.Representative.Role
-  is not RoleModel.OperatorRepresentative)
-{
-  <Loading T="INotification" Id="@Id" Value="@value">
-    <Found>
-      <HeadContent>
-        <title>OZDS - @Translate("Notification"): @context.Title</title>
-      </HeadContent>
-
-      <Details Model="@context"/>
-    </Found>
-    <NotFound>
-      <NotFound/>
-    </NotFound>
-  </Loading>
-
-  return;
-}
-
 <Mutating
   T="INotification"
   Id="@Id"
-  Value="@value"
+  Value="@NotificationsState.Notifications.Find(x => x.Id == Id)"
   LoadAsync="OnLoadAsync"
   NewAsync="OnNewAsync"
   CreateAsync="OnCreateAsync"
-  AsReadonly>
-  <Label>
-    <HeadContent>
-      @if (context.Created)
-      {
-        <title>OZDS - @Translate("New notification")</title>
-      }
-      else
-      {
-        <title>OZDS - @Translate("Notification"): @context.Model.Title</title>
-      }
-    </HeadContent>
-  </Label>
+  WithTitle
+  WithPreview
+  WithHeading>
   <Concretize/>
-  <Edit>
-    <Edit Model="@context.Model"/>
-  </Edit>
   <Details>
     <Details Model="@context.Model"/>
 

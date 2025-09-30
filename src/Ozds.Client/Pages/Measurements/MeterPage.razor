@@ -6,7 +6,6 @@
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Components.Charts
 @using Ozds.Client.Components.Fields
-@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IMeter>
 
@@ -22,31 +21,17 @@
     .FirstOrDefault(x => x.Meter.Id == Id);
 }
 
-<Mutating T="IMeter" Value="@(analysis?.Meter)" Id="@Id">
-  <Edit>
-    <HeadContent>
-      @if (context.Created)
-      {
-        <title>OZDS - @Translate("New meter")</title>
-      }
-      else
-      {
-        <title>OZDS - @Translate("Meter"): @context.Model.Title</title>
-      }
-    </HeadContent>
-    <Edit Model="context.Model"/>
-  </Edit>
-  <Details>
-    <HeadContent>
-      <title>OZDS - @Translate("Meter"): @context.Model.Title</title>
-    </HeadContent>
-    <Details Model="context.Model"/>
-  </Details>
-</Mutating>
+<Mutating
+  T="IMeter"
+  Value="@(analysis?.Meter)"
+  Id="@Id"
+  WithTitle
+  WithHeading
+  WithPreview/>
 
 @if (analysis is not null)
 {
-  <Table Class="mt-8" Model="@analysis.Analysis.Monthly"/>
+  <Table Class="mt-8" Value="@analysis.Analysis.Monthly"/>
 
   <div class="mt-8">
     <MudText Typo="Typo.h5">
@@ -68,14 +53,14 @@
 
     @{
       var accountingPeriodHref =
-        "/report/meter-accounting-period"
+        "/app/report/meter-accounting-period"
         + "/" + GetCulture().TwoLetterISOLanguageName
         + "/" + Id
         + "/" + selectedMonth.Year
         + "/" + selectedMonth.Month;
 
       var loadCurveHref =
-        "/report/meter-load-curve"
+        "/app/report/meter-load-curve"
         + "/" + GetCulture().TwoLetterISOLanguageName
         + "/" + Id
         + "/" + selectedObis.ToCode()

@@ -1,0 +1,19 @@
+@namespace Ozds.Client.Components.Models.Implementations.Administration
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Reflection
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Abstractions.IScope>
+
+@inject ModelReflector ModelReflector
+
+@(Base<IIdentifiable>())
+
+@Field(x => x.ScopeAction)
+
+@(
+PolymorphicLinkField(
+  x => x.ScopeModelType == null
+    ? null
+    : ModelReflector.ResolveModelType(x.ScopeModelType),
+  x => x.ScopeModelId))
+
+@(Base<ITrackable>())

@@ -4,7 +4,7 @@ using Ozds.Business.Models.Abstractions;
 namespace Ozds.Business.Models.Base;
 
 public abstract class MeasurementLocationModel :
-  AuditableModel,
+  TrackableModel,
   IMeasurementLocation
 {
   [Required]

@@ -6,18 +6,21 @@ using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 using Ozds.Data.Queries.Abstractions;
+using Ozds.Data.Reflection;
 
 namespace Ozds.Data.Queries;
 
 public class EventQueries(
-  IDbContextFactory<DataDbContext> factory
+  IDbContextFactory<DataDbContext> factory,
+  EntityReflector entityReflector
 ) : IQueries
 {
   public async Task<PaginatedList<T>> Read<T>(
     LevelEntity minLevel,
     int pageNumber,
     CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount
+    int pageCount = QueryConstants.DefaultPageCount,
+    string? title = null
   )
     where T : class, IEventEntity
   {
@@ -26,7 +29,8 @@ public class EventQueries(
       minLevel,
       pageNumber,
       cancellationToken,
-      pageCount
+      pageCount,
+      title
     );
 
     return entities.Items.OfType<T>().ToPaginatedList(entities.TotalCount);
@@ -37,7 +41,8 @@ public class EventQueries(
     LevelEntity minLevel,
     int pageNumber,
     CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount
+    int pageCount = QueryConstants.DefaultPageCount,
+    string? title = null
   )
   {
     if (!entityType.IsAssignableTo(typeof(IEventEntity)))
@@ -52,6 +57,11 @@ public class EventQueries(
     var filtered = context.Events
       .Where(x => x.Level >= minLevel);
 
+    if (!string.IsNullOrWhiteSpace(title))
+    {
+      filtered = filtered.Where(x => x.Title.Contains(title));
+    }
+
     var ordered = filtered
       .OrderBy(context.PrimaryKeyOf(entityType));
 
@@ -65,12 +75,13 @@ public class EventQueries(
     return items.OfType<object>().ToPaginatedList(count);
   }
 
-  public async Task<PaginatedList<object>> ReadAuditEventsDynamic(
+  public async Task<PaginatedList<object>> ReadAuditEvents(
     Type entityType,
     IAuditableEntity auditableEntity,
     int pageNumber,
     CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount
+    int pageCount = QueryConstants.DefaultPageCount,
+    string? title = null
   )
   {
     if (!entityType.IsAssignableTo(typeof(IAuditEventEntity)))
@@ -79,28 +90,27 @@ public class EventQueries(
         $"Type {entityType} is not assignable to {typeof(IAuditEventEntity)}");
     }
 
-    var auditableEntityId = auditableEntity.Id;
-    var auditableEntityType = await ReadAuditEntityTypeName(
-      auditableEntity.GetType(),
-      cancellationToken);
-    var auditableEntityTable = await ReadAuditEntityTableName(
-      auditableEntity.GetType(),
-      cancellationToken
-    );
-
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
+    // NOTE: filtering only by table name because potential TPH
+    var auditableEntityId = auditableEntity.AuditingId;
+    var auditableEntityTable = entityReflector
+      .ResolveEntityTable(auditableEntity.GetType());
     var filtered = context.Events
       .OfType<AuditEventEntity>()
       .Where(
         x =>
           x.AuditableEntityId == auditableEntityId
-          && x.AuditableEntityType == auditableEntityType
           && x.AuditableEntityTable == auditableEntityTable);
 
+    if (!string.IsNullOrWhiteSpace(title))
+    {
+      filtered = filtered.Where(x => x.Title.Contains(title));
+    }
+
     var ordered = filtered
-      .OrderBy(context.PrimaryKeyOf(entityType));
+      .OrderByDescending(x => x.Timestamp);
 
     var count = await filtered.CountAsync(cancellationToken);
     var items = await ordered
@@ -130,56 +140,5 @@ public class EventQueries(
       .OrderByDescending(x => x.Timestamp)
       .FirstOrDefaultAsync(cancellationToken);
     return messengerEvent;
-  }
-
-  public async Task<string> ReadAuditEntityTypeName(
-    Type entityType,
-    CancellationToken cancellationToken
-  )
-  {
-    if (!entityType.IsAssignableTo(typeof(IAuditableEntity)))
-    {
-      throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(IAuditableEntity)}");
-    }
-
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-
-    return context.GetEntityTypeNameFromEntityType(entityType)
-      ?? throw new InvalidOperationException(
-        $"Type {entityType} doesn't have a type name");
-  }
-
-  public async Task<string> ReadAuditEntityTableName(
-    Type entityType,
-    CancellationToken cancellationToken
-  )
-  {
-    if (!entityType.IsAssignableTo(typeof(IAuditableEntity)))
-    {
-      throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(IAuditableEntity)}");
-    }
-
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-
-    return context.GetTableNameFromEntityType(entityType)
-      ?? throw new InvalidOperationException(
-        $"Type {entityType} doesn't have a table");
-  }
-
-  public async Task<Type> ReadAuditEntityType(
-    string entityTypeName,
-    CancellationToken cancellationToken
-  )
-  {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-
-    return context.GetEntityTypeFromEntityTypeName(entityTypeName)
-      ?? throw new InvalidOperationException(
-        $"Type {entityTypeName} doesn't have a type");
   }
 }

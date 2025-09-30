@@ -14,7 +14,9 @@ public class MessengerQueries(
     string locationId,
     int pageNumber,
     CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount
+    int pageCount = QueryConstants.DefaultPageCount,
+    bool deleted = false,
+    string? title = null
   )
   {
     await using var context = await factory
@@ -25,6 +27,15 @@ public class MessengerQueries(
         context.ForeignKeyEquals<MessengerEntity>(
           nameof(MessengerEntity.Location),
           locationId));
+
+    filtered = deleted
+      ? filtered.Where(x => x.IsDeleted)
+      : filtered.Where(x => !x.IsDeleted);
+
+    if (!string.IsNullOrWhiteSpace(title))
+    {
+      filtered = filtered.Where(x => x.Title.Contains(title));
+    }
 
     var ordered = filtered
       .OrderBy(context.PrimaryKeyOf<MessengerEntity>());

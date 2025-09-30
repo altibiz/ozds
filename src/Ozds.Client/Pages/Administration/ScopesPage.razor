@@ -1,0 +1,25 @@
+@namespace Ozds.Client.Pages
+
+@page "/administration/scopes"
+
+@attribute [Navigation(
+Order = 4,
+Title = "Scopes",
+Icon = Icons.Material.Filled.Lock,
+Parent = typeof(AdministrationPage),
+Allows = [
+RoleModel.OperatorRepresentative
+])]
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Attributes
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+<Table T="IScope" WithTitle WithHeading WithCreate WithDeleted/>
+
+@code
+{
+  [CascadingParameter]
+  private RepresentativeState RepresentativeState { get; set; } = default!;
+}

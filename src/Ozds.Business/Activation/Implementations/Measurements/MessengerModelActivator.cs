@@ -5,7 +5,7 @@ using Ozds.Business.Models.Complex;
 namespace Ozds.Business.Activation.Implementations.Measurements;
 
 public class MessengerModelActivator(IServiceProvider serviceProvider)
-  : InheritingModelActivator<MessengerModel, AuditableModel>(serviceProvider)
+  : InheritingModelActivator<MessengerModel, TrackableModel>(serviceProvider)
 {
   private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();

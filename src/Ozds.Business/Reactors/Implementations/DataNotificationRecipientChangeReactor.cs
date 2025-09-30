@@ -23,7 +23,7 @@ public class DataNotificationRecipientChangeReactor(
 }
 
 public class DataNotificationRecipientChangeHandler(
-  ModelQueries modelQueries,
+  IdentifiableQueries identifiableQueries,
   IEmailSender sender
 ) : Handler<DataModelsChangedEventArgs>
 {
@@ -41,14 +41,15 @@ public class DataNotificationRecipientChangeHandler(
       return;
     }
 
-    var notifications = await modelQueries.ReadByIds<INotification>(
+    var notifications = await identifiableQueries.ReadByIds<INotification>(
       recipients.Select(x => x.NotificationId),
       cancellationToken);
 
-    var representatives = await modelQueries.ReadByIds<RepresentativeModel>(
-      recipients.Select(x => x.RepresentativeId),
-      cancellationToken
-    );
+    var representatives =
+      await identifiableQueries.ReadByIds<RepresentativeModel>(
+        recipients.Select(x => x.RepresentativeId),
+        cancellationToken
+      );
 
     var groups = recipients
       .GroupBy(x => x.NotificationId)

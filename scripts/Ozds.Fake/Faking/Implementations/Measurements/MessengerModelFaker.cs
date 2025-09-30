@@ -8,7 +8,7 @@ namespace Ozds.Fake.Faking.Implementations.Measurements;
 
 public class MessengerModelFaker(
   IServiceProvider serviceProvider
-) : InheritingModelFaker<MessengerModel, AuditableModel>(serviceProvider)
+) : InheritingModelFaker<MessengerModel, TrackableModel>(serviceProvider)
 {
   private readonly ModelFaker modelFaker =
     serviceProvider.GetRequiredService<ModelFaker>();

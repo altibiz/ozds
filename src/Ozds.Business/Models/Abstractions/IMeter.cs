@@ -1,9 +1,10 @@
 using Ozds.Business.Capabilities.Abstractions;
 using Ozds.Business.Models.Complex;
+using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IMeter : IAuditable
+public interface IMeter : ITrackableIdentifiable
 {
   public string MeasurementValidatorId { get; }
 

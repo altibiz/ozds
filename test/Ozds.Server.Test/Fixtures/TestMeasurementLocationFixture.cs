@@ -50,9 +50,9 @@ public class TestMeasurementLocationFixture(
           configurator.ConfigureMeter(x);
         });
 
-    var auditableFixture = new TestAuditableFixture(composition);
+    var trackableFixture = new TestTrackableFixture(composition);
 
-    var measurementLocation = await auditableFixture
+    var measurementLocation = await trackableFixture
       .Create<NetworkUserMeasurementLocationModel>(
         cancellationToken, m =>
         {

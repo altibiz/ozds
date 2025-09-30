@@ -1,12 +1,22 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Joins;
 
 public class NotificationRecipientEntity : JoinEntity
 {
   private long _notificationId;
+
+  public override string LeftId
+  {
+    get { return _notificationId.ToString(); }
+  }
+
+  public override string RightId
+  {
+    get { return RepresentativeId; }
+  }
 
   public string NotificationId
   {

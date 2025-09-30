@@ -7,25 +7,12 @@
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.INetworkUserCalculation>
 
-<Mutating T="INetworkUserCalculation" Id="@Id" AsReadonly>
-  <Edit>
-    @if (context.Created)
-    {
-      <NotFound/>
-      return;
-    }
-
-    <HeadContent>
-      <title>OZDS - @Translate("Calculation"): @context.Model.Title</title>
-    </HeadContent>
-
-    <Edit Model="@context.Model"/>
-  </Edit>
+<Mutating
+  T="INetworkUserCalculation"
+  Id="@Id"
+  WithTitle
+  NotFoundOnCreate>
   <Details>
-    <HeadContent>
-      <title>OZDS - @Translate("Calculation"): @context.Model.Title</title>
-    </HeadContent>
-
     <Details Model="@context.Model"/>
 
     <div class="mt-4">

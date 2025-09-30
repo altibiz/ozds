@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Joins;
-using Ozds.Data.Extensions;
 using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
@@ -14,19 +12,21 @@ public class NotificationQueries(
 {
   public async Task<PaginatedList<T>> ReadForRecipient<T>(
     string representativeId,
-    bool seen,
     int pageNumber,
     CancellationToken cancellationToken,
+    bool seen = false,
+    string? title = null,
     int pageCount = QueryConstants.DefaultPageCount
   )
     where T : INotificationEntity
   {
-    var entities = await ReadForRecipientDynamic(
+    var entities = await ReadForRecipient(
       typeof(T),
       representativeId,
-      seen,
       pageNumber,
       cancellationToken,
+      seen,
+      title,
       pageCount
     );
 
@@ -35,27 +35,30 @@ public class NotificationQueries(
 
   public async Task<List<T>> ReadForRecipient<T>(
     string representativeId,
-    bool seen,
-    CancellationToken cancellationToken
+    CancellationToken cancellationToken,
+    bool seen = false,
+    string? title = null
   )
     where T : INotificationEntity
   {
-    var entities = await ReadForRecipientDynamic(
+    var entities = await ReadForRecipient(
       typeof(T),
       representativeId,
+      cancellationToken,
       seen,
-      cancellationToken
+      title
     );
 
     return entities.OfType<T>().ToList();
   }
 
-  public async Task<PaginatedList<INotificationEntity>> ReadForRecipientDynamic(
+  public async Task<PaginatedList<INotificationEntity>> ReadForRecipient(
     Type entityType,
     string representativeId,
-    bool seen,
     int pageNumber,
     CancellationToken cancellationToken,
+    bool seen = false,
+    string? title = null,
     int pageCount = QueryConstants.DefaultPageCount
   )
   {
@@ -69,19 +72,22 @@ public class NotificationQueries(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
-    var queryable = context.Notifications;
-
-    var initial = context.NotificationRecipients
+    var recipients = context.NotificationRecipients
       .Where(recipient => recipient.RepresentativeId == representativeId);
-    initial = seen ? initial.Where(nr => nr.SeenOn != null) : initial;
-    var filtered = initial
-      .Join(
-        queryable,
-        context.ForeignKeyOf<NotificationRecipientEntity>(
-          nameof(NotificationRecipientEntity.Notification)),
-        context.PrimaryKeyOf<NotificationEntity>(),
-        (_, notification) => notification
-      );
+
+    recipients = seen
+      ? recipients.Where(x => x.SeenOn != null)
+      : recipients.Where(x => x.SeenOn == null);
+
+    var filtered = recipients
+      .Include(x => x.Notification)
+      .Select(x => x.Notification);
+
+    if (!string.IsNullOrEmpty(title))
+    {
+      filtered = filtered.Where(x => x.Title.Contains(title));
+    }
+
     var ordered = filtered
       .OrderByDescending(aggregate => aggregate.Timestamp);
 
@@ -94,11 +100,12 @@ public class NotificationQueries(
     return items.OfType<INotificationEntity>().ToPaginatedList(count);
   }
 
-  public async Task<List<INotificationEntity>> ReadForRecipientDynamic(
+  public async Task<List<INotificationEntity>> ReadForRecipient(
     Type entityType,
     string representativeId,
-    bool seen,
-    CancellationToken cancellationToken
+    CancellationToken cancellationToken,
+    bool seen = false,
+    string? title = null
   )
   {
     if (!entityType.IsAssignableTo(typeof(INotificationEntity)))
@@ -111,19 +118,22 @@ public class NotificationQueries(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
-    var queryable = context.Notifications;
-
-    var initial = context.NotificationRecipients
+    var recipients = context.NotificationRecipients
       .Where(recipient => recipient.RepresentativeId == representativeId);
-    initial = seen ? initial.Where(nr => nr.SeenOn != null) : initial;
-    var filtered = initial
-      .Join(
-        queryable,
-        context.ForeignKeyOf<NotificationRecipientEntity>(
-          nameof(NotificationRecipientEntity.Notification)),
-        context.PrimaryKeyOf<NotificationEntity>(),
-        (_, notification) => notification
-      );
+
+    recipients = seen
+      ? recipients.Where(x => x.SeenOn != null)
+      : recipients.Where(x => x.SeenOn == null);
+
+    var filtered = recipients
+      .Include(x => x.Notification)
+      .Select(x => x.Notification);
+
+    if (!string.IsNullOrEmpty(title))
+    {
+      filtered = filtered.Where(x => x.Title.Contains(title));
+    }
+
     var ordered = filtered
       .OrderByDescending(aggregate => aggregate.Timestamp);
 

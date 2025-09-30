@@ -14,9 +14,9 @@ public class RepresentativeModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
   RepresentativeModel,
-  AuditableModel,
+  TrackableModel,
   RepresentativeEntity,
-  AuditableEntity>(serviceProvider)
+  TrackableEntity>(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();

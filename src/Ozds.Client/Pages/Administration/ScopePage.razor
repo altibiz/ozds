@@ -1,0 +1,15 @@
+@namespace Ozds.Client.Pages
+
+@page "/administration/scope/{id?}"
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IScope>
+
+<Mutating T="IScope" Id="@Id" WithTitle WithHeading WithPreview/>
+
+@code {
+
+  [Parameter]
+  public string? Id { get; set; }
+
+}

@@ -1,12 +1,22 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Joins;
 
-public class LocationRepresentativeEntity : JoinEntity
+public class LocationRepresentativeEntity : AuditableJoinEntity
 {
   private long _locationId;
+
+  public override string LeftId
+  {
+    get { return _locationId.ToString(); }
+  }
+
+  public override string RightId
+  {
+    get { return RepresentativeId; }
+  }
 
   public string LocationId
   {

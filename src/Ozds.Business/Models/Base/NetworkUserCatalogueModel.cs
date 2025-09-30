@@ -3,7 +3,7 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
-public class NetworkUserCatalogueModel
+public abstract class NetworkUserCatalogueModel
   : CatalogueModel, INetworkUserCatalogue
 {
   [Required]

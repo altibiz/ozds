@@ -2,35 +2,22 @@
 
 @page "/finances/network-user-invoice/{id?}"
 @using MudBlazor
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Composite
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.INetworkUserInvoice>
 
-@* TODO: mutations via append-only readonly mutation table *@
-
-<Mutating
+<MappedMutating
   T="StatefulNetworkUserInvoiceModel"
+  TMapped="INetworkUserInvoice"
   LoadAsync="OnLoadAsync"
-  AsReadonly>
-  <Edit>
-    @if (context.Created)
-    {
-      <NotFound/>
-      return;
-    }
-
-    <HeadContent>
-      <title>OZDS - @Translate("Invoice"): @context.Model.Invoice.Title</title>
-    </HeadContent>
-
-    <Edit Model="@context.Model.Invoice"/>
-  </Edit>
+  Map="@(model => model.Invoice)"
+  AsReadonly
+  NotFoundOnCreate
+  WithTitle
+  WithHeading>
   <Details>
-    <HeadContent>
-      <title>OZDS - @Translate("Invoice"): @context.Model.Invoice.Title</title>
-    </HeadContent>
-
     @if (context.Model.State is not null)
     {
       <Details Model="@context.Model.State"/>
@@ -54,12 +41,12 @@
         Class="ml-4"
         Variant="Variant.Outlined"
         Color="Color.Primary"
-        Href="@($"/document/network-user-invoice/{context.Model.Invoice.Id}")">
+        Href="@($"/app/document/network-user-invoice/{context.Model.Invoice.Id}")">
         @Translate("Document (PDF)")
       </MudButton>
     </div>
   </Details>
-</Mutating>
+</MappedMutating>
 
 @code {
 

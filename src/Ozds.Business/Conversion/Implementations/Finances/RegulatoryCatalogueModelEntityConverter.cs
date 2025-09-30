@@ -10,9 +10,9 @@ public class RegulatoryCatalogueModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
   RegulatoryCatalogueModel,
-  AuditableModel,
+  TrackableModel,
   RegulatoryCatalogueEntity,
-  AuditableEntity>(serviceProvider)
+  TrackableEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     RegulatoryCatalogueModel model,

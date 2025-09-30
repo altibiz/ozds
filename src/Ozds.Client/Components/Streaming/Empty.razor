@@ -3,5 +3,22 @@
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
 <MudText Typo="Typo.h5">
-  @Translate("There are no resources of this type")
+  @if (Type is { } type)
+  {
+    @string.Format(
+      Translate("There are no resources of type {0}"),
+      Translate(type))
+  }
+  else
+  {
+    @Translate("There are no resources of this type")
+  }
 </MudText>
+
+
+@code {
+
+  [Parameter]
+  public Type? Type { get; set; }
+
+}

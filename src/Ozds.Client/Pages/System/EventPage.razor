@@ -2,7 +2,6 @@
 
 @page "/system/event/{id}"
 @using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IEvent>
@@ -14,18 +13,7 @@
   return;
 }
 
-<Loading T="IEvent" Id="@Id">
-  <Found>
-    <HeadContent>
-      <title>OZDS - @Translate("Event"): @context.Title</title>
-    </HeadContent>
-
-    <Details Model="context"/>
-  </Found>
-  <NotFound>
-    <NotFound/>
-  </NotFound>
-</Loading>
+<Mutating T="IEvent" Id="@Id" WithHeading WithTitle/>
 
 @code {
 

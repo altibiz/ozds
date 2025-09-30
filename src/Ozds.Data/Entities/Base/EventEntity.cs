@@ -1,8 +1,8 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Enums;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 

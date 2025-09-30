@@ -2,6 +2,7 @@ using Bogus;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
+using Ozds.Business.Models.Enums;
 using Ozds.Business.Naming;
 using Ozds.Fake.Faking.Base;
 
@@ -9,7 +10,7 @@ namespace Ozds.Fake.Faking.Implementations.Measurements;
 
 public class MeterModelFaker(
   IServiceProvider serviceProvider
-) : InheritingModelFaker<MeterModel, AuditableModel>(serviceProvider)
+) : InheritingModelFaker<MeterModel, TrackableModel>(serviceProvider)
 {
   private readonly MeterNamingConvention meterNamingConvention =
     serviceProvider.GetRequiredService<MeterNamingConvention>();

@@ -7,12 +7,21 @@ public class OzdsBusinessOptions
   public bool WithReactors { get; set; } = true;
 
   public OzdsBusinessReactorOptions Reactor { get; set; } = new();
+
+  public OzdsBusinessAuthorizationOptions Authorization { get; set; } =
+    new();
 }
 
 public class OzdsBusinessReactorOptions
 {
   public double MeasurementDeletionJobIntervalSeconds { get; set; } =
     TimeSpan.FromDays(90).TotalSeconds;
+}
+
+public class OzdsBusinessAuthorizationOptions
+{
+  // NOTE: openssl rand -base64 32 | tr '+/' '-_' | tr -d '='
+  public string HmacSecret { get; set; } = default!;
 }
 
 public class ConfigureOzdsBusinessOptions(

@@ -5,7 +5,7 @@ using Ozds.Business.Naming;
 
 namespace Ozds.Business.Models.Base;
 
-public class MessengerModel : AuditableModel, IMessenger
+public abstract class MessengerModel : TrackableModel, IMessenger
 {
   [Required]
   public required string LocationId { get; set; }

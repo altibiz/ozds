@@ -10,7 +10,6 @@ Parent = typeof(FinancesPage),
 Allows = [
 RoleModel.OperatorRepresentative,
 ])]
-@using MudBlazor
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Streaming
@@ -28,38 +27,21 @@ RoleModel.OperatorRepresentative,
   <title>OZDS - @Translate("Catalogues")</title>
 </HeadContent>
 
-<MudCheckBox
-  Label="@Translate("Show deleted")"
-  @bind-Value="_deleted"/>
-
 <Table
   Class="mt-4"
   T="INetworkUserCatalogue"
-  Deleted="@_deleted"/>
-
-<MudButton
-  Class="mt-4"
-  Color="Color.Primary"
-  Variant="Variant.Outlined"
-  Href="@(PageHref<NetworkUserCataloguePage>())">
-  @Translate("Create") @Translate(typeof(INetworkUserCatalogue))
-</MudButton>
+  WithHeading
+  WithDeleted
+  WithCreate/>
 
 <Table
   Class="mt-8"
   T="IRegulatoryCatalogue"
-  Deleted="@_deleted"/>
-
-<MudButton
-  Class="mt-4"
-  Color="Color.Primary"
-  Variant="Variant.Outlined"
-  Href="@(PageHref<RegulatoryCataloguePage>())">
-  @Translate("Create") @Translate(typeof(IRegulatoryCatalogue))
-</MudButton>
+  WithDeleted
+  WithCreate
+  WithHeading/>
 
 @code {
-  private bool _deleted;
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;

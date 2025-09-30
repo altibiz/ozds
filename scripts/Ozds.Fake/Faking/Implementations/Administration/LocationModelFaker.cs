@@ -9,7 +9,7 @@ namespace Ozds.Fake.Implementations.Administration;
 
 public class LocationModelFaker(
   IServiceProvider serviceProvider
-) : InheritingModelFaker<LocationModel, AuditableModel>(
+) : InheritingModelFaker<LocationModel, TrackableModel>(
   serviceProvider
 )
 {

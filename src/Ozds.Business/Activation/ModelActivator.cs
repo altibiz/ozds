@@ -1,5 +1,7 @@
 using System.Collections.Concurrent;
 using Ozds.Business.Activation.Abstractions;
+using Ozds.Business.Models;
+using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation;
 
@@ -25,21 +27,33 @@ public class ModelActivator(IServiceProvider serviceProvider)
 
     activator = serviceProvider
         .GetServices<IModelActivator>()
-        .Where(converter => converter.CanActivate(type))
+        .Where(
+          converter =>
+            !converter.ModelType.IsAbstract
+            && !converter.ModelType.IsInterface
+            && converter.ModelType.IsAssignableTo(type)
+            && converter.CanActivate(type))
         .DefaultIfEmpty(null)
         .Aggregate(
           (acc, next) =>
             acc is null
               ? null
               : next!.ModelType.IsAssignableTo(acc.ModelType)
-                ? next
-                : acc)
+                ? acc
+                : next)
       ?? throw new InvalidOperationException(
         $"No model activator found for {type}");
 
     activatorCache.TryAdd(type, activator);
 
-    return activator.Activate();
+    var activated = activator.Activate();
+
+    if (activated is Model model)
+    {
+      model.Created = true;
+    }
+
+    return activated;
   }
 
   public List<Type> ActivatableSubtypes(Type type)
@@ -55,13 +69,11 @@ public class ModelActivator(IServiceProvider serviceProvider)
         converter =>
           !converter.ModelType.IsAbstract
           && !converter.ModelType.IsInterface
+          // FIXME: with attributes or something else
+          && converter.ModelType != typeof(MeterModel)
           && converter.ModelType.IsAssignableTo(type)
           && converter.CanActivate(type))
       .Select(converter => converter.ModelType)
-      .ToList();
-
-    subtypes = subtypes
-      .Where(subtype => !subtypes.Exists(type => type.BaseType == subtype))
       .ToList();
 
     subtypeCache.TryAdd(type, subtypes);

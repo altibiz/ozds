@@ -2,7 +2,6 @@
 
 @page "/measurements/measurement-validator/{id?}"
 @using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IMeasurementValidator>
@@ -14,28 +13,12 @@
   return;
 }
 
-<Mutating T="IMeasurementValidator" Id="@Id">
-  <Label>
-    <HeadContent>
-      @if (context.Created)
-      {
-        <title>OZDS - @Translate("New measurement validator")</title>
-      }
-      else
-      {
-        <title>
-          OZDS - @Translate("Measurement validator"): @context.Model.Title
-        </title>
-      }
-    </HeadContent>
-  </Label>
-  <Edit>
-    <Edit Model="@context.Model"/>
-  </Edit>
-  <Details>
-    <Details Model="@context.Model"/>
-  </Details>
-</Mutating>
+<Mutating
+  T="IMeasurementValidator"
+  Id="@Id"
+  WithHeading
+  WithPreview
+  WithTitle/>
 
 @code {
 

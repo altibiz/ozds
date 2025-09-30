@@ -2,7 +2,7 @@ using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IMessenger : IAuditable
+public interface IMessenger : ITrackableIdentifiable
 {
   string LocationId { get; set; }
 

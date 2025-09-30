@@ -8,9 +8,9 @@ public class MeasurementLocationEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
   MeasurementLocationModel,
-  AuditableModel,
+  TrackableModel,
   MeasurementLocationEntity,
-  AuditableEntity>(serviceProvider)
+  TrackableEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     MeasurementLocationModel model,

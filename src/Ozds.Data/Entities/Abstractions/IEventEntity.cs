@@ -3,7 +3,7 @@ using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Data.Entities.Abstractions;
 
-public interface IEventEntity : IIdentifiableEntity, IReadonlyEntity
+public interface IEventEntity : IReadonlyEntity
 {
   public DateTimeOffset Timestamp { get; }
 

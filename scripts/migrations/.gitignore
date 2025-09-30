@@ -204,3 +204,5 @@
 /20250404121842-Ozds.Data-FinancialRemarkFix.sql
 /20250718130555-Ozds.Data-MeterInactivityDuration-hypertables.sql
 /20250718130555-Ozds.Data-MeterInactivityDuration.sql
+/20251007081400-Ozds.Data-ApiKeys-hypertables.sql
+/20251007081400-Ozds.Data-ApiKeys.sql

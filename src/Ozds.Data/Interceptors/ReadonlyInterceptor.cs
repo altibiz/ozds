@@ -1,11 +1,10 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Ozds.Data.Entities.Abstractions;
 
 namespace Ozds.Data.Interceptors;
 
 public class ReadonlyInterceptor(IServiceProvider serviceProvider)
-  : ServedSaveChangesInterceptor(serviceProvider)
+  : ServedInterceptor(serviceProvider)
 {
   public override int Order
   {
@@ -47,7 +46,8 @@ public class ReadonlyInterceptor(IServiceProvider serviceProvider)
 
     if (entries.Find(
         entry =>
-          entry.State is EntityState.Modified or EntityState.Deleted) is
+          entry.State is Microsoft.EntityFrameworkCore.EntityState.Modified
+            or Microsoft.EntityFrameworkCore.EntityState.Deleted) is
       { } entry)
     {
       throw new InvalidOperationException(

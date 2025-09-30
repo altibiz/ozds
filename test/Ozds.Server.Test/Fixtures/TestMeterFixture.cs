@@ -24,9 +24,9 @@ public class TestMeterFixture(
       configure(configurator);
     }
 
-    var auditableFixture = new TestAuditableFixture(composition);
+    var trackableFixture = new TestTrackableFixture(composition);
 
-    var measurementValidator = await auditableFixture
+    var measurementValidator = await trackableFixture
         .Create(
           configurator.MeasurementValidatorType,
           cancellationToken,
@@ -44,7 +44,7 @@ public class TestMeterFixture(
       );
     }
 
-    var meter = await auditableFixture
+    var meter = await trackableFixture
       .Create(
         configurator.MeterType,
         cancellationToken,

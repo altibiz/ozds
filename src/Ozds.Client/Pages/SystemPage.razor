@@ -25,7 +25,7 @@ RoleModel.NetworkUserRepresentative
   var notifications = NotificationsState.Notifications;
 }
 
-<Table Model="@notifications"/>
+<Table Value="@notifications" WithHeading/>
 
 @if (RepresentativeState.Representative.Role
   != RoleModel.OperatorRepresentative)
@@ -33,7 +33,7 @@ RoleModel.NetworkUserRepresentative
   return;
 }
 
-<Table Class="mt-8" T="IEvent"/>
+<Table Class="mt-8" T="IEvent" WithHeading/>
 
 @code {
 

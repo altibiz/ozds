@@ -1,0 +1,15 @@
+@namespace Ozds.Client.Pages
+
+@page "/administration/register/{id?}"
+@using Ozds.Business.Models
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.RegisterModel>
+
+<Mutating T="RegisterModel" Id="@Id" WithTitle WithHeading/>
+
+@code {
+
+  [Parameter]
+  public string? Id { get; set; }
+
+}

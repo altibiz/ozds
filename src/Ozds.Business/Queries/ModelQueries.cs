@@ -10,78 +10,12 @@ public class ModelQueries(
   ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
-  public async Task<T?> ReadById<T>(
-    string id,
-    CancellationToken cancellationToken
-  )
-    where T : class, IModel
-  {
-    var model = await ReadById(typeof(T), id, cancellationToken);
-    return model is null ? default : (T)model;
-  }
-
-  public async Task<object?> ReadById(
-    Type modelType,
-    string id,
-    CancellationToken cancellationToken
-  )
-  {
-    if (!modelType.IsAssignableTo(typeof(IModel)))
-    {
-      throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IModel)}");
-    }
-
-    var entityType = modelEntityConverter.EntityType(modelType);
-    var entity = await queries.ReadById(
-      entityType, id, cancellationToken);
-    if (entity is null)
-    {
-      return default;
-    }
-
-    var model = modelEntityConverter.ToModel(entity);
-    return model;
-  }
-
-  public async Task<List<T>> ReadByIds<T>(
-    IEnumerable<string> ids,
-    CancellationToken cancellationToken
-  )
-  {
-    var models = await ReadByIds(typeof(T), ids, cancellationToken);
-    return models.OfType<T>().ToList();
-  }
-
-  public async Task<List<object>> ReadByIds(
-    Type modelType,
-    IEnumerable<string> ids,
-    CancellationToken cancellationToken
-  )
-  {
-    if (!modelType.IsAssignableTo(typeof(IModel)))
-    {
-      throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IModel)}");
-    }
-
-    var entityType = modelEntityConverter.EntityType(modelType);
-    var entities = await queries.ReadByIds(
-      entityType,
-      ids,
-      cancellationToken
-    );
-
-    return entities
-      .Select(modelEntityConverter.ToModel)
-      .ToList();
-  }
-
   public async Task<PaginatedList<T>> Read<T>(
     int pageNumber,
     CancellationToken cancellationToken,
     int pageCount = QueryConstants.DefaultPageCount
   )
+    where T : class, IModel
   {
     var models = await Read(
       typeof(T),
@@ -119,31 +53,5 @@ public class ModelQueries(
     return entities.Items
       .Select(modelEntityConverter.ToModel)
       .ToPaginatedList(entities.TotalCount);
-  }
-
-  public async Task<PaginatedList<object>> ReadByTitle(
-    Type modelType,
-    string title,
-    int pageNumber,
-    CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount
-  )
-  {
-    var entityType = modelEntityConverter.EntityType(modelType);
-
-    var page = await queries.ReadByTitle(
-      entityType,
-      title,
-      pageNumber,
-      cancellationToken,
-      pageCount
-    );
-
-    var models = page.Items
-      .Select(modelEntityConverter.ToModel)
-      .ToList();
-
-    return models
-      .ToPaginatedList(page.TotalCount);
   }
 }

@@ -10,7 +10,7 @@ namespace Ozds.Fake.Implementations.Administration;
 
 public class NetworkUserModelFaker(
   IServiceProvider serviceProvider
-) : InheritingModelFaker<NetworkUserModel, AuditableModel>(
+) : InheritingModelFaker<NetworkUserModel, TrackableModel>(
   serviceProvider
 )
 {

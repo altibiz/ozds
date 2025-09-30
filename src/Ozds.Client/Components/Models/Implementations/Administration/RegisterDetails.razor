@@ -1,0 +1,22 @@
+@namespace Ozds.Client.Components.Models.Implementations.Administration
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.RegisterModel>
+
+@(Base<IIdentifiable>())
+
+@(LinkField<ScopeModel>(x => x.ScopeId))
+
+@Field(x => x.Measure)
+
+@Field(x => x.OrderOfMagnitude)
+
+@Field(x => x.Tariff)
+
+@Field(x => x.Duplex)
+
+@Field(x => x.Phase)
+
+@Field(x => x.Aggregation)
+
+@(Base<ITrackable>())

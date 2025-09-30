@@ -22,7 +22,7 @@ public class MessagingNetworkUserInvoiceStateHandler(
   ModelActivator activator,
   LocalizationQueries localizationQueries,
   NetworkUserInvoiceMutations invoiceMutations,
-  ModelQueries modelQueries,
+  IdentifiableQueries identifiableQueries,
   ModelMutations modelMutations
 ) : Handler<MessagingNetworkUserInvoiceStateEventArgs>
 {
@@ -41,7 +41,7 @@ public class MessagingNetworkUserInvoiceStateHandler(
       cancellationToken
     );
 
-    var invoice = await modelQueries.ReadById<NetworkUserInvoiceModel>(
+    var invoice = await identifiableQueries.ReadById<NetworkUserInvoiceModel>(
       eventArgs.State.NetworkUserInvoiceId,
       cancellationToken
     );
@@ -50,7 +50,7 @@ public class MessagingNetworkUserInvoiceStateHandler(
       return;
     }
 
-    var networkUser = await modelQueries.ReadById<NetworkUserModel>(
+    var networkUser = await identifiableQueries.ReadById<NetworkUserModel>(
       invoice.NetworkUserId,
       cancellationToken
     );

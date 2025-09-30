@@ -1,0 +1,30 @@
+@namespace Ozds.Client.Pages
+
+@page "/administration/registers"
+
+@attribute [Navigation(
+Order = 4,
+Title = "Registers",
+Icon = Icons.Material.Filled.TableRows,
+Parent = typeof(AdministrationPage),
+Allows = [
+RoleModel.OperatorRepresentative
+])]
+@using Ozds.Business.Models
+@using Ozds.Client.Attributes
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+<Table
+  T="RegisterModel"
+  WithTitle
+  WithHeading
+  WithCreate
+  WithDeleted/>
+
+@code
+{
+  [CascadingParameter]
+  private RepresentativeState RepresentativeState { get; set; } = default!;
+}

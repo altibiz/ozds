@@ -8,22 +8,12 @@
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.NetworkUserModel>
 
-<Mutating T="NetworkUserModel" LoadAsync="OnLoadAsync">
-  <Label>
-    <HeadContent>
-      @if (context.Created)
-      {
-        <title>OZDS - @Translate("New network user")</title>
-      }
-      else
-      {
-        <title>OZDS - @Translate("Network user"): @context.Model.Title</title>
-      }
-    </HeadContent>
-  </Label>
-  <Edit>
-    <Edit Model="@context.Model"/>
-  </Edit>
+<Mutating
+  T="NetworkUserModel"
+  LoadAsync="OnLoadAsync"
+  WithHeading
+  WithTitle
+  WithPreview>
   <Details>
     <Details Model="@context.Model"/>
 
@@ -60,7 +50,7 @@
 
       @{
         var invoicePreviewPdfHref =
-          "/document/network-user-invoice-preview"
+          "/app/document/network-user-invoice-preview"
           + "/" + context.Model.Id
           + "/" + invoiceSelectedMonth.Year
           + "/" + invoiceSelectedMonth.Month;
@@ -96,7 +86,7 @@
 
       @{
         var energyCardHref =
-          "/report/network-user-energy-card"
+          "/app/report/network-user-energy-card"
           + "/" + GetCulture().TwoLetterISOLanguageName
           + "/" + context.Model.Id
           + "/" + monthlyAggregatesSelectedMonth.Year

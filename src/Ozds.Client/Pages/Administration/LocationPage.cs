@@ -44,7 +44,7 @@ public partial class LocationPage
 
     var queries = ScopedServices.GetRequiredService<LocationQueries>();
 
-    var location = await queries.ReadLocationByRepresentativeId(
+    var location = await queries.ReadIndirectByRepresentativeIdAndId(
       RepresentativeState.Representative.Id,
       RepresentativeState.Representative.Role,
       Id,

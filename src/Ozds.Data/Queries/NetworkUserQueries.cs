@@ -12,8 +12,52 @@ public class NetworkUserQueries(
   IDbContextFactory<DataDbContext> factory
 ) : IQueries
 {
+  public async Task<PaginatedList<NetworkUserEntity>>
+    ReadByRepresentativeId(
+      string representativeId,
+      int pageNumber,
+      CancellationToken cancellationToken,
+      int pageSize = QueryConstants.DefaultPageCount,
+      bool deleted = false,
+      string? title = null
+    )
+  {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+
+    var filtered = context.NetworkUserRepresentatives
+      .Where(
+        context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
+          nameof(NetworkUserRepresentativeEntity.Representative),
+          representativeId))
+      .Include(x => x.NetworkUser)
+      .Select(x => x.NetworkUser);
+
+    filtered = deleted
+      ? filtered.Where(x => x.IsDeleted)
+      : filtered.Where(x => !x.IsDeleted);
+
+    if (!string.IsNullOrWhiteSpace(title))
+    {
+      filtered = filtered.Where(x => x.Title.Contains(title));
+    }
+
+    var ordered = filtered
+      .OrderByDescending(x => x.LastUpdatedOn)
+      .OrderByDescending(x => x.CreatedOn)
+      .OrderByDescending(x => x.DeletedOn);
+
+    var count = await filtered.CountAsync(cancellationToken);
+    var items = await ordered
+      .Skip(pageNumber * pageSize)
+      .Take(pageSize)
+      .ToListAsync(cancellationToken);
+
+    return items.ToPaginatedList(count);
+  }
+
   public async Task<NetworkUserEntity?>
-    ReadNetworkUserByRepresentativeId(
+    ReadIndirectByRepresentativeIdAndId(
       string representativeId,
       RoleEntity role,
       string networkUserId,
@@ -75,13 +119,14 @@ public class NetworkUserQueries(
   }
 
   public async Task<PaginatedList<NetworkUserEntity>>
-    ReadNetworkUsersByRepresentativeId(
+    ReadIndirectByRepresentativeId(
       string representativeId,
       RoleEntity role,
       int pageNumber,
       CancellationToken cancellationToken,
       int pageCount = QueryConstants.DefaultPageCount,
-      bool deleted = false
+      bool deleted = false,
+      string? title = null
     )
   {
     await using var context = await factory
@@ -125,6 +170,11 @@ public class NetworkUserQueries(
     else
     {
       filtered = filtered.Where(x => x.DeletedOn != null);
+    }
+
+    if (!string.IsNullOrWhiteSpace(title))
+    {
+      filtered = filtered.Where(x => x.Title.Contains(title));
     }
 
     var ordered = filtered

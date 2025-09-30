@@ -1,6 +1,5 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 using Ozds.Business.Analysis;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
@@ -29,9 +28,6 @@ public partial class MeterPage
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
-
-  [CascadingParameter]
-  private Breakpoint Breakpoint { get; set; }
 
   [Inject]
   private Analyzer Analyzer { get; set; } = default!;

@@ -3,27 +3,18 @@
 @layout DocumentLayout
 
 @page "/document/network-user-calculation/{id}"
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Layout
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
-<Loading
+<MappedLoading
   T="NetworkUserCalculationModelWithHtml"
-  LoadAsync="OnLoadAsync">
+  TMapped="INetworkUserCalculation"
+  LoadAsync="OnLoadAsync"
+  Map="@(model => model.Calculation)"
+  WithTitle>
   <Found>
-    <HeadContent>
-      <title>
-        OZDS - @Translate("Network user calculation"):
-        @context.Calculation.Title
-      </title>
-    </HeadContent>
-
     @(new MarkupString(context.Html))
   </Found>
-  <NotFound>
-    <HeadContent>
-      <title>OZDS - @Translate("Network user calculation not found")</title>
-    </HeadContent>
-    <NotFound/>
-  </NotFound>
-</Loading>
+</MappedLoading>

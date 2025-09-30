@@ -48,14 +48,17 @@ public abstract class OzdsComponentBase : DisposableComponentBase
 
   protected string LoginHref
   {
-    get { return $"/auth/login?returnUrl={Uri.EscapeDataString(BaseHref)}"; }
+    get
+    {
+      return $"/app/auth/login?returnUrl={Uri.EscapeDataString(BaseHref)}";
+    }
   }
 
   protected string LogoutHref
   {
     get
     {
-      return "/auth/logout"
+      return "/app/auth/logout"
         + $"?returnUrl={Uri.EscapeDataString(BaseHref)}/auth/login"
         + $"?returnUrl={Uri.EscapeDataString(BaseHref)}";
     }
@@ -64,6 +67,11 @@ public abstract class OzdsComponentBase : DisposableComponentBase
   protected string IndexHref
   {
     get { return BasedHref("/"); }
+  }
+
+  protected string ApiV1Href
+  {
+    get { return "/api/v1/openapi"; }
   }
 
   protected IServiceProvider ScopedServices
@@ -209,25 +217,46 @@ public abstract class OzdsComponentBase : DisposableComponentBase
       period);
   }
 
+  protected string DateFormat()
+  {
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    var culture = GetCulture();
+    return localizationQueries.DateFormat(culture);
+  }
+
+  protected string DateTimeFormat()
+  {
+    var localizationQueries = ScopedServices
+      .GetRequiredService<LocalizationQueries>();
+    var culture = GetCulture();
+    return localizationQueries.DateTimeFormat(culture);
+  }
+
   protected static string JsonString(object? jsonDocument)
   {
     return JsonSerializer.Serialize(jsonDocument, JsonSerializerOptions);
   }
 
-  protected string PageHref<T>(object? parameters = null)
+  protected string PageHref<T>(
+    object? parameters = null,
+    object? queryParameters = null
+  )
   {
-    return PageHref(typeof(T), parameters);
+    return PageHref(typeof(T), parameters, queryParameters);
   }
 
   protected string PageHref(
     Type type,
-    object? parameters = null
+    object? parameters = null,
+    object? queryParameters = null
   )
   {
     return NavigationManager.PageHref(
       TemplateBinderFactory,
       type,
-      parameters
+      parameters,
+      queryParameters
     );
   }
 
@@ -235,6 +264,13 @@ public abstract class OzdsComponentBase : DisposableComponentBase
   {
 #pragma warning disable CA2012 // Use ValueTasks correctly
     JS.InvokeVoidAsync("history.back");
+#pragma warning restore CA2012 // Use ValueTasks correctly
+  }
+
+  protected void NavigateHere()
+  {
+#pragma warning disable CA2012 // Use ValueTasks correctly
+    JS.InvokeVoidAsync("location.reload");
 #pragma warning restore CA2012 // Use ValueTasks correctly
   }
 
@@ -253,14 +289,26 @@ public abstract class OzdsComponentBase : DisposableComponentBase
     NavigationManager.NavigateTo(IndexHref);
   }
 
-  protected void NavigateToPage<T>(object? parameters = null)
+  protected void NavigateToApiV1()
+  {
+    NavigationManager.NavigateTo(ApiV1Href);
+  }
+
+  protected void NavigateToPage<T>(
+    object? parameters = null,
+    object? queryParameters = null
+  )
   {
     NavigationManager.NavigateTo(PageHref<T>(parameters));
   }
 
-  protected void NavigateToPage(Type type, object? parameters = null)
+  protected void NavigateToPage(
+    Type type,
+    object? parameters = null,
+    object? queryParameters = null
+  )
   {
-    NavigationManager.NavigateTo(PageHref(type, parameters));
+    NavigationManager.NavigateTo(PageHref(type, parameters, queryParameters));
   }
 
   private string BasedHref(string uri)
@@ -288,5 +336,15 @@ public abstract class OzdsComponentBase : DisposableComponentBase
     }
 
     return Task.CompletedTask;
+  }
+
+  protected TimeZoneInfo GetTimeZone()
+  {
+    if (CultureState is { } cultureState)
+    {
+      return cultureState.TimeZoneInfo;
+    }
+
+    return TimeZoneInfo.Utc;
   }
 }

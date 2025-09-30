@@ -135,4 +135,14 @@ public class LocalizationQueries(
 
     return $"{duration.Multiplier} {translatedDuration}";
   }
+
+  public string DateFormat(CultureInfo cultureInfo)
+  {
+    return localizer.DateFormat(cultureInfo);
+  }
+
+  public string DateTimeFormat(CultureInfo cultureInfo)
+  {
+    return localizer.DateTimeFormat(cultureInfo);
+  }
 }

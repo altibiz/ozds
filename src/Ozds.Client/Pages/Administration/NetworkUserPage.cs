@@ -53,7 +53,7 @@ public partial class NetworkUserPage
 
     var queries = ScopedServices.GetRequiredService<NetworkUserQueries>();
 
-    var networkUser = await queries.ReadNetworkUserByRepresentativeId(
+    var networkUser = await queries.ReadIndirectByRepresentativeIdAndId(
       RepresentativeState.Representative.Id,
       RepresentativeState.Representative.Role,
       Id,

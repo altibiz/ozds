@@ -1,0 +1,9 @@
+@namespace Ozds.Client.Components.Models
+
+@inherits Ozds.Client.Components.Models.Base.OzdsSummaryComponentBase<Ozds.Business.Models.Abstractions.IJoin>
+
+@Title(x => $"{Translate(x.LeftType)} {Translate("to")} {Translate(x.RightType)}")
+
+@PolymorphicLinkSubtitle(x => x.LeftType, x => x.LeftId)
+
+@PolymorphicLinkSubtitle(x => x.RightType, x => x.RightId)

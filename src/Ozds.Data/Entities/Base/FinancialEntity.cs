@@ -1,5 +1,6 @@
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
 
@@ -8,7 +9,7 @@ namespace Ozds.Data.Entities.Base;
 public abstract class FinancialEntity : IdentifiableEntity, IFinancialEntity
 {
   public virtual RepresentativeEntity? IssuedBy { get; set; }
-  public string? RepresentativeId { get; set; }
+  public string? AuditingRepresentativeId { get; set; }
 
   public DateTimeOffset IssuedOn { get; set; } =
     // NOTE: just so something is there
@@ -76,6 +77,6 @@ public class FinancialEntityTypeHierarchyConfiguration
         "total_eur"
       );
 
-    builder.Ignore(nameof(FinancialEntity.RepresentativeId));
+    builder.Ignore(nameof(FinancialEntity.AuditingRepresentativeId));
   }
 }
