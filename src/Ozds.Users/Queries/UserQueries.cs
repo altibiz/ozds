@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Options;
 using Novell.Directory.Ldap;
 using Ozds.Users.Entities;
+using Ozds.Users.Extensions;
 using Ozds.Users.Options;
 using Ozds.Users.Queries.Abstractions;
 
@@ -85,7 +86,8 @@ public class UserQueries(
   public async Task<(List<UserEntity> Items, int TotalCount)> ReadUsers(
     int pageNumber,
     int pageSize,
-    CancellationToken cancellationToken
+    CancellationToken cancellationToken,
+    string? search = null
   )
   {
     using var scope = serviceProvider.CreateAsyncScope();
@@ -95,6 +97,12 @@ public class UserQueries(
     try
     {
       var filter = $"(objectClass={options.Value.Ldap.UserFilterObjectClass})";
+      if (!string.IsNullOrWhiteSpace(search))
+      {
+        search = search.EscapeLdap();
+        filter =
+          $"(&{filter}({options.Value.Ldap.UserNameAttribute}=*{search}*))";
+      }
 
       string[] attributes =
       {

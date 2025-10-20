@@ -6,7 +6,6 @@
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Components.Charts
 @using Ozds.Client.Components.Fields
-@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IMeasurementLocation>
 
@@ -16,37 +15,16 @@
     .FirstOrDefault(x => x.MeasurementLocation.Id == Id);
 }
 
-<Mutating T="IMeasurementLocation" Id="@Id">
-  <Edit>
-    <HeadContent>
-      @if (context.Created)
-      {
-        <title>OZDS - @Translate("New measurement location")</title>
-      }
-      else
-      {
-        <title>
-          OZDS - @Translate("Measurement location"): @context.Model.Title
-        </title>
-      }
-    </HeadContent>
-
-    <Edit Model="context.Model"/>
-  </Edit>
-  <Details>
-    <HeadContent>
-      <title>
-        OZDS - @Translate("Measurement location"): @context.Model.Title
-      </title>
-    </HeadContent>
-
-    <Details Model="context.Model"/>
-  </Details>
-</Mutating>
+<Mutating
+  T="IMeasurementLocation"
+  Id="@Id"
+  WithHeading
+  WithPreview
+  WithTitle/>
 
 @if (analysis is not null)
 {
-  <Table Class="mt-8" Model="@analysis.Analysis.Monthly"/>
+  <Table Class="mt-8" Value="@analysis.Analysis.Monthly" WithHeading/>
 
   <div class="mt-8">
     <MudText Typo="Typo.h5">
@@ -68,7 +46,7 @@
 
     @{
       var accountingPeriodHref =
-        "/report/measurement-location-accounting-period"
+        "/app/report/measurement-location-accounting-period"
         + "/" + GetCulture().TwoLetterISOLanguageName
         + "/" + Id
         + "/" + selectedMonth.Year
@@ -85,7 +63,7 @@
     <br/>
     @{
       var loadCurveHref =
-        "/report/measurement-location-load-curve"
+        "/app/report/measurement-location-load-curve"
         + "/" + GetCulture().TwoLetterISOLanguageName
         + "/" + Id
         + "/" + selectedObis.ToCode()

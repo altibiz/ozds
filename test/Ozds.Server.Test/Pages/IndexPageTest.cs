@@ -9,12 +9,7 @@ public partial class IndexPageTest : OzdsServerTestBase
 {
   public static IEnumerable<TestUser> Users()
   {
-    return new List<TestUser>
-    {
-      TestUser.Operator,
-      TestUser.Location,
-      TestUser.NetworkUser
-    };
+    return TestUser.Users;
   }
 
   [Test]

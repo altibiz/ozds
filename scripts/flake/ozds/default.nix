@@ -3,13 +3,6 @@
 # TODO: httpsPort when integration with LettuceEncrypt
 
 {
-  seal.defaults.overlay = "ozds";
-  seal.overlays.ozds = (final: prev: {
-    dotnet-sdk = prev.dotnet-sdk_8;
-    dotnet-runtime = prev.dotnet-runtime_8;
-    dotnet-aspnetcore = prev.dotnet-aspnetcore_8;
-  });
-
   seal.defaults.package = "ozds";
   integrate.package.package =
     let
@@ -37,8 +30,8 @@
         rm -rf $out/lib/${pname}/App_Data
       '';
 
-      dotnet-sdk = pkgs.dotnet-sdk;
-      dotnet-runtime = pkgs.dotnet-aspnetcore;
+      dotnet-sdk = pkgs.dotnet-sdk_8;
+      dotnet-runtime = pkgs.dotnet-aspnetcore_8;
 
       meta = {
         description = "ozds";

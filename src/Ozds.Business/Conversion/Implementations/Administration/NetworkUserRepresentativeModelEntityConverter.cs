@@ -10,9 +10,9 @@ public class NetworkUserRepresentativeEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
   NetworkUserRepresentativeModel,
-  JoinModel,
+  AuditableJoinModel,
   NetworkUserRepresentativeEntity,
-  JoinEntity>(serviceProvider)
+  AuditableJoinEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     NetworkUserRepresentativeModel model,

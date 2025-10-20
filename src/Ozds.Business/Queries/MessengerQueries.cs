@@ -14,14 +14,18 @@ public class MessengerQueries(
     string locationId,
     int pageNumber,
     CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount
+    int pageCount = QueryConstants.DefaultPageCount,
+    bool deleted = false,
+    string? title = null
   )
   {
     var entities = await queries.ReadByLocationId(
       locationId,
       pageNumber,
       cancellationToken,
-      pageCount
+      pageCount,
+      deleted,
+      title
     );
 
     var models = entities.Items

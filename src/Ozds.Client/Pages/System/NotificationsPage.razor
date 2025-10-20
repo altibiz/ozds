@@ -17,25 +17,19 @@ RoleModel.NetworkUserRepresentative
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
-<HeadContent>
-  <title>OZDS - @Translate("Notifications")</title>
-</HeadContent>
 
-<MudCheckBox
-  T="bool"
-  Label="@(Translate("Show seen"))"
-  @bind-Value="_seen"/>
-
-<Table PageAsync="OnPageAsync"/>
-
-@if (RepresentativeState.Representative.Role
-  == RoleModel.OperatorRepresentative)
-{
-  <MudButton
-    Class="mt-4"
-    Variant="Variant.Outlined"
-    Color="Color.Primary"
-    Href="@(PageHref<NotificationPage>())">
-    @Translate("Create")
-  </MudButton>
-}
+<Table
+  PageAsync="@(seen ? OnSeenPageAsync : null)"
+  Value="@(seen ? null : NotificationsState.Notifications)"
+  WithTitle
+  WithHeading
+  WithCreate
+  @ref="table">
+  <Tools>
+    <MudCheckBox
+      T="bool"
+      Label="@(Translate("Show seen"))"
+      Value="seen"
+      ValueChanged="OnSeenChanged"/>
+  </Tools>
+</Table>

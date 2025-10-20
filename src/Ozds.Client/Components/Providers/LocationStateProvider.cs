@@ -55,11 +55,12 @@ public partial class LocationStateProvider : OzdsComponentBase
 
     if (!locationSet)
     {
-      var locations = await locationQueries.ReadAllLocationsByRepresentativeId(
-        RepresentativeState.Representative.Id,
-        RepresentativeState.Representative.Role,
-        CancellationToken
-      );
+      var locations = await locationQueries
+        .ReadAllIndirectByRepresentativeId(
+          RepresentativeState.Representative.Id,
+          RepresentativeState.Representative.Role,
+          CancellationToken
+        );
 
       _representativeLocations = locations;
       return;
@@ -68,7 +69,7 @@ public partial class LocationStateProvider : OzdsComponentBase
     LocationModel? location = null;
     if (locationId is not null)
     {
-      location = await locationQueries.ReadLocationByRepresentativeId(
+      location = await locationQueries.ReadIndirectByRepresentativeIdAndId(
         RepresentativeState.Representative.Id,
         RepresentativeState.Representative.Role,
         locationId,
@@ -99,7 +100,7 @@ public partial class LocationStateProvider : OzdsComponentBase
     {
       var locationQueries = ScopedServices
         .GetRequiredService<LocationQueries>();
-      var locations = await locationQueries.ReadAllLocationsByRepresentativeId(
+      var locations = await locationQueries.ReadAllIndirectByRepresentativeId(
         RepresentativeState.Representative.Id,
         RepresentativeState.Representative.Role,
         CancellationToken

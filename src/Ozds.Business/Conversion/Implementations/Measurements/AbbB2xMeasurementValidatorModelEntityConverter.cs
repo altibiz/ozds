@@ -11,9 +11,9 @@ public class AbbB2xMeasurementValidatorModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
   AbbB2xMeasurementValidatorModel,
-  AuditableModel,
+  TrackableModel,
   AbbB2xMeasurementValidatorEntity,
-  AuditableEntity>(serviceProvider)
+  TrackableEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     AbbB2xMeasurementValidatorModel model,

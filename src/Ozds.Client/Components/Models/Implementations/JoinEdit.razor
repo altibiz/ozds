@@ -1,0 +1,18 @@
+@namespace Ozds.Client.Components.Models
+
+@typeparam TPrefix
+@typeparam TModel where TModel : Ozds.Business.Models.Base.JoinModel
+@inherits Ozds.Client.Components.Models.Base.OzdsEditComponentBase<TPrefix, TModel>
+
+@{
+  var side = Get(x => x.ActivationSide);
+}
+
+@if (side == Get(x => x.RightType))
+{
+  @PolymorphicLinkField(x => x.LeftType, x => x.LeftId)
+}
+else if (side == Get(x => x.LeftType))
+{
+  @PolymorphicLinkField(x => x.RightType, x => x.RightId)
+}

@@ -1,0 +1,62 @@
+@namespace Ozds.Client.Pages
+
+@page "/administration/api-key/{id?}"
+@using MudBlazor
+@using Ozds.Business.Authorization
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Enums
+@using Ozds.Business.Models.Joins
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<ApiKeyModel>
+
+<Mutating
+  T="ApiKeyModel"
+  Id="@Id"
+  NewAsync="OnNewAsync"
+  OnSuccessMessage="OnSuccessMessage"
+  WithTitle
+  WithHeading
+  WithPreview>
+  <Footer>
+    @if (!context.Created)
+    {
+      <Table
+        Class="mt-4"
+        PageAsync="OnScopesPageAsync"/>
+
+      @if (RepresentativeState.Representative.Role
+        == RoleModel.OperatorRepresentative)
+      {
+        <Mutating
+          T="ApiKeyScopeModel"
+          JoinActivationSide="@typeof(ApiKeyModel)"
+          JoinActivationId="@Id"
+          Reload
+          Class="mt-4"/>
+      }
+    }
+  </Footer>
+</Mutating>
+
+@code {
+
+  private RenderFragment OnSuccessMessage(ApiKeyModel model, ActionModel action)
+  {
+    if (action != ActionModel.Create)
+    {
+      return Fragment.Empty;
+    }
+
+    var apiKeyManager = ScopedServices.GetRequiredService<ApiKeyManager>();
+
+    return @<MudText Class="mt-4">
+             <p class="mb-2">
+               @Translate("Please copy this key (it won't be shown again):")
+             </p>
+             <pre>
+        @($"{apiKeyManager.Tokenize(model)}")
+      </pre>
+           </MudText>;
+  }
+
+}

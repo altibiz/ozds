@@ -5,60 +5,6 @@ namespace Ozds.Data.Extensions;
 
 public static class DbContextTrackingExtensions
 {
-  public static void AddTracked(
-    this DbContext context,
-    object entity
-  )
-  {
-    var entry = context.FindEntry(entity);
-    entry.CurrentValues.SetValues(entity);
-    entry.State = EntityState.Added;
-  }
-
-  public static void UpdateTracked(
-    this DbContext context,
-    object entity
-  )
-  {
-    var entry = context.FindEntry(entity);
-    entry.CurrentValues.SetValues(entity);
-    entry.State = EntityState.Modified;
-  }
-
-  public static void RemoveTracked(
-    this DbContext context,
-    object entity
-  )
-  {
-    var entry = context.FindEntry(entity);
-    entry.State = EntityState.Deleted;
-  }
-
-  public static void JoinTracked<T>(
-    this DbContext context,
-    object entity,
-    ICollection<T> collection)
-    where T : class
-  {
-    var entry = context.FindEntry(entity);
-
-    if (entry.Collections
-        .FirstOrDefault(
-          collection =>
-            collection.Metadata.TargetEntityType.ClrType == typeof(T))
-      is not { } entryCollection)
-    {
-      throw new InvalidOperationException(
-        $"No collection of {typeof(T)} found on {entity.GetType()}");
-    }
-
-    entryCollection.CurrentValue = collection
-      .Select(entity => context.FindEntry(entity))
-      .Select(entry => entry.Entity)
-      .OfType<T>()
-      .ToList();
-  }
-
   public static EntityEntry<T> FindEntry<T>(
     this DbContext context,
     T entity

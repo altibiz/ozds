@@ -20,13 +20,15 @@ public partial class AdministrationPage : OzdsComponentBase
   private Analyzer Analyzer { get; set; } = default!;
 
   private async Task<PaginatedList<MaybeRepresentingUserModel>>
-    OnUserPageAsync(int page)
+    OnUserPageAsync(string search, int page, int pageCount)
   {
     var queries = ScopedServices.GetRequiredService<RepresentativeQueries>();
 
     var users = await queries.ReadMaybeRepresentingUsers(
       page,
-      CancellationToken
+      CancellationToken,
+      pageCount,
+      search: search
     );
 
     return users;

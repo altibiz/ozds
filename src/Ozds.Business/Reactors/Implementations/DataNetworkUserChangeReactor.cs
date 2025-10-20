@@ -18,14 +18,14 @@ public class DataNetworkUserChangeReactor(
 
 public class DataNetworkUserChangeHandler(
   IBillingJobManager manager,
-  AuditableQueries auditableQueries
+  TrackableQueries trackableQueries
 ) : Handler<DataModelsChangedEventArgs>
 {
   public override async Task AfterStartAsync(
     CancellationToken cancellationToken)
   {
     var page = 0;
-    var networkUsers = await auditableQueries
+    var networkUsers = await trackableQueries
       .Read<NetworkUserModel>(page, cancellationToken);
     while (networkUsers.Items.Count > 0)
     {
@@ -33,7 +33,7 @@ public class DataNetworkUserChangeHandler(
         networkUsers.Items.Select(x => x.Id),
         cancellationToken);
 
-      networkUsers = await auditableQueries
+      networkUsers = await trackableQueries
         .Read<NetworkUserModel>(++page, cancellationToken);
     }
   }

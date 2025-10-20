@@ -1,0 +1,103 @@
+@namespace Ozds.Client.Components.Streaming
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+<HeadContent>
+  @if (State is LoadingTitleState { LoadingState: { } LoadingState })
+  {
+    if (LoadingState.Stage == LoadingStage.Created)
+    {
+      if (LoadingState.ObjectValue is IIdentifiable identifiable)
+      {
+        <title>OZDS - @Translate("New") @Translate(LoadingState.Type): @identifiable.Title</title>
+      }
+      else
+      {
+        <title>OZDS - @Translate("New") @Translate(LoadingState.Type)</title>
+      }
+    }
+    else if (LoadingState.Stage == LoadingStage.Found)
+    {
+      if (LoadingState.ObjectValue is IIdentifiable identifiable)
+      {
+        <title>OZDS - @Translate(LoadingState.Type): @identifiable.Title</title>
+      }
+      else
+      {
+        <title>OZDS - @Translate(LoadingState.Type)</title>
+      }
+    }
+    else if (LoadingState.Stage == LoadingStage.Loading)
+    {
+      <title>
+        OZDS - @Translate("Loading") @(Translate(LoadingState.Type) + "...")
+      </title>
+    }
+    else if (LoadingState.Stage == LoadingStage.Unfound)
+    {
+      <title>
+        OZDS - @Translate(LoadingState.Type) @Translate("not found")
+      </title>
+    }
+    else if (LoadingState.Stage == LoadingStage.Error)
+    {
+      <title>
+        OZDS - @Translate("Error loading") @Translate(LoadingState.Type)
+      </title>
+    }
+
+    return;
+  }
+
+  @if (State is MutatingTitleState { MutatingState: { } mutatingState })
+  {
+    if (mutatingState.Created)
+    {
+      if (mutatingState.ObjectModel is IIdentifiable identifiable)
+      {
+        <title>OZDS - @Translate("New") @Translate(mutatingState.Type): @identifiable.Title</title>
+      }
+      else
+      {
+        <title>OZDS - @Translate("New") @Translate(mutatingState.Type)</title>
+      }
+    }
+    else
+    {
+      if (mutatingState.ObjectModel is IIdentifiable identifiable)
+      {
+        <title>OZDS - @Translate(mutatingState.Type): @identifiable.Title</title>
+      }
+      else
+      {
+        <title>OZDS - @Translate(mutatingState.Type)</title>
+      }
+    }
+
+    return;
+  }
+
+  @if (State is PaginatedListTitleState { PaginatedList: { } paginatedList })
+  {
+    <title>OZDS - @Translate(paginatedList.Type, true)</title>
+
+    return;
+  }
+
+  @if (State is MudGridDataTitleState { MudGridData: { } mudGridData })
+  {
+    <title>OZDS - @Translate(mudGridData.Type, true)</title>
+
+    return;
+  }
+
+  <title>OZDS</title>
+</HeadContent>
+
+@code {
+
+  [Parameter]
+  public TitleState State { get; set; } = default!;
+
+}

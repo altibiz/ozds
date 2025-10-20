@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class MeasurementLocationEntity : AuditableEntity,
+public class MeasurementLocationEntity : TrackableEntity,
   IMeasurementLocationEntity
 {
   public virtual MeterEntity Meter { get; set; } = default!;

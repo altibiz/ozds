@@ -27,4 +27,8 @@ public interface ILocalizationQueries : IQueries
   public string DocumentDate(DateTimeOffset date);
 
   public string DocumentNumber(decimal number, int precision = 2);
+
+  public string DateFormat(CultureInfo cultureInfo);
+
+  public string DateTimeFormat(CultureInfo cultureInfo);
 }

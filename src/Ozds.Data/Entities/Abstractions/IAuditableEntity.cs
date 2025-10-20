@@ -1,28 +1,21 @@
 namespace Ozds.Data.Entities.Abstractions;
 
-public interface IAuditableEntity : IIdentifiableEntity
+public interface IAuditableEntity : IEntity
 {
-  public DateTimeOffset CreatedOn { get; }
+  public string AuditingId { get; }
 
-  public string? CreatedById { get; }
+  public string AuditingTitle { get; }
 
-  public RepresentativeEntity? CreatedBy { get; }
+  public DateTimeOffset CreatedOn { get; set; }
 
-  public DateTimeOffset? LastUpdatedOn { get; }
+  public string? CreatedById { get; set; }
 
-  public string? LastUpdatedById { get; }
+  public RepresentativeEntity? CreatedBy { get; set; }
 
-  public RepresentativeEntity? LastUpdatedBy { get; }
+  public string? AuditingRepresentativeId { get; set; }
+}
 
-  public bool IsDeleted { get; }
-
-  public DateTimeOffset? DeletedOn { get; }
-
-  public string? DeletedById { get; }
-
-  public bool Forget { get; set; }
-
-  public bool Restore { get; set; }
-
-  public string? RepresentativeId { get; set; }
+public interface IAuditableIdentifiableEntity
+  : IAuditableEntity, IIdentifiableEntity
+{
 }

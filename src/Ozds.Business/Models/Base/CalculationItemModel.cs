@@ -4,7 +4,7 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class CalculationItemModel : ICalculationItem
+public abstract class CalculationItemModel : Model, ICalculationItem
 {
   public abstract SpanningMeasure<decimal> Amount { get; }
 
@@ -17,10 +17,4 @@ public abstract class CalculationItemModel : ICalculationItem
 
   [Required]
   public required decimal Total_EUR { get; set; }
-
-  public IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
-  {
-    yield break;
-  }
 }

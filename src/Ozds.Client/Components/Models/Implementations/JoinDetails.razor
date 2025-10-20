@@ -1,0 +1,6 @@
+@namespace Ozds.Client.Components.Models
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Abstractions.IJoin>
+
+@PolymorphicLinkField(x => x.LeftType, x => x.LeftId)
+
+@PolymorphicLinkField(x => x.RightType, x => x.RightId)

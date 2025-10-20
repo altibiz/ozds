@@ -6,7 +6,7 @@ namespace Ozds.Business.Caching;
 
 public class MessengerByMeterCache(
   IServiceScopeFactory factory
-) : ConcurrentDictionaryCacheBase<string, IMessenger>
+) : BatchedConcurrentDictionaryCacheBase<string, IMessenger>
 {
   protected override async Task<string?> GetKeyFromDataSourceAsync(
     IMessenger value,

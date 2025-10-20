@@ -2,6 +2,7 @@ using Ozds.Business.Activation.Base;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
+using Ozds.Business.Models.Enums;
 using Ozds.Business.Naming;
 
 namespace Ozds.Business.Activation.Implementations.Measurements;
@@ -9,7 +10,7 @@ namespace Ozds.Business.Activation.Implementations.Measurements;
 public class MeterModelActivator(IServiceProvider serviceProvider)
   : InheritingModelActivator<
     MeterModel,
-    AuditableModel>(serviceProvider)
+    TrackableModel>(serviceProvider)
 {
   private readonly MeterNamingConvention meterNamingConvention =
     serviceProvider.GetRequiredService<MeterNamingConvention>();

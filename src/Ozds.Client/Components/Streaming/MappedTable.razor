@@ -1,0 +1,280 @@
+@namespace Ozds.Client.Components.Streaming
+
+@typeparam T where T : notnull
+@typeparam TMapped
+@using MudBlazor
+@using Ozds.Business.Analysis.Abstractions
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
+@using Ozds.Business.Queries.Abstractions
+@using Ozds.Client.Components.Models
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+@{
+  var heading = Translate(typeof(T), true);
+
+  var mappedModel = Map is { } map
+    ? fetchedModel.Items.Select(map).ToPaginatedList(fetchedModel.TotalCount)
+    : fetchedModel as PaginatedList;
+
+  RenderFragment inner = @<Fragment>
+    @if (WithTitle)
+    {
+      <Title State="@mappedModel"/>
+    }
+
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+      @if (WithHeading)
+      {
+        <MudText Typo="Typo.h6">
+          @heading
+        </MudText>
+      }
+
+      @if (WithDeleted
+        && RepresentativeState.Representative.Role
+        == RoleModel.OperatorRepresentative)
+      {
+        <MudCheckBox
+          Class="mt-4"
+          T="bool"
+          Label="@Translate("Show deleted")"
+          Value="@checkedDeleted"
+          ValueChanged="@OnDeletedChanged"/>
+      }
+
+      @if (Tools is { } tools)
+      {
+        <div class="mt-4">
+          @tools(fetchedModel.Items)
+        </div>
+      }
+
+      @if (typeof(T).IsAssignableTo(typeof(IIdentifiable))
+        || typeof(T).IsAssignableTo(typeof(IAnalysis)))
+      {
+        <MudTextField
+          Class="my-4"
+          T="string"
+          Value="@searchString"
+          DebounceInterval="500"
+          OnDebounceIntervalElapsed="@OnPagingSearch"
+          Placeholder="@Translate("Search")"
+          Adornment="Adornment.Start"
+          Immediate="true"
+          AdornmentIcon="@Icons.Material.Filled.Search"
+          IconSize="Size.Medium"/>
+      }
+      <MappedPaging
+        T="T"
+        TMapped="TMapped"
+        Map="@(Map!)"
+        Value="@FilteredValue"
+        PageAsync="@OnPagingPage"
+        PageCount="@PageCount"
+        Empty="@(Empty!)"
+        @ref="@paging">
+
+        <Found Context="page">
+
+          @foreach (var item in page.Items)
+          {
+            <MudPaper Class="pa-4 mb-2" Elevation="1">
+              <TableCollapse>
+                <Summary>
+                  @if (Summary is null)
+                  {
+                    <Summary Model="item"/>
+                  }
+                  else
+                  {
+                    @Summary(item)
+                  }
+
+                  @if (WithMutations)
+                  {
+                    <MudButton
+                      Variant="Variant.Filled"
+                      Color="Color.Error"
+                      OnClick="@(() => OnDelete(item))">
+                      @Translate("Delete")
+                    </MudButton>
+                  }
+
+                  @if (Actions is { } actions)
+                  {
+                    @actions(item)
+                  }
+                </Summary>
+                <Details>
+                  @if (Details is null)
+                  {
+                    <Details Model="item"/>
+                  }
+                  else
+                  {
+                    @Details(item)
+                  }
+                </Details>
+              </TableCollapse>
+            </MudPaper>
+          }
+        </Found>
+      </MappedPaging>
+    </MudHidden>
+
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+      <MudDataGrid
+        T="T"
+        Items="@FilteredValue"
+        ServerData="@((Func<GridState<T>, Task<GridData<T>>>)(Value is null ? OnDataGridServerData : null!))"
+        RowsPerPage="@PageCount"
+        @ref="@dataGrid">
+        <ToolBarContent>
+          @if (WithHeading)
+          {
+            <MudText Typo="Typo.h6">
+              @heading
+            </MudText>
+          }
+
+          @if (Tools is { } tools)
+          {
+            <MudSpacer/>
+
+            @tools(fetchedModel.Items)
+          }
+
+          <MudSpacer/>
+
+          @if (WithDeleted
+            && RepresentativeState.Representative.Role
+            == RoleModel.OperatorRepresentative)
+          {
+            <MudCheckBox
+              T="bool"
+              Label="@Translate("Show deleted")"
+              Value="@checkedDeleted"
+              ValueChanged="@OnDeletedChanged"/>
+          }
+
+          <MudSpacer/>
+
+          @if (typeof(T).IsAssignableTo(typeof(IIdentifiable)) || typeof(T).IsAssignableTo(typeof(IAnalysis)))
+          {
+            <MudTextField
+              T="string"
+              Value="@searchString"
+              DebounceInterval="500"
+              OnDebounceIntervalElapsed="@OnDataGridSearch"
+              Placeholder="@Translate("Search")"
+              Adornment="Adornment.Start"
+              Immediate="true"
+              AdornmentIcon="@Icons.Material.Filled.Search"
+              IconSize="Size.Medium">
+            </MudTextField>
+          }
+        </ToolBarContent>
+        <Columns>
+          @if (Columns is null)
+          {
+            <Columns TPrefix="T" Models="@fetchedModel.Items"/>
+          }
+          else
+          {
+            @Columns(fetchedModel.Items)
+          }
+
+          @if (Actions is { } actions
+            || (WithMutations
+              && RepresentativeState.Representative.Role
+              == RoleModel.OperatorRepresentative))
+          {
+            <TemplateColumn StickyRight>
+              <CellTemplate>
+                @if (Actions is { } actions)
+                {
+                  @actions(context.Item)
+                }
+
+                @* TODO: restore as well *@
+                @if (WithMutations
+                  && RepresentativeState.Representative.Role
+                  == RoleModel.OperatorRepresentative)
+                {
+                  object? mutationItem = Map is { } deletePrefix
+                    ? Map(context.Item)
+                    : context.Item;
+
+                  <div class="d-flex flex-row">
+                    @if (mutationItem is not ITrackable { IsDeleted: true }
+                      || Delete is not null
+                      || DeleteAsync is not null)
+                    {
+                      <MudButton
+                        Variant="Variant.Filled"
+                        Color="Color.Error"
+                        OnClick="@(() => OnDelete(context.Item))">
+                        @Translate("Delete")
+                      </MudButton>
+                    }
+                    @if (mutationItem is ITrackable { IsDeleted: true }
+                      || Restore is not null
+                      || RestoreAsync is not null)
+                    {
+                      <MudButton
+                        Variant="Variant.Filled"
+                        Color="Color.Success"
+                        OnClick="@(() => OnRestore(context.Item))">
+                        @Translate("Restore")
+                      </MudButton>
+                    }
+                    @if (mutationItem is ITrackable { IsDeleted: true }
+                      || Forget is not null
+                      || ForgetAsync is not null)
+                    {
+                      <MudButton
+                        Variant="Variant.Outlined"
+                        Class="ml-2"
+                        Color="Color.Error"
+                        OnClick="@(() => OnForget(context.Item))">
+                        @Translate("Forget")
+                      </MudButton>
+                    }
+                  </div>
+                }
+              </CellTemplate>
+            </TemplateColumn>
+          }
+        </Columns>
+        <PagerContent>
+          <MudDataGridPager T="T"/>
+        </PagerContent>
+      </MudDataGrid>
+    </MudHidden>
+
+    @if (WithCreate
+      && RepresentativeState.Representative.Role
+      == RoleModel.OperatorRepresentative)
+    {
+      <MudButton
+        Class="mt-4"
+        Variant="Variant.Outlined"
+        Color="Color.Primary"
+        Href="@(PageHref(ModelComponentProvider.GetPageComponentType(typeof(TMapped))))">
+        @Translate("Create") @Translate(typeof(TMapped))
+      </MudButton>
+    }
+  </Fragment>;
+}
+
+@if (string.IsNullOrWhiteSpace(Class) && string.IsNullOrWhiteSpace(Style))
+{
+  @inner
+}
+else
+{
+  <div class="@Class" style="@Style">
+    @inner
+  </div>
+}

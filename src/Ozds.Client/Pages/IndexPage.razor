@@ -62,7 +62,7 @@ RoleModel.NetworkUserRepresentative
   var locations = Analyzer.AnalyzeByLocation(
     AnalysisState.AnalysisBases.Value);
 
-  <Table Class="mt-4" Model="@locations"/>
+  <Table Class="mt-4" Value="@locations" WithHeading/>
 }
 
 @if (RepresentativeState.Representative.Role
@@ -72,7 +72,7 @@ RoleModel.NetworkUserRepresentative
   var networkUsers = Analyzer.AnalyzeByNetworkUser(
     AnalysisState.AnalysisBases.Value);
 
-  <Table Class="mt-4" Model="@networkUsers"/>
+  <Table Class="mt-4" Value="@networkUsers" WithHeading/>
 }
 
 @if (RepresentativeState.Representative.Role
@@ -81,7 +81,7 @@ RoleModel.NetworkUserRepresentative
   var measurementLocationsAnalysis = Analyzer.AnalyzeByMeasurementLocation(
     AnalysisState.AnalysisBases.Value);
 
-  <Table Class="mt-4" Model="@measurementLocationsAnalysis"/>
+  <Table Class="mt-4" Value="@measurementLocationsAnalysis" WithHeading/>
 }
 
 @{
@@ -92,7 +92,7 @@ RoleModel.NetworkUserRepresentative
     .ToList();
 }
 
-<Table Class="mt-4" Model="@invoices"/>
+<Table Class="mt-4" Value="@invoices" WithHeading/>
 
 @code {
 

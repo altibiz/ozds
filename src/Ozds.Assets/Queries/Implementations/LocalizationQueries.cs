@@ -66,13 +66,13 @@ public class LocalizationQueries(
 
   public string Translate(CultureInfo culture, MemberExpression member)
   {
-    var translations = assetQueries.LoadTranslations(culture);
-
     var cacheKey = new TranslationExpressionKey(culture, member);
 
     return translationCache.GetOrAdd(
       cacheKey, _ =>
       {
+        var translations = assetQueries.LoadTranslations(culture);
+
         var overrides = translationQueries.KeyOverrides(member);
         foreach (var key in overrides)
         {
@@ -94,6 +94,7 @@ public class LocalizationQueries(
       cacheKey, _ =>
       {
         var translations = assetQueries.LoadTranslations(culture);
+
         if (translations.TryGetValue(notLocalized, out var value))
         {
           return value;
@@ -150,7 +151,7 @@ public class LocalizationQueries(
       .Value
       .ToOffset(timeQueries.GetCroatianOffset(dateTimeOffset.Value));
 
-    return withTimezone.ToString("dd. MM. yyyy.", cultureInfo);
+    return withTimezone.ToString(DateFormat(cultureInfo), cultureInfo);
   }
 
   public string DateTimeString(DateTimeOffset? dateTimeOffset)
@@ -166,7 +167,7 @@ public class LocalizationQueries(
       .Value
       .ToOffset(timeQueries.GetCroatianOffset(dateTimeOffset.Value));
 
-    return withTimezone.ToString("dd. MM. yyyy. HH:mm", cultureInfo);
+    return withTimezone.ToString(DateTimeFormat(cultureInfo), cultureInfo);
   }
 
   public DateTimeOffset DateTimeApplyOffset(
@@ -179,7 +180,7 @@ public class LocalizationQueries(
 
   public string DocumentDate(DateTimeOffset date)
   {
-    return date.ToString("dd.MM.yyyy.");
+    return date.ToString("dd. MM. yyyy.");
   }
 
   public string DocumentNumber(decimal number, int precision = 2)
@@ -190,6 +191,16 @@ public class LocalizationQueries(
     nfi.NumberGroupSeparator = ".";
     var format = "#,##0." + new string('#', precision);
     return number.ToString(format, nfi);
+  }
+
+  public string DateFormat(CultureInfo cultureInfo)
+  {
+    return "dd. MM. yyyy.";
+  }
+
+  public string DateTimeFormat(CultureInfo cultureInfo)
+  {
+    return "dd. MM. yyyy. HH:mm";
   }
 
   private record TranslationKey(CultureInfo Culture);

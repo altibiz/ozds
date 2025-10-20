@@ -35,6 +35,12 @@ public partial class AnalysisStateProvider : OzdsComponentBase
   [Inject]
   private ILogger<AnalysisStateProvider> Logger { get; set; } = default!;
 
+  public void Reset()
+  {
+    ResetNoRender();
+    InvokeAsync(StateHasChanged);
+  }
+
   protected override void OnParametersSet()
   {
     if (_previousRepresentativeId == RepresentativeState.Representative.Id
@@ -46,7 +52,13 @@ public partial class AnalysisStateProvider : OzdsComponentBase
     _previousRepresentativeId = RepresentativeState.Representative.Id;
     _previousLocationId = LocationState.Location?.Id;
 
+    ResetNoRender();
+  }
+
+  private void ResetNoRender()
+  {
     _state = new AnalysisState(
+      Reset,
       new Lazy<List<AnalysisBasisModel>>(
         () =>
         {
@@ -55,7 +67,7 @@ public partial class AnalysisStateProvider : OzdsComponentBase
             {
               try
               {
-                await FetchAnalysisBasesAsync();
+                await Fetch();
               }
               catch (Exception ex)
               {
@@ -68,7 +80,7 @@ public partial class AnalysisStateProvider : OzdsComponentBase
     );
   }
 
-  private async Task FetchAnalysisBasesAsync()
+  private async Task Fetch()
   {
     var analysisQueries = ScopedServices
       .GetRequiredService<AnalysisQueries>();
@@ -90,6 +102,7 @@ public partial class AnalysisStateProvider : OzdsComponentBase
       );
 
     _state = new AnalysisState(
+      Reset,
       new Lazy<List<AnalysisBasisModel>>(() => analysisBases));
     await InvokeAsync(StateHasChanged);
 
@@ -115,6 +128,7 @@ public partial class AnalysisStateProvider : OzdsComponentBase
     }
 
     _state = new AnalysisState(
+      Reset,
       new Lazy<List<AnalysisBasisModel>>(() => analysisBases));
     await InvokeAsync(StateHasChanged);
 
@@ -133,6 +147,7 @@ public partial class AnalysisStateProvider : OzdsComponentBase
     }
 
     _state = new AnalysisState(
+      Reset,
       new Lazy<List<AnalysisBasisModel>>(() => analysisBases));
     await InvokeAsync(StateHasChanged);
 
@@ -166,6 +181,7 @@ public partial class AnalysisStateProvider : OzdsComponentBase
     }
 
     _state = new AnalysisState(
+      Reset,
       new Lazy<List<AnalysisBasisModel>>(() => analysisBases));
     await InvokeAsync(StateHasChanged);
   }

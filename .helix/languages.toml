@@ -4,7 +4,7 @@ taplo = { command = "taplo", args = ["lsp", "stdio"] }
 yaml-language-server = { command = "yaml-language-server", args = ["--stdio"] }
 marksman = { command = "marksman", args = ["server"] }
 sqls = { command = "sqls" }
-rzls = { command = "rzls" }
+csharp-ls = { command = "csharp-ls" }
 
 [language-server.omnisharp]
 command = "OmniSharp"
@@ -33,25 +33,15 @@ language-servers = ["nil"]
 
 [[language]]
 name = "c-sharp"
-language-servers = ["omnisharp"]
-auto-format = true
+auto-format = false
+formatter = { command = "dotnet-csharpier", args = ["--write-stdout"] }
+language-servers = ["csharp-ls"]
 
 [[language]]
 name = "python"
 auto-format = true
 formatter = { command = "yapf" }
 language-servers = ["pyright-langserver"]
-
-[[language]]
-name = "razor"
-scope = "source.razor"
-injection-regex = "razor"
-file-types = ["razor", "cshtml"]
-roots = ["sln", "csproj"]
-block-comment-tokens = { start = "@*", end = "*@" }
-indent = { tab-width = 2, unit = " " }
-language-servers = ["rzls"]
-auto-format = true
 
 [[language]]
 name = "sql"

@@ -1,6 +1,7 @@
 namespace Ozds.Data.Entities.Abstractions;
 
-public interface IMeasurementLocationEntity : IAuditableEntity
+public interface IMeasurementLocationEntity : ITrackableEntity,
+  IIdentifiableEntity
 {
   public string MeterId { get; }
 }

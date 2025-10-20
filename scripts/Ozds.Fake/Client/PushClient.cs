@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Fake.Client;
@@ -40,7 +41,8 @@ public class PushClient(
   )
   {
     var client = httpClientFactory.CreateClient(Name);
-    client.DefaultRequestHeaders.Add("X-Api-Key", messengerApiKey);
+    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+      "Bearer", messengerApiKey);
     client.DefaultRequestHeaders.Add(
       "X-Buffer-Behavior", bufferBehavior.ToValue());
 

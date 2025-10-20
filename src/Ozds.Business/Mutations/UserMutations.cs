@@ -1,5 +1,5 @@
 using Ozds.Business.Conversion;
-using Ozds.Business.Models.Composite;
+using Ozds.Business.Models;
 using Ozds.Business.Mutations.Abstractions;
 using Ozds.Users.Entities;
 using UserUserMutations = Ozds.Users.Mutations.UserMutations;
@@ -7,34 +7,34 @@ using UserUserMutations = Ozds.Users.Mutations.UserMutations;
 namespace Ozds.Business.Mutations;
 
 public class UserMutations(
-  ModelEntityConverter converter,
+  ModelUserEntityConverter converter,
   UserUserMutations mutations
 ) : IMutations
 {
-  public async Task<string> CreateUser(
-    UserWithPasswordModel model,
+  public async Task<string> Create(
+    UserModel model,
     CancellationToken cancellationToken
   )
   {
-    var entity = converter.ToEntity<UserWithPasswordEntity>(model);
-    await mutations.CreateUser(
+    var entity = converter.ToEntity<UserEntity>(model);
+    await mutations.Create(
       entity,
       cancellationToken
     );
-    return entity.User.Id;
+    return entity.Id;
   }
 
-  public async Task UpdateUser(
-    UserWithPasswordModel userModel,
+  public async Task Update(
+    UserModel userModel,
     CancellationToken cancellationToken
   )
   {
-    var userEntity = converter.ToEntity<UserWithPasswordEntity>(userModel);
-    await mutations.UpdateUser(userEntity, cancellationToken);
+    var entity = converter.ToEntity<UserEntity>(userModel);
+    await mutations.Update(entity, cancellationToken);
   }
 
-  public async Task DeleteUser(string id, CancellationToken cancellationToken)
+  public async Task Delete(string id, CancellationToken cancellationToken)
   {
-    await mutations.DeleteUser(id, cancellationToken);
+    await mutations.Delete(id, cancellationToken);
   }
 }

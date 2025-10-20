@@ -107,9 +107,13 @@ public static class EntityTypeBuilderExtensions
         property => property
             is { GetMethod.IsVirtual: true }
             and { GetMethod.IsFinal: false }
-          || property.Name == nameof(IAuditableEntity.Forget)
-          || property.Name == nameof(IAuditableEntity.Restore)
-          || property.Name == nameof(IAuditableEntity.RepresentativeId))
+          || property.Name == nameof(IJoinEntity.LeftId)
+          || property.Name == nameof(IJoinEntity.RightId)
+          || property.Name == nameof(IAuditableEntity.AuditingId)
+          || property.Name == nameof(IAuditableEntity.AuditingTitle)
+          || property.Name == nameof(IAuditableEntity.AuditingRepresentativeId)
+          || property.Name == nameof(ITrackableEntity.Forget)
+          || property.Name == nameof(ITrackableEntity.Restore))
       .ToList();
 
     var propertiesToArchive = complexPropertyBuilder.Metadata

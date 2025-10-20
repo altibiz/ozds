@@ -4,5 +4,5 @@ public record PaginationOptions(
   int PageCount,
   int PageNumber,
   int TotalCount,
-  Action<int> SetPageNumber
+  Func<int, Task> SetPageNumber
 );

@@ -248,6 +248,30 @@ erDiagram
         real voltage_l3_any_t0_v
     }
 
+    api_key_scopes {
+        uuid api_key_id PK,FK
+        text created_by_id FK
+        timestamp_with_time_zone created_on
+        uuid scope_id PK,FK
+    }
+
+    api_keys {
+        text created_by_id FK
+        timestamp_with_time_zone created_on
+        text deleted_by_id FK
+        timestamp_with_time_zone deleted_on
+        timestamp_with_time_zone expires_on
+        text hash
+        uuid id PK
+        boolean is_deleted
+        text last_updated_by_id FK
+        timestamp_with_time_zone last_updated_on
+        text principal_entity_id
+        text principal_entity_table
+        text principal_entity_type
+        text title
+    }
+
     events {
         audit_entity audit
         text auditable_entity_id
@@ -279,6 +303,8 @@ erDiagram
     }
 
     location_representatives {
+        text created_by_id FK
+        timestamp_with_time_zone created_on
         bigint location_id PK,FK
         text representative_id PK,FK
     }
@@ -620,6 +646,8 @@ erDiagram
     }
 
     network_user_representatives {
+        text created_by_id FK
+        timestamp_with_time_zone created_on
         bigint network_user_id PK,FK
         text representative_id PK,FK
     }
@@ -815,6 +843,26 @@ erDiagram
         text trigger_type
     }
 
+    registers {
+        aggregation_entity aggregation
+        text created_by_id FK
+        timestamp_with_time_zone created_on
+        text deleted_by_id FK
+        timestamp_with_time_zone deleted_on
+        duplex_entity duplex
+        bigint id PK
+        boolean is_deleted
+        text last_updated_by_id FK
+        timestamp_with_time_zone last_updated_on
+        measure_entity measure
+        text name
+        order_of_magnitude_entity order_of_magnitude
+        phase_entity phase
+        uuid scope_id FK
+        tariff_entity tariff
+        text title
+    }
+
     regulatory_catalogues {
         numeric active_energy_total_import_t1_price_eur
         numeric active_energy_total_import_t2_price_eur
@@ -1002,15 +1050,40 @@ erDiagram
         real voltage_l3_any_t0_v
     }
 
+    scopes {
+        text created_by_id FK
+        timestamp_with_time_zone created_on
+        text deleted_by_id FK
+        timestamp_with_time_zone deleted_on
+        uuid id PK
+        interval_entity interval
+        boolean is_deleted
+        character_varying kind
+        text last_updated_by_id FK
+        timestamp_with_time_zone last_updated_on
+        action_entity scope_action
+        text scope_entity_id
+        text scope_entity_table
+        text scope_entity_type
+        text title
+    }
+
     abb_b2x_aggregates }o--|| measurement_locations : "measurement_location_id"
     abb_b2x_aggregates }o--|| meters : "meter_id"
     abb_b2x_measurements }o--|| measurement_locations : "measurement_location_id"
     abb_b2x_measurements }o--|| meters : "meter_id"
+    api_key_scopes }o--|| api_keys : "api_key_id"
+    api_key_scopes }o--|| representatives : "created_by_id"
+    api_key_scopes }o--|| scopes : "scope_id"
+    api_keys }o--|| representatives : "created_by_id"
+    api_keys }o--|| representatives : "deleted_by_id"
+    api_keys }o--|| representatives : "last_updated_by_id"
     events }o--|| messengers : "messenger_id"
     events }o--|| representatives : "representative_id"
     notifications }o--|| events : "event_id"
     location_representatives }o--|| locations : "location_id"
     location_representatives }o--|| representatives : "representative_id"
+    location_representatives }o--|| representatives : "created_by_id"
     locations }o--|| network_user_catalogues : "blue_low_catalogue_id"
     locations }o--|| network_user_catalogues : "red_low_catalogue_id"
     locations }o--|| network_user_catalogues : "white_low_catalogue_id"
@@ -1058,6 +1131,7 @@ erDiagram
     notifications }o--|| network_user_invoices : "invoice_id"
     network_user_representatives }o--|| network_users : "network_user_id"
     network_user_representatives }o--|| representatives : "representative_id"
+    network_user_representatives }o--|| representatives : "created_by_id"
     network_users }o--|| representatives : "created_by_id"
     network_users }o--|| representatives : "deleted_by_id"
     network_users }o--|| representatives : "last_updated_by_id"
@@ -1079,10 +1153,17 @@ erDiagram
     qrtz_simprop_triggers }o--|| qrtz_triggers : "sched_name"
     qrtz_simprop_triggers }o--|| qrtz_triggers : "trigger_group"
     qrtz_simprop_triggers }o--|| qrtz_triggers : "trigger_name"
+    registers }o--|| representatives : "created_by_id"
+    registers }o--|| representatives : "deleted_by_id"
+    registers }o--|| representatives : "last_updated_by_id"
+    registers }o--|| scopes : "scope_id"
     regulatory_catalogues }o--|| representatives : "created_by_id"
     regulatory_catalogues }o--|| representatives : "deleted_by_id"
     regulatory_catalogues }o--|| representatives : "last_updated_by_id"
     representatives }o--|| representatives : "created_by_id"
     representatives }o--|| representatives : "deleted_by_id"
     representatives }o--|| representatives : "last_updated_by_id"
+    scopes }o--|| representatives : "created_by_id"
+    scopes }o--|| representatives : "deleted_by_id"
+    scopes }o--|| representatives : "last_updated_by_id"
 ```

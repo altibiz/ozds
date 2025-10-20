@@ -5,8 +5,10 @@
 @using System.Linq.Expressions
 @using MudBlazor
 @using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Queries.Abstractions
 @using Ozds.Client.Components.Fields
 @using Ozds.Client.Components.Streaming
+@using Ozds.Client.Extensions
 @using Tizzani.MudBlazor.HtmlEditor
 @inherits OzdsManagedModelComponentBase<TPrefix, TModel>
 
@@ -14,7 +16,9 @@
 
 @code {
 
-  protected RenderFragment Field(Expression<Func<TModel, string?>> next)
+  protected RenderFragment Field(
+    Expression<Func<TModel, string?>> next
+  )
   {
     var nextFunc = next.Compile();
     return @<MudTextField
@@ -84,6 +88,31 @@
               For="@For(next)"/>;
   }
 
+  protected RenderFragment Field(
+    Expression<Func<TModel, DateTime?>> next
+  )
+  {
+    var nextFunc = next.Compile();
+    return @<MudDatePicker
+              Label="@Translate(Label(next))"
+              Date="@Get(nextFunc)"
+              DateChanged="@Set(next)"
+              DateFormat="@DateFormat()"/>;
+  }
+
+  protected RenderFragment Field(
+    Expression<Func<TModel, DateTimeOffset?>> next
+  )
+  {
+    var nextFunc = next.Compile();
+    var timeZone = GetTimeZone();
+    return @<MudDatePicker
+              Label="@Translate(Label(next))"
+              Date="@Get(nextFunc)?.DateTime"
+              DateChanged="@Set(next, (DateTime? x) => x == null ? null : new DateTimeOffset(x.Value, timeZone.BaseUtcOffset).ToUniversalTime())"
+              DateFormat="@DateFormat()"/>;
+  }
+
   // NOTE: doesn't work with just Enum
   protected RenderFragment Field<T>(Expression<Func<TModel, T?>> next)
     where T : Enum
@@ -106,7 +135,7 @@
     return @<MultiEnumPicker
               Title="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
-              ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToHashSet())"/>;
+              ValueChanged="@Set(next, (IEnumerable<T>? x) => x!.ToHashSet())"/>;
   }
 
   // NOTE: doesn't work with just Enum
@@ -119,7 +148,7 @@
     return @<MultiEnumPicker
               Title="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
-              ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToList())"/>;
+              ValueChanged="@Set(next, (IEnumerable<T>? x) => x!.ToList())"/>;
   }
 
   protected RenderFragment TextField<T>(Expression<Func<TModel, T?>> next)
@@ -130,6 +159,34 @@
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)"
               For="@For(next)"/>;
+  }
+
+  protected RenderFragment ChoiceField<T>(
+    Expression<Func<TModel, T?>> next,
+    IEnumerable<(string Label, T Value)> choices
+  )
+  {
+    var nextFunc = next.Compile();
+    return @<SelectField
+              Label="@(Translate(Label(next)))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)">
+      @foreach (var choice in choices)
+      {
+        <MudSelectItem Value="@choice.Value">
+          @choice.Label
+        </MudSelectItem>
+      }
+    </SelectField>;
+  }
+
+  protected RenderFragment PasswordField(Expression<Func<TModel, string?>> next)
+  {
+    var nextFunc = next.Compile();
+    return @<PasswordField
+              Label="@(Translate(Label(next)))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)"/>;
   }
 
   protected RenderFragment HtmlField(Expression<Func<TModel, string?>> next)
@@ -222,13 +279,44 @@
               ValueChanged="@Set(next, (IEnumerable<T> x) => x.ToList())"/>;
   }
 
+  protected RenderFragment StringEnumField<T>(
+    Expression<Func<TModel, T?>> next,
+    IEnumerable<T> choices
+  )
+  {
+    var nextFunc = next.Compile();
+    return @<SelectField
+              T="T"
+              Label="@(Translate(Label(next)))"
+              Value="@Get(nextFunc)"
+              ValueChanged="@Set(next)">
+      @foreach (var choice in choices)
+      {
+        @if (choice is string stringChoice)
+        {
+          <MudSelectItem Value="@choice">
+            @Translate(stringChoice)
+          </MudSelectItem>
+        }
+        else if (
+          choice is { } nonNullChoice
+          && nonNullChoice.ToString() is { } nonNullChoiceString)
+        {
+          <MudSelectItem Value="@nonNullChoice">
+            @Translate(nonNullChoiceString)
+          </MudSelectItem>
+        }
+      }
+    </SelectField>;
+  }
+
   protected RenderFragment LinkField<T>(
     Expression<Func<TModel, string?>> next
   )
     where T : IIdentifiable
   {
     var nextFunc = next.Compile();
-    return @<Paging T="T">
+    return @<Paging T="T" Scroll="Scroll.Infinite">
       <Found Context="models">
         <SelectField Label="@(Translate(Label(next)))"
                      Value="@Get(nextFunc)"
@@ -245,6 +333,73 @@
         </SelectField>
       </Found>
     </Paging>;
+  }
+
+  protected RenderFragment PolymorphicLinkField(
+    Expression<Func<TModel, Type?>> type,
+    Expression<Func<TModel, string?>> next
+  )
+  {
+    var nextFunc = next.Compile();
+    var typeFunc = type.Compile();
+
+    RenderFragment<PaginatedList> Found = models =>
+    {
+      return @<SelectField Label="@(Translate(Label(next)))"
+                           Value="@Get(nextFunc)"
+                           ValueChanged="@Set(next)"
+                           For="@For(next)">
+        @foreach (var model in models.ObjectItems.OfType<IIdentifiable>())
+        {
+          <MudSelectItem Value="@model.Id">
+            <MudText>
+              @model.Title
+            </MudText>
+          </MudSelectItem>
+        }
+      </SelectField>;
+    };
+
+    var actualType = Get(typeFunc);
+
+    if (actualType is null)
+    {
+      return @<Fragment/>;
+    }
+
+    var componentType = typeof(Paging<>).MakeGenericType(actualType);
+    var listType = typeof(PaginatedList<>).MakeGenericType(actualType);
+
+#pragma warning disable CS8974
+    var parameters = new Dictionary<string, object>
+    {
+      { "Found", Found.Concretize(listType) },
+      { "Scroll", Scroll.Infinite }
+    };
+#pragma warning restore CS8974
+
+    return @<DynamicComponent
+              Type="@(componentType)"
+              Parameters="@parameters"/>;
+  }
+
+  protected RenderFragment PolymorphicLinkField(
+    Expression<Func<TModel, string?>> type,
+    Expression<Func<TModel, string?>> id,
+    IEnumerable<Type?> choices
+  )
+  {
+    var typeFunc = type.Compile();
+    var idFunc = id.Compile();
+
+    return @<PolymorphicIdField
+              TypeLabel="@(Translate(Label(type)))"
+              Type="@(Get(typeFunc))"
+              TypeChanged="@(Set(type))"
+              TypeChoices="@choices"
+              IdLabel="@(Translate(Label(id)))"
+              Id="@(Get(idFunc))"
+              IdChanged="@(Set(id))"/>;
   }
 
 }

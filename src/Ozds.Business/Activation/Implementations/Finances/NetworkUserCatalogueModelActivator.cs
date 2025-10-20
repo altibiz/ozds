@@ -7,6 +7,6 @@ public class NetworkUserCatalogueModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
   NetworkUserCatalogueModel,
-  AuditableModel>(serviceProvider)
+  TrackableModel>(serviceProvider)
 {
 }

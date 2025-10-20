@@ -43,6 +43,13 @@
         "dotnet-repl"
       ],
       "rollForward": false
+    },
+    "nswag.consolecore": {
+      "version": "14.6.1",
+      "commands": [
+        "nswag"
+      ],
+      "rollForward": false
     }
   }
 }

@@ -1,0 +1,118 @@
+@namespace Ozds.Client.Components.Streaming
+
+@typeparam T where T : notnull
+@typeparam TMapped
+@using MudBlazor
+@using Ozds.Client.Components.Fields
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+@{
+  LoadingState mappedState = Map is { } map ? _state.Map(map) : _state;
+
+  RenderFragment inner = @<Fragment>
+
+    @if (WithTitle)
+    {
+      <Title State="@mappedState"/>
+    }
+
+    @if (WithHeading)
+    {
+      <Heading State="@mappedState"/>
+    }
+
+    @if (_state.Stage is LoadingStage.Loading)
+    {
+      if (Progress is not null)
+      {
+        @Progress
+      }
+      else
+      {
+        <Progress/>
+      }
+    }
+    else if (_state.Stage is LoadingStage.Error)
+    {
+      if (Error is not null)
+      {
+        @Error(_state.Error!)
+      }
+      else
+      {
+        <Error>@_state.Error</Error>
+      }
+    }
+    else if (_state.Stage is LoadingStage.Unfound)
+    {
+      if (NotFound is not null)
+      {
+        @NotFound
+      }
+      else
+      {
+        <NotFound Type="@typeof(T)"/>
+      }
+    }
+    else if (_state.Stage is LoadingStage.Created)
+    {
+      @if (Activate || ActivateAsync)
+      {
+        if (Concretize is not null)
+        {
+          @Concretize
+        }
+        else if (_activationType is not null && ActivatableSubtypes.Count > 1)
+        {
+          <SelectField
+            T="Type"
+            Class="mb-2"
+            Label="@Translate("Type")"
+            Value="@_activationType"
+            ValueChanged="@Reactivate">
+            @foreach (var type in ActivatableSubtypes)
+            {
+              <MudSelectItem Value="@type">
+                <MudText>
+                  @Translate(type)
+                </MudText>
+              </MudSelectItem>
+            }
+          </SelectField>
+        }
+      }
+
+      if (Created is not null)
+      {
+        @Created(_state.Value!)
+      }
+      else
+      {
+        <Serialized Value="@_state.Value"/>
+      }
+    }
+    else
+    {
+      if (Found is not null)
+      {
+        @Found(_state.Value!)
+      }
+      else
+      {
+        <Serialized Value="@_state.Value"/>
+      }
+    }
+  </Fragment>;
+}
+
+@if (string.IsNullOrWhiteSpace(Class) && string.IsNullOrWhiteSpace(Style))
+{
+  @inner
+}
+else
+{
+  <div class="@Class" style="@Style">
+    @inner
+  </div>
+}

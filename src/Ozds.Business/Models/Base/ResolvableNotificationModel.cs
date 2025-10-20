@@ -2,7 +2,7 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
-public class ResolvableNotificationModel
+public abstract class ResolvableNotificationModel
   : NotificationModel, IResolvableNotification
 {
   public string? ResolvedById { get; set; } = default!;

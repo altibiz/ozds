@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace Ozds.Client.Extensions;
 
 public static class TypeExtensions
@@ -54,5 +56,25 @@ public static class TypeExtensions
     }
 
     return typeof(object);
+  }
+
+  public static IEnumerable GetNullableEnumValues(this Type type)
+  {
+    var isNullable = type.IsGenericType
+      && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+
+    var enumType = isNullable
+      ? type.GetGenericArguments().First()
+      : type;
+
+    foreach (var item in Enum.GetValues(enumType))
+    {
+      yield return item;
+    }
+
+    if (isNullable)
+    {
+      yield return null;
+    }
   }
 }

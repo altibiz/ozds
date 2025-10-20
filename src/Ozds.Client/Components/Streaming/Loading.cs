@@ -7,7 +7,12 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Streaming;
 
-public partial class Loading<T> : OzdsComponentBase
+public class Loading<T> : MappedLoading<T, T>
+  where T : notnull
+{
+}
+
+public partial class MappedLoading<T, TMapped> : OzdsComponentBase
   where T : notnull
 {
   private Type? _activationType = default!;
@@ -15,6 +20,9 @@ public partial class Loading<T> : OzdsComponentBase
 
   [Parameter]
   public T? Value { get; set; }
+
+  [Parameter]
+  public Func<T, TMapped>? Map { get; set; } = default!;
 
   [Parameter]
   public RenderFragment? Progress { get; set; }
@@ -47,6 +55,18 @@ public partial class Loading<T> : OzdsComponentBase
   public bool ActivateAsync { get; set; }
 
   [Parameter]
+  public string? JoinActivationId { get; set; }
+
+  [Parameter]
+  public Type? JoinActivationSide { get; set; }
+
+  [Parameter]
+  public bool WithTitle { get; set; }
+
+  [Parameter]
+  public bool WithHeading { get; set; }
+
+  [Parameter]
   public RenderFragment? NotFound { get; set; }
 
   [Parameter]
@@ -71,46 +91,44 @@ public partial class Loading<T> : OzdsComponentBase
     }
   }
 
-  public void Initialize(
-    bool reset = false,
-    bool render = false
-  )
+  public async Task Fetch()
+  {
+    _state = _state.WithReset();
+#pragma warning disable S6966 // Awaitable method should be used
+    Reload();
+#pragma warning restore S6966 // Awaitable method should be used
+    await ReloadAsync();
+  }
+
+  protected override void OnInitialized()
   {
     _activationType = ActivatableSubtypes.FirstOrDefault();
-
-    if (reset)
-    {
-      _state = _state.WithReset();
-    }
 
     if (Value is not null)
     {
       _state = _state.WithValue(Value);
     }
-
-    if (render)
-    {
-      InvokeAsync(StateHasChanged);
-    }
   }
 
-  public void Reload(
-    bool reset = false,
-    bool render = false
-  )
+  protected override void OnParametersSet()
   {
-    if (reset)
-    {
-      _state = _state.WithReset();
-    }
+    Reload();
+  }
 
+  protected override async Task OnParametersSetAsync()
+  {
+    await ReloadAsync();
+  }
+
+  private void Reload()
+  {
     if (Value is not null)
     {
       _state = _state.WithValue(Value);
       return;
     }
 
-    if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
+    if (_state.Stage is not LoadingStage.Loading and not LoadingStage.Unfound)
     {
       return;
     }
@@ -127,7 +145,7 @@ public partial class Loading<T> : OzdsComponentBase
       }
     }
 
-    if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
+    if (_state.Stage is not LoadingStage.Loading and not LoadingStage.Unfound)
     {
       return;
     }
@@ -144,7 +162,7 @@ public partial class Loading<T> : OzdsComponentBase
       }
     }
 
-    if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
+    if (_state.Stage is not LoadingStage.Loading and not LoadingStage.Unfound)
     {
       return;
     }
@@ -157,6 +175,14 @@ public partial class Loading<T> : OzdsComponentBase
           .GetRequiredService<ModelActivator>();
         var created = (T)activator.ActivateDynamic(
           _activationType ?? typeof(T));
+        if (created is IJoin join
+          && JoinActivationSide != null
+          && JoinActivationId != null)
+        {
+          join.ActivationSide = JoinActivationSide;
+          join.ActivationId = JoinActivationId;
+        }
+
         _state = _state.WithCreated(created);
       }
       catch (Exception e)
@@ -164,32 +190,17 @@ public partial class Loading<T> : OzdsComponentBase
         _state = _state.WithError(e.ToString());
       }
     }
-
-    if (render)
-    {
-      InvokeAsync(StateHasChanged);
-    }
   }
 
-  public async Task ReloadAsync(
-    bool reset = false,
-    bool render = false
-  )
+  private async Task ReloadAsync()
   {
-    await Task.Run(() => { });
-
-    if (reset)
-    {
-      _state = _state.WithReset();
-    }
-
     if (Value is not null)
     {
       _state = _state.WithValue(Value);
       return;
     }
 
-    if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
+    if (_state.Stage is not LoadingStage.Loading and not LoadingStage.Unfound)
     {
       return;
     }
@@ -206,18 +217,19 @@ public partial class Loading<T> : OzdsComponentBase
       }
     }
 
-    if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
+    if (_state.Stage is not LoadingStage.Loading and not LoadingStage.Unfound)
     {
       return;
     }
 
-    if (Id is not null && typeof(T).IsAssignableTo(typeof(IAuditable)))
+    // NOTE: keep this here in case we want to filter by deleted
+    if (Id is not null && typeof(T).IsAssignableTo(typeof(ITrackable)))
     {
       try
       {
         _state = _state.WithValue(
           (T?)await ScopedServices
-            .GetRequiredService<AuditableQueries>()
+            .GetRequiredService<TrackableQueries>()
             .ReadById(typeof(T), Id, CancellationToken));
       }
       catch (Exception e)
@@ -226,13 +238,13 @@ public partial class Loading<T> : OzdsComponentBase
       }
     }
 
-    if (Id is not null && typeof(T).IsAssignableTo(typeof(IModel)))
+    if (Id is not null && typeof(T).IsAssignableTo(typeof(IIdentifiable)))
     {
       try
       {
         _state = _state.WithValue(
           (T?)await ScopedServices
-            .GetRequiredService<ModelQueries>()
+            .GetRequiredService<IdentifiableQueries>()
             .ReadById(typeof(T), Id, CancellationToken));
       }
       catch (Exception e)
@@ -241,7 +253,7 @@ public partial class Loading<T> : OzdsComponentBase
       }
     }
 
-    if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
+    if (_state.Stage is not LoadingStage.Loading and not LoadingStage.Unfound)
     {
       return;
     }
@@ -258,7 +270,7 @@ public partial class Loading<T> : OzdsComponentBase
       }
     }
 
-    if (_state.State is not LoadingState.Loading and not LoadingState.Unfound)
+    if (_state.Stage is not LoadingStage.Loading and not LoadingStage.Unfound)
     {
       return;
     }
@@ -271,6 +283,14 @@ public partial class Loading<T> : OzdsComponentBase
           .GetRequiredService<ModelActivator>();
         var created = (T)activator.ActivateDynamic(
           _activationType ?? typeof(T));
+        if (created is IJoin join
+          && JoinActivationSide != null
+          && JoinActivationId != null)
+        {
+          join.ActivationSide = JoinActivationSide;
+          join.ActivationId = JoinActivationId;
+        }
+
         _state = _state.WithCreated(created);
       }
       catch (Exception e)
@@ -278,14 +298,9 @@ public partial class Loading<T> : OzdsComponentBase
         _state = _state.WithError(e.ToString());
       }
     }
-
-    if (render)
-    {
-      await InvokeAsync(StateHasChanged);
-    }
   }
 
-  public void Reactivate(Type type)
+  private void Reactivate(Type type)
   {
     if (!type.IsAssignableTo(typeof(T)))
     {
@@ -297,7 +312,7 @@ public partial class Loading<T> : OzdsComponentBase
 
     _activationType = type;
 
-    if (_state.State is not LoadingState.Created)
+    if (_state.Stage is not LoadingStage.Created)
     {
       return;
     }
@@ -309,6 +324,14 @@ public partial class Loading<T> : OzdsComponentBase
         var activator = ScopedServices
           .GetRequiredService<ModelActivator>();
         var created = (T)activator.ActivateDynamic(_activationType);
+        if (created is IJoin join
+          && JoinActivationSide != null
+          && JoinActivationId != null)
+        {
+          join.ActivationSide = JoinActivationSide;
+          join.ActivationId = JoinActivationId;
+        }
+
         _state = _state.WithCreated(created);
       }
       catch (Exception e)
@@ -324,6 +347,14 @@ public partial class Loading<T> : OzdsComponentBase
         var activator = ScopedServices
           .GetRequiredService<ModelActivator>();
         var created = (T)activator.ActivateDynamic(_activationType);
+        if (created is IJoin join
+          && JoinActivationSide != null
+          && JoinActivationId != null)
+        {
+          join.ActivationSide = JoinActivationSide;
+          join.ActivationId = JoinActivationId;
+        }
+
         _state = _state.WithCreated(created);
       }
       catch (Exception e)
@@ -331,20 +362,5 @@ public partial class Loading<T> : OzdsComponentBase
         _state = _state.WithError(e.ToString());
       }
     }
-  }
-
-  protected override void OnInitialized()
-  {
-    Initialize();
-  }
-
-  protected override void OnParametersSet()
-  {
-    Reload();
-  }
-
-  protected override async Task OnParametersSetAsync()
-  {
-    await ReloadAsync();
   }
 }

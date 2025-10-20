@@ -17,17 +17,19 @@ public class NotificationQueries(
     int pageNumber,
     CancellationToken cancellationToken,
     bool seen = false,
+    string? title = null,
     int pageCount = QueryConstants.DefaultPageCount
   )
     where T : class, INotification
   {
     var entityType = modelEntityConverter.EntityType(typeof(T));
-    var entities = await queries.ReadForRecipientDynamic(
+    var entities = await queries.ReadForRecipient(
       entityType,
       representativeId,
-      seen,
       pageNumber,
       cancellationToken,
+      seen,
+      title,
       pageCount
     );
 
@@ -39,16 +41,18 @@ public class NotificationQueries(
   public async Task<List<T>> ReadForRecipient<T>(
     string representativeId,
     CancellationToken cancellationToken,
-    bool seen = false
+    bool seen = false,
+    string? title = null
   )
     where T : class, INotification
   {
     var entityType = modelEntityConverter.EntityType(typeof(T));
-    var entities = await queries.ReadForRecipientDynamic(
+    var entities = await queries.ReadForRecipient(
       entityType,
       representativeId,
+      cancellationToken,
       seen,
-      cancellationToken
+      title
     );
 
     return entities
@@ -56,12 +60,13 @@ public class NotificationQueries(
       .ToList();
   }
 
-  public async Task<PaginatedList<INotification>> ReadForRecipientDynamic(
+  public async Task<PaginatedList<INotification>> ReadForRecipient(
     Type modelType,
     string representativeId,
-    bool seen,
     int pageNumber,
     CancellationToken cancellationToken,
+    bool seen = false,
+    string? title = null,
     int pageCount = QueryConstants.DefaultPageCount
   )
   {
@@ -73,12 +78,13 @@ public class NotificationQueries(
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
-    var entities = await queries.ReadForRecipientDynamic(
+    var entities = await queries.ReadForRecipient(
       entityType,
       representativeId,
-      seen,
       pageNumber,
       cancellationToken,
+      seen,
+      title,
       pageCount
     );
 
@@ -87,11 +93,12 @@ public class NotificationQueries(
       .ToPaginatedList(entities.TotalCount);
   }
 
-  public async Task<List<INotification>> ReadForRecipientDynamic(
+  public async Task<List<INotification>> ReadForRecipient(
     Type modelType,
     string representativeId,
-    bool seen,
-    CancellationToken cancellationToken
+    CancellationToken cancellationToken,
+    bool seen = false,
+    string? title = null
   )
   {
     if (!modelType.IsAssignableTo(typeof(INotification)))
@@ -102,11 +109,12 @@ public class NotificationQueries(
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
-    var entities = await queries.ReadForRecipientDynamic(
+    var entities = await queries.ReadForRecipient(
       entityType,
       representativeId,
+      cancellationToken,
       seen,
-      cancellationToken
+      title
     );
 
     return entities

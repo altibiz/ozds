@@ -29,34 +29,34 @@ public class TestLocationFixture(
       configure(configurator);
     }
 
-    var auditableFixture = new TestAuditableFixture(composition);
+    var trackableFixture = new TestTrackableFixture(composition);
 
-    var redLowNetworkUserCatalogue = await auditableFixture
+    var redLowNetworkUserCatalogue = await trackableFixture
       .Create(
         cancellationToken,
         configurator.ConfigureRedLowNetworkUserCatalogue);
 
-    var blueLowNetworkUserCatalogue = await auditableFixture
+    var blueLowNetworkUserCatalogue = await trackableFixture
       .Create(
         cancellationToken,
         configurator.ConfigureBlueLowNetworkUserCatalogue);
 
-    var whiteLowNetworkUserCatalogue = await auditableFixture
+    var whiteLowNetworkUserCatalogue = await trackableFixture
       .Create(
         cancellationToken,
         configurator.ConfigureWhiteLowNetworkUserCatalogue);
 
-    var whiteMediumNetworkUserCatalogue = await auditableFixture
+    var whiteMediumNetworkUserCatalogue = await trackableFixture
       .Create(
         cancellationToken,
         configurator.ConfigureWhiteMediumNetworkUserCatalogue);
 
-    var regulatoryCatalogue = await auditableFixture
+    var regulatoryCatalogue = await trackableFixture
       .Create(
         cancellationToken,
         configurator.ConfigureRegulatoryCatalogue);
 
-    var location = await auditableFixture
+    var location = await trackableFixture
       .Create<LocationModel>(
         cancellationToken, l =>
         {
@@ -69,7 +69,7 @@ public class TestLocationFixture(
           configurator.ConfigureLocation(l);
         });
 
-    var messenger = await auditableFixture
+    var messenger = await trackableFixture
       .Create<MessengerModel>(
         cancellationToken, m =>
         {

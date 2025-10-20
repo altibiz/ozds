@@ -10,6 +10,7 @@ using Ozds.Data.Observers.Abstractions;
 using Ozds.Data.Options;
 using Ozds.Data.Procedures.Abstractions;
 using Ozds.Data.Queries.Abstractions;
+using Ozds.Data.Reflection;
 using Ozds.Data.Services;
 
 namespace Ozds.Data.Extensions;
@@ -25,6 +26,7 @@ public static class HostExtensions
     builder.AddMutations();
     builder.AddProcedures();
     builder.AddObservers();
+    builder.AddReflection();
     builder.AddDatabase();
 
     if (ConfigureOzdsDataOptions.WithServices(builder.Configuration))
@@ -73,6 +75,14 @@ public static class HostExtensions
   )
   {
     builder.Services.AddScopedAssignableTo(typeof(IProcedures));
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddReflection(
+    this IHostApplicationBuilder builder
+  )
+  {
+    builder.Services.AddSingleton(typeof(EntityReflector));
     return builder;
   }
 

@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Complex;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class MessengerEntity : AuditableEntity, ICustomIdentifiableEntity
+public class MessengerEntity : TrackableEntity, ICustomIdentifiableEntity
 {
   private long _locationId;
 
@@ -16,6 +16,7 @@ public class MessengerEntity : AuditableEntity, ICustomIdentifiableEntity
   }
 
   public virtual LocationEntity Location { get; set; } = default!;
+
   public virtual ICollection<MeterEntity> Meters { get; set; } = default!;
 
   public virtual ICollection<MessengerEventEntity> Events { get; set; } =

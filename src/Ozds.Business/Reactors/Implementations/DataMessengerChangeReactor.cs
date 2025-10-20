@@ -19,7 +19,7 @@ public class DataMessengerChangeReactor(
 
 public class DataMessengerChangeHandler(
   IMessengerJobManager manager,
-  AuditableQueries auditableQueries,
+  TrackableQueries trackableQueries,
   TimeQueries timeQueries,
   MessengerCache messengerCache,
   MessengerByMeterCache messengerByMeterCache
@@ -29,7 +29,7 @@ public class DataMessengerChangeHandler(
     CancellationToken cancellationToken)
   {
     var page = 0;
-    var result = await auditableQueries
+    var result = await trackableQueries
       .Read<MessengerModel>(page, cancellationToken);
     while (result.Items.Count > 0)
     {
@@ -41,7 +41,7 @@ public class DataMessengerChangeHandler(
         cancellationToken
       );
 
-      result = await auditableQueries
+      result = await trackableQueries
         .Read<MessengerModel>(++page, cancellationToken);
     }
   }

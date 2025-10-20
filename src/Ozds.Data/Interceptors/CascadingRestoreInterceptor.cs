@@ -7,7 +7,7 @@ using Ozds.Data.Extensions;
 namespace Ozds.Data.Interceptors;
 
 public class CascadingRestoreInterceptor(IServiceProvider serviceProvider)
-  : ServedSaveChangesInterceptor(serviceProvider)
+  : ServedInterceptor(serviceProvider)
 {
   public override int Order
   {
@@ -42,11 +42,11 @@ public class CascadingRestoreInterceptor(IServiceProvider serviceProvider)
     }
 
     context.ChangeTracker.DetectChanges();
-    var entries = context.ChangeTracker.Entries<IAuditableEntity>().ToList();
+    var entries = context.ChangeTracker.Entries<ITrackableEntity>().ToList();
 
     foreach (var entry in entries.Where(
       e =>
-        e.State is EntityState.Added
+        e.State is Microsoft.EntityFrameworkCore.EntityState.Added
         && e.Entity.IsDeleted
         && e.Entity.Restore))
     {
@@ -59,7 +59,7 @@ public class CascadingRestoreInterceptor(IServiceProvider serviceProvider)
 
   private static async Task CascadingRestore(
     DbContextEventData eventData,
-    EntityEntry<IAuditableEntity> entry)
+    EntityEntry<ITrackableEntity> entry)
   {
     var context = eventData.Context;
     if (context is null)
@@ -78,7 +78,7 @@ public class CascadingRestoreInterceptor(IServiceProvider serviceProvider)
     foreach (var relationship in relationships
       .Where(
         relationship => relationship.DeclaringEntityType.ClrType
-          .IsAssignableTo(typeof(IAuditableEntity))))
+          .IsAssignableTo(typeof(ITrackableEntity))))
     {
       var declarers = await context
         .GetQueryable(relationship.DeclaringEntityType.ClrType)
@@ -88,14 +88,14 @@ public class CascadingRestoreInterceptor(IServiceProvider serviceProvider)
             relationship.GetNavigation(true)?.Name
             ?? throw new InvalidOperationException(
               "No navigation property found"),
-            entry.Entity.Id))
-        .OfType<IAuditableEntity>()
+            entry.Entity.AuditingId))
+        .OfType<ITrackableEntity>()
         .ToListAsync();
 
       foreach (var declaring in declarers)
       {
         var declaringEntry = context.FindEntry(declaring);
-        declaringEntry.State = EntityState.Added;
+        declaringEntry.State = Microsoft.EntityFrameworkCore.EntityState.Added;
         declaringEntry.Entity.Restore = entry.Entity.Restore;
         await CascadingRestore(
           eventData,

@@ -11,9 +11,9 @@ namespace Ozds.Business.Conversion.Implementations.Administration;
 public class LocationModelEntityConverter(IServiceProvider serviceProvider)
   : InheritingModelEntityConverter<
     LocationModel,
-    AuditableModel,
+    TrackableModel,
     LocationEntity,
-    AuditableEntity>(serviceProvider)
+    TrackableEntity>(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();

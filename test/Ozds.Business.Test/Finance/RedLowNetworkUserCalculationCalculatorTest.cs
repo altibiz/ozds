@@ -272,6 +272,7 @@ public class RedLowNetworkUserCalculationCalculatorTest
           .Excluding(x => x.Title)
           .Excluding(x => x.NetworkUserInvoiceId)
           .Excluding(x => x.IssuedOn)
-          .Excluding(x => x.IssuedById));
+          .Excluding(x => x.IssuedById)
+          .Excluding(x => x.Created));
   }
 }

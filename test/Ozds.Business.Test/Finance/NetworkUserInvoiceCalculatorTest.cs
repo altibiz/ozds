@@ -706,6 +706,7 @@ public class NetworkUserInvoiceCalculatorTest
           .Excluding(x => x.Invoice.Id)
           .Excluding(x => x.Invoice.Title)
           .Excluding(x => x.Invoice.IssuedOn)
-          .Excluding(x => x.Invoice.IssuedById));
+          .Excluding(x => x.Invoice.IssuedById)
+          .Excluding(x => x.Invoice.Created));
   }
 }

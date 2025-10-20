@@ -28,6 +28,7 @@
 
   protected RenderFragment Column(Expression<Func<TModel, Enum?>> next)
   {
+    var nextFunc = next.Compile();
     return Nest(
       @<PropertyColumn
          Filterable="false"
@@ -35,7 +36,16 @@
          T="TPrefix"
          TProperty="Enum"
          Title="@(Translate(Label(next)))"
-         Property="@Wrap(next)"/>);
+         Property="@Wrap(next)">
+        <CellTemplate>
+          <MudText>
+            @if (Get(nextFunc)(context.Item) is { } value)
+            {
+              @Translate(value.ToString())
+            }
+          </MudText>
+        </CellTemplate>
+      </PropertyColumn>);
   }
 
   protected RenderFragment Column(Expression<Func<TModel, decimal?>> next, int decimalPlaces = 2)
@@ -76,9 +86,20 @@
         <CellTemplate>
           @if (Get(nextFunc)(context.Item) is { } item)
           {
-            <MudText>
-              @string.Join(", ", item)
-            </MudText>
+            if (item is IEnumerable<Enum> enumItem)
+            {
+              <MudText>
+                @(string.Join(
+                  ", ", enumItem
+                    .Select(x => Translate(x.ToString()))))
+              </MudText>
+            }
+            else
+            {
+              <MudText>
+                @string.Join(", ", item)
+              </MudText>
+            }
           }
         </CellTemplate>
       </PropertyColumn>);
@@ -122,13 +143,36 @@
          Title="@(Translate(Label(next)))"
          Property="@Wrap(next)">
         <CellTemplate>
-          @{
-            var item = Get(nextFunc)(context.Item);
-          }
-          @if (item is IEnumerable enumerable)
+          @if (Get(nextFunc)(context.Item) is IEnumerable enumerable)
           {
             <MudText>
-              @enumerable.JoinString()
+              @string.Join(", ", enumerable)
+            </MudText>
+          }
+        </CellTemplate>
+      </PropertyColumn>);
+  }
+
+  protected RenderFragment EnumerableEnumColumn<T>(
+    Expression<Func<TModel, T?>> next
+  )
+  {
+    var nextFunc = next.Compile();
+    return Nest(
+      @<PropertyColumn
+         Filterable="false"
+         Sortable="false"
+         T="TPrefix"
+         TProperty="T"
+         Title="@(Translate(Label(next)))"
+         Property="@Wrap(next)">
+        <CellTemplate>
+          @if (Get(nextFunc)(context.Item) is IEnumerable<Enum> enumerable)
+          {
+            <MudText>
+              @(string.Join(
+                ", ", enumerable
+                  .Select(x => Translate(x.ToString()))))
             </MudText>
           }
         </CellTemplate>
@@ -149,6 +193,7 @@
 
   protected RenderFragment EnumColumn<T>(Expression<Func<TModel, T?>> next)
   {
+    var nextFunc = next.Compile();
     return Nest(
       @<PropertyColumn
          Filterable="false"
@@ -156,7 +201,17 @@
          T="TPrefix"
          TProperty="T"
          Title="@(Translate(Label(next)))"
-         Property="@Wrap(next)"/>);
+         Property="@Wrap(next)">
+        <CellTemplate>
+          <MudText>
+            @if (Get(nextFunc)(context.Item) is { } value
+              && value.ToString() is { } valueString)
+            {
+              @Translate(valueString)
+            }
+          </MudText>
+        </CellTemplate>
+      </PropertyColumn>);
   }
 
   protected RenderFragment DateColumn<T>(Expression<Func<TModel, T?>> next)
@@ -247,6 +302,32 @@
       </TemplateColumn>);
   }
 
+  protected RenderFragment PolymorphicLinkColumn(
+    Expression<Func<TModel, Type?>> type,
+    Expression<Func<TModel, string?>> next
+  )
+  {
+    var typeFunc = type.Compile();
+    var nextFunc = next.Compile();
+    return Nest(
+      @<TemplateColumn
+         T="TPrefix"
+         Title="@(Translate(Label(next)))">
+        <CellTemplate>
+          @if (Get(typeFunc)(context.Item) is { } type &&
+            Get(nextFunc)(context.Item) is { } id)
+          {
+            var href = PageHref(
+              Provider.GetPageComponentType(type),
+              new { id });
+            <MudLink Href="@href">
+              @Translate(type) @id
+            </MudLink>
+          }
+        </CellTemplate>
+      </TemplateColumn>);
+  }
+
   protected RenderFragment Nest(
     RenderFragment fragment
   )
@@ -256,15 +337,7 @@
       return fragment;
     }
 
-    return Enumerable
-      .Range(0, NestingLevel)
-      .Aggregate(
-        fragment, (acc, _) =>
-          @<Fragment>
-            <Fragment>
-              @acc
-            </Fragment>
-          </Fragment>);
+    return Fragment.Nest(2 * NestingLevel, fragment);
   }
 
 }

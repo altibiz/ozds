@@ -12,6 +12,9 @@ namespace Ozds.Users.Extensions;
 
 public static class HostExtensions
 {
+  public const string AuthenticationScheme =
+    OpenIdConnectDefaults.AuthenticationScheme;
+
   public static IHostApplicationBuilder AddOzdsUsers(
     this IHostApplicationBuilder builder
   )

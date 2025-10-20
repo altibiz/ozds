@@ -3,27 +3,18 @@
 @layout DocumentLayout
 
 @page "/document/network-user-invoice-preview/{networkUserId}/{year:int}/{month:int}"
+@using Ozds.Business.Models.Composite
 @using Ozds.Client.Components.Layout
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
-<Loading
+<MappedLoading
   T="CalculatedNetworkUserInvoiceModelWithHtml"
-  LoadAsync="OnLoadAsync">
+  TMapped="CalculatedNetworkUserInvoiceModel"
+  LoadAsync="OnLoadAsync"
+  Map="@(model => model.Invoice)"
+  WithTitle>
   <Found>
-    <HeadContent>
-      <title>
-        OZDS - @Translate("Network user invoice preview"):
-        @context.Invoice.Invoice.Title
-      </title>
-    </HeadContent>
-
     @(new MarkupString(context.Html))
   </Found>
-  <NotFound>
-    <HeadContent>
-      <title>OZDS - @Translate("Network user not found")</title>
-    </HeadContent>
-    <NotFound/>
-  </NotFound>
-</Loading>
+</MappedLoading>

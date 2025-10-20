@@ -4,11 +4,14 @@ using Ozds.Assets.Queries.Abstractions;
 
 namespace Ozds.Assets.Queries.Implementations;
 
-public class TranslationQueries : ITranslationQueries
+public class TranslationQueries(
+  ITypeQueries typeQueries
+) : ITranslationQueries
 {
   public string GeneralKey(Type type, bool trimmed = true, bool plural = false)
   {
-    return AddPluralFn(plural)(CleanTypeName(type, trimmed));
+    return AddPluralFn(plural)(
+      typeQueries.ResolveHumanFriendlyTypeName(type, trimmed));
   }
 
   public string GeneralKey(Type type, string member)
@@ -23,12 +26,14 @@ public class TranslationQueries : ITranslationQueries
 
   public string Key(Type type, bool plural = false)
   {
-    return AddPluralFn(plural)(AddNamespace(type, CleanTypeName(type)));
+    return AddPluralFn(plural)(
+      AddNamespace(type, typeQueries.ResolveHumanFriendlyTypeName(type)));
   }
 
   public string Key(Type type, string member)
   {
-    return $"{AddNamespace(type, CleanTypeName(type))}.{member}";
+    return
+      $"{AddNamespace(type, typeQueries.ResolveHumanFriendlyTypeName(type))}.{member}";
   }
 
   public string Key(MemberExpression member)
@@ -38,7 +43,8 @@ public class TranslationQueries : ITranslationQueries
     var suffix = string.Join(
       ".",
       order.Select(x => x.Property));
-    return AddNamespace(type, $"{CleanTypeName(type)}.{suffix}");
+    return AddNamespace(
+      type, $"{typeQueries.ResolveHumanFriendlyTypeName(type)}.{suffix}");
   }
 
   public string[] KeyOverrides(Type type, bool plural = false)
@@ -84,12 +90,12 @@ public class TranslationQueries : ITranslationQueries
 
   public string ShortKey(Type type, bool plural = false)
   {
-    return AddPluralFn(plural)(CleanTypeName(type));
+    return AddPluralFn(plural)(typeQueries.ResolveHumanFriendlyTypeName(type));
   }
 
   public string ShortKey(Type type, string member)
   {
-    return $"{CleanTypeName(type)}.{member}";
+    return $"{typeQueries.ResolveHumanFriendlyTypeName(type)}.{member}";
   }
 
   public string ShortKey(MemberExpression member)
@@ -99,7 +105,7 @@ public class TranslationQueries : ITranslationQueries
     var suffix = string.Join(
       ".",
       order.Select(x => x.Property));
-    return $"{CleanTypeName(type)}.{suffix}";
+    return $"{typeQueries.ResolveHumanFriendlyTypeName(type)}.{suffix}";
   }
 
   public string[] ShortKeyOverrides(Type type, bool plural = false)
@@ -158,48 +164,6 @@ public class TranslationQueries : ITranslationQueries
     return string.IsNullOrEmpty(type.Namespace)
       ? name
       : $"{type.Namespace}.{name}";
-  }
-
-  private static string CleanTypeName(
-    Type type,
-    bool trim = false
-  )
-  {
-    var baseName = type.Name;
-
-    if (!type.IsGenericType)
-    {
-      if (trim)
-      {
-        if (type.IsInterface && baseName.StartsWith('I'))
-        {
-          baseName = baseName[1..];
-        }
-
-        if (baseName.LastIndexOf("Model") is > 0 and var modelIndex)
-        {
-          baseName = baseName[..modelIndex];
-        }
-
-        if (baseName.LastIndexOf("Entity") is > 0 and var entityIndex)
-        {
-          baseName = baseName[..entityIndex];
-        }
-      }
-
-      return baseName;
-    }
-
-    var backtickIndex = baseName.IndexOf('`');
-    if (backtickIndex > 0)
-    {
-      baseName = baseName[..backtickIndex];
-    }
-
-    var genericArgs = string.Join(
-      ", ",
-      type.GetGenericArguments().Select(x => x.Name));
-    return $"{baseName}<{genericArgs}>";
   }
 
   private static List<MemberExpressionItem> MemberOrder(

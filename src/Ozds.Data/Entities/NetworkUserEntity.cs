@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Joins;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class NetworkUserEntity : AuditableEntity
+public class NetworkUserEntity : TrackableEntity
 {
   private long _locationId;
 

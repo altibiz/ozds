@@ -6,7 +6,7 @@ namespace Ozds.Business.Caching;
 
 public class MeasurementValidatorByMeterCache(
   IServiceScopeFactory factory
-) : ConcurrentDictionaryCacheBase<string, IMeasurementValidator>
+) : BatchedConcurrentDictionaryCacheBase<string, IMeasurementValidator>
 {
   protected override async Task<string?> GetKeyFromDataSourceAsync(
     IMeasurementValidator value,

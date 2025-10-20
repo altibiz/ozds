@@ -63,7 +63,7 @@ public class NotificationMutations(
     var entity = modelEntityConverter.ToEntity<IResolvableNotificationEntity>(
       resolvableNotification
     );
-    entity.RepresentativeId = representativeId;
+    entity.AuditingRepresentativeId = representativeId;
 
     var updated = await mutations
       .MarkNotificationAsResolved(entity, cancellationToken);

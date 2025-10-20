@@ -31,6 +31,14 @@ public partial class DataDbContext : DbContext
     set;
   } = default!;
 
+  public DbSet<ApiKeyEntity> ApiKeys { get; set; } = default!;
+
+  public DbSet<ApiKeyScopeEntity> ApiKeyScopes { get; set; } = default!;
+
+  public DbSet<ScopeEntity> Scopes { get; set; } = default!;
+
+  public DbSet<RegisterEntity> Registers { get; set; } = default!;
+
   public DbSet<MeasurementLocationEntity> MeasurementLocations { get; set; } =
     default!;
 

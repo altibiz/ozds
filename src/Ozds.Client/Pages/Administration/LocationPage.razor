@@ -16,45 +16,14 @@
   return;
 }
 
-<Mutating T="LocationModel" LoadAsync="OnLoadAsync">
-  <Label>
-    @if (context.Created
-      && RepresentativeState.Representative.Role
-        is RoleModel.LocationRepresentative)
-    {
-      <NotFound/>
-      return;
-    }
-
-    <HeadContent>
-      @if (context.Created)
-      {
-        <title>OZDS - @Translate("New location")</title>
-      }
-      else
-      {
-        <title>OZDS - @Translate("Location"): @context.Model.Title</title>
-      }
-    </HeadContent>
-  </Label>
-  <Edit>
-    @if (context.Created
-      && RepresentativeState.Representative.Role
-        is RoleModel.LocationRepresentative)
-    {
-      return;
-    }
-
-    <Edit Model="@context.Model"/>
-  </Edit>
+<Mutating
+  T="LocationModel"
+  LoadAsync="OnLoadAsync"
+  WithTitle
+  WithHeading
+  WithPreview
+  AsReadonly>
   <Details>
-    @if (context.Created
-      && RepresentativeState.Representative.Role
-        is RoleModel.LocationRepresentative)
-    {
-      return;
-    }
-
     <Details Model="@context.Model"/>
 
     <div class="mt-8">
@@ -68,7 +37,7 @@
 
       @{
         var energyCardHref =
-          "/report/location-energy-card"
+          "/app/report/location-energy-card"
           + "/" + GetCulture().TwoLetterISOLanguageName
           + "/" + context.Model.Id
           + "/" + selectedMonth.Year

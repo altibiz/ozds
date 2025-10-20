@@ -63,7 +63,21 @@ public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
 
   protected virtual Expression<Func<TPrefix, TModel?>> CreateExp()
   {
-    return Prefix ?? (x => (TModel?)(object?)x);
+    var prefix = Prefix ?? (x => (TModel?)(object?)x);
+
+    var parameter = Expression.Parameter(typeof(TPrefix));
+
+    var @try = Expression.Invoke(prefix, parameter);
+
+    var @catch = Expression.Constant(default(TModel?), typeof(TModel?));
+
+    var tryCatch = Expression.TryCatch(
+      @try,
+      Expression.Catch(typeof(Exception), @catch));
+
+    return Expression.Lambda<Func<TPrefix, TModel?>>(
+      tryCatch,
+      parameter);
   }
 
   protected override Type CreateBaseComponentType()

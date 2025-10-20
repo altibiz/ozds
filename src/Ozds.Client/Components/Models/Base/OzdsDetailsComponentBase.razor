@@ -1,6 +1,7 @@
 @namespace Ozds.Client.Components.Models.Base
 
 @typeparam TModel
+@using System.Collections
 @using System.Linq.Expressions
 @using System.Text.Json
 @using MudBlazor
@@ -104,7 +105,16 @@
       <MudText>
         @if (nextFunc(Model) is { } model)
         {
-          @string.Join(", ", model)
+          if (model is IEnumerable<Enum> enums)
+          {
+            @(string.Join(
+              ", ", enums
+                .Select(x => Translate(x.ToString()))))
+          }
+          else
+          {
+            @string.Join(", ", model)
+          }
         }
         else
         {
@@ -285,15 +295,36 @@
   }
 
   protected RenderFragment EnumerableField<T>(
-    Expression<Func<TModel, IEnumerable<T>?>> next
+    Expression<Func<TModel, T?>> next
   )
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(Label(next)))">
       <MudText>
-        @if (nextFunc(Model) is { } model)
+        @if (nextFunc(Model) is IEnumerable model)
         {
           @string.Join(", ", model)
+        }
+        else
+        {
+          @Translate("None")
+        }
+      </MudText>
+    </DetailsField>;
+  }
+
+  protected RenderFragment EnumerableEnumField<T>(
+    Expression<Func<TModel, T?>> next
+  )
+  {
+    var nextFunc = next.Compile();
+    return @<DetailsField Title="@(Translate(Label(next)))">
+      <MudText>
+        @if (nextFunc(Model) is IEnumerable<Enum> model)
+        {
+          @(string.Join(
+            ", ", model
+              .Select(x => Translate(x.ToString()))))
         }
         else
         {
@@ -322,6 +353,32 @@
       {
         <MudLink Href="@href">
           @id
+        </MudLink>
+      }
+    </DetailsField>;
+  }
+
+  protected RenderFragment PolymorphicLinkField(
+    Expression<Func<TModel, Type?>> type,
+    Expression<Func<TModel, string?>> next
+  )
+  {
+    var typeFunc = type.Compile();
+    var nextFunc = next.Compile();
+    var ty = typeFunc(Model);
+    var id = nextFunc(Model);
+    var href = id is null || ty is null
+      ? null
+      : PageHref(Provider.GetPageComponentType(ty), new { id });
+    return @<DetailsField Title="@(Translate(Label(next)))">
+      @if (id is null || href is null || ty is null)
+      {
+        @Translate("None")
+      }
+      else
+      {
+        <MudLink Href="@href">
+          @Translate(ty) @id
         </MudLink>
       }
     </DetailsField>;

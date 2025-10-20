@@ -7,22 +7,31 @@ using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Components.Streaming;
 
-// TODO: memoize Loading parameters to prevent rerendering
-
-public partial class Paging<T> : OzdsComponentBase
+public class Paging<T> : MappedPaging<T, T>
   where T : notnull
 {
-  private int _pageNumber = 0;
+}
 
-  private Guid infiniteScrollId = Guid.NewGuid();
+public partial class MappedPaging<T, TMapped> : OzdsComponentBase
+  where T : notnull
+{
+  private readonly Guid infiniteScrollId = Guid.NewGuid();
 
-  private Loading<PaginatedList<T>>? loading;
+  private MappedLoading<PaginatedList<T>, PaginatedList<TMapped>>? loading;
+
+  private int pageNumber = 0;
 
   [Parameter]
-  public Func<int, PaginatedList<T>>? Page { get; set; }
+  public IEnumerable<T>? Value { get; set; } = default!;
 
   [Parameter]
-  public Func<int, Task<PaginatedList<T>>>? PageAsync { get; set; }
+  public Func<T, TMapped>? Map { get; set; } = default!;
+
+  [Parameter]
+  public Func<int, int, PaginatedList<T>>? Page { get; set; }
+
+  [Parameter]
+  public Func<int, int, Task<PaginatedList<T>>>? PageAsync { get; set; }
 
   [Parameter]
   public RenderFragment? Progress { get; set; }
@@ -60,52 +69,142 @@ public partial class Paging<T> : OzdsComponentBase
   [Inject]
   public IJSRuntime JS { get; set; } = default!;
 
+  private PaginatedList<T>? LoadingValue
+  {
+    get
+    {
+      return Value is { } value
+        ? PageFetched(value)
+        : null;
+    }
+  }
+
+  private Func<PaginatedList<T>, PaginatedList<TMapped>>? LoadingMap
+  {
+    get
+    {
+      return Map is { } map
+        ? x => x.Items.Select(map).ToPaginatedList(x.TotalCount)
+        : null;
+    }
+  }
+
   private Func<PaginatedList<T>>? OnPage
   {
     get
     {
-      return Page is null
-        ? null
-        : () => Page(_pageNumber);
+      if (Page is not null)
+      {
+        return () => Page(pageNumber, PageCount);
+      }
+
+      return null;
     }
   }
 
+  // NOTE: check for all of these because of sorting/filtering rules
   private Func<Task<PaginatedList<T>>>? OnPageAsync
   {
     get
     {
-      return PageAsync is not null
-        ? () => PageAsync(_pageNumber)
-        : Page is null && typeof(T).IsAssignableTo(typeof(IAuditable))
-          ? () => ScopedServices
-            .GetRequiredService<AuditableQueries>()
-            .Read(
-              typeof(T),
-              _pageNumber,
-              CancellationToken,
-              PageCount,
-              Deleted)
-            .ContinueWith(
-              x => x.IsCanceled
-                ? new PaginatedList<T>(new List<T>(), 0)
-                : x.Result.Items
-                  .OfType<T>()
-                  .ToPaginatedList(x.Result.TotalCount))
-          : Page is null && typeof(T).IsAssignableTo(typeof(IModel))
-            ? () => ScopedServices
-              .GetRequiredService<ModelQueries>()
-              .Read(
-                typeof(T),
-                _pageNumber,
-                CancellationToken,
-                PageCount)
-              .ContinueWith(
-                x => x.IsCanceled
-                  ? new PaginatedList<T>(new List<T>(), 0)
-                  : x.Result.Items
-                    .OfType<T>()
-                    .ToPaginatedList(x.Result.TotalCount))
-            : null;
+      if (PageAsync is not null)
+      {
+        return () => PageAsync(pageNumber, PageCount);
+      }
+
+      if (typeof(T).IsAssignableTo(typeof(ITrackable)))
+      {
+        return () => ScopedServices
+          .GetRequiredService<TrackableQueries>()
+          .Read(
+            typeof(T),
+            pageNumber,
+            CancellationToken,
+            PageCount,
+            Deleted)
+          .ContinueWith(
+            x => x.IsCanceled
+              ? new PaginatedList<T>(new List<T>(), 0)
+              : x.Result.Items
+                .OfType<T>()
+                .ToPaginatedList(x.Result.TotalCount));
+      }
+
+      if (typeof(T).IsAssignableTo(typeof(IAuditable)))
+      {
+        return () => ScopedServices
+          .GetRequiredService<AuditableQueries>()
+          .Read(
+            typeof(T),
+            pageNumber,
+            CancellationToken,
+            PageCount)
+          .ContinueWith(
+            x => x.IsCanceled
+              ? new PaginatedList<T>(new List<T>(), 0)
+              : x.Result.Items
+                .OfType<T>()
+                .ToPaginatedList(x.Result.TotalCount));
+      }
+
+      if (typeof(T).IsAssignableTo(typeof(IIdentifiable)))
+      {
+        return () => ScopedServices
+          .GetRequiredService<IdentifiableQueries>()
+          .Read(
+            typeof(T),
+            pageNumber,
+            CancellationToken,
+            PageCount)
+          .ContinueWith(
+            x => x.IsCanceled
+              ? new PaginatedList<T>(new List<T>(), 0)
+              : x.Result.Items
+                .OfType<T>()
+                .ToPaginatedList(x.Result.TotalCount));
+      }
+
+      if (typeof(T).IsAssignableTo(typeof(IModel)))
+      {
+        return () => ScopedServices
+          .GetRequiredService<ModelQueries>()
+          .Read(
+            typeof(T),
+            pageNumber,
+            CancellationToken,
+            PageCount)
+          .ContinueWith(
+            x => x.IsCanceled
+              ? new PaginatedList<T>(new List<T>(), 0)
+              : x.Result.Items
+                .OfType<T>()
+                .ToPaginatedList(x.Result.TotalCount));
+      }
+
+      return null;
+    }
+  }
+
+  public async Task Fetch()
+  {
+    await FetchLoading();
+  }
+
+  [JSInvokable]
+  public async Task OnScrollInView(
+    string elementId,
+    bool isInView
+  )
+  {
+    if (elementId != infiniteScrollId.ToString())
+    {
+      return;
+    }
+
+    if (isInView && Pagination is null && Scroll is Scroll.Infinite)
+    {
+      pageNumber++;
+      await FetchLoading();
     }
   }
 
@@ -118,48 +217,29 @@ public partial class Paging<T> : OzdsComponentBase
     }
   }
 
-  protected override void OnParametersSet()
+  private async Task SetPageNumber(int pageNumber)
+  {
+    this.pageNumber = pageNumber - 1;
+    await FetchLoading();
+  }
+
+  private async Task FetchLoading()
   {
     if (loading is null)
     {
       return;
     }
 
-    loading.Reload(true);
+    await loading.Fetch();
   }
 
-  protected override async Task OnParametersSetAsync()
+  private PaginatedList<T>? PageFetched(
+    IEnumerable<T> value
+  )
   {
-    if (loading is null)
-    {
-      return;
-    }
-
-    await loading.ReloadAsync(true);
-  }
-
-  [JSInvokable]
-  public void OnScrollInView(bool isInView)
-  {
-    if (isInView && Pagination is null && Scroll is Scroll.Infinite)
-    {
-      _pageNumber++;
-      loading?.ReloadAsync(true);
-    }
-  }
-
-  private async Task OnSelectedChanged(int pageNumber)
-  {
-    _pageNumber = pageNumber;
-    if (loading is { } nonNullLoading)
-    {
-      await nonNullLoading.ReloadAsync(true);
-    }
-  }
-
-  private void SetPageNumber(int pageNumber)
-  {
-    _pageNumber = pageNumber;
-    InvokeAsync(StateHasChanged);
+    return value
+      .Skip(pageNumber * PageCount)
+      .Take(PageCount)
+      .ToPaginatedList(value.Count());
   }
 }

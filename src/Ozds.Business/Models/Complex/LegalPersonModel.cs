@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Complex;
 
-public class LegalPersonModel : IModel
+public class LegalPersonModel : Model
 {
   [Required]
   public required string Name { get; set; } = default!;
@@ -28,9 +28,14 @@ public class LegalPersonModel : IModel
   [Required]
   public required string PhoneNumber { get; set; } = default!;
 
-  public IEnumerable<ValidationResult> Validate(
+  public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {
+    foreach (var validationResult in base.Validate(validationContext))
+    {
+      yield return validationResult;
+    }
+
     if (
       validationContext.MemberName is null or nameof(SocialSecurityNumber) &&
       !SocialSecurityNumber.All(char.IsDigit)

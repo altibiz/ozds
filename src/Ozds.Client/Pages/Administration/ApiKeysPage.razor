@@ -1,0 +1,23 @@
+@namespace Ozds.Client.Pages
+
+@page "/administration/api-keys"
+
+@attribute [Navigation(
+Order = 3,
+Title = "API keys",
+Icon = Icons.Material.Filled.Key,
+Parent = typeof(AdministrationPage),
+Allows = [
+RoleModel.OperatorRepresentative
+])]
+@using Ozds.Business.Models
+@using Ozds.Client.Attributes
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+<Table
+  T="ApiKeyModel"
+  WithDeleted
+  WithHeading
+  WithTitle
+  WithCreate/>

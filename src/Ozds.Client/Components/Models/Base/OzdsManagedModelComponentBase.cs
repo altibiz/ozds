@@ -66,7 +66,7 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
     return @default();
   }
 
-  protected EventCallback<T?> Set<T>(
+  protected EventCallback<T> Set<T>(
     Expression<Func<TModel, T>> next
   )
   {
@@ -89,8 +89,8 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
       nullCheck,
       memberAssignment
     );
-    var lambda = Expression.Lambda<Action<T?>>(body, parameter);
-    return new EventCallback<T?>(null, lambda.Compile());
+    var lambda = Expression.Lambda<Action<T>>(body, parameter);
+    return new EventCallback<T>(null, lambda.Compile());
   }
 
   protected EventCallback<TAdapter> Set<TField, TAdapter>(

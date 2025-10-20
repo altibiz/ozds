@@ -20,28 +20,6 @@ public class AuditableMutations(
     await context.SaveChangesAsync(cancellationToken);
   }
 
-  public async Task Create(
-    IEnumerable<IAuditableEntity> entity,
-    CancellationToken cancellationToken
-  )
-  {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-    context.AddRange(entity);
-    await context.SaveChangesAsync(cancellationToken);
-  }
-
-  public async Task Update(
-    IAuditableEntity entity,
-    CancellationToken cancellationToken
-  )
-  {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-    context.Update(entity);
-    await context.SaveChangesAsync(cancellationToken);
-  }
-
   public async Task Delete(
     IAuditableEntity entity,
     CancellationToken cancellationToken

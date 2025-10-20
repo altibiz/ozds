@@ -3,6 +3,7 @@ using Ozds.Business.Extensions;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
+using Ozds.Business.Models.Enums;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Enums;
@@ -12,9 +13,9 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 public class MeterModelEntityConverter(IServiceProvider serviceProvider)
   : InheritingModelEntityConverter<
     MeterModel,
-    AuditableModel,
+    TrackableModel,
     MeterEntity,
-    AuditableEntity>(serviceProvider)
+    TrackableEntity>(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();

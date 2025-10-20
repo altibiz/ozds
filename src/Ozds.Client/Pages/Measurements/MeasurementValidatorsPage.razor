@@ -8,8 +8,7 @@ Title = "Measurement validators",
 Icon = Icons.Material.Filled.Rule,
 Parent = typeof(MeasurementsPage),
 Allows = [RoleModel.OperatorRepresentative])]
-@using MudBlazor
-@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Streaming
 @using Ozds.Client.State
@@ -22,37 +21,16 @@ Allows = [RoleModel.OperatorRepresentative])]
   return;
 }
 
-<HeadContent>
-  <title>OZDS - @Translate("Measurement validators")</title>
-</HeadContent>
-
-<MudCheckBox
-  Label="@Translate("Show deleted")"
-  @bind-Value="_deleted"/>
-
-<Table T="AbbB2xMeasurementValidatorModel" Deleted="@_deleted"/>
-
 <Table
-  Class="mt-8"
-  T="SchneideriEM3xxxMeasurementValidatorModel"
-  Deleted="@_deleted"/>
-
-@if (RepresentativeState.Representative.Role
-  == RoleModel.OperatorRepresentative)
-{
-  <MudButton
-    Class="mt-4"
-    Variant="Variant.Outlined"
-    Color="Color.Primary"
-    Href="@(PageHref<MeasurementValidatorPage>())">
-    @Translate("Create")
-  </MudButton>
-}
+  T="IMeasurementValidator"
+  WithDeleted
+  WithHeading
+  WithTitle
+  WithCreate/>
 
 @code {
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
 
-  private bool _deleted;
 }

@@ -7,8 +7,8 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 public class CatalogueModelEntityConverter(IServiceProvider serviceProvider)
   : InheritingModelEntityConverter<
     CatalogueModel,
-    AuditableModel,
+    TrackableModel,
     CatalogueEntity,
-    AuditableEntity>(serviceProvider)
+    TrackableEntity>(serviceProvider)
 {
 }

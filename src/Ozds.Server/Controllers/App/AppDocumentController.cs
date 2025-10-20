@@ -1,0 +1,92 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Ozds.Business.Mutations;
+using Ozds.Business.Queries;
+
+namespace Ozds.Server.Controllers.App;
+
+[Route("app/document")]
+[Authorize]
+public class AppDocumentController(
+  InvoiceQueries queries,
+  NetworkUserInvoiceMutations mutations,
+  DocumentMutations documentMutations,
+  LocalizationQueries localizationQueries,
+  TimeQueries time
+) : Controller
+{
+  [HttpGet]
+  [Route("network-user-invoice/{id}")]
+  public async Task<IActionResult> NetworkUserInvoice(
+    string id,
+    CancellationToken cancellationToken
+  )
+  {
+    var invoice =
+      await queries.ReadCalculatedById(
+        id,
+        cancellationToken
+      );
+    if (invoice is null)
+    {
+      return NotFound();
+    }
+
+    var pdf = await documentMutations.CreatePdfForNetworkUserInvoice(
+      invoice,
+      cancellationToken
+    );
+    if (pdf is null)
+    {
+      return NotFound();
+    }
+
+    var fileName =
+      localizationQueries.Translate(
+        localizationQueries.CroatianCulture, "network-user-")
+      + invoice.Invoice.NetworkUserId
+      + localizationQueries.Translate(
+        localizationQueries.CroatianCulture, "-invoice-for-")
+      + invoice.Invoice.ToDate.ToString("MM-yyyy") + ".pdf";
+
+    return File(pdf, "application/pdf", fileName);
+  }
+
+  [HttpGet]
+  [Route("network-user-invoice-preview/{networkUserId}/{year:int}/{month:int}")]
+  public async Task<IActionResult> NetworkUserInvoicePreview(
+    string networkUserId,
+    int year,
+    int month,
+    CancellationToken cancellationToken
+  )
+  {
+    var (start, end) = time.GetMonthRange(year, month);
+
+    var invoice = await mutations.Preview(
+      networkUserId,
+      start,
+      end,
+      cancellationToken
+    );
+
+    var pdf = await documentMutations.CreatePdfForNetworkUserInvoice(
+      invoice,
+      cancellationToken
+    );
+    if (pdf is null)
+    {
+      return NotFound();
+    }
+
+    var fileName =
+      localizationQueries.Translate(
+        localizationQueries.CroatianCulture, "network-user-")
+      + invoice.Invoice.NetworkUserId
+      + localizationQueries.Translate(
+        localizationQueries.CroatianCulture, "-invoice-preview-for-")
+      + invoice.Invoice.ToDate.ToString("MM-yyyy") + ".pdf";
+
+    return File(pdf, "application/pdf", fileName);
+  }
+}

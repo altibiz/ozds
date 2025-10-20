@@ -36,12 +36,17 @@ public class AnalysisQueries(
       if (locationId is not null)
       {
         initialLocations = initialLocations
-          .Where(context.PrimaryKeyEquals<LocationEntity>(locationId));
+          .Where(context.PrimaryKeyEquals<LocationEntity>(locationId))
+          .Where(x => !x.IsDeleted);
       }
 
       return await initialLocations
-        .Include(x => x.NetworkUsers)
-        .ThenInclude(x => x.NetworkUserMeasurementLocations)
+        .Include(
+          x => x.NetworkUsers
+            .Where(x => !x.IsDeleted))
+        .ThenInclude(
+          x => x.NetworkUserMeasurementLocations
+            .Where(x => !x.IsDeleted))
         .ThenInclude(x => x.Meter)
         .AsSingleQuery()
         .ToListAsync(cancellationToken)
@@ -74,7 +79,8 @@ public class AnalysisQueries(
         context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
           nameof(NetworkUserRepresentativeEntity.Representative),
           representative.Id))
-      .Select(x => x.NetworkUser);
+      .Select(x => x.NetworkUser)
+      .Where(x => !x.IsDeleted);
     if (locationId is not null)
     {
       initialNetworkUsersQuery = initialNetworkUsersQuery
@@ -91,8 +97,11 @@ public class AnalysisQueries(
       .Where(
         context.PrimaryKeyIn<NetworkUserEntity>(
           initialNetworkUsers.Select(x => x.Id)))
+      .Where(x => !x.IsDeleted)
       .Include(x => x.Location)
-      .Include(x => x.NetworkUserMeasurementLocations)
+      .Include(
+        x => x.NetworkUserMeasurementLocations
+          .Where(x => !x.IsDeleted))
       .ThenInclude(x => x.Meter)
       .AsSingleQuery()
       .ToListAsync(cancellationToken)

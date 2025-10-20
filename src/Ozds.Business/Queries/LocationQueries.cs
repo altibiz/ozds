@@ -11,7 +11,34 @@ public class LocationQueries(
   ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
-  public async Task<LocationModel?> ReadLocationByRepresentativeId(
+  public async Task<PaginatedList<LocationModel>>
+    ReadByRepresentativeId(
+      string representativeId,
+      int pageNumber,
+      CancellationToken cancellationToken,
+      int pageSize = QueryConstants.DefaultPageCount,
+      bool deleted = false,
+      string? title = null
+    )
+  {
+    var entities = await dataLocationQueries.ReadByRepresentativeId(
+      representativeId,
+      pageNumber,
+      cancellationToken,
+      pageSize,
+      deleted,
+      title
+    );
+
+    var models = entities
+      .Items
+      .Select(modelEntityConverter.ToModel<LocationModel>)
+      .ToPaginatedList(entities.TotalCount);
+
+    return models;
+  }
+
+  public async Task<LocationModel?> ReadIndirectByRepresentativeIdAndId(
     string representativeId,
     RoleModel role,
     string locationId,
@@ -19,7 +46,7 @@ public class LocationQueries(
     bool deleted = false
   )
   {
-    var entity = await dataLocationQueries.ReadLocationByRepresentativeId(
+    var entity = await dataLocationQueries.ReadIndirectByRepresentativeIdAndId(
       representativeId,
       role.ToEntity(),
       locationId,
@@ -35,22 +62,24 @@ public class LocationQueries(
   }
 
   public async Task<PaginatedList<LocationModel>>
-    ReadLocationsByRepresentativeId(
+    ReadIndirectByRepresentativeId(
       string representativeId,
       RoleModel role,
       int pageNumber,
       CancellationToken cancellationToken,
       int pageSize = QueryConstants.DefaultPageCount,
-      bool deleted = false
+      bool deleted = false,
+      string? title = null
     )
   {
-    var entities = await dataLocationQueries.ReadLocationsByRepresentativeId(
+    var entities = await dataLocationQueries.ReadIndirectByRepresentativeId(
       representativeId,
       role.ToEntity(),
       pageNumber,
       cancellationToken,
       pageSize,
-      deleted
+      deleted,
+      title
     );
 
     var models = entities
@@ -61,13 +90,13 @@ public class LocationQueries(
     return models;
   }
 
-  public async Task<List<LocationModel>> ReadAllLocationsByRepresentativeId(
+  public async Task<List<LocationModel>> ReadAllIndirectByRepresentativeId(
     string representativeId,
     RoleModel role,
     CancellationToken cancellationToken
   )
   {
-    var entities = await dataLocationQueries.ReadAllLocationsByRepresentativeId(
+    var entities = await dataLocationQueries.ReadAllIndirectByRepresentativeId(
       representativeId,
       role.ToEntity(),
       cancellationToken

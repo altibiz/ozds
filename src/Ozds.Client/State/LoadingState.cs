@@ -1,6 +1,6 @@
 namespace Ozds.Client.State;
 
-public enum LoadingState
+public enum LoadingStage
 {
   Loading,
   Error,
@@ -9,17 +9,34 @@ public enum LoadingState
   Created
 }
 
+public record LoadingState(
+  LoadingStage Stage,
+  Type Type,
+  string? Error = default,
+  object? ObjectValue = default
+);
+
 public record LoadingState<T>(
-  LoadingState State = LoadingState.Loading,
+  LoadingStage Stage = LoadingStage.Loading,
   string? Error = default,
   T? Value = default
-)
+) : LoadingState(Stage, typeof(T), Error, Value)
 {
+  public LoadingState<TMapped> Map<TMapped>(Func<T, TMapped> map)
+  {
+    var mapped = Value is null ? default : map(Value);
+    return new LoadingState<TMapped>(
+      Stage,
+      Error,
+      mapped
+    );
+  }
+
   public LoadingState<T> WithError(string? error)
   {
     return this with
     {
-      State = LoadingState.Error,
+      Stage = LoadingStage.Error,
       Value = default,
       Error = error
     };
@@ -30,13 +47,13 @@ public record LoadingState<T>(
     return value is null
       ? this with
       {
-        State = LoadingState.Unfound,
+        Stage = LoadingStage.Unfound,
         Value = default,
         Error = default
       }
       : this with
       {
-        State = LoadingState.Found,
+        Stage = LoadingStage.Found,
         Value = value,
         Error = default
       };
@@ -46,7 +63,7 @@ public record LoadingState<T>(
   {
     return this with
     {
-      State = LoadingState.Created,
+      Stage = LoadingStage.Created,
       Value = value,
       Error = default
     };
@@ -56,7 +73,7 @@ public record LoadingState<T>(
   {
     return this with
     {
-      State = LoadingState.Loading,
+      Stage = LoadingStage.Loading,
       Value = default,
       Error = default
     };
@@ -66,7 +83,7 @@ public record LoadingState<T>(
   {
     return this with
     {
-      State = LoadingState.Unfound,
+      Stage = LoadingStage.Unfound,
       Value = default,
       Error = default
     };

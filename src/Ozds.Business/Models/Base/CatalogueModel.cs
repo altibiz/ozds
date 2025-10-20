@@ -3,7 +3,7 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class CatalogueModel : AuditableModel, ICatalogue
+public abstract class CatalogueModel : TrackableModel, ICatalogue
 {
   public virtual IEnumerable<ObisModel> Obis
   {

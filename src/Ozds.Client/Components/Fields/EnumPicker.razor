@@ -1,8 +1,5 @@
 @namespace Ozds.Client.Components.Fields
-
-@* TODO: null handling *@
-@using System.Collections
-@using System.Linq.Expressions
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
 @using MudBlazor
 @typeparam T
 
@@ -14,7 +11,24 @@
   For="For">
   @foreach (var item in Values)
   {
-    var value = (T)item;
+    var typed = (T)item;
+
+    if (typed is not { } value)
+    {
+      <MudSelectItem Value="@typed">
+        @if (Label is { } label)
+        {
+          @label(typed)
+        }
+        else
+        {
+          @Translate("None")
+        }
+      </MudSelectItem>
+
+      continue;
+    }
+
     <MudSelectItem Value="@value">
       @if (Label is { } label)
       {
@@ -22,30 +36,8 @@
       }
       else
       {
-        @value.ToString()
+        @Translate(value.ToString()!)
       }
     </MudSelectItem>
   }
 </SelectField>
-
-@code {
-
-  [Parameter]
-  public T Value { get; set; } = default!;
-
-  [Parameter]
-  public EventCallback<T> ValueChanged { get; set; } = default!;
-
-  [Parameter]
-  public string Title { get; set; } = default!;
-
-  [Parameter]
-  public Func<T, string>? Label { get; set; } = default!;
-
-  [Parameter]
-  public Expression<Func<T>> For { get; set; } = default!;
-
-  [Parameter]
-  public IEnumerable Values { get; set; } = Enum.GetValues(typeof(T));
-
-}

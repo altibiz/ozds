@@ -8,12 +8,3 @@ public class UserEntity
 
   public string Email { get; set; } = default!;
 }
-
-public class UserWithPasswordEntity
-{
-  public UserEntity User { get; set; } = default!;
-
-  public string OldPassword { get; set; } = default!;
-
-  public string NewPassword { get; set; } = default!;
-}

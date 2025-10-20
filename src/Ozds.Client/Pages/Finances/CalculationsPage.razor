@@ -18,10 +18,6 @@ RoleModel.NetworkUserRepresentative
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
-<HeadContent>
-  <title>OZDS - @Translate("Calculations")</title>
-</HeadContent>
-
 @{
   var calculations = AnalysisState.AnalysisBases.Value
     .SelectMany(analysisBasis => analysisBasis.Calculations)
@@ -29,7 +25,7 @@ RoleModel.NetworkUserRepresentative
     .ToList();
 }
 
-<Table Model="calculations"/>
+<Table Value="calculations" WithTitle WithHeading/>
 
 @code {
 

@@ -1,13 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Interceptors;
 
 public class CascadingDeleteInterceptor(IServiceProvider serviceProvider)
-  : ServedSaveChangesInterceptor(serviceProvider)
+  : ServedInterceptor(serviceProvider)
 {
   public override int Order
   {
@@ -42,9 +43,10 @@ public class CascadingDeleteInterceptor(IServiceProvider serviceProvider)
     }
 
     context.ChangeTracker.DetectChanges();
-    var entries = context.ChangeTracker.Entries<IAuditableEntity>().ToList();
+    var entries = context.ChangeTracker.Entries<ITrackableEntity>().ToList();
 
-    foreach (var entry in entries.Where(e => e.State is EntityState.Deleted))
+    foreach (var entry in entries.Where(
+      e => e.State is Microsoft.EntityFrameworkCore.EntityState.Deleted))
     {
       await CascadingDelete(
         eventData,
@@ -55,7 +57,7 @@ public class CascadingDeleteInterceptor(IServiceProvider serviceProvider)
 
   private static async Task CascadingDelete(
     DbContextEventData eventData,
-    EntityEntry<IAuditableEntity> entry)
+    EntityEntry<ITrackableEntity> entry)
   {
     var context = eventData.Context;
     if (context is null)
@@ -74,7 +76,7 @@ public class CascadingDeleteInterceptor(IServiceProvider serviceProvider)
     foreach (var relationship in relationships
       .Where(
         relationship => relationship.DeclaringEntityType.ClrType
-          .IsAssignableTo(typeof(IAuditableEntity))))
+          .IsAssignableTo(typeof(ITrackableEntity))))
     {
       var declarers = await context
         .GetQueryable(relationship.DeclaringEntityType.ClrType)
@@ -84,14 +86,15 @@ public class CascadingDeleteInterceptor(IServiceProvider serviceProvider)
             relationship.GetNavigation(true)?.Name
             ?? throw new InvalidOperationException(
               "No navigation property found"),
-            entry.Entity.Id))
-        .OfType<IAuditableEntity>()
+            entry.Entity.AuditingId))
+        .OfType<ITrackableEntity>()
         .ToListAsync();
 
       foreach (var declaring in declarers)
       {
         var declaringEntry = context.FindEntry(declaring);
-        declaringEntry.State = EntityState.Deleted;
+        declaringEntry.State =
+          Microsoft.EntityFrameworkCore.EntityState.Deleted;
         declaringEntry.Entity.Forget = entry.Entity.Forget;
 
         await CascadingDelete(
@@ -114,7 +117,7 @@ public class CascadingDeleteInterceptorModelConfiguration : IModelConfiguration
       if (relationship.IsRequired)
       {
         if (relationship.DeclaringEntityType.ClrType
-          .IsAssignableTo(typeof(IAuditableEntity)))
+          .IsAssignableTo(typeof(ITrackableEntity)))
         {
           relationship.DeleteBehavior = DeleteBehavior.Restrict;
         }

@@ -9,9 +9,9 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 public class MessengerEntityConverter(IServiceProvider serviceProvider)
   : InheritingModelEntityConverter<
     MessengerModel,
-    AuditableModel,
+    TrackableModel,
     MessengerEntity,
-    AuditableEntity>(serviceProvider)
+    TrackableEntity>(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();

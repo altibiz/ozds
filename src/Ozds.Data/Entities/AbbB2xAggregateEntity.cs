@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Complex;
-using Ozds.Data.Extensions;
 using Ozds.Data.Procedures.Builders;
 
 namespace Ozds.Data.Entities;

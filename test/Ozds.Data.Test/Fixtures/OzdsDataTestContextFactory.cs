@@ -4,6 +4,7 @@ using DotNet.Testcontainers.Containers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting.Internal;
 using Npgsql;
+using Ozds.Assets.Extensions;
 using Ozds.Business.Extensions;
 using Ozds.Data.Context;
 using Ozds.Data.Extensions;
@@ -91,6 +92,7 @@ public static class OzdsDataTestContextFactory
       });
     builder.AddOzdsTime();
     builder.AddOzdsData();
+    builder.AddOzdsAssets();
     builder.AddOzdsBusinessPure();
 
     var host = builder.Build();

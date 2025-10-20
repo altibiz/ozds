@@ -12,7 +12,6 @@ RoleModel.OperatorRepresentative,
 RoleModel.LocationRepresentative,
 RoleModel.NetworkUserRepresentative
 ])]
-@using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
@@ -21,39 +20,23 @@ RoleModel.NetworkUserRepresentative
 @using Ozds.Client.State
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
-<HeadContent>
-  <title>OZDS - @Translate("Measurement locations")</title>
-</HeadContent>
-
 @{
   var analyses = Analyzer.AnalyzeByMeasurementLocation(
     AnalysisState.AnalysisBases.Value);
 }
 
-@if (RepresentativeState.Representative.Role
-  == RoleModel.OperatorRepresentative)
-{
-  <MudCheckBox
-    Label="@Translate("Show deleted")"
-    @bind-Value="_deleted"/>
-}
-
-<Table
-  Model="@(analyses.Where(x => x.MeasurementLocation.IsDeleted == _deleted).ToList())"/>
+<MappedTable
+  Value="@(analyses)"
+  Map="@(model => model.MeasurementLocation)"
+  WithHeading
+  WithDeleted
+  WithTitle
+  WithCreate/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
 {
-  <MudButton
-    Class="mt-4"
-    Variant="Variant.Outlined"
-    Color="Color.Primary"
-    Href="@(PageHref<MeasurementLocationPage>())">
-    @Translate("Create") @Translate(typeof(IMeasurementLocation))
-  </MudButton>
-  <UploadTabs
-    Class="mt-8"
-    T="IMeasurementLocation"/>
+  <UploadTabs Class="mt-8" T="IMeasurementLocation"/>
 }
 
 @code {
@@ -67,5 +50,4 @@ RoleModel.NetworkUserRepresentative
   [Inject]
   private Analyzer Analyzer { get; set; } = default!;
 
-  private bool _deleted;
 }

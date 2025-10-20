@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Joins;
-using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities;
 
-public class LocationEntity : AuditableEntity
+public class LocationEntity : TrackableEntity
 {
   private long _blueLowNetworkUserCatalogueId;
 

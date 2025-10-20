@@ -1,0 +1,23 @@
+@namespace Ozds.Client.Components.Models.Implementations.Administration
+
+@typeparam TPrefix
+@typeparam TModel where TModel : Ozds.Business.Models.RegisterModel
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
+@inherits Ozds.Client.Components.Models.Base.OzdsColumnsComponentBase<TPrefix, TModel>
+
+@(Base<IIdentifiable>())
+
+@(LinkColumn<ScopeModel>(x => x.ScopeId))
+
+@Column(x => x.Measure)
+
+@Column(x => x.OrderOfMagnitude)
+
+@Column(x => x.Tariff)
+
+@Column(x => x.Duplex)
+
+@Column(x => x.Phase)
+
+@Column(x => x.Aggregation)

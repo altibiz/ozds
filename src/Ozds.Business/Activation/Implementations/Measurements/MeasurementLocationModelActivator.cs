@@ -7,7 +7,7 @@ public class MeasurementLocationModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
   MeasurementLocationModel,
-  AuditableModel>(serviceProvider)
+  TrackableModel>(serviceProvider)
 {
   public override void Initialize(MeasurementLocationModel model)
   {

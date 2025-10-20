@@ -1,0 +1,25 @@
+@namespace Ozds.Client.Components.Models.Implementations.Administration
+
+@typeparam TPrefix
+@typeparam TModel where TModel : Ozds.Business.Models.RegisterModel
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Base
+@inherits Ozds.Client.Components.Models.Base.OzdsEditComponentBase<TPrefix, TModel>
+
+@(Base<IdentifiableModel>())
+
+@(LinkField<ScopeModel>(x => x.ScopeId))
+
+@Field(x => x.Name)
+
+@Field(x => x.Measure)
+
+@EnumField(x => x.OrderOfMagnitude)
+
+@EnumField(x => x.Tariff)
+
+@EnumField(x => x.Duplex)
+
+@EnumField(x => x.Phase)
+
+@EnumField(x => x.Aggregation)

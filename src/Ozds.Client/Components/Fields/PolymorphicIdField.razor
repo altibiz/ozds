@@ -1,0 +1,71 @@
+@namespace Ozds.Client.Components.Fields
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Queries.Abstractions
+@using Ozds.Client.Components.Streaming
+@using Ozds.Client.Extensions
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+@*
+  NOTE: we have to keep track of the type here because
+  edit components mutate models and don't actually set them so
+  it doesn't trigger subsequent SetParameters on child components
+*@
+
+<SelectField Label="@TypeLabel"
+             T="string"
+             Value="@type"
+             ValueChanged="@OnTypeChanged">
+  @foreach (var choice in TypeChoices)
+  {
+    var name = choice is not null ? ModelReflector.ResolveModelName(choice) : null;
+    <MudSelectItem Value="@name">
+      @if (choice is not null)
+      {
+        @Translate(choice)
+      }
+      else
+      {
+        @Translate("None")
+      }
+    </MudSelectItem>
+  }
+</SelectField>
+
+@if (type is null)
+{
+  return;
+}
+
+@{
+  var actualType = ModelReflector.ResolveModelType(type);
+
+  var listType = typeof(PaginatedList<>).MakeGenericType(actualType);
+
+  var pagingType = typeof(Paging<>).MakeGenericType(actualType);
+
+  RenderFragment<PaginatedList> Found = models =>
+  {
+    return @<SelectField Label="@IdLabel"
+                         Value="@Id"
+                         ValueChanged="@IdChanged">
+      @foreach (var model in models.ObjectItems.OfType<IIdentifiable>())
+      {
+        <MudSelectItem Value="@model.Id">
+          <MudText>
+            @model.Title
+          </MudText>
+        </MudSelectItem>
+      }
+    </SelectField>;
+  };
+
+  var pagingParameters = new Dictionary<string, object>
+  {
+    { "Found", Found.Concretize(listType) },
+    { "Scroll", Scroll.Infinite }
+  };
+}
+
+<DynamicComponent Type="@pagingType"
+                  Parameters="@pagingParameters"/>

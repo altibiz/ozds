@@ -6,7 +6,7 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 
 public class RegulatoryCatalogueModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<RegulatoryCatalogueModel, AuditableModel>(
+) : InheritingModelActivator<RegulatoryCatalogueModel, TrackableModel>(
   serviceProvider
 )
 {

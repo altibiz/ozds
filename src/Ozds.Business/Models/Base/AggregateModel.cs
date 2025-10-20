@@ -6,7 +6,7 @@ using Ozds.Business.Queries;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class AggregateModel : IAggregate
+public abstract class AggregateModel : Model, IAggregate
 {
   [Required]
   public required string MeterId { get; set; }
@@ -48,9 +48,14 @@ public abstract class AggregateModel : IAggregate
 
   public abstract TariffMeasure<decimal> DerivedApparentPower_VA { get; }
 
-  public virtual IEnumerable<ValidationResult> Validate(
+  public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {
+    foreach (var validationResult in base.Validate(validationContext))
+    {
+      yield return validationResult;
+    }
+
     if (validationContext.ObjectInstance != this)
     {
       yield break;

@@ -1,0 +1,22 @@
+@namespace Ozds.Client.Components.Models
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Fields
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Abstractions.ITrackable>
+
+@(Base<IIdentifiable>())
+
+<div style="mt-4">
+  &nbsp;
+</div>
+
+@if (!Model.Created)
+{
+  <CollapseField Title="@(Translate("Change history"))">
+    <Table PageAsync="OnPageAsync">
+      <Empty>
+        @Translate("No audit events found")
+      </Empty>
+    </Table>
+  </CollapseField>
+}

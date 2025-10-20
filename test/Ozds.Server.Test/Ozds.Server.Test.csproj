@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/Ozds.Server/Ozds.Server.csproj" />
+    <ProjectReference Include="../../src/Ozds.Sdk/Ozds.Sdk.csproj" />
     <ProjectReference Include="../../scripts/Ozds.Fake/Ozds.Fake.csproj" />
   </ItemGroup>
 

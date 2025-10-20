@@ -12,12 +12,11 @@
       Icon="@(_expanded ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)"
       OnClick="@(() => _expanded = !_expanded)"/>
   </MudItem>
-  <MudItem xs="12">
-    <MudCollapse Expanded="@_expanded">
-      @ChildContent
-    </MudCollapse>
-  </MudItem>
 </MudGrid>
+
+<MudCollapse Expanded="@_expanded">
+  @ChildContent
+</MudCollapse>
 
 @code {
 

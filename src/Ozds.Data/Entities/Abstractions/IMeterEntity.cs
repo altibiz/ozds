@@ -3,7 +3,7 @@ using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Data.Entities.Abstractions;
 
-public interface IMeterEntity : IAuditableEntity
+public interface IMeterEntity : ITrackableEntity, IIdentifiableEntity
 {
   public string? MessengerId { get; }
 

@@ -1,6 +1,7 @@
 using Ozds.Business.Conversion.Base;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
+using Ozds.Business.Models.Enums;
 using Ozds.Report.Entities;
 
 namespace Ozds.Business.Conversion.Implementations.Report;

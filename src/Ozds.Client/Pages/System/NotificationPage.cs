@@ -56,7 +56,7 @@ public partial class NotificationPage
     return Id is null
       ? null
       : await ScopedServices
-        .GetRequiredService<ModelQueries>()
+        .GetRequiredService<IdentifiableQueries>()
         .ReadById<INotification>(Id, CancellationToken);
   }
 

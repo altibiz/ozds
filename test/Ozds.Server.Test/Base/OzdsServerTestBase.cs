@@ -52,6 +52,16 @@ public class OzdsServerTestBase
     get { return new TestMeasurementLocationFixture(Composition); }
   }
 
+  public TestScopeFixture Scope
+  {
+    get { return new TestScopeFixture(Composition); }
+  }
+
+  public TestApiKeyFixture ApiKey
+  {
+    get { return new TestApiKeyFixture(Composition); }
+  }
+
   public TestMeterFixture Meter
   {
     get { return new TestMeterFixture(Composition); }

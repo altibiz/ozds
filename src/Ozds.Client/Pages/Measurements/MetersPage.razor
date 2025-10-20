@@ -8,7 +8,6 @@ Title = "Meters",
 Icon = Icons.Material.Filled.Memory,
 Parent = typeof(MeasurementsPage),
 Allows = [RoleModel.OperatorRepresentative])]
-@using MudBlazor
 @using Ozds.Business.Analysis
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
@@ -24,33 +23,22 @@ Allows = [RoleModel.OperatorRepresentative])]
   return;
 }
 
-<HeadContent>
-  <title>OZDS - @Translate("Meters")</title>
-</HeadContent>
 @{
   var analyses = Analyzer.AnalyzeByMeter(AnalysisState.AnalysisBases.Value);
 }
 
-<MudCheckBox
-  Label="@Translate("Show deleted")"
-  @bind-Value="_deleted"/>
-
-<Table Model="@analyses.Where(x => x.Meter.IsDeleted == _deleted).ToList()"/>
+<MappedTable
+  Value="@analyses"
+  Map="@(x => x.Meter)"
+  WithDeleted
+  WithCreate
+  WithTitle
+  WithHeading/>
 
 @if (RepresentativeState.Representative.Role
   == RoleModel.OperatorRepresentative)
 {
-  <MudButton
-    Class="mt-4"
-    Variant="Variant.Outlined"
-    Color="Color.Primary"
-    Href="@(PageHref<MeterPage>())">
-    @Translate("Create") @Translate(typeof(IMeter))
-  </MudButton>
-
-  <UploadTabs
-    Class="mt-8"
-    T="IMeter"/>
+  <UploadTabs T="IMeter" Class="mt-8"/>
 }
 
 @code {
@@ -64,5 +52,4 @@ Allows = [RoleModel.OperatorRepresentative])]
   [Inject]
   private Analyzer Analyzer { get; set; } = default!;
 
-  private bool _deleted;
 }

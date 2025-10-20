@@ -30,26 +30,4 @@ public class EntityMutations(
     context.AddRange(entities);
     await context.SaveChangesAsync(cancellationToken);
   }
-
-  public async Task Update(
-    IEntity entity,
-    CancellationToken cancellationToken
-  )
-  {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-    context.Update(entity);
-    await context.SaveChangesAsync(cancellationToken);
-  }
-
-  public async Task Delete(
-    IEntity entity,
-    CancellationToken cancellationToken
-  )
-  {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-    context.Remove(entity);
-    await context.SaveChangesAsync(cancellationToken);
-  }
 }

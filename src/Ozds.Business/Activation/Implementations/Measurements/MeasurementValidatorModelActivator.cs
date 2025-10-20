@@ -7,6 +7,6 @@ public class MeasurementValidatorModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
   MeasurementValidatorModel,
-  AuditableModel>(serviceProvider)
+  TrackableModel>(serviceProvider)
 {
 }

@@ -25,6 +25,26 @@
     "hash": "sha256-EA7LT/AU3lilE6VQOrNJ2c9vbGaV4pmTzCkz6+madwY="
   },
   {
+    "pname": "Asp.Versioning.Abstractions",
+    "version": "8.1.0",
+    "hash": "sha256-yv3z9fyeKVCIdymC1sIPKNQB+Olzx4RnAdXHXSaslt0="
+  },
+  {
+    "pname": "Asp.Versioning.Http",
+    "version": "8.1.0",
+    "hash": "sha256-Q3oeo/OyrTShfVhDspKiTe+9ef5CPdno+E7LnVfIn3g="
+  },
+  {
+    "pname": "Asp.Versioning.Mvc",
+    "version": "8.1.0",
+    "hash": "sha256-b0xI+fo5GD80p3We9+oCL8mHgJ6fWIWUqDZ9w6c6mXI="
+  },
+  {
+    "pname": "Asp.Versioning.Mvc.ApiExplorer",
+    "version": "8.1.0",
+    "hash": "sha256-CR/GDesZ8iWbSbiETVw7Nn6igJOguCIH+GK++sURtok="
+  },
+  {
     "pname": "Azure.Core",
     "version": "1.35.0",
     "hash": "sha256-kKKNZRAJJO9CeedtA0YqHOrlUTIMr5HFKOPWadhs0Rg="
@@ -535,6 +555,11 @@
     "hash": "sha256-xqbPw99Irq/mg74D3AhPC0gLxwTNLOiZDr/tWx+X2uM="
   },
   {
+    "pname": "Microsoft.Extensions.ApiDescription.Server",
+    "version": "8.0.0",
+    "hash": "sha256-GceEAtCVtm8xUHjR6obQ6bBJMOf+9d9OQ1iVr48sQbg="
+  },
+  {
     "pname": "Microsoft.Extensions.Caching.Abstractions",
     "version": "8.0.0",
     "hash": "sha256-xGpKrywQvU1Wm/WolYIxgHYEFfgkNGeJ+GGc5DT3phI="
@@ -835,6 +860,11 @@
     "hash": "sha256-0AqQ2gMS8iNlYkrD+BxtIg7cXMnr9xZHtKAuN4bjfaQ="
   },
   {
+    "pname": "Microsoft.OpenApi",
+    "version": "1.6.25",
+    "hash": "sha256-Y8/b5gl+VtHD48BOsnSnyIH9ncjy3EGvszIHn+pjzP4="
+  },
+  {
     "pname": "Microsoft.Playwright",
     "version": "1.50.0",
     "hash": "sha256-07lJ0sPGEU1lxGuUqcmt7qTNjpiS0imzj5+8i3ar7+A="
@@ -920,6 +950,11 @@
     "hash": "sha256-T5yuMlQc/eUJtTjHygRqtEO4wKc9YQSVYDKU7ZS8WIU="
   },
   {
+    "pname": "NSwag.ConsoleCore",
+    "version": "14.6.1",
+    "hash": "sha256-XBg6nN2adNsaZG69j8OhtVtTIVyXspu8LMY46EttaAU="
+  },
+  {
     "pname": "OrchardCore.Abstractions",
     "version": "1.8.3",
     "hash": "sha256-qf4wxbLMxPTjGuOwI4iaGayhQrJwZ/YEAncxOOY5n/w="
@@ -998,6 +1033,26 @@
     "pname": "StyleCop.Analyzers",
     "version": "1.1.118",
     "hash": "sha256-CjC1f5z0sP15F6FeXqIDOtZLHqgjmQTzpsIrRkxXREI="
+  },
+  {
+    "pname": "Swashbuckle.AspNetCore",
+    "version": "9.0.6",
+    "hash": "sha256-zb484Hoqv/bWm5PUgzPoChgN3SA6Y+FNZ3OhsTJ8NRM="
+  },
+  {
+    "pname": "Swashbuckle.AspNetCore.Swagger",
+    "version": "9.0.6",
+    "hash": "sha256-Es+YZz5UXd48GotIqsjBweZmJQzGuhXAzzSdDumNJF8="
+  },
+  {
+    "pname": "Swashbuckle.AspNetCore.SwaggerGen",
+    "version": "9.0.6",
+    "hash": "sha256-JUNtvIFcP9RavAH/5ke5Jr3vrr0YUsqHbqW45346VK4="
+  },
+  {
+    "pname": "Swashbuckle.AspNetCore.SwaggerUI",
+    "version": "9.0.6",
+    "hash": "sha256-sM8gPY9bcfdfTSmJlwblmheLf1GirmKvKvDhqzJ3UT4="
   },
   {
     "pname": "System.Buffers",

@@ -4,7 +4,7 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Base;
 
-public class NotificationModel : IdentifiableModel, INotification
+public abstract class NotificationModel : IdentifiableModel, INotification
 {
   [Required]
   public required string Summary { get; set; } = default!;

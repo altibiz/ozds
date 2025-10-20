@@ -1,0 +1,14 @@
+@namespace Ozds.Client.Components.Models.Implementations.Administration
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Reflection
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.MeasurementScopeModel>
+
+@inject ModelReflector ModelReflector
+
+@(Base<IIdentifiable>())
+
+@(Base<IScope>())
+
+@Field(x => x.Interval)
+
+@(Base<ITrackable>())

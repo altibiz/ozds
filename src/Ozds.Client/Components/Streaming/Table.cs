@@ -1,38 +1,62 @@
-using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Ozds.Business.Analysis.Abstractions;
 using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Enums;
+using Ozds.Business.Mutations;
 using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Client.Components.Base;
+using Ozds.Client.Components.Dialogs;
+using Ozds.Client.Components.Models;
+using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Streaming;
 
-public partial class Table<T> : OzdsComponentBase
+public class Table<T> : MappedTable<T, T>
+  where T : notnull
 {
-  private int _lastPageCount = 0;
+}
+
+public partial class MappedTable<T, TMapped> : OzdsComponentBase
+  where T : notnull
+{
+  private bool checkedDeleted;
 
   private MudDataGrid<T>? dataGrid;
 
-  private PaginatedList<T> model = new([], 0);
+  private PaginatedList<T> fetchedModel = new([], 0);
+
+  private MappedPaging<T, TMapped>? paging;
 
   private string? searchString;
+
+  [CascadingParameter]
+  public RepresentativeState RepresentativeState { get; set; } = default!;
+
+  [CascadingParameter]
+  public AnalysisState AnalysisState { get; set; } = default!;
+
+  [Inject]
+  private ModelComponentProvider ModelComponentProvider { get; set; } =
+    default!;
+
+  [Inject]
+  private IDialogService DialogService { get; set; } = default!;
 
   [Parameter]
   public bool Deleted { get; set; } = false;
 
   [Parameter]
-  public IEnumerable<T>? Model { get; set; }
+  public IEnumerable<T>? Value { get; set; }
 
   [Parameter]
-  public Func<int, PaginatedList<T>>? Page { get; set; }
+  public Func<string, int, int, PaginatedList<T>>? Page { get; set; }
 
   [Parameter]
-  public Func<int, Task<PaginatedList<T>>>? PageAsync { get; set; }
+  public Func<string, int, int, Task<PaginatedList<T>>>? PageAsync { get; set; }
 
   [Parameter]
-  public Func<T, bool>? Filter { get; set; }
+  public int PageCount { get; set; } = QueryConstants.DefaultPageCount;
 
   [Parameter]
   public RenderFragment<T>? Summary { get; set; } = default!;
@@ -43,10 +67,32 @@ public partial class Table<T> : OzdsComponentBase
   [Parameter]
   public RenderFragment<IEnumerable<T>>? Columns { get; set; } = default!;
 
-  public int PageCount { get; private set; } = QueryConstants.DefaultPageCount;
+  [Parameter]
+  public RenderFragment<IEnumerable<T>>? Tools { get; set; } = default!;
 
   [Parameter]
-  public bool DynamicTitle { get; set; } = false;
+  public RenderFragment<T>? Actions { get; set; } = default!;
+
+  [Parameter]
+  public RenderFragment? Empty { get; set; } = default!;
+
+  [Parameter]
+  public bool WithDeleted { get; set; } = false;
+
+  [Parameter]
+  public bool WithMutations { get; set; } = false;
+
+  [Parameter]
+  public Func<T, TMapped>? Map { get; set; } = default!;
+
+  [Parameter]
+  public bool WithCreate { get; set; } = false;
+
+  [Parameter]
+  public bool WithHeading { get; set; } = false;
+
+  [Parameter]
+  public bool WithTitle { get; set; } = false;
 
   [Parameter]
   public string Class { get; set; } = string.Empty;
@@ -54,79 +100,78 @@ public partial class Table<T> : OzdsComponentBase
   [Parameter]
   public string Style { get; set; } = string.Empty;
 
-  [Inject]
-  private NavigationManager NavigationManager { get; set; } = default!;
+  [Parameter]
+  public Action<T>? Delete { get; set; }
 
-  protected override Task OnParametersSetAsync()
+  [Parameter]
+  public Func<T, Task>? DeleteAsync { get; set; }
+
+  [Parameter]
+  public Action<T>? Restore { get; set; }
+
+  [Parameter]
+  public Func<T, Task>? RestoreAsync { get; set; }
+
+  [Parameter]
+  public Action<T>? Forget { get; set; }
+
+  [Parameter]
+  public Func<T, Task>? ForgetAsync { get; set; }
+
+  [Parameter]
+  public Func<T, ActionModel, RenderFragment>? OnSuccessMessage { get; set; }
+
+  [Parameter]
+  public Func<T, ActionModel, Exception, RenderFragment>? OnFailureMessage
   {
-    return dataGrid?.ReloadServerData() ?? Task.CompletedTask;
+    get;
+    set;
   }
 
-  protected override async Task OnAfterRenderAsync(bool firstRender)
+  private IEnumerable<T>? FilteredValue
   {
-    if (firstRender && dataGrid is not null)
+    get
     {
-      _lastPageCount = PageCount;
-      await dataGrid.SetRowsPerPageAsync(PageCount);
-
-      dataGrid.PagerStateHasChangedEvent += async () =>
-      {
-        var current = dataGrid.RowsPerPage;
-        if (current == _lastPageCount)
-        {
-          return;
-        }
-
-        _lastPageCount = current;
-        PageCount = current;
-        await dataGrid.ReloadServerData();
-      };
+      return Value is { } value
+        ? value.Where(FilterFetched)
+        : null;
     }
-
-    await base.OnAfterRenderAsync(firstRender);
   }
 
-  private Task OnPagingSearch(string newSearchString)
+  public async Task Fetch()
+  {
+    await FetchPaging();
+    await FetchDataGrid();
+  }
+
+  protected override void OnParametersSet()
+  {
+    checkedDeleted = Deleted;
+  }
+
+  private async Task OnDeletedChanged()
+  {
+    checkedDeleted = !checkedDeleted;
+    await FetchPaging();
+    await FetchDataGrid();
+  }
+
+  private async Task OnPagingSearch(string newSearchString)
   {
     searchString = newSearchString;
-    return Task.CompletedTask;
+    await FetchPaging();
   }
 
   private async Task OnDataGridSearch(string newSearchString)
   {
     searchString = newSearchString;
-    await (dataGrid?.ReloadServerData() ?? Task.CompletedTask);
+    await FetchDataGrid();
   }
 
   private async Task<GridData<T>> OnDataGridServerData(GridState<T> state)
   {
-    var result = new PaginatedList<T>([], 0);
-    if (!string.IsNullOrEmpty(searchString))
-    {
-      if (typeof(T).IsAssignableTo(typeof(IIdentifiable)))
-      {
-        result = await IdentifiableSearch(searchString, state.Page);
-      }
-      else if (typeof(T).IsAssignableTo(typeof(IAnalysis)))
-      {
-        result = AnalysisSearch(state.Page);
-      }
-    }
-    else if (result == new PaginatedList<T>([], 0)
-      || string.IsNullOrEmpty(searchString))
-    {
-      if (PageAsync is not null)
-      {
-        result = await PageAsync(state.Page);
-      }
-      else
-      {
-        result = await Fetch(state.Page);
-      }
-    }
-
-    model = result;
-
+    var result = await Reload(state.Page, state.PageSize);
+    fetchedModel = result;
     return new GridData<T>
     {
       Items = result.Items,
@@ -134,140 +179,477 @@ public partial class Table<T> : OzdsComponentBase
     };
   }
 
-  private async Task<PaginatedList<T>> OnPagingPage(int pageNumber)
+  private async Task<PaginatedList<T>> OnPagingPage(
+    int pageNumber,
+    int pageCount
+  )
   {
-    var result = await Fetch(pageNumber);
-    model = result;
+    var result = await Reload(pageNumber, pageCount);
+    fetchedModel = result;
     return result;
   }
 
-  private async Task<PaginatedList<T>> Fetch(int pageNumber)
+  private async Task OnDelete(T model)
   {
-    if (Model is { } nonNullModel)
+    object? toDelete = Map is null
+      ? model
+      : Map(model);
+
+    var toDeleteTitle = toDelete is IIdentifiable toDeleteIdentifiable
+      ? $" {toDeleteIdentifiable.Title}"
+      : "";
+
+    try
     {
-      var result = new PaginatedList<T>(
-        nonNullModel.Skip(pageNumber * PageCount).Take(PageCount).ToList(),
-        nonNullModel.Count()
-      );
-      return result;
+      if (Delete is not null)
+      {
+        Delete(model);
+      }
+      else if (DeleteAsync is not null)
+      {
+        await DeleteAsync(model);
+      }
+      else if (toDelete is ITrackable trackable)
+      {
+        var mutations = ScopedServices
+          .GetRequiredService<TrackableMutations>();
+        await mutations.Delete(trackable, CancellationToken);
+      }
+      else if (toDelete is IAuditable auditable)
+      {
+        var mutations = ScopedServices
+          .GetRequiredService<AuditableMutations>();
+        await mutations.Delete(auditable, CancellationToken);
+      }
+      else
+      {
+        throw new InvalidOperationException(
+          $"No delete strategy found for {typeof(T)}");
+      }
+    }
+    catch (Exception ex)
+    {
+      var failureMessage = OnFailureMessage is null
+        ? Fragment.String($":\n{ex.Message}")
+        : OnFailureMessage(model, ActionModel.Delete, ex);
+
+      await DialogService.ShowAsync<MutatingResult>(
+        Translate("Failure"),
+        new DialogParameters
+        {
+          {
+            nameof(MutatingResult.Body),
+            Fragment.Combine(
+              Fragment.String(
+                Translate("Failed deleting")
+                + " "
+                + Translate(typeof(TMapped))
+                + toDeleteTitle
+                + ". "),
+              failureMessage)
+          }
+        },
+        new DialogOptions { CloseOnEscapeKey = true });
+      return;
+    }
+
+    var successMessage = OnSuccessMessage is null
+      ? Fragment.Empty
+      : OnSuccessMessage(model, ActionModel.Delete);
+
+    await DialogService.ShowAsync<MutatingResult>(
+      Translate("Success"),
+      new DialogParameters
+      {
+        {
+          nameof(MutatingResult.Body),
+          Fragment.Combine(
+            Fragment.String(
+              Translate("Successfully deleted")
+              + " "
+              + Translate(typeof(TMapped))
+              + toDeleteTitle
+              + ". "),
+            successMessage)
+        },
+        {
+          nameof(MutatingResult.Exit),
+          (IMudDialogInstance _) => { AnalysisState.Reset(); }
+        },
+        {
+          nameof(MutatingResult.NavigationBehavior),
+          null
+        }
+      },
+      new DialogOptions { CloseOnEscapeKey = true });
+  }
+
+  private async Task OnRestore(T model)
+  {
+    object? toRestore = Map is null
+      ? model
+      : Map(model);
+
+    var toRestoreTitle = toRestore is IIdentifiable toRestoreIdentifiable
+      ? $" {toRestoreIdentifiable.Title}"
+      : "";
+
+    try
+    {
+      if (Restore is not null)
+      {
+        Restore(model);
+      }
+      else if (RestoreAsync is not null)
+      {
+        await RestoreAsync(model);
+      }
+      else if (toRestore is ITrackable trackable)
+      {
+        var mutations = ScopedServices.GetRequiredService<TrackableMutations>();
+        await mutations.Restore(trackable, CancellationToken);
+      }
+      else
+      {
+        throw new InvalidOperationException(
+          $"No restore strategy found for {typeof(T)}");
+      }
+    }
+    catch (Exception ex)
+    {
+      var failureMessage = OnFailureMessage is null
+        ? Fragment.String($":\n{ex.Message}")
+        : OnFailureMessage(model, ActionModel.Restore, ex);
+
+      await DialogService.ShowAsync<MutatingResult>(
+        Translate("Failure"),
+        new DialogParameters
+        {
+          {
+            nameof(MutatingResult.Body),
+            Fragment.Combine(
+              Fragment.String(
+                Translate("Failed restoring")
+                + " "
+                + Translate(typeof(TMapped))
+                + toRestoreTitle
+                + ". "),
+              failureMessage)
+          }
+        },
+        new DialogOptions { CloseOnEscapeKey = true });
+      return;
+    }
+
+    var successMessage = OnSuccessMessage is null
+      ? Fragment.Empty
+      : OnSuccessMessage(model, ActionModel.Restore);
+
+    await DialogService.ShowAsync<MutatingResult>(
+      Translate("Success"),
+      new DialogParameters
+      {
+        {
+          nameof(MutatingResult.Body),
+          Fragment.Combine(
+            Fragment.String(
+              Translate("Successfully restored")
+              + " "
+              + Translate(typeof(TMapped))
+              + toRestoreTitle
+              + ". "),
+            successMessage)
+        },
+        {
+          nameof(MutatingResult.Exit),
+          (IMudDialogInstance _) => { AnalysisState.Reset(); }
+        },
+        {
+          nameof(MutatingResult.NavigationBehavior),
+          null
+        }
+      },
+      new DialogOptions { CloseOnEscapeKey = true });
+  }
+
+  private async Task OnForget(T model)
+  {
+    object? toForget = Map is null
+      ? model
+      : Map(model);
+
+    var toForgetTitle = toForget is IIdentifiable toForgetIdentifiable
+      ? $" {toForgetIdentifiable.Title}"
+      : "";
+
+    try
+    {
+      if (Forget is not null)
+      {
+        Forget(model);
+      }
+      else if (ForgetAsync is not null)
+      {
+        await ForgetAsync(model);
+      }
+      else if (toForget is ITrackable trackable)
+      {
+        var mutations = ScopedServices.GetRequiredService<TrackableMutations>();
+        await mutations.Forget(trackable, CancellationToken);
+      }
+      else
+      {
+        throw new InvalidOperationException(
+          $"No forget strategy found for {typeof(T)}");
+      }
+    }
+    catch (Exception ex)
+    {
+      var failureMessage = OnFailureMessage is null
+        ? Fragment.String($":\n{ex.Message}")
+        : OnFailureMessage(model, ActionModel.Forget, ex);
+
+      await DialogService.ShowAsync<MutatingResult>(
+        Translate("Failure"),
+        new DialogParameters
+        {
+          {
+            nameof(MutatingResult.Body),
+            Fragment.Combine(
+              Fragment.String(
+                Translate("Failed forgetting")
+                + " "
+                + Translate(typeof(TMapped))
+                + toForgetTitle
+                + ". "),
+              failureMessage)
+          }
+        },
+        new DialogOptions { CloseOnEscapeKey = true });
+      return;
+    }
+
+    var successMessage = OnSuccessMessage is null
+      ? Fragment.Empty
+      : OnSuccessMessage(model, ActionModel.Forget);
+
+    await DialogService.ShowAsync<MutatingResult>(
+      Translate("Success"),
+      new DialogParameters
+      {
+        {
+          nameof(MutatingResult.Body),
+          Fragment.Combine(
+            Fragment.String(
+              Translate("Successfully forgotten")
+              + " "
+              + Translate(typeof(TMapped))
+              + toForgetTitle
+              + ". "),
+            successMessage)
+        },
+        {
+          nameof(MutatingResult.Exit),
+          (IMudDialogInstance _) => { AnalysisState.Reset(); }
+        },
+        {
+          nameof(MutatingResult.NavigationBehavior),
+          null
+        }
+      },
+      new DialogOptions { CloseOnEscapeKey = true });
+  }
+
+  private async Task FetchPaging()
+  {
+    if (paging is null)
+    {
+      return;
+    }
+
+    await paging.Fetch();
+  }
+
+  private async Task FetchDataGrid()
+  {
+    if (dataGrid is null)
+    {
+      return;
+    }
+
+    await dataGrid.ReloadServerData();
+  }
+
+  private async Task<PaginatedList<T>> Reload(int pageNumber, int pageCount)
+  {
+    if (Value is { } value)
+    {
+      return PageFetched(value, pageNumber, pageCount);
     }
 
     if (Page is { } page)
     {
-      var result = page(pageNumber);
+      var result = page(
+        searchString ?? string.Empty,
+        pageNumber,
+        pageCount);
       return result;
     }
 
     if (PageAsync is { } pageAsync)
     {
-      var result = await pageAsync(pageNumber);
+      var result = await pageAsync(
+        searchString ?? string.Empty,
+        pageNumber,
+        pageCount);
       return result;
     }
 
-    if (typeof(T).IsAssignableTo(typeof(IAuditable)))
+    if (typeof(T).IsAssignableTo(typeof(ITrackableIdentifiable)))
     {
-      var result = await ScopedServices
-        .GetRequiredService<AuditableQueries>()
-        .Read<T>(
-          pageNumber,
-          CancellationToken,
-          PageCount,
-          Deleted);
-      return result;
+      var queries = ScopedServices
+        .GetRequiredService<TrackableQueries>();
+
+      if (string.IsNullOrWhiteSpace(searchString))
+      {
+        var result = await queries
+          .Read(
+            typeof(T),
+            pageNumber,
+            CancellationToken,
+            pageCount,
+            checkedDeleted);
+        return result.Items.OfType<T>().ToPaginatedList(result.TotalCount);
+      }
+      else
+      {
+        var result = await queries
+          .ReadByTitle(
+            typeof(T),
+            searchString,
+            pageNumber,
+            CancellationToken,
+            pageCount,
+            checkedDeleted);
+        return result.Items.OfType<T>().ToPaginatedList(result.TotalCount);
+      }
+    }
+
+    if (typeof(T).IsAssignableTo(typeof(IAuditableIdentifiable)))
+    {
+      var queries = ScopedServices
+        .GetRequiredService<AuditableQueries>();
+
+      if (string.IsNullOrWhiteSpace(searchString))
+      {
+        var result = await queries
+          .Read(
+            typeof(T),
+            pageNumber,
+            CancellationToken,
+            pageCount);
+        return result.Items.OfType<T>().ToPaginatedList(result.TotalCount);
+      }
+      else
+      {
+        var result = await queries
+          .ReadByTitle(
+            typeof(T),
+            searchString,
+            pageNumber,
+            CancellationToken,
+            pageCount);
+        return result.Items.OfType<T>().ToPaginatedList(result.TotalCount);
+      }
+    }
+
+    if (typeof(T).IsAssignableTo(typeof(IIdentifiable)))
+    {
+      var queries = ScopedServices
+        .GetRequiredService<IdentifiableQueries>();
+
+      if (string.IsNullOrWhiteSpace(searchString))
+      {
+        var result = await queries
+          .Read(
+            typeof(T),
+            pageNumber,
+            CancellationToken,
+            pageCount);
+        return result.Items.OfType<T>().ToPaginatedList(result.TotalCount);
+      }
+      else
+      {
+        var result = await queries
+          .ReadByTitle(
+            typeof(T),
+            searchString,
+            pageNumber,
+            CancellationToken,
+            pageCount);
+        return result.Items.OfType<T>().ToPaginatedList(result.TotalCount);
+      }
     }
 
     if (typeof(T).IsAssignableTo(typeof(IModel)))
     {
       var result = await ScopedServices
         .GetRequiredService<ModelQueries>()
-        .Read<T>(
+        .Read(
+          typeof(T),
           pageNumber,
           CancellationToken,
-          PageCount);
-      return result;
+          pageCount);
+      return result.Items.OfType<T>().ToPaginatedList(result.TotalCount);
     }
 
     return new PaginatedList<T>([], 0);
   }
 
-  private async Task<PaginatedList<T>> IdentifiableSearch(
-    string searchText,
-    int tablePageNumber)
+  private PaginatedList<T> PageFetched(
+    IEnumerable<T> value,
+    int pageNumber,
+    int pageCount
+  )
   {
-    var modelQueries = ScopedServices.GetRequiredService<ModelQueries>();
-
-    var page = await modelQueries.ReadByTitle(
-      typeof(T),
-      searchText,
-      tablePageNumber,
-      CancellationToken,
-      PageCount
-    );
-
-    return new PaginatedList<T>(
-      page.Items.Cast<T>().ToList(),
-      page.TotalCount
-    );
+    return value
+      .Where(FilterFetched)
+      .Skip(pageNumber * pageCount)
+      .Take(pageCount)
+      .ToPaginatedList(value.Count());
   }
 
-  private PaginatedList<T> AnalysisSearch(int pageNumber)
+  private bool FilterFetched(T model)
   {
-    if (Model is { } nonNullModel)
-    {
-      var items = nonNullModel
-        .Where(AnalysisFilter)
-        .ToList();
-      var pagedItems = items
-        .Skip(pageNumber * PageCount)
-        .Take(PageCount)
-        .ToList();
-
-      var result = new PaginatedList<T>(
-        pagedItems,
-        items.Count
-      );
-      return result;
-    }
-
-    return new PaginatedList<T>([], 0);
-  }
-
-  private bool AnalysisFilter(T value)
-  {
-    if (value is null)
-    {
-      return false;
-    }
-
-    if (value is IIdentifiable rootIdent && rootIdent.Title.Contains(
-      searchString!, StringComparison.OrdinalIgnoreCase))
+    if (string.IsNullOrWhiteSpace(searchString))
     {
       return true;
     }
 
-    if (value is IIdentifiable)
+    if (model is null)
     {
       return false;
     }
 
-    var props = value.GetType()
-      .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-      .Where(p => p.CanRead);
+    object? toFilter = Map is null
+      ? model
+      : Map(model);
 
-    foreach (var prop in props)
+    if (toFilter is null)
     {
-      var propVal = prop.GetValue(value);
-      if (propVal == null)
-      {
-        continue;
-      }
+      return false;
+    }
 
-      if (propVal is IIdentifiable childIdent
-        && childIdent.Title.Contains(
-          searchString!, StringComparison.OrdinalIgnoreCase))
-      {
-        return true;
-      }
+    if (model is ITrackable trackable
+      && trackable.IsDeleted != checkedDeleted)
+    {
+      return false;
+    }
+
+    if (model is IIdentifiable { Title: { } title }
+      && title.Contains(searchString))
+    {
+      return true;
     }
 
     return false;

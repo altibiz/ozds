@@ -11,6 +11,7 @@ RoleModel.OperatorRepresentative,
 RoleModel.LocationRepresentative,
 RoleModel.NetworkUserRepresentative
 ])]
+@using MudBlazor
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Fields
@@ -26,7 +27,18 @@ RoleModel.NetworkUserRepresentative
     AnalysisState.AnalysisBases.Value);
 }
 
-<Table Model="measurementLocations"/>
+<MudButton
+  Class="mb-2"
+  Variant="Variant.Outlined"
+  Color="Color.Primary"
+  Href="@ApiV1Href">
+  @Translate("API")
+</MudButton>
+
+<MappedTable
+  Value="measurementLocations"
+  Map="@(x => x.MeasurementLocation)"
+  WithHeading/>
 
 @if (RepresentativeState.Representative.Role
   != RoleModel.OperatorRepresentative)
@@ -41,11 +53,13 @@ RoleModel.NetworkUserRepresentative
 
 <Table
   Class="mt-4"
-  Model="meters"/>
+  Value="meters"
+  WithHeading/>
 
 <Table
   Class="mt-4"
-  PageAsync="OnMessengersPageAsync"/>
+  PageAsync="OnMessengersPageAsync"
+  WithHeading/>
 
 <UploadTabs
   Class="mt-4"

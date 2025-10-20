@@ -17,7 +17,7 @@ public class JobsMonthlyNetworkUserBillingJobReactor(
 }
 
 public class JobsMonthlyNetworkUserBillingJobHandler(
-  AuditableQueries auditableQueries,
+  TrackableQueries trackableQueries,
   NetworkUserInvoiceMutations mutations,
   ClockQueries clockQueries,
   TimeQueries timeQueries
@@ -27,7 +27,7 @@ public class JobsMonthlyNetworkUserBillingJobHandler(
     JobsBillingJobEventArgs eventArgs,
     CancellationToken cancellationToken)
   {
-    var networkUser = await auditableQueries
+    var networkUser = await trackableQueries
       .ReadById<NetworkUserModel>(
         eventArgs.NetworkUserId,
         cancellationToken);

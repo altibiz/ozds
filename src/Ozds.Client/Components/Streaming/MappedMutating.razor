@@ -1,0 +1,227 @@
+@namespace Ozds.Client.Components.Streaming
+
+@typeparam T where T : notnull
+@typeparam TMapped
+@using Microsoft.AspNetCore.Components.Forms
+@using MudBlazor
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Business.Models.Enums
+@using Ozds.Client.Components.Models
+@using Ozds.Client.State
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+<MappedLoading
+  T="T"
+  TMapped="TMapped"
+  Value="@Value"
+  Map="@(Map!)"
+  Progress="@(Progress!)"
+  Error="@(Error!)"
+  Id="@(Id!)"
+  Load="@(Load!)"
+  LoadAsync="@(LoadAsync!)"
+  New="@(New!)"
+  NewAsync="@(NewAsync!)"
+  Concretize="@(Concretize!)"
+  Class="@Class"
+  Style="@Style"
+  ActivateAsync
+  JoinActivationId="@JoinActivationId"
+  JoinActivationSide="@JoinActivationSide"
+  WithHeading="@WithHeading"
+  WithTitle="@WithTitle">
+  <Found Context="model">
+    @if (typeof(T).IsAssignableTo(typeof(IReadonly)) || AsReadonly)
+    {
+      if (Details is not null)
+      {
+        @Details(new MutatingState<T>(model, false))
+      }
+      else
+      {
+        <Details Model="@model"/>
+      }
+    }
+    else
+    {
+      @if (mutating || !WithPreview)
+      {
+        <EditForm
+          Model="@model"
+          OnValidSubmit="@(() => OnUpdate(model))">
+          <DataAnnotationsValidator/>
+
+          @if (Edit is not null)
+          {
+            @Edit(new MutatingState<T>(model, false))
+          }
+          else
+          {
+            <Edit Model="@model"/>
+          }
+
+
+          <MudText Color="Color.Error" Class="ml-4">
+            <ValidationSummary/>
+          </MudText>
+
+          <div Class="d-flex flex-row mt-4">
+            <MudButton
+              Variant="Variant.Filled"
+              Color="Color.Success"
+              ButtonType="ButtonType.Submit">
+              @Translate("Update")
+            </MudButton>
+            @if (WithPreview)
+            {
+              <MudButton
+                Variant="Variant.Filled"
+                Color="Color.Secondary"
+                OnClick="@(() => mutating = !mutating)"
+                Class="ml-4">
+                @Translate("Preview")
+              </MudButton>
+            }
+          </div>
+        </EditForm>
+      }
+      else
+      {
+        @if (Details is not null)
+        {
+          @Details(new MutatingState<T>(model, false))
+        }
+        else
+        {
+          <Details Model="@model"/>
+        }
+
+        @if (RepresentativeState.Representative.Role
+          == RoleModel.OperatorRepresentative)
+        {
+          <div Class="d-flex flex-row mt-4">
+            <MudButton
+              OnClick="@(() => mutating = !mutating)"
+              Variant="Variant.Filled"
+              Color="Color.Warning">
+              @Translate("Edit")
+            </MudButton>
+
+            <MudSpacer/>
+
+            @if (model is ITrackable trackable)
+            {
+              if (trackable.IsDeleted)
+              {
+                <MudButton
+                  Variant="Variant.Filled"
+                  Color="Color.Success"
+                  OnClick="@(() => OnRestore(model))">
+                  @Translate("Restore")
+                </MudButton>
+              }
+              else
+              {
+                <MudButton
+                  Variant="Variant.Filled"
+                  Color="Color.Error"
+                  OnClick="@(() => OnDelete(model))">
+                  @Translate("Delete")
+                </MudButton>
+              }
+
+              <MudButton
+                Variant="Variant.Outlined"
+                Class="ml-2"
+                Color="Color.Error"
+                OnClick="@(() => OnForget(model))">
+                @Translate("Forget")
+              </MudButton>
+            }
+          </div>
+        }
+      }
+    }
+
+    @if (Footer is { } footer)
+    {
+      @footer(new MutatingState<T>(model, false))
+    }
+  </Found>
+
+  <Created Context="model">
+    @if (NotFoundOnCreate ||
+      RepresentativeState.Representative.Role
+      != RoleModel.OperatorRepresentative)
+    {
+      <NotFound/>
+      return;
+    }
+
+    @if (creating || !WithPreview)
+    {
+      <EditForm
+        Model="@model"
+        OnValidSubmit="@(() => OnCreate(model))">
+        <DataAnnotationsValidator/>
+
+        @if (Edit is not null)
+        {
+          @Edit(new MutatingState<T>(model, true))
+        }
+        else
+        {
+          <Edit Model="@model"/>
+        }
+
+        <MudText Color="Color.Error" Class="ml-4 mt-4">
+          <ValidationSummary/>
+        </MudText>
+
+        <div Class="d-flex flex-row mt-8">
+          <MudButton
+            ButtonType="ButtonType.Submit"
+            Variant="Variant.Filled"
+            Color="Color.Success">
+            @Translate("Create")
+          </MudButton>
+          @if (WithPreview)
+          {
+            <MudButton
+              OnClick="@(() => creating = !creating)"
+              Variant="Variant.Filled"
+              Color="Color.Secondary"
+              Class="ml-4">
+              @Translate("Preview")
+            </MudButton>
+          }
+        </div>
+      </EditForm>
+    }
+    else
+    {
+      @if (Details is not null)
+      {
+        @Details(new MutatingState<T>(model, true))
+      }
+      else
+      {
+        <Details Model="@model"/>
+      }
+
+      <div Class="d-flex flex-row mt-4">
+        <MudButton
+          OnClick="@(() => creating = !creating)"
+          Variant="Variant.Filled"
+          Color="Color.Warning">
+          @Translate("Edit")
+        </MudButton>
+      </div>
+    }
+
+    @if (Footer is { } footer)
+    {
+      @footer(new MutatingState<T>(model, true))
+    }
+  </Created>
+</MappedLoading>

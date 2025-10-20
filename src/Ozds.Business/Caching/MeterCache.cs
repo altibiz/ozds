@@ -6,7 +6,7 @@ namespace Ozds.Business.Caching;
 
 public class MeterCache(
   IServiceScopeFactory factory
-) : ConcurrentDictionaryCacheBase<string, IMeter>
+) : BatchedConcurrentDictionaryCacheBase<string, IMeter>
 {
   protected override Task<string?> GetKeyFromDataSourceAsync(
     IMeter value,
@@ -35,7 +35,7 @@ public class MeterCache(
   {
     await using var scope = factory.CreateAsyncScope();
     var queries = scope.ServiceProvider
-      .GetRequiredService<AuditableQueries>();
+      .GetRequiredService<IdentifiableQueries>();
     var model = await queries.ReadById<IMeter>(key, cancellationToken);
     return model;
   }
@@ -47,7 +47,7 @@ public class MeterCache(
   {
     await using var scope = factory.CreateAsyncScope();
     var queries = scope.ServiceProvider
-      .GetRequiredService<AuditableQueries>();
+      .GetRequiredService<IdentifiableQueries>();
     var models = await queries.ReadByIdsOrdered<IMeter>(
       keys, cancellationToken);
     return models;

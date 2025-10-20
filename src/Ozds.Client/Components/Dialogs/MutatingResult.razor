@@ -9,8 +9,27 @@
     </MudText>
   </DialogContent>
   <DialogActions>
-    <MudButton FullWidth Color="Color.Primary" OnClick="OnExit">
-      @Translate("Close")
-    </MudButton>
+    @if (NavigationBehavior == MutatingResultNavigationBehavior.Logout)
+    {
+      <MudForm method="post" action="@LogoutHref">
+        <input
+          type="hidden"
+          name="__RequestVerificationToken"
+          value="@UserState.LogoutToken"/>
+        <MudButton
+          FullWidth
+          Color="Color.Primary"
+          OnClick="OnExit"
+          ButtonType="ButtonType.Submit">
+          @Translate("Close")
+        </MudButton>
+      </MudForm>
+    }
+    else
+    {
+      <MudButton FullWidth Color="Color.Primary" OnClick="OnExit">
+        @Translate("Close")
+      </MudButton>
+    }
   </DialogActions>
 </MudDialog>

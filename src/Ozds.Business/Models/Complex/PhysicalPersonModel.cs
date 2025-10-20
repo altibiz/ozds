@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-using Ozds.Business.Models.Abstractions;
+using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Complex;
 
-public class PhysicalPersonModel : IModel
+public class PhysicalPersonModel : Model
 {
   [Required]
   public required string Name { get; set; } = default!;
@@ -15,10 +15,4 @@ public class PhysicalPersonModel : IModel
   [Phone]
   [Required]
   public required string PhoneNumber { get; set; } = default!;
-
-  public IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
-  {
-    yield break;
-  }
 }

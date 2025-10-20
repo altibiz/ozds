@@ -2,33 +2,14 @@
 
 @page "/finances/regulatory-catalogue/{id?}"
 @using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.Abstractions.IRegulatoryCatalogue>
 
-<Mutating T="IRegulatoryCatalogue" Id="@Id">
-  <Edit>
-    <HeadContent>
-      @if (context.Created)
-      {
-        <title>OZDS - @Translate("New catalogue")</title>
-      }
-      else
-      {
-        <title>OZDS - @Translate("Catalogue"): @context.Model.Title</title>
-      }
-    </HeadContent>
-
-    <Edit Model="@context.Model"/>
-  </Edit>
-  <Details>
-    <HeadContent>
-      <title>OZDS - @Translate("Catalogue"): @context.Model.Title</title>
-    </HeadContent>
-
-    <Details Model="@context.Model"/>
-  </Details>
-</Mutating>
+<Mutating
+  T="IRegulatoryCatalogue" Id="@Id"
+  WithTitle
+  WithHeading
+  WithPreview/>
 
 @code {
 

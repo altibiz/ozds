@@ -8,8 +8,8 @@ public class MeasurementValidatorModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
   MeasurementValidatorModel,
-  AuditableModel,
+  TrackableModel,
   MeasurementValidatorEntity,
-  AuditableEntity>(serviceProvider)
+  TrackableEntity>(serviceProvider)
 {
 }

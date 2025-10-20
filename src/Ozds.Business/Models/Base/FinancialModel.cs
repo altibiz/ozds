@@ -32,6 +32,11 @@ public abstract class FinancialModel : IdentifiableModel, IFinancial
   public override IEnumerable<ValidationResult> Validate(
     ValidationContext validationContext)
   {
+    foreach (var validationResult in base.Validate(validationContext))
+    {
+      yield return validationResult;
+    }
+
     if (validationContext.ObjectInstance != this)
     {
       yield break;

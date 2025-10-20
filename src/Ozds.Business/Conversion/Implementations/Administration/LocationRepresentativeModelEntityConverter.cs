@@ -10,9 +10,9 @@ public class LocationRepresentativeEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
   LocationRepresentativeModel,
-  JoinModel,
+  AuditableJoinModel,
   LocationRepresentativeEntity,
-  JoinEntity>(serviceProvider)
+  AuditableJoinEntity>(serviceProvider)
 {
   public override void InitializeEntity(
     LocationRepresentativeModel model,

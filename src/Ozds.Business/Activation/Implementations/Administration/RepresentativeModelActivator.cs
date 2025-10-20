@@ -7,7 +7,7 @@ using Ozds.Business.Models.Enums;
 namespace Ozds.Business.Activation.Implementations.Administration;
 
 public class RepresentativeModelActivator(IServiceProvider serviceProvider)
-  : InheritingModelActivator<RepresentativeModel, AuditableModel>(
+  : InheritingModelActivator<RepresentativeModel, TrackableModel>(
     serviceProvider
   )
 {

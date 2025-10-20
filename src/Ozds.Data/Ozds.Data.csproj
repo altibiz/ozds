@@ -6,6 +6,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="../../src/Ozds.Time/Ozds.Time.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Assets/Ozds.Assets.csproj" />
 	</ItemGroup>
 
   <ItemGroup>

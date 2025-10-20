@@ -8,6 +8,7 @@ Title = "Users",
 Icon = Icons.Material.Filled.People,
 Parent = typeof(AdministrationPage),
 Allows = [RoleModel.OperatorRepresentative])]
+@using MudBlazor
 @using Ozds.Client.Attributes
 @using Ozds.Client.Components.Models
 @using Ozds.Client.Components.Streaming
@@ -20,16 +21,25 @@ Allows = [RoleModel.OperatorRepresentative])]
   return;
 }
 
-<HeadContent>
-  <title>OZDS - @Translate("Users")</title>
-</HeadContent>
+@if (RepresentativeState.Representative.Role
+  == RoleModel.OperatorRepresentative)
+{
+  <MudCheckBox
+    Label="@Translate("Show deleted")"
+    @bind-Value="deleted"/>
+}
 
-<Table PageAsync="OnPageAsync">
+<MappedTable
+  PageAsync="OnPageAsync"
+  Map="@(model => model.User)"
+  WithTitle
+  WithHeading>
   <Summary>
     <Summary Model="@context.User"/>
   </Summary>
   <Details>
     <Details Model="@context.User"/>
+
     @if (context.Representative is { } representative)
     {
       <Details Model="@representative"/>
@@ -39,8 +49,9 @@ Allows = [RoleModel.OperatorRepresentative])]
     <PrefixedColumns
       Models="@context"
       Prefix="@(x => x.Representative)"/>
+
     <PrefixedColumns
       Models="@context"
       Prefix="@(x => x.User)"/>
   </Columns>
-</Table>
+</MappedTable>

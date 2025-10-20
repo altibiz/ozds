@@ -1,7 +1,6 @@
 using Ozds.Business.Activation;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Complex;
-using Ozds.Business.Models.Composite;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Models.Joins;
 using Ozds.Business.Mutations;
@@ -44,6 +43,14 @@ public record TestUser(
     RoleModel.NetworkUserRepresentative,
     "NetworkUser123!"
   );
+
+  public static readonly IReadOnlyCollection<TestUser> Users =
+    new List<TestUser>
+    {
+      Operator,
+      Location,
+      NetworkUser
+    };
 }
 
 public class TestUserFixture(
@@ -53,8 +60,8 @@ public class TestUserFixture(
   public async Task Create(
     TestUser testUser,
     CancellationToken cancellationToken,
-    List<LocationModel>? locations = null,
-    List<NetworkUserModel>? networkUsers = null
+    IEnumerable<LocationModel>? locations = null,
+    IEnumerable<NetworkUserModel>? networkUsers = null
   )
   {
     await using var scope = composition.Ozds.Services.CreateAsyncScope();
@@ -63,39 +70,31 @@ public class TestUserFixture(
       .GetRequiredService<ModelActivator>();
 
     var user = activator.Activate<UserModel>();
-    user.Id = testUser.Id;
-    user.Name = testUser.Name;
-    user.Email = testUser.Email;
+    TestUserToUserModel(testUser, user);
 
-    var userWithPassword = new UserWithPasswordModel
-    {
-      User = user,
-      OldPassword = testUser.Password,
-      NewPassword = testUser.Password
-    };
+    var password = activator.Activate<PasswordModel>();
+    TestUserToPasswordModel(testUser, password);
 
     var representative = activator.Activate<RepresentativeModel>();
-    representative.Id = testUser.Id;
-    representative.Title = testUser.Name;
-    representative.PhysicalPerson = new PhysicalPersonModel
-    {
-      Name = testUser.Name,
-      Email = testUser.Email,
-      PhoneNumber = testUser.PhoneNumber
-    };
-    representative.Role = testUser.Role;
-    representative.Topics = [];
+    TestUserToRepresentativeModel(testUser, representative);
 
     var userMutations = scope.ServiceProvider
       .GetRequiredService<UserMutations>();
-    await userMutations.CreateUser(
-      userWithPassword,
+    await userMutations.Create(
+      user,
       cancellationToken
     );
 
-    var auditableMutations = scope.ServiceProvider
-      .GetRequiredService<AuditableMutations>();
-    await auditableMutations.Create(
+    var passwordMutations = scope.ServiceProvider
+      .GetRequiredService<PasswordMutations>();
+    await passwordMutations.Update(
+      password,
+      cancellationToken
+    );
+
+    var trackableMutations = scope.ServiceProvider
+      .GetRequiredService<TrackableMutations>();
+    await trackableMutations.Create(
       representative,
       cancellationToken
     );
@@ -106,11 +105,10 @@ public class TestUserFixture(
     {
       foreach (var location in locations)
       {
-        var locationRepresentative = new LocationRepresentativeModel
-        {
-          RepresentativeId = representative.Id,
-          LocationId = location.Id
-        };
+        var locationRepresentative = activator
+          .Activate<LocationRepresentativeModel>();
+        locationRepresentative.RepresentativeId = representative.Id;
+        locationRepresentative.LocationId = location.Id;
         await modelMutations.Create(
           locationRepresentative,
           cancellationToken
@@ -122,17 +120,78 @@ public class TestUserFixture(
     {
       foreach (var networkUser in networkUsers)
       {
-        var networkUserRepresentative = new NetworkUserRepresentativeModel
-        {
-          RepresentativeId = representative.Id,
-          NetworkUserId = networkUser.Id
-        };
+        var networkUserRepresentative = activator
+          .Activate<NetworkUserRepresentativeModel>();
+        networkUserRepresentative.RepresentativeId = representative.Id;
+        networkUserRepresentative.NetworkUserId = networkUser.Id;
         await modelMutations.Create(
           networkUserRepresentative,
           cancellationToken
         );
       }
     }
+  }
+
+  public UserModel TestUserToUserModel(
+    TestUser testUser,
+    UserModel? user = null
+  )
+  {
+    if (user is null)
+    {
+      var activator = composition.Ozds.Services
+        .GetRequiredService<ModelActivator>();
+      user = activator.Activate<UserModel>();
+    }
+
+    user.Id = testUser.Id;
+    user.Name = testUser.Name;
+    user.Email = testUser.Email;
+    return user;
+  }
+
+  public PasswordModel TestUserToPasswordModel(
+    TestUser testUser,
+    PasswordModel? password = null
+  )
+  {
+    if (password is null)
+    {
+      var activator = composition.Ozds.Services
+        .GetRequiredService<ModelActivator>();
+      password = activator.Activate<PasswordModel>();
+    }
+
+    password.UserId = testUser.Id;
+    password.OldPassword = testUser.Password;
+    password.NewPassword = testUser.Password;
+    password.ConfirmNewPassword = testUser.Password;
+    return password;
+  }
+
+  public RepresentativeModel TestUserToRepresentativeModel(
+    TestUser testUser,
+    RepresentativeModel? representative = null
+  )
+  {
+    if (representative is null)
+    {
+      var activator = composition.Ozds.Services
+        .GetRequiredService<ModelActivator>();
+      representative = activator.Activate<RepresentativeModel>();
+    }
+
+    representative.Id = testUser.Id;
+    representative.Title = testUser.Name;
+    representative.PhysicalPerson = new PhysicalPersonModel
+    {
+      Name = testUser.Name,
+      Email = testUser.Email,
+      PhoneNumber = testUser.PhoneNumber
+    };
+    representative.Role = testUser.Role;
+    representative.Topics = [];
+    return representative;
   }
 
   public async Task LoginOnLoginPage(

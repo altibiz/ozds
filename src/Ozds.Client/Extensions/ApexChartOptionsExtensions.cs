@@ -3,6 +3,7 @@ using ApexCharts;
 namespace Ozds.Client.Extensions;
 
 // TODO: multi power annotation
+// TODO: date (time) format
 
 public static class ApexChartOptionsExtensions
 {

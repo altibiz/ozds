@@ -17,7 +17,8 @@ public class EventQueries(
     LevelModel minLevel,
     int pageNumber,
     CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount
+    int pageCount = QueryConstants.DefaultPageCount,
+    string? title = null
   )
     where T : class, IEvent
   {
@@ -30,7 +31,8 @@ public class EventQueries(
       minLevelEntity,
       pageNumber,
       cancellationToken,
-      pageCount
+      pageCount,
+      title
     );
 
     return models.Items
@@ -43,7 +45,8 @@ public class EventQueries(
     LevelModel minLevel,
     int pageNumber,
     CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount
+    int pageCount = QueryConstants.DefaultPageCount,
+    string? title = null
   )
   {
     if (!modelType.IsAssignableTo(typeof(IEvent)))
@@ -61,7 +64,8 @@ public class EventQueries(
       minLevelEntity,
       pageNumber,
       cancellationToken,
-      pageCount);
+      pageCount,
+      title);
 
     return entities.Items
       .Select(modelEntityConverter.ToModel<object>)
@@ -72,16 +76,18 @@ public class EventQueries(
     IAuditable auditable,
     int pageNumber,
     CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount
+    int pageCount = QueryConstants.DefaultPageCount,
+    string? search = null
   )
     where T : class, IAuditEvent
   {
-    var entities = await ReadAuditEventsDynamic(
+    var entities = await ReadAuditEvents(
       typeof(T),
       auditable,
       pageNumber,
       cancellationToken,
-      pageCount
+      pageCount,
+      search
     );
 
     return entities.Items
@@ -89,12 +95,13 @@ public class EventQueries(
       .ToPaginatedList(entities.TotalCount);
   }
 
-  public async Task<PaginatedList<IAuditEvent>> ReadAuditEventsDynamic(
+  public async Task<PaginatedList<IAuditEvent>> ReadAuditEvents(
     Type modelType,
     IAuditable auditable,
     int pageNumber,
     CancellationToken cancellationToken,
-    int pageCount = QueryConstants.DefaultPageCount
+    int pageCount = QueryConstants.DefaultPageCount,
+    string? search = null
   )
   {
     if (!modelType.IsAssignableTo(typeof(IAuditEvent)))
@@ -108,12 +115,13 @@ public class EventQueries(
     var auditableEntity = modelEntityConverter
       .ToEntity<IAuditableEntity>(auditable);
 
-    var entities = await queries.ReadAuditEventsDynamic(
+    var entities = await queries.ReadAuditEvents(
       entityType,
       auditableEntity,
       pageNumber,
       cancellationToken,
-      pageCount
+      pageCount,
+      search
     );
 
     return entities.Items

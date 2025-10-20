@@ -57,6 +57,23 @@
     </MudText>;
   }
 
+  protected RenderFragment LinkTitle(
+    Func<TModel, Type?> type,
+    Func<TModel, string?> next
+  )
+  {
+    var ty = type(Model);
+    var id = next(Model);
+    var href = id is null || ty is null
+      ? null
+      : PageHref(Provider.GetPageComponentType(ty), new { id });
+    return @<MudText Typo="Typo.h6">
+      <MudLink Href="@href">
+        @id
+      </MudLink>
+    </MudText>;
+  }
+
   protected RenderFragment LinkSubtitle<T>(Func<TModel, string?> next)
     where T : IIdentifiable
   {
@@ -64,6 +81,23 @@
     var href = id is null
       ? null
       : PageHref(Provider.GetPageComponentType(typeof(T)), new { id });
+    return @<MudText Typo="Typo.body2">
+      <MudLink Href="@href">
+        @id
+      </MudLink>
+    </MudText>;
+  }
+
+  protected RenderFragment PolymorphicLinkSubtitle(
+    Func<TModel, Type?> type,
+    Func<TModel, string?> next
+  )
+  {
+    var ty = type(Model);
+    var id = next(Model);
+    var href = id is null || ty is null
+      ? null
+      : PageHref(Provider.GetPageComponentType(ty), new { id });
     return @<MudText Typo="Typo.body2">
       <MudLink Href="@href">
         @id

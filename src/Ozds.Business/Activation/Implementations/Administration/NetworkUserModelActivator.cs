@@ -6,7 +6,7 @@ using Ozds.Business.Models.Complex;
 namespace Ozds.Business.Activation.Implementations.Administration;
 
 public class NetworkUserModelActivator(IServiceProvider serviceProvider)
-  : InheritingModelActivator<NetworkUserModel, AuditableModel>(serviceProvider)
+  : InheritingModelActivator<NetworkUserModel, TrackableModel>(serviceProvider)
 {
   private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();

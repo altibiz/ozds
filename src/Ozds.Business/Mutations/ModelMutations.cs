@@ -79,38 +79,4 @@ public class ModelMutations(
       }
     }
   }
-
-  public async Task Update(
-    IModel model,
-    CancellationToken cancellationToken
-  )
-  {
-    var validationResult = await modelValidator.Validate(
-      model,
-      cancellationToken
-    );
-    if (validationResult is { } validation)
-    {
-      throw new InvalidOperationException(
-        $"Model {model.GetType()} is invalid: {string.Join(
-          Environment.NewLine,
-          validation.Select(x => x.ErrorMessage)
-        )}"
-      );
-    }
-
-    var entity = modelEntityConverter.ToEntity<IEntity>(model);
-
-    await entityMutations.Update(entity, cancellationToken);
-  }
-
-  public async Task Delete(
-    IModel model,
-    CancellationToken cancellationToken
-  )
-  {
-    var entity = modelEntityConverter.ToEntity<IEntity>(model);
-
-    await entityMutations.Delete(entity, cancellationToken);
-  }
 }

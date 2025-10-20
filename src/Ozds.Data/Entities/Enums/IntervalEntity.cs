@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using Ozds.Data.Extensions;
+using Ozds.Data.Context;
 
 namespace Ozds.Data.Entities.Enums;
 

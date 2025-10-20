@@ -6,7 +6,7 @@ namespace Ozds.Business.Caching;
 
 public class MessengerCache(
   IServiceScopeFactory factory
-) : ConcurrentDictionaryCacheBase<string, IMessenger>
+) : BatchedConcurrentDictionaryCacheBase<string, IMessenger>
 {
   protected override Task<string?> GetKeyFromDataSourceAsync(
     IMessenger value,
@@ -35,7 +35,7 @@ public class MessengerCache(
   {
     await using var scope = factory.CreateAsyncScope();
     var queries = scope.ServiceProvider
-      .GetRequiredService<ModelQueries>();
+      .GetRequiredService<IdentifiableQueries>();
     var model = await queries.ReadById<IMessenger>(key, cancellationToken);
     return model;
   }
@@ -47,7 +47,7 @@ public class MessengerCache(
   {
     await using var scope = factory.CreateAsyncScope();
     var queries = scope.ServiceProvider
-      .GetRequiredService<AuditableQueries>();
+      .GetRequiredService<TrackableQueries>();
     var models = await queries.ReadByIdsOrdered<IMessenger>(
       keys, cancellationToken);
     return models;

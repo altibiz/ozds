@@ -7,6 +7,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.6.0] - 2025-10-20
+
+### Added
+
+- API key, scopes, registers table, entities, models, components, pages
+- `Ozds.Sdk` project with NSwag generated client for OZDS API V1
+- API V1 related controllers in `/api/v1`
+- `Trackable`/`Auditable` distinction
+- auditing of join models
+- `csharp-ls` for development
+- `Model`/`Entity` reflection classes that play nicely with translation strings
+- `ApiKeyManager` for hashing, verification and tokenization
+- `ApiKeyAuthAttribute` for authentication via API key leaving controllers
+  responsible for authorization
+- `ModelUserEntityConverter` for user-related conversions
+- password model and mutations for specific password-related actions
+- password field
+- polymorphic id field
+- analysis state reset
+- get time zone from user browser
+- heading and title components with title state
+- string, empty, nested fragment components
+- mapping for streaming components
+- password change in user page
+
+### Changed
+
+- All app-related controllers to `/app` and
+- API key authentication to `Authorization` header with `Bearer` scheme
+- Auditable -> Trackable
+- old `ConcurrentDictionaryCacheBase` to new
+  `BatchedConcurrentDictionaryCacheBase`
+- old `ConcurrentDictionaryCacheBase` now doesn't do batching
+- nicer `Empty`/`NotFound` components
+- more explicit controls over streaming components
+- add auditing events after mutation so that create ids match
+- better test logging
+
+### Removed
+
 ## [1.5.1] - 2025-08-06
 
 ### Added
@@ -465,6 +505,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.6.0]: https://github.com/altibiz/ozds/compare/1.5.1...1.6.0
 [1.5.1]: https://github.com/altibiz/ozds/compare/1.5.0...1.5.1
 [1.5.0]: https://github.com/altibiz/ozds/compare/1.4.2...1.5.0
 [1.4.2]: https://github.com/altibiz/ozds/compare/1.4.1...1.4.2

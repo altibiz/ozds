@@ -2,11 +2,11 @@ namespace Ozds.Data.Entities.Abstractions;
 
 public interface IFinancialEntity : IReadonlyEntity, IIdentifiableEntity
 {
-  public string? RepresentativeId { get; set; }
+  public string? AuditingRepresentativeId { get; set; }
 
-  public DateTimeOffset IssuedOn { get; }
+  public DateTimeOffset IssuedOn { get; set; }
 
-  public string? IssuedById { get; }
+  public string? IssuedById { get; set; }
 
   public DateTimeOffset FromDate { get; }
 
