@@ -20,7 +20,7 @@ public partial class UserToolbar : OzdsComponentBase
 
   private string CultureName
   {
-    get { return GetCulture().TwoLetterISOLanguageName; }
+    get { return GetCultureString(); }
   }
 
   private string UserName

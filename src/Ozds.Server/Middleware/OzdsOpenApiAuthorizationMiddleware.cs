@@ -19,7 +19,7 @@ public class OzdsOpenApiAuthorizationMiddleware
       && (!context.User.Identity?.IsAuthenticated ?? true))
     {
       await context.ChallengeAsync(
-        HostExtensions.AuthenticationScheme,
+        HostExtensions.ChallengeScheme,
         new AuthenticationProperties
         {
           RedirectUri = context.Request.Path.ToString()

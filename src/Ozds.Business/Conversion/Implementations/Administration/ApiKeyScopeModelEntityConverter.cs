@@ -6,7 +6,7 @@ using Ozds.Data.Entities.Joins;
 
 namespace Ozds.Business.Conversion.Implementations.Administration;
 
-public class ApiKeyScopeEntityConverter(
+public class ApiKeyScopeModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
   ApiKeyScopeModel,

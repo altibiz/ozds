@@ -86,4 +86,31 @@ public class TypeQueries : ITypeQueries
       type.GetGenericArguments().Select(x => x.Name));
     return $"{baseName}<{genericArgs}>";
   }
+
+  public IEnumerable<Type> ResolveSubtypes(
+    Type type,
+    Assembly? assembly = null,
+    string? @namespace = null
+  )
+  {
+    var assemblies = assembly is null
+      ? AppDomain.CurrentDomain.GetAssemblies().ToList()
+      : [assembly];
+
+    return @namespace is null
+      ? assemblies
+          .SelectMany(assembly => assembly
+            .GetTypes()
+            .Where(assemblyType =>
+              assemblyType.IsAssignableTo(type)
+              && !assemblyType.IsAbstract))
+      : assemblies
+          .SelectMany(assembly => assembly
+            .GetTypes()
+            .Where(assemblyType =>
+              assemblyType.Namespace is not null
+              && assemblyType.Namespace.StartsWith(@namespace)
+              && assemblyType.IsAssignableTo(type)
+              && !assemblyType.IsAbstract));
+  }
 }

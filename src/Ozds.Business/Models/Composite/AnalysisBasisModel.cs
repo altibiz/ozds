@@ -1,8 +1,9 @@
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Composite;
 
-public class AnalysisBasisModel
+public class AnalysisBasisModel : IComposite
 {
   public RepresentativeModel? Representative { get; set; } = default!;
 

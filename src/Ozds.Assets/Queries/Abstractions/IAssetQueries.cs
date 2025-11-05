@@ -1,10 +1,8 @@
-using System.Globalization;
-
 namespace Ozds.Assets.Queries.Abstractions;
 
 public interface IAssetQueries : IQueries
 {
-  public Dictionary<string, string> LoadTranslations(CultureInfo culture);
+  public Dictionary<string, string> LoadTranslations(string culture);
 
   public string LoadSvg(string name);
 

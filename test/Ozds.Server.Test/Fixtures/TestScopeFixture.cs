@@ -63,6 +63,110 @@ public class TestScopeFixture(
     );
   }
 
+  public async
+    Task<MeasurementScopeWithRegisters>
+    CreateMeasurementForNetworkUserWithRegisters(
+      NetworkUserModel networkUser,
+      IEnumerable<TestRegister> testRegisters,
+      CancellationToken cancellationToken,
+      Action<Configurator>? configure = null
+    )
+  {
+    var configurator = new Configurator();
+    if (configure is not null)
+    {
+      configure(configurator);
+    }
+
+    var trackableFixture = new TestTrackableFixture(composition);
+
+    var modelReflector = composition.Ozds.Services
+      .GetRequiredService<ModelReflector>();
+
+    var scope = await trackableFixture.Create<MeasurementScopeModel>(
+      cancellationToken,
+      x =>
+      {
+        x.ScopeModelType = modelReflector
+          .ResolveModelName(typeof(NetworkUserModel));
+        x.ScopeModelId = networkUser.Id;
+
+        configurator.ConfigureMeasurementScope(x);
+      });
+
+    var registers = await Task.WhenAll(
+      testRegisters
+        .Select(
+          async testRegister =>
+          {
+            return await trackableFixture
+              .Create<RegisterModel>(
+                cancellationToken,
+                register =>
+                {
+                  register.ScopeId = scope.Id;
+                  TestRegisterToRegisterModel(testRegister, register);
+                });
+          }));
+
+    return new MeasurementScopeWithRegisters(
+      registers.ToList(),
+      scope
+    );
+  }
+
+  public async
+    Task<MeasurementScopeWithRegisters>
+    CreateMeasurementForMeasurementLocationWithRegisters(
+      NetworkUserMeasurementLocationModel measurementLocation,
+      IEnumerable<TestRegister> testRegisters,
+      CancellationToken cancellationToken,
+      Action<Configurator>? configure = null
+    )
+  {
+    var configurator = new Configurator();
+    if (configure is not null)
+    {
+      configure(configurator);
+    }
+
+    var trackableFixture = new TestTrackableFixture(composition);
+
+    var modelReflector = composition.Ozds.Services
+      .GetRequiredService<ModelReflector>();
+
+    var scope = await trackableFixture.Create<MeasurementScopeModel>(
+      cancellationToken,
+      x =>
+      {
+        x.ScopeModelType = modelReflector
+          .ResolveModelName(typeof(NetworkUserMeasurementLocationModel));
+        x.ScopeModelId = measurementLocation.Id;
+
+        configurator.ConfigureMeasurementScope(x);
+      });
+
+    var registers = await Task.WhenAll(
+      testRegisters
+        .Select(
+          async testRegister =>
+          {
+            return await trackableFixture
+              .Create<RegisterModel>(
+                cancellationToken,
+                register =>
+                {
+                  register.ScopeId = scope.Id;
+                  TestRegisterToRegisterModel(testRegister, register);
+                });
+          }));
+
+    return new MeasurementScopeWithRegisters(
+      registers.ToList(),
+      scope
+    );
+  }
+
   public RegisterModel TestRegisterToRegisterModel(
     TestRegister testRegister,
     RegisterModel? register = null)

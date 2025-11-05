@@ -1,12 +1,3 @@
+#pragma warning disable S3261 // Namespaces should not be empty
 namespace Ozds.Time;
-
-// NOTE: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-
-public static class TimeConstants
-{
-  public static readonly TimeZoneInfo CroatianTimeZone =
-    TimeZoneInfo.FindSystemTimeZoneById("Europe/Zagreb");
-
-  public static readonly TimeZoneInfo UtcTimeZone =
-    TimeZoneInfo.FindSystemTimeZoneById("Etc/UTC");
-}
+#pragma warning restore S3261 // Namespaces should not be empty

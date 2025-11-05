@@ -47,7 +47,7 @@
     @{
       var accountingPeriodHref =
         "/app/report/measurement-location-accounting-period"
-        + "/" + GetCulture().TwoLetterISOLanguageName
+        + "/" + GetCultureString()
         + "/" + Id
         + "/" + selectedMonth.Year
         + "/" + selectedMonth.Month;
@@ -64,7 +64,7 @@
     @{
       var loadCurveHref =
         "/app/report/measurement-location-load-curve"
-        + "/" + GetCulture().TwoLetterISOLanguageName
+        + "/" + GetCultureString()
         + "/" + Id
         + "/" + selectedObis.ToCode()
         + "/" + selectedMonth.Year

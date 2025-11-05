@@ -51,7 +51,7 @@ public class NetworkUserInvoiceMutations(
         cancellationToken
       );
     var invoice = invoiceCalculator.Calculate(basis);
-    var culture = CultureInfo.CreateSpecificCulture("hr-HR");
+    var culture = localizationQueries.CroatianCulture;
     var previewText = localizationQueries.Translate(
       culture,
       localizationQueries.Translate(

@@ -1,6 +1,8 @@
+using Ozds.Business.Models.Abstractions;
+
 namespace Ozds.Business.Models.Composite;
 
-public class NetworkUserWithRepresentativesModel
+public class NetworkUserWithRepresentativesModel : IComposite
 {
   public NetworkUserModel NetworkUser { get; set; } = default!;
 

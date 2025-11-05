@@ -4,7 +4,7 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.Measurements;
 
-public class MeasurementLocationEntityConverter(
+public class MeasurementLocationModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
   MeasurementLocationModel,

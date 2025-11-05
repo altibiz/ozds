@@ -15,16 +15,13 @@
 	  <ProjectReference Include="../../src/Ozds.Assets/Ozds.Assets.csproj" />
 	  <ProjectReference Include="../../src/Ozds.Report/Ozds.Report.csproj" />
 	  <ProjectReference Include="../../src/Ozds.Time/Ozds.Time.csproj" />
+	  <ProjectReference Include="../../src/Ozds.Caching/Ozds.Caching.csproj" />
 	</ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
     <PackageReference Include="HtmlSanitizer" />
     <PackageReference Include="System.Linq.Async" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <InternalsVisibleTo Include="Ozds.Business.Test" />
   </ItemGroup>
 
 </Project>

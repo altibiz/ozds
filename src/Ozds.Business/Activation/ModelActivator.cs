@@ -69,9 +69,9 @@ public class ModelActivator(IServiceProvider serviceProvider)
         converter =>
           !converter.ModelType.IsAbstract
           && !converter.ModelType.IsInterface
-          // FIXME: with attributes or something else
-          && converter.ModelType != typeof(MeterModel)
           && converter.ModelType.IsAssignableTo(type)
+          // FIXME: hack for now because MeterModel is not abstract
+          && converter.ModelType != typeof(MeterModel)
           && converter.CanActivate(type))
       .Select(converter => converter.ModelType)
       .ToList();

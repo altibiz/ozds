@@ -4,9 +4,17 @@ namespace Ozds.Time.Queries.Abstractions;
 
 public interface ITimeQueries : IQueries
 {
+  public TimeZoneInfo DefaultTimeZone { get; }
+
   public TimeZoneInfo CroatianTimeZone { get; }
 
   public TimeZoneInfo UtcTimeZone { get; }
+
+  public TimeZoneInfo? IdToTimeZone(string timeZone);
+
+  public string TimeZoneToId(TimeZoneInfo timeZone);
+
+  public string TimeZoneToName(TimeZoneInfo timeZone);
 
   public TimeSpan GetCroatianOffset(DateTimeOffset forDate);
 

@@ -1,13 +1,12 @@
 using Ozds.Business.Activation;
 using Ozds.Business.Conversion;
-using Ozds.Business.Extensions;
+using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
-using Ozds.Business.Queries;
-using Ozds.Time.Queries.Abstractions;
+using Ozds.Business.Test.Base;
 
 namespace Ozds.Business.Test.Conversion;
 
-public class ModelEntityConverterTest
+public class ModelEntityConverterTest : OzdsBusinessHostTestBase
 {
   public static IEnumerable<Type> TestData()
   {
@@ -23,26 +22,11 @@ public class ModelEntityConverterTest
               type.IsAssignableTo(typeof(IModel))));
   }
 
-  // FIXME: nice way to register lots of services
-  // [Test]
+  [Test]
   [MethodDataSource(nameof(TestData))]
-#pragma warning disable TUnit0019 // Missing `Test` Attribute
   public void Converts(Type modelType)
-#pragma warning restore TUnit0019 // Missing `Test` Attribute
   {
-    var builder = Host.CreateApplicationBuilder();
-    builder.AddOzdsBusinessPure();
-    builder.Services.AddScoped(
-      _ => new Mock<TimeQueries>(
-        MockBehavior.Loose,
-        Mock.Of<ITimeQueries>()).Object);
-    builder.Services.AddScoped(
-      _ => new Mock<ClockQueries>(
-        MockBehavior.Loose,
-        Mock.Of<IClockQueries>()).Object);
-    var host = builder.Build();
-
-    using var scope = host.Services.CreateScope();
+    using var scope = Host.Services.CreateScope();
     var serviceProvider = scope.ServiceProvider;
 
     var activator = serviceProvider
@@ -65,6 +49,14 @@ public class ModelEntityConverterTest
 
     var converted = modelEntityConverter.ToModel(entity);
     converted.Should().NotBeNull().And.BeAssignableTo(modelType);
-    converted.Should().BeEquivalentTo(activated);
+    converted.Should().BeEquivalentTo(activated, options => options
+      .Excluding(x =>
+        x.Name == "Created"
+        || (x.DeclaringType.IsAssignableTo(typeof(IJoin))
+          && x.Name == "ActivationSide")
+        || (x.DeclaringType.IsAssignableTo(typeof(IJoin))
+          && x.Name == "ActivationId")
+        || (x.DeclaringType.IsAssignableTo(typeof(ApiKeyModel))
+          && x.Name == "Value")));
   }
 }

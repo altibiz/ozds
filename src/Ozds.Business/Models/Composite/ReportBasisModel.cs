@@ -1,8 +1,9 @@
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Composite;
 
-public class ReportBasisModel
+public class ReportBasisModel : IComposite
 {
   public LocationModel Location { get; set; } = default!;
 

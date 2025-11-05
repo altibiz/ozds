@@ -9,7 +9,7 @@ public class TestApiKeyFixture(
   ServiceComposition composition
 )
 {
-  public async Task<ApiKeyWithApiKeyScope> CreateWithForUserAndScope(
+  public async Task<ApiKeyWithApiKeyScope> CreateForUserAndScope(
     TestUser testUser,
     ScopeModel scope,
     CancellationToken cancellationToken,

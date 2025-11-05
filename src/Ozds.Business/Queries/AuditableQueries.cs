@@ -1,13 +1,19 @@
 using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
+using Ozds.Caching.Entities.Abstractions;
+using CachingIdentifiableMutations = Ozds.Caching.Mutations.IdentifiableEntityMutations;
+using CachingIdentifiableQueries = Ozds.Caching.Queries.IdentifiableEntityQueries;
 using DataAuditableQueries = Ozds.Data.Queries.AuditableQueries;
 
 namespace Ozds.Business.Queries;
 
 public class AuditableQueries(
   DataAuditableQueries queries,
-  ModelEntityConverter modelEntityConverter
+  ModelEntityConverter modelEntityConverter,
+  CachingIdentifiableMutations cachingMutations,
+  CachingIdentifiableQueries cachingQueries,
+  ModelCachingEntityConverter modelCachingEntityConverter
 ) : IQueries
 {
   public async Task<T?> ReadById<T>(
@@ -32,6 +38,27 @@ public class AuditableQueries(
         $"Type {modelType} is not assignable to {typeof(IAuditableIdentifiable)}");
     }
 
+    if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
+    {
+      var cachedEntityType = modelCachingEntityConverter
+        .EntityType(modelType);
+
+      var cachedEntity = await cachingQueries.Read(
+        cachedEntityType,
+        id,
+        cancellationToken
+      );
+
+      var cachedModel = cachedEntity is null
+        ? null
+        : modelCachingEntityConverter.ToModel(cachedEntity);
+
+      if (cachedModel is not null)
+      {
+        return cachedModel;
+      }
+    }
+
     var entityType = modelEntityConverter.EntityType(modelType);
     var entity = await queries.ReadById(
       entityType, id, cancellationToken);
@@ -41,6 +68,14 @@ public class AuditableQueries(
     }
 
     var model = modelEntityConverter.ToModel(entity);
+
+    if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
+    {
+      var cachingEntity = modelCachingEntityConverter
+        .ToEntity<IIdentifiableEntity>(model);
+      await cachingMutations.Create(cachingEntity, cancellationToken);
+    }
+
     return model;
   }
 
@@ -70,6 +105,38 @@ public class AuditableQueries(
         $"Type {modelType} is not assignable to {typeof(IAuditableIdentifiable)}");
     }
 
+    var toFetch = ids.ToList();
+    var result = new List<object>();
+
+    if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
+    {
+      var cachedEntityType = modelCachingEntityConverter
+        .EntityType(modelType);
+
+      var fromCache = toFetch.ToList();
+      foreach (var id in fromCache)
+      {
+        var cachedEntity = await cachingQueries.Read(
+          cachedEntityType,
+          id,
+          cancellationToken
+        );
+        if (cachedEntity is null)
+        {
+          continue;
+        }
+
+        var cachedModel = modelCachingEntityConverter.ToModel(cachedEntity);
+        if (cachedModel is null)
+        {
+          continue;
+        }
+
+        result.Add(cachedModel);
+        toFetch.Remove(id);
+      }
+    }
+
     var entityType = modelEntityConverter.EntityType(modelType);
     var entities = await queries.ReadByIds(
       entityType,
@@ -77,9 +144,22 @@ public class AuditableQueries(
       cancellationToken
     );
 
-    return entities
+    var models = entities
       .Select(modelEntityConverter.ToModel)
       .ToList();
+    if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
+    {
+      foreach (var model in models)
+      {
+        var cachedEntity = modelCachingEntityConverter
+          .ToEntity<IIdentifiableEntity>(model);
+        await cachingMutations.Create(cachedEntity, cancellationToken);
+      }
+    }
+
+    result.AddRange(models);
+
+    return result;
   }
 
   public async Task<List<T?>> ReadByIdsOrdered<T>(
@@ -108,18 +188,80 @@ public class AuditableQueries(
         $"Type {modelType} is not assignable to {typeof(IAuditableIdentifiable)}");
     }
 
+    var toFetch = ids.ToList();
+    var result = toFetch.Select(x => (object?)null).ToList();
+
+    if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
+    {
+      var cachedEntityType = modelCachingEntityConverter
+        .EntityType(modelType);
+
+      var fromCache = toFetch.ToList();
+      for (var i = 0; i < fromCache.Count; i++)
+      {
+        var cachedEntity = await cachingQueries.Read(
+          cachedEntityType,
+          fromCache[i],
+          cancellationToken
+        );
+        if (cachedEntity is null)
+        {
+          continue;
+        }
+
+        var cachedModel = modelCachingEntityConverter.ToModel(cachedEntity);
+
+        if (cachedModel is not null)
+        {
+          result[i] = cachedModel;
+          toFetch.RemoveAt(i);
+        }
+      }
+    }
+
     var entities = await queries.ReadByIdsOrdered(
       modelEntityConverter.EntityType(modelType),
       ids,
       cancellationToken
     );
 
-    return entities
+    var models = entities
       .Select(
         entity => entity is null
           ? null
           : modelEntityConverter.ToModel(entity))
       .ToList();
+    if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
+    {
+      foreach (var model in models)
+      {
+        if (model is null)
+        {
+          continue;
+        }
+        var cachedEntity = modelCachingEntityConverter
+          .ToEntity<IIdentifiableEntity>(model);
+        await cachingMutations.Create(cachedEntity, cancellationToken);
+      }
+    }
+
+    var j = 0;
+    for (var i = 0; i < toFetch.Count && j < result.Count; i++)
+    {
+      while (j < result.Count && result[j] is not null)
+      {
+        j++;
+      }
+
+      if (j >= result.Count)
+      {
+        break;
+      }
+
+      result[j] = models[i];
+    }
+
+    return result;
   }
 
   public async Task<PaginatedList<T>> ReadByTitle<T>(

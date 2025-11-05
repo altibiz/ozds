@@ -38,7 +38,7 @@
       @{
         var energyCardHref =
           "/app/report/location-energy-card"
-          + "/" + GetCulture().TwoLetterISOLanguageName
+          + "/" + GetCultureString()
           + "/" + context.Model.Id
           + "/" + selectedMonth.Year
           + "/" + selectedMonth.Month;

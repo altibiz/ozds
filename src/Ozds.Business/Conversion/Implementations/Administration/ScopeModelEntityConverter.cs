@@ -18,8 +18,8 @@ public class ScopeModelEntityConverter(
   ScopeEntity,
   TrackableEntity>(serviceProvider)
 {
-  private readonly EntityReflector entityReflector =
-    serviceProvider.GetRequiredService<EntityReflector>();
+  private readonly Data.Reflection.EntityReflector entityReflector =
+    serviceProvider.GetRequiredService<Data.Reflection.EntityReflector>();
 
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();

@@ -40,6 +40,32 @@ namespace Ozds.Sdk.Contracts.V1
         /// <exception cref="OzdsApiV1Exception">A server side error occurred.</exception>
         System.Threading.Tasks.Task<QuarterHourlyAggregatesByLocationResponse> QuarterHourlyAggregatesByLocationAsync(string locationId, System.DateTimeOffset? dateFrom, System.DateTimeOffset? dateTo, int? page, System.Threading.CancellationToken cancellationToken);
 
+        /// <returns>OK</returns>
+        /// <exception cref="OzdsApiV1Exception">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<QuarterHourlyAggregatesByNetworkUserResponse> QuarterHourlyAggregatesByNetworkUserAsync(string networkUserId, System.DateTimeOffset? dateFrom, System.DateTimeOffset? dateTo, int? page);
+
+        /// <returns>OK</returns>
+        /// <exception cref="OzdsApiV1Exception">A server side error occurred.</exception>
+        QuarterHourlyAggregatesByNetworkUserResponse QuarterHourlyAggregatesByNetworkUser(string networkUserId, System.DateTimeOffset? dateFrom, System.DateTimeOffset? dateTo, int? page);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="OzdsApiV1Exception">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<QuarterHourlyAggregatesByNetworkUserResponse> QuarterHourlyAggregatesByNetworkUserAsync(string networkUserId, System.DateTimeOffset? dateFrom, System.DateTimeOffset? dateTo, int? page, System.Threading.CancellationToken cancellationToken);
+
+        /// <returns>OK</returns>
+        /// <exception cref="OzdsApiV1Exception">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<QuarterHourlyAggregatesByMeasurementLocationResponse> QuarterHourlyAggregatesByMeasurementLocationAsync(string measurementLocationId, System.DateTimeOffset? dateFrom, System.DateTimeOffset? dateTo, int? page);
+
+        /// <returns>OK</returns>
+        /// <exception cref="OzdsApiV1Exception">A server side error occurred.</exception>
+        QuarterHourlyAggregatesByMeasurementLocationResponse QuarterHourlyAggregatesByMeasurementLocation(string measurementLocationId, System.DateTimeOffset? dateFrom, System.DateTimeOffset? dateTo, int? page);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="OzdsApiV1Exception">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<QuarterHourlyAggregatesByMeasurementLocationResponse> QuarterHourlyAggregatesByMeasurementLocationAsync(string measurementLocationId, System.DateTimeOffset? dateFrom, System.DateTimeOffset? dateTo, int? page, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.1.0 (NJsonSchema v11.5.1.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -71,6 +97,96 @@ namespace Ozds.Sdk.Contracts.V1
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.1.0 (NJsonSchema v11.5.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class QuarterHourlyAggregatesByLocationResponseMeasurement
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("timestamp")]
+        public System.DateTimeOffset Timestamp { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("meterId")]
+        public string MeterId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("measurementLocationId")]
+        public string MeasurementLocationId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("registers")]
+        public System.Collections.Generic.IDictionary<string, string> Registers { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.1.0 (NJsonSchema v11.5.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class QuarterHourlyAggregatesByMeasurementLocationResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("dateFrom")]
+        public System.DateTimeOffset? DateFrom { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("dateTo")]
+        public System.DateTimeOffset? DateTo { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("page")]
+        public int? Page { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("pageSize")]
+        public int? PageSize { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("totalCount")]
+        public int? TotalCount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("measurementLocationId")]
+        public string MeasurementLocationId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("measurements")]
+        public System.Collections.Generic.ICollection<QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement> Measurements { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.1.0 (NJsonSchema v11.5.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("timestamp")]
+        public System.DateTimeOffset Timestamp { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("meterId")]
+        public string MeterId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("measurementLocationId")]
+        public string MeasurementLocationId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("registers")]
+        public System.Collections.Generic.IDictionary<string, string> Registers { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.1.0 (NJsonSchema v11.5.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class QuarterHourlyAggregatesByNetworkUserResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("dateFrom")]
+        public System.DateTimeOffset? DateFrom { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("dateTo")]
+        public System.DateTimeOffset? DateTo { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("page")]
+        public int? Page { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("pageSize")]
+        public int? PageSize { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("totalCount")]
+        public int? TotalCount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("networkUserId")]
+        public string NetworkUserId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("measurements")]
+        public System.Collections.Generic.ICollection<QuarterHourlyAggregatesByNetworkUserResponseMeasurement> Measurements { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.1.0 (NJsonSchema v11.5.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class QuarterHourlyAggregatesByNetworkUserResponseMeasurement
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("timestamp")]

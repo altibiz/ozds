@@ -8,7 +8,9 @@ namespace Ozds.Document.Test.Renderer;
 public class DocumentRendererTest
 {
   [Test]
-  public async Task RendersCalculatedNetworkUserInvoiceTest()
+  public async Task RendersCalculatedNetworkUserInvoiceTest(
+    CancellationToken cancellationToken
+  )
   {
     var builder = Host.CreateApplicationBuilder();
     builder.Services.AddLogging();
@@ -29,11 +31,11 @@ public class DocumentRendererTest
     {
       var html = await documentRenderer
         .RenderCalculatedNetworkUserInvoiceToHtml(
-          entity, CancellationToken.None);
+          entity, cancellationToken);
       html.Should().NotBeNull();
       var pdf = await documentRenderer
         .RenderCalculatedNetworkUserInvoiceToPdf(
-          entity, CancellationToken.None);
+          entity, cancellationToken);
       pdf.Should().NotBeNull();
     }
   }

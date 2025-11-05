@@ -33,7 +33,7 @@ public partial class MessengerPage
     var apiKeys = await queries.ReadByMessengerId(
       Id,
       pageNumber,
-      CancellationToken.None,
+      CancellationToken,
       pageCount,
       false,
       search

@@ -9,16 +9,12 @@ namespace Ozds.Assets.Queries.Implementations;
 public class LocalizationQueries(
   IAssetQueries assetQueries,
   ITimeQueries timeQueries,
-  ITranslationQueries translationQueries
+  ITranslationQueries translationQueries,
+  ICultureQueries cultureQueries
 ) : ILocalizationQueries
 {
   private readonly ConcurrentDictionary<TranslationKey, string>
     translationCache = new();
-
-  public CultureInfo CroatianCulture
-  {
-    get { return AssetConstants.CroatianCulture; }
-  }
 
   public string Translate(CultureInfo culture, Type type, bool plural = false)
   {
@@ -27,7 +23,7 @@ public class LocalizationQueries(
     return translationCache.GetOrAdd(
       cacheKey, _ =>
       {
-        var translations = assetQueries.LoadTranslations(culture);
+        var translations = assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
 
         var overrides = translationQueries.KeyOverrides(type, plural);
         foreach (var key in overrides)
@@ -49,7 +45,7 @@ public class LocalizationQueries(
     return translationCache.GetOrAdd(
       cacheKey, _ =>
       {
-        var translations = assetQueries.LoadTranslations(culture);
+        var translations = assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
 
         var overrides = translationQueries.KeyOverrides(type, member);
         foreach (var key in overrides)
@@ -71,7 +67,7 @@ public class LocalizationQueries(
     return translationCache.GetOrAdd(
       cacheKey, _ =>
       {
-        var translations = assetQueries.LoadTranslations(culture);
+        var translations = assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
 
         var overrides = translationQueries.KeyOverrides(member);
         foreach (var key in overrides)
@@ -93,7 +89,7 @@ public class LocalizationQueries(
     return translationCache.GetOrAdd(
       cacheKey, _ =>
       {
-        var translations = assetQueries.LoadTranslations(culture);
+        var translations = assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
 
         if (translations.TryGetValue(notLocalized, out var value))
         {
@@ -111,7 +107,7 @@ public class LocalizationQueries(
       return "";
     }
 
-    var cultureInfo = CroatianCulture;
+    var cultureInfo = cultureQueries.CroatianCulture;
 
     var numberFormatInfo = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
     numberFormatInfo.NumberGroupSeparator = ".";
@@ -128,7 +124,7 @@ public class LocalizationQueries(
       return "";
     }
 
-    var cultureInfo = CroatianCulture;
+    var cultureInfo = cultureQueries.CroatianCulture;
 
     var numberFormatInfo = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
     numberFormatInfo.NumberGroupSeparator = ".";
@@ -145,7 +141,7 @@ public class LocalizationQueries(
       return "";
     }
 
-    var cultureInfo = CroatianCulture;
+    var cultureInfo = cultureQueries.CroatianCulture;
 
     var withTimezone = dateTimeOffset
       .Value
@@ -161,7 +157,7 @@ public class LocalizationQueries(
       return "";
     }
 
-    var cultureInfo = CroatianCulture;
+    var cultureInfo = cultureQueries.CroatianCulture;
 
     var withTimezone = dateTimeOffset
       .Value
@@ -185,7 +181,7 @@ public class LocalizationQueries(
 
   public string DocumentNumber(decimal number, int precision = 2)
   {
-    var cultureInfo = CroatianCulture;
+    var cultureInfo = cultureQueries.CroatianCulture;
     var nfi = (NumberFormatInfo)cultureInfo.NumberFormat.Clone();
 
     nfi.NumberGroupSeparator = ".";

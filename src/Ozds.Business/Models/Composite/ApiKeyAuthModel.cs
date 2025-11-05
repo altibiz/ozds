@@ -1,7 +1,11 @@
+using Ozds.Business.Models.Abstractions;
+
 namespace Ozds.Business.Models.Composite;
 
-public class ApiKeyAuthModel
+public class ApiKeyAuthModel : ICachedComposite
 {
+  public string CacheId => ApiKey.Id;
+
   public ApiKeyModel ApiKey { get; set; } = default!;
 
   public List<ScopeModel> Scopes { get; set; } = default!;

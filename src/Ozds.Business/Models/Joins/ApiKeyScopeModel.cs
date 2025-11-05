@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Joins;
 
-public class ApiKeyScopeModel : AuditableJoinModel
+public class ApiKeyScopeModel : AuditableJoinModel, ICachedJoin
 {
   public override string LeftId
   {

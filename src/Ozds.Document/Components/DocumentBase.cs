@@ -7,23 +7,26 @@ namespace Ozds.Document.Components;
 public abstract class DocumentBase : ComponentBase
 {
   [Inject]
-  private ILocalizationQueries LocalizerQueries { get; set; } = default!;
+  private ILocalizationQueries LocalizationQueries { get; set; } = default!;
+
+  [Inject]
+  private ICultureQueries CultureQueries { get; set; } = default!;
 
   [Inject]
   private IAssetQueries AssetLoader { get; set; } = default!;
 
   public string Translate(string notLocalized)
   {
-    return LocalizerQueries.Translate(
-      AssetConstants.CroatianCulture,
+    return LocalizationQueries.Translate(
+      CultureQueries.CroatianCulture,
       notLocalized
     );
   }
 
   public string Translate(Type type)
   {
-    return LocalizerQueries.Translate(
-      AssetConstants.CroatianCulture,
+    return LocalizationQueries.Translate(
+      CultureQueries.CroatianCulture,
       type
     );
   }
@@ -42,11 +45,11 @@ public abstract class DocumentBase : ComponentBase
 
   public string Date(DateTimeOffset date)
   {
-    return LocalizerQueries.DocumentDate(date);
+    return LocalizationQueries.DocumentDate(date);
   }
 
   public string Number(decimal number, int precision = 2)
   {
-    return LocalizerQueries.DocumentNumber(number, precision);
+    return LocalizationQueries.DocumentNumber(number, precision);
   }
 }

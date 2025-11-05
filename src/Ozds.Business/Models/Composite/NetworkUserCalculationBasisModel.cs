@@ -1,8 +1,9 @@
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Composite;
 
-public class NetworkUserCalculationBasisModel
+public class NetworkUserCalculationBasisModel : IComposite
 {
   public DateTimeOffset FromDate { get; set; }
 

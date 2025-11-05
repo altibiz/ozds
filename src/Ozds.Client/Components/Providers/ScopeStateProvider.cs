@@ -4,7 +4,7 @@ using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Providers;
 
-// NOTE: rendered at root so keep dependencies minimal
+// NOTE: to be used inside ErrorBoundary so keep dependencies minimal
 public partial class ScopeStateProvider : DisposableComponentBase
 {
   private IServiceScope? _scope;

@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Ozds.Users.Extensions;
+using UsersHostExtensions = Ozds.Users.Extensions.HostExtensions;
 
 namespace Ozds.Server.Controllers.App;
 
@@ -22,7 +21,7 @@ public class AppAuthController : Controller
 
     return Challenge(
       new AuthenticationProperties { RedirectUri = returnUrl },
-      HostExtensions.AuthenticationScheme);
+      UsersHostExtensions.ChallengeScheme);
   }
 
   [HttpPost]
@@ -39,7 +38,7 @@ public class AppAuthController : Controller
 
     return SignOut(
       new AuthenticationProperties { RedirectUri = returnUrl },
-      CookieAuthenticationDefaults.AuthenticationScheme,
-      HostExtensions.AuthenticationScheme);
+      UsersHostExtensions.AuthenticationScheme,
+      UsersHostExtensions.ChallengeScheme);
   }
 }

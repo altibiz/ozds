@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 using Ozds.Client.State;
 
@@ -8,6 +9,12 @@ public partial class LocalizationDrawer : OzdsComponentBase
 {
   [CascadingParameter]
   private LayoutState LayoutState { get; set; } = default!;
+
+  private LocalizationQueries? localizationQueries;
+
+  private LocalizationQueries LocalizationQueries =>
+    localizationQueries ??= ScopedServices
+      .GetRequiredService<LocalizationQueries>();
 
   private void SetLocalizationDrawerOpen(bool open)
   {

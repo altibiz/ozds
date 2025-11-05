@@ -4,7 +4,7 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IMeter : ITrackableIdentifiable
+public interface IMeter : ITrackableIdentifiable, ICachedIdentifiable
 {
   public string MeasurementValidatorId { get; }
 

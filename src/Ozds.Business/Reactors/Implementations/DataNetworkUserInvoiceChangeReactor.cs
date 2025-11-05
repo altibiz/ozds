@@ -1,4 +1,3 @@
-using System.Globalization;
 using Ozds.Business.Models;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
@@ -6,8 +5,6 @@ using Ozds.Business.Queries;
 using Ozds.Business.Reactors.Base;
 using Ozds.Messaging.Contracts;
 using Ozds.Messaging.Sender.Abstractions;
-
-// FIXME: N + 1
 
 namespace Ozds.Business.Reactors.Implementations;
 
@@ -37,22 +34,13 @@ public class DataNetworkUserInvoiceChangeHandler(
       return;
     }
 
-    foreach (var entry in eventArgs.Models)
-    {
-      if (entry.Model is not NetworkUserInvoiceModel invoice)
-      {
-        continue;
-      }
-
-      if (entry.State is not DataModelChangedState.Added)
-      {
-        continue;
-      }
-
-      logger.LogInformation("Acknowledging invoice: {Id}", invoice.Id);
-
-      var culture = CultureInfo.CreateSpecificCulture("hr-HR");
-      await messageSender.AcknowledgeNetworkUserInvoice(
+    var culture = localizationQueries.CroatianCulture;
+    var invoices = eventArgs.Models
+      .Where(x => x.State is DataModelChangedState.Added)
+      .Where(x => x.Model is NetworkUserInvoiceModel)
+      .Select(x => x.Model)
+      .OfType<NetworkUserInvoiceModel>()
+      .Select(invoice =>
         new AcknowledgeNetworkUserInvoice(
           invoice.Id,
           invoice.ArchivedNetworkUser.AltiBizSubProjectCode,
@@ -147,9 +135,21 @@ public class DataNetworkUserInvoiceChangeHandler(
           invoice.Tax_EUR,
           invoice.TotalWithTax_EUR,
           invoice.ArchivedNetworkUser.AutomaticallyApproveInvoices
-        ),
-        cancellationToken
-      );
+        ))
+        .ToList();
+
+    if (invoices.Count == 0)
+    {
+      return;
     }
+
+    logger.LogInformation(
+      "Acknowledging invoices: {Count}",
+      invoices.Count);
+
+    await messageSender.AcknowledgeNetworkUserInvoices(
+      invoices,
+      cancellationToken
+    );
   }
 }

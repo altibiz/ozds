@@ -14,10 +14,10 @@ public class AssetQueries : IAssetQueries
     new();
 
   private readonly
-    ConcurrentDictionary<CultureInfo, Dictionary<string, string>>
+    ConcurrentDictionary<string, Dictionary<string, string>>
     translationCache = new();
 
-  public Dictionary<string, string> LoadTranslations(CultureInfo culture)
+  public Dictionary<string, string> LoadTranslations(string culture)
   {
     return translationCache.GetOrAdd(culture, LoadTranslationsUncached);
   }
@@ -33,11 +33,10 @@ public class AssetQueries : IAssetQueries
   }
 
   private Dictionary<string, string> LoadTranslationsUncached(
-    CultureInfo culture
+    string culture
   )
   {
-    var cultureString = culture.TwoLetterISOLanguageName;
-    var fileName = $"Translations.{cultureString}.xml";
+    var fileName = $"Translations.{culture}.xml";
     var stream = Load(fileName);
     using var streamReader = new StreamReader(stream);
     var text = streamReader.ReadToEnd();

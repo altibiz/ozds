@@ -15,7 +15,7 @@ public class RegisterModelActivator(
   {
     base.Initialize(model);
 
-    model.ScopeId = "0";
+    model.ScopeId = Guid.NewGuid().ToString();
     model.Name = string.Empty;
     model.Measure = MeasureModel.Current;
   }

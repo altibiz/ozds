@@ -14,4 +14,10 @@ public interface ITypeQueries : IQueries
     string @namespace,
     string name
   );
+
+  public IEnumerable<Type> ResolveSubtypes(
+    Type type,
+    Assembly? assembly = null,
+    string? @namespace = null
+  );
 }

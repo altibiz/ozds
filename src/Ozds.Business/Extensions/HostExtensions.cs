@@ -6,7 +6,6 @@ using Ozds.Business.Aggregation.Abstractions;
 using Ozds.Business.Analysis;
 using Ozds.Business.Authorization;
 using Ozds.Business.Buffers.Abstractions;
-using Ozds.Business.Caching.Abstractions;
 using Ozds.Business.Conversion;
 using Ozds.Business.Conversion.Abstractions;
 using Ozds.Business.Finance;
@@ -23,33 +22,11 @@ using Ozds.Business.Reflection;
 using Ozds.Business.Validation;
 using Ozds.Business.Validation.Abstractions;
 
-// TODO: without relays
-
 namespace Ozds.Business.Extensions;
 
 public static class HostExtensions
 {
   public static IHostApplicationBuilder AddOzdsBusiness(
-    this IHostApplicationBuilder builder
-  )
-  {
-    builder.AddOzdsBusinessPure();
-    builder.AddObservers();
-    builder.AddCaching();
-    builder.AddMutations();
-    builder.AddQueries();
-    builder.AddValidation();
-    builder.AddBuffers();
-
-    if (ConfigureOzdsBusinessOptions.WithReactors(builder.Configuration))
-    {
-      builder.AddReactors();
-    }
-
-    return builder;
-  }
-
-  public static IHostApplicationBuilder AddOzdsBusinessPure(
     this IHostApplicationBuilder builder
   )
   {
@@ -62,6 +39,17 @@ public static class HostExtensions
     builder.AddNaming();
     builder.AddReflection();
     builder.AddAuthorization();
+    builder.AddObservers();
+    builder.AddMutations();
+    builder.AddQueries();
+    builder.AddValidation();
+    builder.AddBuffers();
+
+    if (ConfigureOzdsBusinessOptions.WithReactors(builder.Configuration))
+    {
+      builder.AddReactors();
+    }
+
     return builder;
   }
 
@@ -94,6 +82,12 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
+    builder.Services.AddTransientAssignableTo(
+      typeof(IMeasurementAggregateConverter));
+    builder.Services.AddSingleton(typeof(MeasurementAggregateConverter));
+    builder.Services.AddTransientAssignableTo(
+      typeof(IPushRequestMeasurementConverter));
+    builder.Services.AddSingleton(typeof(PushRequestMeasurementConverter));
     builder.Services.AddTransientAssignableTo(typeof(IModelEntityConverter));
     builder.Services.AddSingleton(typeof(ModelEntityConverter));
     builder.Services.AddTransientAssignableTo(
@@ -106,11 +100,8 @@ public static class HostExtensions
       typeof(IModelUserEntityConverter));
     builder.Services.AddSingleton(typeof(ModelUserEntityConverter));
     builder.Services.AddTransientAssignableTo(
-      typeof(IMeasurementAggregateConverter));
-    builder.Services.AddSingleton(typeof(MeasurementAggregateConverter));
-    builder.Services.AddTransientAssignableTo(
-      typeof(IPushRequestMeasurementConverter));
-    builder.Services.AddSingleton(typeof(PushRequestMeasurementConverter));
+      typeof(IModelCachingEntityConverter));
+    builder.Services.AddSingleton(typeof(ModelCachingEntityConverter));
     return builder;
   }
 
@@ -165,7 +156,7 @@ public static class HostExtensions
   {
     builder.Services.AddSingletonAssignableTo(typeof(IPublisher));
     builder.Services.AddSingletonAssignableTo(typeof(ISubscriber));
-    builder.Services.AddSingletonAssignableTo(typeof(IPipe));
+    builder.Services.AddScopedAssignableTo(typeof(IPipe));
     return builder;
   }
 
@@ -194,14 +185,6 @@ public static class HostExtensions
   {
     builder.Services.AddSingletonAssignableTo(typeof(IReactor));
     builder.Services.AddScopedAssignableTo(typeof(IHandler));
-    return builder;
-  }
-
-  private static IHostApplicationBuilder AddCaching(
-    this IHostApplicationBuilder builder
-  )
-  {
-    builder.Services.AddSingletonAssignableTo(typeof(ICache));
     return builder;
   }
 

@@ -1,8 +1,8 @@
 using System.Text;
 using System.Text.Json;
 using Ozds.Business.Activation;
-using Ozds.Business.Caching;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Mutations;
 using Ozds.Business.Observers.Abstractions;
@@ -26,9 +26,9 @@ public class JobsMessengerInactivityJobReactor(
 public class JobsMessengerInactivityJobHandler(
   EventQueries eventQueries,
   ModelMutations modelMutations,
+  TrackableQueries trackable,
   IHostEnvironment environment,
-  ModelActivator activator,
-  MessengerCache messengerCache
+  ModelActivator activator
 ) : Handler<JobsMessengerJobEventArgs>
 {
   private static readonly JsonSerializerOptions
@@ -41,7 +41,7 @@ public class JobsMessengerInactivityJobHandler(
     JobsMessengerJobEventArgs eventArgs,
     CancellationToken cancellationToken)
   {
-    var messenger = await messengerCache.GetAsync(
+    var messenger = await trackable.ReadById<IMessenger>(
       eventArgs.Id,
       cancellationToken);
     if (messenger is null)

@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models;
 
-public class RegisterModel : TrackableModel
+public class RegisterModel : TrackableModel, ICachedIdentifiable
 {
   [Required]
   public required string ScopeId { get; set; } = default!;
