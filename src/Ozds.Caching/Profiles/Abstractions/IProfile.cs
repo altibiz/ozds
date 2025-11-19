@@ -11,5 +11,8 @@ public interface IProfile
 
 public interface IProfile<T> : IProfile
 {
-  Type IProfile.Type => typeof(T);
+  Type IProfile.Type
+  {
+    get { return typeof(T); }
+  }
 }

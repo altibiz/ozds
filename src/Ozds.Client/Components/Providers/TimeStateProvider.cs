@@ -11,6 +11,8 @@ public partial class TimeStateProvider : DisposableComponentBase
 {
   private TimeState? _state;
 
+  private TimeQueries? timeQueries;
+
   [CascadingParameter]
   private ScopeState ScopeState { get; set; } = default!;
 
@@ -29,11 +31,14 @@ public partial class TimeStateProvider : DisposableComponentBase
     }
   }
 
-  private TimeQueries? timeQueries;
-
-  private TimeQueries TimeQueries =>
-    timeQueries ??= ScopedServices
-      .GetRequiredService<TimeQueries>();
+  private TimeQueries TimeQueries
+  {
+    get
+    {
+      return timeQueries ??= ScopedServices
+        .GetRequiredService<TimeQueries>();
+    }
+  }
 
   protected override async Task OnParametersSetAsync()
   {

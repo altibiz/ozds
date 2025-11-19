@@ -9,16 +9,19 @@ public class ProfileRegistry(
   IReadOnlyList<IProfile> profiles
 )
 {
-  private readonly IReadOnlyList<IProfile> profiles = profiles;
+  private readonly ConcurrentDictionary<Type, CacheConfiguration>
+    configurations =
+      new();
 
-  private readonly ConcurrentDictionary<Type, CacheConfiguration> configurations =
-    new();
+  private readonly IReadOnlyList<IProfile> profiles = profiles;
 
   public CacheConfiguration GetConfiguration(Type type)
   {
     return configurations
-      .GetOrAdd(type,
-        type => {
+      .GetOrAdd(
+        type,
+        type =>
+        {
           var configuration = profiles
             .Where(profile => type.IsAssignableTo(profile.Type))
             .Select(profile => profile.Configuration)
@@ -27,6 +30,7 @@ public class ProfileRegistry(
           {
             configuration.Policies.Add(new DefaultPolicy());
           }
+
           return configuration;
         });
   }

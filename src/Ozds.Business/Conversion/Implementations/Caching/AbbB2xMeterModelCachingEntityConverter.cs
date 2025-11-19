@@ -6,7 +6,8 @@ using Ozds.Caching.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.Caching;
 
-public class AbbB2xMeterModelCachingEntityConverter(IServiceProvider serviceProvider)
+public class AbbB2xMeterModelCachingEntityConverter(
+  IServiceProvider serviceProvider)
   : InheritingModelCachingEntityConverter<
     AbbB2xMeterModel,
     MeterModel,

@@ -49,14 +49,16 @@ public class ModelEntityConverterTest : OzdsBusinessHostTestBase
 
     var converted = modelEntityConverter.ToModel(entity);
     converted.Should().NotBeNull().And.BeAssignableTo(modelType);
-    converted.Should().BeEquivalentTo(activated, options => options
-      .Excluding(x =>
-        x.Name == "Created"
-        || (x.DeclaringType.IsAssignableTo(typeof(IJoin))
-          && x.Name == "ActivationSide")
-        || (x.DeclaringType.IsAssignableTo(typeof(IJoin))
-          && x.Name == "ActivationId")
-        || (x.DeclaringType.IsAssignableTo(typeof(ApiKeyModel))
-          && x.Name == "Value")));
+    converted.Should().BeEquivalentTo(
+      activated, options => options
+        .Excluding(
+          x =>
+            x.Name == "Created"
+            || (x.DeclaringType.IsAssignableTo(typeof(IJoin))
+              && x.Name == "ActivationSide")
+            || (x.DeclaringType.IsAssignableTo(typeof(IJoin))
+              && x.Name == "ActivationId")
+            || (x.DeclaringType.IsAssignableTo(typeof(ApiKeyModel))
+              && x.Name == "Value")));
   }
 }

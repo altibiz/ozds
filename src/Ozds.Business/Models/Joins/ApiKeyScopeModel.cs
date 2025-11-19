@@ -6,6 +6,12 @@ namespace Ozds.Business.Models.Joins;
 
 public class ApiKeyScopeModel : AuditableJoinModel, ICachedJoin
 {
+  [Required]
+  public required string ApiKeyId { get; set; } = default!;
+
+  [Required]
+  public required string ScopeId { get; set; } = default!;
+
   public override string LeftId
   {
     get { return ApiKeyId; }
@@ -27,10 +33,4 @@ public class ApiKeyScopeModel : AuditableJoinModel, ICachedJoin
   {
     get { return typeof(ScopeModel); }
   }
-
-  [Required]
-  public required string ApiKeyId { get; set; } = default!;
-
-  [Required]
-  public required string ScopeId { get; set; } = default!;
 }

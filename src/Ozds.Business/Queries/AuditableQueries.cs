@@ -2,8 +2,10 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Caching.Entities.Abstractions;
-using CachingIdentifiableMutations = Ozds.Caching.Mutations.IdentifiableEntityMutations;
-using CachingIdentifiableQueries = Ozds.Caching.Queries.IdentifiableEntityQueries;
+using CachingIdentifiableMutations =
+  Ozds.Caching.Mutations.IdentifiableEntityMutations;
+using CachingIdentifiableQueries =
+  Ozds.Caching.Queries.IdentifiableEntityQueries;
 using DataAuditableQueries = Ozds.Data.Queries.AuditableQueries;
 
 namespace Ozds.Business.Queries;
@@ -239,6 +241,7 @@ public class AuditableQueries(
         {
           continue;
         }
+
         var cachedEntity = modelCachingEntityConverter
           .ToEntity<IIdentifiableEntity>(model);
         await cachingMutations.Create(cachedEntity, cancellationToken);

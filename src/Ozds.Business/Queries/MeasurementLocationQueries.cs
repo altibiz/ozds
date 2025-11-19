@@ -6,7 +6,8 @@ using Ozds.Caching.Entities.Composite;
 using CachingCompositeMutations =
   Ozds.Caching.Mutations.CompositeEntityMutations;
 using CachingCompositeQueries = Ozds.Caching.Queries.CompositeEntityQueries;
-using CachingIdentifiableQueries = Ozds.Caching.Queries.IdentifiableEntityQueries;
+using CachingIdentifiableQueries =
+  Ozds.Caching.Queries.IdentifiableEntityQueries;
 using DataMeasurementLocationQueries =
   Ozds.Data.Queries.MeasurementLocationQueries;
 

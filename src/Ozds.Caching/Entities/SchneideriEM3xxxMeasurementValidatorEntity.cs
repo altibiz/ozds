@@ -2,7 +2,8 @@ using Ozds.Caching.Entities.Base;
 
 namespace Ozds.Caching.Entities;
 
-public class SchneideriEM3xxxMeasurementValidatorEntity : MeasurementValidatorEntity
+public class
+  SchneideriEM3xxxMeasurementValidatorEntity : MeasurementValidatorEntity
 {
   public decimal MinVoltage_V { get; set; } = default!;
 

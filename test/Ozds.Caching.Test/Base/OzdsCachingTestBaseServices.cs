@@ -5,51 +5,100 @@ namespace Ozds.Caching.Test.Base;
 
 public partial class OzdsCachingTestBase
 {
-  protected IServiceProvider Services =>
-    (host ?? throw new InvalidOperationException()).Services;
+  private CompositeEntityMutations? compositeMutations;
 
   private CompositeEntityQueries? compositeQueries;
 
-  protected CompositeEntityQueries CompositeQueries =>
-    compositeQueries ??= Services.GetRequiredService<CompositeEntityQueries>();
-
-  private IdentifiableEntityQueries? identifiableQueries;
-
-  protected IdentifiableEntityQueries IdentifiableQueries =>
-    identifiableQueries ??= Services.GetRequiredService<IdentifiableEntityQueries>();
-
-  private EntityQueries? entityQueries;
-
-  protected EntityQueries EntityQueries =>
-    entityQueries ??= Services.GetRequiredService<EntityQueries>();
-
-  private JoinEntityQueries? joinQueries;
-
-  protected JoinEntityQueries JoinQueries =>
-    joinQueries ??= Services.GetRequiredService<JoinEntityQueries>();
-
-  private CompositeEntityMutations? compositeMutations;
-
-  protected CompositeEntityMutations CompositeMutations =>
-    compositeMutations ??= Services.GetRequiredService<CompositeEntityMutations>();
-
-  private IdentifiableEntityMutations? identifiableMutations;
-
-  protected IdentifiableEntityMutations IdentifiableMutations =>
-    identifiableMutations ??= Services.GetRequiredService<IdentifiableEntityMutations>();
+  private EntityFactory? entityFactory;
 
   private EntityMutations? entityMutations;
 
-  protected EntityMutations EntityMutations =>
-    entityMutations ??= Services.GetRequiredService<EntityMutations>();
+  private EntityQueries? entityQueries;
+
+  private IdentifiableEntityMutations? identifiableMutations;
+
+  private IdentifiableEntityQueries? identifiableQueries;
 
   private JoinEntityMutations? joinMutations;
 
-  protected JoinEntityMutations JoinMutations =>
-    joinMutations ??= Services.GetRequiredService<JoinEntityMutations>();
+  private JoinEntityQueries? joinQueries;
 
-  private EntityFactory? entityFactory;
+  protected IServiceProvider Services
+  {
+    get { return (host ?? throw new InvalidOperationException()).Services; }
+  }
 
-  protected EntityFactory EntityFactory =>
-    entityFactory ??= new EntityFactory();
+  protected CompositeEntityQueries CompositeQueries
+  {
+    get
+    {
+      return compositeQueries ??=
+        Services.GetRequiredService<CompositeEntityQueries>();
+    }
+  }
+
+  protected IdentifiableEntityQueries IdentifiableQueries
+  {
+    get
+    {
+      return identifiableQueries ??=
+        Services.GetRequiredService<IdentifiableEntityQueries>();
+    }
+  }
+
+  protected EntityQueries EntityQueries
+  {
+    get
+    {
+      return entityQueries ??= Services.GetRequiredService<EntityQueries>();
+    }
+  }
+
+  protected JoinEntityQueries JoinQueries
+  {
+    get
+    {
+      return joinQueries ??= Services.GetRequiredService<JoinEntityQueries>();
+    }
+  }
+
+  protected CompositeEntityMutations CompositeMutations
+  {
+    get
+    {
+      return compositeMutations ??=
+        Services.GetRequiredService<CompositeEntityMutations>();
+    }
+  }
+
+  protected IdentifiableEntityMutations IdentifiableMutations
+  {
+    get
+    {
+      return identifiableMutations ??=
+        Services.GetRequiredService<IdentifiableEntityMutations>();
+    }
+  }
+
+  protected EntityMutations EntityMutations
+  {
+    get
+    {
+      return entityMutations ??= Services.GetRequiredService<EntityMutations>();
+    }
+  }
+
+  protected JoinEntityMutations JoinMutations
+  {
+    get
+    {
+      return joinMutations ??=
+        Services.GetRequiredService<JoinEntityMutations>();
+    }
+  }
+
+  protected EntityFactory EntityFactory
+  {
+    get { return entityFactory ??= new EntityFactory(); }
+  }
 }

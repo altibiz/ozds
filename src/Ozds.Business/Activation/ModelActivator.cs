@@ -1,6 +1,5 @@
 using System.Collections.Concurrent;
 using Ozds.Business.Activation.Abstractions;
-using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation;

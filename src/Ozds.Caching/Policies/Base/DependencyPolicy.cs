@@ -57,7 +57,7 @@ public abstract class DependencyPolicy : Policy
       .GetRequiredService<EntityReflector>();
     var cache = new DependencyPolicyCache(policyContext.Cache);
 
-    var dependencyEntity = new DependenciesEntity() { };
+    var dependencyEntity = new DependenciesEntity();
 
     foreach (var dependency in dependencies)
     {
@@ -145,8 +145,8 @@ public abstract class DependencyPolicy : Policy
       await EvictDependencyReferences(
         policyContext,
         cancellationToken,
-        cacheKey: reverseDependency,
-        value: value
+        reverseDependency,
+        value
       );
       await cache.Delete(
         reverseDependency,
@@ -170,8 +170,7 @@ public abstract class DependencyPolicy : Policy
 
   protected async IAsyncEnumerable<IIdentifiableEntity> GetDependencies(
     PolicyContext policyContext,
-    [EnumeratorCancellation]
-    CancellationToken cancellationToken,
+    [EnumeratorCancellation] CancellationToken cancellationToken,
     object? value = null
   )
   {
@@ -182,10 +181,11 @@ public abstract class DependencyPolicy : Policy
     }
 
     foreach (var property in value
-        .GetType()
-        .GetProperties()
-        .Where(property => property.CanRead)
-        .Where(property =>
+      .GetType()
+      .GetProperties()
+      .Where(property => property.CanRead)
+      .Where(
+        property =>
           property.PropertyType.IsAssignableTo(typeof(IIdentifiableEntity))
           || property.PropertyType
             .IsAssignableTo(typeof(IEnumerable<IIdentifiableEntity>))))

@@ -5,7 +5,8 @@ using Ozds.Caching.Entities.Enums;
 namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class OrderOfMagnitudeModelCachingEntityConverter
-  : ConcreteModelCachingEntityConverter<OrderOfMagnitudeModel, OrderOfMagnitudeEntity>
+  : ConcreteModelCachingEntityConverter<OrderOfMagnitudeModel,
+    OrderOfMagnitudeEntity>
 {
   public override OrderOfMagnitudeEntity ToEntity(OrderOfMagnitudeModel model)
   {

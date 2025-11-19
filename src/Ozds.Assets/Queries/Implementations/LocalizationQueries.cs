@@ -23,7 +23,8 @@ public class LocalizationQueries(
     return translationCache.GetOrAdd(
       cacheKey, _ =>
       {
-        var translations = assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
+        var translations =
+          assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
 
         var overrides = translationQueries.KeyOverrides(type, plural);
         foreach (var key in overrides)
@@ -45,7 +46,8 @@ public class LocalizationQueries(
     return translationCache.GetOrAdd(
       cacheKey, _ =>
       {
-        var translations = assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
+        var translations =
+          assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
 
         var overrides = translationQueries.KeyOverrides(type, member);
         foreach (var key in overrides)
@@ -67,7 +69,8 @@ public class LocalizationQueries(
     return translationCache.GetOrAdd(
       cacheKey, _ =>
       {
-        var translations = assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
+        var translations =
+          assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
 
         var overrides = translationQueries.KeyOverrides(member);
         foreach (var key in overrides)
@@ -89,7 +92,8 @@ public class LocalizationQueries(
     return translationCache.GetOrAdd(
       cacheKey, _ =>
       {
-        var translations = assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
+        var translations =
+          assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
 
         if (translations.TryGetValue(notLocalized, out var value))
         {

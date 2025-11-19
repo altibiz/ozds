@@ -21,20 +21,6 @@ public abstract class Cache<TValue>(
 
   private CacheConfiguration configuration = CacheConfiguration.Default;
 
-  protected abstract Task Create(
-    CacheEntryConfiguration entryConfiguration,
-    string key,
-    string value,
-    CancellationToken cancellationToken);
-
-  protected abstract Task<string?> Read(
-    string key,
-    CancellationToken cancellationToken);
-
-  protected abstract Task<string?> Delete(
-    string key,
-    CancellationToken cancellationToken);
-
   void IConfigurableCache.Configure(CacheConfiguration configuration)
   {
     this.configuration = configuration;
@@ -47,20 +33,23 @@ public abstract class Cache<TValue>(
   {
     foreach (var policy in configuration.Policies)
     {
-      await policy.HandleCache(new CreateCachePolicyContext(
-        services,
-        this,
-        key,
-        value
-      ), cancellationToken);
+      await policy.HandleCache(
+        new CreateCachePolicyContext(
+          services,
+          this,
+          key,
+          value
+        ), cancellationToken);
     }
-    publisher.Publish(new CreateCacheEventArgs
-    {
-      CacheConfiguration = configuration,
-      Operation = CacheOperation.Create,
-      Key = key,
-      Value = value
-    });
+
+    publisher.Publish(
+      new CreateCacheEventArgs
+      {
+        CacheConfiguration = configuration,
+        Operation = CacheOperation.Create,
+        Key = key,
+        Value = value
+      });
   }
 
   async Task<TValue?> ICache<TValue>.Read(
@@ -87,19 +76,22 @@ public abstract class Cache<TValue>(
   {
     foreach (var policy in configuration.Policies)
     {
-      await policy.HandleCache(new CachePolicyContext(
-        services,
-        this,
-        CacheOperation.Delete,
-        key
-      ), cancellationToken);
+      await policy.HandleCache(
+        new CachePolicyContext(
+          services,
+          this,
+          CacheOperation.Delete,
+          key
+        ), cancellationToken);
     }
-    publisher.Publish(new CacheEventArgs
-    {
-      CacheConfiguration = configuration,
-      Operation = CacheOperation.Delete,
-      Key = key
-    });
+
+    publisher.Publish(
+      new CacheEventArgs
+      {
+        CacheConfiguration = configuration,
+        Operation = CacheOperation.Delete,
+        Key = key
+      });
   }
 
   async Task IPolicyCache.Create(
@@ -147,4 +139,18 @@ public abstract class Cache<TValue>(
   {
     await Delete(key, cancellationToken);
   }
+
+  protected abstract Task Create(
+    CacheEntryConfiguration entryConfiguration,
+    string key,
+    string value,
+    CancellationToken cancellationToken);
+
+  protected abstract Task<string?> Read(
+    string key,
+    CancellationToken cancellationToken);
+
+  protected abstract Task<string?> Delete(
+    string key,
+    CancellationToken cancellationToken);
 }

@@ -18,10 +18,16 @@ public class CacheConfiguration
 
   public required CacheEntryConfiguration Entry { get; set; }
 
-  public static CacheConfiguration Default => new()
+  public static CacheConfiguration Default
   {
-    Policies = new List<IPolicy>(),
-    JsonSerializerOptions = new(),
-    Entry = new()
-  };
+    get
+    {
+      return new CacheConfiguration
+      {
+        Policies = new List<IPolicy>(),
+        JsonSerializerOptions = new JsonSerializerOptions(),
+        Entry = new CacheEntryConfiguration()
+      };
+    }
+  }
 }

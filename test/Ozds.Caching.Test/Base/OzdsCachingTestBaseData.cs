@@ -32,56 +32,80 @@ public partial class OzdsCachingTestBase
   {
     yield return
       new CompositeEntityWithDependency<ApiKeyAuthEntity, ApiKeyEntity>(
-      (composite, dependency) =>
-      {
-        dependency.Id = composite.ApiKey.Id;
-      },
-      composite => composite.ApiKey);
+        (composite, dependency) => { dependency.Id = composite.ApiKey.Id; },
+        composite => composite.ApiKey);
     yield return
       new CompositeEntityWithDependency<ApiKeyAuthEntity, ScopeEntity>(
-      (composite, dependency) =>
-      {
-        dependency.Id =
-          composite.Scopes.First(x => x is not MeasurementScopeEntity).Id;
-      },
-      composite =>
-        composite.Scopes.First(x => x is not MeasurementScopeEntity));
+        (composite, dependency) =>
+        {
+          dependency.Id =
+            composite.Scopes.First(x => x is not MeasurementScopeEntity).Id;
+        },
+        composite =>
+          composite.Scopes.First(x => x is not MeasurementScopeEntity));
     yield return
-      new CompositeEntityWithDependency<ApiKeyAuthEntity, MeasurementScopeEntity>(
-      (composite, dependency) =>
-      {
-        dependency.Id =
-          composite.Scopes.First(x => x is MeasurementScopeEntity).Id;
-      },
-      composite =>
-        (composite.Scopes
-          .First(x => x is MeasurementScopeEntity)
-          as MeasurementScopeEntity)!);
+      new CompositeEntityWithDependency<ApiKeyAuthEntity,
+        MeasurementScopeEntity>(
+        (composite, dependency) =>
+        {
+          dependency.Id =
+            composite.Scopes.First(x => x is MeasurementScopeEntity).Id;
+        },
+        composite =>
+          (composite.Scopes
+              .First(x => x is MeasurementScopeEntity)
+            as MeasurementScopeEntity)!);
     yield return
       new CompositeEntityWithDependency<ApiKeyAuthEntity, RegisterEntity>(
-      (composite, dependency) =>
-      {
-        dependency.Id = composite.Registers[0].Id;
-      },
-      composite => composite.Registers[0]);
+        (composite, dependency) =>
+        {
+          dependency.Id = composite.Registers[0].Id;
+        },
+        composite => composite.Registers[0]);
     yield return
       new CompositeEntityWithDependency<
-      MeterMeasurementLocationEntity,
-      IMeterEntity>(
-      (composite, dependency) =>
-      {
-        dependency.Id = composite.Meter.Id;
-      },
-      composite => composite.Meter);
+        MeterMeasurementLocationEntity,
+        IMeterEntity>(
+        (composite, dependency) => { dependency.Id = composite.Meter.Id; },
+        composite => composite.Meter);
     yield return
       new CompositeEntityWithDependency<
-      MeterMeasurementLocationEntity,
-      IMeasurementLocationEntity>(
-      (composite, dependency) =>
-      {
-        dependency.Id = composite.MeasurementLocation.Id;
-      },
-      composite => composite.MeasurementLocation);
+        MeterMeasurementLocationEntity,
+        IMeasurementLocationEntity>(
+        (composite, dependency) =>
+        {
+          dependency.Id = composite.MeasurementLocation.Id;
+        },
+        composite => composite.MeasurementLocation);
+  }
+
+  public IEnumerable<CompositeEntityWithIndirectDependency>
+    CompositeEntitiesWithIndirectDependency()
+  {
+    yield return
+      new CompositeEntityWithIndirectDependency<ApiKeyAuthEntity,
+        ApiKeyScopeEntity>(
+        (composite, dependency) =>
+        {
+          dependency.ApiKeyId = composite.ApiKey.Id;
+        },
+        dependency => (dependency as IJoinEntity).Id);
+    yield return
+      new CompositeEntityWithIndirectDependency<ApiKeyAuthEntity,
+        ApiKeyScopeEntity>(
+        (composite, dependency) =>
+        {
+          dependency.ScopeId = composite.Scopes[0].Id;
+        },
+        dependency => (dependency as IJoinEntity).Id);
+    yield return
+      new CompositeEntityWithIndirectDependency<ApiKeyAuthEntity,
+        RegisterEntity>(
+        (composite, dependency) =>
+        {
+          dependency.ScopeId = composite.Registers[0].ScopeId;
+        },
+        dependency => dependency.Id);
   }
 
   public record CompositeEntityWithDependency(
@@ -113,32 +137,6 @@ public partial class OzdsCachingTestBase
     where TComposite : ICompositeEntity
     where TDependency : IIdentifiableEntity;
 
-  public IEnumerable<CompositeEntityWithIndirectDependency>
-    CompositeEntitiesWithIndirectDependency()
-  {
-    yield return
-      new CompositeEntityWithIndirectDependency<ApiKeyAuthEntity, ApiKeyScopeEntity>(
-      (composite, dependency) =>
-      {
-        dependency.ApiKeyId = composite.ApiKey.Id;
-      },
-      dependency => (dependency as IJoinEntity).Id);
-    yield return
-      new CompositeEntityWithIndirectDependency<ApiKeyAuthEntity, ApiKeyScopeEntity>(
-      (composite, dependency) =>
-      {
-        dependency.ScopeId = composite.Scopes[0].Id;
-      },
-      dependency => (dependency as IJoinEntity).Id);
-    yield return
-      new CompositeEntityWithIndirectDependency<ApiKeyAuthEntity, RegisterEntity>(
-      (composite, dependency) =>
-      {
-        dependency.ScopeId = composite.Registers[0].ScopeId;
-      },
-      dependency => dependency.Id);
-  }
-
   public record CompositeEntityWithIndirectDependency(
     Type Composite,
     Type IndirectDependency,
@@ -146,7 +144,8 @@ public partial class OzdsCachingTestBase
     Func<object, string> Key
   );
 
-  public sealed record CompositeEntityWithIndirectDependency<TComposite, TIndirectDependency>(
+  public sealed record CompositeEntityWithIndirectDependency<TComposite,
+    TIndirectDependency>(
     Action<TComposite, TIndirectDependency> SetIdTyped,
     Func<TIndirectDependency, string> KeyTyped
   ) : CompositeEntityWithIndirectDependency(
@@ -158,7 +157,7 @@ public partial class OzdsCachingTestBase
       var dependencyEntity = (TIndirectDependency)dependency;
       SetIdTyped(compositeEntity, dependencyEntity);
     },
-    (dependency) =>
+    dependency =>
     {
       var dependencyEntity = (TIndirectDependency)dependency;
       return KeyTyped(dependencyEntity);

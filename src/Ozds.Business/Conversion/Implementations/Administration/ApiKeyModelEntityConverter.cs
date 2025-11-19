@@ -16,8 +16,8 @@ public class ApiKeyModelEntityConverter(
   ApiKeyEntity,
   TrackableEntity>(serviceProvider)
 {
-  private readonly Data.Reflection.EntityReflector entityReflector =
-    serviceProvider.GetRequiredService<Data.Reflection.EntityReflector>();
+  private readonly EntityReflector entityReflector =
+    serviceProvider.GetRequiredService<EntityReflector>();
 
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();

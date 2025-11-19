@@ -9,28 +9,28 @@ public sealed class OzdsMigrationHost(
 ) : OzdsBusinessHost<
   HostApplicationBuilder,
   IHost>(
-    Host.CreateApplicationBuilder(),
-    builder =>
-    {
-      builder.Configuration.AddInMemoryCollection(
-        new Dictionary<string, string?>
-        {
-          { "Ozds:Users:WithAuth", "false" },
-          { "Ozds:Messaging:WithBus", "false" },
-          { "Ozds:Messaging:WithServices", "false" },
-          { "Ozds:Jobs:WithServices", "false" },
-          { "Ozds:Business:WithReactors", "false" },
-          { "Ozds:Data:WithServices", "false" }
-        });
+  Host.CreateApplicationBuilder(),
+  builder =>
+  {
+    builder.Configuration.AddInMemoryCollection(
+      new Dictionary<string, string?>
+      {
+        { "Ozds:Users:WithAuth", "false" },
+        { "Ozds:Messaging:WithBus", "false" },
+        { "Ozds:Messaging:WithServices", "false" },
+        { "Ozds:Jobs:WithServices", "false" },
+        { "Ozds:Business:WithReactors", "false" },
+        { "Ozds:Data:WithServices", "false" }
+      });
 
-      builder.AddOzdsMigration(arguments);
-    },
-    builder =>
-    {
-      var inner = builder.Build();
+    builder.AddOzdsMigration(arguments);
+  },
+  builder =>
+  {
+    var inner = builder.Build();
 
-      return inner;
-    }
-  )
+    return inner;
+  }
+)
 {
 }

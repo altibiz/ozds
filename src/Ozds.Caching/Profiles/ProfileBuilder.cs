@@ -19,16 +19,18 @@ public class ProfileBuilder
       .Select(profiler => profiler.Profile(CacheConfigurationBuilder.Default))
       .ToList();
 
-    return new(profiles);
+    return new ProfileRegistry(profiles);
   }
 
   public ProfileRegistry Build(Type type)
   {
     var profilers = type.Assembly
       .GetTypes()
-      .Where(type => type
-        .IsAssignableTo(typeof(IProfiler<>)
-        .MakeGenericType(type)))
+      .Where(
+        type => type
+          .IsAssignableTo(
+            typeof(IProfiler<>)
+              .MakeGenericType(type)))
       .Select(Activator.CreateInstance)
       .OfType<IProfiler>()
       .ToList();
@@ -37,6 +39,6 @@ public class ProfileBuilder
       .Select(profiler => profiler.Profile(CacheConfigurationBuilder.Default))
       .ToList();
 
-    return new(profiles);
+    return new ProfileRegistry(profiles);
   }
 }

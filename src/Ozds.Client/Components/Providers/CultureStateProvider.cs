@@ -14,6 +14,8 @@ public partial class CultureStateProvider : DisposableComponentBase
 
   private CultureState? _state;
 
+  private LocalizationQueries? localizationQueries;
+
   [CascadingParameter]
   private ScopeState ScopeState { get; set; } = default!;
 
@@ -38,11 +40,14 @@ public partial class CultureStateProvider : DisposableComponentBase
     }
   }
 
-  private LocalizationQueries? localizationQueries;
-
-  private LocalizationQueries LocalizationQueries =>
-    localizationQueries ??= ScopedServices
-      .GetRequiredService<LocalizationQueries>();
+  private LocalizationQueries LocalizationQueries
+  {
+    get
+    {
+      return localizationQueries ??= ScopedServices
+        .GetRequiredService<LocalizationQueries>();
+    }
+  }
 
   protected override async Task OnParametersSetAsync()
   {

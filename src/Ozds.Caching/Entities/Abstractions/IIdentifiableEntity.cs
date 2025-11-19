@@ -14,6 +14,8 @@ public class IdentifiableEntityProfiler : Profiler<IIdentifiableEntity>
 {
   protected override CacheConfigurationBuilder Configure(
     CacheConfigurationBuilder builder
-  ) =>
-    builder.WithReverseDependencyEviction();
+  )
+  {
+    return builder.WithReverseDependencyEviction();
+  }
 }

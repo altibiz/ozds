@@ -6,14 +6,19 @@ namespace Ozds.Client.Components.Base;
 
 public abstract partial class OzdsComponentBase : DisposableComponentBase
 {
+  private TimeQueries? timeQueries;
+
   [CascadingParameter]
   private TimeState TimeState { get; set; } = default!;
 
-  private TimeQueries? timeQueries;
-
-  private TimeQueries TimeQueries =>
-    timeQueries ??= ScopedServices
-      .GetRequiredService<TimeQueries>();
+  private TimeQueries TimeQueries
+  {
+    get
+    {
+      return timeQueries ??= ScopedServices
+        .GetRequiredService<TimeQueries>();
+    }
+  }
 
   protected TimeZoneInfo GetTimeZone()
   {

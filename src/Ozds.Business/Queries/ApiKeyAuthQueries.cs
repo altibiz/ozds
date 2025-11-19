@@ -4,7 +4,8 @@ using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Caching.Entities;
 using Ozds.Caching.Entities.Composite;
-using CachingCompositeMutations = Ozds.Caching.Mutations.CompositeEntityMutations;
+using CachingCompositeMutations =
+  Ozds.Caching.Mutations.CompositeEntityMutations;
 using CachingCompositeQueries = Ozds.Caching.Queries.CompositeEntityQueries;
 using DataApiKeyAuthQueries = Ozds.Data.Queries.ApiKeyAuthQueries;
 
@@ -27,8 +28,8 @@ public class ApiKeyAuthQueries(
     var cachedEntity = apiKeyId is null
       ? null
       : await cachingCompositeQueries.Read<ApiKeyAuthEntity>(
-          apiKeyId,
-          cancellationToken);
+        apiKeyId,
+        cancellationToken);
 
     var cachedModel = cachedEntity is null
       ? null

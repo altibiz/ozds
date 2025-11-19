@@ -1,6 +1,4 @@
 using Ozds.Caching.Entities.Abstractions;
-using Ozds.Caching.Mutations;
-using Ozds.Caching.Queries;
 using Ozds.Caching.Test.Base;
 using Ozds.Caching.Test.Extensions;
 

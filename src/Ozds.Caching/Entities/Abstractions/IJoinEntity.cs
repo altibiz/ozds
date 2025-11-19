@@ -4,7 +4,10 @@ public interface IJoinEntity : IEntity
 {
   private const string CacheIdSeparator = ":";
 
-  public string Id => LeftId + CacheIdSeparator + RightId;
+  public string Id
+  {
+    get { return LeftId + CacheIdSeparator + RightId; }
+  }
 
   public string LeftId { get; }
 

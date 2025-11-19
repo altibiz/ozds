@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Ozds.Assets;
 using Ozds.Assets.Queries.Abstractions;
 
 namespace Ozds.Document.Components;

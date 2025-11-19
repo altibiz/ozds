@@ -9,7 +9,10 @@ public interface ICached
 
 public interface ICachedIdentifiable : ICached, IIdentifiable
 {
-  string ICached.CacheId => Id;
+  string ICached.CacheId
+  {
+    get { return Id; }
+  }
 }
 
 public interface ICachedComposite : ICached, IComposite
@@ -20,5 +23,8 @@ public interface ICachedJoin : ICached, IJoin
 {
   private const string CacheIdSeparator = ":";
 
-  string ICached.CacheId => LeftId + CacheIdSeparator + RightId;
+  string ICached.CacheId
+  {
+    get { return LeftId + CacheIdSeparator + RightId; }
+  }
 }

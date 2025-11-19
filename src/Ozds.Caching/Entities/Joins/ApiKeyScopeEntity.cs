@@ -7,9 +7,15 @@ namespace Ozds.Caching.Entities.Joins;
 
 public class ApiKeyScopeEntity : AuditableJoinEntity
 {
-  public override string LeftId => ApiKeyId;
+  public override string LeftId
+  {
+    get { return ApiKeyId; }
+  }
 
-  public override string RightId => ScopeId;
+  public override string RightId
+  {
+    get { return ScopeId; }
+  }
 
   public string ApiKeyId { get; set; } = default!;
 
@@ -19,8 +25,9 @@ public class ApiKeyScopeEntity : AuditableJoinEntity
 public class ApiKeyScopeEntityProfiler : Profiler<ApiKeyScopeEntity>
 {
   protected override CacheConfigurationBuilder Configure(
-    CacheConfigurationBuilder builder) =>
-    builder
+    CacheConfigurationBuilder builder)
+  {
+    return builder
       .WithIndirectReverseDependencyEvictionPolicy(
         x => x is ApiKeyScopeEntity entity ? entity.ApiKeyId : null,
         typeof(ApiKeyEntity)
@@ -29,4 +36,5 @@ public class ApiKeyScopeEntityProfiler : Profiler<ApiKeyScopeEntity>
         x => x is ApiKeyScopeEntity entity ? entity.ScopeId : null,
         typeof(IScopeEntity)
       );
+  }
 }

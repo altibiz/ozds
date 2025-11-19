@@ -116,9 +116,10 @@ public static class HostExtensions
   )
   {
     builder.Services.AddSingleton<ProfileBuilder>();
-    builder.Services.AddSingleton(services =>
-      services.GetRequiredService<ProfileBuilder>()
-        .Build(typeof(HostExtensions).Assembly));
+    builder.Services.AddSingleton(
+      services =>
+        services.GetRequiredService<ProfileBuilder>()
+          .Build(typeof(HostExtensions).Assembly));
     return builder;
   }
 

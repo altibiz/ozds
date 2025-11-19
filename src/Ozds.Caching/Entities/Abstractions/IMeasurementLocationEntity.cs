@@ -13,10 +13,12 @@ public class MeasurementLocationEntityProfiler
 {
   protected override CacheConfigurationBuilder Configure(
     CacheConfigurationBuilder builder
-  ) =>
-    builder
+  )
+  {
+    return builder
       .WithIndirectReverseDependencyEvictionPolicy(
         x => x is IMeasurementLocationEntity entity ? entity.MeterId : null,
         typeof(IMeterEntity)
       );
+  }
 }

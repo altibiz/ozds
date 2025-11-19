@@ -7,7 +7,8 @@ namespace Ozds.Business.Conversion;
 public class ModelCachingEntityConverter(IServiceProvider serviceProvider)
 {
   private readonly
-    ConcurrentDictionary<Type, IModelCachingEntityConverter> entityCache = new();
+    ConcurrentDictionary<Type, IModelCachingEntityConverter>
+    entityCache = new();
 
   private readonly
     ConcurrentDictionary<Type, IModelCachingEntityConverter> modelCache = new();

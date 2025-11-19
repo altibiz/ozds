@@ -27,20 +27,26 @@ public class CacheHandler(
     var factory = serviceProvider.GetRequiredService<IPolicyCacheFactory>();
     var cache = factory.Create();
     var policyContext = eventArgs is CreateCacheEventArgs createCacheEventArgs
-      ? new CreateCacheEventPolicyContext(serviceProvider, cache, createCacheEventArgs)
+      ? new CreateCacheEventPolicyContext(
+        serviceProvider, cache, createCacheEventArgs)
       : new CacheEventPolicyContext(serviceProvider, cache, eventArgs);
-    await Task.WhenAll(eventArgs.CacheConfiguration.Policies
-      .Select(async policy =>
-      {
-        try {
-          await policy.HandleCacheEvent(policyContext, cancellationToken);
-        } catch (Exception ex) {
-          logger.LogError(
-            ex,
-            "Policy {Policy} failed with {Key}",
-            policy.GetType().Name,
-            eventArgs.Key);
-        }
-      }));
+    await Task.WhenAll(
+      eventArgs.CacheConfiguration.Policies
+        .Select(
+          async policy =>
+          {
+            try
+            {
+              await policy.HandleCacheEvent(policyContext, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+              logger.LogError(
+                ex,
+                "Policy {Policy} failed with {Key}",
+                policy.GetType().Name,
+                eventArgs.Key);
+            }
+          }));
   }
 }

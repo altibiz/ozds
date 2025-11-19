@@ -16,24 +16,23 @@ public abstract partial class OzdsComponentBase : DisposableComponentBase
 
   private LocalizationQueries? localizationQueries;
 
-  private LocalizationQueries LocalizationQueries =>
-    localizationQueries ??= ScopedServices
-      .GetRequiredService<LocalizationQueries>();
-
-  protected CultureInfo CroatianCulture
+  private LocalizationQueries LocalizationQueries
   {
     get
     {
-      return LocalizationQueries.CroatianCulture;
+      return localizationQueries ??= ScopedServices
+        .GetRequiredService<LocalizationQueries>();
     }
+  }
+
+  protected CultureInfo CroatianCulture
+  {
+    get { return LocalizationQueries.CroatianCulture; }
   }
 
   protected CultureInfo EnglishCulture
   {
-    get
-    {
-      return LocalizationQueries.EnglishCulture;
-    }
+    get { return LocalizationQueries.EnglishCulture; }
   }
 
   protected string NumericString(decimal? number, int places = 2)

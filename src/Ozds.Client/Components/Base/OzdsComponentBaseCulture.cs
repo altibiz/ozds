@@ -1,6 +1,5 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components;
-using Ozds.Business.Queries;
 using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Base;

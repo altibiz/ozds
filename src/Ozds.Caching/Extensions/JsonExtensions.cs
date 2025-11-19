@@ -19,13 +19,14 @@ public static class JsonExtensions
           {
             JsonObject jsonBaseChildObj
               when prop.Value is JsonObject jsonMergeChildObj =>
-                jsonBaseChildObj.Merge(jsonMergeChildObj),
+              jsonBaseChildObj.Merge(jsonMergeChildObj),
             JsonArray jsonBaseChildArray
               when prop.Value is JsonArray jsonMergeChildArray =>
-                jsonBaseChildArray.Merge(jsonMergeChildArray),
+              jsonBaseChildArray.Merge(jsonMergeChildArray),
             _ => prop.Value
           };
         }
+
         break;
       }
       case JsonArray jsonBaseArray when jsonMerge is JsonArray jsonMergeArray:
@@ -36,6 +37,7 @@ public static class JsonExtensions
         {
           jsonBaseArray.Add(mergeNode);
         }
+
         break;
       }
       default:

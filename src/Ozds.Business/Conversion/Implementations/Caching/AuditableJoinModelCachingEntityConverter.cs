@@ -4,7 +4,8 @@ using Ozds.Caching.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.Caching;
 
-public class AuditableJoinModelCachingEntityConverter(IServiceProvider serviceProvider)
+public class AuditableJoinModelCachingEntityConverter(
+  IServiceProvider serviceProvider)
   : InheritingModelCachingEntityConverter<
     AuditableJoinModel,
     JoinModel,

@@ -14,7 +14,9 @@ public class CompositeEntityProfiler : Profiler<ICompositeEntity>
 {
   protected override CacheConfigurationBuilder Configure(
     CacheConfigurationBuilder builder
-  ) =>
-    builder
+  )
+  {
+    return builder
       .WithDependencyTracking();
+  }
 }

@@ -4,7 +4,8 @@ using Ozds.Caching.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.Caching;
 
-public class TrackableModelCachingEntityConverter(IServiceProvider serviceProvider)
+public class TrackableModelCachingEntityConverter(
+  IServiceProvider serviceProvider)
   : InheritingModelCachingEntityConverter<
     TrackableModel,
     IdentifiableModel,

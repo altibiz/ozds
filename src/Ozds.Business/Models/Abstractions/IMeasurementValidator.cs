@@ -1,5 +1,6 @@
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IMeasurementValidator : ITrackableIdentifiable, ICachedIdentifiable
+public interface IMeasurementValidator : ITrackableIdentifiable,
+  ICachedIdentifiable
 {
 }

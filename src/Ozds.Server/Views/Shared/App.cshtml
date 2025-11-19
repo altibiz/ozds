@@ -11,7 +11,7 @@ await Html.RenderComponentAsync<App>(
   RenderMode.Server,
   new
   {
-    CultureId = Model.CultureId,
+    Model.CultureId,
     Model.LogoutToken
   }
 ))

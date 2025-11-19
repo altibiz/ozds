@@ -19,8 +19,6 @@ public class OzdsBusinessHost<THostApplicationBuilder, THost> : IHost
 {
   private readonly IHost inner;
 
-  protected bool IsDisposed { get; set; }
-
   public OzdsBusinessHost(
     THostApplicationBuilder builder,
     Action<THostApplicationBuilder> configure,
@@ -46,13 +44,22 @@ public class OzdsBusinessHost<THostApplicationBuilder, THost> : IHost
     inner = build(builder);
   }
 
-  public IServiceProvider Services => inner.Services;
+  protected bool IsDisposed { get; set; }
 
-  public Task StartAsync(CancellationToken cancellationToken = default) =>
-    inner.StartAsync(cancellationToken);
+  public IServiceProvider Services
+  {
+    get { return inner.Services; }
+  }
 
-  public Task StopAsync(CancellationToken cancellationToken = default) =>
-    inner.StopAsync(cancellationToken);
+  public Task StartAsync(CancellationToken cancellationToken = default)
+  {
+    return inner.StartAsync(cancellationToken);
+  }
+
+  public Task StopAsync(CancellationToken cancellationToken = default)
+  {
+    return inner.StopAsync(cancellationToken);
+  }
 
   public void Dispose()
   {

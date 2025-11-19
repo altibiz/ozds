@@ -41,6 +41,7 @@ public class IndirectReverseDependencyEvictionPolicy(
       {
         return;
       }
+
       await EvictReverseDependencies(
         policyContext,
         cancellationToken,
@@ -85,9 +86,9 @@ public class IndirectReverseDependencyEvictionPolicy(
         scopeReverseDependencies.ReverseDependencies);
     }
 
-    return new()
+    return new ReverseDependenciesEntity
     {
-      ReverseDependencies = reverseDependencies,
+      ReverseDependencies = reverseDependencies
     };
   }
 }

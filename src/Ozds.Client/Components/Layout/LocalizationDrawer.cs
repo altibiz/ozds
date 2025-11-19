@@ -7,14 +7,19 @@ namespace Ozds.Client.Components.Layout;
 
 public partial class LocalizationDrawer : OzdsComponentBase
 {
+  private LocalizationQueries? localizationQueries;
+
   [CascadingParameter]
   private LayoutState LayoutState { get; set; } = default!;
 
-  private LocalizationQueries? localizationQueries;
-
-  private LocalizationQueries LocalizationQueries =>
-    localizationQueries ??= ScopedServices
-      .GetRequiredService<LocalizationQueries>();
+  private LocalizationQueries LocalizationQueries
+  {
+    get
+    {
+      return localizationQueries ??= ScopedServices
+        .GetRequiredService<LocalizationQueries>();
+    }
+  }
 
   private void SetLocalizationDrawerOpen(bool open)
   {

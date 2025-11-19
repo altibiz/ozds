@@ -36,13 +36,14 @@ public partial class OzdsCachingTestBase
   public async Task SetUp(CancellationToken cancellationToken)
   {
     var builder = Host.CreateApplicationBuilder();
-    builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
-    {
+    builder.Configuration.AddInMemoryCollection(
+      new Dictionary<string, string?>
       {
-        "Ozds:Caching:ConnectionString",
-        "memory://"
-      }
-    });
+        {
+          "Ozds:Caching:ConnectionString",
+          "memory://"
+        }
+      });
     builder.AddOzdsCaching();
     builder.AddOzdsAssets();
     builder.AddOzdsTime();

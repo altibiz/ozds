@@ -16,8 +16,9 @@ public class ScopeModelCachingEntityConverter(
   ScopeEntity,
   TrackableEntity>(serviceProvider)
 {
-  private readonly ModelCachingEntityConverter modelEntityConverter = serviceProvider
-    .GetRequiredService<ModelCachingEntityConverter>();
+  private readonly ModelCachingEntityConverter modelEntityConverter =
+    serviceProvider
+      .GetRequiredService<ModelCachingEntityConverter>();
 
   public override void InitializeEntity(
     ScopeModel model,

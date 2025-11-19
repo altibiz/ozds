@@ -158,23 +158,6 @@ public class ApiV1MeasurementsController(
       ));
   }
 
-  private sealed record QuarterHourlyAggregatesByLocationResponse(
-    DateTimeOffset? DateFrom,
-    DateTimeOffset? DateTo,
-    int? Page,
-    int? PageSize,
-    int? TotalCount,
-    string LocationId,
-    IList<QuarterHourlyAggregatesByLocationResponseMeasurement> Measurements
-  );
-
-  private sealed record QuarterHourlyAggregatesByLocationResponseMeasurement(
-    DateTimeOffset Timestamp,
-    string MeterId,
-    string MeasurementLocationId,
-    IDictionary<string, string> Registers
-  );
-
   [HttpGet]
   [Route("quarter-hourly-aggregates-by-network-user/{networkUserId}")]
   [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -317,25 +300,9 @@ public class ApiV1MeasurementsController(
       ));
   }
 
-  private sealed record QuarterHourlyAggregatesByNetworkUserResponse(
-    DateTimeOffset? DateFrom,
-    DateTimeOffset? DateTo,
-    int? Page,
-    int? PageSize,
-    int? TotalCount,
-    string NetworkUserId,
-    IList<QuarterHourlyAggregatesByNetworkUserResponseMeasurement> Measurements
-  );
-
-  private sealed record QuarterHourlyAggregatesByNetworkUserResponseMeasurement(
-    DateTimeOffset Timestamp,
-    string MeterId,
-    string MeasurementLocationId,
-    IDictionary<string, string> Registers
-  );
-
   [HttpGet]
-  [Route("quarter-hourly-aggregates-by-measurement-location/{measurementLocationId}")]
+  [Route(
+    "quarter-hourly-aggregates-by-measurement-location/{measurementLocationId}")]
   [ProducesResponseType(StatusCodes.Status404NotFound)]
   [ProducesResponseType(
     typeof(QuarterHourlyAggregatesByMeasurementLocationResponse),
@@ -382,7 +349,8 @@ public class ApiV1MeasurementsController(
         );
 
       var lastMeasurementsJson =
-        new List<QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement>();
+        new List<
+          QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement>();
       foreach (var measurement in lastMeasurements)
       {
         var measurementJson =
@@ -425,7 +393,8 @@ public class ApiV1MeasurementsController(
       );
 
     var pagedMeasurementsJson =
-      new List<QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement>();
+      new List<
+        QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement>();
     foreach (var measurement in pageMeasurements.Items)
     {
       var measurementJson =
@@ -457,6 +426,40 @@ public class ApiV1MeasurementsController(
       ));
   }
 
+  private sealed record QuarterHourlyAggregatesByLocationResponse(
+    DateTimeOffset? DateFrom,
+    DateTimeOffset? DateTo,
+    int? Page,
+    int? PageSize,
+    int? TotalCount,
+    string LocationId,
+    IList<QuarterHourlyAggregatesByLocationResponseMeasurement> Measurements
+  );
+
+  private sealed record QuarterHourlyAggregatesByLocationResponseMeasurement(
+    DateTimeOffset Timestamp,
+    string MeterId,
+    string MeasurementLocationId,
+    IDictionary<string, string> Registers
+  );
+
+  private sealed record QuarterHourlyAggregatesByNetworkUserResponse(
+    DateTimeOffset? DateFrom,
+    DateTimeOffset? DateTo,
+    int? Page,
+    int? PageSize,
+    int? TotalCount,
+    string NetworkUserId,
+    IList<QuarterHourlyAggregatesByNetworkUserResponseMeasurement> Measurements
+  );
+
+  private sealed record QuarterHourlyAggregatesByNetworkUserResponseMeasurement(
+    DateTimeOffset Timestamp,
+    string MeterId,
+    string MeasurementLocationId,
+    IDictionary<string, string> Registers
+  );
+
   private sealed record QuarterHourlyAggregatesByMeasurementLocationResponse(
     DateTimeOffset? DateFrom,
     DateTimeOffset? DateTo,
@@ -464,13 +467,15 @@ public class ApiV1MeasurementsController(
     int? PageSize,
     int? TotalCount,
     string MeasurementLocationId,
-    IList<QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement> Measurements
+    IList<QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement>
+      Measurements
   );
 
-  private sealed record QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement(
-    DateTimeOffset Timestamp,
-    string MeterId,
-    string MeasurementLocationId,
-    IDictionary<string, string> Registers
-  );
+  private sealed record
+    QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement(
+      DateTimeOffset Timestamp,
+      string MeterId,
+      string MeasurementLocationId,
+      IDictionary<string, string> Registers
+    );
 }

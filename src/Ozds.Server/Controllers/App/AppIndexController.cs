@@ -53,7 +53,7 @@ public class AppIndexController(
     try
     {
       logoutToken = antiforgery
-        .GetAndStoreTokens(Request.HttpContext).RequestToken
+          .GetAndStoreTokens(Request.HttpContext).RequestToken
         ?? throw new InvalidOperationException("Antiforgery token is null.");
     }
     catch (Exception ex)

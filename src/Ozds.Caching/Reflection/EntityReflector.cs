@@ -19,10 +19,11 @@ public class EntityReflector(
   private readonly ConcurrentDictionary<string, Type> nameToTypeCache =
     new();
 
-  private readonly ConcurrentDictionary<Type, string> typeToNameCache =
-    new();
+  private readonly ConcurrentDictionary<Type, IReadOnlyList<Type>>
+    subtypesCache =
+      new();
 
-  private readonly ConcurrentDictionary<Type, IReadOnlyList<Type>> subtypesCache =
+  private readonly ConcurrentDictionary<Type, string> typeToNameCache =
     new();
 
   public string ResolveEntityKeyFromIdentifiable(

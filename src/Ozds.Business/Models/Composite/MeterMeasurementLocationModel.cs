@@ -5,10 +5,13 @@ namespace Ozds.Business.Models.Composite;
 
 public class MeterMeasurementLocationModel : ICachedComposite
 {
-  public string CacheId => Meter.Id;
-
   public MeterModel Meter { get; set; } = default!;
 
   public MeasurementLocationModel MeasurementLocation { get; set; } =
     default!;
+
+  public string CacheId
+  {
+    get { return Meter.Id; }
+  }
 }

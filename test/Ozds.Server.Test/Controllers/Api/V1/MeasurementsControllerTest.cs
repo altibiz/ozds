@@ -235,11 +235,12 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
           x => x
             .WithMeterType(typeof(SchneideriEM3xxxMeterModel))));
 
-    var scope = await Scope.CreateMeasurementForMeasurementLocationWithRegisters(
-      measurementLocation.MeasurementLocation,
-      testRegisters,
-      cancellationToken
-    );
+    var scope =
+      await Scope.CreateMeasurementForMeasurementLocationWithRegisters(
+        measurementLocation.MeasurementLocation,
+        testRegisters,
+        cancellationToken
+      );
 
     var apiKey = await ApiKey.CreateForUserAndScope(
       TestUser.Operator,
@@ -266,15 +267,17 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
 
     client.ApiKey = apiKeyManager.Tokenize(apiKey.ApiKey);
 
-    var fetched = await client.QuarterHourlyAggregatesByMeasurementLocationAsync(
-      measurementLocation.MeasurementLocation.Id,
-      dateFrom,
-      dateTo,
-      0,
-      cancellationToken
-    );
+    var fetched =
+      await client.QuarterHourlyAggregatesByMeasurementLocationAsync(
+        measurementLocation.MeasurementLocation.Id,
+        dateFrom,
+        dateTo,
+        0,
+        cancellationToken
+      );
 
-    fetched.MeasurementLocationId.Should().Be(measurementLocation.MeasurementLocation.Id);
+    fetched.MeasurementLocationId.Should()
+      .Be(measurementLocation.MeasurementLocation.Id);
     fetched.DateFrom.Should().BeCloseTo(dateFrom, TimeSpan.FromSeconds(1));
     fetched.DateTo.Should().BeCloseTo(dateTo, TimeSpan.FromSeconds(1));
     fetched.Page.Should().Be(0);

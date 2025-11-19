@@ -20,8 +20,9 @@ public class CacheFactory(
   {
     var configuration = registry.GetConfiguration(type);
     var cache = services
-      .GetRequiredService(typeof(IConfigurableCache<>).MakeGenericType(type))
-      as IConfigurableCache
+          .GetRequiredService(
+            typeof(IConfigurableCache<>).MakeGenericType(type))
+        as IConfigurableCache
       ?? throw new InvalidOperationException(
         $"{typeof(IConfigurableCache<>).MakeGenericType(type)} not found");
     cache.Configure(configuration);

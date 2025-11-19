@@ -9,14 +9,17 @@ namespace Ozds.Caching.Configuration;
 
 public class CacheConfigurationBuilder
 {
-  private readonly List<IPolicy> policies = new();
-
   private readonly JsonSerializerOptions jsonSerializerOptions
     = new();
 
+  private readonly List<IPolicy> policies = new();
+
   private CacheEntryConfiguration entry = new();
 
-  public static CacheConfigurationBuilder Default => new();
+  public static CacheConfigurationBuilder Default
+  {
+    get { return new CacheConfigurationBuilder(); }
+  }
 
   public CacheConfigurationBuilder WithDependencyTracking(
     Action<DependencyTrackingPolicyBuilder>? configure = null
@@ -27,6 +30,7 @@ public class CacheConfigurationBuilder
     {
       configure(builder);
     }
+
     var policy = builder.Build();
     policies.Add(policy);
     return this;
@@ -41,6 +45,7 @@ public class CacheConfigurationBuilder
     {
       configure(builder);
     }
+
     entry = builder.Build();
     return this;
   }
@@ -54,6 +59,7 @@ public class CacheConfigurationBuilder
     {
       configure(builder);
     }
+
     var policy = builder.Build();
     policies.Add(policy);
     return this;
@@ -84,10 +90,10 @@ public class CacheConfigurationBuilder
 
     IEnumerable<Type> WhereNamespace(IEnumerable<Type> types)
     {
-      return @namespace is { }
-        ? types.Where(type =>
-            type.Namespace is { }
-            && type.Namespace.StartsWith(@namespace))
+      return @namespace is not null
+        ? types.Where(
+          type =>
+            type.Namespace is not null && type.Namespace.StartsWith(@namespace))
         : types;
     }
 
@@ -95,18 +101,20 @@ public class CacheConfigurationBuilder
       .SelectMany(type => WhereNamespace(type.GetTypes()));
 
     var baseTypes = types
-      .Where(type => types
-        .Any(concreteType =>
-          concreteType != type
-          && concreteType.IsAssignableTo(type)))
+      .Where(
+        type => types
+          .Any(
+            concreteType =>
+              concreteType != type
+              && concreteType.IsAssignableTo(type)))
       .ToList();
 
     var subtypes = baseTypes
       .ToDictionary(
         type => type,
         root => types
-            .Where(type => !type.IsAbstract)
-            .Where(type => type.IsAssignableTo(root)));
+          .Where(type => !type.IsAbstract)
+          .Where(type => type.IsAssignableTo(root)));
 
     void Modifier(JsonTypeInfo typeInfo)
     {
@@ -136,7 +144,7 @@ public class CacheConfigurationBuilder
         new DefaultJsonTypeInfoResolver()
           .WithAddedModifier(Modifier));
     }
-    else if (jsonSerializerOptions.TypeInfoResolver is { })
+    else if (jsonSerializerOptions.TypeInfoResolver is not null)
     {
       jsonSerializerOptions.TypeInfoResolver =
         jsonSerializerOptions.TypeInfoResolver.WithAddedModifier(Modifier);
@@ -173,15 +181,15 @@ public static class CacheConfigurationExtensions
     {
       TypeInfoResolver =
         right.JsonSerializerOptions.TypeInfoResolver
-        is { } rightResolver
-        ? configuration.JsonSerializerOptions.TypeInfoResolver
-          is { } leftResolver
-          ? new MergedTypeInfoResolver(leftResolver, rightResolver)
-          : rightResolver
-        : configuration.JsonSerializerOptions.TypeInfoResolver
-          is { } leftResolver2
-          ? leftResolver2
-          : null
+          is { } rightResolver
+          ? configuration.JsonSerializerOptions.TypeInfoResolver
+            is { } leftResolver
+            ? new MergedTypeInfoResolver(leftResolver, rightResolver)
+            : rightResolver
+          : configuration.JsonSerializerOptions.TypeInfoResolver
+            is { } leftResolver2
+            ? leftResolver2
+            : null
     };
 
     foreach (var resolver
@@ -189,6 +197,7 @@ public static class CacheConfigurationExtensions
     {
       jsonSerializerOptions.TypeInfoResolverChain.Add(resolver);
     }
+
     foreach (var resolver
       in right.JsonSerializerOptions.TypeInfoResolverChain)
     {

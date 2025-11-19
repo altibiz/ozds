@@ -6,7 +6,8 @@ using Ozds.Caching.Entities.Complex;
 
 namespace Ozds.Business.Conversion.Implementations.Caching;
 
-public class MessengerModelCachingEntityConverter(IServiceProvider serviceProvider)
+public class MessengerModelCachingEntityConverter(
+  IServiceProvider serviceProvider)
   : InheritingModelCachingEntityConverter<
     MessengerModel,
     TrackableModel,

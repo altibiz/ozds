@@ -19,7 +19,7 @@ public class InMemoryCache<TValue>(
     var entry = new MemoryCacheEntryOptions
     {
       AbsoluteExpirationRelativeToNow = entryConfiguration.HardTtl,
-      SlidingExpiration = entryConfiguration.SoftTtl,
+      SlidingExpiration = entryConfiguration.SoftTtl
     };
     cache.Set(key, value, entry);
     return Task.CompletedTask;

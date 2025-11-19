@@ -29,10 +29,12 @@ public class RegisterEntityProfiler : Profiler<RegisterEntity>
 {
   protected override CacheConfigurationBuilder Configure(
     CacheConfigurationBuilder builder
-  ) =>
-    builder
+  )
+  {
+    return builder
       .WithIndirectReverseDependencyEvictionPolicy(
-        (x) => x is RegisterEntity entity ? entity.ScopeId : null,
+        x => x is RegisterEntity entity ? entity.ScopeId : null,
         typeof(IScopeEntity)
       );
+  }
 }
