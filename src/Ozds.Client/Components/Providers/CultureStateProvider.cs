@@ -1,24 +1,29 @@
 using System.Globalization;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Providers;
 
-// NOTE: rendered at root so keep dependencies minimal
+// NOTE: to be used inside ErrorBoundary and ScopeStateProvider
 public partial class CultureStateProvider : DisposableComponentBase
 {
   private const string CultureKey = "culture";
 
   private CultureState? _state;
 
+  private LocalizationQueries? localizationQueries;
+
+  [CascadingParameter]
+  private ScopeState ScopeState { get; set; } = default!;
+
   [Parameter]
   public RenderFragment? ChildContent { get; set; }
 
   [Parameter]
-  public CultureInfo? Culture { get; set; } = default!;
+  public string? CultureId { get; set; } = default!;
 
   [Inject]
   private NavigationManager NavigationManager { get; set; } = default!;
@@ -26,12 +31,29 @@ public partial class CultureStateProvider : DisposableComponentBase
   [Inject]
   private ILocalStorageService LocalStorageService { get; set; } = default!;
 
-  [Inject]
-  private IJSRuntime JS { get; set; } = default!;
+  protected IServiceProvider ScopedServices
+  {
+    get
+    {
+      return ScopeState?.ScopedServices ??
+        throw new InvalidOperationException($"{this} got disposed");
+    }
+  }
+
+  private LocalizationQueries LocalizationQueries
+  {
+    get
+    {
+      return localizationQueries ??= ScopedServices
+        .GetRequiredService<LocalizationQueries>();
+    }
+  }
 
   protected override async Task OnParametersSetAsync()
   {
-    var culture = Culture;
+    var culture = CultureId is null
+      ? null
+      : LocalizationQueries.IdToCulture(CultureId);
 
     culture ??= GetCultureFromUri();
 
@@ -44,23 +66,12 @@ public partial class CultureStateProvider : DisposableComponentBase
 
     if (culture is null)
     {
-      culture = new CultureInfo("hr");
+      culture = LocalizationQueries.DefaultCulture;
       await SetCultureToLocalStorage(culture);
-    }
-
-    var iana = await JS.InvokeAsync<string>("window.ozdsGetTimeZone");
-    var timeZone = iana is null
-      ? null
-      : TimeZoneInfo.FindSystemTimeZoneById(iana);
-
-    if (timeZone is null)
-    {
-      timeZone = TimeZoneInfo.Utc;
     }
 
     _state = new CultureState(
       culture,
-      timeZone,
       async culture =>
       {
         await SetCultureToLocalStorage(culture);
@@ -83,15 +94,15 @@ public partial class CultureStateProvider : DisposableComponentBase
   {
     if (GetCultureFromUri() is { } uriCulture)
     {
-      if (uriCulture.TwoLetterISOLanguageName
-        == culture.TwoLetterISOLanguageName)
+      if (LocalizationQueries.CultureToId(uriCulture)
+        == LocalizationQueries.CultureToId(culture))
       {
         return;
       }
 
       var uri = new Uri(NavigationManager.Uri);
       var segments = uri.Segments;
-      segments[2] = $"{culture.TwoLetterISOLanguageName}/";
+      segments[2] = $"{LocalizationQueries.CultureToId(culture)}/";
       var path = string.Join("", segments);
       NavigationManager.NavigateTo(path, true);
     }
@@ -101,7 +112,7 @@ public partial class CultureStateProvider : DisposableComponentBase
       var segments = uri.Segments;
       var newSegments = segments
         .Take(1)
-        .Append($"{culture.TwoLetterISOLanguageName}/")
+        .Append($"{LocalizationQueries.CultureToId(culture)}/")
         .Concat(segments.Skip(1));
       var path = string.Join("", newSegments);
       NavigationManager.NavigateTo(path, true);
@@ -113,7 +124,7 @@ public partial class CultureStateProvider : DisposableComponentBase
     await LocalStorageService
       .SetItemAsync(
         CultureKey,
-        culture.TwoLetterISOLanguageName,
+        LocalizationQueries.CultureToId(culture),
         CancellationToken);
   }
 
@@ -124,7 +135,9 @@ public partial class CultureStateProvider : DisposableComponentBase
     var cultureString = segments.ElementAtOrDefault(2)
       ?.TrimStart('/')
       .TrimEnd('/');
-    return ParseCultureString(cultureString);
+    return cultureString is null
+      ? null
+      : LocalizationQueries.IdToCulture(cultureString);
   }
 
   private async Task<CultureInfo?> GetCultureFromLocalStorage()
@@ -133,27 +146,7 @@ public partial class CultureStateProvider : DisposableComponentBase
         CultureKey,
         CancellationToken)
       is { } cultureString
-      ? ParseCultureString(cultureString)
+      ? LocalizationQueries.IdToCulture(cultureString)
       : default;
-  }
-
-  private static CultureInfo? ParseCultureString(string? cultureString)
-  {
-    if (cultureString is null)
-    {
-      return default;
-    }
-
-    CultureInfo? culture;
-    try
-    {
-      culture = new CultureInfo(cultureString);
-    }
-    catch (Exception)
-    {
-      return default;
-    }
-
-    return culture;
   }
 }

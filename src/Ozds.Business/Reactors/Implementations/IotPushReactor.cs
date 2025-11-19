@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using Ozds.Business.Activation;
 using Ozds.Business.Buffers;
-using Ozds.Business.Caching;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
@@ -30,9 +29,8 @@ public class IotPushHandler(
   MeasurementBuffer buffer,
   IMessengerJobManager messengerJobManager,
   IMeterJobManager meterJobManager,
-  MessengerCache messengerCache,
-  MeterCache meterCache,
   ModelMutations modelMutations,
+  TrackableQueries trackableQueries,
   ClockQueries clock,
   TimeQueries time
 ) : Handler<IotPushEventArgs>
@@ -89,7 +87,7 @@ public class IotPushHandler(
     CancellationToken cancellationToken
   )
   {
-    var messenger = await messengerCache.GetAsync(
+    var messenger = await trackableQueries.ReadById<IMessenger>(
       eventArgs.MessengerId,
       cancellationToken);
     if (messenger is not null)
@@ -104,7 +102,10 @@ public class IotPushHandler(
     var meterIds = eventArgs.Measurements
       .Select(x => x.MeterId)
       .Distinct();
-    var meters = await meterCache.GetAsync(meterIds, cancellationToken);
+    var meters = await trackableQueries.ReadByIds<IMeter>(
+      meterIds,
+      cancellationToken
+    );
     if (meters.Count > 0)
     {
       await meterJobManager.RescheduleInactivityMonitorJobs(
@@ -124,7 +125,7 @@ public class IotPushHandler(
   {
     var now = clock.Timestamp();
 
-    var messenger = await messengerCache.GetAsync(
+    var messenger = await trackableQueries.ReadById<IMessenger>(
       eventArgs.MessengerId,
       cancellationToken);
     if (messenger is null)
@@ -166,7 +167,7 @@ public class IotPushHandler(
   {
     var now = clock.Timestamp();
 
-    var messenger = await messengerCache.GetAsync(
+    var messenger = await trackableQueries.ReadById<IMessenger>(
       eventArgs.MessengerId,
       cancellationToken);
     if (messenger is null)

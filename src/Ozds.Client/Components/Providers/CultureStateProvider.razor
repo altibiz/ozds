@@ -2,11 +2,6 @@
 
 @inherits Ozds.Client.Components.Base.DisposableComponentBase
 
-<script>
-  window.ozdsGetTimeZone = () =>
-    Intl.DateTimeFormat().resolvedOptions().timeZone;
-</script>
-
 @if (_state is null)
 {
   return;

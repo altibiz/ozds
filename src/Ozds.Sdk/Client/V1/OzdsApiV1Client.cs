@@ -179,6 +179,248 @@ namespace Ozds.Sdk.Client.V1
             }
         }
 
+        /// <returns>OK</returns>
+        /// <exception cref="OzdsApiV1Exception">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<QuarterHourlyAggregatesByNetworkUserResponse> QuarterHourlyAggregatesByNetworkUserAsync(string networkUserId, System.DateTimeOffset? dateFrom, System.DateTimeOffset? dateTo, int? page)
+        {
+            return QuarterHourlyAggregatesByNetworkUserAsync(networkUserId, dateFrom, dateTo, page, System.Threading.CancellationToken.None);
+        }
+
+        /// <returns>OK</returns>
+        /// <exception cref="OzdsApiV1Exception">A server side error occurred.</exception>
+        public virtual QuarterHourlyAggregatesByNetworkUserResponse QuarterHourlyAggregatesByNetworkUser(string networkUserId, System.DateTimeOffset? dateFrom, System.DateTimeOffset? dateTo, int? page)
+        {
+            return System.Threading.Tasks.Task.Run(async () => await QuarterHourlyAggregatesByNetworkUserAsync(networkUserId, dateFrom, dateTo, page, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="OzdsApiV1Exception">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<QuarterHourlyAggregatesByNetworkUserResponse> QuarterHourlyAggregatesByNetworkUserAsync(string networkUserId, System.DateTimeOffset? dateFrom, System.DateTimeOffset? dateTo, int? page, System.Threading.CancellationToken cancellationToken)
+        {
+            if (networkUserId == null)
+                throw new System.ArgumentNullException("networkUserId");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "api/v1/measurements/quarter-hourly-aggregates-by-network-user/{networkUserId}"
+                    urlBuilder_.Append("api/v1/measurements/quarter-hourly-aggregates-by-network-user/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(networkUserId, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('?');
+                    if (dateFrom != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("dateFrom")).Append('=').Append(System.Uri.EscapeDataString(dateFrom.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (dateTo != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("dateTo")).Append('=').Append(System.Uri.EscapeDataString(dateTo.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (page != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("page")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(page, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<QuarterHourlyAggregatesByNetworkUserResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new OzdsApiV1Exception("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new OzdsApiV1Exception("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new OzdsApiV1Exception("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new OzdsApiV1Exception("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new OzdsApiV1Exception("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <returns>OK</returns>
+        /// <exception cref="OzdsApiV1Exception">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<QuarterHourlyAggregatesByMeasurementLocationResponse> QuarterHourlyAggregatesByMeasurementLocationAsync(string measurementLocationId, System.DateTimeOffset? dateFrom, System.DateTimeOffset? dateTo, int? page)
+        {
+            return QuarterHourlyAggregatesByMeasurementLocationAsync(measurementLocationId, dateFrom, dateTo, page, System.Threading.CancellationToken.None);
+        }
+
+        /// <returns>OK</returns>
+        /// <exception cref="OzdsApiV1Exception">A server side error occurred.</exception>
+        public virtual QuarterHourlyAggregatesByMeasurementLocationResponse QuarterHourlyAggregatesByMeasurementLocation(string measurementLocationId, System.DateTimeOffset? dateFrom, System.DateTimeOffset? dateTo, int? page)
+        {
+            return System.Threading.Tasks.Task.Run(async () => await QuarterHourlyAggregatesByMeasurementLocationAsync(measurementLocationId, dateFrom, dateTo, page, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="OzdsApiV1Exception">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<QuarterHourlyAggregatesByMeasurementLocationResponse> QuarterHourlyAggregatesByMeasurementLocationAsync(string measurementLocationId, System.DateTimeOffset? dateFrom, System.DateTimeOffset? dateTo, int? page, System.Threading.CancellationToken cancellationToken)
+        {
+            if (measurementLocationId == null)
+                throw new System.ArgumentNullException("measurementLocationId");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                
+                    // Operation Path: "api/v1/measurements/quarter-hourly-aggregates-by-measurement-location/{measurementLocationId}"
+                    urlBuilder_.Append("api/v1/measurements/quarter-hourly-aggregates-by-measurement-location/");
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(measurementLocationId, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append('?');
+                    if (dateFrom != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("dateFrom")).Append('=').Append(System.Uri.EscapeDataString(dateFrom.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (dateTo != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("dateTo")).Append('=').Append(System.Uri.EscapeDataString(dateTo.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (page != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("page")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(page, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<QuarterHourlyAggregatesByMeasurementLocationResponse>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new OzdsApiV1Exception("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 401)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new OzdsApiV1Exception("Unauthorized", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 403)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new OzdsApiV1Exception("Forbidden", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new OzdsApiV1Exception("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await ReadAsStringAsync(response_.Content, cancellationToken).ConfigureAwait(false);
+                            throw new OzdsApiV1Exception("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)

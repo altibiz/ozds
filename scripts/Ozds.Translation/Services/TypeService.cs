@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Globalization;
 using System.Reflection;
-using Ozds.Assets;
 using Ozds.Assets.Entities;
 using Ozds.Assets.Extensions;
 using Ozds.Assets.Queries.Abstractions;
@@ -16,6 +14,8 @@ namespace Ozds.Translation.Services;
 public class TypeService(
   IServiceProvider services,
   OzdsTranslationTypeArguments arguments,
+  ITranslationQueries translationQueries,
+  ICultureQueries cultureQueries,
   ILogger<TypeService> logger
 ) : EnumeratedService<TranslationWorkerItem, TranslationWorker>(
   services
@@ -283,8 +283,6 @@ public class TypeService(
       Remember: these were only examples of translation.
     ".Dedent(6, "\n").Trim();
 
-  private readonly IServiceProvider services = services;
-
   private TranslationDictionaryEntity dictionary =
     TranslationDictionaryEntity.Empty;
 
@@ -310,6 +308,13 @@ public class TypeService(
 
   protected override IEnumerable<TranslationWorkerItem> GetEnumerable()
   {
+    var culture = cultureQueries.IdToCulture(arguments.Language);
+    if (culture is null)
+    {
+      throw new InvalidOperationException(
+        $"Could not find culture '{arguments.Language}'");
+    }
+
     var items = GroupItemsAcrossAssemblies(GroupItemsByDeclaration(GetItems()))
       .ToList();
 
@@ -345,13 +350,13 @@ public class TypeService(
 
     foreach (var item in items)
     {
-      var translation = dictionary.Get(item.Key) ??
+      var translated = dictionary.Get(item.Key) ??
         item.AdditionalKeys
           .Select(x => dictionary.Get(x.Key))
           .FirstOrDefault(x => x is not null);
-      if (translation is not null)
+      if (translated is not null)
       {
-        dictionary.AddOrUpdate(item.Key, item.Metadata, translation);
+        dictionary.AddOrUpdate(item.Key, item.Metadata, translated);
         logger.LogInformation(
           "Updated metadata for '{Key}' to\n{Metadata}",
           item.Key,
@@ -386,8 +391,8 @@ public class TypeService(
         item.Key,
         item.Metadata,
         item.Key,
-        AssetConstants.EnglishCulture,
-        new CultureInfo(arguments.Language),
+        cultureQueries.EnglishCulture,
+        culture,
         item.AdditionalPrompt
       );
     }
@@ -398,14 +403,11 @@ public class TypeService(
       IEnumerable<GroupedByDeclarationTranslationItem> items
     )
   {
-    var translation = services
-      .GetRequiredService<ITranslationQueries>();
-
     return items
       .GroupBy(
         item => item.Property is { } property
-          ? translation.GeneralKey(item.Type, property)
-          : translation.GeneralKey(item.Type, plural: item.Plural))
+          ? translationQueries.GeneralKey(item.Type, property)
+          : translationQueries.GeneralKey(item.Type, plural: item.Plural))
       .Select(
         group =>
         {
@@ -421,7 +423,7 @@ public class TypeService(
                 group
                   .Where(x => x.Property == null)
                   .GroupBy(
-                    x => translation
+                    x => translationQueries
                       .GeneralKey(x.Type, false))
                   .Where(x => x.Key != group.Key)
                   .Select(x => (x.Key, x.Key)))
@@ -437,9 +439,6 @@ public class TypeService(
       IEnumerable<TypeTranslationItem> items
     )
   {
-    var translation = services
-      .GetRequiredService<ITranslationQueries>();
-
     return items
       .GroupBy(
         item => (
@@ -474,7 +473,7 @@ public class TypeService(
             );
           }
 
-          var typeKey = translation.Key(type);
+          var typeKey = translationQueries.Key(type);
           var declaredItem = group.FirstOrDefault(
             x =>
               x.Key.StartsWith(typeKey));
@@ -516,9 +515,6 @@ public class TypeService(
 
   private IEnumerable<TypeTranslationItem> GetItems()
   {
-    var translation = services
-      .GetRequiredService<ITranslationQueries>();
-
     var assemblies = AppDomain.CurrentDomain
       .GetAssemblies()
       .Where(
@@ -544,8 +540,8 @@ public class TypeService(
 
     foreach (var type in types)
     {
-      var prefix = translation.Key(type);
-      var shortPrefix = translation.ShortKey(type);
+      var prefix = translationQueries.Key(type);
+      var shortPrefix = translationQueries.ShortKey(type);
 
       yield return new TypeTranslationItem(
         type,
@@ -562,8 +558,8 @@ public class TypeService(
         yield return item;
       }
 
-      var pluralPrefix = translation.Key(type, true);
-      var pluralShortPrefix = translation.ShortKey(type, true);
+      var pluralPrefix = translationQueries.Key(type, true);
+      var pluralShortPrefix = translationQueries.ShortKey(type, true);
 
       yield return new TypeTranslationItem(
         type,

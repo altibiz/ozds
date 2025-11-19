@@ -22,17 +22,17 @@ public static class OrderOfMagnitudeModelExtensions
   {
     return order switch
     {
-      OrderOfMagnitudeModel.Giga => System.Math.Pow(10, 9).ToDecimal(),
-      OrderOfMagnitudeModel.Mega => System.Math.Pow(10, 6).ToDecimal(),
-      OrderOfMagnitudeModel.Kilo => System.Math.Pow(10, 3).ToDecimal(),
-      OrderOfMagnitudeModel.Hecto => System.Math.Pow(10, 2).ToDecimal(),
-      OrderOfMagnitudeModel.Deca => System.Math.Pow(10, 1).ToDecimal(),
+      OrderOfMagnitudeModel.Giga => System.Math.Pow(10, -9).ToDecimal(),
+      OrderOfMagnitudeModel.Mega => System.Math.Pow(10, -6).ToDecimal(),
+      OrderOfMagnitudeModel.Kilo => System.Math.Pow(10, -3).ToDecimal(),
+      OrderOfMagnitudeModel.Hecto => System.Math.Pow(10, -2).ToDecimal(),
+      OrderOfMagnitudeModel.Deca => System.Math.Pow(10, -1).ToDecimal(),
       null => 1,
-      OrderOfMagnitudeModel.Deci => System.Math.Pow(10, -1).ToDecimal(),
-      OrderOfMagnitudeModel.Centi => System.Math.Pow(10, -2).ToDecimal(),
-      OrderOfMagnitudeModel.Milli => System.Math.Pow(10, -3).ToDecimal(),
-      OrderOfMagnitudeModel.Micro => System.Math.Pow(10, -6).ToDecimal(),
-      OrderOfMagnitudeModel.Nano => System.Math.Pow(10, -9).ToDecimal(),
+      OrderOfMagnitudeModel.Deci => System.Math.Pow(10, 1).ToDecimal(),
+      OrderOfMagnitudeModel.Centi => System.Math.Pow(10, 2).ToDecimal(),
+      OrderOfMagnitudeModel.Milli => System.Math.Pow(10, 3).ToDecimal(),
+      OrderOfMagnitudeModel.Micro => System.Math.Pow(10, 6).ToDecimal(),
+      OrderOfMagnitudeModel.Nano => System.Math.Pow(10, 9).ToDecimal(),
       _ => throw new ArgumentOutOfRangeException(nameof(order), order, null)
     };
   }

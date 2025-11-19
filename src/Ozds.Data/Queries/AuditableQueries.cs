@@ -67,7 +67,7 @@ public class AuditableQueries(
       .CreateDbContextAsync(cancellationToken);
     var queryable = context
       .GetQueryable<IAuditableIdentifiableEntity>(entityType)
-      .Where(context.PrimaryKeyIn<IAuditableIdentifiableEntity>(ids));
+      .Where(context.PrimaryKeyIn(entityType, ids));
 
     var filtered = queryable;
 

@@ -1,8 +1,9 @@
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Composite;
 
-public record CalculatedNetworkUserInvoiceModel
+public record CalculatedNetworkUserInvoiceModel : IComposite
 {
   public required List<NetworkUserCalculationModel> Calculations { get; set; }
 

@@ -9,6 +9,36 @@ public class TimeQueries(
   TimeTimeQueries timeTimeQueries
 ) : ISingletonQueries
 {
+  public TimeZoneInfo DefaultTimeZone
+  {
+    get { return timeTimeQueries.DefaultTimeZone; }
+  }
+
+  public TimeZoneInfo CroatianTimeZone
+  {
+    get { return timeTimeQueries.CroatianTimeZone; }
+  }
+
+  public TimeZoneInfo UtcTimeZone
+  {
+    get { return timeTimeQueries.UtcTimeZone; }
+  }
+
+  public TimeZoneInfo? IdToTimeZone(string timeZone)
+  {
+    return timeTimeQueries.IdToTimeZone(timeZone);
+  }
+
+  public string TimeZoneToId(TimeZoneInfo timeZone)
+  {
+    return timeTimeQueries.TimeZoneToId(timeZone);
+  }
+
+  public string TimeZoneToName(TimeZoneInfo timeZone)
+  {
+    return timeTimeQueries.TimeZoneToName(timeZone);
+  }
+
   public TimeSpan GetOffset(DateTimeOffset forDate)
   {
     return timeTimeQueries.GetCroatianOffset(forDate);

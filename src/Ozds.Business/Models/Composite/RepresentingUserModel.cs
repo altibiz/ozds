@@ -1,6 +1,8 @@
+using Ozds.Business.Models.Abstractions;
+
 namespace Ozds.Business.Models.Composite;
 
-public class RepresentingUserModel : MaybeRepresentingUserModel
+public class RepresentingUserModel : MaybeRepresentingUserModel, IComposite
 {
   public new RepresentativeModel Representative
   {

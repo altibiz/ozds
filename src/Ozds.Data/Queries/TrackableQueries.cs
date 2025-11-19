@@ -68,8 +68,9 @@ public class TrackableQueries(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
     var queryable = context
-      .GetQueryable<ITrackableIdentifiableEntity>(entityType)
-      .Where(context.PrimaryKeyIn<ITrackableIdentifiableEntity>(ids));
+      .GetQueryable(entityType)
+      .Where(context.PrimaryKeyIn(entityType, ids))
+      .OfType<ITrackableIdentifiableEntity>();
 
     var filtered = deleted
       ? queryable.Where(x => x.IsDeleted)
@@ -113,7 +114,7 @@ public class TrackableQueries(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
     var queryable = context
-      .GetQueryable<ITrackableIdentifiableEntity>(entityType)
+      .GetQueryable(entityType)
       .Where(context.PrimaryKeyIn(entityType, ids))
       .OfType<ITrackableIdentifiableEntity>();
 

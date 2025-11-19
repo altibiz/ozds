@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using Ozds.Business.Models.Enums;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Abstractions;
@@ -178,7 +177,6 @@ public class CreateMeasurementsTest
                         .Add(
                           time.IntervalTimeSpan(
                             abbB2XAggregateItem.Interval
-                              .ToModel()
                               .ToTimeEntity(),
                             abbB2XAggregateItem.Timestamp)))
                   .Aggregate(abbB2XAggregateItem, Upserts.Upsert),
@@ -197,7 +195,6 @@ public class CreateMeasurementsTest
                         .Add(
                           time.IntervalTimeSpan(
                             schneideriEM3xxxAggregateItem.Interval
-                              .ToModel()
                               .ToTimeEntity(),
                             schneideriEM3xxxAggregateItem.Timestamp)))
                   .Aggregate(schneideriEM3xxxAggregateItem, Upserts.Upsert),

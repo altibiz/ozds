@@ -34,21 +34,21 @@ public partial class DeveloperPage : OzdsComponentBase
       .GetRequiredService<ModelQueries>()
       .Read<NetworkUserInvoiceModel>(
         0,
-        CancellationToken.None
+        CancellationToken
       );
 
     var calculated = await ScopedServices
       .GetRequiredService<InvoiceQueries>()
       .ReadCalculatedById(
         invoice.Items.First().Id,
-        CancellationToken.None
+        CancellationToken
       );
 
     var pdf = await ScopedServices
       .GetRequiredService<DocumentMutations>()
       .CreatePdfForNetworkUserInvoice(
         calculated!,
-        CancellationToken.None
+        CancellationToken
       );
 
     if (pdf is null)

@@ -192,6 +192,7 @@ words:
   - "micro"
   - "nano"
   - "hmacsha"
+  - "identifiables"
 
   # Croatian
   - "altibiz"

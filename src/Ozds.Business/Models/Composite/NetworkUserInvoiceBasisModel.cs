@@ -1,6 +1,8 @@
+using Ozds.Business.Models.Abstractions;
+
 namespace Ozds.Business.Models.Composite;
 
-public class NetworkUserInvoiceBasisModel
+public class NetworkUserInvoiceBasisModel : IComposite
 {
   public LocationModel Location { get; set; } = default!;
 

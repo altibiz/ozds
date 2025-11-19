@@ -1,11 +1,7 @@
-using System.Globalization;
-
 namespace Ozds.Time.Test.Fixtures;
 
+#pragma warning disable S2094 // Classes should not be empty
 public static class Constants
+#pragma warning restore S2094 // Classes should not be empty
 {
-  public static readonly DateTimeOffset DefaultDateTimeOffset =
-    DateTimeOffset.Parse(
-      "2000-01-01T00:00:00Z",
-      CultureInfo.InvariantCulture);
 }

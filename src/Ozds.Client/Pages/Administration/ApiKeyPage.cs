@@ -57,7 +57,7 @@ public partial class ApiKeyPage
     var scopes = await queries.ReadByApiKeyId(
       Id,
       pageNumber,
-      CancellationToken.None,
+      CancellationToken,
       QueryConstants.DefaultPageCount,
       false,
       search

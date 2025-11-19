@@ -1,15 +1,18 @@
 using System.Collections.Concurrent;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Ozds.Assets.Queries.Abstractions;
 using Ozds.Data.Context;
 using Ozds.Data.Extensions;
+using Ozds.Data.Options;
 
 namespace Ozds.Data.Reflection;
 
 public sealed class EntityReflector(
   IDbContextFactory<DataDbContext> factory,
-  ITypeQueries typeQueries
+  ITypeQueries typeQueries,
+  IOptions<OzdsDataOptions> options
 ) : IAsyncDisposable
 {
   private readonly DataDbContext context = factory.CreateDbContext();
@@ -43,8 +46,24 @@ public sealed class EntityReflector(
       return name;
     }
 
-    name = context.GetTableName(entityType)
-      ?? throw new InvalidOperationException("Table name not found");
+    if (options.Value.SelfContainedReflection)
+    {
+      try
+      {
+        name = context.GetTableName(entityType)
+          ?? throw new InvalidOperationException("Table name not found");
+      }
+      catch
+      {
+        name = entityType.Name;
+      }
+    }
+    else
+    {
+      name = context.GetTableName(entityType)
+        ?? throw new InvalidOperationException("Table name not found");
+    }
+
     typeToTableCache.TryAdd(entityType, name);
 
     return name;

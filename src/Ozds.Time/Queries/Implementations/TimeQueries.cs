@@ -3,22 +3,55 @@ using Ozds.Time.Queries.Abstractions;
 
 namespace Ozds.Time.Queries.Implementations;
 
+// NOTE: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
 public class TimeQueries : ITimeQueries
 {
+  private static readonly TimeZoneInfo CroatianTimeZoneValue =
+    TimeZoneInfo.FindSystemTimeZoneById("Europe/Zagreb");
+
+  private static readonly TimeZoneInfo UtcTimeZoneValue =
+    TimeZoneInfo.FindSystemTimeZoneById("Etc/UTC");
+
+  public TimeZoneInfo DefaultTimeZone { get; } =
+    UtcTimeZoneValue;
+
   public TimeZoneInfo CroatianTimeZone { get; } =
-    TimeConstants.CroatianTimeZone;
+    CroatianTimeZoneValue;
 
   public TimeZoneInfo UtcTimeZone { get; } =
-    TimeConstants.UtcTimeZone;
+    UtcTimeZoneValue;
+
+  public TimeZoneInfo? IdToTimeZone(string timeZone)
+  {
+    try
+    {
+      return TimeZoneInfo.FindSystemTimeZoneById(timeZone);
+    }
+    catch (Exception)
+    {
+      return null;
+    }
+  }
+
+  public string TimeZoneToId(TimeZoneInfo timeZone)
+  {
+    return timeZone.Id;
+  }
+
+  public string TimeZoneToName(TimeZoneInfo timeZone)
+  {
+    return timeZone.DisplayName;
+  }
 
   public TimeSpan GetCroatianOffset(DateTimeOffset forDate)
   {
-    return TimeConstants.CroatianTimeZone.GetUtcOffset(forDate);
+    return CroatianTimeZone.GetUtcOffset(forDate);
   }
 
   public TimeSpan GetUtcOffset(DateTimeOffset forDate)
   {
-    return TimeConstants.UtcTimeZone.GetUtcOffset(forDate);
+    return UtcTimeZone.GetUtcOffset(forDate);
   }
 
   public (DateTimeOffset, DateTimeOffset) GetMonthRange(
@@ -27,7 +60,7 @@ public class TimeQueries : ITimeQueries
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
-      TimeConstants.CroatianTimeZone
+      CroatianTimeZone
     );
 
     var localStartOfMonth = new DateTime(
@@ -37,14 +70,14 @@ public class TimeQueries : ITimeQueries
     var utcStartOfMonth =
       TimeZoneInfo.ConvertTimeToUtc(
         localStartOfMonth,
-        TimeConstants.CroatianTimeZone);
+        CroatianTimeZone);
 
     var localStartOfNextMonth = localStartOfMonth.AddMonths(1);
 
     var utcStartOfNextMonth =
       TimeZoneInfo.ConvertTimeToUtc(
         localStartOfNextMonth,
-        TimeConstants.CroatianTimeZone);
+        CroatianTimeZone);
 
     return (
       new DateTimeOffset(utcStartOfMonth, TimeSpan.Zero),
@@ -64,7 +97,7 @@ public class TimeQueries : ITimeQueries
       0,
       0,
       0,
-      TimeConstants.CroatianTimeZone.BaseUtcOffset
+      CroatianTimeZone.BaseUtcOffset
     );
 
     return GetMonthRange(startOfMonth);
@@ -76,7 +109,7 @@ public class TimeQueries : ITimeQueries
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
-      TimeConstants.CroatianTimeZone
+      CroatianTimeZone
     );
 
     var localStartOfYear = new DateTime(
@@ -86,14 +119,14 @@ public class TimeQueries : ITimeQueries
     var utcStartOfYear =
       TimeZoneInfo.ConvertTimeToUtc(
         localStartOfYear,
-        TimeConstants.CroatianTimeZone);
+        CroatianTimeZone);
 
     var localStartOfNextYear = localStartOfYear.AddYears(1);
 
     var utcStartOfNextYear =
       TimeZoneInfo.ConvertTimeToUtc(
         localStartOfNextYear,
-        TimeConstants.CroatianTimeZone);
+        CroatianTimeZone);
 
     return (
       new DateTimeOffset(utcStartOfYear, TimeSpan.Zero),
@@ -112,7 +145,7 @@ public class TimeQueries : ITimeQueries
       0,
       0,
       0,
-      TimeConstants.CroatianTimeZone.BaseUtcOffset
+      CroatianTimeZone.BaseUtcOffset
     );
 
     return GetYearRange(startOfMonth);
@@ -152,7 +185,7 @@ public class TimeQueries : ITimeQueries
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
-      TimeConstants.CroatianTimeZone
+      CroatianTimeZone
     );
 
     var localStartOfMonth = new DateTime(
@@ -162,7 +195,7 @@ public class TimeQueries : ITimeQueries
     var utcStartOfMonth =
       TimeZoneInfo.ConvertTimeToUtc(
         localStartOfMonth,
-        TimeConstants.CroatianTimeZone);
+        CroatianTimeZone);
 
     return new DateTimeOffset(utcStartOfMonth, TimeSpan.Zero);
   }
@@ -173,7 +206,7 @@ public class TimeQueries : ITimeQueries
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
-      TimeConstants.CroatianTimeZone
+      CroatianTimeZone
     );
 
     var lastMonthLocalDateTime = localDateTime.AddMonths(-1);
@@ -185,7 +218,7 @@ public class TimeQueries : ITimeQueries
     var utcStartOfLastMonth =
       TimeZoneInfo.ConvertTimeToUtc(
         localStartOfLastMonth,
-        TimeConstants.CroatianTimeZone);
+        CroatianTimeZone);
 
     return new DateTimeOffset(utcStartOfLastMonth, TimeSpan.Zero);
   }
@@ -196,7 +229,7 @@ public class TimeQueries : ITimeQueries
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
-      TimeConstants.CroatianTimeZone
+      CroatianTimeZone
     );
 
     var nextMonthLocalDateTime = localDateTime.AddMonths(1);
@@ -208,7 +241,7 @@ public class TimeQueries : ITimeQueries
     var utcStartOfNextMonth =
       TimeZoneInfo.ConvertTimeToUtc(
         localStartOfNextMonth,
-        TimeConstants.CroatianTimeZone);
+        CroatianTimeZone);
 
     return new DateTimeOffset(utcStartOfNextMonth, TimeSpan.Zero);
   }
@@ -219,7 +252,7 @@ public class TimeQueries : ITimeQueries
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
-      TimeConstants.CroatianTimeZone
+      CroatianTimeZone
     );
 
     var localStartOfDay = new DateTime(
@@ -229,7 +262,7 @@ public class TimeQueries : ITimeQueries
     var utcStartOfDay =
       TimeZoneInfo.ConvertTimeToUtc(
         localStartOfDay,
-        TimeConstants.CroatianTimeZone);
+        CroatianTimeZone);
 
     return new DateTimeOffset(utcStartOfDay, TimeSpan.Zero);
   }
@@ -240,7 +273,7 @@ public class TimeQueries : ITimeQueries
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
-      TimeConstants.CroatianTimeZone
+      CroatianTimeZone
     );
 
     var localStartOfYear = new DateTime(
@@ -249,7 +282,7 @@ public class TimeQueries : ITimeQueries
     var utcStartOfYear =
       TimeZoneInfo.ConvertTimeToUtc(
         localStartOfYear,
-        TimeConstants.CroatianTimeZone);
+        CroatianTimeZone);
     return new DateTimeOffset(utcStartOfYear, TimeSpan.Zero);
   }
 
@@ -258,7 +291,7 @@ public class TimeQueries : ITimeQueries
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
-      TimeConstants.CroatianTimeZone
+      CroatianTimeZone
     );
 
     var year = localDateTime.Year;
@@ -272,7 +305,7 @@ public class TimeQueries : ITimeQueries
         var utcStartOfMonth =
           TimeZoneInfo.ConvertTimeToUtc(
             localStartOfMonth,
-            TimeConstants.CroatianTimeZone);
+            CroatianTimeZone);
 
         return new DateTimeOffset(utcStartOfMonth, TimeSpan.Zero);
       });

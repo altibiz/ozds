@@ -1,6 +1,8 @@
+using Ozds.Business.Models.Abstractions;
+
 namespace Ozds.Business.Models.Composite;
 
-public class ApiKeyAuthModel
+public class ApiKeyAuthModel : ICachedComposite
 {
   public ApiKeyModel ApiKey { get; set; } = default!;
 
@@ -8,4 +10,9 @@ public class ApiKeyAuthModel
 
   public Dictionary<string, List<RegisterModel>> Registers { get; set; } =
     default!;
+
+  public string CacheId
+  {
+    get { return ApiKey.Id; }
+  }
 }

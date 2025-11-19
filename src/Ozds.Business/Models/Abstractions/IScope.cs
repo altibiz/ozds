@@ -2,7 +2,7 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IScope : ITrackableIdentifiable
+public interface IScope : ITrackableIdentifiable, ICachedIdentifiable
 {
   public string? ScopeModelId { get; }
 

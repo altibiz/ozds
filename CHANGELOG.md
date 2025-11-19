@@ -7,6 +7,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.6.1] - 2025-11-19
+
+### Added
+
+- `Ozds.Caching` project for cache implementation
+- caching behavior to business queries
+- separate reactor for cache entity deletion
+- time state provider component extracted from culture state provider
+- API for fetching quarter hourly aggregates by network user and measurement
+  location
+- `Ozds.Caching.Test` project for cache testing
+- `System.Runtime.Caching` package for first `InMemoryCache` implementation
+
+### Changed
+
+- group common host behavior into generic `OzdsBusinessHost`
+- invert order of magnitude multiplier
+- split up component base class
+- standardized culture serialization
+- fix N+1 when sending network user invoice acknowledgements
+- fix business conversion and activation tests
+
+### Removed
+
+- `AssetConstants` in favor of properties from `ICultureQueries`
+- `TimeConstants` in favor of properties from `ITimeQueries`
+- old translation files
+- all classes in `Ozds.Business.Caching` in favor of the new `Ozds.Caching`
+  project
+- reactors that only did cache mutations
+- `Ozds.Business` dependency from `Ozds.Data.Test`
+- leftover uses of `CancellationToken.None`
+
 ## [1.6.0] - 2025-10-20
 
 ### Added

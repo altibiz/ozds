@@ -13,6 +13,8 @@ public class OzdsDataOptions
   public bool MigrateOnStartup { get; set; } = false;
 
   public bool WithServices { get; set; } = true;
+
+  public bool SelfContainedReflection { get; set; } = false;
 }
 
 public class ConfigureOzdsDataOptions(IConfiguration configuration)

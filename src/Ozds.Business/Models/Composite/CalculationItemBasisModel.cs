@@ -1,8 +1,9 @@
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Composite;
 
-public class CalculationItemBasisModel
+public class CalculationItemBasisModel : IComposite
 {
   public List<AggregateModel> Aggregates { get; set; } = default!;
 

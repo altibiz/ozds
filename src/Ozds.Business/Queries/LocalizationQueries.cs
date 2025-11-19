@@ -1,72 +1,94 @@
 using System.Globalization;
 using System.Linq.Expressions;
-using Ozds.Assets;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
+using AssetCultureQueries =
+  Ozds.Assets.Queries.Abstractions.ICultureQueries;
 using AssetLocalizationQueries =
   Ozds.Assets.Queries.Abstractions.ILocalizationQueries;
 
 namespace Ozds.Business.Queries;
 
 public class LocalizationQueries(
-  AssetLocalizationQueries localizer
+  AssetLocalizationQueries localizationQueries,
+  AssetCultureQueries cultureQueries
 ) : IQueries
 {
+  public CultureInfo DefaultCulture
+  {
+    get { return cultureQueries.DefaultCulture; }
+  }
+
   public CultureInfo CroatianCulture
   {
-    get { return AssetConstants.CroatianCulture; }
+    get { return cultureQueries.CroatianCulture; }
   }
 
   public CultureInfo EnglishCulture
   {
-    get { return AssetConstants.EnglishCulture; }
+    get { return cultureQueries.EnglishCulture; }
+  }
+
+  public CultureInfo? IdToCulture(string culture)
+  {
+    return cultureQueries.IdToCulture(culture);
+  }
+
+  public string CultureToId(CultureInfo culture)
+  {
+    return cultureQueries.CultureToId(culture);
+  }
+
+  public string CultureToName(CultureInfo culture)
+  {
+    return cultureQueries.CultureToName(culture);
   }
 
   public string Translate(CultureInfo culture, string notLocalized)
   {
-    return localizer.Translate(culture, notLocalized);
+    return localizationQueries.Translate(culture, notLocalized);
   }
 
   public string Translate(CultureInfo culture, Type type, bool plural = false)
   {
-    return localizer.Translate(culture, type, plural);
+    return localizationQueries.Translate(culture, type, plural);
   }
 
   public string Translate(CultureInfo culture, Type type, string member)
   {
-    return localizer.Translate(culture, type, member);
+    return localizationQueries.Translate(culture, type, member);
   }
 
   public string Translate(CultureInfo culture, MemberExpression member)
   {
-    return localizer.Translate(culture, member);
+    return localizationQueries.Translate(culture, member);
   }
 
   public string NumericString(decimal? number, int places = 2)
   {
-    return localizer.NumericString(number, places);
+    return localizationQueries.NumericString(number, places);
   }
 
   public string NumericString(float? number, int places = 2)
   {
-    return localizer.NumericString(number, places);
+    return localizationQueries.NumericString(number, places);
   }
 
   public string DateString(DateTimeOffset? dateTimeOffset)
   {
-    return localizer.DateString(dateTimeOffset);
+    return localizationQueries.DateString(dateTimeOffset);
   }
 
   public string DateTimeString(DateTimeOffset? dateTimeOffset)
   {
-    return localizer.DateTimeString(dateTimeOffset);
+    return localizationQueries.DateTimeString(dateTimeOffset);
   }
 
   public DateTimeOffset DateTimeApplyOffset(
     DateTimeOffset dateTimeOffset)
   {
-    return localizer.DateTimeApplyOffset(dateTimeOffset);
+    return localizationQueries.DateTimeApplyOffset(dateTimeOffset);
   }
 
   // NOTE: hack to get the translator to translate these
@@ -120,7 +142,7 @@ public class LocalizationQueries(
       };
     }
 
-    return localizer.Translate(culture, nonLocalized);
+    return localizationQueries.Translate(culture, nonLocalized);
   }
 
   public string TranslatePeriod(
@@ -138,11 +160,11 @@ public class LocalizationQueries(
 
   public string DateFormat(CultureInfo cultureInfo)
   {
-    return localizer.DateFormat(cultureInfo);
+    return localizationQueries.DateFormat(cultureInfo);
   }
 
   public string DateTimeFormat(CultureInfo cultureInfo)
   {
-    return localizer.DateTimeFormat(cultureInfo);
+    return localizationQueries.DateTimeFormat(cultureInfo);
   }
 }

@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Ozds.Business.Caching;
 using Ozds.Business.Queries;
 
 namespace Ozds.Business.Authorization;
@@ -43,10 +42,11 @@ public class ApiKeyAuthAttribute : Attribute, IAsyncAuthorizationFilter
     var (keyId, provided) = manager.Split(token);
 
     var apiKeyAuthCache = context.HttpContext.RequestServices
-      .GetRequiredService<ApiKeyAuthCache>();
+      .GetRequiredService<ApiKeyAuthQueries>();
 
-    var auth = await apiKeyAuthCache.GetAsync(
+    var auth = await apiKeyAuthCache.ReadByApiKeyIdAndScopeId(
       keyId,
+      null,
       context.HttpContext.RequestAborted);
 
     if (auth is null)

@@ -11,9 +11,6 @@ public partial class NavigationDrawer : OzdsComponentBase
   [CascadingParameter]
   private LayoutState LayoutState { get; set; } = default!;
 
-  [CascadingParameter]
-  private UserState UserState { get; set; } = default!;
-
   [Inject]
   private NavigationManager NavigationManager { get; set; } = default!;
 

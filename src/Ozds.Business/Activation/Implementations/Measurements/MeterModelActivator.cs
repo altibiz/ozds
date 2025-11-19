@@ -1,5 +1,4 @@
 using Ozds.Business.Activation.Base;
-using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
@@ -25,7 +24,9 @@ public class MeterModelActivator(IServiceProvider serviceProvider)
     model.Phases = new HashSet<PhaseModel>();
     model.MessengerId = null;
     model.MeasurementValidatorId = "0";
-    model.Id = meterNamingConvention.IdPrefixForMeterType(model.GetType());
+    model.Id = model.GetType() == typeof(MeterModel)
+      ? ""
+      : meterNamingConvention.IdPrefixForMeterType(model.GetType());
     model.MaxInactivityPeriod = modelActivator.Activate<PeriodModel>();
   }
 }

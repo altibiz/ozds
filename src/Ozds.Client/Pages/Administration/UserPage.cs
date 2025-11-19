@@ -187,7 +187,7 @@ public partial class UserPage
     var locations = await queries.ReadByRepresentativeId(
       Id,
       pageNumber,
-      CancellationToken.None,
+      CancellationToken,
       pageCount,
       false,
       search
@@ -212,7 +212,7 @@ public partial class UserPage
     var networkUsers = await queries.ReadByRepresentativeId(
       Id,
       pageNumber,
-      CancellationToken.None,
+      CancellationToken,
       QueryConstants.DefaultPageCount,
       false,
       search
@@ -237,7 +237,7 @@ public partial class UserPage
     var apiKeys = await queries.ReadByRepresentativeId(
       Id,
       pageNumber,
-      CancellationToken.None,
+      CancellationToken,
       pageCount,
       false,
       search

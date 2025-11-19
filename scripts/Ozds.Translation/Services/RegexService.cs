@@ -1,8 +1,7 @@
-using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using Ozds.Assets;
 using Ozds.Assets.Entities;
+using Ozds.Assets.Queries.Abstractions;
 using Ozds.Translation.Arguments;
 using Ozds.Translation.Services.Base;
 using Ozds.Translation.Workers;
@@ -12,6 +11,7 @@ namespace Ozds.Translation.Services;
 public partial class RegexService(
   IServiceProvider services,
   OzdsTranslationRegexArguments arguments,
+  ICultureQueries cultureQueries,
   ILogger<RegexService> logger
 ) : AsyncEnumeratedService<TranslationWorkerItem, TranslationWorker>(
   services
@@ -123,6 +123,13 @@ public partial class RegexService(
       [EnumeratorCancellation] CancellationToken cancellationToken
     )
   {
+    var culture = cultureQueries.IdToCulture(arguments.Language);
+    if (culture is null)
+    {
+      throw new InvalidOperationException(
+        $"Could not find culture '{arguments.Language}'");
+    }
+
     var razorFiles = Directory
       .GetFiles(
         arguments.InputRazorFolderPath,
@@ -163,8 +170,8 @@ public partial class RegexService(
             key,
             metadata,
             key,
-            AssetConstants.EnglishCulture,
-            new CultureInfo(arguments.Language),
+            cultureQueries.EnglishCulture,
+            culture,
             AdditionalPrompt
           );
         }

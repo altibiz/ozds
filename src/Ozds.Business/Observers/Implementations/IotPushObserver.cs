@@ -1,10 +1,10 @@
 using Ozds.Business.Buffers;
-using Ozds.Business.Caching;
 using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.Base;
 using Ozds.Business.Observers.EventArgs;
+using Ozds.Business.Queries;
 using Ozds.Iot.Observers.Abstractions;
 using Ozds.Iot.Observers.EventArgs;
 
@@ -31,7 +31,7 @@ public class IotPushRelay(
 }
 
 public class IotPushPipe(
-  MeasurementLocationByMeterCache Cache,
+  MeasurementLocationQueries measurementLocationQueries,
   PushRequestMeasurementConverter PushRequestConverter
 ) : IPipe<PushEventArgs, IotPushEventArgs>
 {
@@ -53,7 +53,9 @@ public class IotPushPipe(
     var modelMeasurements = new List<IMeasurement>();
     foreach (var meterPushRequest in eventArgs.Request.Measurements)
     {
-      if (await Cache.GetAsync(meterPushRequest.MeterId, cancellationToken)
+      if (await measurementLocationQueries.ReadByMeterId(
+          meterPushRequest.MeterId,
+          cancellationToken)
         is { } measurementLocation)
       {
         modelMeasurements.Add(

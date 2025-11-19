@@ -13,6 +13,9 @@ namespace Ozds.Users.Extensions;
 public static class HostExtensions
 {
   public const string AuthenticationScheme =
+    CookieAuthenticationDefaults.AuthenticationScheme;
+
+  public const string ChallengeScheme =
     OpenIdConnectDefaults.AuthenticationScheme;
 
   public static IHostApplicationBuilder AddOzdsUsers(

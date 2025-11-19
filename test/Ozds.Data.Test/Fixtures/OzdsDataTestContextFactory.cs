@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting.Internal;
 using Npgsql;
 using Ozds.Assets.Extensions;
-using Ozds.Business.Extensions;
 using Ozds.Data.Context;
 using Ozds.Data.Extensions;
 using Ozds.Data.Options;
@@ -91,9 +90,8 @@ public static class OzdsDataTestContextFactory
         options.LogSql = false;
       });
     builder.AddOzdsTime();
-    builder.AddOzdsData();
     builder.AddOzdsAssets();
-    builder.AddOzdsBusinessPure();
+    builder.AddOzdsData();
 
     var host = builder.Build();
 

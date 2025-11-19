@@ -1,5 +1,4 @@
 @namespace Ozds.Client
-@using System.Globalization
 @using Microsoft.AspNetCore.Components.Routing
 @using Ozds.Client.Components.Layout
 @using Ozds.Client.Components.Providers
@@ -9,81 +8,79 @@
 
 @inject NavigationManager NavigationManager
 
-@{
-  var culture = Culture is null ? null : new CultureInfo(Culture);
-}
-
 <OzdsErrorBoundary>
   <ScopeStateProvider>
-    <CultureStateProvider Culture="@culture">
-      <UserStateProvider LogoutToken="@LogoutToken">
-        <RepresentativeStateProvider>
-          <Found>
-            <Router AppAssembly="@typeof(App).Assembly">
-              <Found Context="routeData">
-                <LayoutStateProvider>
-                  <ThemeStateProvider>
-                    <LocationStateProvider>
-                      <NotificationsStateProvider>
-                        <AnalysisStateProvider>
-                          <RouteView
-                            RouteData="@routeData"
-                            DefaultLayout="@typeof(Layout)"/>
-                        </AnalysisStateProvider>
-                      </NotificationsStateProvider>
-                    </LocationStateProvider>
-                  </ThemeStateProvider>
-                </LayoutStateProvider>
-              </Found>
-              <NotFound>
-                <LayoutStateProvider>
-                  <ThemeStateProvider>
-                    <LayoutView Layout="@typeof(Layout)">
-                      <NotFound/>
-                    </LayoutView>
-                  </ThemeStateProvider>
-                </LayoutStateProvider>
-              </NotFound>
-            </Router>
-          </Found>
-          <NotFound>
-            @if (NavigationManager.Uri != PageHref<UnapprovedPage>())
-            {
-              NavigateToPage<UnapprovedPage>();
-              return;
-            }
+    <TimeStateProvider>
+      <CultureStateProvider CultureId="@CultureId">
+        <UserStateProvider LogoutToken="@LogoutToken">
+          <RepresentativeStateProvider>
+            <Found>
+              <Router AppAssembly="@typeof(App).Assembly">
+                <Found Context="routeData">
+                  <LayoutStateProvider>
+                    <ThemeStateProvider>
+                      <LocationStateProvider>
+                        <NotificationsStateProvider>
+                          <AnalysisStateProvider>
+                            <RouteView
+                              RouteData="@routeData"
+                              DefaultLayout="@typeof(Layout)"/>
+                          </AnalysisStateProvider>
+                        </NotificationsStateProvider>
+                      </LocationStateProvider>
+                    </ThemeStateProvider>
+                  </LayoutStateProvider>
+                </Found>
+                <NotFound>
+                  <LayoutStateProvider>
+                    <ThemeStateProvider>
+                      <LayoutView Layout="@typeof(Layout)">
+                        <NotFound/>
+                      </LayoutView>
+                    </ThemeStateProvider>
+                  </LayoutStateProvider>
+                </NotFound>
+              </Router>
+            </Found>
+            <NotFound>
+              @if (NavigationManager.Uri != PageHref<UnapprovedPage>())
+              {
+                NavigateToPage<UnapprovedPage>();
+                return;
+              }
 
-            <Router AppAssembly="@typeof(App).Assembly">
-              <Found Context="routeData">
-                <LayoutStateProvider>
-                  <ThemeStateProvider>
-                    <RouteView
-                      RouteData="@routeData"
-                      DefaultLayout="@typeof(Layout)"/>
-                  </ThemeStateProvider>
-                </LayoutStateProvider>
-              </Found>
-              <NotFound>
-                <LayoutStateProvider>
-                  <ThemeStateProvider>
-                    <LayoutView Layout="@typeof(Layout)">
-                      <NotFound/>
-                    </LayoutView>
-                  </ThemeStateProvider>
-                </LayoutStateProvider>
-              </NotFound>
-            </Router>
-          </NotFound>
-        </RepresentativeStateProvider>
-      </UserStateProvider>
-    </CultureStateProvider>
+              <Router AppAssembly="@typeof(App).Assembly">
+                <Found Context="routeData">
+                  <LayoutStateProvider>
+                    <ThemeStateProvider>
+                      <RouteView
+                        RouteData="@routeData"
+                        DefaultLayout="@typeof(Layout)"/>
+                    </ThemeStateProvider>
+                  </LayoutStateProvider>
+                </Found>
+                <NotFound>
+                  <LayoutStateProvider>
+                    <ThemeStateProvider>
+                      <LayoutView Layout="@typeof(Layout)">
+                        <NotFound/>
+                      </LayoutView>
+                    </ThemeStateProvider>
+                  </LayoutStateProvider>
+                </NotFound>
+              </Router>
+            </NotFound>
+          </RepresentativeStateProvider>
+        </UserStateProvider>
+      </CultureStateProvider>
+    </TimeStateProvider>
   </ScopeStateProvider>
 </OzdsErrorBoundary>
 
 @code {
 
   [Parameter]
-  public string? Culture { get; set; }
+  public string? CultureId { get; set; }
 
   [Parameter]
   public string LogoutToken { get; set; } = default!;

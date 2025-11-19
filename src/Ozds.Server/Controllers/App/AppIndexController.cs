@@ -1,13 +1,16 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Ozds.Business.Queries;
 using Ozds.Server.ViewModels;
 
 namespace Ozds.Server.Controllers.App;
 
 [Route("app")]
-public class AppIndexController(IAntiforgery antiforgery) : Controller
+public class AppIndexController(
+  IAntiforgery antiforgery,
+  LocalizationQueries localizationQueries
+) : Controller
 {
   public const string LocalStorageCulture = "_";
 
@@ -31,33 +34,27 @@ public class AppIndexController(IAntiforgery antiforgery) : Controller
       return Redirect($"/{catchall}");
     }
 
-    CultureInfo? cultureInfo = null;
-    if (culture is not null)
+    var cultureInfo = localizationQueries.IdToCulture(culture);
+    if (cultureInfo is null && culture != LocalStorageCulture)
     {
-      try
-      {
-        cultureInfo = new CultureInfo(culture);
-      }
-      catch (Exception)
-      {
-        if (culture != LocalStorageCulture)
-        {
-          return Redirect($"/app/{LocalStorageCulture}");
-        }
-      }
+      return Redirect($"/app/{LocalStorageCulture}");
     }
 
-    if (cultureInfo is not null
-      && cultureInfo.TwoLetterISOLanguageName != culture)
+    var cultureInfoId =
+      cultureInfo is null
+        ? null
+        : localizationQueries.CultureToId(cultureInfo);
+    if (cultureInfoId is not null && culture != cultureInfoId)
     {
-      return Redirect($"/app/{cultureInfo.TwoLetterISOLanguageName}");
+      return Redirect($"/app/{cultureInfoId}");
     }
 
     string? logoutToken;
     try
     {
       logoutToken = antiforgery
-        .GetAndStoreTokens(Request.HttpContext).RequestToken;
+          .GetAndStoreTokens(Request.HttpContext).RequestToken
+        ?? throw new InvalidOperationException("Antiforgery token is null.");
     }
     catch (Exception ex)
     {
@@ -68,8 +65,8 @@ public class AppIndexController(IAntiforgery antiforgery) : Controller
       "App",
       new AppViewModel
       {
-        Culture = cultureInfo,
-        LogoutToken = logoutToken!
+        CultureId = cultureInfoId,
+        LogoutToken = logoutToken
       });
   }
 }

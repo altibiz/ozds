@@ -54,14 +54,14 @@
     @{
       var accountingPeriodHref =
         "/app/report/meter-accounting-period"
-        + "/" + GetCulture().TwoLetterISOLanguageName
+        + "/" + GetCultureString()
         + "/" + Id
         + "/" + selectedMonth.Year
         + "/" + selectedMonth.Month;
 
       var loadCurveHref =
         "/app/report/meter-load-curve"
-        + "/" + GetCulture().TwoLetterISOLanguageName
+        + "/" + GetCultureString()
         + "/" + Id
         + "/" + selectedObis.ToCode()
         + "/" + selectedMonth.Year

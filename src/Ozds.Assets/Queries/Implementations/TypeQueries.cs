@@ -40,6 +40,37 @@ public class TypeQueries : ITypeQueries
           == ResolveHumanFriendlyTypeName(type, name, true));
   }
 
+  public IEnumerable<Type> ResolveSubtypes(
+    Type type,
+    Assembly? assembly = null,
+    string? @namespace = null
+  )
+  {
+    var assemblies = assembly is null
+      ? AppDomain.CurrentDomain.GetAssemblies().ToList()
+      : [assembly];
+
+    return @namespace is null
+      ? assemblies
+        .SelectMany(
+          assembly => assembly
+            .GetTypes()
+            .Where(
+              assemblyType =>
+                assemblyType.IsAssignableTo(type)
+                && !assemblyType.IsAbstract))
+      : assemblies
+        .SelectMany(
+          assembly => assembly
+            .GetTypes()
+            .Where(
+              assemblyType =>
+                assemblyType.Namespace is not null
+                && assemblyType.Namespace.StartsWith(@namespace)
+                && assemblyType.IsAssignableTo(type)
+                && !assemblyType.IsAbstract));
+  }
+
   private static string ResolveHumanFriendlyTypeName(
     Type type,
     string baseName,

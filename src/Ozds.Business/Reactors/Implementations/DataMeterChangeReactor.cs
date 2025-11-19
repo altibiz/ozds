@@ -1,5 +1,4 @@
-using Ozds.Business.Caching;
-using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Observers.Abstractions;
 using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Queries;
@@ -21,11 +20,7 @@ public class DataMeterChangeReactor(
 public class DataMeterChangeHandler(
   IMeterJobManager manager,
   TrackableQueries trackableQueries,
-  TimeQueries timeQueries,
-  MeterCache meterCache,
-  MeasurementLocationByMeterCache measurementLocationByMeterCache,
-  MessengerByMeterCache messengerByMeterCache,
-  MeasurementValidatorByMeterCache measurementValidatorByMeterCache
+  TimeQueries timeQueries
 ) : Handler<DataModelsChangedEventArgs>
 {
   public override async Task AfterStartAsync(
@@ -33,7 +28,7 @@ public class DataMeterChangeHandler(
   {
     var page = 0;
     var result = await trackableQueries
-      .Read<MeterModel>(page, cancellationToken);
+      .Read<IMeter>(page, cancellationToken);
     while (result.Items.Count > 0)
     {
       await manager.EnsureInactivityMonitorJobs(
@@ -45,7 +40,7 @@ public class DataMeterChangeHandler(
       );
 
       result = await trackableQueries
-        .Read<MeterModel>(
+        .Read<IMeter>(
           ++page,
           cancellationToken,
           QueryConstants.DefaultReactorPageCount);
@@ -59,7 +54,7 @@ public class DataMeterChangeHandler(
     var added = eventArgs.Models
       .Where(x => x.State == DataModelChangedState.Added)
       .Select(x => x.Model)
-      .OfType<MeterModel>()
+      .OfType<IMeter>()
       .ToList();
     if (added.Count > 0)
     {
@@ -75,18 +70,10 @@ public class DataMeterChangeHandler(
     var modified = eventArgs.Models
       .Where(x => x.State == DataModelChangedState.Modified)
       .Select(x => x.Model)
-      .OfType<MeterModel>()
+      .OfType<IMeter>()
       .ToList();
     if (modified.Count > 0)
     {
-      await meterCache.TryUpdateAsync(modified, cancellationToken);
-      foreach (var id in modified.Select(x => x.Id))
-      {
-        measurementLocationByMeterCache.TryRemove(id);
-        messengerByMeterCache.TryRemove(id);
-        measurementValidatorByMeterCache.TryRemove(id);
-      }
-
       await manager.RescheduleInactivityMonitorJobs(
         modified.Select(
           x => new MeterInactivityMonitorDetails(
@@ -99,18 +86,10 @@ public class DataMeterChangeHandler(
     var removed = eventArgs.Models
       .Where(x => x.State == DataModelChangedState.Removed)
       .Select(x => x.Model)
-      .OfType<MeterModel>()
+      .OfType<IMeter>()
       .ToList();
     if (removed.Count > 0)
     {
-      await meterCache.TryRemoveAsync(removed, cancellationToken);
-      foreach (var id in removed.Select(x => x.Id))
-      {
-        measurementLocationByMeterCache.TryRemove(id);
-        messengerByMeterCache.TryRemove(id);
-        measurementValidatorByMeterCache.TryRemove(id);
-      }
-
       await manager.UnscheduleInactivityMonitorJobs(
         removed.Select(x => x.Id),
         cancellationToken

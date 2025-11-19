@@ -3,7 +3,7 @@
 @model Ozds.Server.ViewModels.AppViewModel
 
 @{
-  Layout = "_Layout.cshtml";
+  Layout = "_AppLayout.cshtml";
 }
 
 @(
@@ -11,7 +11,7 @@ await Html.RenderComponentAsync<App>(
   RenderMode.Server,
   new
   {
-    Culture = Model.Culture?.TwoLetterISOLanguageName,
+    Model.CultureId,
     Model.LogoutToken
   }
 ))

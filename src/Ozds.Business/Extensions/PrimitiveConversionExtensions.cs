@@ -4,75 +4,35 @@ public static class PrimitiveConversionExtensions
 {
   public static float ToFloat(this decimal value)
   {
-    try
-    {
-      return (float)value;
-    }
-    catch (OverflowException)
-    {
-      return 0;
-    }
+    return Convert.ToSingle(value);
   }
 
   public static double ToDouble(this decimal value)
   {
-    try
-    {
-      return (double)value;
-    }
-    catch (OverflowException)
-    {
-      return 0;
-    }
+    return Convert.ToDouble(value);
   }
 
   public static long ToLong(this decimal value)
   {
-    try
-    {
-      return (long)value;
-    }
-    catch (OverflowException)
-    {
-      return 0;
-    }
+    return value > long.MaxValue
+      ? long.MaxValue
+      : value < long.MinValue
+        ? long.MinValue
+        : Convert.ToInt64(value);
   }
 
   public static decimal ToDecimal(this float value)
   {
-    try
-    {
-      return (decimal)value;
-    }
-    catch (OverflowException)
-    {
-      return 0;
-    }
+    return Convert.ToDecimal(value);
   }
 
   public static decimal ToDecimal(this double value)
   {
-    try
-    {
-      return (decimal)value;
-    }
-    catch (OverflowException)
-    {
-      return 0;
-    }
+    return Convert.ToDecimal(value);
   }
 
   public static decimal ToDecimal(this long value)
   {
-    try
-    {
-#pragma warning disable IDE0004
-      return value;
-#pragma warning restore IDE0004
-    }
-    catch (OverflowException)
-    {
-      return 0;
-    }
+    return Convert.ToDecimal(value);
   }
 }
