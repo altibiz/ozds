@@ -13,14 +13,14 @@ public class BillingQueries(
 ) : IQueries
 {
   public async Task<NetworkUserInvoiceBasisModel>
-    ReadInvoiceBasisForNetworkUser(
+    ReadInvoiceBasisByNetworkUser(
       string networkUserId,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
       CancellationToken cancellationToken
     )
   {
-    var entity = await queries.ReadInvoiceBasisForNetworkUser(
+    var entity = await queries.ReadInvoiceBasisByNetworkUser(
       networkUserId,
       fromDate,
       toDate,

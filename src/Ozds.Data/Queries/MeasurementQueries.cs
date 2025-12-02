@@ -1,12 +1,12 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
-using Ozds.Data.Entities;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 using Ozds.Data.Queries.Abstractions;
+using Ozds.Data.Reflection;
 using Z.EntityFramework.Plus;
 
 // TODO: remove any direct references
@@ -18,7 +18,8 @@ using Z.EntityFramework.Plus;
 namespace Ozds.Data.Queries;
 
 public class MeasurementQueries(
-  IDbContextFactory<DataDbContext> factory
+  IDbContextFactory<DataDbContext> factory,
+  EntityReflector reflector
 ) : IQueries
 {
   public async Task<PaginatedList<IMeasurementEntity>> ReadByMeterIds(
@@ -203,16 +204,8 @@ public class MeasurementQueries(
     var futureItems = new List<QueryFutureEnumerable<IMeasurementEntity>>();
 
     var types = interval is not null
-      ? new[]
-      {
-        typeof(AbbB2xAggregateEntity),
-        typeof(SchneideriEM3xxxAggregateEntity)
-      }
-      : new[]
-      {
-        typeof(AbbB2xMeasurementEntity),
-        typeof(SchneideriEM3xxxMeasurementEntity)
-      };
+      ? reflector.AggregateTypes
+      : reflector.MeasurementTypes;
 
     foreach (var entityType in types)
     {
@@ -298,16 +291,8 @@ public class MeasurementQueries(
     var futureItems = new List<QueryDeferred<IMeasurementEntity>>();
 
     var types = interval is not null
-      ? new[]
-      {
-        typeof(AbbB2xAggregateEntity),
-        typeof(SchneideriEM3xxxAggregateEntity)
-      }
-      : new[]
-      {
-        typeof(AbbB2xMeasurementEntity),
-        typeof(SchneideriEM3xxxMeasurementEntity)
-      };
+      ? reflector.AggregateTypes
+      : reflector.MeasurementTypes;
 
     foreach (var entityType in types)
     {

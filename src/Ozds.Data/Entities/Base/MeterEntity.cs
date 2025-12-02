@@ -6,6 +6,8 @@ using Ozds.Data.Entities.Enums;
 
 namespace Ozds.Data.Entities.Base;
 
+// NOTE: don't make this thing abstract for now - archived properties break
+
 public class MeterEntity
   : TrackableEntity, ICustomIdentifiableEntity, IMeterEntity
 {

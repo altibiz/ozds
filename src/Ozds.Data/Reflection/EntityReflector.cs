@@ -4,18 +4,23 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Ozds.Assets.Queries.Abstractions;
 using Ozds.Data.Context;
+using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
 using Ozds.Data.Options;
 
 namespace Ozds.Data.Reflection;
 
-public sealed class EntityReflector(
-  IDbContextFactory<DataDbContext> factory,
-  ITypeQueries typeQueries,
-  IOptions<OzdsDataOptions> options
-) : IAsyncDisposable
+public sealed class EntityReflector : IAsyncDisposable
 {
-  private readonly DataDbContext context = factory.CreateDbContext();
+#pragma warning disable S4487 // Unread "private" fields should be removed
+  private readonly IDbContextFactory<DataDbContext> factory;
+#pragma warning restore S4487 // Unread "private" fields should be removed
+
+  private readonly ITypeQueries typeQueries;
+
+  private readonly IOptions<OzdsDataOptions> options;
+
+  private readonly DataDbContext context;
 
   private readonly Assembly entitiesAssembly =
     typeof(EntityReflector).Assembly;
@@ -33,6 +38,54 @@ public sealed class EntityReflector(
 
   private readonly ConcurrentDictionary<Type, string> typeToTableCache =
     new();
+
+  private readonly Lazy<List<Type>> aggregateTypes;
+
+  private readonly Lazy<Dictionary<Type, Type>> aggregateTypeToMeterType;
+
+  private readonly Lazy<List<Type>> measurementTypes;
+
+  public List<Type> AggregateTypes => aggregateTypes.Value;
+
+  public List<Type> MeasurementTypes => measurementTypes.Value;
+
+  public EntityReflector(
+    IDbContextFactory<DataDbContext> factory,
+    ITypeQueries typeQueries,
+    IOptions<OzdsDataOptions> options
+  )
+  {
+    this.factory = factory;
+    this.typeQueries = typeQueries;
+    this.options = options;
+
+    context = factory.CreateDbContext();
+
+    aggregateTypes = new(() => context.Model
+      .GetEntityTypes()
+      .Where(x =>
+        x.ClrType.IsAssignableTo(typeof(IAggregateEntity))
+        && !x.ClrType.IsAbstract
+        && !x.ClrType.IsGenericType)
+      .Select(x => x.ClrType)
+      .ToList());
+
+    measurementTypes = new(() => context.Model
+      .GetEntityTypes()
+      .Where(x =>
+        x.ClrType.IsAssignableTo(typeof(IMeasurementEntity))
+        && !x.ClrType.IsAbstract
+        && !x.ClrType.IsGenericType)
+      .Select(x => x.ClrType)
+      .ToList());
+
+    aggregateTypeToMeterType = new(() => aggregateTypes.Value
+      .ToDictionary(
+        x => x,
+        x => x.GetProperty("Meter")?.PropertyType
+          ?? throw new InvalidOperationException(
+            $"No meter property found for {x.Name}.")));
+  }
 
   public ValueTask DisposeAsync()
   {
@@ -122,5 +175,10 @@ public sealed class EntityReflector(
     nameToTypeCache.TryAdd(name, type);
 
     return type;
+  }
+
+  public Type ResolveAggregateMeterType(Type aggregateType)
+  {
+    return aggregateTypeToMeterType.Value[aggregateType];
   }
 }

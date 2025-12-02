@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
@@ -6,15 +7,17 @@ using Ozds.Data.Entities.Composite;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 using Ozds.Data.Queries.Abstractions;
+using Ozds.Data.Reflection;
 
 namespace Ozds.Data.Queries;
 
 public class BillingQueries(
-  IDbContextFactory<DataDbContext> factory
+  IDbContextFactory<DataDbContext> factory,
+  EntityReflector reflector
 ) : IQueries
 {
   public async Task<NetworkUserInvoiceBasisEntity>
-    ReadInvoiceBasisForNetworkUser(
+    ReadInvoiceBasisByNetworkUser(
       string networkUserId,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
@@ -33,7 +36,8 @@ public class BillingQueries(
         .FirstOrDefaultAsync(cancellationToken) ??
       throw new InvalidOperationException(
         "Network user not found");
-    var calculationBases = await NetworkUserCalculationBasesByNetworkUser(
+
+    var calculationBases = await ReadCalculationBasesByNetworkUser(
       networkUserId,
       fromDate,
       toDate,
@@ -52,7 +56,7 @@ public class BillingQueries(
   }
 
   private async Task<List<NetworkUserCalculationBasisEntity>>
-    NetworkUserCalculationBasesByNetworkUser(
+    ReadCalculationBasesByNetworkUser(
       string networkUserId,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
@@ -62,160 +66,285 @@ public class BillingQueries(
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
 
-    return (await context.NetworkUsers
-        .Include(x => x.Location)
-        .ThenInclude(x => x.RegulatoryCatalogue)
-        .Where(context.PrimaryKeyEquals<NetworkUserEntity>(networkUserId))
-        .Join(
-          context.MeasurementLocations
-            .OfType<NetworkUserMeasurementLocationEntity>()
-            .Include(x => x.NetworkUserCatalogue)
-            .Include(x => x.Meter),
-          context.PrimaryKeyOf<NetworkUserEntity>(),
-          context.ForeignKeyOf<NetworkUserMeasurementLocationEntity>(
-            nameof(NetworkUserMeasurementLocationEntity.NetworkUser)),
-          (networkUser, measurementLocation) =>
-            new NetworkUserCalculationBasesByNetworkUserIntermediary
-            {
-              Location = networkUser.Location,
-              NetworkUser = networkUser,
-              MeasurementLocation = measurementLocation,
-              UsageNetworkUserCatalogue =
-                measurementLocation.NetworkUserCatalogue,
-              SupplyRegulatoryCatalogue = networkUser
-                .Location
-                .RegulatoryCatalogue,
-              Meter = measurementLocation.Meter
-            }
-        )
-        .GroupJoin(
-          context.AbbB2xAggregates
-            .Where(x => x.Timestamp >= fromDate)
-            .Where(x => x.Timestamp <= toDate)
-            .Where(x => x.Interval == IntervalEntity.QuarterHour),
-          context
-            .PrimaryKeyOf<MeasurementLocationEntity>()
-            .Prefix(
-              (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
-                x.MeasurementLocation),
-          context.ForeignKeyOf<AbbB2xAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.MeasurementLocation)
-          ),
-          (x, abbB2xAggregates) =>
-            new
-            {
-              x.Location,
-              x.NetworkUser,
-              x.MeasurementLocation,
-              x.Meter,
-              x.UsageNetworkUserCatalogue,
-              x.SupplyRegulatoryCatalogue,
-              abbB2xAggregates
-            }
-        )
-        .SelectMany(
-          x => x.abbB2xAggregates.DefaultIfEmpty(),
-          (x, abbAggregate) =>
-            new NetworkUserCalculationBasesByNetworkUserIntermediary
-            {
-              Location = x.Location,
-              NetworkUser = x.NetworkUser,
-              MeasurementLocation = x.MeasurementLocation,
-              Meter = x.Meter,
-              UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
-              SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
-              AbbB2xAggregate = abbAggregate
-            }
-        )
-        .GroupJoin(
-          context.SchneideriEM3xxxAggregates
-            .Where(x => x.Timestamp >= fromDate)
-            .Where(x => x.Timestamp <= toDate)
-            .Where(x => x.Interval == IntervalEntity.QuarterHour),
-          context
-            .PrimaryKeyOf<MeasurementLocationEntity>()
-            .Prefix(
-              (NetworkUserCalculationBasesByNetworkUserIntermediary x) =>
-                x.MeasurementLocation),
-          context.ForeignKeyOf<SchneideriEM3xxxAggregateEntity>(
-            nameof(AbbB2xAggregateEntity.MeasurementLocation)
-          ),
-          (x, schneideriEM3xxxAggregates) =>
-            new
-            {
-              x.Location,
-              x.NetworkUser,
-              x.MeasurementLocation,
-              x.Meter,
-              x.UsageNetworkUserCatalogue,
-              x.SupplyRegulatoryCatalogue,
-              x.AbbB2xAggregate,
-              schneideriEM3xxxAggregates
-            }
-        )
-        .SelectMany(
-          x => x.schneideriEM3xxxAggregates.DefaultIfEmpty(),
-          (x, schneiderAggregate) =>
-            new NetworkUserCalculationBasesByNetworkUserIntermediary
-            {
-              Location = x.Location,
-              NetworkUser = x.NetworkUser,
-              MeasurementLocation = x.MeasurementLocation,
-              Meter = x.Meter,
-              UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
-              SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
-              AbbB2xAggregate = x.AbbB2xAggregate,
-              SchneideriEM3xxxAggregate = schneiderAggregate
-            }
-        )
-        .ToListAsync(cancellationToken))
-      .GroupBy(x => x.MeasurementLocation.Id)
-      .Select(
-        x => new NetworkUserCalculationBasisEntity
-        {
-          FromDate = fromDate,
-          ToDate = toDate,
-          Location = x.First().Location,
-          NetworkUser = x.First().NetworkUser,
-          MeasurementLocation = x.First().MeasurementLocation,
-          Meter = x.First().Meter,
-          UsageNetworkUserCatalogue = x.First().UsageNetworkUserCatalogue,
-          SupplyRegulatoryCatalogue = x.First().SupplyRegulatoryCatalogue,
-          Aggregates = Enumerable.Empty<AggregateEntity>()
-            .Concat(
-              x
-                .Where(x => x.AbbB2xAggregate is not null)
-                .Select(x => x.AbbB2xAggregate!))
-            .Concat(
-              x
-                .Where(x => x.SchneideriEM3xxxAggregate is not null)
-                .Select(x => x.SchneideriEM3xxxAggregate!))
-            .ToList()
-        }
-      )
+    var bases =
+      await ReadCalculationBasesByNetworkUser(
+        networkUserId,
+        cancellationToken);
+
+    foreach (var aggregateType in reflector.AggregateTypes)
+    {
+      var aggregates = await ReadCalculationBaseAggregates(
+        aggregateType,
+        bases.Where(x =>
+          x.Meter.GetType()
+            == reflector.ResolveAggregateMeterType(aggregateType)),
+        fromDate,
+        toDate,
+        cancellationToken
+      );
+
+      foreach (var intermediary in bases)
+      {
+        intermediary.Aggregates = aggregates
+          .FirstOrDefault(x =>
+            x.MeasurementLocation.Id == intermediary.MeasurementLocation.Id)
+          ?.Aggregates
+          ?? intermediary.Aggregates;
+      }
+    }
+
+    return bases
+      .Select(x => new NetworkUserCalculationBasisEntity
+      {
+        FromDate = fromDate,
+        ToDate = toDate,
+        Location = x.Location,
+        NetworkUser = x.NetworkUser,
+        MeasurementLocation = x.MeasurementLocation,
+        Meter = x.Meter,
+        UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
+        SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
+        Aggregates = x.Aggregates ?? new()
+      })
       .ToList();
   }
 
-  private readonly struct NetworkUserCalculationBasesByNetworkUserIntermediary
+  private async Task<List<NetworkUserCalculationBasisEntity>>
+    ReadCalculationBasesByNetworkUser(
+      string networkUserId,
+      CancellationToken cancellationToken
+    )
   {
-    public LocationEntity Location { get; init; }
-    public NetworkUserEntity NetworkUser { get; init; }
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
 
-    public NetworkUserMeasurementLocationEntity MeasurementLocation
+    return await context.MeasurementLocations
+        .OfType<NetworkUserMeasurementLocationEntity>()
+        .Where(context.ForeignKeyEquals<NetworkUserMeasurementLocationEntity>(
+          networkUserId,
+          nameof(NetworkUserMeasurementLocationEntity.NetworkUser)))
+        .Include(x => x.NetworkUserCatalogue)
+        .Include(x => x.Meter)
+        .Include(x => x.NetworkUser)
+        .ThenInclude(x => x.Location)
+        .ThenInclude(x => x.RegulatoryCatalogue)
+        .Select(x => new NetworkUserCalculationBasisEntity
+        {
+          Location = x.NetworkUser.Location,
+          NetworkUser = x.NetworkUser,
+          MeasurementLocation = x,
+          UsageNetworkUserCatalogue =
+            x.NetworkUserCatalogue,
+          SupplyRegulatoryCatalogue = x.NetworkUser.Location.RegulatoryCatalogue,
+          Meter = x.Meter
+        })
+        .ToListAsync(cancellationToken);
+  }
+
+  private async Task<List<NetworkUserCalculationBasisEntity>>
+    ReadCalculationBaseAggregates(
+      Type aggregateType,
+      IEnumerable<NetworkUserCalculationBasisEntity>
+        intermediaries,
+      DateTimeOffset fromDate,
+      DateTimeOffset toDate,
+      CancellationToken cancellationToken
+    )
+  {
+    if (!intermediaries.Any())
     {
-      get;
-      init;
+      return new List<NetworkUserCalculationBasisEntity>();
     }
 
-    public NetworkUserCatalogueEntity UsageNetworkUserCatalogue { get; init; }
-    public RegulatoryCatalogueEntity SupplyRegulatoryCatalogue { get; init; }
-    public MeterEntity Meter { get; init; }
-    public AbbB2xAggregateEntity? AbbB2xAggregate { get; init; }
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
 
-    public SchneideriEM3xxxAggregateEntity? SchneideriEM3xxxAggregate
+    var table = reflector.ResolveEntityTable(aggregateType);
+
+    var parameters = new Dictionary<string, object?>
     {
-      get;
-      init;
+        {
+          "interval",
+          StringExtensions.ToSnakeCase(nameof(IntervalEntity.QuarterHour))
+        },
+        { "from", fromDate.ToString("o", CultureInfo.InvariantCulture) },
+        { "to",   toDate.ToString("o", CultureInfo.InvariantCulture) },
+    };
+
+    var locationValueRows = new List<string>();
+    int index = 0;
+    foreach (var id in intermediaries.Select(x => x.MeasurementLocation.Id))
+    {
+        string paramName = $"loc{index++}";
+        parameters[paramName] = id;
+        locationValueRows.Add($"(@{paramName})");
     }
+
+    string joinLocationsClause = $@"
+        JOIN (
+            VALUES {string.Join(", ", locationValueRows)}
+        ) AS selected_locations(location_id)
+          ON selected_locations.location_id = a.measurement_location_id
+    ";
+
+    var inRange = await context
+      .DapperCommand<AggregateEntity>(
+        aggregateType,
+        $@"
+          SELECT *
+          FROM {table} a
+          {joinLocationsClause}
+          WHERE a.interval = @interval
+            AND a.timestamp >= @from
+            AND a.timestamp <= @to
+        ",
+        cancellationToken,
+        parameters);
+
+    if (intermediaries.All(i => inRange
+      .Exists(p => p.MeasurementLocationId == i.MeasurementLocation.Id)))
+    {
+      return intermediaries
+        .Select(x => new NetworkUserCalculationBasisEntity
+        {
+          Location = x.Location,
+          NetworkUser = x.NetworkUser,
+          MeasurementLocation = x.MeasurementLocation,
+          UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
+          SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
+          Meter = x.Meter,
+          Aggregates = inRange.Where(y =>
+              y.MeasurementLocationId == x.MeasurementLocation.Id)
+            .OrderBy(x => x.Timestamp)
+            .ToList()
+        })
+        .ToList();
+    }
+
+    var start = await context
+        .DapperCommand<AggregateEntity>(
+          aggregateType,
+          $@"
+            SELECT *
+            FROM (
+              SELECT a.*,
+                    ROW_NUMBER() OVER (
+                      PARTITION BY a.measurement_location_id
+                      ORDER BY a.timestamp ASC
+                    ) AS rn
+              FROM {table} a
+              {joinLocationsClause}
+              WHERE a.interval = @interval
+                AND a.timestamp >= @from
+            ) start_candidates
+            WHERE rn = 1
+          ",
+          cancellationToken,
+          parameters);
+
+    var startMissing = await context
+      .DapperCommand<AggregateEntity>(
+        aggregateType,
+        $@"
+          SELECT *
+          FROM (
+            SELECT a.*,
+                  ROW_NUMBER() OVER (
+                    PARTITION BY a.measurement_location_id
+                    ORDER BY a.timestamp DESC
+                  ) AS rn
+            FROM {table} a
+            {joinLocationsClause}
+            WHERE a.interval = @interval
+              AND a.timestamp < @from
+          ) start_fallback
+          WHERE rn = 1
+        ",
+        cancellationToken,
+        parameters);
+
+    var end = await context
+      .DapperCommand<AggregateEntity>(
+        aggregateType,
+        $@"
+          SELECT *
+          FROM (
+            SELECT a.*,
+                  ROW_NUMBER() OVER (
+                    PARTITION BY a.measurement_location_id
+                    ORDER BY a.timestamp DESC
+                  ) AS rn
+            FROM {table} a
+            {joinLocationsClause}
+            WHERE a.interval = @interval
+              AND a.timestamp <= @to
+          ) end_candidates
+          WHERE rn = 1
+        ",
+        cancellationToken,
+        parameters);
+
+    var endMissing = await context
+      .DapperCommand<AggregateEntity>(
+        aggregateType,
+        $@"
+          SELECT *
+          FROM (
+            SELECT a.*,
+                  ROW_NUMBER() OVER (
+                    PARTITION BY a.measurement_location_id
+                    ORDER BY a.timestamp ASC
+                  ) AS rn
+            FROM {table} a
+            {joinLocationsClause}
+            WHERE a.interval = @interval
+              AND a.timestamp > @to
+          ) end_fallback
+          WHERE rn = 1
+        ",
+        cancellationToken,
+        parameters);
+
+    return intermediaries
+      .Select(x =>
+      {
+        var aggregates = inRange.Where(y =>
+            y.MeasurementLocationId == x.MeasurementLocation.Id)
+          .OrderBy(x => x.Timestamp)
+          .ToList();
+
+        if (aggregates.Count == 0)
+        {
+          var xStart = start.FirstOrDefault(y =>
+            y.MeasurementLocationId == x.MeasurementLocation.Id) ??
+            startMissing.FirstOrDefault(y =>
+              y.MeasurementLocationId == x.MeasurementLocation.Id);
+          if (xStart is not null)
+          {
+            aggregates.Insert(0, xStart);
+          }
+
+          var xEnd = end.FirstOrDefault(y =>
+            y.MeasurementLocationId == x.MeasurementLocation.Id) ??
+            endMissing.FirstOrDefault(y =>
+              y.MeasurementLocationId == x.MeasurementLocation.Id);
+          if (xEnd is not null && xEnd.Timestamp != xStart?.Timestamp)
+          {
+            aggregates.Add(xEnd);
+          }
+        }
+
+        return new NetworkUserCalculationBasisEntity
+        {
+          Location = x.Location,
+          NetworkUser = x.NetworkUser,
+          MeasurementLocation = x.MeasurementLocation,
+          UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
+          SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
+          Meter = x.Meter,
+          Aggregates = aggregates
+        };
+      })
+      .ToList();
   }
 }

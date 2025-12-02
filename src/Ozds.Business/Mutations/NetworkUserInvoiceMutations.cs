@@ -43,7 +43,7 @@ public class NetworkUserInvoiceMutations(
     var billingQueries = scope.ServiceProvider
       .GetRequiredService<BillingQueries>();
     var basis = await billingQueries
-      .ReadInvoiceBasisForNetworkUser(
+      .ReadInvoiceBasisByNetworkUser(
         networkUserId,
         dateFrom,
         dateTo,
@@ -78,7 +78,7 @@ public class NetworkUserInvoiceMutations(
     var billingQueries = scope.ServiceProvider
       .GetRequiredService<BillingQueries>();
     var basis = await billingQueries
-      .ReadInvoiceBasisForNetworkUser(
+      .ReadInvoiceBasisByNetworkUser(
         networkUserId,
         dateFrom,
         dateTo,

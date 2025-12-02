@@ -11,6 +11,7 @@ using Ozds.Data.Mutations.Abstractions;
 using Ozds.Data.Observers.Abstractions;
 using Ozds.Data.Observers.EventArgs;
 using Ozds.Data.Procedures;
+using Ozds.Data.Reflection;
 
 namespace Ozds.Data.Mutations;
 
@@ -19,7 +20,8 @@ public class MeasurementMutations(
   ILogger<MeasurementMutations> logger,
   IEntitiesChangingPublisher changingPublisher,
   IEntitiesChangedPublisher changedPublisher,
-  MeasurementProcedures procedures
+  MeasurementProcedures procedures,
+  EntityReflector reflector
 ) : IMutations
 {
   public async Task DeleteOlderThan(
@@ -125,19 +127,13 @@ public class MeasurementMutations(
     }
   }
 
-  private static async Task ExecuteDeleteOlderThan(
+  private async Task ExecuteDeleteOlderThan(
     DataDbContext context,
     DateTimeOffset threshold,
     CancellationToken cancellationToken
   )
   {
-    var measurementTypes = new[]
-    {
-      typeof(AbbB2xMeasurementEntity),
-      typeof(SchneideriEM3xxxMeasurementEntity)
-    };
-
-    foreach (var (measurementType, index) in measurementTypes.Select(
+    foreach (var (measurementType, index) in reflector.MeasurementTypes.Select(
       (x, i) => (x, i)))
     {
 #pragma warning disable EF1002 // Risk of vulnerability to SQL injection.
