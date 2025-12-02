@@ -2,7 +2,6 @@ using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using Ozds.Data.Context;
-using Ozds.Data.Entities;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Enums;

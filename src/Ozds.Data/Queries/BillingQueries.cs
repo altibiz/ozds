@@ -75,8 +75,9 @@ public class BillingQueries(
     {
       var aggregates = await ReadCalculationBaseAggregates(
         aggregateType,
-        bases.Where(x =>
-          x.Meter.GetType()
+        bases.Where(
+          x =>
+            x.Meter.GetType()
             == reflector.ResolveAggregateMeterType(aggregateType)),
         fromDate,
         toDate,
@@ -86,26 +87,28 @@ public class BillingQueries(
       foreach (var intermediary in bases)
       {
         intermediary.Aggregates = aggregates
-          .FirstOrDefault(x =>
-            x.MeasurementLocation.Id == intermediary.MeasurementLocation.Id)
-          ?.Aggregates
+            .FirstOrDefault(
+              x =>
+                x.MeasurementLocation.Id == intermediary.MeasurementLocation.Id)
+            ?.Aggregates
           ?? intermediary.Aggregates;
       }
     }
 
     return bases
-      .Select(x => new NetworkUserCalculationBasisEntity
-      {
-        FromDate = fromDate,
-        ToDate = toDate,
-        Location = x.Location,
-        NetworkUser = x.NetworkUser,
-        MeasurementLocation = x.MeasurementLocation,
-        Meter = x.Meter,
-        UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
-        SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
-        Aggregates = x.Aggregates ?? new()
-      })
+      .Select(
+        x => new NetworkUserCalculationBasisEntity
+        {
+          FromDate = fromDate,
+          ToDate = toDate,
+          Location = x.Location,
+          NetworkUser = x.NetworkUser,
+          MeasurementLocation = x.MeasurementLocation,
+          Meter = x.Meter,
+          UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
+          SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
+          Aggregates = x.Aggregates ?? new List<AggregateEntity>()
+        })
       .ToList();
   }
 
@@ -119,26 +122,29 @@ public class BillingQueries(
       .CreateDbContextAsync(cancellationToken);
 
     return await context.MeasurementLocations
-        .OfType<NetworkUserMeasurementLocationEntity>()
-        .Where(context.ForeignKeyEquals<NetworkUserMeasurementLocationEntity>(
+      .OfType<NetworkUserMeasurementLocationEntity>()
+      .Where(
+        context.ForeignKeyEquals<NetworkUserMeasurementLocationEntity>(
           networkUserId,
           nameof(NetworkUserMeasurementLocationEntity.NetworkUser)))
-        .Include(x => x.NetworkUserCatalogue)
-        .Include(x => x.Meter)
-        .Include(x => x.NetworkUser)
-        .ThenInclude(x => x.Location)
-        .ThenInclude(x => x.RegulatoryCatalogue)
-        .Select(x => new NetworkUserCalculationBasisEntity
+      .Include(x => x.NetworkUserCatalogue)
+      .Include(x => x.Meter)
+      .Include(x => x.NetworkUser)
+      .ThenInclude(x => x.Location)
+      .ThenInclude(x => x.RegulatoryCatalogue)
+      .Select(
+        x => new NetworkUserCalculationBasisEntity
         {
           Location = x.NetworkUser.Location,
           NetworkUser = x.NetworkUser,
           MeasurementLocation = x,
           UsageNetworkUserCatalogue =
             x.NetworkUserCatalogue,
-          SupplyRegulatoryCatalogue = x.NetworkUser.Location.RegulatoryCatalogue,
+          SupplyRegulatoryCatalogue =
+            x.NetworkUser.Location.RegulatoryCatalogue,
           Meter = x.Meter
         })
-        .ToListAsync(cancellationToken);
+      .ToListAsync(cancellationToken);
   }
 
   private async Task<List<NetworkUserCalculationBasisEntity>>
@@ -163,24 +169,24 @@ public class BillingQueries(
 
     var parameters = new Dictionary<string, object?>
     {
-        {
-          "interval",
-          StringExtensions.ToSnakeCase(nameof(IntervalEntity.QuarterHour))
-        },
-        { "from", fromDate.ToString("o", CultureInfo.InvariantCulture) },
-        { "to",   toDate.ToString("o", CultureInfo.InvariantCulture) },
+      {
+        "interval",
+        StringExtensions.ToSnakeCase(nameof(IntervalEntity.QuarterHour))
+      },
+      { "from", fromDate.ToString("o", CultureInfo.InvariantCulture) },
+      { "to", toDate.ToString("o", CultureInfo.InvariantCulture) }
     };
 
     var locationValueRows = new List<string>();
-    int index = 0;
+    var index = 0;
     foreach (var id in intermediaries.Select(x => x.MeasurementLocation.Id))
     {
-        string paramName = $"loc{index++}";
-        parameters[paramName] = id;
-        locationValueRows.Add($"(@{paramName})");
+      var paramName = $"loc{index++}";
+      parameters[paramName] = id;
+      locationValueRows.Add($"(@{paramName})");
     }
 
-    string joinLocationsClause = $@"
+    var joinLocationsClause = $@"
         JOIN (
             VALUES {string.Join(", ", locationValueRows)}
         ) AS selected_locations(location_id)
@@ -201,30 +207,33 @@ public class BillingQueries(
         cancellationToken,
         parameters);
 
-    if (intermediaries.All(i => inRange
-      .Exists(p => p.MeasurementLocationId == i.MeasurementLocation.Id)))
+    if (intermediaries.All(
+      i => inRange
+        .Exists(p => p.MeasurementLocationId == i.MeasurementLocation.Id)))
     {
       return intermediaries
-        .Select(x => new NetworkUserCalculationBasisEntity
-        {
-          Location = x.Location,
-          NetworkUser = x.NetworkUser,
-          MeasurementLocation = x.MeasurementLocation,
-          UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
-          SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
-          Meter = x.Meter,
-          Aggregates = inRange.Where(y =>
-              y.MeasurementLocationId == x.MeasurementLocation.Id)
-            .OrderBy(x => x.Timestamp)
-            .ToList()
-        })
+        .Select(
+          x => new NetworkUserCalculationBasisEntity
+          {
+            Location = x.Location,
+            NetworkUser = x.NetworkUser,
+            MeasurementLocation = x.MeasurementLocation,
+            UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
+            SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
+            Meter = x.Meter,
+            Aggregates = inRange.Where(
+                y =>
+                  y.MeasurementLocationId == x.MeasurementLocation.Id)
+              .OrderBy(x => x.Timestamp)
+              .ToList()
+          })
         .ToList();
     }
 
     var start = await context
-        .DapperCommand<AggregateEntity>(
-          aggregateType,
-          $@"
+      .DapperCommand<AggregateEntity>(
+        aggregateType,
+        $@"
             SELECT *
             FROM (
               SELECT a.*,
@@ -239,8 +248,8 @@ public class BillingQueries(
             ) start_candidates
             WHERE rn = 1
           ",
-          cancellationToken,
-          parameters);
+        cancellationToken,
+        parameters);
 
     var startMissing = await context
       .DapperCommand<AggregateEntity>(
@@ -306,45 +315,51 @@ public class BillingQueries(
         parameters);
 
     return intermediaries
-      .Select(x =>
-      {
-        var aggregates = inRange.Where(y =>
-            y.MeasurementLocationId == x.MeasurementLocation.Id)
-          .OrderBy(x => x.Timestamp)
-          .ToList();
-
-        if (aggregates.Count == 0)
+      .Select(
+        x =>
         {
-          var xStart = start.FirstOrDefault(y =>
-            y.MeasurementLocationId == x.MeasurementLocation.Id) ??
-            startMissing.FirstOrDefault(y =>
-              y.MeasurementLocationId == x.MeasurementLocation.Id);
-          if (xStart is not null)
+          var aggregates = inRange.Where(
+              y =>
+                y.MeasurementLocationId == x.MeasurementLocation.Id)
+            .OrderBy(x => x.Timestamp)
+            .ToList();
+
+          if (aggregates.Count == 0)
           {
-            aggregates.Insert(0, xStart);
+            var xStart = start.FirstOrDefault(
+                y =>
+                  y.MeasurementLocationId == x.MeasurementLocation.Id) ??
+              startMissing.FirstOrDefault(
+                y =>
+                  y.MeasurementLocationId == x.MeasurementLocation.Id);
+            if (xStart is not null)
+            {
+              aggregates.Insert(0, xStart);
+            }
+
+            var xEnd = end.FirstOrDefault(
+                y =>
+                  y.MeasurementLocationId == x.MeasurementLocation.Id) ??
+              endMissing.FirstOrDefault(
+                y =>
+                  y.MeasurementLocationId == x.MeasurementLocation.Id);
+            if (xEnd is not null && xEnd.Timestamp != xStart?.Timestamp)
+            {
+              aggregates.Add(xEnd);
+            }
           }
 
-          var xEnd = end.FirstOrDefault(y =>
-            y.MeasurementLocationId == x.MeasurementLocation.Id) ??
-            endMissing.FirstOrDefault(y =>
-              y.MeasurementLocationId == x.MeasurementLocation.Id);
-          if (xEnd is not null && xEnd.Timestamp != xStart?.Timestamp)
+          return new NetworkUserCalculationBasisEntity
           {
-            aggregates.Add(xEnd);
-          }
-        }
-
-        return new NetworkUserCalculationBasisEntity
-        {
-          Location = x.Location,
-          NetworkUser = x.NetworkUser,
-          MeasurementLocation = x.MeasurementLocation,
-          UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
-          SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
-          Meter = x.Meter,
-          Aggregates = aggregates
-        };
-      })
+            Location = x.Location,
+            NetworkUser = x.NetworkUser,
+            MeasurementLocation = x.MeasurementLocation,
+            UsageNetworkUserCatalogue = x.UsageNetworkUserCatalogue,
+            SupplyRegulatoryCatalogue = x.SupplyRegulatoryCatalogue,
+            Meter = x.Meter,
+            Aggregates = aggregates
+          };
+        })
       .ToList();
   }
 }
