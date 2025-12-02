@@ -1,4 +1,3 @@
-using System.Globalization;
 using AutoFixture.Dsl;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
@@ -15,53 +14,6 @@ public class MeasurementEntityFactory(
   IDbContextFactory<DataDbContext> factory
 )
 {
-  private const int MassiveMeasurementCount =
-    10000 / Constants.DefaultDbFuzzCount / 2;
-
-  private const int MeasurementCount =
-    1000 / Constants.DefaultDbFuzzCount / 2;
-
-  private const int AggregateCount =
-    MeasurementCount / 10;
-
-  private const int MeasurementCountFew =
-    MeasurementCount / 4;
-
-  private const int AggregateCountFew =
-    MeasurementCountFew / 10;
-
-  private static readonly DateTimeOffset Now = new(
-    DateTime.SpecifyKind(
-      DateTimeOffset.Parse(
-        "2024-10-27T05:15:00Z",
-        CultureInfo.InvariantCulture).UtcDateTime,
-      DateTimeKind.Utc),
-    TimeSpan.Zero);
-
-  private static readonly DateTimeOffset NowStartOfQuarterHour = new(
-    DateTime.SpecifyKind(
-      DateTimeOffset.Parse(
-        "2024-10-27T05:15:00Z",
-        CultureInfo.InvariantCulture).UtcDateTime,
-      DateTimeKind.Utc),
-    TimeSpan.Zero);
-
-  private static readonly DateTimeOffset NowStartOfDay = new(
-    DateTime.SpecifyKind(
-      DateTimeOffset.Parse(
-        "2024-10-26T22:00:00Z",
-        CultureInfo.InvariantCulture).UtcDateTime,
-      DateTimeKind.Utc),
-    TimeSpan.Zero);
-
-  private static readonly DateTimeOffset NowStartOfMonth = new(
-    DateTime.SpecifyKind(
-      DateTimeOffset.Parse(
-        "2024-09-30T22:00:00Z",
-        CultureInfo.InvariantCulture).UtcDateTime,
-      DateTimeKind.Utc),
-    TimeSpan.Zero);
-
   public async Task<List<IMeasurementEntity>> CreateDerivedNull(
     CancellationToken cancellationToken
   )
@@ -98,7 +50,7 @@ public class MeasurementEntityFactory(
 
     return await Create(
       x => x
-        .CreateMany(MeasurementCountFew),
+        .CreateMany(Constants.MeasurementCountFew),
       x => x
         .IndexedWith(x => x.DerivedActivePowerL1ImportT0_W, DerivedPowerFactory)
         .IndexedWith(x => x.DerivedActivePowerL2ImportT0_W, DerivedPowerFactory)
@@ -130,9 +82,9 @@ public class MeasurementEntityFactory(
           x => x.DerivedActivePowerTotalImportT1_W, DerivedPowerFactory)
         .IndexedWith(
           x => x.DerivedActivePowerTotalImportT2_W, DerivedPowerFactory)
-        .CreateMany(AggregateCountFew),
+        .CreateMany(Constants.AggregateCountFew),
       x => x
-        .CreateMany(MeasurementCountFew),
+        .CreateMany(Constants.MeasurementCountFew),
       x => x
         .IndexedWith(x => x.DerivedActivePowerL1ImportT0_W, DerivedPowerFactory)
         .IndexedWith(x => x.DerivedActivePowerL2ImportT0_W, DerivedPowerFactory)
@@ -149,7 +101,7 @@ public class MeasurementEntityFactory(
           x => x.DerivedActivePowerTotalImportT1_W, DerivedPowerFactory)
         .IndexedWith(
           x => x.DerivedActivePowerTotalImportT2_W, DerivedPowerFactory)
-        .CreateMany(AggregateCountFew),
+        .CreateMany(Constants.AggregateCountFew),
       cancellationToken
     );
   }
@@ -159,10 +111,10 @@ public class MeasurementEntityFactory(
   )
   {
     return await Create(
-      x => x.CreateMany(MeasurementCount),
-      x => x.CreateMany(AggregateCount),
-      x => x.CreateMany(MeasurementCount),
-      x => x.CreateMany(AggregateCount),
+      x => x.CreateMany(Constants.MeasurementCount),
+      x => x.CreateMany(Constants.AggregateCount),
+      x => x.CreateMany(Constants.MeasurementCount),
+      x => x.CreateMany(Constants.AggregateCount),
       cancellationToken
     );
   }
@@ -172,9 +124,9 @@ public class MeasurementEntityFactory(
   )
   {
     return await Create(
-      x => x.CreateMany(MassiveMeasurementCount),
+      x => x.CreateMany(Constants.MassiveMeasurementCount),
       x => x.CreateMany(0),
-      x => x.CreateMany(MassiveMeasurementCount),
+      x => x.CreateMany(Constants.MassiveMeasurementCount),
       x => x.CreateMany(0),
       cancellationToken
     );
@@ -208,7 +160,7 @@ public class MeasurementEntityFactory(
     var fixture = context.ContextualFixture();
     fixture.Customizations.Add(
       new DateTimeOffsetInRangeSpecimenBuilder(
-        Now.AddMonths(-1), Now));
+        Constants.Now.AddMonths(-1), Constants.Now));
 
     foreach (var i in Enumerable.Range(1, Constants.DefaultDbFuzzCount))
     {
@@ -314,16 +266,16 @@ public class MeasurementEntityFactory(
 
   private static DateTimeOffset MeasurementTimestampByIndex(int i)
   {
-    return Now.AddMinutes(-i);
+    return Constants.Now.AddMinutes(-i);
   }
 
   private static DateTimeOffset AggregateTimestampByIndex(int i)
   {
     return i % 3 == 0
-      ? NowStartOfQuarterHour.AddMinutes(-(i / 3) * 15)
+      ? Constants.NowStartOfQuarterHour.AddMinutes(-(i / 3) * 15)
       : i % 3 == 1
-        ? NowStartOfDay.AddDays(-(i / 3))
-        : NowStartOfMonth.AddMonths(-(i / 3));
+        ? Constants.NowStartOfDay.AddDays(-(i / 3))
+        : Constants.NowStartOfMonth.AddMonths(-(i / 3));
   }
 
   private static IntervalEntity IntervalByIndex(int i)

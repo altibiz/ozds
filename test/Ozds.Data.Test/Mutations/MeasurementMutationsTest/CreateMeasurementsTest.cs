@@ -6,22 +6,21 @@ using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Mutations;
+using Ozds.Data.Test.Base;
 using Ozds.Data.Test.Extensions;
 using Ozds.Time.Queries.Abstractions;
 
 namespace Ozds.Data.Test.Mutations.MeasurementMutationsTest;
 
-public class CreateMeasurementsTest
+public class CreateMeasurementsTest : OzdsDataTestBase
 {
   [Test]
   [Repeat(2)]
   public async Task FinishesInTimeTest(CancellationToken cancellationToken)
   {
-    await using var testContext = await OzdsDataTestContextFactory
-      .CreateOzdsDataTestContext(cancellationToken);
-    var mutations = testContext.ServiceScope.ServiceProvider
+    var mutations = ServiceProvider
       .GetRequiredService<MeasurementMutations>();
-    var factory = testContext.ServiceScope.ServiceProvider
+    var factory = ServiceProvider
       .GetRequiredService<MeasurementEntityFactory>();
 
     var expected = await factory.CreateMany(cancellationToken);
@@ -41,11 +40,9 @@ public class CreateMeasurementsTest
     CancellationToken cancellationToken
   )
   {
-    await using var testContext = await OzdsDataTestContextFactory
-      .CreateOzdsDataTestContext(cancellationToken);
-    var mutations = testContext.ServiceScope.ServiceProvider
+    var mutations = ServiceProvider
       .GetRequiredService<MeasurementMutations>();
-    var factory = testContext.ServiceScope.ServiceProvider
+    var factory = ServiceProvider
       .GetRequiredService<MeasurementEntityFactory>();
 
     var expected = await factory.CreateMassiveMeasurements(
@@ -64,16 +61,14 @@ public class CreateMeasurementsTest
   [Test]
   public async Task IsValidTest(CancellationToken cancellationToken)
   {
-    await using var testContext = await OzdsDataTestContextFactory
-      .CreateOzdsDataTestContext(cancellationToken);
-    await using var context = await testContext.ServiceScope.ServiceProvider
+    await using var context = await ServiceProvider
       .GetRequiredService<IDbContextFactory<DataDbContext>>()
       .CreateDbContextAsync(cancellationToken);
-    var mutations = testContext.ServiceScope.ServiceProvider
+    var mutations = ServiceProvider
       .GetRequiredService<MeasurementMutations>();
-    var time = testContext.ServiceScope.ServiceProvider
+    var time = ServiceProvider
       .GetRequiredService<ITimeQueries>();
-    var factory = testContext.ServiceScope.ServiceProvider
+    var factory = ServiceProvider
       .GetRequiredService<MeasurementEntityFactory>();
 
     var measurements = await factory.CreateDerivedNull(cancellationToken);
