@@ -29,6 +29,8 @@ public class
       .Calculate<UsageActiveEnergyTotalImportT1CalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.ActiveEnergyTotalImportT1Price_EUR
         }
@@ -38,6 +40,8 @@ public class
       .Calculate<UsageActiveEnergyTotalImportT2CalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.ActiveEnergyTotalImportT2Price_EUR
         }
@@ -47,6 +51,8 @@ public class
       .Calculate<UsageActivePowerTotalImportT1PeakCalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.ActivePowerTotalImportT1Price_EUR
         }
@@ -56,6 +62,8 @@ public class
       .Calculate<UsageReactiveEnergyTotalRampedT0CalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.ReactiveEnergyTotalRampedT0Price_EUR
         }
@@ -65,6 +73,8 @@ public class
       .Calculate<UsageMeterFeeCalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.MeterFeePrice_EUR
         }
@@ -82,6 +92,8 @@ public class
       .Calculate<SupplyActiveEnergyTotalImportT1CalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.ActiveEnergyTotalImportT1Price_EUR
         }
@@ -91,6 +103,8 @@ public class
       .Calculate<SupplyActiveEnergyTotalImportT2CalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.ActiveEnergyTotalImportT2Price_EUR
         }
@@ -100,6 +114,8 @@ public class
       .Calculate<SupplyBusinessUsageCalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.BusinessUsageFeePrice_EUR
         }
@@ -109,6 +125,8 @@ public class
       .Calculate<SupplyRenewableEnergyCalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.RenewableEnergyFeePrice_EUR
         }

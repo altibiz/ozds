@@ -11,7 +11,7 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
   protected override UsageActivePowerTotalImportT1PeakCalculationItemModel
     CalculateConcrete(CalculationItemBasisModel calculationBasis)
   {
-    if (calculationBasis.Aggregates.Count <= 1)
+    if (calculationBasis.Aggregates.Count < 1)
     {
       return new UsageActivePowerTotalImportT1PeakCalculationItemModel
       {
@@ -25,7 +25,8 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
     var aggregates = calculationBasis.Aggregates;
 
     var peak = aggregates
-      .SkipLast(1)
+      .Where(x => x.Timestamp >= calculationBasis.FromDate)
+      .Where(x => x.Timestamp < calculationBasis.ToDate)
       .Select(
         x => x.DerivedActivePower_W
           .TariffBinary().T1
