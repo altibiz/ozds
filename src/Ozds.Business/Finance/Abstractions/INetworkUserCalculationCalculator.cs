@@ -7,7 +7,7 @@ public interface INetworkUserCalculationCalculator
 {
   bool CanCalculate(NetworkUserCalculationBasisModel calculationBasis);
 
-  MeteredNetworkUserCalculationModel Calculate(
+  NetworkUserCalculationModel Calculate(
     NetworkUserCalculationBasisModel calculationBasis
   );
 }
