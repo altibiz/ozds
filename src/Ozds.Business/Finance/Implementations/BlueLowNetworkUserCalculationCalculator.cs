@@ -31,6 +31,10 @@ public class
         {
           FromDate = calculationBasis.FromDate,
           ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.ActiveEnergyTotalImportT0Price_EUR
         }
@@ -42,6 +46,10 @@ public class
         {
           FromDate = calculationBasis.FromDate,
           ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.ReactiveEnergyTotalRampedT0Price_EUR
         }
@@ -53,6 +61,10 @@ public class
         {
           FromDate = calculationBasis.FromDate,
           ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.MeterFeePrice_EUR
         }
@@ -70,6 +82,10 @@ public class
         {
           FromDate = calculationBasis.FromDate,
           ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.ActiveEnergyTotalImportT1Price_EUR
         }
@@ -81,6 +97,10 @@ public class
         {
           FromDate = calculationBasis.FromDate,
           ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.ActiveEnergyTotalImportT2Price_EUR
         }
@@ -92,6 +112,10 @@ public class
         {
           FromDate = calculationBasis.FromDate,
           ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.BusinessUsageFeePrice_EUR
         }
@@ -103,6 +127,10 @@ public class
         {
           FromDate = calculationBasis.FromDate,
           ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.RenewableEnergyFeePrice_EUR
         }

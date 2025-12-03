@@ -213,8 +213,12 @@ public class BlueLowNetworkUserCalculationCalculatorTest
           typeof(BlueLowNetworkUserCatalogueModel)).ToCustomization());
     var basis = fixture
       .Build<NetworkUserCalculationBasisModel>()
-      .With(x => x.FromDate, expected.FromDate)
-      .With(x => x.ToDate, expected.ToDate)
+      .With(x => x.FromDate, expected.RequestedFromDate)
+      .With(x => x.ToDate, expected.RequestedToDate)
+      .With(x => x.BilledFromDate, expected.FromDate)
+      .With(x => x.BilledToDate, expected.ToDate)
+      .With(x => x.MeasuredFromDate, expected.MeteredFromDate)
+      .With(x => x.MeasuredToDate, expected.MeteredToDate)
       .With(
         x => x.MeasurementLocation,
         expected.ArchivedNetworkUserMeasurementLocation)
