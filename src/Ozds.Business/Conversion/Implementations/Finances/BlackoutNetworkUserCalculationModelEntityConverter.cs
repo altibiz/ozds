@@ -23,6 +23,7 @@ public class BlackoutNetworkUserCalculationModelEntityConverter(
   )
   {
     base.InitializeEntity(model, entity);
+    entity.UsageNetworkUserCatalogueId = model.UsageNetworkUserCatalogueId;
     entity.ArchivedUsageNetworkUserCatalogue =
       modelEntityConverter.ToEntity<NetworkUserCatalogueEntity>(
         model.ConcreteArchivedUsageNetworkUserCatalogue);
@@ -35,6 +36,7 @@ public class BlackoutNetworkUserCalculationModelEntityConverter(
   )
   {
     base.InitializeModel(entity, model);
+    model.UsageNetworkUserCatalogueId = entity.UsageNetworkUserCatalogueId;
     model.ConcreteArchivedUsageNetworkUserCatalogue =
       modelEntityConverter.ToModel<NetworkUserCatalogueModel>(
         entity.ArchivedUsageNetworkUserCatalogue);
