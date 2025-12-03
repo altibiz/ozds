@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Ozds.Data.Interceptors;
 
-public class ServedInterceptor(IServiceProvider serviceProvider)
+public abstract class ServedInterceptor(IServiceProvider serviceProvider)
   : SaveChangesInterceptor
 {
 #pragma warning disable SA1401

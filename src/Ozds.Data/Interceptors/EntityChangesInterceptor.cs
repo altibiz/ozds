@@ -22,7 +22,7 @@ public record EntityChangesInterceptorState(
   DateTimeOffset Now
 );
 
-public class EntityChangesInterceptor(IServiceProvider serviceProvider)
+public abstract class EntityChangesInterceptor(IServiceProvider serviceProvider)
   : StatefulInterceptor<EntityChangesInterceptorState>(serviceProvider)
 {
   protected override EntityChangesInterceptorState ProcessSavingChanges(

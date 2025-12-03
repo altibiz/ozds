@@ -8,6 +8,14 @@ public class NetworkUserCalculationBasisEntity
 
   public DateTimeOffset ToDate { get; set; }
 
+  public DateTimeOffset MeasuredFromDate { get; set; }
+
+  public DateTimeOffset MeasuredToDate { get; set; }
+
+  public DateTimeOffset BilledFromDate { get; set; }
+
+  public DateTimeOffset BilledToDate { get; set; }
+
   public List<AggregateEntity> Aggregates { get; set; } = default!;
 
   public LocationEntity Location { get; set; } = default!;
