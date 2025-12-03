@@ -53,7 +53,8 @@ public sealed class OzdsData : IAsyncDisposable
         options.LogSql = false;
       });
 
-    builder.Services.AddSingleton<MeasurementEntityFactory>();
+    builder.Services.AddSingleton<TestInfrastructureFixture>();
+    builder.Services.AddSingleton<TestMeasurementFixture>();
 
     var host = builder.Build();
 

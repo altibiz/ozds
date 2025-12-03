@@ -106,7 +106,15 @@ public static class DbContextAssertionsExtensions
         return options
           .AllowingInfiniteRecursion()
           .IncludingNestedObjects()
-          .RespectingRuntimeTypes();
+          .RespectingRuntimeTypes()
+          .Using<float>(ctx => ctx.Subject
+            .Should()
+            .BeApproximately(ctx.Expectation, 0.000001f))
+          .WhenTypeIs<float>()
+          .Using<double>(ctx => ctx.Subject
+            .Should()
+            .BeApproximately(ctx.Expectation, 0.000001d))
+          .WhenTypeIs<double>();
       },
       because,
       becauseArgs);

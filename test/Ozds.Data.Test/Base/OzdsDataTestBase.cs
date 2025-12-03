@@ -12,6 +12,12 @@ public class OzdsDataTestBase
     ozdsData?.ServiceProvider
     ?? throw new InvalidOperationException("Test not initialized");
 
+  public TestInfrastructureFixture Infrastructure =>
+    ServiceProvider.GetRequiredService<TestInfrastructureFixture>();
+
+  public TestMeasurementFixture Measurements =>
+    ServiceProvider.GetRequiredService<TestMeasurementFixture>();
+
   [Before(HookType.Test)]
   public async Task SetUp(CancellationToken cancellationToken)
   {

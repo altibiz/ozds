@@ -12,9 +12,19 @@ namespace Ozds.Data.Reflection;
 
 public sealed class EntityReflector : IAsyncDisposable
 {
+  private readonly Lazy<List<Type>> measurementTypes;
+
   private readonly Lazy<List<Type>> aggregateTypes;
 
-  private readonly Lazy<Dictionary<Type, Type>> aggregateTypeToMeterType;
+  private readonly Lazy<List<Type>> meterTypes;
+
+  private readonly Lazy<Dictionary<Type, Type>> measurementTypeToMeterType;
+
+  private readonly Lazy<Dictionary<Type, Type>> meterTypeToMeasurementType;
+
+  private readonly Lazy<Dictionary<Type, Type>> meterTypeToAggregateType;
+
+  private readonly Lazy<Dictionary<Type, Type>> meterTypeToMeasurementValidatorType;
 
   private readonly DataDbContext context;
 
@@ -25,8 +35,6 @@ public sealed class EntityReflector : IAsyncDisposable
 #pragma warning disable S4487 // Unread "private" fields should be removed
   private readonly IDbContextFactory<DataDbContext> factory;
 #pragma warning restore S4487 // Unread "private" fields should be removed
-
-  private readonly Lazy<List<Type>> measurementTypes;
 
   private readonly ConcurrentDictionary<string, Type> nameToTypeCache =
     new();
@@ -73,18 +81,51 @@ public sealed class EntityReflector : IAsyncDisposable
         .Where(
           x =>
             x.ClrType.IsAssignableTo(typeof(IMeasurementEntity))
+            && !x.ClrType.IsAssignableTo(typeof(IAggregateEntity))
             && !x.ClrType.IsAbstract
             && !x.ClrType.IsGenericType)
         .Select(x => x.ClrType)
         .ToList());
 
-    aggregateTypeToMeterType = new Lazy<Dictionary<Type, Type>>(
-      () => aggregateTypes.Value
+    meterTypes = new Lazy<List<Type>>(
+      () => context.Model
+        .GetEntityTypes()
+        .Where(
+          x =>
+            x.ClrType.IsAssignableTo(typeof(IMeterEntity))
+            && !x.ClrType.IsAbstract
+            && !x.ClrType.IsGenericType)
+        .Select(x => x.ClrType)
+        .ToList());
+
+    measurementTypeToMeterType = new Lazy<Dictionary<Type, Type>>(
+      () => aggregateTypes.Value.Concat(measurementTypes.Value)
         .ToDictionary(
           x => x,
           x => x.GetProperty("Meter")?.PropertyType
             ?? throw new InvalidOperationException(
               $"No meter property found for {x.Name}.")));
+
+    meterTypeToAggregateType = new Lazy<Dictionary<Type, Type>>(
+      () => measurementTypeToMeterType.Value
+        .Where(x => x.Key.IsAssignableTo(typeof(IAggregateEntity)))
+        .ToDictionary(
+          x => x.Value,
+          x => x.Key));
+
+    meterTypeToMeasurementType = new Lazy<Dictionary<Type, Type>>(
+      () => measurementTypeToMeterType.Value
+        .Where(x => !x.Key.IsAssignableTo(typeof(IAggregateEntity)))
+        .ToDictionary(
+          x => x.Value,
+          x => x.Key));
+
+    meterTypeToMeasurementValidatorType = new Lazy<Dictionary<Type, Type>>(
+      () => MeterTypes.ToDictionary(
+        x => x,
+        x => x.GetProperty("MeasurementValidator")?.PropertyType
+          ?? throw new InvalidOperationException(
+            $"No measurement validator property found for {x.Name}.")));
   }
 
   public List<Type> AggregateTypes
@@ -95,6 +136,11 @@ public sealed class EntityReflector : IAsyncDisposable
   public List<Type> MeasurementTypes
   {
     get { return measurementTypes.Value; }
+  }
+
+  public List<Type> MeterTypes
+  {
+    get { return meterTypes.Value; }
   }
 
   public ValueTask DisposeAsync()
@@ -187,8 +233,24 @@ public sealed class EntityReflector : IAsyncDisposable
     return type;
   }
 
-  public Type ResolveAggregateMeterType(Type aggregateType)
+  public Type ResolveMeasurementMeterType(Type measurementType)
   {
-    return aggregateTypeToMeterType.Value[aggregateType];
+    return measurementTypeToMeterType.Value[measurementType];
+  }
+
+  public Type ResolveMeterMeasurementType(
+    Type meterType,
+    bool aggregate = false
+  )
+  {
+    return (aggregate ? meterTypeToAggregateType : meterTypeToMeasurementType)
+      .Value[meterType];
+  }
+
+  public Type ResolveMeterMeasurementValidatorType(
+    Type meterType
+  )
+  {
+    return meterTypeToMeasurementValidatorType.Value[meterType];
   }
 }

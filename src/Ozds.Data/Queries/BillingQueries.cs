@@ -78,7 +78,7 @@ public class BillingQueries(
         bases.Where(
           x =>
             x.Meter.GetType()
-            == reflector.ResolveAggregateMeterType(aggregateType)),
+            == reflector.ResolveMeasurementMeterType(aggregateType)),
         fromDate,
         toDate,
         cancellationToken
