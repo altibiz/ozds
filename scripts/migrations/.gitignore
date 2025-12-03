@@ -208,3 +208,5 @@
 /20251007081400-Ozds.Data-ApiKeys.sql
 /20251203191642-Ozds.Data-MeteredNetworkUserCalculationEntity-hypertables.sql
 /20251203191642-Ozds.Data-MeteredNetworkUserCalculationEntity.sql
+/20251203195247-Ozds.Data-NetworkUserInvoiceCalculationUnique-hypertables.sql
+/20251203195247-Ozds.Data-NetworkUserInvoiceCalculationUnique.sql

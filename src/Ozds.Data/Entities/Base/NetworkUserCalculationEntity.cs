@@ -80,6 +80,13 @@ public class
       .HasDiscriminator<string>(nameof(NetworkUserCalculationEntity.Kind));
 
     builder
+      .HasIndex(
+        "_networkUserMeasurementLocationId",
+        nameof(NetworkUserCalculationEntity.FromDate),
+        nameof(NetworkUserCalculationEntity.ToDate))
+      .IsUnique();
+
+    builder
       .HasOne(nameof(NetworkUserCalculationEntity.NetworkUserInvoice))
       .WithMany(nameof(NetworkUserInvoiceEntity.NetworkUserCalculations))
       .HasForeignKey("_networkUserInvoiceId");

@@ -72,6 +72,13 @@ public class
       .WithMany(nameof(NetworkUserEntity.Invoices))
       .HasForeignKey("_networkUserId");
 
+    builder
+      .HasIndex(
+        "_networkUserId",
+        nameof(NetworkUserInvoiceEntity.FromDate),
+        nameof(NetworkUserInvoiceEntity.ToDate))
+      .IsUnique();
+
     builder.Ignore(nameof(NetworkUserInvoiceEntity.NetworkUserId));
     builder
       .Property("_networkUserId")
