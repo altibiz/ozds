@@ -20,6 +20,11 @@ public sealed class PostgresContainer : IAsyncDisposable
 
   private readonly IContainer container;
 
+  private PostgresContainer(IContainer container)
+  {
+    this.container = container;
+  }
+
   public string ConnectionString
   {
     get
@@ -34,9 +39,9 @@ public sealed class PostgresContainer : IAsyncDisposable
     }
   }
 
-  private PostgresContainer(IContainer container)
+  public ValueTask DisposeAsync()
   {
-    this.container = container;
+    return container.DisposeAsync();
   }
 
   public static async Task<PostgresContainer> Create(
@@ -63,11 +68,6 @@ public sealed class PostgresContainer : IAsyncDisposable
 
     await container.StartAsync(cancellationToken);
 
-    return new(container);
-  }
-
-  public ValueTask DisposeAsync()
-  {
-    return container.DisposeAsync();
+    return new PostgresContainer(container);
   }
 }

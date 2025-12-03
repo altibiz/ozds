@@ -7,7 +7,10 @@
     @Svg("invoice-print-header-hrv")
   </div>
   <div class="page-content">
-    <NetworkUserCalculationDocumentContent Entity="@Entity"/>
+    @if (Entity is MeteredNetworkUserCalculationEntity meteredNetworkUserCalculation)
+    {
+      <MeteredNetworkUserCalculationDocumentContent Entity="@meteredNetworkUserCalculation"/>
+    }
     <Remark Extended Value="@Entity.Remark"/>
   </div>
   <div class="page-footer">

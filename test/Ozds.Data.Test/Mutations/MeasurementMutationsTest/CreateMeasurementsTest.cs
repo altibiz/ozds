@@ -23,26 +23,30 @@ public class CreateMeasurementsTest : OzdsDataTestBase
       .GetRequiredService<EntityReflector>();
 
     var infrastructures = await Task.WhenAll(
-        reflector.MeasurementTypes
-          .Concat(reflector.AggregateTypes)
-          .Select(measurementType => Infrastructure.Create(
+      reflector.MeasurementTypes
+        .Concat(reflector.AggregateTypes)
+        .Select(
+          measurementType => Infrastructure.Create(
             cancellationToken,
-            x => x.WithMeterType(reflector
-              .ResolveMeasurementMeterType(measurementType)))));
+            x => x.WithMeterType(
+              reflector
+                .ResolveMeasurementMeterType(measurementType)))));
 
     var infrastructureMeasurements = await Task.WhenAll(
       infrastructures
-        .SelectMany(infrastructure => Enum
-          .GetValues<IntervalEntity>()
-          .Cast<IntervalEntity?>()
-          .Append(null)
-          .Select(interval => Measurements
-            .Create(
-              infrastructure,
-              cancellationToken,
-              x => x
-                .WithCount(Constants.MeasurementCount)
-                .WithInterval(interval)))));
+        .SelectMany(
+          infrastructure => Enum
+            .GetValues<IntervalEntity>()
+            .Cast<IntervalEntity?>()
+            .Append(null)
+            .Select(
+              interval => Measurements
+                .Create(
+                  infrastructure,
+                  cancellationToken,
+                  x => x
+                    .WithCount(Constants.MeasurementCount)
+                    .WithInterval(interval)))));
 
     var measurements = infrastructureMeasurements
       .SelectMany(x => x)
@@ -66,25 +70,29 @@ public class CreateMeasurementsTest : OzdsDataTestBase
       .GetRequiredService<EntityReflector>();
 
     var infrastructures = await Task.WhenAll(
-        reflector.MeasurementTypes
-          .Select(measurementType => Infrastructure.Create(
+      reflector.MeasurementTypes
+        .Select(
+          measurementType => Infrastructure.Create(
             cancellationToken,
-            x => x.WithMeterType(reflector
-              .ResolveMeasurementMeterType(measurementType)))));
+            x => x.WithMeterType(
+              reflector
+                .ResolveMeasurementMeterType(measurementType)))));
 
     var infrastructureMeasurements = await Task.WhenAll(
       infrastructures
-        .SelectMany(infrastructure => Enum
-          .GetValues<IntervalEntity>()
-          .Cast<IntervalEntity?>()
-          .Append(null)
-          .Select(interval => Measurements
-            .Create(
-              infrastructure,
-              cancellationToken,
-              x => x
-                .WithCount(Constants.MassiveMeasurementCount)
-                .WithInterval(interval)))));
+        .SelectMany(
+          infrastructure => Enum
+            .GetValues<IntervalEntity>()
+            .Cast<IntervalEntity?>()
+            .Append(null)
+            .Select(
+              interval => Measurements
+                .Create(
+                  infrastructure,
+                  cancellationToken,
+                  x => x
+                    .WithCount(Constants.MassiveMeasurementCount)
+                    .WithInterval(interval)))));
 
     var measurements = infrastructureMeasurements
       .SelectMany(x => x)
@@ -106,26 +114,30 @@ public class CreateMeasurementsTest : OzdsDataTestBase
       .GetRequiredService<EntityReflector>();
 
     var infrastructures = await Task.WhenAll(
-        reflector.MeasurementTypes
-          .Concat(reflector.AggregateTypes)
-          .Select(measurementType => Infrastructure.Create(
+      reflector.MeasurementTypes
+        .Concat(reflector.AggregateTypes)
+        .Select(
+          measurementType => Infrastructure.Create(
             cancellationToken,
-            x => x.WithMeterType(reflector
-              .ResolveMeasurementMeterType(measurementType)))));
+            x => x.WithMeterType(
+              reflector
+                .ResolveMeasurementMeterType(measurementType)))));
 
     var infrastructureMeasurements = await Task.WhenAll(
       infrastructures
-        .SelectMany(infrastructure => Enum
-          .GetValues<IntervalEntity>()
-          .Cast<IntervalEntity?>()
-          .Append(null)
-          .Select(interval => Measurements
-            .Create(
-              infrastructure,
-              cancellationToken,
-              x => x
-                .WithCount(Constants.MeasurementCountFew)
-                .WithInterval(interval)))));
+        .SelectMany(
+          infrastructure => Enum
+            .GetValues<IntervalEntity>()
+            .Cast<IntervalEntity?>()
+            .Append(null)
+            .Select(
+              interval => Measurements
+                .Create(
+                  infrastructure,
+                  cancellationToken,
+                  x => x
+                    .WithCount(Constants.MeasurementCountFew)
+                    .WithInterval(interval)))));
 
     var measurements = infrastructureMeasurements
       .SelectMany(x => x)

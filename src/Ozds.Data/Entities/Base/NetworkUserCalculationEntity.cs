@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
 using Ozds.Data.Entities.Abstractions;
-using Ozds.Data.Entities.Complex;
 using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
@@ -30,29 +29,6 @@ public class NetworkUserCalculationEntity
     set;
   } = default!;
 
-  public UsageMeterFeeCalculationItemEntity UsageMeterFee { get; set; } =
-    default!;
-
-  public SupplyActiveEnergyTotalImportT1CalculationItemEntity
-    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
-
-  public SupplyActiveEnergyTotalImportT2CalculationItemEntity
-    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
-
-  public SupplyBusinessUsageCalculationItemEntity SupplyBusinessUsageFee
-  {
-    get;
-    set;
-  } =
-    default!;
-
-  public SupplyRenewableEnergyCalculationItemEntity SupplyRenewableEnergyFee
-  {
-    get;
-    set;
-  } =
-    default!;
-
   public virtual NetworkUserMeasurementLocationEntity
     NetworkUserMeasurementLocation { get; set; } =
     default!;
@@ -75,10 +51,6 @@ public class NetworkUserCalculationEntity
     set { _networkUserInvoiceId = long.Parse(value); }
   }
 
-  public decimal UsageFeeTotal_EUR { get; set; }
-
-  public decimal SupplyFeeTotal_EUR { get; set; }
-
   public string SupplyRegulatoryCatalogueId
   {
     get { return _supplyRegulatoryCatalogueId.ToString(); }
@@ -90,32 +62,6 @@ public class NetworkUserCalculationEntity
     get { return _networkUserMeasurementLocationId.ToString(); }
     set { _networkUserMeasurementLocationId = long.Parse(value); }
   }
-}
-
-public class
-  NetworkUserCalculationEntity<TUsageNetworkUserCatalogue> :
-  NetworkUserCalculationEntity
-  where TUsageNetworkUserCatalogue : NetworkUserCatalogueEntity
-{
-  protected long _usageNetworkUserCatalogueId;
-
-  public string UsageNetworkUserCatalogueId
-  {
-    get { return _usageNetworkUserCatalogueId.ToString(); }
-    set { _usageNetworkUserCatalogueId = long.Parse(value); }
-  }
-
-  public virtual TUsageNetworkUserCatalogue UsageNetworkUserCatalogue
-  {
-    get;
-    set;
-  } = default!;
-
-  public TUsageNetworkUserCatalogue ArchivedUsageNetworkUserCatalogue
-  {
-    get;
-    set;
-  } = default!;
 }
 
 public class
@@ -180,29 +126,6 @@ public class
       .Property("_supplyRegulatoryCatalogueId")
       .HasColumnName("supply_regulatory_catalogue_id");
 
-    builder.ComplexProperty(nameof(NetworkUserCalculationEntity.UsageMeterFee))
-      .UsageMeterFeeCalculationItem();
-
-    builder.ComplexProperty(
-        nameof(NetworkUserCalculationEntity
-          .SupplyActiveEnergyTotalImportT1))
-      .SupplyActiveEnergyTotalImportT1CalculationItem();
-
-    builder.ComplexProperty(
-        nameof(NetworkUserCalculationEntity
-          .SupplyActiveEnergyTotalImportT2))
-      .SupplyActiveEnergyTotalImportT2CalculationItem();
-
-    builder.ComplexProperty(
-        nameof(NetworkUserCalculationEntity
-          .SupplyBusinessUsageFee))
-      .SupplyBusinessUsageCalculationItem();
-
-    builder.ComplexProperty(
-        nameof(NetworkUserCalculationEntity
-          .SupplyRenewableEnergyFee))
-      .SupplyRenewableEnergyCalculationItem();
-
     builder
       .HasOne(nameof(NetworkUserCalculationEntity.Meter))
       .WithMany(nameof(MeterEntity.NetworkUserCalculations))
@@ -210,42 +133,5 @@ public class
 
     builder
       .ArchivedProperty(nameof(NetworkUserCalculationEntity.ArchivedMeter));
-
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserCalculationEntity.UsageFeeTotal_EUR),
-        "usage_fee_total_eur"
-      );
-
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserCalculationEntity
-          .SupplyFeeTotal_EUR),
-        "supply_fee_total_eur"
-      );
-
-    if (entity != typeof(NetworkUserCalculationEntity))
-    {
-      builder
-        .HasOne(
-          nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>
-            .UsageNetworkUserCatalogue))
-        .WithMany(
-          nameof(NetworkUserCatalogueEntity<NetworkUserCalculationEntity>
-            .NetworkUserCalculations))
-        .HasForeignKey("_usageNetworkUserCatalogueId");
-
-      builder.Ignore(
-        nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>
-          .UsageNetworkUserCatalogueId));
-      builder
-        .Property("_usageNetworkUserCatalogueId")
-        .HasColumnName("usage_network_user_catalogue_id");
-
-      builder
-        .ArchivedProperty(
-          nameof(NetworkUserCalculationEntity<NetworkUserCatalogueEntity>
-            .ArchivedUsageNetworkUserCatalogue));
-    }
   }
 }

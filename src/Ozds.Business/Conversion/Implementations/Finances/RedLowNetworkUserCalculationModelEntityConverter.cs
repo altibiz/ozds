@@ -12,9 +12,9 @@ public class RedLowNetworkUserCalculationModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
   RedLowNetworkUserCalculationModel,
-  NetworkUserCalculationModel,
+  MeteredNetworkUserCalculationModel,
   RedLowNetworkUserCalculationEntity,
-  NetworkUserCalculationEntity>(serviceProvider)
+  MeteredNetworkUserCalculationEntity>(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();

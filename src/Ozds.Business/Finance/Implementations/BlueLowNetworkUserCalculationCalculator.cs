@@ -18,7 +18,7 @@ public class
     _calculationItemCalculator =
       calculationItemCalculator;
 
-  protected override NetworkUserCalculationModel CalculateForNetworkUser(
+  protected override MeteredNetworkUserCalculationModel CalculateForNetworkUser(
     BlueLowNetworkUserCatalogueModel usageCatalogue,
     NetworkUserCalculationBasisModel calculationBasis
   )
@@ -127,8 +127,12 @@ public class
         + $"{calculationBasis.NetworkUser.Title} at "
         + $"{calculationBasis.Location.Title}",
       MeterId = calculationBasis.Meter.Id,
-      ToDate = calculationBasis.ToDate,
-      FromDate = calculationBasis.FromDate,
+      ToDate = calculationBasis.BilledToDate,
+      FromDate = calculationBasis.BilledFromDate,
+      RequestedFromDate = calculationBasis.FromDate,
+      RequestedToDate = calculationBasis.ToDate,
+      MeteredFromDate = calculationBasis.MeasuredFromDate,
+      MeteredToDate = calculationBasis.MeasuredToDate,
       NetworkUserInvoiceId = "0",
       UsageNetworkUserCatalogueId = usageCatalogue.Id,
       SupplyRegulatoryCatalogueId =

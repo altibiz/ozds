@@ -33,16 +33,16 @@ public class NetworkUserInvoiceCalculatorTest
           .ToCustomization())
       .Customize(
         new TypeRelay(
-          typeof(INetworkUserCalculation),
+          typeof(IMeteredNetworkUserCalculation),
           typeof(BlueLowNetworkUserCalculationModel)).ToCustomization())
       .Customize(
         new TypeRelay(
-          typeof(NetworkUserCalculationModel),
+          typeof(MeteredNetworkUserCalculationModel),
           typeof(BlueLowNetworkUserCalculationModel)).ToCustomization())
       .Build<CalculatedNetworkUserInvoiceModel>()
       .With(
         x => x.Calculations,
-        Enumerable.Empty<NetworkUserCalculationModel>()
+        Enumerable.Empty<MeteredNetworkUserCalculationModel>()
           .Concat(
             new Fixture()
               .Customize(
@@ -471,6 +471,7 @@ public class NetworkUserInvoiceCalculatorTest
 
                   return x;
                 }))
+          .Cast<NetworkUserCalculationModel>()
           .OrderBy(_ => Random.Shared.Next())
           .ToList())
       .CreateMany(2)
@@ -483,6 +484,7 @@ public class NetworkUserInvoiceCalculatorTest
 
           x.Invoice.UsageActiveEnergyTotalImportT0Fee_EUR = System.Math.Round(
             x.Calculations
+              .OfType<MeteredNetworkUserCalculationModel>()
               .SelectMany(
                 calculation => calculation.UsageItems
                   .OfType<
@@ -492,6 +494,7 @@ public class NetworkUserInvoiceCalculatorTest
 
           x.Invoice.UsageActiveEnergyTotalImportT1Fee_EUR = System.Math.Round(
             x.Calculations
+              .OfType<MeteredNetworkUserCalculationModel>()
               .SelectMany(
                 calculation => calculation.UsageItems
                   .OfType<
@@ -501,6 +504,7 @@ public class NetworkUserInvoiceCalculatorTest
 
           x.Invoice.UsageActiveEnergyTotalImportT2Fee_EUR = System.Math.Round(
             x.Calculations
+              .OfType<MeteredNetworkUserCalculationModel>()
               .SelectMany(
                 calculation => calculation.UsageItems
                   .OfType<
@@ -511,6 +515,7 @@ public class NetworkUserInvoiceCalculatorTest
           x.Invoice.UsageActivePowerTotalImportT1PeakFee_EUR =
             System.Math.Round(
               x.Calculations
+                .OfType<MeteredNetworkUserCalculationModel>()
                 .SelectMany(
                   calculation => calculation.UsageItems
                     .OfType<
@@ -521,6 +526,7 @@ public class NetworkUserInvoiceCalculatorTest
           x.Invoice.UsageReactiveEnergyTotalRampedT0Fee_EUR =
             System.Math.Round(
               x.Calculations
+                .OfType<MeteredNetworkUserCalculationModel>()
                 .SelectMany(
                   calculation => calculation.UsageItems
                     .OfType<
@@ -530,6 +536,7 @@ public class NetworkUserInvoiceCalculatorTest
 
           x.Invoice.UsageMeterFee_EUR = System.Math.Round(
             x.Calculations
+              .OfType<MeteredNetworkUserCalculationModel>()
               .SelectMany(
                 calculation => calculation.UsageItems
                   .OfType<UsageMeterFeeCalculationItemModel>())
@@ -548,6 +555,7 @@ public class NetworkUserInvoiceCalculatorTest
           x.Invoice.SupplyActiveEnergyTotalImportT1Fee_EUR =
             System.Math.Round(
               x.Calculations
+                .OfType<MeteredNetworkUserCalculationModel>()
                 .SelectMany(
                   calculation => calculation.SupplyItems
                     .OfType<
@@ -558,6 +566,7 @@ public class NetworkUserInvoiceCalculatorTest
           x.Invoice.SupplyActiveEnergyTotalImportT2Fee_EUR =
             System.Math.Round(
               x.Calculations
+                .OfType<MeteredNetworkUserCalculationModel>()
                 .SelectMany(
                   calculation => calculation.SupplyItems
                     .OfType<
@@ -567,6 +576,7 @@ public class NetworkUserInvoiceCalculatorTest
 
           x.Invoice.SupplyBusinessUsageFee_EUR = System.Math.Round(
             x.Calculations
+              .OfType<MeteredNetworkUserCalculationModel>()
               .SelectMany(
                 calculation => calculation.SupplyItems
                   .OfType<SupplyBusinessUsageCalculationItemModel>())
@@ -575,6 +585,7 @@ public class NetworkUserInvoiceCalculatorTest
 
           x.Invoice.SupplyRenewableEnergyFee_EUR = System.Math.Round(
             x.Calculations
+              .OfType<MeteredNetworkUserCalculationModel>()
               .SelectMany(
                 calculation => calculation.SupplyItems
                   .OfType<SupplyRenewableEnergyCalculationItemModel>())

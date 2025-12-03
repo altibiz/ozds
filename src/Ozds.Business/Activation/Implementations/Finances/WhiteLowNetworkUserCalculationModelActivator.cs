@@ -9,7 +9,7 @@ public class WhiteLowNetworkUserCalculationModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
   WhiteLowNetworkUserCalculationModel,
-  NetworkUserCalculationModel>(serviceProvider)
+  MeteredNetworkUserCalculationModel>(serviceProvider)
 {
   private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();

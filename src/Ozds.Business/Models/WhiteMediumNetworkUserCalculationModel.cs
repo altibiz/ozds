@@ -7,7 +7,7 @@ using Ozds.Business.Models.Complex;
 namespace Ozds.Business.Models;
 
 public class WhiteMediumNetworkUserCalculationModel
-  : NetworkUserCalculationModel<WhiteMediumNetworkUserCatalogueModel>
+  : MeteredNetworkUserCalculationModel<WhiteMediumNetworkUserCatalogueModel>
 {
   [Required]
   public required UsageActiveEnergyTotalImportT1CalculationItemModel

@@ -27,9 +27,9 @@ public class TestInfrastructureFixture(
   EntityReflector reflector
 )
 {
-  private static int messengerIndex = 0;
+  private static int messengerIndex;
 
-  private static int meterIndex = 0;
+  private static int meterIndex;
 
   public async Task<InfrastructureEntities> Create(
     CancellationToken cancellationToken,
@@ -122,6 +122,7 @@ public class TestInfrastructureFixture(
         {
           meter.MessengerId = messenger.Id;
         }
+
         configurator.ConfigureMeter(meter);
       });
 
@@ -155,78 +156,174 @@ public class TestInfrastructureFixture(
 
   public class Configurator(EntityReflector reflector)
   {
-    public Action<RedLowNetworkUserCatalogueEntity> ConfigureRedLowNetworkUserCatalogue { get; private set; } = _ => { };
-    public Action<BlueLowNetworkUserCatalogueEntity> ConfigureBlueLowNetworkUserCatalogue { get; private set; } = _ => { };
-    public Action<WhiteLowNetworkUserCatalogueEntity> ConfigureWhiteLowNetworkUserCatalogue { get; private set; } = _ => { };
-    public Action<WhiteMediumNetworkUserCatalogueEntity> ConfigureWhiteMediumNetworkUserCatalogue { get; private set; } = _ => { };
-    public Action<RegulatoryCatalogueEntity> ConfigureRegulatoryCatalogue { get; private set; } = _ => { };
+    public Action<RedLowNetworkUserCatalogueEntity>
+      ConfigureRedLowNetworkUserCatalogue { get; private set; } = _ => { };
 
-    public Action<LocationEntity> ConfigureLocation { get; private set; } = _ => { };
-    public Action<NetworkUserEntity> ConfigureNetworkUser { get; private set; } = _ => { };
-    public Action<MessengerEntity> ConfigureMessenger { get; private set; } = _ => { };
-    public Action<MeasurementValidatorEntity> ConfigureMeasurementValidator { get; private set; } = _ => { };
+    public Action<BlueLowNetworkUserCatalogueEntity>
+      ConfigureBlueLowNetworkUserCatalogue { get; private set; } = _ => { };
+
+    public Action<WhiteLowNetworkUserCatalogueEntity>
+      ConfigureWhiteLowNetworkUserCatalogue { get; private set; } = _ => { };
+
+    public Action<WhiteMediumNetworkUserCatalogueEntity>
+      ConfigureWhiteMediumNetworkUserCatalogue { get; private set; } = _ => { };
+
+    public Action<RegulatoryCatalogueEntity> ConfigureRegulatoryCatalogue
+    {
+      get;
+      private set;
+    } = _ => { };
+
+    public Action<LocationEntity> ConfigureLocation { get; private set; } =
+      _ => { };
+
+    public Action<NetworkUserEntity>
+      ConfigureNetworkUser { get; private set; } = _ => { };
+
+    public Action<MessengerEntity> ConfigureMessenger { get; private set; } =
+      _ => { };
+
+    public Action<MeasurementValidatorEntity> ConfigureMeasurementValidator
+    {
+      get;
+      private set;
+    } = _ => { };
+
     public Action<MeterEntity> ConfigureMeter { get; private set; } = _ => { };
-    public Action<NetworkUserMeasurementLocationEntity> ConfigureMeasurementLocation { get; private set; } = _ => { };
 
-    public Type MessengerType { get; private set; } = typeof(PidgeonMessengerEntity);
-    public Type MeasurementValidatorType { get; private set; } = typeof(AbbB2xMeasurementValidatorEntity);
+    public Action<NetworkUserMeasurementLocationEntity>
+      ConfigureMeasurementLocation { get; private set; } = _ => { };
+
+    public Type MessengerType { get; private set; } =
+      typeof(PidgeonMessengerEntity);
+
+    public Type MeasurementValidatorType { get; private set; } =
+      typeof(AbbB2xMeasurementValidatorEntity);
+
     public Type MeterType { get; private set; } = typeof(AbbB2xMeterEntity);
     public bool AttachMessengerToMeter { get; private set; } = true;
 
-    public Func<LocationEntity, string> GetNetworkUserCatalogueId { get; private set; } =
+    public Func<LocationEntity, string> GetNetworkUserCatalogueId
+    {
+      get;
+      private set;
+    } =
       location => location.RedLowNetworkUserCatalogueId;
 
-    public Configurator WithRedLowNetworkUserCatalogue(Action<RedLowNetworkUserCatalogueEntity> configure)
-    { ConfigureRedLowNetworkUserCatalogue = Chain(ConfigureRedLowNetworkUserCatalogue, configure);
-      return this; }
-    public Configurator WithBlueLowNetworkUserCatalogue(Action<BlueLowNetworkUserCatalogueEntity> configure)
-    { ConfigureBlueLowNetworkUserCatalogue = Chain(ConfigureBlueLowNetworkUserCatalogue, configure);
-      return this; }
-    public Configurator WithWhiteLowNetworkUserCatalogue(Action<WhiteLowNetworkUserCatalogueEntity> configure)
-    { ConfigureWhiteLowNetworkUserCatalogue = Chain(ConfigureWhiteLowNetworkUserCatalogue, configure);
-      return this; }
-    public Configurator WithWhiteMediumNetworkUserCatalogue(Action<WhiteMediumNetworkUserCatalogueEntity> configure)
-    { ConfigureWhiteMediumNetworkUserCatalogue = Chain(ConfigureWhiteMediumNetworkUserCatalogue, configure);
-      return this; }
-    public Configurator WithRegulatoryCatalogue(Action<RegulatoryCatalogueEntity> configure)
-    { ConfigureRegulatoryCatalogue = Chain(ConfigureRegulatoryCatalogue, configure);
-      return this; }
+    public Configurator WithRedLowNetworkUserCatalogue(
+      Action<RedLowNetworkUserCatalogueEntity> configure)
+    {
+      ConfigureRedLowNetworkUserCatalogue = Chain(
+        ConfigureRedLowNetworkUserCatalogue, configure);
+      return this;
+    }
 
-    public Configurator WithMessengerType(Type t) { MessengerType = t;
-      return this; }
-    public Configurator WithMeterType(Type t) { MeterType = t;
-      MeasurementValidatorType = reflector.ResolveMeterMeasurementValidatorType(t);
-      return this; }
-    public Configurator WithAttachMessengerToMeter(bool attach = true) { AttachMessengerToMeter = attach;
-      return this; }
+    public Configurator WithBlueLowNetworkUserCatalogue(
+      Action<BlueLowNetworkUserCatalogueEntity> configure)
+    {
+      ConfigureBlueLowNetworkUserCatalogue = Chain(
+        ConfigureBlueLowNetworkUserCatalogue, configure);
+      return this;
+    }
+
+    public Configurator WithWhiteLowNetworkUserCatalogue(
+      Action<WhiteLowNetworkUserCatalogueEntity> configure)
+    {
+      ConfigureWhiteLowNetworkUserCatalogue = Chain(
+        ConfigureWhiteLowNetworkUserCatalogue, configure);
+      return this;
+    }
+
+    public Configurator WithWhiteMediumNetworkUserCatalogue(
+      Action<WhiteMediumNetworkUserCatalogueEntity> configure)
+    {
+      ConfigureWhiteMediumNetworkUserCatalogue = Chain(
+        ConfigureWhiteMediumNetworkUserCatalogue, configure);
+      return this;
+    }
+
+    public Configurator WithRegulatoryCatalogue(
+      Action<RegulatoryCatalogueEntity> configure)
+    {
+      ConfigureRegulatoryCatalogue = Chain(
+        ConfigureRegulatoryCatalogue, configure);
+      return this;
+    }
+
+    public Configurator WithMessengerType(Type t)
+    {
+      MessengerType = t;
+      return this;
+    }
+
+    public Configurator WithMeterType(Type t)
+    {
+      MeterType = t;
+      MeasurementValidatorType =
+        reflector.ResolveMeterMeasurementValidatorType(t);
+      return this;
+    }
+
+    public Configurator WithAttachMessengerToMeter(bool attach = true)
+    {
+      AttachMessengerToMeter = attach;
+      return this;
+    }
 
     public Configurator WithLocation(Action<LocationEntity> configure)
-    { ConfigureLocation = Chain(ConfigureLocation, configure);
-      return this; }
-    public Configurator WithNetworkUser(Action<NetworkUserEntity> configure)
-    { ConfigureNetworkUser = Chain(ConfigureNetworkUser, configure);
-      return this; }
-    public Configurator WithMessenger(Action<MessengerEntity> configure)
-    { ConfigureMessenger = Chain(ConfigureMessenger, configure);
-      return this; }
-    public Configurator WithMeasurementValidator(Action<MeasurementValidatorEntity> configure)
-    { ConfigureMeasurementValidator = Chain(ConfigureMeasurementValidator, configure);
-      return this; }
-    public Configurator WithMeter(Action<MeterEntity> configure)
-    { ConfigureMeter = Chain(ConfigureMeter, configure);
-      return this; }
-    public Configurator WithMeasurementLocation(Action<NetworkUserMeasurementLocationEntity> configure)
-    { ConfigureMeasurementLocation = Chain(ConfigureMeasurementLocation, configure);
-      return this; }
-
-    public Configurator WithNetworkUserCatalogueId(Func<LocationEntity, string> pickId)
-    { GetNetworkUserCatalogueId = pickId;
-      return this; }
-
-    private static Action<T> Chain<T>(Action<T> first, Action<T> second) => item =>
     {
-      first(item);
-      second(item);
-    };
+      ConfigureLocation = Chain(ConfigureLocation, configure);
+      return this;
+    }
+
+    public Configurator WithNetworkUser(Action<NetworkUserEntity> configure)
+    {
+      ConfigureNetworkUser = Chain(ConfigureNetworkUser, configure);
+      return this;
+    }
+
+    public Configurator WithMessenger(Action<MessengerEntity> configure)
+    {
+      ConfigureMessenger = Chain(ConfigureMessenger, configure);
+      return this;
+    }
+
+    public Configurator WithMeasurementValidator(
+      Action<MeasurementValidatorEntity> configure)
+    {
+      ConfigureMeasurementValidator = Chain(
+        ConfigureMeasurementValidator, configure);
+      return this;
+    }
+
+    public Configurator WithMeter(Action<MeterEntity> configure)
+    {
+      ConfigureMeter = Chain(ConfigureMeter, configure);
+      return this;
+    }
+
+    public Configurator WithMeasurementLocation(
+      Action<NetworkUserMeasurementLocationEntity> configure)
+    {
+      ConfigureMeasurementLocation = Chain(
+        ConfigureMeasurementLocation, configure);
+      return this;
+    }
+
+    public Configurator WithNetworkUserCatalogueId(
+      Func<LocationEntity, string> pickId)
+    {
+      GetNetworkUserCatalogueId = pickId;
+      return this;
+    }
+
+    private static Action<T> Chain<T>(Action<T> first, Action<T> second)
+    {
+      return item =>
+      {
+        first(item);
+        second(item);
+      };
+    }
   }
 }

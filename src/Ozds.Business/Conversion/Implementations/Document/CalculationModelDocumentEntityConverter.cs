@@ -12,4 +12,16 @@ public class CalculationModelDocumentEntityConverter(
   CalculationEntity,
   FinancialEntity>(serviceProvider)
 {
+  public override void InitializeEntity(
+    CalculationModel model,
+    CalculationEntity entity
+  )
+  {
+    base.InitializeEntity(model, entity);
+
+    entity.RequestedFromDate = model.RequestedFromDate;
+    entity.RequestedToDate = model.RequestedToDate;
+    entity.MeteredFromDate = model.MeteredFromDate;
+    entity.MeteredToDate = model.MeteredToDate;
+  }
 }

@@ -15,7 +15,7 @@ public abstract class NetworkUserCalculationCalculator<T> :
       .IsAssignableTo(typeof(T));
   }
 
-  public NetworkUserCalculationModel Calculate(
+  public MeteredNetworkUserCalculationModel Calculate(
     NetworkUserCalculationBasisModel calculationBasis)
   {
     var usageCalculation = CalculateForNetworkUser(
@@ -25,7 +25,7 @@ public abstract class NetworkUserCalculationCalculator<T> :
     return usageCalculation;
   }
 
-  protected abstract NetworkUserCalculationModel CalculateForNetworkUser(
+  protected abstract MeteredNetworkUserCalculationModel CalculateForNetworkUser(
     T catalogue,
     NetworkUserCalculationBasisModel calculationBasis);
 }

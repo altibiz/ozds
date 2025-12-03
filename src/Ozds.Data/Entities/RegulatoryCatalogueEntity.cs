@@ -9,7 +9,7 @@ public class RegulatoryCatalogueEntity : CatalogueEntity
 {
   public virtual ICollection<LocationEntity> Locations { get; set; } = default!;
 
-  public virtual ICollection<NetworkUserCalculationEntity>
+  public virtual ICollection<MeteredNetworkUserCalculationEntity>
     NetworkUserCalculations { get; set; } =
     default!;
 

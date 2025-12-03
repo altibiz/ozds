@@ -42,6 +42,10 @@ public class BillingQueries(
           {
             FromDate = x.FromDate,
             ToDate = x.ToDate,
+            MeasuredFromDate = x.MeasuredFromDate,
+            MeasuredToDate = x.MeasuredToDate,
+            BilledFromDate = x.BilledFromDate,
+            BilledToDate = x.BilledToDate,
             Aggregates = x.Aggregates
               .Select(y => modelEntityConverter.ToModel<AggregateModel>(y))
               .ToList(),

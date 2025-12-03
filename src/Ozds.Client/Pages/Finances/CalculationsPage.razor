@@ -21,7 +21,7 @@ RoleModel.NetworkUserRepresentative
 @{
   var calculations = AnalysisState.AnalysisBases.Value
     .SelectMany(analysisBasis => analysisBasis.Calculations)
-    .OfType<INetworkUserCalculation>()
+    .OfType<IMeteredNetworkUserCalculation>()
     .ToList();
 }
 

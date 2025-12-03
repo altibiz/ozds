@@ -15,15 +15,6 @@ namespace Ozds.Data.Test.Queries.BillingQueriesTest;
 
 public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
 {
-  public record BillingScenario(
-    string Name,
-    Dictionary<string, bool> MeasurementsMap,
-    string QueryMonth,
-    string ExpectedStart,
-    string ExpectedEnd,
-    int NumberOfAggregates
-  );
-
   public static IEnumerable<BillingScenario> BillingScenarios()
   {
     const string Oct1 = "2023-10-01T00:00:00+02:00";
@@ -35,109 +26,109 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
     {
       new BillingScenario(
         "1. Metered-Metered-Metered (Normal Month)",
-        new()
+        new Dictionary<string, bool>
         {
           { Oct1, true },
           { Nov1, true },
           { Dec1, true }
         },
-        QueryMonth: Nov1,
-        ExpectedStart: Nov1,
-        ExpectedEnd: Dec1,
-        NumberOfAggregates: 11
+        Nov1,
+        Nov1,
+        Dec1,
+        11
       ),
       new BillingScenario(
         "2. Blackout-Metered-Metered (Prev Blackout ignored for current)",
-        new()
+        new Dictionary<string, bool>
         {
           { Oct1, false },
           { Nov1, true },
           { Dec1, true }
         },
-        QueryMonth: Nov1,
-        ExpectedStart: Nov1,
-        ExpectedEnd: Dec1,
-        NumberOfAggregates: 11
+        Nov1,
+        Nov1,
+        Dec1,
+        11
       ),
       new BillingScenario(
         "3. Blackout-Blackout-Metered (No history to anchor to)",
-        new()
+        new Dictionary<string, bool>
         {
           { Oct1, false },
           { Nov1, false },
           { Dec1, true }
         },
-        QueryMonth: Nov1,
-        ExpectedStart: Nov1,
-        ExpectedEnd: Dec1,
-        NumberOfAggregates: 1
+        Nov1,
+        Nov1,
+        Dec1,
+        1
       ),
       new BillingScenario(
         "4. Metered-Blackout-Metered (Bridge the gap)",
-        new()
+        new Dictionary<string, bool>
         {
           { Oct1, true },
           { Nov1, false },
           { Dec1, true }
         },
-        QueryMonth: Nov1,
-        ExpectedStart: Oct1,
-        ExpectedEnd: Dec1,
-        NumberOfAggregates: 2
+        Nov1,
+        Oct1,
+        Dec1,
+        2
       ),
       new BillingScenario(
         "5. Metered-Blackout-Blackout (Anchor to Oct, End at requested)",
-        new()
+        new Dictionary<string, bool>
         {
           { Oct1, true },
           { Nov1, false },
           { Dec1, false }
         },
-        QueryMonth: Nov1,
-        ExpectedStart: Oct1,
-        ExpectedEnd: Dec1,
-        NumberOfAggregates: 1
+        Nov1,
+        Oct1,
+        Dec1,
+        1
       ),
       new BillingScenario(
         "6. Metered-Metered-Blackout (Normal start, End at requested)",
-        new()
+        new Dictionary<string, bool>
         {
           { Oct1, true },
           { Nov1, true },
           { Dec1, false }
         },
-        QueryMonth: Nov1,
-        ExpectedStart: Nov1,
-        ExpectedEnd: Dec1,
-        NumberOfAggregates: 10
+        Nov1,
+        Nov1,
+        Dec1,
+        10
       ),
       new BillingScenario(
         "7. Metered-Blackout-Metered-Metered (Bridge gap with future data)",
-        new()
+        new Dictionary<string, bool>
         {
           { Oct1, true },
           { Nov1, false },
           { Dec1, true },
           { Jan1, true }
         },
-        QueryMonth: Nov1,
-        ExpectedStart: Oct1,
-        ExpectedEnd: Dec1,
-        NumberOfAggregates: 2
+        Nov1,
+        Oct1,
+        Dec1,
+        2
       ),
       new BillingScenario(
         "8. Metered-Metered-Blackout-Metered (Bridge gap for Dec)",
-        new()
+        new Dictionary<string, bool>
         {
           { Oct1, true },
           { Nov1, true },
           { Dec1, false },
           { Jan1, true }
         },
-        QueryMonth: Dec1,
-        ExpectedStart: Nov1,
-        ExpectedEnd: Jan1,
-        NumberOfAggregates: 2
+        Dec1,
+        Nov1,
+        Jan1,
+        2
       )
     };
   }
@@ -204,10 +195,12 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
 
     var basis = result.NetworkUserCalculationBases.First();
 
-    basis.BilledFromDate.Should().Be(expectedStart,
+    basis.BilledFromDate.Should().Be(
+      expectedStart,
       $"Scenario '{scenario.Name}': Billing Start mismatch");
 
-    basis.BilledToDate.Should().Be(expectedEnd,
+    basis.BilledToDate.Should().Be(
+      expectedEnd,
       $"Scenario '{scenario.Name}': Billing End mismatch");
 
     if (expectedStart < expectedEnd)
@@ -226,8 +219,9 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
       RegulatoryCatalogue = infrastructure.RegulatoryCatalogue,
       FromDate = fromDate,
       ToDate = toDate,
-      NetworkUserCalculationBases = [
-        new()
+      NetworkUserCalculationBases =
+      [
+        new NetworkUserCalculationBasisEntity
         {
           FromDate = fromDate,
           ToDate = toDate,
@@ -243,15 +237,18 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
           Meter = infrastructure.Meter,
           Aggregates = allMeasurements
             .OfType<AggregateEntity>()
-            .Where(x =>
-              x.Timestamp >= fromDate
-              && x.Timestamp <= toDate)
-            .Concat(allMeasurements
-              .OfType<AggregateEntity>()
-              .Where(x => x.Timestamp == expectedStart))
-            .Concat(allMeasurements
-              .OfType<AggregateEntity>()
-              .Where(x => x.Timestamp == expectedEnd))
+            .Where(
+              x =>
+                x.Timestamp >= fromDate
+                && x.Timestamp <= toDate)
+            .Concat(
+              allMeasurements
+                .OfType<AggregateEntity>()
+                .Where(x => x.Timestamp == expectedStart))
+            .Concat(
+              allMeasurements
+                .OfType<AggregateEntity>()
+                .Where(x => x.Timestamp == expectedEnd))
             .DistinctBy(x => x.Timestamp)
             .ToList()
         }
@@ -275,4 +272,13 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
         DateTimeKind.Utc),
       TimeSpan.Zero);
   }
+
+  public record BillingScenario(
+    string Name,
+    Dictionary<string, bool> MeasurementsMap,
+    string QueryMonth,
+    string ExpectedStart,
+    string ExpectedEnd,
+    int NumberOfAggregates
+  );
 }

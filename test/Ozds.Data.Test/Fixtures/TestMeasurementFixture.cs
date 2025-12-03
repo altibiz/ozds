@@ -31,35 +31,38 @@ public class TestMeasurementFixture(
 
     var type = reflector.ResolveMeterMeasurementType(
       infrastructure.Meter.GetType(),
-      aggregate: configurator.Interval is not null);
+      configurator.Interval is not null);
 
     // NOTE: trick to get start of an interval not before from
     var fromDate = configurator.Interval is null
       ? configurator.FromDate
       : configurator.Interval is IntervalEntity.QuarterHour
-      ? time.GetStartOfQuarterHour(configurator.FromDate
-          .AddMinutes(15).AddTicks(-1))
-      : configurator.Interval is IntervalEntity.Day
-      ? time.GetStartOfDay(configurator.FromDate
-          .AddDays(1).AddTicks(-1))
-      : time.GetStartOfMonth(configurator.FromDate
-          .AddMonths(1).AddTicks(-1));
+        ? time.GetStartOfQuarterHour(
+          configurator.FromDate
+            .AddMinutes(15).AddTicks(-1))
+        : configurator.Interval is IntervalEntity.Day
+          ? time.GetStartOfDay(
+            configurator.FromDate
+              .AddDays(1).AddTicks(-1))
+          : time.GetStartOfMonth(
+            configurator.FromDate
+              .AddMonths(1).AddTicks(-1));
 
     var toDate = configurator.Interval is null
       ? configurator.ToDate
       : configurator.Interval is IntervalEntity.QuarterHour
-      ? time.GetStartOfQuarterHour(configurator.ToDate)
-      : configurator.Interval is IntervalEntity.Day
-      ? time.GetStartOfDay(configurator.ToDate)
-      : time.GetStartOfMonth(configurator.ToDate);
+        ? time.GetStartOfQuarterHour(configurator.ToDate)
+        : configurator.Interval is IntervalEntity.Day
+          ? time.GetStartOfDay(configurator.ToDate)
+          : time.GetStartOfMonth(configurator.ToDate);
 
     var timeInterval = configurator.Interval is null
       ? (TimeIntervalEntity?)null
       : configurator.Interval is IntervalEntity.QuarterHour
-      ? TimeIntervalEntity.QuarterHour
-      : configurator.Interval is IntervalEntity.Day
-      ? TimeIntervalEntity.Day
-      : TimeIntervalEntity.Month;
+        ? TimeIntervalEntity.QuarterHour
+        : configurator.Interval is IntervalEntity.Day
+          ? TimeIntervalEntity.Day
+          : TimeIntervalEntity.Month;
 
     var timeSpan = timeInterval is not null
       ? time.IntervalTimeSpan(timeInterval.Value, fromDate)
@@ -68,8 +71,8 @@ public class TestMeasurementFixture(
     var count = timeSpan is null
       ? configurator.Count
       : Math.Min(
-          configurator.Count,
-          (int)Math.Floor((toDate - fromDate) / timeSpan.Value));
+        configurator.Count,
+        (int)Math.Floor((toDate - fromDate) / timeSpan.Value));
 
     var measurements = fixture
       .CreateMany<IMeasurementEntity>(type, count)
@@ -113,7 +116,7 @@ public class TestMeasurementFixture(
 
   public class Configurator
   {
-    public IntervalEntity? Interval { get; private set; } = default!;
+    public IntervalEntity? Interval { get; private set; }
 
     public DateTimeOffset FromDate { get; private set; } =
       Constants.NowStartOfMonth;

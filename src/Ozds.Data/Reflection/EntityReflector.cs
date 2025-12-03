@@ -12,19 +12,7 @@ namespace Ozds.Data.Reflection;
 
 public sealed class EntityReflector : IAsyncDisposable
 {
-  private readonly Lazy<List<Type>> measurementTypes;
-
   private readonly Lazy<List<Type>> aggregateTypes;
-
-  private readonly Lazy<List<Type>> meterTypes;
-
-  private readonly Lazy<Dictionary<Type, Type>> measurementTypeToMeterType;
-
-  private readonly Lazy<Dictionary<Type, Type>> meterTypeToMeasurementType;
-
-  private readonly Lazy<Dictionary<Type, Type>> meterTypeToAggregateType;
-
-  private readonly Lazy<Dictionary<Type, Type>> meterTypeToMeasurementValidatorType;
 
   private readonly DataDbContext context;
 
@@ -35,6 +23,18 @@ public sealed class EntityReflector : IAsyncDisposable
 #pragma warning disable S4487 // Unread "private" fields should be removed
   private readonly IDbContextFactory<DataDbContext> factory;
 #pragma warning restore S4487 // Unread "private" fields should be removed
+  private readonly Lazy<List<Type>> measurementTypes;
+
+  private readonly Lazy<Dictionary<Type, Type>> measurementTypeToMeterType;
+
+  private readonly Lazy<List<Type>> meterTypes;
+
+  private readonly Lazy<Dictionary<Type, Type>> meterTypeToAggregateType;
+
+  private readonly Lazy<Dictionary<Type, Type>> meterTypeToMeasurementType;
+
+  private readonly Lazy<Dictionary<Type, Type>>
+    meterTypeToMeasurementValidatorType;
 
   private readonly ConcurrentDictionary<string, Type> nameToTypeCache =
     new();

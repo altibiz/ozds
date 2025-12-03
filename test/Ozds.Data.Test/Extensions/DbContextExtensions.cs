@@ -126,13 +126,15 @@ public static class DbContextExtensions
         e => e
           .GetDeclaredProperties()
           .OfType<IPropertyBase>()
-          .Concat(e
-            .GetDeclaredComplexProperties()
-            .Where(c => !clrTypes.Contains(c.ClrType)))
-          .Concat(e
-            .GetDeclaredComplexProperties()
-            .Where(c => !clrTypes.Contains(c.ClrType))
-            .SelectMany(p => p.ComplexType.GetProperties()))
+          .Concat(
+            e
+              .GetDeclaredComplexProperties()
+              .Where(c => !clrTypes.Contains(c.ClrType)))
+          .Concat(
+            e
+              .GetDeclaredComplexProperties()
+              .Where(c => !clrTypes.Contains(c.ClrType))
+              .SelectMany(p => p.ComplexType.GetProperties()))
           .Concat(e.GetDeclaredSkipNavigations())
           .Concat(e.GetDeclaredNavigations())
           .Concat(e.GetDeclaredKeys().SelectMany(p => p.Properties))

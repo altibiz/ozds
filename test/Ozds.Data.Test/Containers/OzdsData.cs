@@ -14,8 +14,6 @@ public sealed class OzdsData : IAsyncDisposable
 
   private readonly AsyncServiceScope scope;
 
-  public IServiceProvider ServiceProvider => scope.ServiceProvider;
-
   private OzdsData(
     IHost host,
     AsyncServiceScope scope
@@ -23,6 +21,17 @@ public sealed class OzdsData : IAsyncDisposable
   {
     this.host = host;
     this.scope = scope;
+  }
+
+  public IServiceProvider ServiceProvider
+  {
+    get { return scope.ServiceProvider; }
+  }
+
+  public async ValueTask DisposeAsync()
+  {
+    await scope.DisposeAsync();
+    host.Dispose();
   }
 
   public static async Task<OzdsData> Create(
@@ -65,12 +74,6 @@ public sealed class OzdsData : IAsyncDisposable
       .CreateDbContextAsync(cancellationToken);
     await migrationContext.Database.MigrateAsync(cancellationToken);
 
-    return new(host, scope);
-  }
-
-  public async ValueTask DisposeAsync()
-  {
-    await scope.DisposeAsync();
-    host.Dispose();
+    return new OzdsData(host, scope);
   }
 }

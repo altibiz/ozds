@@ -1,5 +1,6 @@
 using Ozds.Business.Finance.Abstractions;
 using Ozds.Business.Models;
+using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries;
@@ -24,6 +25,7 @@ public class NetworkUserInvoiceCalculator(
 
     var usageActiveEnergyTotalImportT0Fee = System.Math.Round(
       calculations
+        .OfType<IMeteredNetworkUserCalculation>()
         .SelectMany(
           calculation => calculation.UsageItems
             .OfType<UsageActiveEnergyTotalImportT0CalculationItemModel>())
@@ -32,6 +34,7 @@ public class NetworkUserInvoiceCalculator(
 
     var usageActiveEnergyTotalImportT1Fee = System.Math.Round(
       calculations
+        .OfType<IMeteredNetworkUserCalculation>()
         .SelectMany(
           calculation => calculation.UsageItems
             .OfType<UsageActiveEnergyTotalImportT1CalculationItemModel>())
@@ -40,6 +43,7 @@ public class NetworkUserInvoiceCalculator(
 
     var usageActiveEnergyTotalImportT2Fee = System.Math.Round(
       calculations
+        .OfType<IMeteredNetworkUserCalculation>()
         .SelectMany(
           calculation => calculation.UsageItems
             .OfType<UsageActiveEnergyTotalImportT2CalculationItemModel>())
@@ -48,6 +52,7 @@ public class NetworkUserInvoiceCalculator(
 
     var usageActivePowerTotalImportT1PeakFee = System.Math.Round(
       calculations
+        .OfType<IMeteredNetworkUserCalculation>()
         .SelectMany(
           calculation => calculation.UsageItems
             .OfType<UsageActivePowerTotalImportT1PeakCalculationItemModel>())
@@ -56,6 +61,7 @@ public class NetworkUserInvoiceCalculator(
 
     var usageReactiveEnergyTotalRampedT0Fee = System.Math.Round(
       calculations
+        .OfType<IMeteredNetworkUserCalculation>()
         .SelectMany(
           calculation => calculation.UsageItems
             .OfType<UsageReactiveEnergyTotalRampedT0CalculationItemModel>())
@@ -64,6 +70,7 @@ public class NetworkUserInvoiceCalculator(
 
     var usageMeterFee = System.Math.Round(
       calculations
+        .OfType<IMeteredNetworkUserCalculation>()
         .SelectMany(
           calculation => calculation.UsageItems
             .OfType<UsageMeterFeeCalculationItemModel>())
@@ -81,6 +88,7 @@ public class NetworkUserInvoiceCalculator(
 
     var supplyActiveEnergyTotalImportT1Fee = System.Math.Round(
       calculations
+        .OfType<IMeteredNetworkUserCalculation>()
         .SelectMany(
           calculation => calculation.SupplyItems
             .OfType<SupplyActiveEnergyTotalImportT1CalculationItemModel>())
@@ -89,6 +97,7 @@ public class NetworkUserInvoiceCalculator(
 
     var supplyActiveEnergyTotalImportT2Fee = System.Math.Round(
       calculations
+        .OfType<IMeteredNetworkUserCalculation>()
         .SelectMany(
           calculation => calculation.SupplyItems
             .OfType<SupplyActiveEnergyTotalImportT2CalculationItemModel>())
@@ -97,6 +106,7 @@ public class NetworkUserInvoiceCalculator(
 
     var supplyBusinessUsageFee = System.Math.Round(
       calculations
+        .OfType<IMeteredNetworkUserCalculation>()
         .SelectMany(
           calculation => calculation.SupplyItems
             .OfType<SupplyBusinessUsageCalculationItemModel>())
@@ -105,6 +115,7 @@ public class NetworkUserInvoiceCalculator(
 
     var supplyRenewableEnergyFee = System.Math.Round(
       calculations
+        .OfType<IMeteredNetworkUserCalculation>()
         .SelectMany(
           calculation => calculation.SupplyItems
             .OfType<SupplyRenewableEnergyCalculationItemModel>())

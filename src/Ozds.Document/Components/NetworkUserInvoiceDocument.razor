@@ -23,7 +23,10 @@
     </div>
     <div class="page-content">
       <div class="page-inner-space-between">
-        <NetworkUserCalculationDocumentContent Entity="@calculation"/>
+        @if (calculation is MeteredNetworkUserCalculationEntity meteredCalculation)
+        {
+          <MeteredNetworkUserCalculationDocumentContent Entity="@meteredCalculation"/>
+        }
         <Remark Value="@calculation.Remark"/>
       </div>
     </div>

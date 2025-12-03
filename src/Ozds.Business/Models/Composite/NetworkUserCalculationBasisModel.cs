@@ -9,6 +9,14 @@ public class NetworkUserCalculationBasisModel : IComposite
 
   public DateTimeOffset ToDate { get; set; }
 
+  public DateTimeOffset MeasuredFromDate { get; set; }
+
+  public DateTimeOffset MeasuredToDate { get; set; }
+
+  public DateTimeOffset BilledFromDate { get; set; }
+
+  public DateTimeOffset BilledToDate { get; set; }
+
   public List<AggregateModel> Aggregates { get; set; } = default!;
 
   public LocationModel Location { get; set; } = default!;

@@ -26,5 +26,9 @@ public class CalculationModelActivator(
     model.IssuedById = default!;
     model.FromDate = startOfLastMonth;
     model.ToDate = startOfThisMonth;
+    model.RequestedFromDate = startOfLastMonth;
+    model.RequestedToDate = startOfThisMonth;
+    model.MeteredFromDate = startOfLastMonth;
+    model.MeteredToDate = startOfThisMonth;
   }
 }

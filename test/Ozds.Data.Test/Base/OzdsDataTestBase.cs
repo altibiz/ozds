@@ -4,19 +4,30 @@ namespace Ozds.Data.Test.Base;
 
 public class OzdsDataTestBase
 {
+  private OzdsData? ozdsData;
   private PostgresContainer? postgresContainer;
 
-  private OzdsData? ozdsData;
+  public IServiceProvider ServiceProvider
+  {
+    get
+    {
+      return ozdsData?.ServiceProvider
+        ?? throw new InvalidOperationException("Test not initialized");
+    }
+  }
 
-  public IServiceProvider ServiceProvider =>
-    ozdsData?.ServiceProvider
-    ?? throw new InvalidOperationException("Test not initialized");
+  public TestInfrastructureFixture Infrastructure
+  {
+    get
+    {
+      return ServiceProvider.GetRequiredService<TestInfrastructureFixture>();
+    }
+  }
 
-  public TestInfrastructureFixture Infrastructure =>
-    ServiceProvider.GetRequiredService<TestInfrastructureFixture>();
-
-  public TestMeasurementFixture Measurements =>
-    ServiceProvider.GetRequiredService<TestMeasurementFixture>();
+  public TestMeasurementFixture Measurements
+  {
+    get { return ServiceProvider.GetRequiredService<TestMeasurementFixture>(); }
+  }
 
   [Before(HookType.Test)]
   public async Task SetUp(CancellationToken cancellationToken)

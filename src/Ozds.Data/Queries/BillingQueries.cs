@@ -75,9 +75,9 @@ public class BillingQueries(
     foreach (var aggregateType in reflector.AggregateTypes)
     {
       var applicableBases = bases.Where(
-        x =>
-          x.Meter.GetType()
-          == reflector.ResolveMeasurementMeterType(aggregateType))
+          x =>
+            x.Meter.GetType()
+            == reflector.ResolveMeasurementMeterType(aggregateType))
         .ToList();
 
       if (applicableBases.Count == 0)
@@ -95,9 +95,10 @@ public class BillingQueries(
 
       foreach (var enriched in enrichedBases)
       {
-        var original = bases.First(x =>
-          x.MeasurementLocation.Id
-          == enriched.MeasurementLocation.Id);
+        var original = bases.First(
+          x =>
+            x.MeasurementLocation.Id
+            == enriched.MeasurementLocation.Id);
         original.Aggregates = enriched.Aggregates;
         original.MeasuredFromDate = enriched.MeasuredFromDate;
         original.MeasuredToDate = enriched.MeasuredToDate;
@@ -244,7 +245,7 @@ public class BillingQueries(
     {
       var blackoutParams = new Dictionary<string, object?>(parameters);
       var blackoutRows = new List<string>();
-      int bIndex = 0;
+      var bIndex = 0;
       foreach (var id in blackoutLocationIds)
       {
         var pName = $"bloc{bIndex++}";
@@ -292,7 +293,7 @@ public class BillingQueries(
         };
 
         var targetRows = new List<string>();
-        int tIndex = 0;
+        var tIndex = 0;
 
         foreach (var reading in lastReadingsBeforeBlackout)
         {
@@ -311,7 +312,7 @@ public class BillingQueries(
 
         if (targetRows.Count != 0)
         {
-           actualStartBoundaries = await context
+          actualStartBoundaries = await context
             .DapperCommand<AggregateEntity>(
               aggregateType,
               $@"
@@ -339,75 +340,77 @@ public class BillingQueries(
       }
     }
 
-    return bases.Select(basis =>
-    {
-      var locId = basis.MeasurementLocation.Id;
-
-      var windowData = inWindowAggregates
-        .Where(x => x.MeasurementLocationId == locId)
-        .OrderBy(x => x.Timestamp)
-        .ToList();
-
-      var next = nextBoundaries
-        .FirstOrDefault(x => x.MeasurementLocationId == locId);
-
-      var prev = actualStartBoundaries
-        .FirstOrDefault(x => x.MeasurementLocationId == locId);
-
-      AggregateEntity? startAgg = null;
-      AggregateEntity? endAgg = null;
-
-      if (windowData.Count != 0)
+    return bases.Select(
+      basis =>
       {
-        startAgg = windowData.First();
-        endAgg = next;
-      }
-      else
-      {
-        startAgg = prev;
-        endAgg = next;
-      }
+        var locId = basis.MeasurementLocation.Id;
 
-      var resultAggregates = new List<AggregateEntity>(windowData);
+        var windowData = inWindowAggregates
+          .Where(x => x.MeasurementLocationId == locId)
+          .OrderBy(x => x.Timestamp)
+          .ToList();
 
-      if (startAgg != null && !resultAggregates
-        .Exists(x => x.Timestamp == startAgg.Timestamp))
-      {
-        resultAggregates.Insert(0, startAgg);
-      }
-      if (endAgg != null && !resultAggregates
-        .Exists(x => x.Timestamp == endAgg.Timestamp))
-      {
-        resultAggregates.Add(endAgg);
-      }
+        var next = nextBoundaries
+          .FirstOrDefault(x => x.MeasurementLocationId == locId);
 
-      var measuredFrom = startAgg?.Timestamp ?? fromDate;
-      var measuredTo = endAgg?.Timestamp ?? toDate;
+        var prev = actualStartBoundaries
+          .FirstOrDefault(x => x.MeasurementLocationId == locId);
 
-      var billedFrom = startAgg is not null
-        ? timeQueries.GetStartOfMonth(startAgg.Timestamp)
-        : fromDate;
+        AggregateEntity? startAgg = null;
+        AggregateEntity? endAgg = null;
 
-      var billedTo = endAgg is not null
-        ? timeQueries.GetStartOfMonth(endAgg.Timestamp)
-        : toDate;
+        if (windowData.Count != 0)
+        {
+          startAgg = windowData.First();
+          endAgg = next;
+        }
+        else
+        {
+          startAgg = prev;
+          endAgg = next;
+        }
 
-      return new NetworkUserCalculationBasisEntity
-      {
-        Location = basis.Location,
-        NetworkUser = basis.NetworkUser,
-        MeasurementLocation = basis.MeasurementLocation,
-        UsageNetworkUserCatalogue = basis.UsageNetworkUserCatalogue,
-        SupplyRegulatoryCatalogue = basis.SupplyRegulatoryCatalogue,
-        Meter = basis.Meter,
-        Aggregates = resultAggregates.OrderBy(x => x.Timestamp).ToList(),
-        MeasuredFromDate = measuredFrom,
-        MeasuredToDate = measuredTo,
-        BilledFromDate = billedFrom,
-        BilledToDate = billedTo,
-        FromDate = fromDate,
-        ToDate = toDate
-      };
-    }).ToList();
+        var resultAggregates = new List<AggregateEntity>(windowData);
+
+        if (startAgg != null && !resultAggregates
+          .Exists(x => x.Timestamp == startAgg.Timestamp))
+        {
+          resultAggregates.Insert(0, startAgg);
+        }
+
+        if (endAgg != null && !resultAggregates
+          .Exists(x => x.Timestamp == endAgg.Timestamp))
+        {
+          resultAggregates.Add(endAgg);
+        }
+
+        var measuredFrom = startAgg?.Timestamp ?? fromDate;
+        var measuredTo = endAgg?.Timestamp ?? toDate;
+
+        var billedFrom = startAgg is not null
+          ? timeQueries.GetStartOfMonth(startAgg.Timestamp)
+          : fromDate;
+
+        var billedTo = endAgg is not null
+          ? timeQueries.GetStartOfMonth(endAgg.Timestamp)
+          : toDate;
+
+        return new NetworkUserCalculationBasisEntity
+        {
+          Location = basis.Location,
+          NetworkUser = basis.NetworkUser,
+          MeasurementLocation = basis.MeasurementLocation,
+          UsageNetworkUserCatalogue = basis.UsageNetworkUserCatalogue,
+          SupplyRegulatoryCatalogue = basis.SupplyRegulatoryCatalogue,
+          Meter = basis.Meter,
+          Aggregates = resultAggregates.OrderBy(x => x.Timestamp).ToList(),
+          MeasuredFromDate = measuredFrom,
+          MeasuredToDate = measuredTo,
+          BilledFromDate = billedFrom,
+          BilledToDate = billedTo,
+          FromDate = fromDate,
+          ToDate = toDate
+        };
+      }).ToList();
   }
 }
