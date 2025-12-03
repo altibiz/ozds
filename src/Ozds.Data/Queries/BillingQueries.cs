@@ -180,7 +180,7 @@ public class BillingQueries(
     var index = 0;
     foreach (var id in bases.Select(x => x.MeasurementLocation.Id))
     {
-      var paramName = $"loc{index++}";
+      var paramName = $"location{index++}";
       parameters[paramName] = long.Parse(id);
       locationValueRows.Add($"(@{paramName})");
     }
@@ -189,7 +189,8 @@ public class BillingQueries(
         JOIN (
             VALUES {string.Join(", ", locationValueRows)}
         ) AS selected_locations(location_id)
-          ON selected_locations.location_id = a.measurement_location_id
+          ON selected_locations.location_id
+            = aggregates.measurement_location_id
     ";
 
     var inWindowAggregates = await context
@@ -197,12 +198,12 @@ public class BillingQueries(
         aggregateType,
         $@"
           SELECT *
-          FROM {table} a
+          FROM {table} aggregates
           {joinLocationsClause}
-          WHERE a.interval
+          WHERE aggregates.interval
               = '{quarterHourIntervalValue}'::{intervalTypeName}
-            AND a.timestamp >= @from
-            AND a.timestamp < @to
+            AND aggregates.timestamp >= @from
+            AND aggregates.timestamp < @to
         ",
         cancellationToken,
         parameters);
@@ -213,18 +214,18 @@ public class BillingQueries(
         $@"
           SELECT *
           FROM (
-            SELECT a.*,
+            SELECT aggregates.*,
             ROW_NUMBER() OVER (
-              PARTITION BY a.measurement_location_id
-              ORDER BY a.timestamp ASC
-            ) AS rn
-            FROM {table} a
+              PARTITION BY aggregates.measurement_location_id
+              ORDER BY aggregates.timestamp ASC
+            ) AS row_number
+            FROM {table} aggregates
             {joinLocationsClause}
-            WHERE a.interval
+            WHERE aggregates.interval
                 = '{quarterHourIntervalValue}'::{intervalTypeName}
-              AND a.timestamp >= @to
+              AND aggregates.timestamp >= @to
           ) end_candidates
-          WHERE rn = 1
+          WHERE row_number = 1
         ",
         cancellationToken,
         parameters);
@@ -243,21 +244,22 @@ public class BillingQueries(
 
     if (blackoutLocationIds.Count != 0)
     {
-      var blackoutParams = new Dictionary<string, object?>(parameters);
+      var blackoutParameters = new Dictionary<string, object?>(parameters);
       var blackoutRows = new List<string>();
-      var bIndex = 0;
+      var blackoutIndex = 0;
       foreach (var id in blackoutLocationIds)
       {
-        var pName = $"bloc{bIndex++}";
-        blackoutParams[pName] = long.Parse(id);
-        blackoutRows.Add($"(@{pName})");
+        var parameterName = $"blackout_location{blackoutIndex++}";
+        blackoutParameters[parameterName] = long.Parse(id);
+        blackoutRows.Add($"(@{parameterName})");
       }
 
       var blackoutJoin = $@"
         JOIN (
             VALUES {string.Join(", ", blackoutRows)}
         ) AS selected_locations(location_id)
-          ON selected_locations.location_id = a.measurement_location_id
+          ON selected_locations.location_id
+            = aggregates.measurement_location_id
       ";
 
       var lastReadingsBeforeBlackout = await context
@@ -266,25 +268,25 @@ public class BillingQueries(
           $@"
             SELECT *
             FROM (
-              SELECT a.*,
+              SELECT aggregates.*,
               ROW_NUMBER() OVER (
-                PARTITION BY a.measurement_location_id
-                ORDER BY a.timestamp DESC
-              ) AS rn
-              FROM {table} a
+                PARTITION BY aggregates.measurement_location_id
+                ORDER BY aggregates.timestamp DESC
+              ) AS row_number
+              FROM {table} aggregates
               {blackoutJoin}
-              WHERE a.interval
+              WHERE aggregates.interval
                   = '{quarterHourIntervalValue}'::{intervalTypeName}
-                AND a.timestamp < @from
+                AND aggregates.timestamp < @from
             ) start_fallback
-            WHERE rn = 1
+            WHERE row_number = 1
           ",
           cancellationToken,
-          blackoutParams);
+          blackoutParameters);
 
       if (lastReadingsBeforeBlackout.Count != 0)
       {
-        var targetParams = new Dictionary<string, object?>
+        var targetParameters = new Dictionary<string, object?>
         {
           {
             "interval",
@@ -293,21 +295,22 @@ public class BillingQueries(
         };
 
         var targetRows = new List<string>();
-        var tIndex = 0;
+        var targetIndex = 0;
 
         foreach (var reading in lastReadingsBeforeBlackout)
         {
           var monthStart = timeQueries.GetStartOfMonth(reading.Timestamp);
 
-          var pLoc = $"tloc{tIndex}";
-          var pDate = $"tdate{tIndex}";
+          var locationParameter = $"target_location{targetIndex}";
+          var dateParameter = $"target_date{targetIndex}";
 
-          targetParams[pLoc] = long.Parse(reading.MeasurementLocationId);
-          targetParams[pDate] = monthStart;
+          targetParameters[locationParameter] =
+            long.Parse(reading.MeasurementLocationId);
+          targetParameters[dateParameter] = monthStart;
 
-          targetRows.Add($"(@{pLoc}, @{pDate})");
+          targetRows.Add($"(@{locationParameter}, @{dateParameter})");
 
-          tIndex++;
+          targetIndex++;
         }
 
         if (targetRows.Count != 0)
@@ -318,24 +321,24 @@ public class BillingQueries(
               $@"
                 SELECT *
                 FROM (
-                  SELECT a.*,
+                  SELECT aggregates.*,
                   ROW_NUMBER() OVER (
-                    PARTITION BY a.measurement_location_id
-                    ORDER BY a.timestamp ASC
-                  ) AS rn
-                  FROM {table} a
+                    PARTITION BY aggregates.measurement_location_id
+                    ORDER BY aggregates.timestamp ASC
+                  ) AS row_number
+                  FROM {table} aggregates
                   JOIN (
                       VALUES {string.Join(", ", targetRows)}
                   ) AS targets(location_id, target_start)
-                    ON targets.location_id = a.measurement_location_id
-                  WHERE a.interval
+                    ON targets.location_id = aggregates.measurement_location_id
+                  WHERE aggregates.interval
                       = '{quarterHourIntervalValue}'::{intervalTypeName}
-                    AND a.timestamp >= targets.target_start
+                    AND aggregates.timestamp >= targets.target_start
                 ) real_starts
-                WHERE rn = 1
+                WHERE row_number = 1
               ",
               cancellationToken,
-              targetParams);
+              targetParameters);
         }
       }
     }
@@ -343,56 +346,56 @@ public class BillingQueries(
     return bases.Select(
       basis =>
       {
-        var locId = basis.MeasurementLocation.Id;
+        var locationId = basis.MeasurementLocation.Id;
 
-        var windowData = inWindowAggregates
-          .Where(x => x.MeasurementLocationId == locId)
+        var locationAggregates = inWindowAggregates
+          .Where(x => x.MeasurementLocationId == locationId)
           .OrderBy(x => x.Timestamp)
           .ToList();
 
         var next = nextBoundaries
-          .FirstOrDefault(x => x.MeasurementLocationId == locId);
+          .FirstOrDefault(x => x.MeasurementLocationId == locationId);
 
-        var prev = actualStartBoundaries
-          .FirstOrDefault(x => x.MeasurementLocationId == locId);
+        var previous = actualStartBoundaries
+          .FirstOrDefault(x => x.MeasurementLocationId == locationId);
 
-        AggregateEntity? startAgg = null;
-        AggregateEntity? endAgg = null;
+        AggregateEntity? startAggregate = null;
+        AggregateEntity? endAggregate = null;
 
-        if (windowData.Count != 0)
+        if (locationAggregates.Count != 0)
         {
-          startAgg = windowData.First();
-          endAgg = next;
+          startAggregate = locationAggregates.First();
+          endAggregate = next;
         }
         else
         {
-          startAgg = prev;
-          endAgg = next;
+          startAggregate = previous;
+          endAggregate = next;
         }
 
-        var resultAggregates = new List<AggregateEntity>(windowData);
+        var resultAggregates = new List<AggregateEntity>(locationAggregates);
 
-        if (startAgg != null && !resultAggregates
-          .Exists(x => x.Timestamp == startAgg.Timestamp))
+        if (startAggregate != null && !resultAggregates
+          .Exists(x => x.Timestamp == startAggregate.Timestamp))
         {
-          resultAggregates.Insert(0, startAgg);
+          resultAggregates.Insert(0, startAggregate);
         }
 
-        if (endAgg != null && !resultAggregates
-          .Exists(x => x.Timestamp == endAgg.Timestamp))
+        if (endAggregate != null && !resultAggregates
+          .Exists(x => x.Timestamp == endAggregate.Timestamp))
         {
-          resultAggregates.Add(endAgg);
+          resultAggregates.Add(endAggregate);
         }
 
-        var measuredFrom = startAgg?.Timestamp ?? fromDate;
-        var measuredTo = endAgg?.Timestamp ?? toDate;
+        var measuredFrom = startAggregate?.Timestamp ?? fromDate;
+        var measuredTo = endAggregate?.Timestamp ?? toDate;
 
-        var billedFrom = startAgg is not null
-          ? timeQueries.GetStartOfMonth(startAgg.Timestamp)
+        var billedFrom = startAggregate is not null
+          ? timeQueries.GetStartOfMonth(startAggregate.Timestamp)
           : fromDate;
 
-        var billedTo = endAgg is not null
-          ? timeQueries.GetStartOfMonth(endAgg.Timestamp)
+        var billedTo = endAggregate is not null
+          ? timeQueries.GetStartOfMonth(endAggregate.Timestamp)
           : toDate;
 
         return new NetworkUserCalculationBasisEntity

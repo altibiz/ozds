@@ -97,7 +97,7 @@ public class TestMeasurementFixture(
         aggregate.Interval = configurator.Interval
           ?? IntervalEntity.QuarterHour;
 
-        // NOTE: matches app behavior and ensures correct upsertion
+        // NOTE: matches app behavior and ensures correct upsert
         if (aggregate.Interval is IntervalEntity.QuarterHour)
         {
           aggregate.Count = 1;
