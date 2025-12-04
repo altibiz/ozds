@@ -118,6 +118,8 @@ public static class HostExtensions
         {
           var connectionString = ConfigureOzdsUsersOptions
             .OidcConnectionString(builder.Configuration);
+          var requireHttpsMetadata = ConfigureOzdsUsersOptions
+            .RequireHttpsMetadata(builder.Configuration);
           var authLogoutSubpath = ConfigureOzdsUsersOptions
             .AuthLogoutSubpath(builder.Configuration);
           var idKey = ConfigureOzdsUsersOptions
@@ -130,6 +132,7 @@ public static class HostExtensions
             .SignOutCallbackSubpath(builder.Configuration);
 
           options.Authority = connectionString.Authority;
+          options.RequireHttpsMetadata = requireHttpsMetadata ?? !builder.Environment.IsDevelopment();
           options.ClientId = connectionString.ClientId;
           options.ClientSecret = connectionString.ClientSecret;
           options.ResponseType = OpenIdConnectResponseType.Code;

@@ -15,6 +15,8 @@ public class OzdsUsersOptionsOidc
 {
   public string ConnectionString { get; set; } = string.Empty;
 
+  public bool? RequireHttpsMetadata { get; set; } = true;
+
   public string? AuthLogoutSubpath { get; set; } = default;
 
   public string UserIdKey { get; set; } = string.Empty;
@@ -128,6 +130,14 @@ public class ConfigureOzdsUsersOptions(
       ?? string.Empty;
 
     return new OzdsUsersParsedLdapConnectionString(connectionString);
+  }
+
+  public static bool? RequireHttpsMetadata(
+    IConfiguration configuration
+  )
+  {
+    return configuration
+      .GetValue<bool?>("Ozds:Users:Oidc:RequireHttpsMetadata");
   }
 
   public static bool WithAuth(IConfiguration configuration)

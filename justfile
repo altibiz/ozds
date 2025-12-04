@@ -299,6 +299,13 @@ publish *args:
         '(builtins.getFlake "git+file:{{ root }}").packages.${builtins.currentSystem}.playwrightBrowsers' \
         "/chromium_headless_shell-1155/chrome-linux/headless_shell"
 
+    # NOTE: leaving it here for future reference if linus decies nested namespaces are cool
+    # mkdir "{{ artifacts }}/.playwright/node/linux-x64"
+    # cd "{{ artifacts }}/.playwright/node/linux-x64"; \
+    #   nix-bundle \
+    #     '(builtins.getFlake "git+file:{{ root }}").packages.${builtins.currentSystem}.playwrightNode' \
+    #     "/bin/node"
+
 docs:
     rm -rf '{{ artifacts }}'
     mkdir '{{ artifacts }}'

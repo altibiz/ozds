@@ -14,15 +14,8 @@
             name = system;
             value = {
               playwrightNode = playwrightPkgs.nodejs;
-              playwrightBrowsers =
-                if playwrightPkgs.hostPlatform.isLinux
-                then
-                  playwrightPkgs.playwright-driver.browsers.override
-                    {
-                      withFirefox = false;
-                      withWebkit = false;
-                    }
-                else playwrightPkgs.playwright-driver.browsers;
+              # NOTE: override breaks bundle
+              playwrightBrowsers = playwrightPkgs.playwright-driver.browsers;
             };
           })
         perch.lib.defaults.systems);
