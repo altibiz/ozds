@@ -42,7 +42,7 @@ public class NetworkUserInvoiceCalculatorTest
       .Build<CalculatedNetworkUserInvoiceModel>()
       .With(
         x => x.Calculations,
-        Enumerable.Empty<MeteredNetworkUserCalculationModel>()
+        Enumerable.Empty<NetworkUserCalculationModel>()
           .Concat(
             new Fixture()
               .Customize(
@@ -471,7 +471,45 @@ public class NetworkUserInvoiceCalculatorTest
 
                   return x;
                 }))
-          .Cast<NetworkUserCalculationModel>()
+          .Concat(
+            new Fixture()
+              .Customize(
+                new TypeRelay(typeof(IAggregate), typeof(AbbB2xAggregateModel))
+                  .ToCustomization())
+              .Customize(
+                new TypeRelay(
+                  typeof(AggregateModel),
+                  typeof(AbbB2xAggregateModel))
+                  .ToCustomization())
+              .Customize(
+                new TypeRelay(typeof(IMeter), typeof(AbbB2xMeterModel))
+                  .ToCustomization())
+              .Customize(
+                new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
+                  .ToCustomization())
+              .Customize(
+                new TypeRelay(
+                  typeof(NetworkUserCatalogueModel),
+                  typeof(BlueLowNetworkUserCatalogueModel))
+                  .ToCustomization())
+              .Build<BlackoutNetworkUserCalculationModel>()
+              .CreateMany(Constants.DefaultFuzzCount / 8)
+              .Select(x =>
+              {
+                  x.UsageNetworkUserCatalogueId =
+                    x.ConcreteArchivedUsageNetworkUserCatalogue.Id;
+                  x.SupplyRegulatoryCatalogueId =
+                    x.ArchivedSupplyRegulatoryCatalogue.Id;
+                  x.NetworkUserMeasurementLocationId =
+                    x.ArchivedNetworkUserMeasurementLocation.Id;
+                  x.Remark =
+                    x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
+                  x.MeterId = x.ArchivedMeter.Id;
+
+                  x.Total_EUR = 0.0M;
+
+                  return x;
+              }))
           .OrderBy(_ => Random.Shared.Next())
           .ToList())
       .CreateMany(2)
@@ -625,10 +663,6 @@ public class NetworkUserInvoiceCalculatorTest
       new Mock<NetworkUserCalculationCalculator>(
         MockBehavior.Strict,
         new Mock<IServiceProvider>().Object);
-
-    var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-    httpContextAccessorMock.Setup(x => x.HttpContext)
-      .Returns(new DefaultHttpContext());
 
     var mockSequence = calculationItemCalculatorMock.SetupSequence(
       x => x.Calculate(It.IsAny<NetworkUserCalculationBasisModel>()));
