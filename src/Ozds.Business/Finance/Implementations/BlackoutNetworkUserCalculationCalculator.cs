@@ -12,7 +12,6 @@ public class BlackoutNetworkUserCalculationCalculator(
 )
   : INetworkUserCalculationCalculator
 {
-
   public bool CanCalculate(
     NetworkUserCalculationBasisModel calculationBasis
   )

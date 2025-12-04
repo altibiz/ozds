@@ -23,11 +23,11 @@ public class NetworkUserCalculationCalculator(
     }
 
     return serviceProvider
-          .GetServices<INetworkUserCalculationCalculator>()
-          .FirstOrDefault(calculator => calculator.CanCalculate(basis))
-          ?.Calculate(basis)
-        ?? throw new InvalidOperationException(
-          $"No calculator found for calculation {basis.GetType()}.");
+        .GetServices<INetworkUserCalculationCalculator>()
+        .FirstOrDefault(calculator => calculator.CanCalculate(basis))
+        ?.Calculate(basis)
+      ?? throw new InvalidOperationException(
+        $"No calculator found for calculation {basis.GetType()}.");
   }
 
   public TCalculation Calculate<TCalculation>(

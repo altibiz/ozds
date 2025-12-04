@@ -28,8 +28,8 @@ public class BlackoutNetworkUserCalculationCalculatorTest
           .ToCustomization())
       .Customize(
         new TypeRelay(
-          typeof(NetworkUserCatalogueModel),
-          typeof(BlueLowNetworkUserCatalogueModel))
+            typeof(NetworkUserCatalogueModel),
+            typeof(BlueLowNetworkUserCatalogueModel))
           .ToCustomization())
       .Build<BlackoutNetworkUserCalculationModel>()
       .CreateMany(Constants.DefaultFuzzCount)
@@ -134,16 +134,16 @@ public class BlackoutNetworkUserCalculationCalculatorTest
 
     var fixedStartOfMonth = DateTimeOffset.UtcNow;
     timeQueriesMock
-        .Setup(x => x.GetStartOfMonth(It.IsAny<DateTimeOffset>()))
-        .Returns(fixedStartOfMonth);
+      .Setup(x => x.GetStartOfMonth(It.IsAny<DateTimeOffset>()))
+      .Returns(fixedStartOfMonth);
 
     var clockQueriesMock = new Mock<ClockQueries>(
       MockBehavior.Loose,
       Mock.Of<IClockQueries>());
 
     var calculator = new BlackoutNetworkUserCalculationCalculator(
-        clockQueriesMock.Object,
-        timeQueriesMock.Object);
+      clockQueriesMock.Object,
+      timeQueriesMock.Object);
 
     var fixture = new Fixture()
       .Customize(
@@ -154,8 +154,8 @@ public class BlackoutNetworkUserCalculationCalculatorTest
           .ToCustomization())
       .Customize(
         new TypeRelay(
-          typeof(NetworkUserCatalogueModel),
-          typeof(BlueLowNetworkUserCatalogueModel))
+            typeof(NetworkUserCatalogueModel),
+            typeof(BlueLowNetworkUserCatalogueModel))
           .ToCustomization());
 
     var basis = fixture.Build<NetworkUserCalculationBasisModel>()
@@ -174,16 +174,16 @@ public class BlackoutNetworkUserCalculationCalculatorTest
       Mock.Of<ITimeQueries>());
 
     timeQueriesMock
-        .Setup(x => x.GetStartOfMonth(It.IsAny<DateTimeOffset>()))
-        .Returns<DateTimeOffset>(d => d);
+      .Setup(x => x.GetStartOfMonth(It.IsAny<DateTimeOffset>()))
+      .Returns<DateTimeOffset>(d => d);
 
     var clockQueriesMock = new Mock<ClockQueries>(
       MockBehavior.Loose,
       Mock.Of<IClockQueries>());
 
     var calculator = new BlackoutNetworkUserCalculationCalculator(
-        clockQueriesMock.Object,
-        timeQueriesMock.Object);
+      clockQueriesMock.Object,
+      timeQueriesMock.Object);
 
     var fixture = new Fixture()
       .Customize(
@@ -194,12 +194,12 @@ public class BlackoutNetworkUserCalculationCalculatorTest
           .ToCustomization())
       .Customize(
         new TypeRelay(
-          typeof(NetworkUserCatalogueModel),
-          typeof(BlueLowNetworkUserCatalogueModel))
+            typeof(NetworkUserCatalogueModel),
+            typeof(BlueLowNetworkUserCatalogueModel))
           .ToCustomization());
 
     var basis = fixture.Build<NetworkUserCalculationBasisModel>()
-        .Create();
+      .Create();
 
     var result = calculator.CanCalculate(basis);
 

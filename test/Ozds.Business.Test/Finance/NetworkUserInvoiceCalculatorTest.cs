@@ -478,8 +478,8 @@ public class NetworkUserInvoiceCalculatorTest
                   .ToCustomization())
               .Customize(
                 new TypeRelay(
-                  typeof(AggregateModel),
-                  typeof(AbbB2xAggregateModel))
+                    typeof(AggregateModel),
+                    typeof(AbbB2xAggregateModel))
                   .ToCustomization())
               .Customize(
                 new TypeRelay(typeof(IMeter), typeof(AbbB2xMeterModel))
@@ -489,13 +489,14 @@ public class NetworkUserInvoiceCalculatorTest
                   .ToCustomization())
               .Customize(
                 new TypeRelay(
-                  typeof(NetworkUserCatalogueModel),
-                  typeof(BlueLowNetworkUserCatalogueModel))
+                    typeof(NetworkUserCatalogueModel),
+                    typeof(BlueLowNetworkUserCatalogueModel))
                   .ToCustomization())
               .Build<BlackoutNetworkUserCalculationModel>()
               .CreateMany(Constants.DefaultFuzzCount / 8)
-              .Select(x =>
-              {
+              .Select(
+                x =>
+                {
                   x.UsageNetworkUserCatalogueId =
                     x.ConcreteArchivedUsageNetworkUserCatalogue.Id;
                   x.SupplyRegulatoryCatalogueId =
@@ -509,7 +510,7 @@ public class NetworkUserInvoiceCalculatorTest
                   x.Total_EUR = 0.0M;
 
                   return x;
-              }))
+                }))
           .OrderBy(_ => Random.Shared.Next())
           .ToList())
       .CreateMany(2)

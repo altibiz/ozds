@@ -33,9 +33,11 @@ LinkField<NetworkUserMeasurementLocationModel>(
   @(ArchivedField(x => x.ArchivedSupplyRegulatoryCatalogue))
 </FieldChapter>
 
-@(Base<IFinancial>(@<Fragment>
-  @Sub()
-</Fragment>))
+@(
+Base<IFinancial>(
+  @<Fragment>
+    @Sub()
+  </Fragment>))
 
 @code {
 

@@ -10,5 +10,7 @@ public class BlackoutNetworkUserCalculationModel : NetworkUserCalculationModel
     ConcreteArchivedUsageNetworkUserCatalogue { get; set; } = default!;
 
   public override NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue
-    => ConcreteArchivedUsageNetworkUserCatalogue;
+  {
+    get { return ConcreteArchivedUsageNetworkUserCatalogue; }
+  }
 }

@@ -4,8 +4,7 @@ public abstract class
   BlackoutNetworkUserCalculationEntity : NetworkUserCalculationEntity
 {
   public NetworkUserCatalogueEntity
-    ConcreteUsageNetworkUserCatalogue
-  { get; set; } = default!;
+    ConcreteUsageNetworkUserCatalogue { get; set; } = default!;
 
   public override NetworkUserCatalogueEntity UsageNetworkUserCatalogue
   {

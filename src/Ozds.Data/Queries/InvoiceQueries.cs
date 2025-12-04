@@ -110,9 +110,10 @@ public class InvoiceQueries(
       .CreateDbContextAsync(cancellationToken);
 
     var invoice = await context.NetworkUserInvoices
-      .Where(context.ForeignKeyEquals<NetworkUserInvoiceEntity>(
-        nameof(NetworkUserInvoiceEntity.NetworkUser),
-        networkUserId))
+      .Where(
+        context.ForeignKeyEquals<NetworkUserInvoiceEntity>(
+          nameof(NetworkUserInvoiceEntity.NetworkUser),
+          networkUserId))
       .Where(x => x.FromDate == dateFrom)
       .Where(x => x.ToDate == dateTo)
       .Include(invoice => invoice.NetworkUserCalculations)
