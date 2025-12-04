@@ -13,14 +13,14 @@ public class BillingQueries(
 ) : IQueries
 {
   public async Task<NetworkUserInvoiceBasisModel>
-    ReadInvoiceBasisForNetworkUser(
+    ReadInvoiceBasisByNetworkUser(
       string networkUserId,
       DateTimeOffset fromDate,
       DateTimeOffset toDate,
       CancellationToken cancellationToken
     )
   {
-    var entity = await queries.ReadInvoiceBasisForNetworkUser(
+    var entity = await queries.ReadInvoiceBasisByNetworkUser(
       networkUserId,
       fromDate,
       toDate,
@@ -42,6 +42,10 @@ public class BillingQueries(
           {
             FromDate = x.FromDate,
             ToDate = x.ToDate,
+            MeasuredFromDate = x.MeasuredFromDate,
+            MeasuredToDate = x.MeasuredToDate,
+            BilledFromDate = x.BilledFromDate,
+            BilledToDate = x.BilledToDate,
             Aggregates = x.Aggregates
               .Select(y => modelEntityConverter.ToModel<AggregateModel>(y))
               .ToList(),

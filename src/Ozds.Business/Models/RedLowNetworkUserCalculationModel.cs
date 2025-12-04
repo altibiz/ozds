@@ -7,7 +7,7 @@ using Ozds.Business.Models.Complex;
 namespace Ozds.Business.Models;
 
 public class RedLowNetworkUserCalculationModel
-  : NetworkUserCalculationModel<RedLowNetworkUserCatalogueModel>
+  : MeteredNetworkUserCalculationModel<RedLowNetworkUserCatalogueModel>
 {
   [Required]
   public required UsageActiveEnergyTotalImportT1CalculationItemModel

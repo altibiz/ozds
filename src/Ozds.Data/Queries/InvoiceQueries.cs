@@ -97,4 +97,36 @@ public class InvoiceQueries(
       Invoice = invoice
     };
   }
+
+  public async Task<CalculatedNetworkUserInvoiceEntity?>
+    ReadCalculatedNetworkUserInvoice(
+      string networkUserId,
+      DateTimeOffset dateFrom,
+      DateTimeOffset dateTo,
+      CancellationToken cancellationToken
+    )
+  {
+    await using var context = await factory
+      .CreateDbContextAsync(cancellationToken);
+
+    var invoice = await context.NetworkUserInvoices
+      .Where(
+        context.ForeignKeyEquals<NetworkUserInvoiceEntity>(
+          nameof(NetworkUserInvoiceEntity.NetworkUser),
+          networkUserId))
+      .Where(x => x.FromDate == dateFrom)
+      .Where(x => x.ToDate == dateTo)
+      .Include(invoice => invoice.NetworkUserCalculations)
+      .FirstOrDefaultAsync(cancellationToken);
+    if (invoice is null)
+    {
+      return null;
+    }
+
+    return new CalculatedNetworkUserInvoiceEntity
+    {
+      Calculations = invoice.NetworkUserCalculations.ToList(),
+      Invoice = invoice
+    };
+  }
 }

@@ -1,0 +1,55 @@
+@namespace Ozds.Document.Components
+@using Ozds.Document.Entities
+@inherits DocumentBase
+
+<div>
+  <p>
+    <strong>
+      <u>
+        @Translate("SPECIFICATION OF CONSUMPTION AT BILLING MEASUREMENT LOCATION")
+      </u>
+    </strong>
+  </p>
+  <p style="margin-top: 0.8rem;">
+    @Translate("Name of the billing measurement location (OMM)"):
+    @(Entity.MeasurementLocationTitle)
+  </p>
+  <p>
+    @Translate("Number of the billing measurement location (OMM)"):
+    @(Entity.MeasurementLocationId)
+  </p>
+  <br/>
+  <p>
+    <b>
+      @(
+      string.Format(
+        Translate("Data unavailable for the billing period: {0} - {1}. Billing calculation suspended."),
+        Date(Entity.FromDate),
+        Date(Entity.ToDate)))
+    </b>
+  </p>
+</div>
+
+
+@code {
+
+  [Parameter]
+  public BlackoutNetworkUserCalculationEntity Entity { get; set; } = default!;
+
+  private string TariffModelTitle
+  {
+    get
+    {
+      return Entity.UsageNetworkUserCatalogue is RedLowNetworkUserCatalogueEntity
+        ? Translate("Red NN")
+        : Entity.UsageNetworkUserCatalogue is BlueLowNetworkUserCatalogueEntity
+          ? Translate("Blue NN")
+          : Entity.UsageNetworkUserCatalogue is WhiteLowNetworkUserCatalogueEntity
+            ? Translate("White NN")
+            : Entity.UsageNetworkUserCatalogue is WhiteMediumNetworkUserCatalogueEntity
+              ? Translate("White SN")
+              : string.Empty;
+    }
+  }
+
+}

@@ -1738,14 +1738,26 @@ namespace Ozds.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("meter_id");
 
+                    b.Property<DateTimeOffset>("MeteredFromDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("metered_from_date");
+
+                    b.Property<DateTimeOffset>("MeteredToDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("metered_to_date");
+
                     b.Property<string>("Remark")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("remark");
 
-                    b.Property<decimal>("SupplyFeeTotal_EUR")
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("supply_fee_total_eur");
+                    b.Property<DateTimeOffset>("RequestedFromDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("requested_from_date");
+
+                    b.Property<DateTimeOffset>("RequestedToDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("requested_to_date");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -1759,10 +1771,6 @@ namespace Ozds.Data.Migrations
                     b.Property<decimal>("Total_EUR")
                         .HasColumnType("decimal(19, 4)")
                         .HasColumnName("total_eur");
-
-                    b.Property<decimal>("UsageFeeTotal_EUR")
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("usage_fee_total_eur");
 
                     b.Property<long>("_networkUserInvoiceId")
                         .HasColumnType("bigint")
@@ -1956,123 +1964,6 @@ namespace Ozds.Data.Migrations
                                 .HasColumnName("asrc_title");
                         });
 
-                    b.ComplexProperty<Dictionary<string, object>>("SupplyActiveEnergyTotalImportT1", "Ozds.Data.Entities.Base.NetworkUserCalculationEntity.SupplyActiveEnergyTotalImportT1#SupplyActiveEnergyTotalImportT1CalculationItemEntity", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<decimal>("Amount_kWh")
-                                .HasColumnType("numeric")
-                                .HasColumnName("rvt_amount_kwh");
-
-                            b1.Property<decimal>("Max_kWh")
-                                .HasColumnType("numeric")
-                                .HasColumnName("rvt_max_kwh");
-
-                            b1.Property<decimal>("Min_kWh")
-                                .HasColumnType("numeric")
-                                .HasColumnName("rvt_min_kwh");
-
-                            b1.Property<decimal>("Price_EUR")
-                                .HasColumnType("decimal(19, 4)")
-                                .HasColumnName("rvt_price_eur");
-
-                            b1.Property<decimal>("Total_EUR")
-                                .HasColumnType("decimal(19, 4)")
-                                .HasColumnName("rvt_total_eur");
-                        });
-
-                    b.ComplexProperty<Dictionary<string, object>>("SupplyActiveEnergyTotalImportT2", "Ozds.Data.Entities.Base.NetworkUserCalculationEntity.SupplyActiveEnergyTotalImportT2#SupplyActiveEnergyTotalImportT2CalculationItemEntity", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<decimal>("Amount_kWh")
-                                .HasColumnType("numeric")
-                                .HasColumnName("rnt_amount_kwh");
-
-                            b1.Property<decimal>("Max_kWh")
-                                .HasColumnType("numeric")
-                                .HasColumnName("rnt_max_kwh");
-
-                            b1.Property<decimal>("Min_kWh")
-                                .HasColumnType("numeric")
-                                .HasColumnName("rnt_min_kwh");
-
-                            b1.Property<decimal>("Price_EUR")
-                                .HasColumnType("decimal(19, 4)")
-                                .HasColumnName("rnt_price_eur");
-
-                            b1.Property<decimal>("Total_EUR")
-                                .HasColumnType("decimal(19, 4)")
-                                .HasColumnName("rnt_total_eur");
-                        });
-
-                    b.ComplexProperty<Dictionary<string, object>>("SupplyBusinessUsageFee", "Ozds.Data.Entities.Base.NetworkUserCalculationEntity.SupplyBusinessUsageFee#SupplyBusinessUsageCalculationItemEntity", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<decimal>("Amount_kWh")
-                                .HasColumnType("numeric")
-                                .HasColumnName("trp_amount_kwh");
-
-                            b1.Property<decimal>("Max_kWh")
-                                .HasColumnType("numeric")
-                                .HasColumnName("trp_max_kwh");
-
-                            b1.Property<decimal>("Min_kWh")
-                                .HasColumnType("numeric")
-                                .HasColumnName("trp_min_kwh");
-
-                            b1.Property<decimal>("Price_EUR")
-                                .HasColumnType("decimal(19, 4)")
-                                .HasColumnName("trp_price_eur");
-
-                            b1.Property<decimal>("Total_EUR")
-                                .HasColumnType("decimal(19, 4)")
-                                .HasColumnName("trp_total_eur");
-                        });
-
-                    b.ComplexProperty<Dictionary<string, object>>("SupplyRenewableEnergyFee", "Ozds.Data.Entities.Base.NetworkUserCalculationEntity.SupplyRenewableEnergyFee#SupplyRenewableEnergyCalculationItemEntity", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<decimal>("Amount_kWh")
-                                .HasColumnType("numeric")
-                                .HasColumnName("oie_amount_kwh");
-
-                            b1.Property<decimal>("Max_kWh")
-                                .HasColumnType("numeric")
-                                .HasColumnName("oie_max_kwh");
-
-                            b1.Property<decimal>("Min_kWh")
-                                .HasColumnType("numeric")
-                                .HasColumnName("oie_min_kwh");
-
-                            b1.Property<decimal>("Price_EUR")
-                                .HasColumnType("decimal(19, 4)")
-                                .HasColumnName("oie_price_eur");
-
-                            b1.Property<decimal>("Total_EUR")
-                                .HasColumnType("decimal(19, 4)")
-                                .HasColumnName("oie_total_eur");
-                        });
-
-                    b.ComplexProperty<Dictionary<string, object>>("UsageMeterFee", "Ozds.Data.Entities.Base.NetworkUserCalculationEntity.UsageMeterFee#UsageMeterFeeCalculationItemEntity", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<decimal>("Amount_N")
-                                .HasColumnType("numeric")
-                                .HasColumnName("usage_meter_fee_amount");
-
-                            b1.Property<decimal>("Price_EUR")
-                                .HasColumnType("decimal(19, 4)")
-                                .HasColumnName("usage_meter_fee_price_eur");
-
-                            b1.Property<decimal>("Total_EUR")
-                                .HasColumnType("decimal(19, 4)")
-                                .HasColumnName("usage_meter_fee_total_eur");
-                        });
-
                     b.HasKey("_id")
                         .HasName("pk_network_user_calculations");
 
@@ -2088,11 +1979,12 @@ namespace Ozds.Data.Migrations
                     b.HasIndex("_networkUserInvoiceId")
                         .HasDatabaseName("ix_network_user_calculations__network_user_invoice_id");
 
-                    b.HasIndex("_networkUserMeasurementLocationId")
-                        .HasDatabaseName("ix_network_user_calculations__network_user_measurement_locatio");
-
                     b.HasIndex("_supplyRegulatoryCatalogueId")
                         .HasDatabaseName("ix_network_user_calculations__supply_regulatory_catalogue_id");
+
+                    b.HasIndex("_networkUserMeasurementLocationId", "FromDate", "ToDate")
+                        .IsUnique()
+                        .HasDatabaseName("ix_network_user_calculations__network_user_measurement_locatio");
 
                     b.ToTable("network_user_calculations", (string)null);
 
@@ -2970,8 +2862,9 @@ namespace Ozds.Data.Migrations
                     b.HasIndex("IssuedById")
                         .HasDatabaseName("ix_network_user_invoices_issued_by_id");
 
-                    b.HasIndex("_networkUserId")
-                        .HasDatabaseName("ix_network_user_invoices__network_user_id");
+                    b.HasIndex("_networkUserId", "FromDate", "ToDate")
+                        .IsUnique()
+                        .HasDatabaseName("ix_network_user_invoices__network_user_id_from_date_to_date");
 
                     b.ToTable("network_user_invoices", (string)null);
                 });
@@ -4335,9 +4228,402 @@ namespace Ozds.Data.Migrations
                     b.HasDiscriminator().HasValue("SchneideriEM3xxxMeterEntity");
                 });
 
-            modelBuilder.Entity("Ozds.Data.Entities.BlueLowNetworkUserCalculationEntity", b =>
+            modelBuilder.Entity("Ozds.Data.Entities.Base.MeteredNetworkUserCalculationEntity", b =>
                 {
                     b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCalculationEntity");
+
+                    b.Property<decimal>("SupplyFeeTotal_EUR")
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("supply_fee_total_eur");
+
+                    b.Property<decimal>("UsageFeeTotal_EUR")
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("usage_fee_total_eur");
+
+                    b.ComplexProperty<Dictionary<string, object>>("SupplyActiveEnergyTotalImportT1", "Ozds.Data.Entities.Base.MeteredNetworkUserCalculationEntity.SupplyActiveEnergyTotalImportT1#SupplyActiveEnergyTotalImportT1CalculationItemEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("Amount_kWh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("rvt_amount_kwh");
+
+                            b1.Property<decimal>("Max_kWh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("rvt_max_kwh");
+
+                            b1.Property<decimal>("Min_kWh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("rvt_min_kwh");
+
+                            b1.Property<decimal>("Price_EUR")
+                                .HasColumnType("decimal(19, 4)")
+                                .HasColumnName("rvt_price_eur");
+
+                            b1.Property<decimal>("Total_EUR")
+                                .HasColumnType("decimal(19, 4)")
+                                .HasColumnName("rvt_total_eur");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("SupplyActiveEnergyTotalImportT2", "Ozds.Data.Entities.Base.MeteredNetworkUserCalculationEntity.SupplyActiveEnergyTotalImportT2#SupplyActiveEnergyTotalImportT2CalculationItemEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("Amount_kWh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("rnt_amount_kwh");
+
+                            b1.Property<decimal>("Max_kWh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("rnt_max_kwh");
+
+                            b1.Property<decimal>("Min_kWh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("rnt_min_kwh");
+
+                            b1.Property<decimal>("Price_EUR")
+                                .HasColumnType("decimal(19, 4)")
+                                .HasColumnName("rnt_price_eur");
+
+                            b1.Property<decimal>("Total_EUR")
+                                .HasColumnType("decimal(19, 4)")
+                                .HasColumnName("rnt_total_eur");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("SupplyBusinessUsageFee", "Ozds.Data.Entities.Base.MeteredNetworkUserCalculationEntity.SupplyBusinessUsageFee#SupplyBusinessUsageCalculationItemEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("Amount_kWh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("trp_amount_kwh");
+
+                            b1.Property<decimal>("Max_kWh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("trp_max_kwh");
+
+                            b1.Property<decimal>("Min_kWh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("trp_min_kwh");
+
+                            b1.Property<decimal>("Price_EUR")
+                                .HasColumnType("decimal(19, 4)")
+                                .HasColumnName("trp_price_eur");
+
+                            b1.Property<decimal>("Total_EUR")
+                                .HasColumnType("decimal(19, 4)")
+                                .HasColumnName("trp_total_eur");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("SupplyRenewableEnergyFee", "Ozds.Data.Entities.Base.MeteredNetworkUserCalculationEntity.SupplyRenewableEnergyFee#SupplyRenewableEnergyCalculationItemEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("Amount_kWh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("oie_amount_kwh");
+
+                            b1.Property<decimal>("Max_kWh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("oie_max_kwh");
+
+                            b1.Property<decimal>("Min_kWh")
+                                .HasColumnType("numeric")
+                                .HasColumnName("oie_min_kwh");
+
+                            b1.Property<decimal>("Price_EUR")
+                                .HasColumnType("decimal(19, 4)")
+                                .HasColumnName("oie_price_eur");
+
+                            b1.Property<decimal>("Total_EUR")
+                                .HasColumnType("decimal(19, 4)")
+                                .HasColumnName("oie_total_eur");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("UsageMeterFee", "Ozds.Data.Entities.Base.MeteredNetworkUserCalculationEntity.UsageMeterFee#UsageMeterFeeCalculationItemEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("Amount_N")
+                                .HasColumnType("numeric")
+                                .HasColumnName("usage_meter_fee_amount");
+
+                            b1.Property<decimal>("Price_EUR")
+                                .HasColumnType("decimal(19, 4)")
+                                .HasColumnName("usage_meter_fee_price_eur");
+
+                            b1.Property<decimal>("Total_EUR")
+                                .HasColumnType("decimal(19, 4)")
+                                .HasColumnName("usage_meter_fee_total_eur");
+                        });
+
+                    b.ToTable("network_user_calculations", (string)null);
+
+                    b.HasDiscriminator().HasValue("MeteredNetworkUserCalculationEntity");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.BlackoutNetworkUserCalculationEntity", b =>
+                {
+                    b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCalculationEntity");
+
+                    b.Property<long>("_usageNetworkUserCatalogueId")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("bigint")
+                        .HasColumnName("usage_network_user_catalogue_id");
+
+                    b.ComplexProperty<Dictionary<string, object>>("ArchivedUsageNetworkUserCatalogue", "Ozds.Data.Entities.BlackoutNetworkUserCalculationEntity.ArchivedUsageNetworkUserCatalogue#NetworkUserCatalogueEntity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("CreatedById")
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasColumnType("text")
+                                .HasColumnName("aunuc_created_by_id");
+
+                            b1.Property<DateTimeOffset>("CreatedOn")
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("aunuc_created_on");
+
+                            b1.Property<string>("DeletedById")
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasColumnType("text")
+                                .HasColumnName("aunuc_deleted_by_id");
+
+                            b1.Property<DateTimeOffset?>("DeletedOn")
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("aunuc_deleted_on");
+
+                            b1.Property<bool>("IsDeleted")
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasColumnType("boolean")
+                                .HasColumnName("aunuc_is_deleted");
+
+                            b1.Property<string>("Kind")
+                                .IsRequired()
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasColumnType("text")
+                                .HasColumnName("aunuc_kind");
+
+                            b1.Property<string>("LastUpdatedById")
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasColumnType("text")
+                                .HasColumnName("aunuc_last_updated_by_id");
+
+                            b1.Property<DateTimeOffset?>("LastUpdatedOn")
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("aunuc_last_updated_on");
+
+                            b1.Property<decimal>("MeterFeePrice_EUR")
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasColumnType("numeric")
+                                .HasColumnName("aunuc_meter_fee_price__eur");
+
+                            b1.Property<string>("Title")
+                                .IsRequired()
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasColumnType("text")
+                                .HasColumnName("aunuc_title");
+                        });
+
+                    b.HasIndex("_usageNetworkUserCatalogueId")
+                        .HasDatabaseName("ix_network_user_calculations_usage_network_user_catalogue_id");
+
+                    b.ToTable("network_user_calculations", (string)null);
+
+                    b.HasDiscriminator().HasValue("BlackoutNetworkUserCalculationEntity");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.BlueLowNetworkUserCatalogueEntity", b =>
+                {
+                    b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCatalogueEntity");
+
+                    b.Property<decimal>("ActiveEnergyTotalImportT0Price_EUR")
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("active_energy_total_import_t0_price_eur");
+
+                    b.Property<decimal>("ReactiveEnergyTotalRampedT0Price_EUR")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
+
+                    b.ToTable("network_user_catalogues", (string)null);
+
+                    b.HasDiscriminator().HasValue("BlueLowNetworkUserCatalogueEntity");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.RedLowNetworkUserCatalogueEntity", b =>
+                {
+                    b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCatalogueEntity");
+
+                    b.Property<decimal>("ActiveEnergyTotalImportT1Price_EUR")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("active_energy_total_import_t1_price_eur");
+
+                    b.Property<decimal>("ActiveEnergyTotalImportT2Price_EUR")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("active_energy_total_import_t2_price_eur");
+
+                    b.Property<decimal>("ActivePowerTotalImportT1Price_EUR")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("active_power_total_import_t1_price_eur");
+
+                    b.Property<decimal>("ReactiveEnergyTotalRampedT0Price_EUR")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
+
+                    b.ToTable("network_user_catalogues", (string)null);
+
+                    b.HasDiscriminator().HasValue("RedLowNetworkUserCatalogueEntity");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.WhiteLowNetworkUserCatalogueEntity", b =>
+                {
+                    b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCatalogueEntity");
+
+                    b.Property<decimal>("ActiveEnergyTotalImportT1Price_EUR")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("active_energy_total_import_t1_price_eur");
+
+                    b.Property<decimal>("ActiveEnergyTotalImportT2Price_EUR")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("active_energy_total_import_t2_price_eur");
+
+                    b.Property<decimal>("ReactiveEnergyTotalRampedT0Price_EUR")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
+
+                    b.ToTable("network_user_catalogues", (string)null);
+
+                    b.HasDiscriminator().HasValue("WhiteLowNetworkUserCatalogueEntity");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.WhiteMediumNetworkUserCatalogueEntity", b =>
+                {
+                    b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCatalogueEntity");
+
+                    b.Property<decimal>("ActiveEnergyTotalImportT1Price_EUR")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("active_energy_total_import_t1_price_eur");
+
+                    b.Property<decimal>("ActiveEnergyTotalImportT2Price_EUR")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("active_energy_total_import_t2_price_eur");
+
+                    b.Property<decimal>("ActivePowerTotalImportT1Price_EUR")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("active_power_total_import_t1_price_eur");
+
+                    b.Property<decimal>("ReactiveEnergyTotalRampedT0Price_EUR")
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("decimal(19, 4)")
+                        .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
+
+                    b.ToTable("network_user_catalogues", (string)null);
+
+                    b.HasDiscriminator().HasValue("WhiteMediumNetworkUserCatalogueEntity");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.Base.ReadonlyNotificationEntity", b =>
+                {
+                    b.HasBaseType("Ozds.Data.Entities.Base.NotificationEntity");
+
+                    b.ToTable("notifications", (string)null);
+
+                    b.HasDiscriminator().HasValue("ReadonlyNotificationEntity");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.Base.ResolvableNotificationEntity", b =>
+                {
+                    b.HasBaseType("Ozds.Data.Entities.Base.NotificationEntity");
+
+                    b.Property<string>("ResolvedById")
+                        .HasColumnType("text")
+                        .HasColumnName("resolved_by_id");
+
+                    b.Property<DateTimeOffset?>("ResolvedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("resolved_on");
+
+                    b.HasIndex("ResolvedById")
+                        .HasDatabaseName("ix_notifications_resolved_by_id");
+
+                    b.ToTable("notifications", (string)null);
+
+                    b.HasDiscriminator().HasValue("ResolvableNotificationEntity");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.NetworkUserInvoiceNotificationEntity", b =>
+                {
+                    b.HasBaseType("Ozds.Data.Entities.Base.NotificationEntity");
+
+                    b.Property<long>("_invoiceId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("invoice_id");
+
+                    b.HasIndex("_invoiceId")
+                        .HasDatabaseName("ix_notifications_invoice_id");
+
+                    b.ToTable("notifications", (string)null);
+
+                    b.HasDiscriminator().HasValue("NetworkUserInvoiceNotificationEntity");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.MeasurementScopeEntity", b =>
+                {
+                    b.HasBaseType("Ozds.Data.Entities.ScopeEntity");
+
+                    b.Property<IntervalEntity>("Interval")
+                        .HasColumnType("interval_entity")
+                        .HasColumnName("interval");
+
+                    b.ToTable("scopes", (string)null);
+
+                    b.HasDiscriminator().HasValue("MeasurementScopeEntity");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.RepresentativeAuditEventEntity", b =>
+                {
+                    b.HasBaseType("Ozds.Data.Entities.Base.AuditEventEntity");
+
+                    b.Property<string>("RepresentativeId")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasColumnType("text")
+                        .HasColumnName("representative_id");
+
+                    b.HasIndex("RepresentativeId")
+                        .HasDatabaseName("ix_events_representative_id");
+
+                    b.ToTable("events", (string)null);
+
+                    b.HasDiscriminator().HasValue("RepresentativeAuditEventEntity");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.SystemAuditEventEntity", b =>
+                {
+                    b.HasBaseType("Ozds.Data.Entities.Base.AuditEventEntity");
+
+                    b.ToTable("events", (string)null);
+
+                    b.HasDiscriminator().HasValue("SystemAuditEventEntity");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.BlueLowNetworkUserCalculationEntity", b =>
+                {
+                    b.HasBaseType("Ozds.Data.Entities.Base.MeteredNetworkUserCalculationEntity");
 
                     b.Property<long>("_usageNetworkUserCatalogueId")
                         .ValueGeneratedOnUpdateSometimes()
@@ -4501,7 +4787,7 @@ namespace Ozds.Data.Migrations
                         });
 
                     b.HasIndex("_usageNetworkUserCatalogueId")
-                        .HasDatabaseName("ix_network_user_calculations__usage_network_user_catalogue_id");
+                        .HasDatabaseName("ix_network_user_calculations_usage_network_user_catalogue_id");
 
                     b.ToTable("network_user_calculations", (string)null);
 
@@ -4510,7 +4796,7 @@ namespace Ozds.Data.Migrations
 
             modelBuilder.Entity("Ozds.Data.Entities.RedLowNetworkUserCalculationEntity", b =>
                 {
-                    b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCalculationEntity");
+                    b.HasBaseType("Ozds.Data.Entities.Base.MeteredNetworkUserCalculationEntity");
 
                     b.Property<long>("_usageNetworkUserCatalogueId")
                         .ValueGeneratedOnUpdateSometimes()
@@ -4745,7 +5031,7 @@ namespace Ozds.Data.Migrations
                         });
 
                     b.HasIndex("_usageNetworkUserCatalogueId")
-                        .HasDatabaseName("ix_network_user_calculations__usage_network_user_catalogue_id");
+                        .HasDatabaseName("ix_network_user_calculations_usage_network_user_catalogue_id");
 
                     b.ToTable("network_user_calculations", (string)null);
 
@@ -4754,7 +5040,7 @@ namespace Ozds.Data.Migrations
 
             modelBuilder.Entity("Ozds.Data.Entities.WhiteLowNetworkUserCalculationEntity", b =>
                 {
-                    b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCalculationEntity");
+                    b.HasBaseType("Ozds.Data.Entities.Base.MeteredNetworkUserCalculationEntity");
 
                     b.Property<long>("_usageNetworkUserCatalogueId")
                         .ValueGeneratedOnUpdateSometimes()
@@ -4959,7 +5245,7 @@ namespace Ozds.Data.Migrations
                         });
 
                     b.HasIndex("_usageNetworkUserCatalogueId")
-                        .HasDatabaseName("ix_network_user_calculations__usage_network_user_catalogue_id");
+                        .HasDatabaseName("ix_network_user_calculations_usage_network_user_catalogue_id");
 
                     b.ToTable("network_user_calculations", (string)null);
 
@@ -4968,7 +5254,7 @@ namespace Ozds.Data.Migrations
 
             modelBuilder.Entity("Ozds.Data.Entities.WhiteMediumNetworkUserCalculationEntity", b =>
                 {
-                    b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCalculationEntity");
+                    b.HasBaseType("Ozds.Data.Entities.Base.MeteredNetworkUserCalculationEntity");
 
                     b.Property<long>("_usageNetworkUserCatalogueId")
                         .ValueGeneratedOnUpdateSometimes()
@@ -5203,196 +5489,11 @@ namespace Ozds.Data.Migrations
                         });
 
                     b.HasIndex("_usageNetworkUserCatalogueId")
-                        .HasDatabaseName("ix_network_user_calculations__usage_network_user_catalogue_id");
+                        .HasDatabaseName("ix_network_user_calculations_usage_network_user_catalogue_id");
 
                     b.ToTable("network_user_calculations", (string)null);
 
                     b.HasDiscriminator().HasValue("WhiteMediumNetworkUserCalculationEntity");
-                });
-
-            modelBuilder.Entity("Ozds.Data.Entities.BlueLowNetworkUserCatalogueEntity", b =>
-                {
-                    b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCatalogueEntity");
-
-                    b.Property<decimal>("ActiveEnergyTotalImportT0Price_EUR")
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("active_energy_total_import_t0_price_eur");
-
-                    b.Property<decimal>("ReactiveEnergyTotalRampedT0Price_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
-
-                    b.ToTable("network_user_catalogues", (string)null);
-
-                    b.HasDiscriminator().HasValue("BlueLowNetworkUserCatalogueEntity");
-                });
-
-            modelBuilder.Entity("Ozds.Data.Entities.RedLowNetworkUserCatalogueEntity", b =>
-                {
-                    b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCatalogueEntity");
-
-                    b.Property<decimal>("ActiveEnergyTotalImportT1Price_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("active_energy_total_import_t1_price_eur");
-
-                    b.Property<decimal>("ActiveEnergyTotalImportT2Price_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("active_energy_total_import_t2_price_eur");
-
-                    b.Property<decimal>("ActivePowerTotalImportT1Price_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("active_power_total_import_t1_price_eur");
-
-                    b.Property<decimal>("ReactiveEnergyTotalRampedT0Price_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
-
-                    b.ToTable("network_user_catalogues", (string)null);
-
-                    b.HasDiscriminator().HasValue("RedLowNetworkUserCatalogueEntity");
-                });
-
-            modelBuilder.Entity("Ozds.Data.Entities.WhiteLowNetworkUserCatalogueEntity", b =>
-                {
-                    b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCatalogueEntity");
-
-                    b.Property<decimal>("ActiveEnergyTotalImportT1Price_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("active_energy_total_import_t1_price_eur");
-
-                    b.Property<decimal>("ActiveEnergyTotalImportT2Price_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("active_energy_total_import_t2_price_eur");
-
-                    b.Property<decimal>("ReactiveEnergyTotalRampedT0Price_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
-
-                    b.ToTable("network_user_catalogues", (string)null);
-
-                    b.HasDiscriminator().HasValue("WhiteLowNetworkUserCatalogueEntity");
-                });
-
-            modelBuilder.Entity("Ozds.Data.Entities.WhiteMediumNetworkUserCatalogueEntity", b =>
-                {
-                    b.HasBaseType("Ozds.Data.Entities.Base.NetworkUserCatalogueEntity");
-
-                    b.Property<decimal>("ActiveEnergyTotalImportT1Price_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("active_energy_total_import_t1_price_eur");
-
-                    b.Property<decimal>("ActiveEnergyTotalImportT2Price_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("active_energy_total_import_t2_price_eur");
-
-                    b.Property<decimal>("ActivePowerTotalImportT1Price_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("active_power_total_import_t1_price_eur");
-
-                    b.Property<decimal>("ReactiveEnergyTotalRampedT0Price_EUR")
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("decimal(19, 4)")
-                        .HasColumnName("reactive_energy_total_ramped_t0_price_eur");
-
-                    b.ToTable("network_user_catalogues", (string)null);
-
-                    b.HasDiscriminator().HasValue("WhiteMediumNetworkUserCatalogueEntity");
-                });
-
-            modelBuilder.Entity("Ozds.Data.Entities.Base.ReadonlyNotificationEntity", b =>
-                {
-                    b.HasBaseType("Ozds.Data.Entities.Base.NotificationEntity");
-
-                    b.ToTable("notifications", (string)null);
-
-                    b.HasDiscriminator().HasValue("ReadonlyNotificationEntity");
-                });
-
-            modelBuilder.Entity("Ozds.Data.Entities.Base.ResolvableNotificationEntity", b =>
-                {
-                    b.HasBaseType("Ozds.Data.Entities.Base.NotificationEntity");
-
-                    b.Property<string>("ResolvedById")
-                        .HasColumnType("text")
-                        .HasColumnName("resolved_by_id");
-
-                    b.Property<DateTimeOffset?>("ResolvedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("resolved_on");
-
-                    b.HasIndex("ResolvedById")
-                        .HasDatabaseName("ix_notifications_resolved_by_id");
-
-                    b.ToTable("notifications", (string)null);
-
-                    b.HasDiscriminator().HasValue("ResolvableNotificationEntity");
-                });
-
-            modelBuilder.Entity("Ozds.Data.Entities.NetworkUserInvoiceNotificationEntity", b =>
-                {
-                    b.HasBaseType("Ozds.Data.Entities.Base.NotificationEntity");
-
-                    b.Property<long>("_invoiceId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("invoice_id");
-
-                    b.HasIndex("_invoiceId")
-                        .HasDatabaseName("ix_notifications_invoice_id");
-
-                    b.ToTable("notifications", (string)null);
-
-                    b.HasDiscriminator().HasValue("NetworkUserInvoiceNotificationEntity");
-                });
-
-            modelBuilder.Entity("Ozds.Data.Entities.MeasurementScopeEntity", b =>
-                {
-                    b.HasBaseType("Ozds.Data.Entities.ScopeEntity");
-
-                    b.Property<IntervalEntity>("Interval")
-                        .HasColumnType("interval_entity")
-                        .HasColumnName("interval");
-
-                    b.ToTable("scopes", (string)null);
-
-                    b.HasDiscriminator().HasValue("MeasurementScopeEntity");
-                });
-
-            modelBuilder.Entity("Ozds.Data.Entities.RepresentativeAuditEventEntity", b =>
-                {
-                    b.HasBaseType("Ozds.Data.Entities.Base.AuditEventEntity");
-
-                    b.Property<string>("RepresentativeId")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("text")
-                        .HasColumnName("representative_id");
-
-                    b.HasIndex("RepresentativeId")
-                        .HasDatabaseName("ix_events_representative_id");
-
-                    b.ToTable("events", (string)null);
-
-                    b.HasDiscriminator().HasValue("RepresentativeAuditEventEntity");
-                });
-
-            modelBuilder.Entity("Ozds.Data.Entities.SystemAuditEventEntity", b =>
-                {
-                    b.HasBaseType("Ozds.Data.Entities.Base.AuditEventEntity");
-
-                    b.ToTable("events", (string)null);
-
-                    b.HasDiscriminator().HasValue("SystemAuditEventEntity");
                 });
 
             modelBuilder.Entity("Ozds.Data.Entities.SystemNotificationEntity", b =>
@@ -6164,50 +6265,14 @@ namespace Ozds.Data.Migrations
                     b.Navigation("NetworkUserCatalogue");
                 });
 
-            modelBuilder.Entity("Ozds.Data.Entities.BlueLowNetworkUserCalculationEntity", b =>
+            modelBuilder.Entity("Ozds.Data.Entities.BlackoutNetworkUserCalculationEntity", b =>
                 {
-                    b.HasOne("Ozds.Data.Entities.BlueLowNetworkUserCatalogueEntity", "UsageNetworkUserCatalogue")
-                        .WithMany("NetworkUserCalculations")
+                    b.HasOne("Ozds.Data.Entities.Base.NetworkUserCatalogueEntity", "UsageNetworkUserCatalogue")
+                        .WithMany()
                         .HasForeignKey("_usageNetworkUserCatalogueId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_network_user_calculations_network_user_catalogues__usage_ne");
-
-                    b.Navigation("UsageNetworkUserCatalogue");
-                });
-
-            modelBuilder.Entity("Ozds.Data.Entities.RedLowNetworkUserCalculationEntity", b =>
-                {
-                    b.HasOne("Ozds.Data.Entities.RedLowNetworkUserCatalogueEntity", "UsageNetworkUserCatalogue")
-                        .WithMany("NetworkUserCalculations")
-                        .HasForeignKey("_usageNetworkUserCatalogueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_network_user_calculations_network_user_catalogues__usage_ne");
-
-                    b.Navigation("UsageNetworkUserCatalogue");
-                });
-
-            modelBuilder.Entity("Ozds.Data.Entities.WhiteLowNetworkUserCalculationEntity", b =>
-                {
-                    b.HasOne("Ozds.Data.Entities.WhiteLowNetworkUserCatalogueEntity", "UsageNetworkUserCatalogue")
-                        .WithMany("NetworkUserCalculations")
-                        .HasForeignKey("_usageNetworkUserCatalogueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_network_user_calculations_network_user_catalogues__usage_ne");
-
-                    b.Navigation("UsageNetworkUserCatalogue");
-                });
-
-            modelBuilder.Entity("Ozds.Data.Entities.WhiteMediumNetworkUserCalculationEntity", b =>
-                {
-                    b.HasOne("Ozds.Data.Entities.WhiteMediumNetworkUserCatalogueEntity", "UsageNetworkUserCatalogue")
-                        .WithMany("NetworkUserCalculations")
-                        .HasForeignKey("_usageNetworkUserCatalogueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_network_user_calculations_network_user_catalogues__usage_ne");
+                        .HasConstraintName("fk_network_user_calculations_network_user_catalogues_usage_net");
 
                     b.Navigation("UsageNetworkUserCatalogue");
                 });
@@ -6244,6 +6309,54 @@ namespace Ozds.Data.Migrations
                         .HasConstraintName("fk_events_representatives_representative_id");
 
                     b.Navigation("Representative");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.BlueLowNetworkUserCalculationEntity", b =>
+                {
+                    b.HasOne("Ozds.Data.Entities.BlueLowNetworkUserCatalogueEntity", "UsageNetworkUserCatalogue")
+                        .WithMany("NetworkUserCalculations")
+                        .HasForeignKey("_usageNetworkUserCatalogueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_network_user_calculations_network_user_catalogues_usage_net");
+
+                    b.Navigation("UsageNetworkUserCatalogue");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.RedLowNetworkUserCalculationEntity", b =>
+                {
+                    b.HasOne("Ozds.Data.Entities.RedLowNetworkUserCatalogueEntity", "UsageNetworkUserCatalogue")
+                        .WithMany("NetworkUserCalculations")
+                        .HasForeignKey("_usageNetworkUserCatalogueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_network_user_calculations_network_user_catalogues_usage_net");
+
+                    b.Navigation("UsageNetworkUserCatalogue");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.WhiteLowNetworkUserCalculationEntity", b =>
+                {
+                    b.HasOne("Ozds.Data.Entities.WhiteLowNetworkUserCatalogueEntity", "UsageNetworkUserCatalogue")
+                        .WithMany("NetworkUserCalculations")
+                        .HasForeignKey("_usageNetworkUserCatalogueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_network_user_calculations_network_user_catalogues_usage_net");
+
+                    b.Navigation("UsageNetworkUserCatalogue");
+                });
+
+            modelBuilder.Entity("Ozds.Data.Entities.WhiteMediumNetworkUserCalculationEntity", b =>
+                {
+                    b.HasOne("Ozds.Data.Entities.WhiteMediumNetworkUserCatalogueEntity", "UsageNetworkUserCatalogue")
+                        .WithMany("NetworkUserCalculations")
+                        .HasForeignKey("_usageNetworkUserCatalogueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_network_user_calculations_network_user_catalogues_usage_net");
+
+                    b.Navigation("UsageNetworkUserCatalogue");
                 });
 
             modelBuilder.Entity("Ozds.Data.Entities.MessengerNotificationEntity", b =>

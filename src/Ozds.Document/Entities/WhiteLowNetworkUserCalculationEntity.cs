@@ -1,7 +1,7 @@
 namespace Ozds.Document.Entities;
 
 public class WhiteLowNetworkUserCalculationEntity
-  : NetworkUserCalculationEntity<WhiteLowNetworkUserCatalogueEntity>
+  : MeteredNetworkUserCalculationEntity<WhiteLowNetworkUserCatalogueEntity>
 {
   public UsageActiveEnergyTotalImportT1CalculationItemEntity
     UsageActiveEnergyTotalImportT1 { get; set; } = default!;

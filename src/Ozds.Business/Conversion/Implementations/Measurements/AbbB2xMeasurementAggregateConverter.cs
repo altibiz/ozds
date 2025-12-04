@@ -6,6 +6,8 @@ using Ozds.Business.Queries;
 
 namespace Ozds.Business.Conversion.Implementations.Measurements;
 
+// NOTE: derived values don't actually matter because db computes them anyway
+
 public class AbbB2xMeasurementAggregateConverter(
   TimeQueries time
 )

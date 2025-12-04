@@ -25,7 +25,7 @@ public abstract class NetworkUserCalculationCalculator<T> :
     return usageCalculation;
   }
 
-  protected abstract NetworkUserCalculationModel CalculateForNetworkUser(
+  protected abstract MeteredNetworkUserCalculationModel CalculateForNetworkUser(
     T catalogue,
     NetworkUserCalculationBasisModel calculationBasis);
 }

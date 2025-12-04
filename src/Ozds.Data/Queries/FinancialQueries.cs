@@ -29,8 +29,10 @@ public class FinancialQueries(
         context.ForeignKeyIn<NetworkUserCalculationEntity>(
           nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation),
           measurementLocationIds))
-      .Where(calculation => calculation.FromDate >= fromDate)
-      .Where(calculation => calculation.FromDate < toDate)
+      .Where(
+        calculation =>
+          (calculation.FromDate >= fromDate && calculation.FromDate < toDate)
+          || (calculation.ToDate >= fromDate && calculation.ToDate < toDate))
       .Include(calculation => calculation.NetworkUserInvoice);
 
     var ordered = filtered

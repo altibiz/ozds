@@ -12,9 +12,9 @@ public class WhiteLowNetworkUserCalculationModelEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelEntityConverter<
   WhiteLowNetworkUserCalculationModel,
-  NetworkUserCalculationModel,
+  MeteredNetworkUserCalculationModel,
   WhiteLowNetworkUserCalculationEntity,
-  NetworkUserCalculationEntity>(serviceProvider)
+  MeteredNetworkUserCalculationEntity>(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();

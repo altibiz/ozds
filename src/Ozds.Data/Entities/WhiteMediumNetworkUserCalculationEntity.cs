@@ -6,7 +6,7 @@ using Ozds.Data.Entities.Complex;
 namespace Ozds.Data.Entities;
 
 public class
-  WhiteMediumNetworkUserCalculationEntity : NetworkUserCalculationEntity<
+  WhiteMediumNetworkUserCalculationEntity : MeteredNetworkUserCalculationEntity<
   WhiteMediumNetworkUserCatalogueEntity>
 {
 #pragma warning disable CA1707

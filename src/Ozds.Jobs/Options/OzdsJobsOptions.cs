@@ -24,7 +24,7 @@ public class OzdsJobsArchivalOptions
 public class OzdsJobsBillingOptions
 {
   public string MonthlyBillingCron { get; set; } =
-    "0 0 0 1 * ?"; // NOTE: on the first second of every month
+    "0 0 12 15 * ?"; // NOTE: on the 15th of every month at noon
 }
 
 public class ConfigureOzdsJobsOptions(

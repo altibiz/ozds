@@ -2,7 +2,7 @@
 
 @inherits DocumentBase
 
-@if (!Extended && string.IsNullOrEmpty(Value))
+@if (!Extended && string.IsNullOrEmpty(Value) && ChildContent is null)
 {
   return;
 }
@@ -11,18 +11,37 @@
   <p>
     <u>
       <strong>
-        @Translate("Note to users")
+        @Translate("Note to users"):
       </strong>
-      &colon;
     </u>
   </p>
 
-  <p>
-    @(new MarkupString(Value))
-  </p>
+  @if (!string.IsNullOrEmpty(Value))
+  {
+    <p>
+      @(new MarkupString(Value))
+    </p>
+  }
+
+  @if (ChildContent is not null)
+  {
+    @if (!string.IsNullOrEmpty(Value))
+    {
+      <br/>
+    }
+
+    <p>
+      @ChildContent
+    </p>
+  }
 
   @if (Extended)
   {
+    @if (!string.IsNullOrEmpty(Value) || ChildContent is not null)
+    {
+      <br/>
+    }
+
     <p>
       @Translate("You can submit questions, complaints, and written grievances to")
       &colon;
@@ -58,6 +77,9 @@
 
   [Parameter]
   public string Value { get; set; } = string.Empty;
+
+  [Parameter]
+  public RenderFragment? ChildContent { get; set; } = default!;
 
   [Parameter]
   public bool Extended { get; set; } = false;

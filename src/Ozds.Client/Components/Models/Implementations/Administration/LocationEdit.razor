@@ -4,11 +4,15 @@
 @typeparam TModel where TModel : Ozds.Business.Models.LocationModel
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Base
+@using Ozds.Business.Models.Complex
+@using Ozds.Client.Components.Fields
 @inherits Ozds.Client.Components.Models.Base.OzdsEditComponentBase<TPrefix, TModel>
 
 @(Base<IdentifiableModel>())
 
-<Edit Model="@Get(x => x.LegalPerson)"/>
+<FieldSection Title="@Translate(typeof(LegalPersonModel))">
+  <Edit Model="@Get(x => x.LegalPerson)"/>
+</FieldSection>
 
 @Field(x => x.AltiBizSubProjectCode)
 

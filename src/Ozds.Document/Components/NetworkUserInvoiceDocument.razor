@@ -23,8 +23,32 @@
     </div>
     <div class="page-content">
       <div class="page-inner-space-between">
-        <NetworkUserCalculationDocumentContent Entity="@calculation"/>
-        <Remark Value="@calculation.Remark"/>
+        @if (calculation is MeteredNetworkUserCalculationEntity meteredCalculation)
+        {
+          <MeteredNetworkUserCalculationDocumentContent Entity="@meteredCalculation"/>
+        }
+        @if (calculation is BlackoutNetworkUserCalculationEntity blackoutCalculation)
+        {
+          <BlackoutNetworkUserCalculationDocumentContent Entity="@blackoutCalculation"/>
+        }
+        @if (
+          calculation is not BlackoutNetworkUserCalculationEntity
+          && (calculation.MeteredFromDate != calculation.FromDate
+            || calculation.MeteredToDate != calculation.ToDate))
+        {
+          <Remark Value="@calculation.Remark">
+            <b>
+              @string.Format(
+                Translate("Data was taken from period: {0} - {1}."),
+                DateTime(calculation.MeteredFromDate),
+                DateTime(calculation.MeteredToDate))
+            </b>
+          </Remark>
+        }
+        else
+        {
+          <Remark Value="@calculation.Remark"/>
+        }
       </div>
     </div>
     <div class="page-footer">

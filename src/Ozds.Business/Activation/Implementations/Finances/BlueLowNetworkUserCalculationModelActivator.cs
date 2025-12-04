@@ -9,7 +9,7 @@ public class BlueLowNetworkUserCalculationModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
   BlueLowNetworkUserCalculationModel,
-  NetworkUserCalculationModel>(serviceProvider)
+  MeteredNetworkUserCalculationModel>(serviceProvider)
 {
   private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();

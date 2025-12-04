@@ -47,6 +47,11 @@ public abstract class DocumentBase : ComponentBase
     return LocalizationQueries.DocumentDate(date);
   }
 
+  public string DateTime(DateTimeOffset date)
+  {
+    return LocalizationQueries.DocumentDateTime(date);
+  }
+
   public string Number(decimal number, int precision = 2)
   {
     return LocalizationQueries.DocumentNumber(number, precision);

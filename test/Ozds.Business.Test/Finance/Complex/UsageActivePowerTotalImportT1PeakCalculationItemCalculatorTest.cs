@@ -154,6 +154,8 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
 
     var input = new CalculationItemBasisModel
     {
+      FromDate = aggregates.Select(x => x.Timestamp).Min(),
+      ToDate = aggregates.Select(x => x.Timestamp).Max().AddTicks(1),
       Aggregates = aggregates,
       Price_EUR = expected.Price_EUR
     };

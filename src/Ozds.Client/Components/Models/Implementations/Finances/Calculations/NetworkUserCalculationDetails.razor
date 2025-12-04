@@ -35,35 +35,10 @@ LinkField<NetworkUserMeasurementLocationModel>(
 
 @(
 Base<IFinancial>(
-  @<Fragment>
-    <FieldChapter Title="@Translate("ZDS network usage fee")">
+  Base<ICalculation>(
+    @<Fragment>
       @Sub()
-      <FieldSection Title="@Translate("Measurement service fee")">
-        <Details Model="@Model.UsageMeterFee"/>
-      </FieldSection>
-    </FieldChapter>
-
-    <FieldChapter Title="@Translate("Electrical energy supply fee")">
-      <FieldSection Title="@Translate("Electrical energy supply during higher daily tariff period")">
-        <Details Model="@Model.SupplyActiveEnergyTotalImportT1"/>
-      </FieldSection>
-      <FieldSection Title="@Translate("Electrical energy supply during lower daily tariff period")">
-        <Details Model="@Model.SupplyActiveEnergyTotalImportT2"/>
-      </FieldSection>
-      <FieldSection Title="@Translate("Fee for promoting production from renewable energy sources and cogeneration")">
-        <Details Model="@Model.SupplyRenewableEnergyFee"/>
-      </FieldSection>
-      <FieldSection Title="@Translate("Excise duty for business/non-business use")">
-        <Details Model="@Model.SupplyBusinessUsageFee"/>
-      </FieldSection>
-    </FieldChapter>
-  </Fragment>))
-
-<FieldSection Class="mt-8" Title="@Translate("Totals")">
-  @Field(x => x.UsageFeeTotal_EUR)
-  @Field(x => x.SupplyFeeTotal_EUR)
-  @Field(x => x.Total_EUR)
-</FieldSection>
+    </Fragment>)))
 
 @code {
 

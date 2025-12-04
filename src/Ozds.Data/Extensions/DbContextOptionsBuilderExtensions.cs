@@ -30,7 +30,8 @@ public static class DbContextOptionsBuilderExtensions
     return builder.AddInterceptors(
       assembly
         .GetTypes()
-        .Where(type => type.IsSubclassOf(typeof(ServedInterceptor)))
+        .Where(type => type.IsAssignableTo(typeof(ServedInterceptor)))
+        .Where(type => !type.IsAbstract && !type.IsGenericType)
         .Select(
           type =>
           {

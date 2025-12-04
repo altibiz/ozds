@@ -483,6 +483,8 @@ erDiagram
         numeric jen_total_eur
         character_varying kind
         text meter_id FK
+        timestamp_with_time_zone metered_from_date
+        timestamp_with_time_zone metered_to_date
         numeric mjt_amount_kwh
         numeric mjt_max_kwh
         numeric mjt_min_kwh
@@ -506,6 +508,8 @@ erDiagram
         numeric oie_price_eur
         numeric oie_total_eur
         text remark
+        timestamp_with_time_zone requested_from_date
+        timestamp_with_time_zone requested_to_date
         numeric rnt_amount_kwh
         numeric rnt_max_kwh
         numeric rnt_min_kwh

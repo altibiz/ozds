@@ -55,7 +55,7 @@ public static class DbContextDapperCommandExtensions
     return objects;
   }
 
-  private static async Task<List<T>> DapperCommand<T>(
+  public static async Task<List<T>> DapperCommand<T>(
     this DbContext context,
     Type type,
     string sql,

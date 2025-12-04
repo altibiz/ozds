@@ -6,31 +6,56 @@ using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Entities.Complex;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Mutations;
+using Ozds.Data.Reflection;
+using Ozds.Data.Test.Base;
 using Ozds.Data.Test.Extensions;
 using Ozds.Time.Queries.Abstractions;
 
 namespace Ozds.Data.Test.Mutations.MeasurementMutationsTest;
 
-public class CreateMeasurementsTest
+public class CreateMeasurementsTest : OzdsDataTestBase
 {
   [Test]
   [Repeat(2)]
   public async Task FinishesInTimeTest(CancellationToken cancellationToken)
   {
-    await using var testContext = await OzdsDataTestContextFactory
-      .CreateOzdsDataTestContext(cancellationToken);
-    var mutations = testContext.ServiceScope.ServiceProvider
-      .GetRequiredService<MeasurementMutations>();
-    var factory = testContext.ServiceScope.ServiceProvider
-      .GetRequiredService<MeasurementEntityFactory>();
+    var reflector = ServiceProvider
+      .GetRequiredService<EntityReflector>();
 
-    var expected = await factory.CreateMany(cancellationToken);
+    var infrastructures = await Task.WhenAll(
+      reflector.MeasurementTypes
+        .Concat(reflector.AggregateTypes)
+        .Select(
+          measurementType => Infrastructure.Create(
+            cancellationToken,
+            x => x.WithMeterType(
+              reflector
+                .ResolveMeasurementMeterType(measurementType)))));
+
+    var infrastructureMeasurements = await Task.WhenAll(
+      infrastructures
+        .SelectMany(
+          infrastructure => Enum
+            .GetValues<IntervalEntity>()
+            .Cast<IntervalEntity?>()
+            .Append(null)
+            .Select(
+              interval => Measurements
+                .Create(
+                  infrastructure,
+                  cancellationToken,
+                  x => x
+                    .WithCount(Constants.MeasurementCount)
+                    .WithInterval(interval)))));
+
+    var measurements = infrastructureMeasurements
+      .SelectMany(x => x)
+      .ToList();
 
     var stopwatch = Stopwatch.StartNew();
-    await mutations.Create(
-      expected,
-      cancellationToken
-    );
+    await ServiceProvider
+      .GetRequiredService<MeasurementMutations>()
+      .Create(measurements, cancellationToken);
     stopwatch.Stop();
     stopwatch.Elapsed.Should().BeLessThan(TimeSpan.FromSeconds(10));
   }
@@ -41,44 +66,85 @@ public class CreateMeasurementsTest
     CancellationToken cancellationToken
   )
   {
-    await using var testContext = await OzdsDataTestContextFactory
-      .CreateOzdsDataTestContext(cancellationToken);
-    var mutations = testContext.ServiceScope.ServiceProvider
-      .GetRequiredService<MeasurementMutations>();
-    var factory = testContext.ServiceScope.ServiceProvider
-      .GetRequiredService<MeasurementEntityFactory>();
+    var reflector = ServiceProvider
+      .GetRequiredService<EntityReflector>();
 
-    var expected = await factory.CreateMassiveMeasurements(
-      cancellationToken);
+    var infrastructures = await Task.WhenAll(
+      reflector.MeasurementTypes
+        .Select(
+          measurementType => Infrastructure.Create(
+            cancellationToken,
+            x => x.WithMeterType(
+              reflector
+                .ResolveMeasurementMeterType(measurementType)))));
+
+    var infrastructureMeasurements = await Task.WhenAll(
+      infrastructures
+        .SelectMany(
+          infrastructure => Enum
+            .GetValues<IntervalEntity>()
+            .Cast<IntervalEntity?>()
+            .Append(null)
+            .Select(
+              interval => Measurements
+                .Create(
+                  infrastructure,
+                  cancellationToken,
+                  x => x
+                    .WithCount(Constants.MassiveMeasurementCount)
+                    .WithInterval(interval)))));
+
+    var measurements = infrastructureMeasurements
+      .SelectMany(x => x)
+      .ToList();
 
     var stopwatch = Stopwatch.StartNew();
-    var actual = await mutations.Create(
-      expected,
-      cancellationToken
-    );
+    var actual = await ServiceProvider
+      .GetRequiredService<MeasurementMutations>()
+      .Create(measurements, cancellationToken);
     stopwatch.Stop();
     stopwatch.Elapsed.Should().BeLessThan(TimeSpan.FromSeconds(10));
-    actual.Should().HaveCount(expected.Count);
+    actual.Should().HaveCount(measurements.Count);
   }
 
   [Test]
   public async Task IsValidTest(CancellationToken cancellationToken)
   {
-    await using var testContext = await OzdsDataTestContextFactory
-      .CreateOzdsDataTestContext(cancellationToken);
-    await using var context = await testContext.ServiceScope.ServiceProvider
-      .GetRequiredService<IDbContextFactory<DataDbContext>>()
-      .CreateDbContextAsync(cancellationToken);
-    var mutations = testContext.ServiceScope.ServiceProvider
-      .GetRequiredService<MeasurementMutations>();
-    var time = testContext.ServiceScope.ServiceProvider
-      .GetRequiredService<ITimeQueries>();
-    var factory = testContext.ServiceScope.ServiceProvider
-      .GetRequiredService<MeasurementEntityFactory>();
+    var reflector = ServiceProvider
+      .GetRequiredService<EntityReflector>();
 
-    var measurements = await factory.CreateDerivedNull(cancellationToken);
+    var infrastructures = await Task.WhenAll(
+      reflector.MeasurementTypes
+        .Concat(reflector.AggregateTypes)
+        .Select(
+          measurementType => Infrastructure.Create(
+            cancellationToken,
+            x => x.WithMeterType(
+              reflector
+                .ResolveMeasurementMeterType(measurementType)))));
 
-    var byproduct = (await mutations
+    var infrastructureMeasurements = await Task.WhenAll(
+      infrastructures
+        .SelectMany(
+          infrastructure => Enum
+            .GetValues<IntervalEntity>()
+            .Cast<IntervalEntity?>()
+            .Append(null)
+            .Select(
+              interval => Measurements
+                .Create(
+                  infrastructure,
+                  cancellationToken,
+                  x => x
+                    .WithCount(Constants.MeasurementCountFew)
+                    .WithInterval(interval)))));
+
+    var measurements = infrastructureMeasurements
+      .SelectMany(x => x)
+      .ToList();
+
+    var byproduct = (await ServiceProvider
+        .GetRequiredService<MeasurementMutations>()
         .Create(
           measurements,
           cancellationToken))
@@ -97,6 +163,10 @@ public class CreateMeasurementsTest
             : (IntervalEntity?)null
         ))
       .ToList();
+
+    await using var context = await ServiceProvider
+      .GetRequiredService<IDbContextFactory<DataDbContext>>()
+      .CreateDbContextAsync(cancellationToken);
 
     var actual = (await context.AbbB2xAggregates
         .ToListAsync(cancellationToken))
@@ -129,6 +199,9 @@ public class CreateMeasurementsTest
     byproduct.Should().BeContextuallyEquivalentTo(context, actual);
 
     measurements.Should().NotBeContextuallyEquivalentTo(context, actual);
+
+    var time = ServiceProvider
+      .GetRequiredService<ITimeQueries>();
 
     var expected = measurements
       .GroupBy(

@@ -1,0 +1,75 @@
+@namespace Ozds.Client.Components.Models
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Fields
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Abstractions.IMeteredNetworkUserCalculation>
+
+@(Base<IIdentifiable>())
+
+@(
+Base<INetworkUserCalculation>(
+  @<Fragment>
+    <FieldChapter Title="@Translate("ZDS network usage fee")">
+      @Sub()
+      <FieldSection Title="@Translate("Measurement service fee")">
+        <Details Model="@Model.UsageMeterFee"/>
+      </FieldSection>
+    </FieldChapter>
+
+    <FieldChapter Title="@Translate("Electrical energy supply fee")">
+      <FieldSection Title="@Translate("Electrical energy supply during higher daily tariff period")">
+        <Details Model="@Model.SupplyActiveEnergyTotalImportT1"/>
+      </FieldSection>
+      <FieldSection Title="@Translate("Electrical energy supply during lower daily tariff period")">
+        <Details Model="@Model.SupplyActiveEnergyTotalImportT2"/>
+      </FieldSection>
+      <FieldSection Title="@Translate("Fee for promoting production from renewable energy sources and cogeneration")">
+        <Details Model="@Model.SupplyRenewableEnergyFee"/>
+      </FieldSection>
+      <FieldSection Title="@Translate("Excise duty for business/non-business use")">
+        <Details Model="@Model.SupplyBusinessUsageFee"/>
+      </FieldSection>
+    </FieldChapter>
+  </Fragment>))
+
+<FieldSection Class="mt-8" Title="@Translate("Totals")">
+  @Field(x => x.UsageFeeTotal_EUR)
+  @Field(x => x.SupplyFeeTotal_EUR)
+  @Field(x => x.Total_EUR)
+</FieldSection>
+
+@if (Model.MeteredFromDate != Model.FromDate || Model.MeteredToDate != Model.ToDate)
+{
+  <br/>
+
+  <h2>
+    <b>
+      @(
+      string.Format(
+        Translate("Data was taken from period: {0} - {1}."),
+        DateTimeString(Model.MeteredFromDate),
+        DateTimeString(Model.MeteredToDate)))
+    </b>
+  </h2>
+}
+
+@code {
+
+  private string TariffModelTitle
+  {
+    get
+    {
+      return Model.ArchivedUsageNetworkUserCatalogue is RedLowNetworkUserCatalogueModel
+        ? Translate("Red NN")
+        : Model.ArchivedUsageNetworkUserCatalogue is BlueLowNetworkUserCatalogueModel
+          ? Translate("Blue NN")
+          : Model.ArchivedUsageNetworkUserCatalogue is WhiteLowNetworkUserCatalogueModel
+            ? Translate("White NN")
+            : Model.ArchivedUsageNetworkUserCatalogue is WhiteMediumNetworkUserCatalogueModel
+              ? Translate("White SN")
+              : string.Empty;
+    }
+  }
+
+}

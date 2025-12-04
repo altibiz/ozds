@@ -9,9 +9,9 @@ public class RedLowNetworkUserCalculationModelDocumentEntityConverter(
   IServiceProvider serviceProvider
 ) : InheritingModelDocumentEntityConverter<
   RedLowNetworkUserCalculationModel,
-  NetworkUserCalculationModel,
+  MeteredNetworkUserCalculationModel,
   RedLowNetworkUserCalculationEntity,
-  NetworkUserCalculationEntity>(serviceProvider)
+  MeteredNetworkUserCalculationEntity>(serviceProvider)
 {
   private readonly ModelDocumentEntityConverter modelDocumentEntityConverter =
     serviceProvider.GetRequiredService<ModelDocumentEntityConverter>();

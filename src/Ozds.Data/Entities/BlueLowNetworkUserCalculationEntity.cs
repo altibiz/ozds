@@ -6,7 +6,7 @@ using Ozds.Data.Entities.Complex;
 namespace Ozds.Data.Entities;
 
 public class
-  BlueLowNetworkUserCalculationEntity : NetworkUserCalculationEntity<
+  BlueLowNetworkUserCalculationEntity : MeteredNetworkUserCalculationEntity<
   BlueLowNetworkUserCatalogueEntity>
 {
 #pragma warning disable CA1707

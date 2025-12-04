@@ -1,5 +1,5 @@
 outs:
-- md5: be9030ef8d62e9867d11fca8e37f3b51
-  size: 350084
+- md5: bf2e44d7dd6b6141c0da6ffd2efcc6d0
+  size: 6051204
   hash: md5
   path: current-hypertables.sql

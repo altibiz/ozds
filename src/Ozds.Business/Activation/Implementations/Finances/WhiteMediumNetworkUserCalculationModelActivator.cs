@@ -9,7 +9,7 @@ public class WhiteMediumNetworkUserCalculationModelActivator(
   IServiceProvider serviceProvider
 ) : InheritingModelActivator<
   WhiteMediumNetworkUserCalculationModel,
-  NetworkUserCalculationModel>(serviceProvider)
+  MeteredNetworkUserCalculationModel>(serviceProvider)
 {
   private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();

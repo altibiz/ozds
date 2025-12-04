@@ -7,8 +7,34 @@
     @Svg("invoice-print-header-hrv")
   </div>
   <div class="page-content">
-    <NetworkUserCalculationDocumentContent Entity="@Entity"/>
-    <Remark Extended Value="@Entity.Remark"/>
+    <div class="page-inner-space-between">
+      @if (Entity is MeteredNetworkUserCalculationEntity meteredNetworkUserCalculation)
+      {
+        <MeteredNetworkUserCalculationDocumentContent Entity="@meteredNetworkUserCalculation"/>
+      }
+      @if (Entity is BlackoutNetworkUserCalculationEntity blackoutNetworkUserCalculation)
+      {
+        <BlackoutNetworkUserCalculationDocumentContent Entity="@blackoutNetworkUserCalculation"/>
+      }
+      @if (
+        Entity is not BlackoutNetworkUserCalculationEntity
+        && (Entity.MeteredFromDate != Entity.FromDate
+          || Entity.MeteredToDate != Entity.ToDate))
+      {
+        <Remark Extended Value="@Entity.Remark">
+          <b>
+            @string.Format(
+              Translate("Data was taken from period: {0} - {1}."),
+              DateTime(Entity.MeteredFromDate),
+              DateTime(Entity.MeteredToDate))
+          </b>
+        </Remark>
+      }
+      else
+      {
+        <Remark Extended Value="@Entity.Remark"/>
+      }
+    </div>
   </div>
   <div class="page-footer">
     @Svg("invoice-print-footer-hrv")

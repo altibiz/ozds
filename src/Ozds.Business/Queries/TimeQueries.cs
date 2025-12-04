@@ -80,7 +80,8 @@ public class TimeQueries(
     return timeTimeQueries.GetStartOfQuarterHour(dateTimeOffset);
   }
 
-  public DateTimeOffset GetStartOfMonth(
+  // NOTE: virtual for mocking purposes
+  public virtual DateTimeOffset GetStartOfMonth(
     DateTimeOffset dateTimeOffset
   )
   {

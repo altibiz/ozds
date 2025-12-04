@@ -8,6 +8,7 @@ using Ozds.Business.Queries;
 using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Composite;
+using DataInvoiceQueries = Ozds.Data.Queries.InvoiceQueries;
 using DataNetworkUserInvoiceMutations =
   Ozds.Data.Mutations.NetworkUserInvoiceMutations;
 
@@ -16,6 +17,7 @@ namespace Ozds.Business.Mutations;
 public class NetworkUserInvoiceMutations(
   IServiceScopeFactory factory,
   DataNetworkUserInvoiceMutations mutations,
+  DataInvoiceQueries queries,
   INetworkUserInvoiceCalculator invoiceCalculator,
   LocalizationQueries localizationQueries,
   ModelEntityConverter modelEntityConverter,
@@ -43,7 +45,7 @@ public class NetworkUserInvoiceMutations(
     var billingQueries = scope.ServiceProvider
       .GetRequiredService<BillingQueries>();
     var basis = await billingQueries
-      .ReadInvoiceBasisForNetworkUser(
+      .ReadInvoiceBasisByNetworkUser(
         networkUserId,
         dateFrom,
         dateTo,
@@ -78,7 +80,7 @@ public class NetworkUserInvoiceMutations(
     var billingQueries = scope.ServiceProvider
       .GetRequiredService<BillingQueries>();
     var basis = await billingQueries
-      .ReadInvoiceBasisForNetworkUser(
+      .ReadInvoiceBasisByNetworkUser(
         networkUserId,
         dateFrom,
         dateTo,
@@ -112,10 +114,26 @@ public class NetworkUserInvoiceMutations(
 
     entity.Invoice.AuditingRepresentativeId = representativeId;
 
-    await mutations.CreateCalculatedInvoice(
+    var created = await mutations.CreateCalculatedInvoice(
       entity,
       cancellationToken
     );
+
+    if (!created)
+    {
+      entity = await queries.ReadCalculatedNetworkUserInvoice(
+        invoice.Invoice.NetworkUserId,
+        invoice.Invoice.FromDate,
+        invoice.Invoice.ToDate,
+        cancellationToken
+      );
+
+      if (entity is null)
+      {
+        throw new InvalidOperationException(
+          "Could not find calculated invoice.");
+      }
+    }
 
     var model = new CalculatedNetworkUserInvoiceModel
     {

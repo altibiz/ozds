@@ -3,7 +3,9 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class NetworkUserCatalogueModel
+// NOTE: don't make this thing abstract for now - archived properties break
+
+public class NetworkUserCatalogueModel
   : CatalogueModel, INetworkUserCatalogue
 {
   [Required]

@@ -18,7 +18,7 @@ public class
     _calculationItemCalculator =
       calculationItemCalculator;
 
-  protected override NetworkUserCalculationModel CalculateForNetworkUser(
+  protected override MeteredNetworkUserCalculationModel CalculateForNetworkUser(
     WhiteLowNetworkUserCatalogueModel usageCatalogue,
     NetworkUserCalculationBasisModel calculationBasis
   )
@@ -29,6 +29,12 @@ public class
       .Calculate<UsageActiveEnergyTotalImportT1CalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.ActiveEnergyTotalImportT1Price_EUR
         }
@@ -38,6 +44,12 @@ public class
       .Calculate<UsageActiveEnergyTotalImportT2CalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.ActiveEnergyTotalImportT2Price_EUR
         }
@@ -47,6 +59,12 @@ public class
       .Calculate<UsageReactiveEnergyTotalRampedT0CalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.ReactiveEnergyTotalRampedT0Price_EUR
         }
@@ -56,6 +74,12 @@ public class
       .Calculate<UsageMeterFeeCalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = usageCatalogue.MeterFeePrice_EUR
         }
@@ -72,6 +96,12 @@ public class
       .Calculate<SupplyActiveEnergyTotalImportT1CalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.ActiveEnergyTotalImportT1Price_EUR
         }
@@ -81,6 +111,12 @@ public class
       .Calculate<SupplyActiveEnergyTotalImportT2CalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.ActiveEnergyTotalImportT2Price_EUR
         }
@@ -90,6 +126,12 @@ public class
       .Calculate<SupplyBusinessUsageCalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.BusinessUsageFeePrice_EUR
         }
@@ -99,6 +141,12 @@ public class
       .Calculate<SupplyRenewableEnergyCalculationItemModel>(
         new CalculationItemBasisModel
         {
+          FromDate = calculationBasis.FromDate,
+          ToDate = calculationBasis.ToDate,
+          MeasuredFromDate = calculationBasis.MeasuredFromDate,
+          MeasuredToDate = calculationBasis.MeasuredToDate,
+          BilledFromDate = calculationBasis.BilledFromDate,
+          BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
           Price_EUR = supplyCatalogue.RenewableEnergyFeePrice_EUR
         }
@@ -123,8 +171,12 @@ public class
         + $"{calculationBasis.NetworkUser.Title} at "
         + $"{calculationBasis.Location.Title}",
       MeterId = calculationBasis.Meter.Id,
-      ToDate = calculationBasis.ToDate,
-      FromDate = calculationBasis.FromDate,
+      ToDate = calculationBasis.BilledToDate,
+      FromDate = calculationBasis.BilledFromDate,
+      RequestedFromDate = calculationBasis.FromDate,
+      RequestedToDate = calculationBasis.ToDate,
+      MeteredFromDate = calculationBasis.MeasuredFromDate,
+      MeteredToDate = calculationBasis.MeasuredToDate,
       NetworkUserInvoiceId = "0",
       UsageNetworkUserCatalogueId = usageCatalogue.Id,
       SupplyRegulatoryCatalogueId =

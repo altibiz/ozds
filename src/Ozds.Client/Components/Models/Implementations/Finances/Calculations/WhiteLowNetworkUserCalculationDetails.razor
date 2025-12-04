@@ -8,17 +8,18 @@
 
 @(
 Base<IFinancial>(
-  Base<INetworkUserCalculation>(
-    @<Fragment>
-      <FieldSection Title="@Translate("Network usage during higher daily tariff period")">
-        <Details Model="@Model.UsageActiveEnergyTotalImportT1"/>
-      </FieldSection>
+  Base<ICalculation>(
+    Base<IMeteredNetworkUserCalculation>(
+      @<Fragment>
+        <FieldSection Title="@Translate("Network usage during higher daily tariff period")">
+          <Details Model="@Model.UsageActiveEnergyTotalImportT1"/>
+        </FieldSection>
 
-      <FieldSection Title="@Translate("Network usage during lower daily tariff period")">
-        <Details Model="@Model.UsageActiveEnergyTotalImportT2"/>
-      </FieldSection>
+        <FieldSection Title="@Translate("Network usage during lower daily tariff period")">
+          <Details Model="@Model.UsageActiveEnergyTotalImportT2"/>
+        </FieldSection>
 
-      <FieldSection Title="@Translate("Excessively drawn reactive energy")">
-        <Details Model="@Model.UsageReactiveEnergyTotalRampedT0"/>
-      </FieldSection>
-    </Fragment>)))
+        <FieldSection Title="@Translate("Excessively drawn reactive energy")">
+          <Details Model="@Model.UsageReactiveEnergyTotalRampedT0"/>
+        </FieldSection>
+      </Fragment>))))

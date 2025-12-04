@@ -4,18 +4,13 @@ using TUnit.Core.Enums;
 
 namespace Ozds.Server.Test.Base;
 
-public class OzdsServerTestBase
+public class OzdsServerTestBase(
+  Action<ServiceComposition>? configure = null
+)
 {
   private ServiceComposition? composition;
-  private Action<ServiceComposition>? configure;
+  private Action<ServiceComposition>? configure = configure;
   private AsyncServiceScope? scope;
-
-  public OzdsServerTestBase(
-    Action<ServiceComposition>? configure = null
-  )
-  {
-    this.configure = configure;
-  }
 
   private ServiceComposition Composition
   {

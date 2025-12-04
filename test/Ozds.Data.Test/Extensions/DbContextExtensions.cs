@@ -114,19 +114,27 @@ public static class DbContextExtensions
     this DbContext dbContext
   )
   {
+    // NOTE: need to not reintroduce archived properties
+    var clrTypes = dbContext.Model
+      .GetEntityTypes()
+      .Select(x => x.ClrType)
+      .ToHashSet();
+
     var entity = dbContext.Model
       .GetEntityTypes()
       .SelectMany(
         e => e
           .GetDeclaredProperties()
           .OfType<IPropertyBase>()
-          .Concat(e.GetDeclaredComplexProperties())
           .Concat(
             e
               .GetDeclaredComplexProperties()
-              .SelectMany(
-                p => p.ComplexType
-                  .GetProperties()))
+              .Where(c => !clrTypes.Contains(c.ClrType)))
+          .Concat(
+            e
+              .GetDeclaredComplexProperties()
+              .Where(c => !clrTypes.Contains(c.ClrType))
+              .SelectMany(p => p.ComplexType.GetProperties()))
           .Concat(e.GetDeclaredSkipNavigations())
           .Concat(e.GetDeclaredNavigations())
           .Concat(e.GetDeclaredKeys().SelectMany(p => p.Properties))
