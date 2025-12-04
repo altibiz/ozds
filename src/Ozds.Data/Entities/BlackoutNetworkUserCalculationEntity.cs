@@ -43,9 +43,7 @@ public class
       .HasOne(
         nameof(BlackoutNetworkUserCalculationEntity
           .UsageNetworkUserCatalogue))
-      .WithMany(
-        nameof(NetworkUserCatalogueEntity<MeteredNetworkUserCalculationEntity>
-          .NetworkUserCalculations))
+      .WithMany()
       .HasForeignKey("_usageNetworkUserCatalogueId");
 
     builder.Ignore(
