@@ -132,14 +132,13 @@ public class MeasurementMutations(
     CancellationToken cancellationToken
   )
   {
-    foreach (var (measurementType, index) in reflector.MeasurementTypes.Select(
-      (x, i) => (x, i)))
+    foreach (var measurementType in reflector.MeasurementTypes)
     {
+      var tableName = context.GetTableName(measurementType);
 #pragma warning disable EF1002 // Risk of vulnerability to SQL injection.
       await context.Database.ExecuteSqlRawAsync(
-        $"DELETE FROM {context.GetTableName(measurementType)} "
-        + $"WHERE timestamp < @p{index}",
-        [new NpgsqlParameter("@p" + index, threshold)],
+        $"SELECT drop_chunks('{tableName}', older_than => @p0)",
+        [new NpgsqlParameter("@p0", threshold)],
         cancellationToken
       );
 #pragma warning restore EF1002 // Risk of vulnerability to SQL injection.
