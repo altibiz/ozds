@@ -52,7 +52,7 @@ public abstract class
 
   protected virtual IEnumerable<CalculationItemEntity> AdditionalUsageItems
   {
-    get => [];
+    get { return []; }
   }
 }
 

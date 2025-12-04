@@ -1,6 +1,5 @@
 @namespace Ozds.Client.Components.Models
 @using Ozds.Business.Models.Abstractions
-@using Ozds.Client.Components.Fields
 @inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.BlackoutNetworkUserCalculationModel>
 
 @(Base<IIdentifiable>())
@@ -11,7 +10,8 @@
 
 <h2>
   <b>
-    @(string.Format(
+    @(
+    string.Format(
       Translate("Data unavailable for the billing period: {0} - {1}. Billing calculation suspended."),
       DateString(Model.FromDate),
       DateString(Model.ToDate)))

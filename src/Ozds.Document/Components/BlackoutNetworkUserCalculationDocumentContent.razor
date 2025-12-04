@@ -21,7 +21,8 @@
   <br/>
   <p>
     <b>
-      @(string.Format(
+      @(
+      string.Format(
         Translate("Data unavailable for the billing period: {0} - {1}. Billing calculation suspended."),
         Date(Entity.FromDate),
         Date(Entity.ToDate)))

@@ -19,7 +19,7 @@
       @if (
         Entity is not BlackoutNetworkUserCalculationEntity
         && (Entity.MeteredFromDate != Entity.FromDate
-        || Entity.MeteredToDate != Entity.ToDate))
+          || Entity.MeteredToDate != Entity.ToDate))
       {
         <Remark Extended Value="@Entity.Remark">
           <b>

@@ -78,8 +78,9 @@ public class BillingQueries(
       var applicableBases = bases.Where(
           x =>
             x.Meter.GetType()
-              .IsAssignableTo(reflector
-                .ResolveMeasurementMeterType(aggregateType)))
+              .IsAssignableTo(
+                reflector
+                  .ResolveMeasurementMeterType(aggregateType)))
         .ToList();
 
       if (applicableBases.Count == 0)

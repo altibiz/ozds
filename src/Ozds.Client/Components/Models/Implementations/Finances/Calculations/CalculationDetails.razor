@@ -1,18 +1,19 @@
-@using Ozds.Business.Models
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Abstractions.ICalculation>
 
 @(Base<IIdentifiable>())
 
-@(Base<IFinancial>(@<Fragment>
-  @Field(x => x.RequestedFromDate)
+@(
+Base<IFinancial>(
+  @<Fragment>
+    @Field(x => x.RequestedFromDate)
 
-  @Field(x => x.RequestedToDate)
+    @Field(x => x.RequestedToDate)
 
-  @Field(x => x.MeteredFromDate)
+    @Field(x => x.MeteredFromDate)
 
-  @Field(x => x.MeteredToDate)
+    @Field(x => x.MeteredToDate)
 
-  @Sub()
-</Fragment>))
+    @Sub()
+  </Fragment>))
