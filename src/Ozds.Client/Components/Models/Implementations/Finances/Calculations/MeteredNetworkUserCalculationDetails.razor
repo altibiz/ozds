@@ -47,8 +47,8 @@ Base<INetworkUserCalculation>(
     <b>
       @(string.Format(
         Translate("Data was taken from period: {0} - {1}."),
-        DateString(Model.MeteredFromDate),
-        DateString(Model.MeteredToDate)))
+        DateTimeString(Model.MeteredFromDate),
+        DateTimeString(Model.MeteredToDate)))
     </b>
   </h2>
 }

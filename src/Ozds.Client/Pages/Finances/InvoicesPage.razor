@@ -22,6 +22,7 @@ RoleModel.NetworkUserRepresentative
   var invoices = AnalysisState.AnalysisBases.Value
     .SelectMany(analysisBasis => analysisBasis.Invoices)
     .OfType<INetworkUserInvoice>()
+    .DistinctBy(x => (x.FromDate, x.ToDate, x.NetworkUserId))
     .ToList();
 }
 

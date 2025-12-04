@@ -31,7 +31,22 @@
         {
           <BlackoutNetworkUserCalculationDocumentContent Entity="@blackoutCalculation"/>
         }
-        <Remark Value="@calculation.Remark"/>
+        @if (calculation.MeteredFromDate != calculation.FromDate
+          || calculation.MeteredToDate != calculation.ToDate)
+        {
+          <Remark Value="@calculation.Remark">
+            <b>
+              @string.Format(
+                Translate("Data was taken from period: {0} - {1}."),
+                DateTime(calculation.MeteredFromDate),
+                DateTime(calculation.MeteredToDate))
+            </b>
+          </Remark>
+        }
+        else
+        {
+          <Remark Value="@calculation.Remark"/>
+        }
       </div>
     </div>
     <div class="page-footer">

@@ -183,6 +183,11 @@ public class LocalizationQueries(
     return date.ToString("dd. MM. yyyy.");
   }
 
+  public string DocumentDateTime(DateTimeOffset date)
+  {
+    return date.ToString("dd. MM. yyyy. HH:mm");
+  }
+
   public string DocumentNumber(decimal number, int precision = 2)
   {
     var cultureInfo = cultureQueries.CroatianCulture;
