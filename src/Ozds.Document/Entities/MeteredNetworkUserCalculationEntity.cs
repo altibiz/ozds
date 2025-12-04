@@ -50,9 +50,9 @@ public abstract class
     }
   }
 
-  protected abstract IEnumerable<CalculationItemEntity> AdditionalUsageItems
+  protected virtual IEnumerable<CalculationItemEntity> AdditionalUsageItems
   {
-    get;
+    get => [];
   }
 }
 

@@ -39,6 +39,20 @@ Base<INetworkUserCalculation>(
   @Field(x => x.Total_EUR)
 </FieldSection>
 
+@if (Model.MeteredFromDate != Model.FromDate || Model.MeteredToDate != Model.ToDate)
+{
+  <br/>
+
+  <h2>
+    <b>
+      @(string.Format(
+        Translate("Data was taken from period: {0} - {1}."),
+        DateString(Model.MeteredFromDate),
+        DateString(Model.MeteredToDate)))
+    </b>
+  </h2>
+}
+
 @code {
 
   private string TariffModelTitle

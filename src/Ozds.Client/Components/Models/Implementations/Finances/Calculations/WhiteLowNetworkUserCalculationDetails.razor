@@ -7,7 +7,7 @@
 @(Base<IIdentifiable>())
 
 @(
-Base<IFinancial>(
+Base<IFinancial>(Base<ICalculation>(
   Base<IMeteredNetworkUserCalculation>(
     @<Fragment>
       <FieldSection Title="@Translate("Network usage during higher daily tariff period")">
@@ -21,4 +21,4 @@ Base<IFinancial>(
       <FieldSection Title="@Translate("Excessively drawn reactive energy")">
         <Details Model="@Model.UsageReactiveEnergyTotalRampedT0"/>
       </FieldSection>
-    </Fragment>)))
+    </Fragment>))))

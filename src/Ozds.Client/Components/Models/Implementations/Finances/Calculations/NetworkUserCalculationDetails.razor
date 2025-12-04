@@ -34,10 +34,10 @@ LinkField<NetworkUserMeasurementLocationModel>(
 </FieldChapter>
 
 @(
-Base<IFinancial>(
+Base<IFinancial>(Base<ICalculation>(
   @<Fragment>
     @Sub()
-  </Fragment>))
+  </Fragment>)))
 
 @code {
 

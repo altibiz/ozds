@@ -1,6 +1,6 @@
 namespace Ozds.Document.Entities;
 
-public abstract class
+public class
   BlackoutNetworkUserCalculationEntity : NetworkUserCalculationEntity
 {
   public NetworkUserCatalogueEntity

@@ -33,6 +33,7 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
           .DuplexImport()
           .AggregateMax()
           .PhaseSum())
+      .DefaultIfEmpty()
       .Max();
 
     var peakKilo = System.Math.Round(peak / 1000M, 2);

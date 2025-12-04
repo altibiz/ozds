@@ -5,8 +5,15 @@
 
 @(Base<IIdentifiable>())
 
-@(Base<IFinancial>(Base<INetworkUserCalculation>()))
+@(Base<IFinancial>(Base<ICalculation>(Base<INetworkUserCalculation>())))
 
-<FieldSection Class="mt-8" Title="@Translate("Totals")">
-  @Field(x => x.Total_EUR)
-</FieldSection>
+<br/>
+
+<h2>
+  <b>
+    @(string.Format(
+      Translate("Data unavailable for the billing period: {0} - {1}. Billing calculation suspended."),
+      DateString(Model.FromDate),
+      DateString(Model.ToDate)))
+  </b>
+</h2>

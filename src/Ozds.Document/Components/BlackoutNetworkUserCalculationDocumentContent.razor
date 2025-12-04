@@ -18,8 +18,14 @@
     @Translate("Number of the billing measurement location (OMM)"):
     @(Entity.MeasurementLocationId)
   </p>
+  <br/>
   <p>
-    @Translate("Tariff model"): @TariffModelTitle
+    <b>
+      @(string.Format(
+        Translate("Data unavailable for the billing period: {0} - {1}. Billing calculation suspended."),
+        Date(Entity.FromDate),
+        Date(Entity.ToDate)))
+    </b>
   </p>
 </div>
 
@@ -27,7 +33,7 @@
 @code {
 
   [Parameter]
-  public NetworkUserCalculationEntity Entity { get; set; } = default!;
+  public BlackoutNetworkUserCalculationEntity Entity { get; set; } = default!;
 
   private string TariffModelTitle
   {

@@ -74,10 +74,12 @@ public class BillingQueries(
 
     foreach (var aggregateType in reflector.AggregateTypes)
     {
+      // NOTE: IsAssignableTo is used because proxies
       var applicableBases = bases.Where(
           x =>
             x.Meter.GetType()
-            == reflector.ResolveMeasurementMeterType(aggregateType))
+              .IsAssignableTo(reflector
+                .ResolveMeasurementMeterType(aggregateType)))
         .ToList();
 
       if (applicableBases.Count == 0)

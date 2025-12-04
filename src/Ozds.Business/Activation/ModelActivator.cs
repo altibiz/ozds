@@ -69,8 +69,10 @@ public class ModelActivator(IServiceProvider serviceProvider)
           !converter.ModelType.IsAbstract
           && !converter.ModelType.IsInterface
           && converter.ModelType.IsAssignableTo(type)
-          // FIXME: hack for now because MeterModel is not abstract
+          // FIXME: hack for now because MeterModel
+          // and NetworkUserCatalogueModel are not abstract
           && converter.ModelType != typeof(MeterModel)
+          && converter.ModelType != typeof(NetworkUserCatalogueModel)
           && converter.CanActivate(type))
       .Select(converter => converter.ModelType)
       .ToList();
