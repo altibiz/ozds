@@ -16,8 +16,10 @@
       {
         <BlackoutNetworkUserCalculationDocumentContent Entity="@blackoutNetworkUserCalculation"/>
       }
-      @if (Entity.MeteredFromDate != Entity.FromDate
-        || Entity.MeteredToDate != Entity.ToDate)
+      @if (
+        Entity is not BlackoutNetworkUserCalculationEntity
+        && (Entity.MeteredFromDate != Entity.FromDate
+        || Entity.MeteredToDate != Entity.ToDate))
       {
         <Remark Extended Value="@Entity.Remark">
           <b>
