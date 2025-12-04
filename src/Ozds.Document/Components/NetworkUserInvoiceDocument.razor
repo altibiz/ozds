@@ -27,6 +27,10 @@
         {
           <MeteredNetworkUserCalculationDocumentContent Entity="@meteredCalculation"/>
         }
+        @if (calculation is BlackoutNetworkUserCalculationEntity blackoutCalculation)
+        {
+          <BlackoutNetworkUserCalculationDocumentContent Entity="@blackoutCalculation"/>
+        }
         <Remark Value="@calculation.Remark"/>
       </div>
     </div>

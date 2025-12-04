@@ -7,34 +7,8 @@
 
 @(Base<IIdentifiable>())
 
-@(LinkField<INetworkUserInvoice>(x => x.NetworkUserInvoiceId))
-
-@(LinkField<IMeter>(x => x.MeterId))
-
 @(
-LinkField<NetworkUserMeasurementLocationModel>(
-  x => x.NetworkUserMeasurementLocationId))
-
-@(LinkField<INetworkUserCatalogue>(x => x.UsageNetworkUserCatalogueId))
-
-@(LinkField<IRegulatoryCatalogue>(x => x.SupplyRegulatoryCatalogueId))
-
-<DetailsField Title="@Translate("Tariff model")">
-  @TariffModelTitle
-</DetailsField>
-
-<FieldChapter Title="@Translate("Archives")">
-  @(ArchivedField(x => x.ArchivedMeter))
-
-  @(ArchivedField(x => x.ArchivedNetworkUserMeasurementLocation))
-
-  @(ArchivedField(x => x.ArchivedUsageNetworkUserCatalogue))
-
-  @(ArchivedField(x => x.ArchivedSupplyRegulatoryCatalogue))
-</FieldChapter>
-
-@(
-Base<IFinancial>(
+Base<INetworkUserCalculation>(
   @<Fragment>
     <FieldChapter Title="@Translate("ZDS network usage fee")">
       @Sub()

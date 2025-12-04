@@ -1,0 +1,13 @@
+@namespace Ozds.Client.Components.Models
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Fields
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.BlackoutNetworkUserCalculationModel>
+
+@(Base<IIdentifiable>())
+
+@(Base<IFinancial>(Base<INetworkUserCalculation>()))
+
+<FieldSection Class="mt-8" Title="@Translate("Totals")">
+  @Field(x => x.Total_EUR)
+</FieldSection>

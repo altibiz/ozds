@@ -1,0 +1,58 @@
+@namespace Ozds.Client.Components.Models
+@using Ozds.Business.Models
+@using Ozds.Business.Models.Abstractions
+@using Ozds.Client.Components.Fields
+@using Ozds.Client.Components.Streaming
+@inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Models.Abstractions.INetworkUserCalculation>
+
+@(Base<IIdentifiable>())
+
+@(LinkField<INetworkUserInvoice>(x => x.NetworkUserInvoiceId))
+
+@(LinkField<IMeter>(x => x.MeterId))
+
+@(
+LinkField<NetworkUserMeasurementLocationModel>(
+  x => x.NetworkUserMeasurementLocationId))
+
+@(LinkField<INetworkUserCatalogue>(x => x.UsageNetworkUserCatalogueId))
+
+@(LinkField<IRegulatoryCatalogue>(x => x.SupplyRegulatoryCatalogueId))
+
+<DetailsField Title="@Translate("Tariff model")">
+  @TariffModelTitle
+</DetailsField>
+
+<FieldChapter Title="@Translate("Archives")">
+  @(ArchivedField(x => x.ArchivedMeter))
+
+  @(ArchivedField(x => x.ArchivedNetworkUserMeasurementLocation))
+
+  @(ArchivedField(x => x.ArchivedUsageNetworkUserCatalogue))
+
+  @(ArchivedField(x => x.ArchivedSupplyRegulatoryCatalogue))
+</FieldChapter>
+
+@(Base<IFinancial>(@<Fragment>
+  @Sub()
+</Fragment>))
+
+@code {
+
+  private string TariffModelTitle
+  {
+    get
+    {
+      return Model.ArchivedUsageNetworkUserCatalogue is RedLowNetworkUserCatalogueModel
+        ? Translate("Red NN")
+        : Model.ArchivedUsageNetworkUserCatalogue is BlueLowNetworkUserCatalogueModel
+          ? Translate("Blue NN")
+          : Model.ArchivedUsageNetworkUserCatalogue is WhiteLowNetworkUserCatalogueModel
+            ? Translate("White NN")
+            : Model.ArchivedUsageNetworkUserCatalogue is WhiteMediumNetworkUserCatalogueModel
+              ? Translate("White SN")
+              : string.Empty;
+    }
+  }
+
+}

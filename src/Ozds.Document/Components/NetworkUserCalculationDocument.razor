@@ -11,6 +11,10 @@
     {
       <MeteredNetworkUserCalculationDocumentContent Entity="@meteredNetworkUserCalculation"/>
     }
+    @if (Entity is BlackoutNetworkUserCalculationEntity blackoutNetworkUserCalculation)
+    {
+      <BlackoutNetworkUserCalculationDocumentContent Entity="@blackoutNetworkUserCalculation"/>
+    }
     <Remark Extended Value="@Entity.Remark"/>
   </div>
   <div class="page-footer">
