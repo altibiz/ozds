@@ -210,3 +210,5 @@
 /20251203191642-Ozds.Data-MeteredNetworkUserCalculationEntity.sql
 /20251203195247-Ozds.Data-NetworkUserInvoiceCalculationUnique-hypertables.sql
 /20251203195247-Ozds.Data-NetworkUserInvoiceCalculationUnique.sql
+/20251204143643-Ozds.Data-BlackoutNetworkUserInvoiceCalculation-hypertables.sql
+/20251204143643-Ozds.Data-BlackoutNetworkUserInvoiceCalculation.sql
