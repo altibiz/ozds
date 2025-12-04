@@ -3660,7 +3660,7 @@
         Address
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/Remark.razor' line 32 column 10
+        From file 'Ozds.Document/Components/Remark.razor' line 51 column 10
       </Metadata>
       <Value>
         Address
@@ -5855,9 +5855,9 @@
         Blue NN
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 51 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 65 column 13
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 51 column 13
-        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 39 column 13
+        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 45 column 13
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 187 column 13
       </Metadata>
       <Value>
@@ -8328,6 +8328,33 @@
       </Metadata>
       <Value>
         Dashboard
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Data unavailable for the billing period: {0} - {1}. Billing
+        calculation suspended.
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/BlackoutNetworkUserCalculationDetails.razor' line 15 column 7
+        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 25 column 9
+      </Metadata>
+      <Value>
+        Data unavailable for the billing period: {0} - {1}. Billing
+        calculation suspended.
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Data was taken from period: {0} - {1}.
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 49 column 9
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocument.razor' line 25 column 15
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocument.razor' line 40 column 17
+      </Metadata>
+      <Value>
+        Data was taken from period: {0} - {1}.
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -14705,7 +14732,7 @@
         MeteredFromDate
       </Key>
       <Metadata>
-        Property 'MeteredFromDate' of type 'Ozds.Business.Models.Base.CalculationModel' with overrides:
+        Property 'MeteredFromDate' of type 'Ozds.Business.Models.Abstractions.ICalculation' with overrides:
         BlackoutNetworkUserCalculationModel.MeteredFromDate
         ~BlackoutNetworkUserCalculationModel.MeteredFromDate
         BlueLowNetworkUserCalculationModel.MeteredFromDate
@@ -14720,6 +14747,7 @@
         ~AnalysisBasisModel.Calculations.MeteredFromDate
         CalculatedNetworkUserInvoiceModel.Calculations.MeteredFromDate
         ~CalculatedNetworkUserInvoiceModel.Calculations.MeteredFromDate
+        CalculationModel.MeteredFromDate
         ~CalculationModel.MeteredFromDate
         MeteredNetworkUserCalculationModel.MeteredFromDate
         ~MeteredNetworkUserCalculationModel.MeteredFromDate
@@ -14727,6 +14755,7 @@
         ~MeteredNetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.MeteredFromDate
         NetworkUserCalculationModel.MeteredFromDate
         ~NetworkUserCalculationModel.MeteredFromDate
+        ~ICalculation.MeteredFromDate
 
         Property 'MeteredFromDate' of type 'Ozds.Document.Entities.CalculationEntity' with overrides:
         BlackoutNetworkUserCalculationEntity.MeteredFromDate
@@ -14795,7 +14824,7 @@
         MeteredToDate
       </Key>
       <Metadata>
-        Property 'MeteredToDate' of type 'Ozds.Business.Models.Base.CalculationModel' with overrides:
+        Property 'MeteredToDate' of type 'Ozds.Business.Models.Abstractions.ICalculation' with overrides:
         BlackoutNetworkUserCalculationModel.MeteredToDate
         ~BlackoutNetworkUserCalculationModel.MeteredToDate
         BlueLowNetworkUserCalculationModel.MeteredToDate
@@ -14810,6 +14839,7 @@
         ~AnalysisBasisModel.Calculations.MeteredToDate
         CalculatedNetworkUserInvoiceModel.Calculations.MeteredToDate
         ~CalculatedNetworkUserInvoiceModel.Calculations.MeteredToDate
+        CalculationModel.MeteredToDate
         ~CalculationModel.MeteredToDate
         MeteredNetworkUserCalculationModel.MeteredToDate
         ~MeteredNetworkUserCalculationModel.MeteredToDate
@@ -14817,6 +14847,7 @@
         ~MeteredNetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.MeteredToDate
         NetworkUserCalculationModel.MeteredToDate
         ~NetworkUserCalculationModel.MeteredToDate
+        ~ICalculation.MeteredToDate
 
         Property 'MeteredToDate' of type 'Ozds.Document.Entities.CalculationEntity' with overrides:
         BlackoutNetworkUserCalculationEntity.MeteredToDate
@@ -17373,8 +17404,8 @@
         or
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/Remark.razor' line 37 column 10
-        From file 'Ozds.Document/Components/Remark.razor' line 32 column 10
+        From file 'Ozds.Document/Components/Remark.razor' line 56 column 10
+        From file 'Ozds.Document/Components/Remark.razor' line 51 column 10
       </Metadata>
       <Value>
         or
@@ -17582,7 +17613,7 @@
         Phone
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/Remark.razor' line 47 column 10
+        From file 'Ozds.Document/Components/Remark.razor' line 66 column 10
       </Metadata>
       <Value>
         Phone
@@ -19547,9 +19578,11 @@
         Red NN
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 49 column 11
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 63 column 11
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 13 column 27
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 49 column 11
-        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 37 column 11
+        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 43 column 11
+        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 9 column 10
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 185 column 11
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 90 column 14
       </Metadata>
@@ -20018,7 +20051,7 @@
         RequestedFromDate
       </Key>
       <Metadata>
-        Property 'RequestedFromDate' of type 'Ozds.Business.Models.Base.CalculationModel' with overrides:
+        Property 'RequestedFromDate' of type 'Ozds.Business.Models.Abstractions.ICalculation' with overrides:
         BlackoutNetworkUserCalculationModel.RequestedFromDate
         ~BlackoutNetworkUserCalculationModel.RequestedFromDate
         BlueLowNetworkUserCalculationModel.RequestedFromDate
@@ -20033,6 +20066,7 @@
         ~AnalysisBasisModel.Calculations.RequestedFromDate
         CalculatedNetworkUserInvoiceModel.Calculations.RequestedFromDate
         ~CalculatedNetworkUserInvoiceModel.Calculations.RequestedFromDate
+        CalculationModel.RequestedFromDate
         ~CalculationModel.RequestedFromDate
         MeteredNetworkUserCalculationModel.RequestedFromDate
         ~MeteredNetworkUserCalculationModel.RequestedFromDate
@@ -20040,6 +20074,7 @@
         ~MeteredNetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.RequestedFromDate
         NetworkUserCalculationModel.RequestedFromDate
         ~NetworkUserCalculationModel.RequestedFromDate
+        ~ICalculation.RequestedFromDate
 
         Property 'RequestedFromDate' of type 'Ozds.Document.Entities.CalculationEntity' with overrides:
         BlackoutNetworkUserCalculationEntity.RequestedFromDate
@@ -20071,7 +20106,7 @@
         RequestedToDate
       </Key>
       <Metadata>
-        Property 'RequestedToDate' of type 'Ozds.Business.Models.Base.CalculationModel' with overrides:
+        Property 'RequestedToDate' of type 'Ozds.Business.Models.Abstractions.ICalculation' with overrides:
         BlackoutNetworkUserCalculationModel.RequestedToDate
         ~BlackoutNetworkUserCalculationModel.RequestedToDate
         BlueLowNetworkUserCalculationModel.RequestedToDate
@@ -20086,6 +20121,7 @@
         ~AnalysisBasisModel.Calculations.RequestedToDate
         CalculatedNetworkUserInvoiceModel.Calculations.RequestedToDate
         ~CalculatedNetworkUserInvoiceModel.Calculations.RequestedToDate
+        CalculationModel.RequestedToDate
         ~CalculationModel.RequestedToDate
         MeteredNetworkUserCalculationModel.RequestedToDate
         ~MeteredNetworkUserCalculationModel.RequestedToDate
@@ -20093,6 +20129,7 @@
         ~MeteredNetworkUserCalculationModel&lt;TNetworkUserCatalogue&gt;.RequestedToDate
         NetworkUserCalculationModel.RequestedToDate
         ~NetworkUserCalculationModel.RequestedToDate
+        ~ICalculation.RequestedToDate
 
         Property 'RequestedToDate' of type 'Ozds.Document.Entities.CalculationEntity' with overrides:
         BlackoutNetworkUserCalculationEntity.RequestedToDate
@@ -21494,7 +21531,6 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 22 column 23
-        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 22 column 6
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 22 column 6
       </Metadata>
       <Value>
@@ -22995,7 +23031,6 @@
         Totals
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/BlackoutNetworkUserCalculationDetails.razor' line 10 column 36
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 36 column 36
       </Metadata>
       <Value>
@@ -24120,9 +24155,9 @@
         White NN
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 53 column 15
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 67 column 15
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 53 column 15
-        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 41 column 15
+        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 47 column 15
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 189 column 15
       </Metadata>
       <Value>
@@ -24134,9 +24169,9 @@
         White SN
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 55 column 17
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 69 column 17
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 55 column 17
-        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 43 column 17
+        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 49 column 17
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 191 column 17
       </Metadata>
       <Value>
@@ -24389,7 +24424,7 @@
         You can submit questions, complaints, and written grievances to
       </Key>
       <Metadata>
-        From file 'Ozds.Document/Components/Remark.razor' line 27 column 8
+        From file 'Ozds.Document/Components/Remark.razor' line 46 column 8
       </Metadata>
       <Value>
         You can submit questions, complaints, and written grievances to
