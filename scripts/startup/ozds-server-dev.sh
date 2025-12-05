@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+root="$(dirname "${BASH_SOURCE[0]}")"
+
 if [ -n "$DIRENV_DIR" ]; then
   # NOTE: chromium is already bundled and this would lead to a double bundle to which linux says hard nope
   export DIRENV_PLAYWRIGHT_NODEJS_PATH="$PLAYWRIGHT_NODEJS_PATH"
@@ -7,10 +9,10 @@ if [ -n "$DIRENV_DIR" ]; then
 else
   if [ -n "$DIRENV_PLAYWRIGHT_NODEJS_PATH" ]; then
     export PLAYWRIGHT_NODEJS_PATH="$DIRENV_PLAYWRIGHT_NODEJS_PATH"
+  else
+    export PLAYWRIGHT_NODEJS_PATH="$root/.playwright/node/linux-x64/node"
   fi
 fi
-
-root="$(dirname "${BASH_SOURCE[0]}")"
 
 export ASPNETCORE_ENVIRONMENT="Production"
 export ASPNETCORE_URLS="http://localhost:5000"
