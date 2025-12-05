@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 root="$(dirname "${BASH_SOURCE[0]}")"
+if [ -d "$root/playwright" ]; then
+  mv "$root/playwright" "$root/.playwright"
+fi
 
 if [ -n "$DIRENV_DIR" ]; then
   # NOTE: chromium is already bundled and this would lead to a double bundle to which linux says hard nope
