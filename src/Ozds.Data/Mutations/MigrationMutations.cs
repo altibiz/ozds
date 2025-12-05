@@ -12,7 +12,7 @@ public class MigrationMutations(
   {
     await using var context = await factory
       .CreateDbContextAsync(cancellationToken);
-    context.Database.SetCommandTimeout(TimeSpan.FromHours(1));
+    context.Database.SetCommandTimeout(TimeSpan.FromHours(6));
     await context.Database.MigrateAsync(cancellationToken);
   }
 }
