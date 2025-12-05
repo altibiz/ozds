@@ -23,7 +23,8 @@ public static class DbContextDapperCommandExtensions
     this DbContext context,
     string sql,
     CancellationToken cancellationToken,
-    object? parameters = null
+    object? parameters = null,
+    int? commandTimeout = null
   )
   {
     var objects = await DapperCommand<T>(
@@ -31,7 +32,8 @@ public static class DbContextDapperCommandExtensions
       typeof(T),
       sql,
       cancellationToken,
-      parameters
+      parameters,
+      commandTimeout
     );
 
     return objects;
@@ -42,14 +44,17 @@ public static class DbContextDapperCommandExtensions
     Type type,
     string sql,
     CancellationToken cancellationToken,
-    object? parameters = null)
+    object? parameters = null,
+    int? commandTimeout = null
+  )
   {
     var objects = await DapperCommand<object>(
       context,
       type,
       sql,
       cancellationToken,
-      parameters
+      parameters,
+      commandTimeout
     );
 
     return objects;
@@ -60,7 +65,8 @@ public static class DbContextDapperCommandExtensions
     Type type,
     string sql,
     CancellationToken cancellationToken,
-    object? parameters = null
+    object? parameters = null,
+    int? commandTimeout = null
   )
   {
     var resultAttribute = type.GetCustomAttribute<DapperResultAttribute>();
@@ -74,7 +80,8 @@ public static class DbContextDapperCommandExtensions
       sql,
       parameters,
       context.Database.CurrentTransaction?.GetDbTransaction(),
-      cancellationToken: cancellationToken
+      cancellationToken: cancellationToken,
+      commandTimeout: commandTimeout
     );
     using var reader = await connection.ExecuteReaderAsync(command);
 

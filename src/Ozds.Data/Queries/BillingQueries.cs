@@ -209,7 +209,8 @@ public class BillingQueries(
             AND aggregates.timestamp < @to
         ",
         cancellationToken,
-        parameters);
+        parameters,
+        commandTimeout: 300);
 
     var nextBoundaries = await context
       .DapperCommand<AggregateEntity>(
@@ -231,7 +232,8 @@ public class BillingQueries(
           WHERE row_number = 1
         ",
         cancellationToken,
-        parameters);
+        parameters,
+        commandTimeout: 300);
 
     var locationsWithData = inWindowAggregates
       .Select(x => x.MeasurementLocationId)
@@ -285,7 +287,8 @@ public class BillingQueries(
             WHERE row_number = 1
           ",
           cancellationToken,
-          blackoutParameters);
+          blackoutParameters,
+          commandTimeout: 300);
 
       if (lastReadingsBeforeBlackout.Count != 0)
       {
@@ -341,7 +344,8 @@ public class BillingQueries(
                 WHERE row_number = 1
               ",
               cancellationToken,
-              targetParameters);
+              targetParameters,
+              commandTimeout: 300);
         }
       }
     }
