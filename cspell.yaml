@@ -193,6 +193,7 @@ words:
   - "nano"
   - "hmacsha"
   - "identifiables"
+  - "direnv"
 
   # Croatian
   - "altibiz"
