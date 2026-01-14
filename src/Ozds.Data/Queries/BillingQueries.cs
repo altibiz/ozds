@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
 using Ozds.Data.Entities;
@@ -14,7 +15,8 @@ namespace Ozds.Data.Queries;
 public class BillingQueries(
   IDbContextFactory<DataDbContext> factory,
   EntityReflector reflector,
-  ITimeQueries timeQueries
+  ITimeQueries timeQueries,
+  ILogger<BillingQueries> logger
 ) : IQueries
 {
   public async Task<NetworkUserInvoiceBasisEntity>
@@ -196,41 +198,63 @@ public class BillingQueries(
             = aggregates.measurement_location_id
     ";
 
+    var inWindowAggregatesSql = $@"
+      SELECT *
+      FROM {table} aggregates
+      {joinLocationsClause}
+      WHERE aggregates.interval
+          = '{quarterHourIntervalValue}'::{intervalTypeName}
+        AND aggregates.timestamp >= @from
+        AND aggregates.timestamp < @to
+    ";
+
+    logger.LogDebug(
+      "In window aggregates\nSql: {Sql}\nParameters: {Parameters}",
+      inWindowAggregatesSql,
+      JsonSerializer.Serialize(
+        parameters,
+#pragma warning disable CA1869 // Cache and reuse 'JsonSerializerOptions' instances
+        new JsonSerializerOptions { WriteIndented = true }));
+#pragma warning restore CA1869 // Cache and reuse 'JsonSerializerOptions' instances
+
     var inWindowAggregates = await context
       .DapperCommand<AggregateEntity>(
         aggregateType,
-        $@"
-          SELECT *
-          FROM {table} aggregates
-          {joinLocationsClause}
-          WHERE aggregates.interval
-              = '{quarterHourIntervalValue}'::{intervalTypeName}
-            AND aggregates.timestamp >= @from
-            AND aggregates.timestamp < @to
-        ",
+        inWindowAggregatesSql,
         cancellationToken,
         parameters,
         commandTimeout: 300);
 
+    var nextBoundariesSql = $@"
+      SELECT *
+      FROM (
+        SELECT aggregates.*,
+        ROW_NUMBER() OVER (
+          PARTITION BY aggregates.measurement_location_id
+          ORDER BY aggregates.timestamp ASC
+        ) AS row_number
+        FROM {table} aggregates
+        {joinLocationsClause}
+        WHERE aggregates.interval
+            = '{quarterHourIntervalValue}'::{intervalTypeName}
+          AND aggregates.timestamp >= @to
+      ) end_candidates
+      WHERE row_number = 1
+    ";
+
+    logger.LogDebug(
+      "Next boundaries\nSql: {Sql}\nParameters: {Parameters}",
+      nextBoundariesSql,
+      JsonSerializer.Serialize(
+        parameters,
+#pragma warning disable CA1869 // Cache and reuse 'JsonSerializerOptions' instances
+        new JsonSerializerOptions { WriteIndented = true }));
+#pragma warning restore CA1869 // Cache and reuse 'JsonSerializerOptions' instances
+
     var nextBoundaries = await context
       .DapperCommand<AggregateEntity>(
         aggregateType,
-        $@"
-          SELECT *
-          FROM (
-            SELECT aggregates.*,
-            ROW_NUMBER() OVER (
-              PARTITION BY aggregates.measurement_location_id
-              ORDER BY aggregates.timestamp ASC
-            ) AS row_number
-            FROM {table} aggregates
-            {joinLocationsClause}
-            WHERE aggregates.interval
-                = '{quarterHourIntervalValue}'::{intervalTypeName}
-              AND aggregates.timestamp >= @to
-          ) end_candidates
-          WHERE row_number = 1
-        ",
+        nextBoundariesSql,
         cancellationToken,
         parameters,
         commandTimeout: 300);
@@ -267,25 +291,27 @@ public class BillingQueries(
             = aggregates.measurement_location_id
       ";
 
+      var lastReadingsBeforeBlackoutSql = $@"
+        SELECT *
+        FROM (
+          SELECT aggregates.*,
+          ROW_NUMBER() OVER (
+            PARTITION BY aggregates.measurement_location_id
+            ORDER BY aggregates.timestamp DESC
+          ) AS row_number
+          FROM {table} aggregates
+          {blackoutJoin}
+          WHERE aggregates.interval
+              = '{quarterHourIntervalValue}'::{intervalTypeName}
+            AND aggregates.timestamp < @from
+        ) start_fallback
+        WHERE row_number = 1
+      ";
+
       var lastReadingsBeforeBlackout = await context
         .DapperCommand<AggregateEntity>(
           aggregateType,
-          $@"
-            SELECT *
-            FROM (
-              SELECT aggregates.*,
-              ROW_NUMBER() OVER (
-                PARTITION BY aggregates.measurement_location_id
-                ORDER BY aggregates.timestamp DESC
-              ) AS row_number
-              FROM {table} aggregates
-              {blackoutJoin}
-              WHERE aggregates.interval
-                  = '{quarterHourIntervalValue}'::{intervalTypeName}
-                AND aggregates.timestamp < @from
-            ) start_fallback
-            WHERE row_number = 1
-          ",
+          lastReadingsBeforeBlackoutSql,
           cancellationToken,
           blackoutParameters,
           commandTimeout: 300);
@@ -321,28 +347,30 @@ public class BillingQueries(
 
         if (targetRows.Count != 0)
         {
+          var actualStartBoundariesSql = $@"
+            SELECT *
+            FROM (
+              SELECT aggregates.*,
+              ROW_NUMBER() OVER (
+                PARTITION BY aggregates.measurement_location_id
+                ORDER BY aggregates.timestamp ASC
+              ) AS row_number
+              FROM {table} aggregates
+              JOIN (
+                  VALUES {string.Join(", ", targetRows)}
+              ) AS targets(location_id, target_start)
+                ON targets.location_id = aggregates.measurement_location_id
+              WHERE aggregates.interval
+                  = '{quarterHourIntervalValue}'::{intervalTypeName}
+                AND aggregates.timestamp >= targets.target_start
+            ) real_starts
+            WHERE row_number = 1
+          ";
+
           actualStartBoundaries = await context
             .DapperCommand<AggregateEntity>(
               aggregateType,
-              $@"
-                SELECT *
-                FROM (
-                  SELECT aggregates.*,
-                  ROW_NUMBER() OVER (
-                    PARTITION BY aggregates.measurement_location_id
-                    ORDER BY aggregates.timestamp ASC
-                  ) AS row_number
-                  FROM {table} aggregates
-                  JOIN (
-                      VALUES {string.Join(", ", targetRows)}
-                  ) AS targets(location_id, target_start)
-                    ON targets.location_id = aggregates.measurement_location_id
-                  WHERE aggregates.interval
-                      = '{quarterHourIntervalValue}'::{intervalTypeName}
-                    AND aggregates.timestamp >= targets.target_start
-                ) real_starts
-                WHERE row_number = 1
-              ",
+              actualStartBoundariesSql,
               cancellationToken,
               targetParameters,
               commandTimeout: 300);
