@@ -213,9 +213,7 @@ public class BillingQueries(
       inWindowAggregatesSql,
       JsonSerializer.Serialize(
         parameters,
-#pragma warning disable CA1869 // Cache and reuse 'JsonSerializerOptions' instances
-        new JsonSerializerOptions { WriteIndented = true }));
-#pragma warning restore CA1869 // Cache and reuse 'JsonSerializerOptions' instances
+        JsonSerializerOptions));
 
     var inWindowAggregates = await context
       .DapperCommand<AggregateEntity>(
@@ -226,20 +224,21 @@ public class BillingQueries(
         commandTimeout: 300);
 
     var nextBoundariesSql = $@"
-      SELECT *
+      SELECT picked.*
       FROM (
-        SELECT aggregates.*,
-        ROW_NUMBER() OVER (
-          PARTITION BY aggregates.measurement_location_id
-          ORDER BY aggregates.timestamp ASC
-        ) AS row_number
+        VALUES {string.Join(", ", locationValueRows)}
+      ) AS selected_locations(location_id)
+      CROSS JOIN LATERAL (
+        SELECT aggregates.*
         FROM {table} aggregates
-        {joinLocationsClause}
-        WHERE aggregates.interval
+        WHERE aggregates.measurement_location_id
+            = selected_locations.location_id
+          AND aggregates.interval
             = '{quarterHourIntervalValue}'::{intervalTypeName}
           AND aggregates.timestamp >= @to
-      ) end_candidates
-      WHERE row_number = 1
+        ORDER BY aggregates.timestamp ASC
+        LIMIT 1
+      ) AS picked
     ";
 
     logger.LogDebug(
@@ -247,9 +246,7 @@ public class BillingQueries(
       nextBoundariesSql,
       JsonSerializer.Serialize(
         parameters,
-#pragma warning disable CA1869 // Cache and reuse 'JsonSerializerOptions' instances
-        new JsonSerializerOptions { WriteIndented = true }));
-#pragma warning restore CA1869 // Cache and reuse 'JsonSerializerOptions' instances
+        JsonSerializerOptions));
 
     var nextBoundaries = await context
       .DapperCommand<AggregateEntity>(
@@ -283,30 +280,30 @@ public class BillingQueries(
         blackoutRows.Add($"(@{parameterName})");
       }
 
-      var blackoutJoin = $@"
-        JOIN (
-            VALUES {string.Join(", ", blackoutRows)}
-        ) AS selected_locations(location_id)
-          ON selected_locations.location_id
-            = aggregates.measurement_location_id
-      ";
-
       var lastReadingsBeforeBlackoutSql = $@"
-        SELECT *
+        SELECT picked.*
         FROM (
-          SELECT aggregates.*,
-          ROW_NUMBER() OVER (
-            PARTITION BY aggregates.measurement_location_id
-            ORDER BY aggregates.timestamp DESC
-          ) AS row_number
+          VALUES {string.Join(", ", blackoutRows)}
+        ) AS selected_locations(location_id)
+        CROSS JOIN LATERAL (
+          SELECT aggregates.*
           FROM {table} aggregates
-          {blackoutJoin}
-          WHERE aggregates.interval
+          WHERE aggregates.measurement_location_id
+              = selected_locations.location_id
+            AND aggregates.interval
               = '{quarterHourIntervalValue}'::{intervalTypeName}
             AND aggregates.timestamp < @from
-        ) start_fallback
-        WHERE row_number = 1
+          ORDER BY aggregates.timestamp DESC
+          LIMIT 1
+        ) AS picked
       ";
+
+      logger.LogDebug(
+        "Last readings before blackout\nSql: {Sql}\nParameters: {Parameters}",
+        lastReadingsBeforeBlackoutSql,
+        JsonSerializer.Serialize(
+          blackoutParameters,
+          JsonSerializerOptions));
 
       var lastReadingsBeforeBlackout = await context
         .DapperCommand<AggregateEntity>(
@@ -348,24 +345,29 @@ public class BillingQueries(
         if (targetRows.Count != 0)
         {
           var actualStartBoundariesSql = $@"
-            SELECT *
+            SELECT picked.*
             FROM (
-              SELECT aggregates.*,
-              ROW_NUMBER() OVER (
-                PARTITION BY aggregates.measurement_location_id
-                ORDER BY aggregates.timestamp ASC
-              ) AS row_number
+              VALUES {string.Join(", ", targetRows)}
+            ) AS targets(location_id, target_start)
+            CROSS JOIN LATERAL (
+              SELECT aggregates.*
               FROM {table} aggregates
-              JOIN (
-                  VALUES {string.Join(", ", targetRows)}
-              ) AS targets(location_id, target_start)
-                ON targets.location_id = aggregates.measurement_location_id
-              WHERE aggregates.interval
-                  = '{quarterHourIntervalValue}'::{intervalTypeName}
+              WHERE aggregates.measurement_location_id = targets.location_id
+                AND aggregates.interval = '{quarterHourIntervalValue}'::{intervalTypeName}
                 AND aggregates.timestamp >= targets.target_start
-            ) real_starts
-            WHERE row_number = 1
+              ORDER BY aggregates.timestamp ASC
+              LIMIT 1
+            ) AS picked
           ";
+
+          logger.LogDebug(
+            "Actual start boundaries\nSql: {Sql}\nParameters: {Parameters}",
+            actualStartBoundariesSql,
+            JsonSerializer.Serialize(
+              targetParameters,
+#pragma warning disable CA1869 // Cache and reuse 'JsonSerializerOptions' instances
+              new JsonSerializerOptions { WriteIndented = true }));
+#pragma warning restore CA1869 // Cache and reuse 'JsonSerializerOptions' instances
 
           actualStartBoundaries = await context
             .DapperCommand<AggregateEntity>(
@@ -451,4 +453,9 @@ public class BillingQueries(
         };
       }).ToList();
   }
+
+  private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+  {
+    WriteIndented = true
+  };
 }
