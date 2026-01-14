@@ -19,6 +19,11 @@ public class BillingQueries(
   ILogger<BillingQueries> logger
 ) : IQueries
 {
+  private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+  {
+    WriteIndented = true
+  };
+
   public async Task<NetworkUserInvoiceBasisEntity>
     ReadInvoiceBasisByNetworkUser(
       string networkUserId,
@@ -221,7 +226,7 @@ public class BillingQueries(
         inWindowAggregatesSql,
         cancellationToken,
         parameters,
-        commandTimeout: 300);
+        300);
 
     var nextBoundariesSql = $@"
       SELECT picked.*
@@ -254,7 +259,7 @@ public class BillingQueries(
         nextBoundariesSql,
         cancellationToken,
         parameters,
-        commandTimeout: 300);
+        300);
 
     var locationsWithData = inWindowAggregates
       .Select(x => x.MeasurementLocationId)
@@ -311,7 +316,7 @@ public class BillingQueries(
           lastReadingsBeforeBlackoutSql,
           cancellationToken,
           blackoutParameters,
-          commandTimeout: 300);
+          300);
 
       if (lastReadingsBeforeBlackout.Count != 0)
       {
@@ -375,7 +380,7 @@ public class BillingQueries(
               actualStartBoundariesSql,
               cancellationToken,
               targetParameters,
-              commandTimeout: 300);
+              300);
         }
       }
     }
@@ -453,9 +458,4 @@ public class BillingQueries(
         };
       }).ToList();
   }
-
-  private static readonly JsonSerializerOptions JsonSerializerOptions = new()
-  {
-    WriteIndented = true
-  };
 }
