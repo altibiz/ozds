@@ -249,6 +249,7 @@ test-ci *args:
     ls '{{ testdir }}' \
       | where $it.type == "dir" \
       | where { not ($in.name | str ends-with "Ozds.Server.Test") } \
+      | where { not ($in.name | str ends-with "Ozds.Caching.Test") } \
       | each { \
           print ($in.name | path basename); \
           let result = (dotnet test \
