@@ -313,10 +313,10 @@ public class MeasurementMutations(
           x is AggregateEntity aggregate
             ? (IntervalEntity?)aggregate.Interval
             : null))
-      .SelectAwait(
-        async x =>
+      .Select(
+        x =>
         {
-          var measurements = await x.ToListAsync();
+          var measurements = x.ToList();
           return new MeasurementGroup(x.Key.Type, x.Key.Interval, measurements);
         })
       .ToListAsync(cancellationToken);

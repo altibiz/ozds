@@ -507,7 +507,7 @@ clean:
       | each { |x| docker volume rm $x }
     @just up
 
-    nu {{ isllmready }}
+    #nu {{ isllmready }}
 
     nu {{ isdatabaseready }}
 
