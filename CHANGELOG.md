@@ -11,7 +11,13 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
-- more decimal places on Column definition
+- fix more decimal places on Column definitions for Regulatory catalogue
+
+## Unreleased
+
+### Changed
+
+- fix more decimal places on Column definitions for Network User catalogue
 
 ## [1.7.1] - 2025-12-14
 
