@@ -99,14 +99,14 @@ public partial class RegexService(
   {
     await foreach (var item in items
       .GroupBy(item => item.Key)
-      .SelectAwait(
-        async group =>
+      .Select(
+        group =>
         {
-          var first = await group.FirstAsync();
+          var first = group.First();
 
-          var metadata = await group
+          var metadata = group
             .Select(item => item.Metadata)
-            .AggregateAsync((x, y) => $"{x}\n{y}");
+            .Aggregate((x, y) => $"{x}\n{y}");
 
           return first with
           {
