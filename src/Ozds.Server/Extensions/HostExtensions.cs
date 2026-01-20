@@ -46,8 +46,8 @@ public static class HostExtensions
 
     app.UseMiddleware<OzdsExceptionMiddleware>();
 
-    //app.UseStaticFiles();
-    app.MapStaticAssets(); 
+    app.UseStaticFiles();
+    app.MapStaticAssets();
     app.UseRouting();
 
     app.UseAuthentication();
