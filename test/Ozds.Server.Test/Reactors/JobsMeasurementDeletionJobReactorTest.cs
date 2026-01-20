@@ -31,6 +31,7 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
 
   private TimeSpan Interval { get; }
 
+  // TODO: make it work with delete_chunks
   [Test]
   public async Task MeasurementDeletionJobReactor_Reacts(
     CancellationToken cancellationToken
