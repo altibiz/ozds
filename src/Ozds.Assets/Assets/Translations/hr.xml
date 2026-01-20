@@ -5854,9 +5854,9 @@
         Blue NN
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 65 column 13
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 51 column 13
-        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 45 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 66 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 52 column 13
+        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 46 column 13
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 187 column 13
       </Metadata>
       <Value>
@@ -8336,7 +8336,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/BlackoutNetworkUserCalculationDetails.razor' line 15 column 7
-        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 25 column 9
+        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 26 column 9
       </Metadata>
       <Value>
         Podaci nedostupni za obračunsko razdoblje: {0} - {1}. Obračun je
@@ -8348,9 +8348,9 @@
         Data was taken from period: {0} - {1}.
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 49 column 9
-        From file 'Ozds.Document/Components/NetworkUserCalculationDocument.razor' line 25 column 15
-        From file 'Ozds.Document/Components/NetworkUserInvoiceDocument.razor' line 40 column 17
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 50 column 9
+        From file 'Ozds.Document/Components/NetworkUserCalculationDocument.razor' line 27 column 15
+        From file 'Ozds.Document/Components/NetworkUserInvoiceDocument.razor' line 42 column 17
       </Metadata>
       <Value>
         Podaci su preuzeti iz razdoblja: {0} – {1}.
@@ -9957,8 +9957,8 @@
         Engaged power during higher daily tariff period
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 21 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 21 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 22 column 31
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 22 column 31
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 34 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 31 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 105 column 10
@@ -10121,10 +10121,10 @@
         Excessively drawn reactive energy
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/BlueLowNetworkUserCalculationDetails.razor' line 17 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 25 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteLowNetworkUserCalculationDetails.razor' line 21 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 25 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/BlueLowNetworkUserCalculationDetails.razor' line 18 column 31
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 26 column 31
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteLowNetworkUserCalculationDetails.razor' line 22 column 31
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 26 column 31
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 37 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 26 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 112 column 10
@@ -16508,9 +16508,9 @@
         Network usage during higher daily tariff period
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 13 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteLowNetworkUserCalculationDetails.razor' line 13 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 13 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 14 column 31
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteLowNetworkUserCalculationDetails.razor' line 14 column 31
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 14 column 31
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 28 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 21 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 91 column 10
@@ -16524,9 +16524,9 @@
         Network usage during lower daily tariff period
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 17 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteLowNetworkUserCalculationDetails.razor' line 17 column 29
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 17 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/RedLowNetworkUserCalculationDetails.razor' line 18 column 31
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteLowNetworkUserCalculationDetails.razor' line 18 column 31
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/WhiteMediumNetworkUserCalculationDetails.razor' line 18 column 31
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 31 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 16 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 98 column 10
@@ -16540,7 +16540,7 @@
         Network usage during unique daily tariff period
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/BlueLowNetworkUserCalculationDetails.razor' line 13 column 29
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/BlueLowNetworkUserCalculationDetails.razor' line 14 column 31
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Invoices/NetworkUserInvoiceDetails.razor' line 25 column 25
         From file 'Ozds.Document/Components/NetworkUserCalculationDocumentAbbreviations.razor' line 11 column 4
         From file 'Ozds.Document/Components/NetworkUserInvoiceDocumentContent.razor' line 84 column 10
@@ -19622,10 +19622,10 @@
         Red NN
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 63 column 11
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 64 column 11
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 13 column 27
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 49 column 11
-        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 43 column 11
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 50 column 11
+        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 44 column 11
         From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 9 column 10
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 185 column 11
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 90 column 14
@@ -24198,9 +24198,9 @@
         White NN
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 67 column 15
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 53 column 15
-        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 47 column 15
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 68 column 15
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 54 column 15
+        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 48 column 15
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 189 column 15
       </Metadata>
       <Value>
@@ -24212,9 +24212,9 @@
         White SN
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 69 column 17
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 55 column 17
-        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 49 column 17
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 70 column 17
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 56 column 17
+        From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 50 column 17
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 191 column 17
       </Metadata>
       <Value>

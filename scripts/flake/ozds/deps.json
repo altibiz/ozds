@@ -1125,6 +1125,11 @@
     "hash": "sha256-xhljqSkNQk8DMkEOBSYnn9lzCSEDDq4yO910itptqiE="
   },
   {
+    "pname": "System.Configuration.ConfigurationManager",
+    "version": "9.0.10",
+    "hash": "sha256-473QDHk9cMxW36NYH5sNiYqBtxmLpNUv66Atfdy5trg="
+  },
+  {
     "pname": "System.Diagnostics.DiagnosticSource",
     "version": "6.0.1",
     "hash": "sha256-Xi8wrUjVlioz//TPQjFHqcV/QGhTqnTfUcltsNlcCJ4="
@@ -1148,6 +1153,11 @@
     "pname": "System.Diagnostics.EventLog",
     "version": "8.0.0",
     "hash": "sha256-rt8xc3kddpQY4HEdghlBeOK4gdw5yIj4mcZhAVtk2/Y="
+  },
+  {
+    "pname": "System.Diagnostics.EventLog",
+    "version": "9.0.10",
+    "hash": "sha256-Nl5DqIAwczE10eWNlVz1UpAVO668eNdhyWq+Rfw+QI0="
   },
   {
     "pname": "System.Formats.Asn1",
@@ -1226,8 +1236,8 @@
   },
   {
     "pname": "System.Runtime.Caching",
-    "version": "8.0.0",
-    "hash": "sha256-wIbBBlwC3N/Mn05V0YfTcLsjmo6NUCd6g1ubtNZ6HDQ="
+    "version": "9.0.10",
+    "hash": "sha256-NEgFSnJYegaqGd5qkLFhs93l1BpzbLNDLPM9xkETnto="
   },
   {
     "pname": "System.Runtime.CompilerServices.Unsafe",
@@ -1268,6 +1278,11 @@
     "pname": "System.Security.Cryptography.ProtectedData",
     "version": "8.0.0",
     "hash": "sha256-fb0pa9sQxN+mr0vnXg1Igbx49CaOqS+GDkTfWNboUvs="
+  },
+  {
+    "pname": "System.Security.Cryptography.ProtectedData",
+    "version": "9.0.10",
+    "hash": "sha256-uuYXxZ5AzdT2nijig1RzcINYa2HbpXTyZARjx25Vvo4="
   },
   {
     "pname": "System.Security.Cryptography.Xml",
