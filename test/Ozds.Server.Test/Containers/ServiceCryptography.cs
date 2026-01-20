@@ -70,15 +70,14 @@ public static class ServiceCryptography
       rng.GetBytes(salt);
     }
 
-    byte[] passwordHash;
-    using (var pbkdf2 = new Rfc2898DeriveBytes(
+    // https://learn.microsoft.com/en-us/dotnet/fundamentals/syslib-diagnostics/syslib0060 - replaced by
+    byte[] passwordHash = Rfc2898DeriveBytes.Pbkdf2(
       password,
       salt,
       iterations,
-      HashAlgorithmName.SHA512))
-    {
-      passwordHash = pbkdf2.GetBytes(64);
-    }
+      HashAlgorithmName.SHA512,
+      64
+    );
 
     // NOTE: Authelia uses glibc base64
     // which uses '.' instead of '+' without padding...
