@@ -38,6 +38,13 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - update System.Linq.Async package to version 7.0.0
 - fixed problem with removed async functions from package System.Linq.Async on
   RegexService.cs and MeasurementMutations.cs
+- updated .NET version from 8 to 10
+- updated Azure.Identity package
+- removed deprecated/unused packages and dependencies
+- replaced deprecated implementation on ServiceCryptography
+- update System.Linq.Async package to version 7.0.0
+- fixed problem with removed async functions from package System.Linq.Async on
+  RegexService.cs and MeasurementMutations.cs
 - fix more decimal places on Column definitions for Regulatory catalogue
 - fix more decimal places on Column definitions for Network User catalogue
 
