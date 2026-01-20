@@ -5,7 +5,11 @@
     <LangVersion>13</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <!-- <RequiresAspNetWebAssets>true</RequiresAspNetWebAssets> -->
+  </PropertyGroup>
+
+  <PropertyGroup
+      Condition="'$(MSBuildProjectName)' == 'Ozds.Server'">
+    <RequiresAspNetWebAssets>true</RequiresAspNetWebAssets>
   </PropertyGroup>
 
   <PropertyGroup
