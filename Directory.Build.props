@@ -12,11 +12,6 @@
     <RequiresAspNetWebAssets>true</RequiresAspNetWebAssets>
   </PropertyGroup>
 
-  <PropertyGroup
-      Condition="'$(MSBuildProjectName)' == 'Ozds.Server'">
-    <RequiresAspNetWebAssets>true</RequiresAspNetWebAssets>
-  </PropertyGroup>
-
   <PropertyGroup>
     <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
   </PropertyGroup>
