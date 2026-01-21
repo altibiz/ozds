@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <PropertyGroup>
+    <RequiresAspNetWebAssets>true</RequiresAspNetWebAssets>
+  </PropertyGroup>
+
 	<ItemGroup>
 	  <ProjectReference Include="../../src/Ozds.Business/Ozds.Business.csproj" />
 	  <ProjectReference Include="../../src/Ozds.Client/Ozds.Client.csproj" />
