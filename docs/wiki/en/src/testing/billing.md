@@ -24,17 +24,14 @@ Here is a list of failures that can occur in the billing process divided into
 areas:
 
 - **Server -> Database**:
-
   - Database is not connected to the network
   - Database throws an exception (software bug)
 
 - **Server**:
-
   - Server is not connected to the network
   - Server throws an exception (software bug)
 
 - **Server -> Altibiz ERP**:
-
   - Altibiz ERP server is not connected to the network
   - Altibiz ERP server is sending incorrect data
   - Altibiz ERP server throws an exception (software bug)
