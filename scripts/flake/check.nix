@@ -26,9 +26,7 @@
           nixpkgs-fmt
 
           # C#
-          dotnet-sdk
-          dotnet-runtime
-          dotnet-aspnetcore
+        ] ++ (self.lib.dotnet.pkgs pkgs) ++ [
 
           # PostgreSQL
           postgresql_14
