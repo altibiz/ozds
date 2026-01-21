@@ -54,7 +54,7 @@ prepare:
     dotnet tool restore
     dotnet build
     (which prettier | is-not-empty) or (npm install -g prettier)
-    ($env | get --ignore-errors PLAYWRIGHT_BROWSERS_PATH | is-not-empty) or \
+    ($env | get --optional PLAYWRIGHT_BROWSERS_PATH | is-not-empty) or \
       ((pwsh '{{ playwright }}' install --with-deps chromium) | is-empty)
     @just clean
 
@@ -500,7 +500,7 @@ clean:
     docker compose ps -a -q | lines | each { |x| docker stop $x }
     docker compose --profile "*" down
     docker volume ls -q | lines \
-      | filter { |x| \
+      | where { |x| \
           ($x | str starts-with "ozds") \
           and not ($x | str contains "ollama") \
         } \

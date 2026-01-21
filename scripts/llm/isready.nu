@@ -6,7 +6,7 @@ def main [] {
       let ollama_container_id = (docker compose ps --format json
         | lines
         | each { $in | from json }
-        | filter { $in.Image | str starts-with "ollama" }
+        | where { $in.Image | str starts-with "ollama" }
         | first
         | get id)
       (docker exec $ollama_container_id
