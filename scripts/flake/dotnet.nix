@@ -33,7 +33,7 @@ let
       # vscode extension
       sdk_9_0_3xx
       # latest LTS
-      sdk_8_0_3xx
+      sdk_10_0-bin
     ]);
 in
 {
