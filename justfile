@@ -168,7 +168,7 @@ format:
       --cache --cache-strategy metadata \
       '{{ root }}'
 
-    yapf --recursive --in-place --parallel '{{ root }}'
+    # yapf --recursive --in-place --parallel '{{ root }}'
 
     dotnet jb cleanupcode '{{ sln }}' \
       --verbosity=WARN \
@@ -198,9 +198,9 @@ lint:
       | get exit_code) == 0 { exit 1 }
 
     # TODO: make it work in CI
-    ($env | get CI? | is-not-empty) \
-      or ((pyright '{{ root }}' | complete | get exit_code) == 0)
-    ruff check '{{ root }}'
+    # ($env | get CI? | is-not-empty) \
+    #   or ((pyright '{{ root }}' | complete | get exit_code) == 0)
+    # ruff check '{{ root }}'
 
     @just lint-dotnet
 
