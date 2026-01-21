@@ -30,8 +30,8 @@
         rm -rf $out/lib/${pname}/App_Data
       '';
 
-      dotnet-sdk = pkgs.dotnet-sdk_8;
-      dotnet-runtime = pkgs.dotnet-aspnetcore_8;
+      dotnet-sdk = pkgs.dotnet-sdk_10;
+      dotnet-runtime = pkgs.dotnet-aspnetcore_10;
 
       meta = {
         description = "ozds";
