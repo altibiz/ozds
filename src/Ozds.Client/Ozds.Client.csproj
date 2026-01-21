@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Identity" />
     <PackageReference Include="MudBlazor" />
     <PackageReference Include="MudBlazor.ThemeManager" />
     <PackageReference Include="Blazor-ApexCharts" />
