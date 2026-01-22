@@ -566,8 +566,8 @@
   },
   {
     "pname": "Roslynator.DotNet.Cli",
-    "version": "0.8.9",
-    "hash": "sha256-tcCPAw8PmnXRTr9oGO8Oph0hGCC55NMOPVno7lHjhkE="
+    "version": "0.12.0",
+    "hash": "sha256-70/d2Zver5ueaZAy+wUVCq4Hs6ZKF0lYZqhWKMzjLMA="
   },
   {
     "pname": "SonarAnalyzer.CSharp",
