@@ -16,6 +16,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
 {
   private MeasurementChartParameters _parameters = new();
 
+  private bool _initParamsSet = false;
+
   private MudSelect<string> _select = default!;
 
   [Parameter]
@@ -85,20 +87,44 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   protected override void OnParametersSet()
   {
+    if (_parameters.MeasurementLocations.Count == 0
+        && _parameters.Meters.Count == 0
+        && _initParamsSet)
+    {
+      return;
+    }
+
     if (MeasurementLocations.Count == 1)
     {
       _parameters.MeasurementLocations = MeasurementLocations.ToHashSet();
+      _initParamsSet = true;
       return;
     }
 
     if (Meters.Count == 1)
     {
       _parameters.Meters = Meters.ToHashSet();
+      _initParamsSet = true;
+      return;
+    }
+
+    if (_parameters.MeasurementLocations.Count > 0)
+    {
+      _parameters.MeasurementLocations
+        .IntersectWith(MeasurementLocations);
+      return;
+    }
+
+    if (_parameters.Meters.Count > 0)
+    {
+      _parameters.Meters
+        .IntersectWith(Meters);
       return;
     }
 
     if (MeasurementLocations.Count > 0)
     {
+      _initParamsSet = true;
       _parameters.MeasurementLocations = MeasurementLocations
         .Take(1)
         .ToHashSet();
@@ -107,6 +133,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
     if (Meters.Count > 0)
     {
+      _initParamsSet = true;
+
       _parameters.Meters = Meters
         .Take(1)
         .ToHashSet();

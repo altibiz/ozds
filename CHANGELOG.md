@@ -7,7 +7,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and adheres to [Semantic Versioning](https://semver.org/).
 
-## Unreleased
+## Unreleased - 2025-01-22
+
+### Changed
+
+- fixed unintended reset of the selected measurement points or meters on each
+  property change (for now it's local fix but it could be done so that the state
+  and params of chart control persist after reloading the page)
+
+## Unreleased - 2025-01-19
 
 ### Changed
 
