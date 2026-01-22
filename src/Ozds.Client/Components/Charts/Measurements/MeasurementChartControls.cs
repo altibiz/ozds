@@ -14,9 +14,8 @@ namespace Ozds.Client.Components.Charts;
 
 public partial class MeasurementChartControls : OzdsComponentBase
 {
-  private MeasurementChartParameters _parameters = new();
-
   private bool _initParamsSet = false;
+  private MeasurementChartParameters _parameters = new();
 
   private MudSelect<string> _select = default!;
 
@@ -88,8 +87,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
   protected override void OnParametersSet()
   {
     if (_parameters.MeasurementLocations.Count == 0
-        && _parameters.Meters.Count == 0
-        && _initParamsSet)
+      && _parameters.Meters.Count == 0
+      && _initParamsSet)
     {
       return;
     }
