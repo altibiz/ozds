@@ -55,16 +55,14 @@ public partial class RegexService(
     {
       var managedItems = dictionary
         .ToList()
-        .Where(
-          item => item.Metadata is { } metadata
-            && metadata.StartsWith("From file"))
+        .Where(item => item.Metadata is { } metadata
+          && metadata.StartsWith("From file"))
         .ToList();
 
       // TODO: better way to detect managed translations
       var unusedManagedItems = managedItems
-        .Where(
-          dictionaryItem => !items
-            .Exists(item => item.Key == dictionaryItem.Key))
+        .Where(dictionaryItem => !items
+          .Exists(item => item.Key == dictionaryItem.Key))
         .ToList();
 
       foreach (var key in unusedManagedItems.Select(x => x.Key))
@@ -99,20 +97,19 @@ public partial class RegexService(
   {
     await foreach (var item in items
       .GroupBy(item => item.Key)
-      .Select(
-        group =>
+      .Select(group =>
+      {
+        var first = group.First();
+
+        var metadata = group
+          .Select(item => item.Metadata)
+          .Aggregate((x, y) => $"{x}\n{y}");
+
+        return first with
         {
-          var first = group.First();
-
-          var metadata = group
-            .Select(item => item.Metadata)
-            .Aggregate((x, y) => $"{x}\n{y}");
-
-          return first with
-          {
-            Metadata = metadata
-          };
-        }))
+          Metadata = metadata
+        };
+      }))
     {
       yield return item;
     }

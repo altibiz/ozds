@@ -117,16 +117,15 @@ public class IdentifiableQueries(
         cancellationToken);
 
     return ids
-      .Select(
-        id =>
+      .Select(id =>
+      {
+        if (items.TryGetValue(id, out var item))
         {
-          if (items.TryGetValue(id, out var item))
-          {
-            return item;
-          }
+          return item;
+        }
 
-          return default;
-        })
+        return default;
+      })
       .Cast<object?>()
       .ToList();
   }

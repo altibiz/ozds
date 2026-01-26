@@ -12,11 +12,11 @@
   )
   {
     return @<Fragment>
-      @foreach (var fragment in fragments)
-      {
-        @fragment
-      }
-    </Fragment>;
+             @foreach (var fragment in fragments)
+             {
+               @fragment
+             }
+           </Fragment>;
   }
 
   public static RenderFragment String(
@@ -24,8 +24,8 @@
   )
   {
     return @<Fragment>
-      @(@string)
-    </Fragment>;
+             @(@string)
+           </Fragment>;
   }
 
   public static readonly RenderFragment Empty = @<Fragment></Fragment>;

@@ -13,11 +13,10 @@ public partial class MessagingDbContext(
     get
     {
       return typeof(MessagingDbContext).Assembly.GetTypes()
-        .Where(
-          x =>
-            x.IsClass &&
-            !x.IsAbstract &&
-            x.IsAssignableTo(typeof(ISagaClassMap)))
+        .Where(x =>
+          x.IsClass &&
+          !x.IsAbstract &&
+          x.IsAssignableTo(typeof(ISagaClassMap)))
         .Select(Activator.CreateInstance)
         .Cast<ISagaClassMap>();
     }

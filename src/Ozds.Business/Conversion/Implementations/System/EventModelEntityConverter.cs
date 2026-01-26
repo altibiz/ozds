@@ -22,9 +22,8 @@ public class EventModelEntityConverter(IServiceProvider serviceProvider)
   {
     base.InitializeEntity(model, entity);
     entity.Categories = model.Categories
-      .Select(
-        category => modelEntityConverter
-          .ToEntity<CategoryEntity>(category))
+      .Select(category => modelEntityConverter
+        .ToEntity<CategoryEntity>(category))
       .ToList();
     entity.Timestamp = model.Timestamp;
     entity.Level = modelEntityConverter.ToEntity<LevelEntity>(model.Level);
@@ -37,9 +36,8 @@ public class EventModelEntityConverter(IServiceProvider serviceProvider)
   {
     base.InitializeModel(entity, model);
     model.Categories = entity.Categories
-      .Select(
-        category => modelEntityConverter
-          .ToModel<CategoryModel>(category))
+      .Select(category => modelEntityConverter
+        .ToModel<CategoryModel>(category))
       .ToList();
     model.Timestamp = entity.Timestamp;
     model.Level = modelEntityConverter.ToModel<LevelModel>(entity.Level);

@@ -27,8 +27,7 @@ public static class DbContextDapperCommandExtensions
     int? commandTimeout = null
   )
   {
-    var objects = await DapperCommand<T>(
-      context,
+    var objects = await context.DapperCommand<T>(
       typeof(T),
       sql,
       cancellationToken,
@@ -48,8 +47,7 @@ public static class DbContextDapperCommandExtensions
     int? commandTimeout = null
   )
   {
-    var objects = await DapperCommand<object>(
-      context,
+    var objects = await context.DapperCommand<object>(
       type,
       sql,
       cancellationToken,
@@ -452,10 +450,9 @@ public static class DbContextDapperCommandExtensions
   {
     var concreteEntityType = baseEntityType
         .GetDerivedTypesInclusive()
-        .FirstOrDefault(
-          e => Equals(
-            e.GetDiscriminatorValue(),
-            discriminatorValue))
+        .FirstOrDefault(e => Equals(
+          e.GetDiscriminatorValue(),
+          discriminatorValue))
       ?? throw new InvalidOperationException(
         $"Unknown discriminator value: {discriminatorValue}");
 
@@ -471,25 +468,24 @@ public static class DbContextDapperCommandExtensions
 
     var splitColumns = new Queue<string>(
       propertyMappings
-        .Select(
-          mapping =>
+        .Select(mapping =>
+        {
+          var splitColumn = mapping switch
           {
-            var splitColumn = mapping switch
-            {
-              EntityPropertyMapping entityMapping => entityMapping
-                  .EntityType.FindPrimaryKey()
-                  ?.Properties[0]
-                  ?.GetColumnName()
-                ?? throw new InvalidOperationException(
-                  "Primary key not found for entity"
-                  + entityMapping.EntityType.ClrType.Name),
-              ScalarPropertyMapping scalarMapping =>
-                scalarMapping.Property.Name,
-              _ => throw new InvalidOperationException(
-                $"Unknown property mapping type: {mapping.GetType().Name}")
-            };
-            return splitColumn;
-          }));
+            EntityPropertyMapping entityMapping => entityMapping
+                .EntityType.FindPrimaryKey()
+                ?.Properties[0]
+                ?.GetColumnName()
+              ?? throw new InvalidOperationException(
+                "Primary key not found for entity"
+                + entityMapping.EntityType.ClrType.Name),
+            ScalarPropertyMapping scalarMapping =>
+              scalarMapping.Property.Name,
+            _ => throw new InvalidOperationException(
+              $"Unknown property mapping type: {mapping.GetType().Name}")
+          };
+          return splitColumn;
+        }));
 
     var splits = Enumerable.Range(0, reader.FieldCount)
       .Aggregate(

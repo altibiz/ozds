@@ -33,23 +33,22 @@ public class BlackoutNetworkUserCalculationCalculatorTest
           .ToCustomization())
       .Build<BlackoutNetworkUserCalculationModel>()
       .CreateMany(Constants.DefaultFuzzCount)
-      .Select(
-        x =>
-        {
-          x.UsageNetworkUserCatalogueId =
-            x.ConcreteArchivedUsageNetworkUserCatalogue.Id;
-          x.SupplyRegulatoryCatalogueId =
-            x.ArchivedSupplyRegulatoryCatalogue.Id;
-          x.NetworkUserMeasurementLocationId =
-            x.ArchivedNetworkUserMeasurementLocation.Id;
-          x.Remark =
-            x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
-          x.MeterId = x.ArchivedMeter.Id;
+      .Select(x =>
+      {
+        x.UsageNetworkUserCatalogueId =
+          x.ConcreteArchivedUsageNetworkUserCatalogue.Id;
+        x.SupplyRegulatoryCatalogueId =
+          x.ArchivedSupplyRegulatoryCatalogue.Id;
+        x.NetworkUserMeasurementLocationId =
+          x.ArchivedNetworkUserMeasurementLocation.Id;
+        x.Remark =
+          x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
+        x.MeterId = x.ArchivedMeter.Id;
 
-          x.Total_EUR = 0.0M;
+        x.Total_EUR = 0.0M;
 
-          return x;
-        });
+        return x;
+      });
   }
 
   [Test]

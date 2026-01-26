@@ -44,7 +44,7 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
   private IDialogService DialogService { get; set; } = default!;
 
   [Parameter]
-  public bool Deleted { get; set; } = false;
+  public bool Deleted { get; set; }
 
   [Parameter]
   public IEnumerable<T>? Value { get; set; }
@@ -59,40 +59,40 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
   public int PageCount { get; set; } = QueryConstants.DefaultPageCount;
 
   [Parameter]
-  public RenderFragment<T>? Summary { get; set; } = default!;
+  public RenderFragment<T>? Summary { get; set; }
 
   [Parameter]
-  public RenderFragment<T>? Details { get; set; } = default!;
+  public RenderFragment<T>? Details { get; set; }
 
   [Parameter]
-  public RenderFragment<IEnumerable<T>>? Columns { get; set; } = default!;
+  public RenderFragment<IEnumerable<T>>? Columns { get; set; }
 
   [Parameter]
-  public RenderFragment<IEnumerable<T>>? Tools { get; set; } = default!;
+  public RenderFragment<IEnumerable<T>>? Tools { get; set; }
 
   [Parameter]
-  public RenderFragment<T>? Actions { get; set; } = default!;
+  public RenderFragment<T>? Actions { get; set; }
 
   [Parameter]
-  public RenderFragment? Empty { get; set; } = default!;
+  public RenderFragment? Empty { get; set; }
 
   [Parameter]
-  public bool WithDeleted { get; set; } = false;
+  public bool WithDeleted { get; set; }
 
   [Parameter]
-  public bool WithMutations { get; set; } = false;
+  public bool WithMutations { get; set; }
 
   [Parameter]
-  public Func<T, TMapped>? Map { get; set; } = default!;
+  public Func<T, TMapped>? Map { get; set; }
 
   [Parameter]
-  public bool WithCreate { get; set; } = false;
+  public bool WithCreate { get; set; }
 
   [Parameter]
-  public bool WithHeading { get; set; } = false;
+  public bool WithHeading { get; set; }
 
   [Parameter]
-  public bool WithTitle { get; set; } = false;
+  public bool WithTitle { get; set; }
 
   [Parameter]
   public string Class { get; set; } = string.Empty;

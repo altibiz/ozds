@@ -43,13 +43,12 @@ public class DataNotificationChangeHandler(
       {
         NotificationRecipients = recipients
           .GroupBy(x => x.NotificationId)
-          .Select(
-            x =>
-              new NotificationRecipientsCreatedEventArgsNotificationRecipients
-              {
-                Notification = notifications.First(y => y.Id == x.Key),
-                Recipients = x.ToList()
-              })
+          .Select(x =>
+            new NotificationRecipientsCreatedEventArgsNotificationRecipients
+            {
+              Notification = notifications.First(y => y.Id == x.Key),
+              Recipients = x.ToList()
+            })
           .ToList()
       });
 

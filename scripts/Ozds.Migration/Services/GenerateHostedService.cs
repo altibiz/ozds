@@ -98,9 +98,8 @@ public class GenerateHostedService(
           cancellationToken));
     }
 
-    foreach (var (type, interval) in AggregateTypes.SelectMany(
-      type =>
-        Intervals.Select(interval => (type, interval))))
+    foreach (var (type, interval) in AggregateTypes.SelectMany(type =>
+      Intervals.Select(interval => (type, interval))))
     {
       statements.Add(
         await Statement(
@@ -133,9 +132,8 @@ public class GenerateHostedService(
           cancellationToken));
     }
 
-    foreach (var (type, interval) in AggregateTypes.SelectMany(
-      type =>
-        Intervals.Select(interval => (type, interval))))
+    foreach (var (type, interval) in AggregateTypes.SelectMany(type =>
+      Intervals.Select(interval => (type, interval))))
     {
       statements.Add(
         await Statement(

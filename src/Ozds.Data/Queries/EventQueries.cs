@@ -99,10 +99,9 @@ public class EventQueries(
       .ResolveEntityTable(auditableEntity.GetType());
     var filtered = context.Events
       .OfType<AuditEventEntity>()
-      .Where(
-        x =>
-          x.AuditableEntityId == auditableEntityId
-          && x.AuditableEntityTable == auditableEntityTable);
+      .Where(x =>
+        x.AuditableEntityId == auditableEntityId
+        && x.AuditableEntityTable == auditableEntityTable);
 
     if (!string.IsNullOrWhiteSpace(title))
     {

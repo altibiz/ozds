@@ -61,13 +61,12 @@ public class AspNetCoreComponentsComponentToHtmlRenderer(
       { parametersParameterName, parameters }
     };
     var parameterView = ParameterView.FromDictionary(indexParameters);
-    var html = await htmlRenderer.Dispatcher.InvokeAsync(
-      async () =>
-      {
-        var output = await htmlRenderer
-          .RenderComponentAsync(rootType, parameterView);
-        return output.ToHtmlString();
-      });
+    var html = await htmlRenderer.Dispatcher.InvokeAsync(async () =>
+    {
+      var output = await htmlRenderer
+        .RenderComponentAsync(rootType, parameterView);
+      return output.ToHtmlString();
+    });
     return html;
   }
 }

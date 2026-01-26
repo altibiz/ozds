@@ -32,20 +32,19 @@ public static class DbContextOptionsBuilderExtensions
         .GetTypes()
         .Where(type => type.IsAssignableTo(typeof(ServedInterceptor)))
         .Where(type => !type.IsAbstract && !type.IsGenericType)
-        .Select(
-          type =>
+        .Select(type =>
+        {
+          try
           {
-            try
-            {
-              return (IInterceptor?)Activator.CreateInstance(
-                type,
-                serviceProvider);
-            }
-            catch (Exception)
-            {
-              return null;
-            }
-          })
+            return (IInterceptor?)Activator.CreateInstance(
+              type,
+              serviceProvider);
+          }
+          catch (Exception)
+          {
+            return null;
+          }
+        })
         .Where(interceptor => interceptor is not null)
         .OfType<ServedInterceptor>()
         .OrderBy(interceptor => interceptor.Order)

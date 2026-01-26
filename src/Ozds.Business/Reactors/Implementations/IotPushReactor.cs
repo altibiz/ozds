@@ -109,10 +109,9 @@ public class IotPushHandler(
     if (meters.Count > 0)
     {
       await meterJobManager.RescheduleInactivityMonitorJobs(
-        meters.Select(
-          x => new MeterInactivityMonitorDetails(
-            x.Id,
-            time.PeriodTimeSpan(x.MaxInactivityPeriod))),
+        meters.Select(x => new MeterInactivityMonitorDetails(
+          x.Id,
+          time.PeriodTimeSpan(x.MaxInactivityPeriod))),
         cancellationToken
       );
     }

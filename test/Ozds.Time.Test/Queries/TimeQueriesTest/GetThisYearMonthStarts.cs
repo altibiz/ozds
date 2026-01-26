@@ -67,8 +67,9 @@ public class GetThisYearMonthStartsTest
 
     var inputDate = DateTimeOffset.Parse(
       inputDateString, CultureInfo.InvariantCulture);
-    var expectedDates = expectedDateStrings.Select(
-      s => DateTimeOffset.Parse(s, CultureInfo.InvariantCulture)).ToList();
+    var expectedDates = expectedDateStrings
+      .Select(s => DateTimeOffset.Parse(s, CultureInfo.InvariantCulture))
+      .ToList();
 
     var resultDates = timeQueries.GetThisYearMonthStarts(inputDate).ToList();
 

@@ -59,24 +59,22 @@ public partial class AnalysisStateProvider : OzdsComponentBase
   {
     _state = new AnalysisState(
       Reset,
-      new Lazy<List<AnalysisBasisModel>>(
-        () =>
+      new Lazy<List<AnalysisBasisModel>>(() =>
+      {
+        Task.Run(async () =>
         {
-          Task.Run(
-            async () =>
-            {
-              try
-              {
-                await Fetch();
-              }
-              catch (Exception ex)
-              {
-                Logger.LogError(ex, "Error setting analysis bases");
-              }
-            });
+          try
+          {
+            await Fetch();
+          }
+          catch (Exception ex)
+          {
+            Logger.LogError(ex, "Error setting analysis bases");
+          }
+        });
 
-          return new List<AnalysisBasisModel>();
-        })
+        return new List<AnalysisBasisModel>();
+      })
     );
   }
 
@@ -120,9 +118,8 @@ public partial class AnalysisStateProvider : OzdsComponentBase
     {
       analysisBasis.MonthlyAggregates = monthlyAggregates
         .Items
-        .Where(
-          x => x.MeasurementLocationId
-            == analysisBasis.MeasurementLocation.Id)
+        .Where(x => x.MeasurementLocationId
+          == analysisBasis.MeasurementLocation.Id)
         .OfType<AggregateModel>()
         .ToList();
     }
@@ -140,9 +137,8 @@ public partial class AnalysisStateProvider : OzdsComponentBase
     foreach (var analysisBasis in analysisBases)
     {
       analysisBasis.LastMeasurement = lastMeasurements
-          .FirstOrDefault(
-            x => x.MeasurementLocationId
-              == analysisBasis.MeasurementLocation.Id)
+          .FirstOrDefault(x => x.MeasurementLocationId
+            == analysisBasis.MeasurementLocation.Id)
         as MeasurementModel;
     }
 
@@ -165,17 +161,15 @@ public partial class AnalysisStateProvider : OzdsComponentBase
       analysisBasis.Calculations = financials
         .Items
         .OfType<INetworkUserCalculation>()
-        .Where(
-          x => x.NetworkUserMeasurementLocationId
-            == analysisBasis.MeasurementLocation.Id)
+        .Where(x => x.NetworkUserMeasurementLocationId
+          == analysisBasis.MeasurementLocation.Id)
         .OfType<CalculationModel>()
         .ToList();
       analysisBasis.Invoices = financials
         .Items
         .OfType<INetworkUserInvoice>()
-        .Where(
-          x => x.NetworkUserId
-            == analysisBasis.NetworkUser?.Id)
+        .Where(x => x.NetworkUserId
+          == analysisBasis.NetworkUser?.Id)
         .OfType<InvoiceModel>()
         .ToList();
     }

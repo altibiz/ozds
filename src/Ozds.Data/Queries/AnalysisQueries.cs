@@ -41,37 +41,31 @@ public class AnalysisQueries(
       }
 
       return await initialLocations
-        .Include(
-          x => x.NetworkUsers
-            .Where(x => !x.IsDeleted))
-        .ThenInclude(
-          x => x.NetworkUserMeasurementLocations
-            .Where(x => !x.IsDeleted))
+        .Include(x => x.NetworkUsers
+          .Where(x => !x.IsDeleted))
+        .ThenInclude(x => x.NetworkUserMeasurementLocations
+          .Where(x => !x.IsDeleted))
         .ThenInclude(x => x.Meter)
         .AsSingleQuery()
         .ToListAsync(cancellationToken)
-        .ContinueWith(
-          x => x.Result
-            .SelectMany(
-              x => x.NetworkUsers
-                .SelectMany(
-                  y => y.NetworkUserMeasurementLocations
-                    .Select(
-                      z => new AnalysisBasisEntity
-                      {
-                        Representative = representative,
-                        FromDate = fromDate,
-                        ToDate = toDate,
-                        Location = x,
-                        NetworkUser = y,
-                        MeasurementLocation = z,
-                        Meter = z.Meter,
-                        Calculations = new List<CalculationEntity>(),
-                        Invoices = new List<InvoiceEntity>(),
-                        LastMeasurement = null,
-                        MonthlyAggregates = new List<AggregateEntity>()
-                      })))
-            .ToList());
+        .ContinueWith(x => x.Result
+          .SelectMany(x => x.NetworkUsers
+            .SelectMany(y => y.NetworkUserMeasurementLocations
+              .Select(z => new AnalysisBasisEntity
+              {
+                Representative = representative,
+                FromDate = fromDate,
+                ToDate = toDate,
+                Location = x,
+                NetworkUser = y,
+                MeasurementLocation = z,
+                Meter = z.Meter,
+                Calculations = new List<CalculationEntity>(),
+                Invoices = new List<InvoiceEntity>(),
+                LastMeasurement = null,
+                MonthlyAggregates = new List<AggregateEntity>()
+              })))
+          .ToList());
     }
 
     var initialNetworkUsersQuery = context.NetworkUserRepresentatives
@@ -99,31 +93,27 @@ public class AnalysisQueries(
           initialNetworkUsers.Select(x => x.Id)))
       .Where(x => !x.IsDeleted)
       .Include(x => x.Location)
-      .Include(
-        x => x.NetworkUserMeasurementLocations
-          .Where(x => !x.IsDeleted))
+      .Include(x => x.NetworkUserMeasurementLocations
+        .Where(x => !x.IsDeleted))
       .ThenInclude(x => x.Meter)
       .AsSingleQuery()
       .ToListAsync(cancellationToken)
-      .ContinueWith(
-        x => x.Result
-          .SelectMany(
-            x => x.NetworkUserMeasurementLocations
-              .Select(
-                y => new AnalysisBasisEntity
-                {
-                  Representative = representative,
-                  FromDate = fromDate,
-                  ToDate = toDate,
-                  Location = x.Location,
-                  NetworkUser = x,
-                  MeasurementLocation = y,
-                  Meter = y.Meter,
-                  Calculations = new List<CalculationEntity>(),
-                  Invoices = new List<InvoiceEntity>(),
-                  LastMeasurement = null,
-                  MonthlyAggregates = new List<AggregateEntity>()
-                }))
-          .ToList());
+      .ContinueWith(x => x.Result
+        .SelectMany(x => x.NetworkUserMeasurementLocations
+          .Select(y => new AnalysisBasisEntity
+          {
+            Representative = representative,
+            FromDate = fromDate,
+            ToDate = toDate,
+            Location = x.Location,
+            NetworkUser = x,
+            MeasurementLocation = y,
+            Meter = y.Meter,
+            Calculations = new List<CalculationEntity>(),
+            Invoices = new List<InvoiceEntity>(),
+            LastMeasurement = null,
+            MonthlyAggregates = new List<AggregateEntity>()
+          }))
+        .ToList());
   }
 }

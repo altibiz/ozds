@@ -160,10 +160,9 @@ public abstract class
     while (timeSpan > TimeSpan.Zero)
     {
       foreach (var record in records
-        .Where(
-          record =>
-            record.Timestamp >= dateFromCsv
-            && record.Timestamp < dateToCsv))
+        .Where(record =>
+          record.Timestamp >= dateFromCsv
+          && record.Timestamp < dateToCsv))
       {
         var timestamp = currentDateFrom + (record.Timestamp - dateFromCsv);
         var copied = _corrector.CopyRecord(record);

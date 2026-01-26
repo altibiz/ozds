@@ -86,29 +86,24 @@ public partial class NotificationsStateProvider : OzdsComponentBase
   )
   {
     if (!args.NotificationRecipients
-      .Any(
-        x => x.Recipients
-          .Any(
-            y => y.RepresentativeId
-              == RepresentativeState.Representative.Id)))
+      .Any(x => x.Recipients
+        .Any(y => y.RepresentativeId
+          == RepresentativeState.Representative.Id)))
     {
       return;
     }
 
-    InvokeAsync(
-      () =>
-      {
-        var notifications = args.NotificationRecipients
-          .Where(
-            x => x.Recipients
-              .Any(
-                y => y.RepresentativeId
-                  == RepresentativeState.Representative.Id))
-          .Select(x => x.Notification)
-          .ToList();
-        _state.Notifications.AddRange(notifications);
-        StateHasChanged();
-      });
+    InvokeAsync(() =>
+    {
+      var notifications = args.NotificationRecipients
+        .Where(x => x.Recipients
+          .Any(y => y.RepresentativeId
+            == RepresentativeState.Representative.Id))
+        .Select(x => x.Notification)
+        .ToList();
+      _state.Notifications.AddRange(notifications);
+      StateHasChanged();
+    });
   }
 
   private void OnDataModelsChanged(
@@ -124,12 +119,10 @@ public partial class NotificationsStateProvider : OzdsComponentBase
       .ToList();
 
     var actualNotificationsMarkedAsSeen = _state.Notifications
-      .Where(
-        x => notificationsMarkedAsSeen
-          .Exists(
-            y =>
-              y.NotificationId == x.Id
-              && y.RepresentativeId == RepresentativeState.Representative.Id))
+      .Where(x => notificationsMarkedAsSeen
+        .Exists(y =>
+          y.NotificationId == x.Id
+          && y.RepresentativeId == RepresentativeState.Representative.Id))
       .ToList();
 
     var indexedNotificationsMarkedAsResolved = args.Models
@@ -137,33 +130,31 @@ public partial class NotificationsStateProvider : OzdsComponentBase
       .Select(x => x.Model)
       .OfType<IResolvableNotification>()
       .Where(x => x.ResolvedOn is not null)
-      .Select(
-        x => new
-        {
-          Notification = x,
-          Index = _state.Notifications.FindIndex(y => y.Id == x.Id)
-        })
+      .Select(x => new
+      {
+        Notification = x,
+        Index = _state.Notifications.FindIndex(y => y.Id == x.Id)
+      })
       .Where(x => x.Index is not -1)
       .ToList();
 
     if (actualNotificationsMarkedAsSeen.Count > 0 ||
       indexedNotificationsMarkedAsResolved.Count > 0)
     {
-      InvokeAsync(
-        () =>
+      InvokeAsync(() =>
+      {
+        foreach (var notification in actualNotificationsMarkedAsSeen)
         {
-          foreach (var notification in actualNotificationsMarkedAsSeen)
-          {
-            _state.Notifications.Remove(notification);
-          }
+          _state.Notifications.Remove(notification);
+        }
 
-          foreach (var x in indexedNotificationsMarkedAsResolved)
-          {
-            _state.Notifications[x.Index] = x.Notification;
-          }
+        foreach (var x in indexedNotificationsMarkedAsResolved)
+        {
+          _state.Notifications[x.Index] = x.Notification;
+        }
 
-          StateHasChanged();
-        });
+        StateHasChanged();
+      });
     }
   }
 }

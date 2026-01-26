@@ -39,10 +39,9 @@ public class ValidationQueries(
       cancellationToken);
 
     var models = entities
-      .Select(
-        entity => entity is null
-          ? null
-          : modelEntityConverter.ToModel<IMeasurementValidator>(entity))
+      .Select(entity => entity is null
+        ? null
+        : modelEntityConverter.ToModel<IMeasurementValidator>(entity))
       .ToList();
 
     return models;
@@ -75,10 +74,9 @@ public class ValidationQueries(
       cancellationToken);
 
     var models = entities
-      .Select(
-        entity => entity is null
-          ? null
-          : modelEntityConverter.ToModel<IMeter>(entity))
+      .Select(entity => entity is null
+        ? null
+        : modelEntityConverter.ToModel<IMeter>(entity))
       .ToList();
 
     return models;

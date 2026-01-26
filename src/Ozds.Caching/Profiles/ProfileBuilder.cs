@@ -26,11 +26,10 @@ public class ProfileBuilder
   {
     var profilers = type.Assembly
       .GetTypes()
-      .Where(
-        type => type
-          .IsAssignableTo(
-            typeof(IProfiler<>)
-              .MakeGenericType(type)))
+      .Where(type => type
+        .IsAssignableTo(
+          typeof(IProfiler<>)
+            .MakeGenericType(type)))
       .Select(Activator.CreateInstance)
       .OfType<IProfiler>()
       .ToList();

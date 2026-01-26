@@ -15,8 +15,8 @@ public static class ITypeBaseExtensions
 
     foreach (var complexProperty in type.GetComplexProperties())
     {
-      foreach (var property in GetScalarPropertiesRecursive(
-        complexProperty.ComplexType))
+      foreach (var property in complexProperty.ComplexType
+        .GetScalarPropertiesRecursive())
       {
         yield return property;
       }

@@ -15,14 +15,14 @@ public class Loading<T> : MappedLoading<T, T>
 public partial class MappedLoading<T, TMapped> : OzdsComponentBase
   where T : notnull
 {
-  private Type? _activationType = default!;
+  private Type? _activationType;
   private LoadingState<T> _state = new();
 
   [Parameter]
   public T? Value { get; set; }
 
   [Parameter]
-  public Func<T, TMapped>? Map { get; set; } = default!;
+  public Func<T, TMapped>? Map { get; set; }
 
   [Parameter]
   public RenderFragment? Progress { get; set; }

@@ -46,13 +46,12 @@ public class AbbB2xMeterModelReportEntityConverter(
         ReportConversionConstants.ListDelimiter,
         StringSplitOptions.RemoveEmptyEntries
       )
-      .Select(
-        static s =>
-          Enum.TryParse<PhaseModel>(s.Trim(), out var phase)
-            ? phase
-            : throw new InvalidOperationException(
-              "An error occurred while trying to parse a csv input as a PhaseModel."
-            )
+      .Select(static s =>
+        Enum.TryParse<PhaseModel>(s.Trim(), out var phase)
+          ? phase
+          : throw new InvalidOperationException(
+            "An error occurred while trying to parse a csv input as a PhaseModel."
+          )
       )
       .ToHashSet();
   }

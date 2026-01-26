@@ -82,12 +82,11 @@ public class BillingQueries(
     foreach (var aggregateType in reflector.AggregateTypes)
     {
       // NOTE: IsAssignableTo is used because proxies
-      var applicableBases = bases.Where(
-          x =>
-            x.Meter.GetType()
-              .IsAssignableTo(
-                reflector
-                  .ResolveMeasurementMeterType(aggregateType)))
+      var applicableBases = bases.Where(x =>
+          x.Meter.GetType()
+            .IsAssignableTo(
+              reflector
+                .ResolveMeasurementMeterType(aggregateType)))
         .ToList();
 
       if (applicableBases.Count == 0)
@@ -105,10 +104,9 @@ public class BillingQueries(
 
       foreach (var enriched in enrichedBases)
       {
-        var original = bases.First(
-          x =>
-            x.MeasurementLocation.Id
-            == enriched.MeasurementLocation.Id);
+        var original = bases.First(x =>
+          x.MeasurementLocation.Id
+          == enriched.MeasurementLocation.Id);
         original.Aggregates = enriched.Aggregates;
         original.MeasuredFromDate = enriched.MeasuredFromDate;
         original.MeasuredToDate = enriched.MeasuredToDate;
@@ -142,18 +140,17 @@ public class BillingQueries(
       .Include(x => x.NetworkUser)
       .ThenInclude(x => x.Location)
       .ThenInclude(x => x.RegulatoryCatalogue)
-      .Select(
-        x => new NetworkUserCalculationBasisEntity
-        {
-          Location = x.NetworkUser.Location,
-          NetworkUser = x.NetworkUser,
-          MeasurementLocation = x,
-          UsageNetworkUserCatalogue =
-            x.NetworkUserCatalogue,
-          SupplyRegulatoryCatalogue =
-            x.NetworkUser.Location.RegulatoryCatalogue,
-          Meter = x.Meter
-        })
+      .Select(x => new NetworkUserCalculationBasisEntity
+      {
+        Location = x.NetworkUser.Location,
+        NetworkUser = x.NetworkUser,
+        MeasurementLocation = x,
+        UsageNetworkUserCatalogue =
+          x.NetworkUserCatalogue,
+        SupplyRegulatoryCatalogue =
+          x.NetworkUser.Location.RegulatoryCatalogue,
+        Meter = x.Meter
+      })
       .ToListAsync(cancellationToken);
   }
 
@@ -385,77 +382,76 @@ public class BillingQueries(
       }
     }
 
-    return bases.Select(
-      basis =>
+    return bases.Select(basis =>
+    {
+      var locationId = basis.MeasurementLocation.Id;
+
+      var locationAggregates = inWindowAggregates
+        .Where(x => x.MeasurementLocationId == locationId)
+        .OrderBy(x => x.Timestamp)
+        .ToList();
+
+      var next = nextBoundaries
+        .FirstOrDefault(x => x.MeasurementLocationId == locationId);
+
+      var previous = actualStartBoundaries
+        .FirstOrDefault(x => x.MeasurementLocationId == locationId);
+
+      AggregateEntity? startAggregate = null;
+      AggregateEntity? endAggregate = null;
+
+      if (locationAggregates.Count != 0)
       {
-        var locationId = basis.MeasurementLocation.Id;
+        startAggregate = locationAggregates.First();
+        endAggregate = next;
+      }
+      else
+      {
+        startAggregate = previous;
+        endAggregate = next;
+      }
 
-        var locationAggregates = inWindowAggregates
-          .Where(x => x.MeasurementLocationId == locationId)
-          .OrderBy(x => x.Timestamp)
-          .ToList();
+      var resultAggregates = new List<AggregateEntity>(locationAggregates);
 
-        var next = nextBoundaries
-          .FirstOrDefault(x => x.MeasurementLocationId == locationId);
+      if (startAggregate != null && !resultAggregates
+        .Exists(x => x.Timestamp == startAggregate.Timestamp))
+      {
+        resultAggregates.Insert(0, startAggregate);
+      }
 
-        var previous = actualStartBoundaries
-          .FirstOrDefault(x => x.MeasurementLocationId == locationId);
+      if (endAggregate != null && !resultAggregates
+        .Exists(x => x.Timestamp == endAggregate.Timestamp))
+      {
+        resultAggregates.Add(endAggregate);
+      }
 
-        AggregateEntity? startAggregate = null;
-        AggregateEntity? endAggregate = null;
+      var measuredFrom = startAggregate?.Timestamp ?? fromDate;
+      var measuredTo = endAggregate?.Timestamp ?? toDate;
 
-        if (locationAggregates.Count != 0)
-        {
-          startAggregate = locationAggregates.First();
-          endAggregate = next;
-        }
-        else
-        {
-          startAggregate = previous;
-          endAggregate = next;
-        }
+      var billedFrom = startAggregate is not null
+        ? timeQueries.GetStartOfMonth(startAggregate.Timestamp)
+        : fromDate;
 
-        var resultAggregates = new List<AggregateEntity>(locationAggregates);
+      var billedTo = endAggregate is not null
+        ? timeQueries.GetStartOfMonth(endAggregate.Timestamp)
+        : toDate;
 
-        if (startAggregate != null && !resultAggregates
-          .Exists(x => x.Timestamp == startAggregate.Timestamp))
-        {
-          resultAggregates.Insert(0, startAggregate);
-        }
-
-        if (endAggregate != null && !resultAggregates
-          .Exists(x => x.Timestamp == endAggregate.Timestamp))
-        {
-          resultAggregates.Add(endAggregate);
-        }
-
-        var measuredFrom = startAggregate?.Timestamp ?? fromDate;
-        var measuredTo = endAggregate?.Timestamp ?? toDate;
-
-        var billedFrom = startAggregate is not null
-          ? timeQueries.GetStartOfMonth(startAggregate.Timestamp)
-          : fromDate;
-
-        var billedTo = endAggregate is not null
-          ? timeQueries.GetStartOfMonth(endAggregate.Timestamp)
-          : toDate;
-
-        return new NetworkUserCalculationBasisEntity
-        {
-          Location = basis.Location,
-          NetworkUser = basis.NetworkUser,
-          MeasurementLocation = basis.MeasurementLocation,
-          UsageNetworkUserCatalogue = basis.UsageNetworkUserCatalogue,
-          SupplyRegulatoryCatalogue = basis.SupplyRegulatoryCatalogue,
-          Meter = basis.Meter,
-          Aggregates = resultAggregates.OrderBy(x => x.Timestamp).ToList(),
-          MeasuredFromDate = measuredFrom,
-          MeasuredToDate = measuredTo,
-          BilledFromDate = billedFrom,
-          BilledToDate = billedTo,
-          FromDate = fromDate,
-          ToDate = toDate
-        };
-      }).ToList();
+      return new NetworkUserCalculationBasisEntity
+      {
+        Location = basis.Location,
+        NetworkUser = basis.NetworkUser,
+        MeasurementLocation = basis.MeasurementLocation,
+        UsageNetworkUserCatalogue = basis.UsageNetworkUserCatalogue,
+        SupplyRegulatoryCatalogue = basis.SupplyRegulatoryCatalogue,
+        Meter = basis.Meter,
+        Aggregates = resultAggregates.OrderBy(x => x.Timestamp).ToList(),
+        MeasuredFromDate = measuredFrom,
+        MeasuredToDate = measuredTo,
+        BilledFromDate = billedFrom,
+        BilledToDate = billedTo,
+        FromDate = fromDate,
+        ToDate = toDate
+      };
+    }).ToList();
   }
 }

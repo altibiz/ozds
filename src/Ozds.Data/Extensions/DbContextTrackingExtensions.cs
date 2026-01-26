@@ -37,12 +37,11 @@ public static class DbContextTrackingExtensions
     return entityType.IsInstanceOfType(entity) &&
       (entry.Metadata
         .FindPrimaryKey()?.Properties
-        .All(
-          property => property
-            .GetGetter()
-            .GetClrValue(entity)?.Equals(
-              property
-                .GetGetter()
-                .GetClrValue(entry.Entity)) ?? false) ?? false);
+        .All(property => property
+          .GetGetter()
+          .GetClrValue(entity)?.Equals(
+            property
+              .GetGetter()
+              .GetClrValue(entry.Entity)) ?? false) ?? false);
   }
 }

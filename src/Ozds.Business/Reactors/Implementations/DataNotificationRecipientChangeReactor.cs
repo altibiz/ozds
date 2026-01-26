@@ -53,18 +53,16 @@ public class DataNotificationRecipientChangeHandler(
 
     var groups = recipients
       .GroupBy(x => x.NotificationId)
-      .Select(
-        x => new
-        {
-          Notification = notifications.FirstOrDefault(y => y.Id == x.Key),
-          Recipients = x.ToList(),
-          Representatives = x
-            .Select(
-              y => representatives
-                .FirstOrDefault(z => z.Id == y.RepresentativeId))
-            .OfType<RepresentativeModel>()
-            .ToList()
-        });
+      .Select(x => new
+      {
+        Notification = notifications.FirstOrDefault(y => y.Id == x.Key),
+        Recipients = x.ToList(),
+        Representatives = x
+          .Select(y => representatives
+            .FirstOrDefault(z => z.Id == y.RepresentativeId))
+          .OfType<RepresentativeModel>()
+          .ToList()
+      });
 
     var emails = new List<EmailMessage>();
     foreach (var group in groups)
@@ -86,8 +84,7 @@ public class DataNotificationRecipientChangeHandler(
       }
 
       emails.AddRange(
-        group.Representatives.Select(
-          representative => new EmailMessage(
+        group.Representatives.Select(representative => new EmailMessage(
             representative.PhysicalPerson.Name,
             representative.PhysicalPerson.Email,
             titleBuilder.ToString(),

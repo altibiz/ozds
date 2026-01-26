@@ -21,12 +21,11 @@ public class EnumerableQueries(
       DateTo = dateTo
     };
     return timeEnumerableQueries.Split(entity, times)
-      .Select(
-        x => new DateTimeOffsetRangeModel
-        {
-          DateFrom = x.DateFrom,
-          DateTo = x.DateTo
-        });
+      .Select(x => new DateTimeOffsetRangeModel
+      {
+        DateFrom = x.DateFrom,
+        DateTo = x.DateTo
+      });
   }
 
   public virtual IEnumerable<DateTimeOffsetRangeModel> Split(
@@ -41,12 +40,11 @@ public class EnumerableQueries(
       DateTo = dateTo
     };
     return timeEnumerableQueries.Split(entity, interval)
-      .Select(
-        x => new DateTimeOffsetRangeModel
-        {
-          DateFrom = x.DateFrom,
-          DateTo = x.DateTo
-        });
+      .Select(x => new DateTimeOffsetRangeModel
+      {
+        DateFrom = x.DateFrom,
+        DateTo = x.DateTo
+      });
   }
 
   public virtual IEnumerable<DateTimeOffsetRangeModel> Split(
@@ -60,12 +58,11 @@ public class EnumerableQueries(
       DateTo = range.DateTo
     };
     return timeEnumerableQueries.Split(entity, times)
-      .Select(
-        x => new DateTimeOffsetRangeModel
-        {
-          DateFrom = x.DateFrom,
-          DateTo = x.DateTo
-        });
+      .Select(x => new DateTimeOffsetRangeModel
+      {
+        DateFrom = x.DateFrom,
+        DateTo = x.DateTo
+      });
   }
 
   public virtual IEnumerable<DateTimeOffsetRangeModel> Split(
@@ -79,12 +76,11 @@ public class EnumerableQueries(
       DateTo = range.DateTo
     };
     return timeEnumerableQueries.Split(entity, interval)
-      .Select(
-        x => new DateTimeOffsetRangeModel
-        {
-          DateFrom = x.DateFrom,
-          DateTo = x.DateTo
-        });
+      .Select(x => new DateTimeOffsetRangeModel
+      {
+        DateFrom = x.DateFrom,
+        DateTo = x.DateTo
+      });
   }
 
   public IAsyncEnumerable<IAsyncEnumerable<T>> Batch<T>(

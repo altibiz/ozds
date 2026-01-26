@@ -12,10 +12,9 @@ public class DateTimeOffsetOptions
     where TSelf : SelfReferenceEquivalencyAssertionOptions<TSelf>
   {
     return options
-      .Using<DateTimeOffset>(
-        context => context.Subject
-          .Should()
-          .BeCloseTo(context.Expectation, TimeSpan.FromMilliseconds(1)))
+      .Using<DateTimeOffset>(context => context.Subject
+        .Should()
+        .BeCloseTo(context.Expectation, TimeSpan.FromMilliseconds(1)))
       .WhenTypeIs<DateTimeOffset>();
   }
 }

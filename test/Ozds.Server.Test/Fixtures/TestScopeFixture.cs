@@ -44,18 +44,17 @@ public class TestScopeFixture(
 
     var registers = await Task.WhenAll(
       testRegisters
-        .Select(
-          async testRegister =>
-          {
-            return await trackableFixture
-              .Create<RegisterModel>(
-                cancellationToken,
-                register =>
-                {
-                  register.ScopeId = scope.Id;
-                  TestRegisterToRegisterModel(testRegister, register);
-                });
-          }));
+        .Select(async testRegister =>
+        {
+          return await trackableFixture
+            .Create<RegisterModel>(
+              cancellationToken,
+              register =>
+              {
+                register.ScopeId = scope.Id;
+                TestRegisterToRegisterModel(testRegister, register);
+              });
+        }));
 
     return new MeasurementScopeWithRegisters(
       registers.ToList(),
@@ -96,18 +95,17 @@ public class TestScopeFixture(
 
     var registers = await Task.WhenAll(
       testRegisters
-        .Select(
-          async testRegister =>
-          {
-            return await trackableFixture
-              .Create<RegisterModel>(
-                cancellationToken,
-                register =>
-                {
-                  register.ScopeId = scope.Id;
-                  TestRegisterToRegisterModel(testRegister, register);
-                });
-          }));
+        .Select(async testRegister =>
+        {
+          return await trackableFixture
+            .Create<RegisterModel>(
+              cancellationToken,
+              register =>
+              {
+                register.ScopeId = scope.Id;
+                TestRegisterToRegisterModel(testRegister, register);
+              });
+        }));
 
     return new MeasurementScopeWithRegisters(
       registers.ToList(),
@@ -148,18 +146,17 @@ public class TestScopeFixture(
 
     var registers = await Task.WhenAll(
       testRegisters
-        .Select(
-          async testRegister =>
-          {
-            return await trackableFixture
-              .Create<RegisterModel>(
-                cancellationToken,
-                register =>
-                {
-                  register.ScopeId = scope.Id;
-                  TestRegisterToRegisterModel(testRegister, register);
-                });
-          }));
+        .Select(async testRegister =>
+        {
+          return await trackableFixture
+            .Create<RegisterModel>(
+              cancellationToken,
+              register =>
+              {
+                register.ScopeId = scope.Id;
+                TestRegisterToRegisterModel(testRegister, register);
+              });
+        }));
 
     return new MeasurementScopeWithRegisters(
       registers.ToList(),

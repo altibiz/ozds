@@ -184,11 +184,10 @@ public abstract class DependencyPolicy : Policy
       .GetType()
       .GetProperties()
       .Where(property => property.CanRead)
-      .Where(
-        property =>
-          property.PropertyType.IsAssignableTo(typeof(IIdentifiableEntity))
-          || property.PropertyType
-            .IsAssignableTo(typeof(IEnumerable<IIdentifiableEntity>))))
+      .Where(property =>
+        property.PropertyType.IsAssignableTo(typeof(IIdentifiableEntity))
+        || property.PropertyType
+          .IsAssignableTo(typeof(IEnumerable<IIdentifiableEntity>))))
     {
       var dependencyValue = property.GetValue(value);
       if (dependencyValue is IIdentifiableEntity identifiable)

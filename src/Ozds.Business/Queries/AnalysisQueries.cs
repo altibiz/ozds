@@ -37,24 +37,23 @@ public class AnalysisQueries(
       );
 
     return entities
-      .Select(
-        entity => new AnalysisBasisModel
-        {
-          Representative = representative,
-          FromDate = fromDate,
-          ToDate = toDate,
-          Location = modelEntityConverter
-            .ToModel<LocationModel>(entity.Location),
-          NetworkUser = modelEntityConverter
-            .ToModel<NetworkUserModel>(entity.NetworkUser),
-          MeasurementLocation = modelEntityConverter
-            .ToModel<MeasurementLocationModel>(entity.MeasurementLocation),
-          Meter = modelEntityConverter.ToModel<MeterModel>(entity.Meter),
-          Calculations = [],
-          Invoices = [],
-          LastMeasurement = null,
-          MonthlyAggregates = []
-        })
+      .Select(entity => new AnalysisBasisModel
+      {
+        Representative = representative,
+        FromDate = fromDate,
+        ToDate = toDate,
+        Location = modelEntityConverter
+          .ToModel<LocationModel>(entity.Location),
+        NetworkUser = modelEntityConverter
+          .ToModel<NetworkUserModel>(entity.NetworkUser),
+        MeasurementLocation = modelEntityConverter
+          .ToModel<MeasurementLocationModel>(entity.MeasurementLocation),
+        Meter = modelEntityConverter.ToModel<MeterModel>(entity.Meter),
+        Calculations = [],
+        Invoices = [],
+        LastMeasurement = null,
+        MonthlyAggregates = []
+      })
       .ToList();
   }
 }

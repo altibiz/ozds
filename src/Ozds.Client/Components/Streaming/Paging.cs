@@ -19,13 +19,13 @@ public partial class MappedPaging<T, TMapped> : OzdsComponentBase
 
   private MappedLoading<PaginatedList<T>, PaginatedList<TMapped>>? loading;
 
-  private int pageNumber = 0;
+  private int pageNumber;
 
   [Parameter]
-  public IEnumerable<T>? Value { get; set; } = default!;
+  public IEnumerable<T>? Value { get; set; }
 
   [Parameter]
-  public Func<T, TMapped>? Map { get; set; } = default!;
+  public Func<T, TMapped>? Map { get; set; }
 
   [Parameter]
   public Func<int, int, PaginatedList<T>>? Page { get; set; }
@@ -58,7 +58,7 @@ public partial class MappedPaging<T, TMapped> : OzdsComponentBase
   public Scroll Scroll { get; set; } = Scroll.Paged;
 
   [Parameter]
-  public bool Deleted { get; set; } = false;
+  public bool Deleted { get; set; }
 
   [Parameter]
   public string Class { get; set; } = string.Empty;
@@ -122,12 +122,11 @@ public partial class MappedPaging<T, TMapped> : OzdsComponentBase
             CancellationToken,
             PageCount,
             Deleted)
-          .ContinueWith(
-            x => x.IsCanceled
-              ? new PaginatedList<T>(new List<T>(), 0)
-              : x.Result.Items
-                .OfType<T>()
-                .ToPaginatedList(x.Result.TotalCount));
+          .ContinueWith(x => x.IsCanceled
+            ? new PaginatedList<T>(new List<T>(), 0)
+            : x.Result.Items
+              .OfType<T>()
+              .ToPaginatedList(x.Result.TotalCount));
       }
 
       if (typeof(T).IsAssignableTo(typeof(IAuditable)))
@@ -139,12 +138,11 @@ public partial class MappedPaging<T, TMapped> : OzdsComponentBase
             pageNumber,
             CancellationToken,
             PageCount)
-          .ContinueWith(
-            x => x.IsCanceled
-              ? new PaginatedList<T>(new List<T>(), 0)
-              : x.Result.Items
-                .OfType<T>()
-                .ToPaginatedList(x.Result.TotalCount));
+          .ContinueWith(x => x.IsCanceled
+            ? new PaginatedList<T>(new List<T>(), 0)
+            : x.Result.Items
+              .OfType<T>()
+              .ToPaginatedList(x.Result.TotalCount));
       }
 
       if (typeof(T).IsAssignableTo(typeof(IIdentifiable)))
@@ -156,12 +154,11 @@ public partial class MappedPaging<T, TMapped> : OzdsComponentBase
             pageNumber,
             CancellationToken,
             PageCount)
-          .ContinueWith(
-            x => x.IsCanceled
-              ? new PaginatedList<T>(new List<T>(), 0)
-              : x.Result.Items
-                .OfType<T>()
-                .ToPaginatedList(x.Result.TotalCount));
+          .ContinueWith(x => x.IsCanceled
+            ? new PaginatedList<T>(new List<T>(), 0)
+            : x.Result.Items
+              .OfType<T>()
+              .ToPaginatedList(x.Result.TotalCount));
       }
 
       if (typeof(T).IsAssignableTo(typeof(IModel)))
@@ -173,12 +170,11 @@ public partial class MappedPaging<T, TMapped> : OzdsComponentBase
             pageNumber,
             CancellationToken,
             PageCount)
-          .ContinueWith(
-            x => x.IsCanceled
-              ? new PaginatedList<T>(new List<T>(), 0)
-              : x.Result.Items
-                .OfType<T>()
-                .ToPaginatedList(x.Result.TotalCount));
+          .ContinueWith(x => x.IsCanceled
+            ? new PaginatedList<T>(new List<T>(), 0)
+            : x.Result.Items
+              .OfType<T>()
+              .ToPaginatedList(x.Result.TotalCount));
       }
 
       return null;

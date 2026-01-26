@@ -15,14 +15,13 @@ public class Analyzer(
   {
     return models
       .GroupBy(x => x.Location.Id)
-      .Select(
-        x =>
-        {
-          return new LocationAnalysis(
-            x.First().Location,
-            Analyze(x)
-          );
-        })
+      .Select(x =>
+      {
+        return new LocationAnalysis(
+          x.First().Location,
+          Analyze(x)
+        );
+      })
       .ToList();
   }
 
@@ -33,15 +32,14 @@ public class Analyzer(
     return models
       .Where(x => x.NetworkUser is not null)
       .GroupBy(x => x.NetworkUser!.Id)
-      .Select(
-        x =>
-        {
-          return new NetworkUserAnalysis(
-            x.First().Location,
-            x.First().NetworkUser!,
-            Analyze(x)
-          );
-        })
+      .Select(x =>
+      {
+        return new NetworkUserAnalysis(
+          x.First().Location,
+          x.First().NetworkUser!,
+          Analyze(x)
+        );
+      })
       .ToList();
   }
 
@@ -51,17 +49,16 @@ public class Analyzer(
   {
     return models
       .GroupBy(x => x.MeasurementLocation.Id)
-      .Select(
-        x =>
-        {
-          return new MeasurementLocationAnalysis(
-            x.First().Location,
-            x.First().NetworkUser,
-            x.First().MeasurementLocation,
-            x.First().Meter,
-            Analyze(x)
-          );
-        })
+      .Select(x =>
+      {
+        return new MeasurementLocationAnalysis(
+          x.First().Location,
+          x.First().NetworkUser,
+          x.First().MeasurementLocation,
+          x.First().Meter,
+          Analyze(x)
+        );
+      })
       .ToList();
   }
 
@@ -71,17 +68,16 @@ public class Analyzer(
   {
     return models
       .GroupBy(x => x.Meter.Id)
-      .Select(
-        x =>
-        {
-          return new MeterAnalysis(
-            x.First().Location,
-            x.First().NetworkUser,
-            x.First().MeasurementLocation,
-            x.First().Meter,
-            Analyze(x)
-          );
-        })
+      .Select(x =>
+      {
+        return new MeterAnalysis(
+          x.First().Location,
+          x.First().NetworkUser,
+          x.First().MeasurementLocation,
+          x.First().Meter,
+          Analyze(x)
+        );
+      })
       .ToList();
   }
 
@@ -161,14 +157,13 @@ public class Analyzer(
           x.load,
           aggregates
         })
-      .Select(
-        x =>
-          new MonthlyAnalysis(
-            timeQueries.GetStartOfMonth(x.consumption.Timestamp),
-            x.load,
-            x.consumption,
-            x.aggregates.Cast<IMeasurement>().ToList()
-          ))
+      .Select(x =>
+        new MonthlyAnalysis(
+          timeQueries.GetStartOfMonth(x.consumption.Timestamp),
+          x.load,
+          x.consumption,
+          x.aggregates.Cast<IMeasurement>().ToList()
+        ))
       .OrderByDescending(x => x.StartOfMonth)
       .ToList();
 
@@ -187,88 +182,78 @@ public class Analyzer(
   {
     return models
       .GroupBy(x => x.Timestamp)
-      .Select(
-        x => new Consumption(
-          x.Key,
-          x
-            .Select(
-              x => x.ActiveEnergy_Wh
-                .TariffUnary()
-                .DuplexImport()
-                .AggregateMin()
-                .PhaseSum())
-            .DefaultIfEmpty(0M)
-            .Min() / 1000M,
-          x
-            .Select(
-              x => x.ActiveEnergy_Wh
-                .TariffUnary()
-                .DuplexImport()
-                .AggregateMax()
-                .PhaseSum())
-            .DefaultIfEmpty(0M)
-            .Max() / 1000M,
-          x
-            .Select(
-              x => x.ActiveEnergy_Wh
-                .TariffUnary()
-                .DuplexImport()
-                .PhaseSum())
-            .DefaultIfEmpty(0M)
-            .Sum() / 1000M,
-          x
-            .Select(
-              x => x.ReactiveEnergy_VARh
-                .TariffUnary()
-                .DuplexImport()
-                .AggregateMin()
-                .PhaseSum())
-            .DefaultIfEmpty(0M)
-            .Min() / 1000M,
-          x
-            .Select(
-              x => x.ReactiveEnergy_VARh
-                .TariffUnary()
-                .DuplexImport()
-                .AggregateMax()
-                .PhaseSum())
-            .DefaultIfEmpty(0M)
-            .Max() / 1000M,
-          x
-            .Select(
-              x => x.ReactiveEnergy_VARh
-                .TariffUnary()
-                .DuplexImport()
-                .PhaseSum())
-            .DefaultIfEmpty(0M)
-            .Sum() / 1000M,
-          x
-            .Select(
-              x => x.ApparentEnergy_VAh
-                .TariffUnary()
-                .DuplexImport()
-                .AggregateMin()
-                .PhaseSum())
-            .DefaultIfEmpty(0M)
-            .Min() / 1000M,
-          x
-            .Select(
-              x => x.ApparentEnergy_VAh
-                .TariffUnary()
-                .DuplexImport()
-                .AggregateMax()
-                .PhaseSum())
-            .DefaultIfEmpty(0M)
-            .Max() / 1000M,
-          x
-            .Select(
-              x => x.ApparentEnergy_VAh
-                .TariffUnary()
-                .DuplexImport()
-                .PhaseSum())
-            .DefaultIfEmpty(0M)
-            .Sum() / 1000M
-        ))
+      .Select(x => new Consumption(
+        x.Key,
+        x
+          .Select(x => x.ActiveEnergy_Wh
+            .TariffUnary()
+            .DuplexImport()
+            .AggregateMin()
+            .PhaseSum())
+          .DefaultIfEmpty(0M)
+          .Min() / 1000M,
+        x
+          .Select(x => x.ActiveEnergy_Wh
+            .TariffUnary()
+            .DuplexImport()
+            .AggregateMax()
+            .PhaseSum())
+          .DefaultIfEmpty(0M)
+          .Max() / 1000M,
+        x
+          .Select(x => x.ActiveEnergy_Wh
+            .TariffUnary()
+            .DuplexImport()
+            .PhaseSum())
+          .DefaultIfEmpty(0M)
+          .Sum() / 1000M,
+        x
+          .Select(x => x.ReactiveEnergy_VARh
+            .TariffUnary()
+            .DuplexImport()
+            .AggregateMin()
+            .PhaseSum())
+          .DefaultIfEmpty(0M)
+          .Min() / 1000M,
+        x
+          .Select(x => x.ReactiveEnergy_VARh
+            .TariffUnary()
+            .DuplexImport()
+            .AggregateMax()
+            .PhaseSum())
+          .DefaultIfEmpty(0M)
+          .Max() / 1000M,
+        x
+          .Select(x => x.ReactiveEnergy_VARh
+            .TariffUnary()
+            .DuplexImport()
+            .PhaseSum())
+          .DefaultIfEmpty(0M)
+          .Sum() / 1000M,
+        x
+          .Select(x => x.ApparentEnergy_VAh
+            .TariffUnary()
+            .DuplexImport()
+            .AggregateMin()
+            .PhaseSum())
+          .DefaultIfEmpty(0M)
+          .Min() / 1000M,
+        x
+          .Select(x => x.ApparentEnergy_VAh
+            .TariffUnary()
+            .DuplexImport()
+            .AggregateMax()
+            .PhaseSum())
+          .DefaultIfEmpty(0M)
+          .Max() / 1000M,
+        x
+          .Select(x => x.ApparentEnergy_VAh
+            .TariffUnary()
+            .DuplexImport()
+            .PhaseSum())
+          .DefaultIfEmpty(0M)
+          .Sum() / 1000M
+      ))
       .OrderByDescending(x => x.Timestamp)
       .ToList();
   }
@@ -279,13 +264,12 @@ public class Analyzer(
   {
     return models
       .GroupBy(x => x.FromDate)
-      .Select(
-        x => new Expenses(
-          x.Key,
-          x
-            .Select(x => x.Total_EUR)
-            .DefaultIfEmpty(0)
-            .Sum())
+      .Select(x => new Expenses(
+        x.Key,
+        x
+          .Select(x => x.Total_EUR)
+          .DefaultIfEmpty(0)
+          .Sum())
       )
       .OrderByDescending(x => x.Timestamp)
       .ToList();
@@ -297,14 +281,13 @@ public class Analyzer(
   {
     return models
       .GroupBy(x => x.FromDate)
-      .Select(
-        x => new Expenses(
-          x.Key,
-          x
-            .Select(x => x.TotalWithTax_EUR)
-            .DefaultIfEmpty(0)
-            .Sum()
-        ))
+      .Select(x => new Expenses(
+        x.Key,
+        x
+          .Select(x => x.TotalWithTax_EUR)
+          .DefaultIfEmpty(0)
+          .Sum()
+      ))
       .OrderByDescending(x => x.Timestamp)
       .ToList();
   }
@@ -343,21 +326,18 @@ public class Analyzer(
       measurements.FirstOrDefault()?.Timestamp
       ?? DateTimeOffset.MinValue,
       measurements
-        .Select(
-          measurement => measurement.ActivePower_W
-            .TariffUnary().DuplexImport().PhaseSum())
+        .Select(measurement => measurement.ActivePower_W
+          .TariffUnary().DuplexImport().PhaseSum())
         .DefaultIfEmpty(0M)
         .Sum() / 1000M,
       measurements
-        .Select(
-          measurement => measurement.ReactivePower_VAR
-            .TariffUnary().DuplexImport().PhaseSum())
+        .Select(measurement => measurement.ReactivePower_VAR
+          .TariffUnary().DuplexImport().PhaseSum())
         .DefaultIfEmpty(0M)
         .Sum() / 1000M,
       measurements
-        .Select(
-          measurement => measurement.ApparentPower_VA
-            .TariffUnary().DuplexImport().PhaseSum())
+        .Select(measurement => measurement.ApparentPower_VA
+          .TariffUnary().DuplexImport().PhaseSum())
         .DefaultIfEmpty(0M)
         .Sum() / 1000M
     );

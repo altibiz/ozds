@@ -9,11 +9,10 @@ public class IgnoreForeignKeysOptions(
 )
 {
   private readonly Lazy<HashSet<(string, Type?)>> foreign =
-    new(
-      () => dbContext
-        .GetForeignKeys()
-        .Select(x => (x.Name, x.DeclaringType))
-        .ToHashSet());
+    new(() => dbContext
+      .GetForeignKeys()
+      .Select(x => (x.Name, x.DeclaringType))
+      .ToHashSet());
 
   public SelfReferenceEquivalencyAssertionOptions<TSelf> Configure<
     TSelf

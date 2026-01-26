@@ -26,13 +26,10 @@ public class JobsMessengerInactivityJobReactorTest : OzdsServerTestBase
 
     var x = await MeasurementLocation.Create(
       cancellationToken, x => x
-        .WithNetworkUser(
-          y => y
-            .WithLocation(
-              z => z
-                .WithMessenger(
-                  m =>
-                    m.MaxInactivityPeriod = inactivityPeriod))));
+        .WithNetworkUser(y => y
+          .WithLocation(z => z
+            .WithMessenger(m =>
+              m.MaxInactivityPeriod = inactivityPeriod))));
 
     {
       using var cts = inactivityTimeSpan

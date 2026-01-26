@@ -78,10 +78,9 @@ public class RecordCorrector(IServiceProvider serviceProvider)
   private IRecordCorrector GetCorrector(Type measurementRecordType)
   {
     var corrector = _serviceProvider.GetServices<IRecordCorrector>()
-        .FirstOrDefault(
-          corrector =>
-            corrector.CanCorrectFor(
-              measurementRecordType))
+        .FirstOrDefault(corrector =>
+          corrector.CanCorrectFor(
+            measurementRecordType))
       ?? throw new InvalidOperationException(
         $"No corrector found for {measurementRecordType.Name}");
     return corrector;

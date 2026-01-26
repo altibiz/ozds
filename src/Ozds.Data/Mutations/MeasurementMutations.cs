@@ -165,10 +165,9 @@ public class MeasurementMutations(
         new EntitiesChangingEventArgs
         {
           Entities = measurements
-            .Select(
-              measurement => new EntityChangingEntry(
-                EntityChangingState.Adding,
-                measurement))
+            .Select(measurement => new EntityChangingEntry(
+              EntityChangingState.Adding,
+              measurement))
             .ToList()
         });
     }
@@ -185,10 +184,9 @@ public class MeasurementMutations(
         new EntitiesChangedEventArgs
         {
           Entities = result
-            .Select(
-              measurement => new EntityChangedEntry(
-                EntityChangedState.Added,
-                measurement))
+            .Select(measurement => new EntityChangedEntry(
+              EntityChangedState.Added,
+              measurement))
             .ToList()
         });
     }
@@ -217,10 +215,9 @@ public class MeasurementMutations(
         new EntitiesChangingEventArgs
         {
           Entities = measurementsList!
-            .Select(
-              measurement => new EntityChangingEntry(
-                EntityChangingState.Adding,
-                measurement))
+            .Select(measurement => new EntityChangingEntry(
+              EntityChangingState.Adding,
+              measurement))
             .ToList()
         });
     }
@@ -243,10 +240,9 @@ public class MeasurementMutations(
         new EntitiesChangedEventArgs
         {
           Entities = result
-            .Select(
-              measurement => new EntityChangedEntry(
-                EntityChangedState.Added,
-                measurement))
+            .Select(measurement => new EntityChangedEntry(
+              EntityChangedState.Added,
+              measurement))
             .ToList()
         });
     }
@@ -261,23 +257,21 @@ public class MeasurementMutations(
   )
   {
     var grouped = measurements
-      .OrderBy(
-        x => x is IAggregateEntity aggregate
-          ? aggregate.Interval switch
-          {
-            IntervalEntity.Month or IntervalEntity.Day => 1,
-            IntervalEntity.QuarterHour => 2,
-            _ => throw new InvalidOperationException(
-              $"Unknown interval {aggregate.Interval}.")
-          }
-          : 0)
-      .GroupBy(
-        x => (
-          Type: x.GetType(),
-          Interval:
-          x is AggregateEntity aggregate
-            ? (IntervalEntity?)aggregate.Interval
-            : null))
+      .OrderBy(x => x is IAggregateEntity aggregate
+        ? aggregate.Interval switch
+        {
+          IntervalEntity.Month or IntervalEntity.Day => 1,
+          IntervalEntity.QuarterHour => 2,
+          _ => throw new InvalidOperationException(
+            $"Unknown interval {aggregate.Interval}.")
+        }
+        : 0)
+      .GroupBy(x => (
+        Type: x.GetType(),
+        Interval:
+        x is AggregateEntity aggregate
+          ? (IntervalEntity?)aggregate.Interval
+          : null))
       .Select(x => new MeasurementGroup(x.Key.Type, x.Key.Interval, x.ToList()))
       .ToList();
     if (grouped.Count == 0)
@@ -296,29 +290,26 @@ public class MeasurementMutations(
   )
   {
     var grouped = await measurements
-      .OrderBy(
-        x => x is IAggregateEntity aggregate
-          ? aggregate.Interval switch
-          {
-            IntervalEntity.Month or IntervalEntity.Day => 1,
-            IntervalEntity.QuarterHour => 2,
-            _ => throw new InvalidOperationException(
-              $"Unknown interval {aggregate.Interval}.")
-          }
-          : 0)
-      .GroupBy(
-        x => (
-          Type: x.GetType(),
-          Interval:
-          x is AggregateEntity aggregate
-            ? (IntervalEntity?)aggregate.Interval
-            : null))
-      .Select(
-        x =>
+      .OrderBy(x => x is IAggregateEntity aggregate
+        ? aggregate.Interval switch
         {
-          var measurements = x.ToList();
-          return new MeasurementGroup(x.Key.Type, x.Key.Interval, measurements);
-        })
+          IntervalEntity.Month or IntervalEntity.Day => 1,
+          IntervalEntity.QuarterHour => 2,
+          _ => throw new InvalidOperationException(
+            $"Unknown interval {aggregate.Interval}.")
+        }
+        : 0)
+      .GroupBy(x => (
+        Type: x.GetType(),
+        Interval:
+        x is AggregateEntity aggregate
+          ? (IntervalEntity?)aggregate.Interval
+          : null))
+      .Select(x =>
+      {
+        var measurements = x.ToList();
+        return new MeasurementGroup(x.Key.Type, x.Key.Interval, measurements);
+      })
       .ToListAsync(cancellationToken);
     if (grouped.Count == 0)
     {
@@ -398,31 +389,28 @@ public class MeasurementMutations(
               grouped
                 .SelectMany(group => group.Measurements)
                 .OfType<IAggregateEntity>()
-                .GroupBy(
-                  aggregate => new
-                  {
-                    Type = aggregate.GetType(),
-                    aggregate.Interval,
-                    aggregate.MeterId,
-                    aggregate.MeasurementLocationId,
-                    aggregate.Timestamp
-                  })
-                .Select(
-                  x => new
-                  {
-                    x.Key,
-                    List = x.ToList()
-                  })
+                .GroupBy(aggregate => new
+                {
+                  Type = aggregate.GetType(),
+                  aggregate.Interval,
+                  aggregate.MeterId,
+                  aggregate.MeasurementLocationId,
+                  aggregate.Timestamp
+                })
+                .Select(x => new
+                {
+                  x.Key,
+                  List = x.ToList()
+                })
                 .Where(x => x.List.Count > 1)
-                .Select(
-                  x => string.Join(
-                    Environment.NewLine,
-                    $"Type: {x.Key.Type.Name}",
-                    $"Interval: {x.Key.Interval}",
-                    $"Meter ID: {x.Key.MeterId}",
-                    $"Measurement Location ID: {x.Key.MeasurementLocationId}",
-                    $"Timestamp: {x.Key.Timestamp}",
-                    $"Count: {x.List.Count}")));
+                .Select(x => string.Join(
+                  Environment.NewLine,
+                  $"Type: {x.Key.Type.Name}",
+                  $"Interval: {x.Key.Interval}",
+                  $"Meter ID: {x.Key.MeterId}",
+                  $"Measurement Location ID: {x.Key.MeasurementLocationId}",
+                  $"Timestamp: {x.Key.Timestamp}",
+                  $"Count: {x.List.Count}")));
             logger.LogError(
               "Aggregate update affected a row more than once."
               + " {Count} aggregates affected."
@@ -472,16 +460,15 @@ public class MeasurementMutations(
     }
 
     return results
-      .GroupBy(
-        x => new
-        {
-          x.MeterId,
-          x.MeasurementLocationId,
-          x.Timestamp,
-          Interval = x is IAggregateEntity aggregate
-            ? aggregate.Interval
-            : (IntervalEntity?)null
-        })
+      .GroupBy(x => new
+      {
+        x.MeterId,
+        x.MeasurementLocationId,
+        x.Timestamp,
+        Interval = x is IAggregateEntity aggregate
+          ? aggregate.Interval
+          : (IntervalEntity?)null
+      })
       .Select(x => x.Last())
       .ToList();
   }

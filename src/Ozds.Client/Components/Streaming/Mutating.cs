@@ -30,10 +30,10 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
   public T? Value { get; set; }
 
   [Parameter]
-  public string? Id { get; set; } = default!;
+  public string? Id { get; set; }
 
   [Parameter]
-  public Func<T, TMapped>? Map { get; set; } = default!;
+  public Func<T, TMapped>? Map { get; set; }
 
   [Parameter]
   public RenderFragment? Progress { get; set; }
@@ -106,34 +106,34 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
   public bool Reload { get; set; }
 
   [Parameter]
-  public RenderFragment<MutatingState<T>>? Details { get; set; } = default!;
+  public RenderFragment<MutatingState<T>>? Details { get; set; }
 
   [Parameter]
-  public RenderFragment<MutatingState<T>>? Edit { get; set; } = default!;
+  public RenderFragment<MutatingState<T>>? Edit { get; set; }
 
   [Parameter]
-  public RenderFragment<MutatingState<T>>? Footer { get; set; } = default!;
+  public RenderFragment<MutatingState<T>>? Footer { get; set; }
 
   [Parameter]
-  public bool AsReadonly { get; set; } = false;
+  public bool AsReadonly { get; set; }
 
   [Parameter]
-  public bool WithPreview { get; set; } = false;
+  public bool WithPreview { get; set; }
 
   [Parameter]
-  public bool WithTitle { get; set; } = false;
+  public bool WithTitle { get; set; }
 
   [Parameter]
-  public bool WithHeading { get; set; } = false;
+  public bool WithHeading { get; set; }
 
   [Parameter]
-  public bool NotFoundOnCreate { get; set; } = false;
+  public bool NotFoundOnCreate { get; set; }
 
   [Parameter]
-  public string? Class { get; set; } = default!;
+  public string? Class { get; set; }
 
   [Parameter]
-  public string? Style { get; set; } = default!;
+  public string? Style { get; set; }
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;

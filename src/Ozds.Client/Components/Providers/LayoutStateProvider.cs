@@ -19,46 +19,42 @@ public partial class LayoutStateProvider : ComponentBase
       false,
       isUserDrawerOpen =>
       {
-        InvokeAsync(
-          () =>
-          {
-            _state = _state! with { IsUserDrawerOpen = isUserDrawerOpen };
-            StateHasChanged();
-          });
+        InvokeAsync(() =>
+        {
+          _state = _state! with { IsUserDrawerOpen = isUserDrawerOpen };
+          StateHasChanged();
+        });
       },
       isLocalizationDrawerOpen =>
       {
-        InvokeAsync(
-          () =>
+        InvokeAsync(() =>
+        {
+          _state = _state! with
           {
-            _state = _state! with
-            {
-              IsLocalizationDrawerOpen = isLocalizationDrawerOpen
-            };
-            StateHasChanged();
-          });
+            IsLocalizationDrawerOpen = isLocalizationDrawerOpen
+          };
+          StateHasChanged();
+        });
       },
       isNavigationDrawerOpen =>
       {
-        InvokeAsync(
-          () =>
+        InvokeAsync(() =>
+        {
+          _state = _state! with
           {
-            _state = _state! with
-            {
-              IsNavigationDrawerOpen = isNavigationDrawerOpen
-            };
-            StateHasChanged();
-          });
+            IsNavigationDrawerOpen = isNavigationDrawerOpen
+          };
+          StateHasChanged();
+        });
       },
       Breakpoint.None,
       breakpoint =>
       {
-        InvokeAsync(
-          () =>
-          {
-            _state = _state! with { Breakpoint = breakpoint };
-            StateHasChanged();
-          });
+        InvokeAsync(() =>
+        {
+          _state = _state! with { Breakpoint = breakpoint };
+          StateHasChanged();
+        });
       }
     );
   }

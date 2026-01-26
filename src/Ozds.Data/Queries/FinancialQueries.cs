@@ -29,10 +29,9 @@ public class FinancialQueries(
         context.ForeignKeyIn<NetworkUserCalculationEntity>(
           nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation),
           measurementLocationIds))
-      .Where(
-        calculation =>
-          (calculation.FromDate >= fromDate && calculation.FromDate < toDate)
-          || (calculation.ToDate >= fromDate && calculation.ToDate < toDate))
+      .Where(calculation =>
+        (calculation.FromDate >= fromDate && calculation.FromDate < toDate)
+        || (calculation.ToDate >= fromDate && calculation.ToDate < toDate))
       .Include(calculation => calculation.NetworkUserInvoice);
 
     var ordered = filtered
@@ -80,8 +79,8 @@ public class FinancialQueries(
       .Include(calculation => calculation.NetworkUserInvoice);
 
     var ordered = filtered
-      .OrderByDescending(
-        calculation => calculation.NetworkUserInvoice.IssuedOn);
+      .OrderByDescending(calculation =>
+        calculation.NetworkUserInvoice.IssuedOn);
 
     var count = await filtered.CountAsync(cancellationToken);
 

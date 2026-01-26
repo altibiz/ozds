@@ -38,14 +38,12 @@ public class InvoiceQueries(
           .ThenInclude(x => x.Invoices)
           .Include(x => x.NetworkUsers)
           .ThenInclude(x => x.Invoices)
-          .SelectMany(
-            x => x.Locations
-              .SelectMany(
-                x => x.NetworkUsers
-                  .SelectMany(x => x.Invoices))
-              .Concat(
-                x.NetworkUsers
-                  .SelectMany(x => x.Invoices))),
+          .SelectMany(x => x.Locations
+            .SelectMany(x => x.NetworkUsers
+              .SelectMany(x => x.Invoices))
+            .Concat(
+              x.NetworkUsers
+                .SelectMany(x => x.Invoices))),
       RoleEntity.OperatorRepresentative => context.NetworkUserInvoices,
       _ => throw new ArgumentOutOfRangeException(nameof(role))
     };

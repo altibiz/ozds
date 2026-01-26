@@ -20,7 +20,7 @@ public partial class PasswordField
   public string Value { get; set; } = default!;
 
   [Parameter]
-  public EventCallback<string> ValueChanged { get; set; } = default!;
+  public EventCallback<string> ValueChanged { get; set; }
 
   private void OnVisibilityClick()
   {

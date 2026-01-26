@@ -15,52 +15,44 @@ public class NetworkUserInvoiceStateMachine
       () => InitiateNetworkUserInvoice,
       x =>
       {
-        x.CorrelateBy(
-          (state, context) =>
-            state.NetworkUserInvoiceId
-            == context.Message.NetworkUserInvoiceId);
+        x.CorrelateBy((state, context) =>
+          state.NetworkUserInvoiceId
+          == context.Message.NetworkUserInvoiceId);
         x.SelectId(x => NewId.NextGuid());
 
         x.InsertOnInitial = true;
 
-        x.SetSagaFactory(
-          context =>
-            new NetworkUserInvoiceStateEntity
-            {
-              CorrelationId = context.CorrelationId ?? NewId.NextGuid(),
-              NetworkUserInvoiceId = context.Message.NetworkUserInvoiceId
-            });
+        x.SetSagaFactory(context =>
+          new NetworkUserInvoiceStateEntity
+          {
+            CorrelationId = context.CorrelationId ?? NewId.NextGuid(),
+            NetworkUserInvoiceId = context.Message.NetworkUserInvoiceId
+          });
       });
 
     Event(
       () => AbortNetworkUserInvoice,
       x => x
-        .CorrelateBy(
-          (state, context) =>
-            state.NetworkUserInvoiceId
-            == context.Message.NetworkUserInvoiceId)
-        .SelectId(
-          x => NewId.NextGuid()));
+        .CorrelateBy((state, context) =>
+          state.NetworkUserInvoiceId
+          == context.Message.NetworkUserInvoiceId)
+        .SelectId(x => NewId.NextGuid()));
 
     Event(
       () => RegisterNetworkUserInvoice,
       x => x
-        .CorrelateBy(
-          (state, context) =>
-            state.NetworkUserInvoiceId
-            == context.Message.NetworkUserInvoiceId)
-        .SelectId(
-          x => NewId.NextGuid()));
+        .CorrelateBy((state, context) =>
+          state.NetworkUserInvoiceId
+          == context.Message.NetworkUserInvoiceId)
+        .SelectId(x => NewId.NextGuid()));
 
     Event(
       () => ApproveNetworkUserInvoice,
       x => x
-        .CorrelateBy(
-          (state, context) =>
-            state.NetworkUserInvoiceId
-            == context.Message.NetworkUserInvoiceId)
-        .SelectId(
-          x => NewId.NextGuid()));
+        .CorrelateBy((state, context) =>
+          state.NetworkUserInvoiceId
+          == context.Message.NetworkUserInvoiceId)
+        .SelectId(x => NewId.NextGuid()));
 
     Initially(
       When(InitiateNetworkUserInvoice)

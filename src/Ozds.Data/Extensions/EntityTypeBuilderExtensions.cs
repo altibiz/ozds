@@ -103,27 +103,25 @@ public static class EntityTypeBuilderExtensions
       .ComplexType
       .ClrType
       .GetProperties()
-      .Where(
-        property => property
-            is { GetMethod.IsVirtual: true }
-            and { GetMethod.IsFinal: false }
-          || property.Name == nameof(IJoinEntity.LeftId)
-          || property.Name == nameof(IJoinEntity.RightId)
-          || property.Name == nameof(IAuditableEntity.AuditingId)
-          || property.Name == nameof(IAuditableEntity.AuditingTitle)
-          || property.Name == nameof(IAuditableEntity.AuditingRepresentativeId)
-          || property.Name == nameof(ITrackableEntity.Forget)
-          || property.Name == nameof(ITrackableEntity.Restore))
+      .Where(property => property
+          is { GetMethod.IsVirtual: true }
+          and { GetMethod.IsFinal: false }
+        || property.Name == nameof(IJoinEntity.LeftId)
+        || property.Name == nameof(IJoinEntity.RightId)
+        || property.Name == nameof(IAuditableEntity.AuditingId)
+        || property.Name == nameof(IAuditableEntity.AuditingTitle)
+        || property.Name == nameof(IAuditableEntity.AuditingRepresentativeId)
+        || property.Name == nameof(ITrackableEntity.Forget)
+        || property.Name == nameof(ITrackableEntity.Restore))
       .ToList();
 
     var propertiesToArchive = complexPropertyBuilder.Metadata
       .ComplexType
       .ClrType
       .GetProperties()
-      .Where(
-        property =>
-          property.PropertyType.Name.EndsWith("Entity")
-          && !property.PropertyType.IsEnum)
+      .Where(property =>
+        property.PropertyType.Name.EndsWith("Entity")
+        && !property.PropertyType.IsEnum)
       .Except(propertiesToIgnore)
       .ToList();
 

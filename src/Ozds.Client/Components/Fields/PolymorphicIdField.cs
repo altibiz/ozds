@@ -21,7 +21,7 @@ public partial class PolymorphicIdField : OzdsComponentBase
   public string Type { get; set; } = default!;
 
   [Parameter]
-  public EventCallback<string> TypeChanged { get; set; } = default!;
+  public EventCallback<string> TypeChanged { get; set; }
 
   [Parameter]
   public IEnumerable<Type> TypeChoices { get; set; } = default!;
@@ -33,7 +33,7 @@ public partial class PolymorphicIdField : OzdsComponentBase
   public string Id { get; set; } = default!;
 
   [Parameter]
-  public EventCallback<string> IdChanged { get; set; } = default!;
+  public EventCallback<string> IdChanged { get; set; }
 
   [Inject]
   public ModelReflector ModelReflector { get; set; } = default!;

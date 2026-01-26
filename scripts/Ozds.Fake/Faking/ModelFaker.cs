@@ -27,13 +27,12 @@ public class ModelFaker(IServiceProvider serviceProvider)
         .GetServices<IModelFaker>()
         .Where(converter => converter.CanFake(type))
         .DefaultIfEmpty(null)
-        .Aggregate(
-          (acc, next) =>
-            acc is null
-              ? null
-              : next!.ModelType.IsAssignableTo(acc.ModelType)
-                ? next
-                : acc)
+        .Aggregate((acc, next) =>
+          acc is null
+            ? null
+            : next!.ModelType.IsAssignableTo(acc.ModelType)
+              ? next
+              : acc)
       ?? throw new InvalidOperationException(
         $"No model activator found for {type}");
 
@@ -51,12 +50,11 @@ public class ModelFaker(IServiceProvider serviceProvider)
 
     subtypes = serviceProvider
       .GetServices<IModelFaker>()
-      .Where(
-        converter =>
-          !converter.ModelType.IsAbstract
-          && !converter.ModelType.IsInterface
-          && converter.ModelType.IsAssignableTo(type)
-          && converter.CanFake(type))
+      .Where(converter =>
+        !converter.ModelType.IsAbstract
+        && !converter.ModelType.IsInterface
+        && converter.ModelType.IsAssignableTo(type)
+        && converter.CanFake(type))
       .Select(converter => converter.ModelType)
       .ToList();
 

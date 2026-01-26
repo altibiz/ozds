@@ -23,11 +23,9 @@ public sealed class EntityReflector : IAsyncDisposable
 #pragma warning disable S4487 // Unread "private" fields should be removed
   private readonly IDbContextFactory<DataDbContext> factory;
 #pragma warning restore S4487 // Unread "private" fields should be removed
-  private readonly Lazy<List<Type>> measurementTypes;
 
   private readonly Lazy<Dictionary<Type, Type>> measurementTypeToMeterType;
-
-  private readonly Lazy<List<Type>> meterTypes;
+  private readonly Lazy<List<Type>> measurementTypes;
 
   private readonly Lazy<Dictionary<Type, Type>> meterTypeToAggregateType;
 
@@ -35,6 +33,8 @@ public sealed class EntityReflector : IAsyncDisposable
 
   private readonly Lazy<Dictionary<Type, Type>>
     meterTypeToMeasurementValidatorType;
+
+  private readonly Lazy<List<Type>> meterTypes;
 
   private readonly ConcurrentDictionary<string, Type> nameToTypeCache =
     new();
@@ -64,64 +64,58 @@ public sealed class EntityReflector : IAsyncDisposable
 
     context = factory.CreateDbContext();
 
-    aggregateTypes = new Lazy<List<Type>>(
-      () => context.Model
-        .GetEntityTypes()
-        .Where(
-          x =>
-            x.ClrType.IsAssignableTo(typeof(IAggregateEntity))
-            && !x.ClrType.IsAbstract
-            && !x.ClrType.IsGenericType)
-        .Select(x => x.ClrType)
-        .ToList());
+    aggregateTypes = new Lazy<List<Type>>(() => context.Model
+      .GetEntityTypes()
+      .Where(x =>
+        x.ClrType.IsAssignableTo(typeof(IAggregateEntity))
+        && !x.ClrType.IsAbstract
+        && !x.ClrType.IsGenericType)
+      .Select(x => x.ClrType)
+      .ToList());
 
-    measurementTypes = new Lazy<List<Type>>(
-      () => context.Model
-        .GetEntityTypes()
-        .Where(
-          x =>
-            x.ClrType.IsAssignableTo(typeof(IMeasurementEntity))
-            && !x.ClrType.IsAssignableTo(typeof(IAggregateEntity))
-            && !x.ClrType.IsAbstract
-            && !x.ClrType.IsGenericType)
-        .Select(x => x.ClrType)
-        .ToList());
+    measurementTypes = new Lazy<List<Type>>(() => context.Model
+      .GetEntityTypes()
+      .Where(x =>
+        x.ClrType.IsAssignableTo(typeof(IMeasurementEntity))
+        && !x.ClrType.IsAssignableTo(typeof(IAggregateEntity))
+        && !x.ClrType.IsAbstract
+        && !x.ClrType.IsGenericType)
+      .Select(x => x.ClrType)
+      .ToList());
 
-    meterTypes = new Lazy<List<Type>>(
-      () => context.Model
-        .GetEntityTypes()
-        .Where(
-          x =>
-            x.ClrType.IsAssignableTo(typeof(IMeterEntity))
-            && !x.ClrType.IsAbstract
-            && !x.ClrType.IsGenericType)
-        .Select(x => x.ClrType)
-        .ToList());
+    meterTypes = new Lazy<List<Type>>(() => context.Model
+      .GetEntityTypes()
+      .Where(x =>
+        x.ClrType.IsAssignableTo(typeof(IMeterEntity))
+        && !x.ClrType.IsAbstract
+        && !x.ClrType.IsGenericType)
+      .Select(x => x.ClrType)
+      .ToList());
 
-    measurementTypeToMeterType = new Lazy<Dictionary<Type, Type>>(
-      () => aggregateTypes.Value.Concat(measurementTypes.Value)
+    measurementTypeToMeterType = new Lazy<Dictionary<Type, Type>>(() =>
+      aggregateTypes.Value.Concat(measurementTypes.Value)
         .ToDictionary(
           x => x,
           x => x.GetProperty("Meter")?.PropertyType
             ?? throw new InvalidOperationException(
               $"No meter property found for {x.Name}.")));
 
-    meterTypeToAggregateType = new Lazy<Dictionary<Type, Type>>(
-      () => measurementTypeToMeterType.Value
+    meterTypeToAggregateType = new Lazy<Dictionary<Type, Type>>(() =>
+      measurementTypeToMeterType.Value
         .Where(x => x.Key.IsAssignableTo(typeof(IAggregateEntity)))
         .ToDictionary(
           x => x.Value,
           x => x.Key));
 
-    meterTypeToMeasurementType = new Lazy<Dictionary<Type, Type>>(
-      () => measurementTypeToMeterType.Value
+    meterTypeToMeasurementType = new Lazy<Dictionary<Type, Type>>(() =>
+      measurementTypeToMeterType.Value
         .Where(x => !x.Key.IsAssignableTo(typeof(IAggregateEntity)))
         .ToDictionary(
           x => x.Value,
           x => x.Key));
 
-    meterTypeToMeasurementValidatorType = new Lazy<Dictionary<Type, Type>>(
-      () => MeterTypes.ToDictionary(
+    meterTypeToMeasurementValidatorType = new Lazy<Dictionary<Type, Type>>(() =>
+      MeterTypes.ToDictionary(
         x => x,
         x => x.GetProperty("MeasurementValidator")?.PropertyType
           ?? throw new InvalidOperationException(

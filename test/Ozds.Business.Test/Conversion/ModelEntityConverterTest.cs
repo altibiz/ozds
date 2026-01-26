@@ -13,13 +13,11 @@ public class ModelEntityConverterTest : OzdsBusinessHostTestBase
     return AppDomain.CurrentDomain
       .GetAssemblies()
       .Where(x => x.FullName is { } name && name.Contains("Ozds"))
-      .SelectMany(
-        assembly => assembly
-          .GetTypes()
-          .Where(
-            type =>
-              !type.IsGenericType &&
-              type.IsAssignableTo(typeof(IModel))));
+      .SelectMany(assembly => assembly
+        .GetTypes()
+        .Where(type =>
+          !type.IsGenericType &&
+          type.IsAssignableTo(typeof(IModel))));
   }
 
   [Test]
@@ -35,10 +33,9 @@ public class ModelEntityConverterTest : OzdsBusinessHostTestBase
       .GetRequiredService<ModelEntityConverter>();
 
     var activationType = TestData()
-      .FirstOrDefault(
-        type =>
-          !type.IsGenericType
-          && type.IsAssignableTo(modelType))!;
+      .FirstOrDefault(type =>
+        !type.IsGenericType
+        && type.IsAssignableTo(modelType))!;
     activationType.Should().NotBeNull();
     var activated = activator.ActivateDynamic(activationType);
     activated.Should().NotBeNull().And.BeAssignableTo(activationType);
@@ -51,14 +48,13 @@ public class ModelEntityConverterTest : OzdsBusinessHostTestBase
     converted.Should().NotBeNull().And.BeAssignableTo(modelType);
     converted.Should().BeEquivalentTo(
       activated, options => options
-        .Excluding(
-          x =>
-            x.Name == "Created"
-            || (x.DeclaringType.IsAssignableTo(typeof(IJoin))
-              && x.Name == "ActivationSide")
-            || (x.DeclaringType.IsAssignableTo(typeof(IJoin))
-              && x.Name == "ActivationId")
-            || (x.DeclaringType.IsAssignableTo(typeof(ApiKeyModel))
-              && x.Name == "Value")));
+        .Excluding(x =>
+          x.Name == "Created"
+          || (x.DeclaringType.IsAssignableTo(typeof(IJoin))
+            && x.Name == "ActivationSide")
+          || (x.DeclaringType.IsAssignableTo(typeof(IJoin))
+            && x.Name == "ActivationId")
+          || (x.DeclaringType.IsAssignableTo(typeof(ApiKeyModel))
+            && x.Name == "Value")));
   }
 }

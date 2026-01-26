@@ -52,20 +52,19 @@ public class SmtpSender(
 
   public void SendBulk(IEnumerable<EmailMessage> messages)
   {
-    var mimeMessages = messages.Select(
-      m =>
-      {
-        var mimeMessage = new MimeMessage();
-        mimeMessage.From.Add(
-          new MailboxAddress(
-            options.Value.From.Name, options.Value.From.Address));
-        mimeMessage.To.Add(new MailboxAddress(m.Name, m.Address));
-        mimeMessage.Subject = m.Subject;
-        mimeMessage.Body =
-          new BodyBuilder { HtmlBody = m.Content }.ToMessageBody();
+    var mimeMessages = messages.Select(m =>
+    {
+      var mimeMessage = new MimeMessage();
+      mimeMessage.From.Add(
+        new MailboxAddress(
+          options.Value.From.Name, options.Value.From.Address));
+      mimeMessage.To.Add(new MailboxAddress(m.Name, m.Address));
+      mimeMessage.Subject = m.Subject;
+      mimeMessage.Body =
+        new BodyBuilder { HtmlBody = m.Content }.ToMessageBody();
 
-        return mimeMessage;
-      });
+      return mimeMessage;
+    });
 
     client.Connect(
       connectionString.Host, connectionString.Port, connectionString.Ssl);
@@ -80,20 +79,19 @@ public class SmtpSender(
 
   public async Task SendBulkAsync(IEnumerable<EmailMessage> messages)
   {
-    var mimeMessages = messages.Select(
-      m =>
-      {
-        var mimeMessage = new MimeMessage();
-        mimeMessage.From.Add(
-          new MailboxAddress(
-            options.Value.From.Name, options.Value.From.Address));
-        mimeMessage.To.Add(new MailboxAddress(m.Name, m.Address));
-        mimeMessage.Subject = m.Subject;
-        mimeMessage.Body =
-          new BodyBuilder { HtmlBody = m.Content }.ToMessageBody();
+    var mimeMessages = messages.Select(m =>
+    {
+      var mimeMessage = new MimeMessage();
+      mimeMessage.From.Add(
+        new MailboxAddress(
+          options.Value.From.Name, options.Value.From.Address));
+      mimeMessage.To.Add(new MailboxAddress(m.Name, m.Address));
+      mimeMessage.Subject = m.Subject;
+      mimeMessage.Body =
+        new BodyBuilder { HtmlBody = m.Content }.ToMessageBody();
 
-        return mimeMessage;
-      });
+      return mimeMessage;
+    });
 
     await client.ConnectAsync(
       connectionString.Host, connectionString.Port, connectionString.Ssl);

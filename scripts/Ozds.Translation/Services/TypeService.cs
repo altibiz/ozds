@@ -323,22 +323,18 @@ public class TypeService(
       // TODO: better way to detect managed translations
       var managedItems = dictionary
         .ToList()
-        .Where(
-          item => item.Metadata is { } metadata
-            && (metadata.StartsWith("Type")
-              || metadata.StartsWith("Property")))
+        .Where(item => item.Metadata is { } metadata
+          && (metadata.StartsWith("Type")
+            || metadata.StartsWith("Property")))
         .ToList();
 
       var unusedManagedItems = managedItems
-        .Where(
-          dictionaryItem => !items.Exists(
-            item =>
-              item.Key == dictionaryItem.Key
-              || item.ShortKey == dictionaryItem.Key
-              || item.AdditionalKeys.Exists(
-                x =>
-                  x.Key == dictionaryItem.Key
-                  || x.ShortKey == dictionaryItem.Key)))
+        .Where(dictionaryItem => !items.Exists(item =>
+          item.Key == dictionaryItem.Key
+          || item.ShortKey == dictionaryItem.Key
+          || item.AdditionalKeys.Exists(x =>
+            x.Key == dictionaryItem.Key
+            || x.ShortKey == dictionaryItem.Key)))
         .ToList();
 
       foreach (var key in unusedManagedItems.Select(x => x.Key))
@@ -404,34 +400,31 @@ public class TypeService(
     )
   {
     return items
-      .GroupBy(
-        item => item.Property is { } property
-          ? translationQueries.GeneralKey(item.Type, property)
-          : translationQueries.GeneralKey(item.Type, plural: item.Plural))
-      .Select(
-        group =>
-        {
-          var metadata = string
-            .Join("\n\n", group.Select(x => x.Metadata));
-          return new GroupedAcrossAssembliesTranslationItem(
-            false,
-            group.Key,
-            group.Key,
-            group
-              .Select(x => (x.Key, x.ShortKey))
-              .Concat(
-                group
-                  .Where(x => x.Property == null)
-                  .GroupBy(
-                    x => translationQueries
-                      .GeneralKey(x.Type, false))
-                  .Where(x => x.Key != group.Key)
-                  .Select(x => (x.Key, x.Key)))
-              .ToList(),
-            metadata,
-            AdditionalPropertyPrompt
-          );
-        });
+      .GroupBy(item => item.Property is { } property
+        ? translationQueries.GeneralKey(item.Type, property)
+        : translationQueries.GeneralKey(item.Type, plural: item.Plural))
+      .Select(group =>
+      {
+        var metadata = string
+          .Join("\n\n", group.Select(x => x.Metadata));
+        return new GroupedAcrossAssembliesTranslationItem(
+          false,
+          group.Key,
+          group.Key,
+          group
+            .Select(x => (x.Key, x.ShortKey))
+            .Concat(
+              group
+                .Where(x => x.Property == null)
+                .GroupBy(x => translationQueries
+                  .GeneralKey(x.Type, false))
+                .Where(x => x.Key != group.Key)
+                .Select(x => (x.Key, x.Key)))
+            .ToList(),
+          metadata,
+          AdditionalPropertyPrompt
+        );
+      });
   }
 
   private IEnumerable<GroupedByDeclarationTranslationItem>
@@ -440,86 +433,82 @@ public class TypeService(
     )
   {
     return items
-      .GroupBy(
-        item => (
-          Type: item.DeclaringType,
-          IsPlural: item.Plural,
-          Property: item.EnumName ?? item.Property?.Name
-        ))
-      .Select(
-        group =>
-        {
-          var type = group.Key.Type;
-          var property = group.Key.Property;
+      .GroupBy(item => (
+        Type: item.DeclaringType,
+        IsPlural: item.Plural,
+        Property: item.EnumName ?? item.Property?.Name
+      ))
+      .Select(group =>
+      {
+        var type = group.Key.Type;
+        var property = group.Key.Property;
 
-          if (property is null)
-          {
-            var prompt = group.Key.IsPlural
-              ? AdditionalPluralTypePrompt
-              : AdditionalTypePrompt;
-            var first = group.First();
-            var typeMetadata = $"""
+        if (property is null)
+        {
+          var prompt = group.Key.IsPlural
+            ? AdditionalPluralTypePrompt
+            : AdditionalTypePrompt;
+          var first = group.First();
+          var typeMetadata = $"""
             Type '{type.FullName}'
           """.Trim();
-            return new GroupedByDeclarationTranslationItem(
-              type,
-              null,
-              first.Key,
-              first.ShortKey,
-              [],
-              typeMetadata,
-              prompt,
-              group.Key.IsPlural
-            );
-          }
+          return new GroupedByDeclarationTranslationItem(
+            type,
+            null,
+            first.Key,
+            first.ShortKey,
+            [],
+            typeMetadata,
+            prompt,
+            group.Key.IsPlural
+          );
+        }
 
-          var typeKey = translationQueries.Key(type);
-          var declaredItem = group.FirstOrDefault(
-            x =>
-              x.Key.StartsWith(typeKey));
-          if (declaredItem is null)
-          {
-            var keys = string.Join(
-              "\n",
-              group.Select(x => x.Key));
-            throw new InvalidOperationException(
-              $"Could not find declared item for '{typeKey}.{property}'"
-              + $" out of:\n{keys}");
-          }
+        var typeKey = translationQueries.Key(type);
+        var declaredItem = group.FirstOrDefault(x =>
+          x.Key.StartsWith(typeKey));
+        if (declaredItem is null)
+        {
+          var keys = string.Join(
+            "\n",
+            group.Select(x => x.Key));
+          throw new InvalidOperationException(
+            $"Could not find declared item for '{typeKey}.{property}'"
+            + $" out of:\n{keys}");
+        }
 
-          var additional = group
-            .Where(x => x != declaredItem)
-            .ToList();
-          var memberMetadata = additional.Count == 0
-            ? $"Property '{property}' of type '{typeKey}'"
-            : $"""
+        var additional = group
+          .Where(x => x != declaredItem)
+          .ToList();
+        var memberMetadata = additional.Count == 0
+          ? $"Property '{property}' of type '{typeKey}'"
+          : $"""
               Property '{property}' of type '{typeKey}' with overrides:
             {string
               .Join("\n", additional.Select(x => x.ShortKey))
               .Indent(2, "\n")}
             """.Trim().Dedent(12, "\n");
-          return new GroupedByDeclarationTranslationItem(
-            type,
-            property,
-            declaredItem.Key,
-            declaredItem.ShortKey,
-            additional
-              .Select(x => (x.Key, x.ShortKey))
-              .ToList(),
-            memberMetadata,
-            AdditionalPropertyPrompt,
-            false
-          );
-        });
+        return new GroupedByDeclarationTranslationItem(
+          type,
+          property,
+          declaredItem.Key,
+          declaredItem.ShortKey,
+          additional
+            .Select(x => (x.Key, x.ShortKey))
+            .ToList(),
+          memberMetadata,
+          AdditionalPropertyPrompt,
+          false
+        );
+      });
   }
 
   private IEnumerable<TypeTranslationItem> GetItems()
   {
     var assemblies = AppDomain.CurrentDomain
       .GetAssemblies()
-      .Where(
-        assembly =>
-          arguments.InputAssemblies.Contains(assembly.GetName().Name));
+      .Where(assembly =>
+        arguments.InputAssemblies.Contains(assembly.GetName().Name));
 
     logger.LogInformation(
       "Found assemblies:\n{Assemblies}",
@@ -527,16 +516,14 @@ public class TypeService(
     );
 
     var types = assemblies
-      .SelectMany(
-        assembly => assembly
-          .GetTypes()
-          .Where(type => !(type.Name?.StartsWith('<') ?? false))
-          .Where(type => !(type.Name?.EndsWith("Extensions") ?? false))
-          .Where(
-            type =>
-              type.Namespace is not null
-              && arguments.InputNamespaces.Any(
-                type.Namespace.StartsWith)));
+      .SelectMany(assembly => assembly
+        .GetTypes()
+        .Where(type => !(type.Name?.StartsWith('<') ?? false))
+        .Where(type => !(type.Name?.EndsWith("Extensions") ?? false))
+        .Where(type =>
+          type.Namespace is not null
+          && arguments.InputNamespaces.Any(
+            type.Namespace.StartsWith)));
 
     foreach (var type in types)
     {

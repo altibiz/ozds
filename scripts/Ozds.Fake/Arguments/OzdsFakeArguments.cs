@@ -145,14 +145,13 @@ public static class OzdsFakeArguments
   {
     try
     {
-      var result = new Parser(
-        with =>
-        {
-          with.CaseInsensitiveEnumValues = true;
-          with.AutoHelp = true;
-          with.AutoVersion = true;
-          with.HelpWriter = Console.Out;
-        }).ParseArguments<OzdsFakePushArguments, OzdsFakeSeedArguments,
+      var result = new Parser(with =>
+      {
+        with.CaseInsensitiveEnumValues = true;
+        with.AutoHelp = true;
+        with.AutoVersion = true;
+        with.HelpWriter = Console.Out;
+      }).ParseArguments<OzdsFakePushArguments, OzdsFakeSeedArguments,
         OzdsFakeInsertArguments,
         OzdsFakeAltibizArguments>(args);
 

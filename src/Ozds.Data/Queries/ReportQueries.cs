@@ -42,36 +42,34 @@ public class ReportQueries(
         cancellationToken);
 
     return initial
-      .Select(
-        basis =>
+      .Select(basis =>
+      {
+        var basisAggregates = aggregates.Items
+          .Where(x => x.MeasurementLocationId == basis.MeasurementLocation.Id);
+        var minAggregate = basisAggregates
+          .OfType<AggregateEntity>()
+          .FirstOrDefault();
+        var maxAggregate = basisAggregates
+          .OfType<AggregateEntity>()
+          .LastOrDefault();
+        if (minAggregate is null
+          || maxAggregate is null
+          || minAggregate == maxAggregate)
         {
-          var basisAggregates = aggregates.Items
-            .Where(
-              x => x.MeasurementLocationId == basis.MeasurementLocation.Id);
-          var minAggregate = basisAggregates
-            .OfType<AggregateEntity>()
-            .FirstOrDefault();
-          var maxAggregate = basisAggregates
-            .OfType<AggregateEntity>()
-            .LastOrDefault();
-          if (minAggregate is null
-            || maxAggregate is null
-            || minAggregate == maxAggregate)
-          {
-            return null;
-          }
+          return null;
+        }
 
-          return new EnergyCardReportBasisEntity
-          {
-            Location = basis.Location,
-            NetworkUser = basis.NetworkUser,
-            Catalogue = basis.Catalogue,
-            MeasurementLocation = basis.MeasurementLocation,
-            Meter = basis.Meter,
-            MinAggregate = minAggregate,
-            MaxAggregate = maxAggregate
-          };
-        })
+        return new EnergyCardReportBasisEntity
+        {
+          Location = basis.Location,
+          NetworkUser = basis.NetworkUser,
+          Catalogue = basis.Catalogue,
+          MeasurementLocation = basis.MeasurementLocation,
+          Meter = basis.Meter,
+          MinAggregate = minAggregate,
+          MaxAggregate = maxAggregate
+        };
+      })
       .OfType<EnergyCardReportBasisEntity>()
       .ToList();
   }
@@ -104,34 +102,32 @@ public class ReportQueries(
         cancellationToken);
 
     return initial
-      .Select(
-        basis =>
+      .Select(basis =>
+      {
+        var basisAggregates = aggregates.Items
+          .Where(x => x.MeasurementLocationId == basis.MeasurementLocation.Id);
+        var minAggregate = basisAggregates
+          .OfType<AggregateEntity>()
+          .FirstOrDefault();
+        var maxAggregate = basisAggregates
+          .OfType<AggregateEntity>()
+          .LastOrDefault();
+        if (minAggregate is null || maxAggregate is null)
         {
-          var basisAggregates = aggregates.Items
-            .Where(
-              x => x.MeasurementLocationId == basis.MeasurementLocation.Id);
-          var minAggregate = basisAggregates
-            .OfType<AggregateEntity>()
-            .FirstOrDefault();
-          var maxAggregate = basisAggregates
-            .OfType<AggregateEntity>()
-            .LastOrDefault();
-          if (minAggregate is null || maxAggregate is null)
-          {
-            return null;
-          }
+          return null;
+        }
 
-          return new EnergyCardReportBasisEntity
-          {
-            Location = basis.Location,
-            NetworkUser = basis.NetworkUser,
-            Catalogue = basis.Catalogue,
-            MeasurementLocation = basis.MeasurementLocation,
-            Meter = basis.Meter,
-            MinAggregate = minAggregate,
-            MaxAggregate = maxAggregate
-          };
-        })
+        return new EnergyCardReportBasisEntity
+        {
+          Location = basis.Location,
+          NetworkUser = basis.NetworkUser,
+          Catalogue = basis.Catalogue,
+          MeasurementLocation = basis.MeasurementLocation,
+          Meter = basis.Meter,
+          MinAggregate = minAggregate,
+          MaxAggregate = maxAggregate
+        };
+      })
       .OfType<EnergyCardReportBasisEntity>()
       .ToList();
   }
@@ -164,34 +160,32 @@ public class ReportQueries(
         cancellationToken);
 
     return initial
-      .Select(
-        basis =>
+      .Select(basis =>
+      {
+        var basisAggregates = aggregates.Items
+          .Where(x => x.MeasurementLocationId == basis.MeasurementLocation.Id);
+        var minAggregate = basisAggregates
+          .OfType<AggregateEntity>()
+          .FirstOrDefault();
+        var maxAggregate = basisAggregates
+          .OfType<AggregateEntity>()
+          .LastOrDefault();
+        if (minAggregate is null || maxAggregate is null)
         {
-          var basisAggregates = aggregates.Items
-            .Where(
-              x => x.MeasurementLocationId == basis.MeasurementLocation.Id);
-          var minAggregate = basisAggregates
-            .OfType<AggregateEntity>()
-            .FirstOrDefault();
-          var maxAggregate = basisAggregates
-            .OfType<AggregateEntity>()
-            .LastOrDefault();
-          if (minAggregate is null || maxAggregate is null)
-          {
-            return null;
-          }
+          return null;
+        }
 
-          return new EnergyCardReportBasisEntity
-          {
-            Location = basis.Location,
-            NetworkUser = basis.NetworkUser,
-            Catalogue = basis.Catalogue,
-            MeasurementLocation = basis.MeasurementLocation,
-            Meter = basis.Meter,
-            MinAggregate = minAggregate,
-            MaxAggregate = maxAggregate
-          };
-        })
+        return new EnergyCardReportBasisEntity
+        {
+          Location = basis.Location,
+          NetworkUser = basis.NetworkUser,
+          Catalogue = basis.Catalogue,
+          MeasurementLocation = basis.MeasurementLocation,
+          Meter = basis.Meter,
+          MinAggregate = minAggregate,
+          MaxAggregate = maxAggregate
+        };
+      })
       .OfType<EnergyCardReportBasisEntity>()
       .ToList();
   }
@@ -395,15 +389,14 @@ public class ReportQueries(
     }
 
     return entities
-      .Select(
-        entity => new ReportBasisEntity
-        {
-          Location = entity.NetworkUser.Location,
-          NetworkUser = entity.NetworkUser,
-          Catalogue = entity.NetworkUserCatalogue,
-          MeasurementLocation = entity,
-          Meter = entity.Meter
-        })
+      .Select(entity => new ReportBasisEntity
+      {
+        Location = entity.NetworkUser.Location,
+        NetworkUser = entity.NetworkUser,
+        Catalogue = entity.NetworkUserCatalogue,
+        MeasurementLocation = entity,
+        Meter = entity.Meter
+      })
       .ToList();
   }
 
@@ -424,9 +417,8 @@ public class ReportQueries(
         .ThenInclude(x => x.NetworkUserMeasurementLocations)
         .AsSplitQuery()
         .ToListAsync(cancellationToken))
-      .SelectMany(
-        x => x.NetworkUsers
-          .SelectMany(x => x.NetworkUserMeasurementLocations));
+      .SelectMany(x => x.NetworkUsers
+        .SelectMany(x => x.NetworkUserMeasurementLocations));
 
     var entities = await context.MeasurementLocations
       .OfType<NetworkUserMeasurementLocationEntity>()
@@ -444,15 +436,14 @@ public class ReportQueries(
     }
 
     return entities
-      .Select(
-        entity => new ReportBasisEntity
-        {
-          Location = entity.NetworkUser.Location,
-          NetworkUser = entity.NetworkUser,
-          Catalogue = entity.NetworkUserCatalogue,
-          MeasurementLocation = entity,
-          Meter = entity.Meter
-        })
+      .Select(entity => new ReportBasisEntity
+      {
+        Location = entity.NetworkUser.Location,
+        NetworkUser = entity.NetworkUser,
+        Catalogue = entity.NetworkUserCatalogue,
+        MeasurementLocation = entity,
+        Meter = entity.Meter
+      })
       .ToList();
   }
 
@@ -480,15 +471,14 @@ public class ReportQueries(
     }
 
     return entities
-      .Select(
-        entity => new ReportBasisEntity
-        {
-          Location = entity.NetworkUser.Location,
-          NetworkUser = entity.NetworkUser,
-          Catalogue = entity.NetworkUserCatalogue,
-          MeasurementLocation = entity,
-          Meter = entity.Meter
-        })
+      .Select(entity => new ReportBasisEntity
+      {
+        Location = entity.NetworkUser.Location,
+        NetworkUser = entity.NetworkUser,
+        Catalogue = entity.NetworkUserCatalogue,
+        MeasurementLocation = entity,
+        Meter = entity.Meter
+      })
       .ToList();
   }
 

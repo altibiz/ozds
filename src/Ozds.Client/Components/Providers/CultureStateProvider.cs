@@ -23,7 +23,7 @@ public partial class CultureStateProvider : DisposableComponentBase
   public RenderFragment? ChildContent { get; set; }
 
   [Parameter]
-  public string? CultureId { get; set; } = default!;
+  public string? CultureId { get; set; }
 
   [Inject]
   private NavigationManager NavigationManager { get; set; } = default!;

@@ -44,11 +44,10 @@ public class CascadingRestoreInterceptor(IServiceProvider serviceProvider)
     context.ChangeTracker.DetectChanges();
     var entries = context.ChangeTracker.Entries<ITrackableEntity>().ToList();
 
-    foreach (var entry in entries.Where(
-      e =>
-        e.State is Microsoft.EntityFrameworkCore.EntityState.Added
-        && e.Entity.IsDeleted
-        && e.Entity.Restore))
+    foreach (var entry in entries.Where(e =>
+      e.State is Microsoft.EntityFrameworkCore.EntityState.Added
+      && e.Entity.IsDeleted
+      && e.Entity.Restore))
     {
       await CascadingRestore(
         eventData,
@@ -71,14 +70,12 @@ public class CascadingRestoreInterceptor(IServiceProvider serviceProvider)
       .GetEntityTypes()
       .SelectMany(e => e.GetForeignKeys())
       .Where(relationship => relationship.IsRequired)
-      .Where(
-        relationship => relationship.PrincipalEntityType
-          == entry.Metadata);
+      .Where(relationship => relationship.PrincipalEntityType
+        == entry.Metadata);
 
     foreach (var relationship in relationships
-      .Where(
-        relationship => relationship.DeclaringEntityType.ClrType
-          .IsAssignableTo(typeof(ITrackableEntity))))
+      .Where(relationship => relationship.DeclaringEntityType.ClrType
+        .IsAssignableTo(typeof(ITrackableEntity))))
     {
       var declarers = await context
         .GetQueryable(relationship.DeclaringEntityType.ClrType)

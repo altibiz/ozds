@@ -9,11 +9,10 @@ public class IgnoreIgnoredPropertiesOptions(
 )
 {
   private readonly Lazy<HashSet<(string, Type?)>> ignored =
-    new(
-      () => dbContext
-        .GetIgnoredProperties()
-        .Select(x => (x.Name, x.DeclaringType))
-        .ToHashSet());
+    new(() => dbContext
+      .GetIgnoredProperties()
+      .Select(x => (x.Name, x.DeclaringType))
+      .ToHashSet());
 
   public SelfReferenceEquivalencyAssertionOptions<TSelf> Configure<
     TSelf

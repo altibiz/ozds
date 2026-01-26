@@ -22,10 +22,9 @@ public static class DbContextQueryableExtensions
   {
     var method = typeof(DbContext)
       .GetMethods()
-      .FirstOrDefault(
-        m => m.Name == nameof(DbContext.Set)
-          && m.IsGenericMethodDefinition
-          && m.GetParameters().Length == 0)
+      .FirstOrDefault(m => m.Name == nameof(DbContext.Set)
+        && m.IsGenericMethodDefinition
+        && m.GetParameters().Length == 0)
       ?.MakeGenericMethod(type);
     return method?.Invoke(context, null) as IQueryable<object>
       ?? throw new InvalidOperationException($"No DbSet found for {type}");

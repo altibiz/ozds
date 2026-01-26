@@ -301,26 +301,24 @@ public class ReportQueries(
     };
 
     return obis
-      .Select(
-        obis => new AccountingPeriodReportModel
-        {
-          MeasurementLocationCode = GetMeasurementLocationCode(model),
-          Timestamp = model.MinAggregate.Timestamp,
-          ObisCode = obis.ToCode(),
-          Unit = obis.ToUnit(),
-          Value = obis.GetValue(model.MinAggregate)
-        })
+      .Select(obis => new AccountingPeriodReportModel
+      {
+        MeasurementLocationCode = GetMeasurementLocationCode(model),
+        Timestamp = model.MinAggregate.Timestamp,
+        ObisCode = obis.ToCode(),
+        Unit = obis.ToUnit(),
+        Value = obis.GetValue(model.MinAggregate)
+      })
       .Concat(
         obis
-          .Select(
-            obis => new AccountingPeriodReportModel
-            {
-              MeasurementLocationCode = GetMeasurementLocationCode(model),
-              Timestamp = model.MaxAggregate.Timestamp,
-              ObisCode = obis.ToCode(),
-              Unit = obis.ToUnit(),
-              Value = obis.GetValue(model.MaxAggregate)
-            }))
+          .Select(obis => new AccountingPeriodReportModel
+          {
+            MeasurementLocationCode = GetMeasurementLocationCode(model),
+            Timestamp = model.MaxAggregate.Timestamp,
+            ObisCode = obis.ToCode(),
+            Unit = obis.ToUnit(),
+            Value = obis.GetValue(model.MaxAggregate)
+          }))
       .ToList();
   }
 
@@ -348,16 +346,15 @@ public class ReportQueries(
     };
 
     return model.Aggregates
-      .Select(
-        aggregate => new LoadCurveReportModel
-        {
-          MeasurementLocationCode = GetMeasurementLocationCode(model),
-          Timestamp = aggregate.Timestamp,
-          ObisCode = obis.ToCode(),
-          MeterId = model.Meter.Id,
-          Energy_kx = obis.GetValue(aggregate),
-          Power_kx = obis.GetDerivedValue(aggregate)
-        })
+      .Select(aggregate => new LoadCurveReportModel
+      {
+        MeasurementLocationCode = GetMeasurementLocationCode(model),
+        Timestamp = aggregate.Timestamp,
+        ObisCode = obis.ToCode(),
+        MeterId = model.Meter.Id,
+        Energy_kx = obis.GetValue(aggregate),
+        Power_kx = obis.GetDerivedValue(aggregate)
+      })
       .ToList();
   }
 

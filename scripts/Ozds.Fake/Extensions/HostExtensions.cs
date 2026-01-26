@@ -212,47 +212,45 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    builder.Services.AddMassTransit(
-      x =>
+    builder.Services.AddMassTransit(x =>
+    {
+      var fakeAssembly = typeof(HostExtensions).Assembly;
+      var messagingAssembly = typeof(MessagingDbContext).Assembly;
+
+      x.SetKebabCaseEndpointNameFormatter();
+
+      x.AddConsumers(fakeAssembly);
+      x.AddSagaStateMachines(fakeAssembly);
+      x.AddActivities(fakeAssembly);
+
+      x.AddSagas(messagingAssembly);
+      x.SetInMemorySagaRepositoryProvider();
+
+      var connectionString = ConfigureOzdsFakeOptions
+        .ParseConnectionString(builder.Configuration);
+      if (connectionString is OzdsMessagingParsedRabbitMqConnectionString
+        rabbitMqConnectionString)
       {
-        var fakeAssembly = typeof(HostExtensions).Assembly;
-        var messagingAssembly = typeof(MessagingDbContext).Assembly;
-
-        x.SetKebabCaseEndpointNameFormatter();
-
-        x.AddConsumers(fakeAssembly);
-        x.AddSagaStateMachines(fakeAssembly);
-        x.AddActivities(fakeAssembly);
-
-        x.AddSagas(messagingAssembly);
-        x.SetInMemorySagaRepositoryProvider();
-
-        var connectionString = ConfigureOzdsFakeOptions
-          .ParseConnectionString(builder.Configuration);
-        if (connectionString is OzdsMessagingParsedRabbitMqConnectionString
-          rabbitMqConnectionString)
+        x.UsingRabbitMq((context, cfg) =>
         {
-          x.UsingRabbitMq(
-            (context, cfg) =>
+          cfg.Host(
+            rabbitMqConnectionString.Host,
+            (ushort)rabbitMqConnectionString.Port,
+            rabbitMqConnectionString.VirtualHost,
+            cfg =>
             {
-              cfg.Host(
-                rabbitMqConnectionString.Host,
-                (ushort)rabbitMqConnectionString.Port,
-                rabbitMqConnectionString.VirtualHost,
-                cfg =>
-                {
-                  cfg.Username(rabbitMqConnectionString.User);
-                  cfg.Password(rabbitMqConnectionString.Password);
-                });
-              cfg.ConfigureEndpoints(context);
+              cfg.Username(rabbitMqConnectionString.User);
+              cfg.Password(rabbitMqConnectionString.Password);
             });
-        }
-        else
-        {
-          throw new InvalidOperationException(
-            "Only RabbitMQ is supported");
-        }
-      });
+          cfg.ConfigureEndpoints(context);
+        });
+      }
+      else
+      {
+        throw new InvalidOperationException(
+          "Only RabbitMQ is supported");
+      }
+    });
 
     return builder;
   }

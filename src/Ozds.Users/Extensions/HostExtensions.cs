@@ -71,30 +71,35 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    builder.Services.AddScoped(
-      serviceProvider =>
+    builder.Services.AddScoped(serviceProvider =>
+    {
+      var connectionString = ConfigureOzdsUsersOptions
+        .LdapConnectionString(builder.Configuration);
+
+      var options = new LdapConnectionOptions();
+      if (builder.Environment.IsDevelopment())
       {
-        var connectionString = ConfigureOzdsUsersOptions
-          .LdapConnectionString(builder.Configuration);
-
-        var options = new LdapConnectionOptions();
-        if (builder.Environment.IsDevelopment())
+        options.ConfigureRemoteCertificateValidationCallback((
+          sender,
+          certificate,
+          chain,
+          errors) =>
         {
-          options.ConfigureRemoteCertificateValidationCallback(
-            (sender, certificate, chain, errors) => { return true; });
-        }
+          return true;
+        });
+      }
 
-        var connection = new LdapConnection(options);
-        if (connectionString.Ssl)
-        {
-          connection.SecureSocketLayer = true;
-        }
+      var connection = new LdapConnection(options);
+      if (connectionString.Ssl)
+      {
+        connection.SecureSocketLayer = true;
+      }
 
-        connection.Connect(connectionString.Host, connectionString.Port);
-        connection.Bind(connectionString.User, connectionString.Password);
+      connection.Connect(connectionString.Host, connectionString.Port);
+      connection.Bind(connectionString.User, connectionString.Password);
 
-        return connection;
-      });
+      return connection;
+    });
 
     return builder;
   }
@@ -104,115 +109,113 @@ public static class HostExtensions
   )
   {
     builder.Services
-      .AddAuthentication(
-        options =>
-        {
-          options.DefaultScheme =
-            CookieAuthenticationDefaults.AuthenticationScheme;
-          options.DefaultChallengeScheme =
-            OpenIdConnectDefaults.AuthenticationScheme;
-        })
+      .AddAuthentication(options =>
+      {
+        options.DefaultScheme =
+          CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme =
+          OpenIdConnectDefaults.AuthenticationScheme;
+      })
       .AddCookie()
-      .AddOpenIdConnect(
-        options =>
+      .AddOpenIdConnect(options =>
+      {
+        var connectionString = ConfigureOzdsUsersOptions
+          .OidcConnectionString(builder.Configuration);
+        var requireHttpsMetadata = ConfigureOzdsUsersOptions
+          .RequireHttpsMetadata(builder.Configuration);
+        var authLogoutSubpath = ConfigureOzdsUsersOptions
+          .AuthLogoutSubpath(builder.Configuration);
+        var idKey = ConfigureOzdsUsersOptions
+          .IdKey(builder.Configuration);
+        var idClaim = ConfigureOzdsUsersOptions
+          .IdClaim(builder.Configuration);
+        var signInCallbackSubpath = ConfigureOzdsUsersOptions
+          .SignInCallbackSubpath(builder.Configuration);
+        var signOutCallbackSubpath = ConfigureOzdsUsersOptions
+          .SignOutCallbackSubpath(builder.Configuration);
+
+        options.Authority = connectionString.Authority;
+        options.RequireHttpsMetadata = requireHttpsMetadata
+          ?? !builder.Environment.IsDevelopment();
+        options.ClientId = connectionString.ClientId;
+        options.ClientSecret = connectionString.ClientSecret;
+        options.ResponseType = OpenIdConnectResponseType.Code;
+        options.Scope.Clear();
+        options.Scope.Add("openid");
+        options.Scope.Add("profile");
+        options.Scope.Add("email");
+        options.Scope.Add("offline_access");
+
+        options.CallbackPath = $"/{signInCallbackSubpath}";
+        options.SignedOutCallbackPath = $"/{signOutCallbackSubpath}";
+        var events = new OpenIdConnectEvents();
+        if (authLogoutSubpath is { } logoutSubpath)
         {
-          var connectionString = ConfigureOzdsUsersOptions
-            .OidcConnectionString(builder.Configuration);
-          var requireHttpsMetadata = ConfigureOzdsUsersOptions
-            .RequireHttpsMetadata(builder.Configuration);
-          var authLogoutSubpath = ConfigureOzdsUsersOptions
-            .AuthLogoutSubpath(builder.Configuration);
-          var idKey = ConfigureOzdsUsersOptions
-            .IdKey(builder.Configuration);
-          var idClaim = ConfigureOzdsUsersOptions
-            .IdClaim(builder.Configuration);
-          var signInCallbackSubpath = ConfigureOzdsUsersOptions
-            .SignInCallbackSubpath(builder.Configuration);
-          var signOutCallbackSubpath = ConfigureOzdsUsersOptions
-            .SignOutCallbackSubpath(builder.Configuration);
-
-          options.Authority = connectionString.Authority;
-          options.RequireHttpsMetadata = requireHttpsMetadata
-            ?? !builder.Environment.IsDevelopment();
-          options.ClientId = connectionString.ClientId;
-          options.ClientSecret = connectionString.ClientSecret;
-          options.ResponseType = OpenIdConnectResponseType.Code;
-          options.Scope.Clear();
-          options.Scope.Add("openid");
-          options.Scope.Add("profile");
-          options.Scope.Add("email");
-          options.Scope.Add("offline_access");
-
-          options.CallbackPath = $"/{signInCallbackSubpath}";
-          options.SignedOutCallbackPath = $"/{signOutCallbackSubpath}";
-          var events = new OpenIdConnectEvents();
-          if (authLogoutSubpath is { } logoutSubpath)
+          events.OnRedirectToIdentityProviderForSignOut = context =>
           {
-            events.OnRedirectToIdentityProviderForSignOut = context =>
-            {
-              context.ProtocolMessage.IssuerAddress =
-                $"{connectionString.Authority}/{logoutSubpath}";
-              return Task.CompletedTask;
-            };
-          }
+            context.ProtocolMessage.IssuerAddress =
+              $"{connectionString.Authority}/{logoutSubpath}";
+            return Task.CompletedTask;
+          };
+        }
 
-          if (builder.Environment.IsDevelopment())
+        if (builder.Environment.IsDevelopment())
+        {
+          events.OnUserInformationReceived = context =>
           {
-            events.OnUserInformationReceived = context =>
+            var logger = context.HttpContext.RequestServices
+              .GetRequiredService<ILogger<OpenIdConnectEvents>>();
+            logger.LogDebug(
+              "User info received from user info endpoint: {User}",
+              context.User.ToString());
+            return Task.CompletedTask;
+          };
+          events.OnTokenValidated = context =>
+          {
+            var logger = context.HttpContext.RequestServices
+              .GetRequiredService<ILogger<OpenIdConnectEvents>>();
+            logger.LogDebug("Token validated. Claims from ID token:");
+            foreach (var claim in context.Principal?.Claims ?? [])
             {
-              var logger = context.HttpContext.RequestServices
-                .GetRequiredService<ILogger<OpenIdConnectEvents>>();
               logger.LogDebug(
-                "User info received from user info endpoint: {User}",
-                context.User.ToString());
-              return Task.CompletedTask;
-            };
-            events.OnTokenValidated = context =>
-            {
-              var logger = context.HttpContext.RequestServices
-                .GetRequiredService<ILogger<OpenIdConnectEvents>>();
-              logger.LogDebug("Token validated. Claims from ID token:");
-              foreach (var claim in context.Principal?.Claims ?? [])
-              {
-                logger.LogDebug(
-                  "Type: {Type}, Value: {Value}",
-                  claim.Type,
-                  claim.Value
-                );
-              }
+                "Type: {Type}, Value: {Value}",
+                claim.Type,
+                claim.Value
+              );
+            }
 
-              return Task.CompletedTask;
-            };
-            events.OnAuthenticationFailed = context =>
-            {
-              var logger = context.HttpContext.RequestServices
-                .GetRequiredService<ILogger<OpenIdConnectEvents>>();
-              logger.LogDebug(
-                context.Exception,
-                "Authentication failed");
-              return Task.CompletedTask;
-            };
-          }
-
-          options.Events = events;
-
-          if (builder.Environment.IsDevelopment())
+            return Task.CompletedTask;
+          };
+          events.OnAuthenticationFailed = context =>
           {
-            options.RequireHttpsMetadata = false;
+            var logger = context.HttpContext.RequestServices
+              .GetRequiredService<ILogger<OpenIdConnectEvents>>();
+            logger.LogDebug(
+              context.Exception,
+              "Authentication failed");
+            return Task.CompletedTask;
+          };
+        }
+
+        options.Events = events;
+
+        if (builder.Environment.IsDevelopment())
+        {
+          options.RequireHttpsMetadata = false;
 #pragma warning disable S4830 // Server certificates should be verified during SSL/TLS connections
-            options.BackchannelHttpHandler = new HttpClientHandler
-            {
-              ServerCertificateCustomValidationCallback =
-                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            };
+          options.BackchannelHttpHandler = new HttpClientHandler
+          {
+            ServerCertificateCustomValidationCallback =
+              HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+          };
 #pragma warning restore S4830 // Server certificates should be verified during SSL/TLS connections
-          }
+        }
 
-          options.MapInboundClaims = true;
-          options.SaveTokens = true;
-          options.GetClaimsFromUserInfoEndpoint = true;
-          options.ClaimActions.MapJsonKey(idClaim, idKey);
-        });
+        options.MapInboundClaims = true;
+        options.SaveTokens = true;
+        options.GetClaimsFromUserInfoEndpoint = true;
+        options.ClaimActions.MapJsonKey(idClaim, idKey);
+      });
 
     builder.Services.AddAuthorization();
 

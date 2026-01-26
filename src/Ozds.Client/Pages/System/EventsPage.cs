@@ -22,10 +22,9 @@ public partial class EventsPage : OzdsComponentBase
   {
     get
     {
-      return Enum.GetValues<LevelModel>().Where(
-        l => Environment.IsDevelopment()
-          ? l >= LevelModel.Trace
-          : l >= LevelModel.Information);
+      return Enum.GetValues<LevelModel>().Where(l => Environment.IsDevelopment()
+        ? l >= LevelModel.Trace
+        : l >= LevelModel.Information);
     }
   }
 

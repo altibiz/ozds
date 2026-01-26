@@ -37,30 +37,29 @@ public class BillingQueries(
       FromDate = entity.FromDate,
       ToDate = entity.ToDate,
       NetworkUserCalculationBases = entity.NetworkUserCalculationBases
-        .Select(
-          x => new NetworkUserCalculationBasisModel
-          {
-            FromDate = x.FromDate,
-            ToDate = x.ToDate,
-            MeasuredFromDate = x.MeasuredFromDate,
-            MeasuredToDate = x.MeasuredToDate,
-            BilledFromDate = x.BilledFromDate,
-            BilledToDate = x.BilledToDate,
-            Aggregates = x.Aggregates
-              .Select(y => modelEntityConverter.ToModel<AggregateModel>(y))
-              .ToList(),
-            Location = modelEntityConverter.ToModel<LocationModel>(x.Location),
-            NetworkUser = modelEntityConverter.ToModel<NetworkUserModel>(
-              x.NetworkUser),
-            MeasurementLocation = modelEntityConverter
-              .ToModel<NetworkUserMeasurementLocationModel>(
-                x.MeasurementLocation),
-            UsageNetworkUserCatalogue = modelEntityConverter
-              .ToModel<NetworkUserCatalogueModel>(x.UsageNetworkUserCatalogue),
-            SupplyRegulatoryCatalogue = modelEntityConverter
-              .ToModel<RegulatoryCatalogueModel>(x.SupplyRegulatoryCatalogue),
-            Meter = modelEntityConverter.ToModel<MeterModel>(x.Meter)
-          })
+        .Select(x => new NetworkUserCalculationBasisModel
+        {
+          FromDate = x.FromDate,
+          ToDate = x.ToDate,
+          MeasuredFromDate = x.MeasuredFromDate,
+          MeasuredToDate = x.MeasuredToDate,
+          BilledFromDate = x.BilledFromDate,
+          BilledToDate = x.BilledToDate,
+          Aggregates = x.Aggregates
+            .Select(y => modelEntityConverter.ToModel<AggregateModel>(y))
+            .ToList(),
+          Location = modelEntityConverter.ToModel<LocationModel>(x.Location),
+          NetworkUser = modelEntityConverter.ToModel<NetworkUserModel>(
+            x.NetworkUser),
+          MeasurementLocation = modelEntityConverter
+            .ToModel<NetworkUserMeasurementLocationModel>(
+              x.MeasurementLocation),
+          UsageNetworkUserCatalogue = modelEntityConverter
+            .ToModel<NetworkUserCatalogueModel>(x.UsageNetworkUserCatalogue),
+          SupplyRegulatoryCatalogue = modelEntityConverter
+            .ToModel<RegulatoryCatalogueModel>(x.SupplyRegulatoryCatalogue),
+          Meter = modelEntityConverter.ToModel<MeterModel>(x.Meter)
+        })
         .ToList()
     };
   }

@@ -34,10 +34,9 @@ public class AggregateMeasureUpserter(IServiceProvider serviceProvider)
 
     upserter = serviceProvider
         .GetServices<IAggregateMeasureUpserter>()
-        .FirstOrDefault(
-          upserter =>
-            upserter.CanUpsert(lhs.GetType())
-            && upserter.CanUpsert(rhs.GetType()))
+        .FirstOrDefault(upserter =>
+          upserter.CanUpsert(lhs.GetType())
+          && upserter.CanUpsert(rhs.GetType()))
       ?? throw new InvalidOperationException(
         $"No upserter found for models {lhs.GetType()} and {rhs.GetType()}.");
 

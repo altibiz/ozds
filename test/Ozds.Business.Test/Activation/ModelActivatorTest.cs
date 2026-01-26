@@ -11,13 +11,11 @@ public class ModelActivatorTest : OzdsBusinessHostTestBase
     return AppDomain.CurrentDomain
       .GetAssemblies()
       .Where(x => x.FullName is { } name && name.Contains("Ozds"))
-      .SelectMany(
-        assembly => assembly
-          .GetTypes()
-          .Where(
-            type =>
-              !type.IsGenericType
-              && type.IsAssignableTo(typeof(IModel))));
+      .SelectMany(assembly => assembly
+        .GetTypes()
+        .Where(type =>
+          !type.IsGenericType
+          && type.IsAssignableTo(typeof(IModel))));
   }
 
   [Test]

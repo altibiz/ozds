@@ -25,28 +25,25 @@ public class CreateMeasurementsTest : OzdsDataTestBase
     var infrastructures = await Task.WhenAll(
       reflector.MeasurementTypes
         .Concat(reflector.AggregateTypes)
-        .Select(
-          measurementType => Infrastructure.Create(
-            cancellationToken,
-            x => x.WithMeterType(
-              reflector
-                .ResolveMeasurementMeterType(measurementType)))));
+        .Select(measurementType => Infrastructure.Create(
+          cancellationToken,
+          x => x.WithMeterType(
+            reflector
+              .ResolveMeasurementMeterType(measurementType)))));
 
     var infrastructureMeasurements = await Task.WhenAll(
       infrastructures
-        .SelectMany(
-          infrastructure => Enum
-            .GetValues<IntervalEntity>()
-            .Cast<IntervalEntity?>()
-            .Append(null)
-            .Select(
-              interval => Measurements
-                .Create(
-                  infrastructure,
-                  cancellationToken,
-                  x => x
-                    .WithCount(Constants.MeasurementCount)
-                    .WithInterval(interval)))));
+        .SelectMany(infrastructure => Enum
+          .GetValues<IntervalEntity>()
+          .Cast<IntervalEntity?>()
+          .Append(null)
+          .Select(interval => Measurements
+            .Create(
+              infrastructure,
+              cancellationToken,
+              x => x
+                .WithCount(Constants.MeasurementCount)
+                .WithInterval(interval)))));
 
     var measurements = infrastructureMeasurements
       .SelectMany(x => x)
@@ -71,28 +68,25 @@ public class CreateMeasurementsTest : OzdsDataTestBase
 
     var infrastructures = await Task.WhenAll(
       reflector.MeasurementTypes
-        .Select(
-          measurementType => Infrastructure.Create(
-            cancellationToken,
-            x => x.WithMeterType(
-              reflector
-                .ResolveMeasurementMeterType(measurementType)))));
+        .Select(measurementType => Infrastructure.Create(
+          cancellationToken,
+          x => x.WithMeterType(
+            reflector
+              .ResolveMeasurementMeterType(measurementType)))));
 
     var infrastructureMeasurements = await Task.WhenAll(
       infrastructures
-        .SelectMany(
-          infrastructure => Enum
-            .GetValues<IntervalEntity>()
-            .Cast<IntervalEntity?>()
-            .Append(null)
-            .Select(
-              interval => Measurements
-                .Create(
-                  infrastructure,
-                  cancellationToken,
-                  x => x
-                    .WithCount(Constants.MassiveMeasurementCount)
-                    .WithInterval(interval)))));
+        .SelectMany(infrastructure => Enum
+          .GetValues<IntervalEntity>()
+          .Cast<IntervalEntity?>()
+          .Append(null)
+          .Select(interval => Measurements
+            .Create(
+              infrastructure,
+              cancellationToken,
+              x => x
+                .WithCount(Constants.MassiveMeasurementCount)
+                .WithInterval(interval)))));
 
     var measurements = infrastructureMeasurements
       .SelectMany(x => x)
@@ -116,28 +110,25 @@ public class CreateMeasurementsTest : OzdsDataTestBase
     var infrastructures = await Task.WhenAll(
       reflector.MeasurementTypes
         .Concat(reflector.AggregateTypes)
-        .Select(
-          measurementType => Infrastructure.Create(
-            cancellationToken,
-            x => x.WithMeterType(
-              reflector
-                .ResolveMeasurementMeterType(measurementType)))));
+        .Select(measurementType => Infrastructure.Create(
+          cancellationToken,
+          x => x.WithMeterType(
+            reflector
+              .ResolveMeasurementMeterType(measurementType)))));
 
     var infrastructureMeasurements = await Task.WhenAll(
       infrastructures
-        .SelectMany(
-          infrastructure => Enum
-            .GetValues<IntervalEntity>()
-            .Cast<IntervalEntity?>()
-            .Append(null)
-            .Select(
-              interval => Measurements
-                .Create(
-                  infrastructure,
-                  cancellationToken,
-                  x => x
-                    .WithCount(Constants.MeasurementCountFew)
-                    .WithInterval(interval)))));
+        .SelectMany(infrastructure => Enum
+          .GetValues<IntervalEntity>()
+          .Cast<IntervalEntity?>()
+          .Append(null)
+          .Select(interval => Measurements
+            .Create(
+              infrastructure,
+              cancellationToken,
+              x => x
+                .WithCount(Constants.MeasurementCountFew)
+                .WithInterval(interval)))));
 
     var measurements = infrastructureMeasurements
       .SelectMany(x => x)
@@ -148,20 +139,18 @@ public class CreateMeasurementsTest : OzdsDataTestBase
         .Create(
           measurements,
           cancellationToken))
-      .OrderBy(
-        x => x is IAggregateEntity aggregate
+      .OrderBy(x => x is IAggregateEntity aggregate
+        ? aggregate.Interval
+        : (IntervalEntity?)null)
+      .ThenBy(x => (
+        x.GetType().Name,
+        x.MeterId,
+        x.MeasurementLocationId,
+        x.Timestamp,
+        x is IAggregateEntity aggregate
           ? aggregate.Interval
-          : (IntervalEntity?)null)
-      .ThenBy(
-        x => (
-          x.GetType().Name,
-          x.MeterId,
-          x.MeasurementLocationId,
-          x.Timestamp,
-          x is IAggregateEntity aggregate
-            ? aggregate.Interval
-            : (IntervalEntity?)null
-        ))
+          : (IntervalEntity?)null
+      ))
       .ToList();
 
     await using var context = await ServiceProvider
@@ -180,20 +169,18 @@ public class CreateMeasurementsTest : OzdsDataTestBase
       .Concat(
         await context.SchneideriEM3xxxMeasurements
           .ToListAsync(cancellationToken))
-      .OrderBy(
-        x => x is IAggregateEntity aggregate
+      .OrderBy(x => x is IAggregateEntity aggregate
+        ? aggregate.Interval
+        : (IntervalEntity?)null)
+      .ThenBy(x => (
+        x.GetType().Name,
+        x.MeterId,
+        x.MeasurementLocationId,
+        x.Timestamp,
+        x is IAggregateEntity aggregate
           ? aggregate.Interval
-          : (IntervalEntity?)null)
-      .ThenBy(
-        x => (
-          x.GetType().Name,
-          x.MeterId,
-          x.MeasurementLocationId,
-          x.Timestamp,
-          x is IAggregateEntity aggregate
-            ? aggregate.Interval
-            : (IntervalEntity?)null
-        ))
+          : (IntervalEntity?)null
+      ))
       .ToList();
 
     byproduct.Should().BeContextuallyEquivalentTo(context, actual);
@@ -230,64 +217,57 @@ public class CreateMeasurementsTest : OzdsDataTestBase
               })
             : x.First())
       .ToList();
-    expected = expected.Select(
-        item =>
-          item is IAggregateEntity aggregateItem
-          && aggregateItem.Interval != IntervalEntity.QuarterHour
-            ? aggregateItem switch
-            {
-              AbbB2xAggregateEntity abbB2XAggregateItem =>
-                expected
-                  .OfType<AbbB2xAggregateEntity>()
-                  .Where(x => x.Interval == IntervalEntity.QuarterHour)
-                  .Where(x => x.MeterId == abbB2XAggregateItem.MeterId)
-                  .Where(
-                    x => x.MeasurementLocationId
-                      == abbB2XAggregateItem.MeasurementLocationId)
-                  .Where(
-                    x => x.Timestamp >= abbB2XAggregateItem.Timestamp
-                      && x.Timestamp < abbB2XAggregateItem.Timestamp
-                        .Add(
-                          time.IntervalTimeSpan(
-                            abbB2XAggregateItem.Interval
-                              .ToTimeEntity(),
-                            abbB2XAggregateItem.Timestamp)))
-                  .Aggregate(abbB2XAggregateItem, Upserts.Upsert),
-              SchneideriEM3xxxAggregateEntity schneideriEM3xxxAggregateItem =>
-                expected
-                  .OfType<SchneideriEM3xxxAggregateEntity>()
-                  .Where(x => x.Interval == IntervalEntity.QuarterHour)
-                  .Where(
-                    x => x.MeterId == schneideriEM3xxxAggregateItem.MeterId)
-                  .Where(
-                    x => x.MeasurementLocationId
-                      == schneideriEM3xxxAggregateItem.MeasurementLocationId)
-                  .Where(
-                    x => x.Timestamp >= schneideriEM3xxxAggregateItem.Timestamp
-                      && x.Timestamp < schneideriEM3xxxAggregateItem.Timestamp
-                        .Add(
-                          time.IntervalTimeSpan(
-                            schneideriEM3xxxAggregateItem.Interval
-                              .ToTimeEntity(),
-                            schneideriEM3xxxAggregateItem.Timestamp)))
-                  .Aggregate(schneideriEM3xxxAggregateItem, Upserts.Upsert),
-              _ => item
-            }
-            : item)
-      .OrderBy(
-        x => x is IAggregateEntity aggregate
+    expected = expected.Select(item =>
+        item is IAggregateEntity aggregateItem
+        && aggregateItem.Interval != IntervalEntity.QuarterHour
+          ? aggregateItem switch
+          {
+            AbbB2xAggregateEntity abbB2XAggregateItem =>
+              expected
+                .OfType<AbbB2xAggregateEntity>()
+                .Where(x => x.Interval == IntervalEntity.QuarterHour)
+                .Where(x => x.MeterId == abbB2XAggregateItem.MeterId)
+                .Where(x => x.MeasurementLocationId
+                  == abbB2XAggregateItem.MeasurementLocationId)
+                .Where(x => x.Timestamp >= abbB2XAggregateItem.Timestamp
+                  && x.Timestamp < abbB2XAggregateItem.Timestamp
+                    .Add(
+                      time.IntervalTimeSpan(
+                        abbB2XAggregateItem.Interval
+                          .ToTimeEntity(),
+                        abbB2XAggregateItem.Timestamp)))
+                .Aggregate(abbB2XAggregateItem, Upserts.Upsert),
+            SchneideriEM3xxxAggregateEntity schneideriEM3xxxAggregateItem =>
+              expected
+                .OfType<SchneideriEM3xxxAggregateEntity>()
+                .Where(x => x.Interval == IntervalEntity.QuarterHour)
+                .Where(x => x.MeterId == schneideriEM3xxxAggregateItem.MeterId)
+                .Where(x => x.MeasurementLocationId
+                  == schneideriEM3xxxAggregateItem.MeasurementLocationId)
+                .Where(x =>
+                  x.Timestamp >= schneideriEM3xxxAggregateItem.Timestamp
+                  && x.Timestamp < schneideriEM3xxxAggregateItem.Timestamp
+                    .Add(
+                      time.IntervalTimeSpan(
+                        schneideriEM3xxxAggregateItem.Interval
+                          .ToTimeEntity(),
+                        schneideriEM3xxxAggregateItem.Timestamp)))
+                .Aggregate(schneideriEM3xxxAggregateItem, Upserts.Upsert),
+            _ => item
+          }
+          : item)
+      .OrderBy(x => x is IAggregateEntity aggregate
+        ? aggregate.Interval
+        : (IntervalEntity?)null)
+      .ThenBy(x => (
+        x.GetType().Name,
+        x.MeterId,
+        x.MeasurementLocationId,
+        x.Timestamp,
+        x is IAggregateEntity aggregate
           ? aggregate.Interval
-          : (IntervalEntity?)null)
-      .ThenBy(
-        x => (
-          x.GetType().Name,
-          x.MeterId,
-          x.MeasurementLocationId,
-          x.Timestamp,
-          x is IAggregateEntity aggregate
-            ? aggregate.Interval
-            : (IntervalEntity?)null
-        ))
+          : (IntervalEntity?)null
+      ))
       .ToList();
 
     actual.Should().BeContextuallyEquivalentTo(context, expected);

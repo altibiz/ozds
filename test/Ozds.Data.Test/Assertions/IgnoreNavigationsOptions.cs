@@ -9,11 +9,10 @@ public class IgnoreNavigationsOptions(
 )
 {
   private readonly Lazy<HashSet<(string, Type?)>> navigations =
-    new(
-      () => dbContext
-        .GetNavigations()
-        .Select(x => (x.Name, x.DeclaringType))
-        .ToHashSet());
+    new(() => dbContext
+      .GetNavigations()
+      .Select(x => (x.Name, x.DeclaringType))
+      .ToHashSet());
 
   public SelfReferenceEquivalencyAssertionOptions<TSelf> Configure<
     TSelf
