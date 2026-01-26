@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Context;
-using Ozds.Data.Entities.Abstractions;
 
 namespace Ozds.Data.Entities.Base;
 

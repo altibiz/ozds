@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ozds.Data.Context;
 using Ozds.Data.Entities.Base;
+
 namespace Ozds.Data.Entities;
 
 public class RepresentativeAuditEventEntity : AuditEventEntity
