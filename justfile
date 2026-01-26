@@ -213,8 +213,9 @@ lint-spelling:
 lint-dotnet:
     dotnet build --no-incremental /warnaserror '{{ sln }}'
 
-    dotnet roslynator analyze '{{ sln }}' \
-      --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
+    # commented out for now since roslynator is not yet compatible with .NET 10 SDK
+    #dotnet roslynator analyze '{{ sln }}' \
+    #  --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
     dotnet jb inspectcode '{{ sln }}' \
       --no-build \
