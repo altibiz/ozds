@@ -4906,7 +4906,7 @@
         Archives
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 26 column 23
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 25 column 23
       </Metadata>
       <Value>
         Archives
@@ -5856,7 +5856,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 66 column 13
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 52 column 13
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 51 column 13
         From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 46 column 13
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 187 column 13
       </Metadata>
@@ -6816,7 +6816,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/MappedMutating.razor' line 186 column 14
-        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 265 column 10
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 265 column 33
         From file 'Ozds.Client/Pages/Administration/UserPage.razor' line 112 column 12
         From file 'Ozds.Client/Pages/Measurements/MessengerPage.razor' line 32 column 6
       </Metadata>
@@ -8591,8 +8591,8 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/MappedMutating.razor' line 129 column 20
-        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 100 column 24
-        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 218 column 26
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 100 column 47
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 218 column 49
       </Metadata>
       <Value>
         Delete
@@ -10278,7 +10278,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/MappedMutating.razor' line 138 column 18
-        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 241 column 26
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 241 column 49
       </Metadata>
       <Value>
         Forget
@@ -17083,16 +17083,16 @@
         From file 'Ozds.Client/Components/Fields/EnumPicker.razor' line 25 column 12
         From file 'Ozds.Client/Components/Fields/MultiEnumPicker.razor' line 26 column 12
         From file 'Ozds.Client/Components/Fields/PolymorphicIdField.razor' line 29 column 10
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 121 column 12
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 147 column 10
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 182 column 14
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 238 column 14
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 263 column 14
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 121 column 19
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 147 column 17
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 182 column 21
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 238 column 21
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 263 column 21
         From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 289 column 16
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 310 column 12
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 331 column 12
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 350 column 10
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 376 column 10
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 310 column 19
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 331 column 19
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 350 column 17
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 376 column 17
         From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 168 column 36
       </Metadata>
       <Value>
@@ -17524,9 +17524,9 @@
         Phase sum
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementDonutChart.razor' line 66 column 9
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementGaugeChart.razor' line 64 column 9
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 71 column 9
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementDonutChart.razor' line 65 column 9
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementGaugeChart.razor' line 63 column 9
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 70 column 9
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 45 column 38
       </Metadata>
       <Value>
@@ -19580,11 +19580,10 @@
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 64 column 11
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 13 column 27
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 50 column 11
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 49 column 11
         From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 44 column 11
         From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 9 column 10
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 185 column 11
-        From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 90 column 14
       </Metadata>
       <Value>
         Red NN
@@ -20243,7 +20242,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/MappedMutating.razor' line 120 column 20
-        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 229 column 26
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 229 column 49
       </Metadata>
       <Value>
         Restore
@@ -20504,8 +20503,8 @@
         Search
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 62 column 25
-        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 170 column 29
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 62 column 48
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 170 column 52
       </Metadata>
       <Value>
         Search
@@ -20613,8 +20612,8 @@
         Show deleted
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 41 column 19
-        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 156 column 23
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 41 column 42
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 156 column 46
         From file 'Ozds.Client/Pages/Administration/LocationsPage.razor' line 31 column 13
         From file 'Ozds.Client/Pages/Administration/UsersPage.razor' line 28 column 13
       </Metadata>
@@ -21530,7 +21529,7 @@
         Tariff model
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 22 column 23
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 21 column 23
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 22 column 6
       </Metadata>
       <Value>
@@ -23194,7 +23193,7 @@
         Type
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Streaming/MappedLoading.razor' line 71 column 21
+        From file 'Ozds.Client/Components/Streaming/MappedLoading.razor' line 71 column 44
       </Metadata>
       <Value>
         Type
@@ -24156,7 +24155,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 68 column 15
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 54 column 15
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 53 column 15
         From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 48 column 15
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 189 column 15
       </Metadata>
@@ -24170,7 +24169,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/MeteredNetworkUserCalculationDetails.razor' line 70 column 17
-        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 56 column 17
+        From file 'Ozds.Client/Components/Models/Implementations/Finances/Calculations/NetworkUserCalculationDetails.razor' line 55 column 17
         From file 'Ozds.Document/Components/BlackoutNetworkUserCalculationDocumentContent.razor' line 50 column 17
         From file 'Ozds.Document/Components/MeteredNetworkUserCalculationDocumentContent.razor' line 191 column 17
       </Metadata>
