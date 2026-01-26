@@ -44,6 +44,17 @@ public class CreateMeasurementsTest : OzdsDataTestBase
               x => x
                 .WithCount(Constants.MeasurementCount)
                 .WithInterval(interval)))));
+        .SelectMany(infrastructure => Enum
+          .GetValues<IntervalEntity>()
+          .Cast<IntervalEntity?>()
+          .Append(null)
+          .Select(interval => Measurements
+            .Create(
+              infrastructure,
+              cancellationToken,
+              x => x
+                .WithCount(Constants.MeasurementCount)
+                .WithInterval(interval)))));
 
     var measurements = infrastructureMeasurements
       .SelectMany(x => x)
@@ -191,31 +202,28 @@ public class CreateMeasurementsTest : OzdsDataTestBase
       .GetRequiredService<ITimeQueries>();
 
     var expected = measurements
-      .GroupBy(
-        x => (
-          x.GetType(),
-          x.MeterId,
-          x.MeasurementLocationId,
-          x.Timestamp,
-          x is IAggregateEntity aggregate
-            ? aggregate.Interval
-            : (IntervalEntity?)null
-        ))
-      .Select(
-        x =>
-          x.Key.Item5 is not null
-            ? x.Aggregate(
-              (lhs, rhs) => (lhs, rhs) switch
-              {
-                (AbbB2xAggregateEntity lhsAggregate,
-                  AbbB2xAggregateEntity rhsAggregate) => Upserts
-                    .Upsert(lhsAggregate, rhsAggregate),
-                (SchneideriEM3xxxAggregateEntity lhsAggregate,
-                  SchneideriEM3xxxAggregateEntity rhsAggregate) => Upserts
-                    .Upsert(lhsAggregate, rhsAggregate),
-                _ => lhs
-              })
-            : x.First())
+      .GroupBy(x => (
+        x.GetType(),
+        x.MeterId,
+        x.MeasurementLocationId,
+        x.Timestamp,
+        x is IAggregateEntity aggregate
+          ? aggregate.Interval
+          : (IntervalEntity?)null
+      ))
+      .Select(x =>
+        x.Key.Item4 is { }
+          ? x.Aggregate((lhs, rhs) => (lhs, rhs) switch
+          {
+            (AbbB2xAggregateEntity lhsAggregate,
+              AbbB2xAggregateEntity rhsAggregate) => Upserts
+                .Upsert(lhsAggregate, rhsAggregate),
+            (SchneideriEM3xxxAggregateEntity lhsAggregate,
+              SchneideriEM3xxxAggregateEntity rhsAggregate) => Upserts
+                .Upsert(lhsAggregate, rhsAggregate),
+            _ => lhs
+          })
+          : x.First())
       .ToList();
     expected = expected.Select(item =>
         item is IAggregateEntity aggregateItem
