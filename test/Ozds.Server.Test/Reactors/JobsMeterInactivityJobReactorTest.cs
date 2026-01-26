@@ -26,11 +26,9 @@ public class JobsMeterInactivityJobReactorTest : OzdsServerTestBase
 
     var x = await MeasurementLocation.Create(
       cancellationToken, x => x
-        .WithMeter(
-          y => y
-            .WithMeter(
-              m =>
-                m.MaxInactivityPeriod = inactivityPeriod)));
+        .WithMeter(y => y
+          .WithMeter(m =>
+            m.MaxInactivityPeriod = inactivityPeriod)));
 
     {
       using var cts = inactivityTimeSpan

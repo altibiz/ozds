@@ -57,12 +57,11 @@ public class PasswordModel : Base.UserModel
         );
       }
 
-      if (!NewPassword.All(
-        @char =>
-          char.IsLetter(@char)
-          || char.IsDigit(@char)
-          || char.IsSymbol(@char)
-          || char.IsPunctuation(@char)))
+      if (!NewPassword.All(@char =>
+        char.IsLetter(@char)
+        || char.IsDigit(@char)
+        || char.IsSymbol(@char)
+        || char.IsPunctuation(@char)))
       {
         yield return new ValidationResult(
           "Password characters must be letters, digits, symbols or punctuation.",
@@ -86,10 +85,9 @@ public class PasswordModel : Base.UserModel
         );
       }
 
-      if (!NewPassword.Any(
-        @char =>
-          char.IsSymbol(@char)
-          || char.IsPunctuation(@char)))
+      if (!NewPassword.Any(@char =>
+        char.IsSymbol(@char)
+        || char.IsPunctuation(@char)))
       {
         yield return new ValidationResult(
           "Password must contain at least one symbol or punctuation.",

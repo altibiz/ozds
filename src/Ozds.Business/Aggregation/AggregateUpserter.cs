@@ -334,10 +334,9 @@ public class AggregateUpserter(IServiceProvider serviceProvider)
 
     upserter = serviceProvider
         .GetServices<IAggregateUpserter>()
-        .FirstOrDefault(
-          upserter =>
-            upserter.CanUpsert(lhsType)
-            && upserter.CanUpsert(rhsType))
+        .FirstOrDefault(upserter =>
+          upserter.CanUpsert(lhsType)
+          && upserter.CanUpsert(rhsType))
       ?? throw new InvalidOperationException(
         $"No upserter found for models {lhsType} and {rhsType}.");
 

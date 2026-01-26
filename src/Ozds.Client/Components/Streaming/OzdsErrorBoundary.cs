@@ -11,7 +11,7 @@ public partial class OzdsErrorBoundary : DisposableComponentBase
   private InnerErrorBoundary? inner;
 
   [Parameter]
-  public RenderFragment? ChildContent { get; set; } = default!;
+  public RenderFragment? ChildContent { get; set; }
 
   [Inject]
   private IErrorPublisher ErrorPublisher { get; set; } = default!;

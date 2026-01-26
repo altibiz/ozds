@@ -258,15 +258,14 @@ public sealed class TranslationDictionaryEntity
     {
       Translations = dictionary
         .OrderBy(item => item.Key)
-        .Select(
-          item => new TranslationDictionaryItem
-          {
-            Key = PrettyKeyValue(item.Key, format),
-            Metadata = item.Value.Metadata is { } metadata
-              ? PrettyMetadata(metadata, format)
-              : null,
-            Value = PrettyKeyValue(item.Value.Value, format)
-          })
+        .Select(item => new TranslationDictionaryItem
+        {
+          Key = PrettyKeyValue(item.Key, format),
+          Metadata = item.Value.Metadata is { } metadata
+            ? PrettyMetadata(metadata, format)
+            : null,
+          Value = PrettyKeyValue(item.Value.Value, format)
+        })
         .ToList()
     };
   }
@@ -276,13 +275,12 @@ public sealed class TranslationDictionaryEntity
   {
     return new ConcurrentDictionary<string, Item>(
       content.Translations
-        .Select(
-          item =>
-            new KeyValuePair<string, Item>(
-              item.Key.TrimWords(),
-              new Item(
-                item.Metadata?.Trim().Dedent(8, "\n"),
-                item.Value.TrimWords())))
+        .Select(item =>
+          new KeyValuePair<string, Item>(
+            item.Key.TrimWords(),
+            new Item(
+              item.Metadata?.Trim().Dedent(8, "\n"),
+              item.Value.TrimWords())))
         .DistinctBy(item => item.Key)
     );
   }

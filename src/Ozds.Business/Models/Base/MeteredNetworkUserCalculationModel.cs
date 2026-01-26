@@ -77,22 +77,19 @@ public abstract class MeteredNetworkUserCalculationModel :
     {
       var result = ReactiveEnergyAmount_Wh
         .SpanDiff()
-        .Select(
-          duplex =>
-            new AnyDuplexMeasure<decimal>(duplex.DuplexAbs().DuplexSum()))
+        .Select(duplex =>
+          new AnyDuplexMeasure<decimal>(duplex.DuplexAbs().DuplexSum()))
         .Subtract(
           ActiveEnergyAmount_Wh
             .SpanDiff()
-            .Select(
-              duplex =>
-                new AnyDuplexMeasure<decimal>(duplex.DuplexImport()))
+            .Select(duplex =>
+              new AnyDuplexMeasure<decimal>(duplex.DuplexImport()))
             .Multiply(0.33M));
 
       return result
-        .Select(
-          duplex => duplex.DuplexAny().PhaseSum() < 0
-            ? DuplexMeasure<decimal>.Null
-            : duplex);
+        .Select(duplex => duplex.DuplexAny().PhaseSum() < 0
+          ? DuplexMeasure<decimal>.Null
+          : duplex);
     }
   }
 

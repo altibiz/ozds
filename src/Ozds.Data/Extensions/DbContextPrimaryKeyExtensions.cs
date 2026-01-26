@@ -147,14 +147,13 @@ public static class DbContextPrimaryKeyExtensions
     var convertedParameter = Expression.Convert(parameter, entityType);
 
     var propertyExpressions = keyProperties
-      .Select(
-        p =>
-          p.PropertyInfo is { } propertyInfo
-            ? Expression.Property(convertedParameter, propertyInfo)
-            : Expression.Field(
-              convertedParameter, p.FieldInfo
-              ?? throw new InvalidOperationException(
-                $"No field info found for {p}")))
+      .Select(p =>
+        p.PropertyInfo is { } propertyInfo
+          ? Expression.Property(convertedParameter, propertyInfo)
+          : Expression.Field(
+            convertedParameter, p.FieldInfo
+            ?? throw new InvalidOperationException(
+              $"No field info found for {p}")))
       .ToList();
 
     Expression resultExpression;

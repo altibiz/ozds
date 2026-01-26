@@ -44,10 +44,9 @@ public class ReadonlyInterceptor(IServiceProvider serviceProvider)
       .Entries<IReadonlyEntity>()
       .ToList();
 
-    if (entries.Find(
-        entry =>
-          entry.State is Microsoft.EntityFrameworkCore.EntityState.Modified
-            or Microsoft.EntityFrameworkCore.EntityState.Deleted) is
+    if (entries.Find(entry =>
+        entry.State is Microsoft.EntityFrameworkCore.EntityState.Modified
+          or Microsoft.EntityFrameworkCore.EntityState.Deleted) is
       { } entry)
     {
       throw new InvalidOperationException(

@@ -205,9 +205,8 @@ public class PushRequestMeasurementConverter(
 
     converter = serviceProvider
         .GetServices<IPushRequestMeasurementConverter>()
-        .FirstOrDefault(
-          converter =>
-            converter.PushRequestType.IsAssignableTo(pushRequestType))
+        .FirstOrDefault(converter =>
+          converter.PushRequestType.IsAssignableTo(pushRequestType))
       ?? throw new InvalidOperationException(
         $"No converter found for {pushRequestType.Name}");
 
@@ -227,9 +226,8 @@ public class PushRequestMeasurementConverter(
 
     converter = serviceProvider
         .GetServices<IPushRequestMeasurementConverter>()
-        .FirstOrDefault(
-          converter =>
-            converter.MeasurementType.IsAssignableTo(measurementType))
+        .FirstOrDefault(converter =>
+          converter.MeasurementType.IsAssignableTo(measurementType))
       ?? throw new InvalidOperationException(
         $"No converter found for {measurementType.Name}");
 

@@ -5,33 +5,30 @@ namespace Ozds.Data.Test.Extensions;
 
 public static class SpecimenBuilderExtensions
 {
-  private static readonly Lazy<MethodInfo> GenericCreateMethodLazy = new(
-    () =>
-      typeof(SpecimenFactory)
-        .GetMethods(BindingFlags.Static | BindingFlags.Public)
-        .First(
-          method =>
-            method.Name == "Create"
-            && method.IsGenericMethod
-            && method.GetGenericArguments().Length == 1
-            && method.GetParameters().Length == 1
-            && method.GetParameters()[0].ParameterType
-            == typeof(ISpecimenBuilder)));
+  private static readonly Lazy<MethodInfo> GenericCreateMethodLazy = new(() =>
+    typeof(SpecimenFactory)
+      .GetMethods(BindingFlags.Static | BindingFlags.Public)
+      .First(method =>
+        method.Name == "Create"
+        && method.IsGenericMethod
+        && method.GetGenericArguments().Length == 1
+        && method.GetParameters().Length == 1
+        && method.GetParameters()[0].ParameterType
+        == typeof(ISpecimenBuilder)));
 
-  private static readonly Lazy<MethodInfo> GenericCreateManyMethodLazy = new(
-    () =>
+  private static readonly Lazy<MethodInfo> GenericCreateManyMethodLazy =
+    new(() =>
       typeof(SpecimenFactory)
         .GetMethods(BindingFlags.Static | BindingFlags.Public)
-        .First(
-          method =>
-            method.Name == "CreateMany"
-            && method.IsGenericMethod
-            && method.GetGenericArguments().Length == 1
-            && method.GetParameters().Length == 2
-            && method.GetParameters()[0].ParameterType
-            == typeof(ISpecimenBuilder)
-            && method.GetParameters()[1].ParameterType
-            == typeof(int)));
+        .First(method =>
+          method.Name == "CreateMany"
+          && method.IsGenericMethod
+          && method.GetGenericArguments().Length == 1
+          && method.GetParameters().Length == 2
+          && method.GetParameters()[0].ParameterType
+          == typeof(ISpecimenBuilder)
+          && method.GetParameters()[1].ParameterType
+          == typeof(int)));
 
   private static MethodInfo GenericCreateMethod
   {

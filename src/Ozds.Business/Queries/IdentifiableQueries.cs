@@ -224,10 +224,9 @@ public class IdentifiableQueries(
     );
 
     var models = entities
-      .Select(
-        entity => entity is null
-          ? null
-          : modelEntityConverter.ToModel(entity))
+      .Select(entity => entity is null
+        ? null
+        : modelEntityConverter.ToModel(entity))
       .ToList();
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {

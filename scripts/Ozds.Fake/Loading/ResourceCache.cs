@@ -43,14 +43,13 @@ public class ResourceCache(IServiceProvider serviceProvider)
   {
     return (await _cache.GetOrAdd(
       (name, typeof(TLoader)),
-      _ => new Lazy<Task<object>>(
-        async () =>
-        {
-          await using var stream = Load(name);
-          var loader = _serviceProvider.GetRequiredService<TLoader>();
-          var initial = await loader.Load(stream, cancellationToken);
-          return await postprocess(initial, cancellationToken);
-        })
+      _ => new Lazy<Task<object>>(async () =>
+      {
+        await using var stream = Load(name);
+        var loader = _serviceProvider.GetRequiredService<TLoader>();
+        var initial = await loader.Load(stream, cancellationToken);
+        return await postprocess(initial, cancellationToken);
+      })
     ).Value as TOut)!;
   }
 

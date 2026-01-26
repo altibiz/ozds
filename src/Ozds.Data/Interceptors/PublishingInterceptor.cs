@@ -96,8 +96,7 @@ public class PublishingInterceptor(
       new EntitiesChangingEventArgs
       {
         Entities = entries
-          .Select(
-            entry => new EntityChangingEntry(
+          .Select(entry => new EntityChangingEntry(
               entry.State switch
               {
                 EntityState.Added => EntityChangingState.Adding,
@@ -121,8 +120,7 @@ public class PublishingInterceptor(
       new EntitiesChangedEventArgs
       {
         Entities = entries
-          .Select(
-            entry => new EntityChangedEntry(
+          .Select(entry => new EntityChangedEntry(
               entry.State switch
               {
                 EntityState.Added => EntityChangedState.Added,

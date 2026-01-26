@@ -17,12 +17,11 @@ public class NetworkUserInvoiceStateSagaDefinition
       ?? throw new InvalidOperationException(
         "Ozds:Messaging not found in configuration");
 
-    Endpoint(
-      e =>
-      {
-        e.Name = options.Sagas.NetworkUserInvoiceState;
-        e.PrefetchCount = ConcurrencyLimit;
-      });
+    Endpoint(e =>
+    {
+      e.Name = options.Sagas.NetworkUserInvoiceState;
+      e.PrefetchCount = ConcurrencyLimit;
+    });
   }
 
   protected override void ConfigureSaga(
@@ -42,17 +41,13 @@ public class NetworkUserInvoiceStateSagaDefinition
 
     var partition = endpointConfigurator.CreatePartitioner(ConcurrencyLimit);
 
-    sagaConfigurator.Message<IAbortNetworkUserInvoice>(
-      x => x
-        .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
-    sagaConfigurator.Message<IInitiateNetworkUserInvoice>(
-      x => x
-        .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
-    sagaConfigurator.Message<IRegisterNetworkUserInvoice>(
-      x => x
-        .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
-    sagaConfigurator.Message<IApproveNetworkUserInvoice>(
-      x => x
-        .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
+    sagaConfigurator.Message<IAbortNetworkUserInvoice>(x => x
+      .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
+    sagaConfigurator.Message<IInitiateNetworkUserInvoice>(x => x
+      .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
+    sagaConfigurator.Message<IRegisterNetworkUserInvoice>(x => x
+      .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
+    sagaConfigurator.Message<IApproveNetworkUserInvoice>(x => x
+      .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
   }
 }

@@ -49,16 +49,14 @@ public abstract class EntityChangesInterceptor(IServiceProvider serviceProvider)
       }
 
       var properties = entry.Properties
-        .Where(
-          property =>
-            property.OriginalValue?.ToString()
-            != property.CurrentValue?.ToString())
-        .Select(
-          property => new EntityProperty(
-            property.Metadata.Name,
-            property.OriginalValue?.ToString(),
-            property.CurrentValue?.ToString()
-          ))
+        .Where(property =>
+          property.OriginalValue?.ToString()
+          != property.CurrentValue?.ToString())
+        .Select(property => new EntityProperty(
+          property.Metadata.Name,
+          property.OriginalValue?.ToString(),
+          property.CurrentValue?.ToString()
+        ))
         .ToArray();
 
       entries.Add(

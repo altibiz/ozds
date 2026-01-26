@@ -11,22 +11,20 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
   {
     Interval = TimeSpan.FromHours(1);
 
-    Configure(
-      x =>
+    Configure(x =>
+    {
+      x.Ozds.ConfigureHost(builder =>
       {
-        x.Ozds.ConfigureHost(
-          builder =>
+        builder.Configuration.AddInMemoryCollection(
+          new Dictionary<string, string?>
           {
-            builder.Configuration.AddInMemoryCollection(
-              new Dictionary<string, string?>
-              {
-                ["Ozds:Jobs:Archival:DailyMeasurementDeletionCron"] =
-                  "0 * * * * ?", // NOTE: on the first second of every minute
-                ["Ozds:Business:Reactor:MeasurementDeletionJobIntervalSeconds"] =
-                  Interval.TotalSeconds.ToString()
-              });
+            ["Ozds:Jobs:Archival:DailyMeasurementDeletionCron"] =
+              "0 * * * * ?", // NOTE: on the first second of every minute
+            ["Ozds:Business:Reactor:MeasurementDeletionJobIntervalSeconds"] =
+              Interval.TotalSeconds.ToString()
           });
       });
+    });
   }
 
   private TimeSpan Interval { get; }
@@ -57,12 +55,10 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
       .Where(x => x is not IAggregate)
       .ToListAsync(cancellationToken);
 
-    itemsBefore.Should().AllSatisfy(
-      x =>
-        x.Timestamp.Should().BeAfter(dateFrom));
-    itemsBefore.Should().AllSatisfy(
-      x =>
-        x.Timestamp.Should().BeBefore(dateTo));
+    itemsBefore.Should().AllSatisfy(x =>
+      x.Timestamp.Should().BeAfter(dateFrom));
+    itemsBefore.Should().AllSatisfy(x =>
+      x.Timestamp.Should().BeBefore(dateTo));
 
     await Task.Delay(TimeSpan.FromMinutes(2), cancellationToken);
 
@@ -78,8 +74,7 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
 
     itemsAfter.TotalCount.Should().BeLessThan(itemsBefore.Count);
 
-    itemsAfter.Items.Should().AllSatisfy(
-      x =>
-        x.Timestamp.Should().BeAfter(deletionCutoff));
+    itemsAfter.Items.Should().AllSatisfy(x =>
+      x.Timestamp.Should().BeAfter(deletionCutoff));
   }
 }

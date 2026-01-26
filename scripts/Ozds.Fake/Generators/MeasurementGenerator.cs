@@ -38,13 +38,12 @@ public class MeasurementRecordGenerator(
     return enumerable.Concat(
       ids
         .GroupBy(id => GetGenerator(id.MeterId))
-        .Select(
-          group => group.Key.BatchMeasurementRecords(
-            dateFrom,
-            dateTo,
-            group,
-            cancellationToken
-          )),
+        .Select(group => group.Key.BatchMeasurementRecords(
+          dateFrom,
+          dateTo,
+          group,
+          cancellationToken
+        )),
       cancellationToken);
   }
 

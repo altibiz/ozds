@@ -10,11 +10,10 @@ public static class StringExtensions
       newline,
       value
         .Split(newline)
-        .Select(
-          line =>
-            string.IsNullOrWhiteSpace(line)
-              ? line.TrimStart()
-              : new string(' ', indent) + line));
+        .Select(line =>
+          string.IsNullOrWhiteSpace(line)
+            ? line.TrimStart()
+            : new string(' ', indent) + line));
   }
 
   public static string Dedent(this string value, int indent, string newline)
@@ -23,10 +22,9 @@ public static class StringExtensions
       newline,
       value
         .Split(newline)
-        .Select(
-          line => line.StartsWith(new string(' ', indent))
-            ? line[indent..]
-            : line.TrimStart()));
+        .Select(line => line.StartsWith(new string(' ', indent))
+          ? line[indent..]
+          : line.TrimStart()));
   }
 
   public static string TrimWords(

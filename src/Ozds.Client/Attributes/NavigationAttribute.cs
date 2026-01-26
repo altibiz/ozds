@@ -31,25 +31,21 @@ public class NavigationAttribute : Attribute
   {
     var descriptors = typeof(NavigationAttribute).Assembly
       .GetTypes()
-      .Select(
-        type => new
-        {
-          Type = type,
-          Navigation = type.GetCustomAttributes<NavigationAttribute>(),
-          Route = type.GetCustomAttributes<RouteAttribute>()
-        })
+      .Select(type => new
+      {
+        Type = type,
+        Navigation = type.GetCustomAttributes<NavigationAttribute>(),
+        Route = type.GetCustomAttributes<RouteAttribute>()
+      })
       .Where(type => type.Navigation.Any() && type.Route.Any())
-      .SelectMany(
-        type => type.Navigation
-          .SelectMany(
-            navigation => type.Route
-              .Select(
-                route => new NavigationDescriptor
-                {
-                  Type = type.Type,
-                  Navigation = navigation,
-                  Route = route
-                })))
+      .SelectMany(type => type.Navigation
+        .SelectMany(navigation => type.Route
+          .Select(route => new NavigationDescriptor
+          {
+            Type = type.Type,
+            Navigation = navigation,
+            Route = route
+          })))
       .OrderBy(x => x.Navigation.Order)
       .ToList();
 

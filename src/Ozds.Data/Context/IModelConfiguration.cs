@@ -32,25 +32,23 @@ public abstract class
       ?? throw new InvalidOperationException("Method not found");
     _ = typeof(TBase).Assembly
       .GetTypes()
-      .Where(
-        type =>
-          !type.IsAbstract &&
-          !type.IsGenericType &&
-          typeof(TBase).IsAssignableFrom(type))
-      .OrderBy(
-        type =>
+      .Where(type =>
+        !type.IsAbstract &&
+        !type.IsGenericType &&
+        typeof(TBase).IsAssignableFrom(type))
+      .OrderBy(type =>
+      {
+        var level = 0;
+        for (
+          var currentType = type.BaseType;
+          currentType != null;
+          currentType = currentType.BaseType)
         {
-          var level = 0;
-          for (
-            var currentType = type.BaseType;
-            currentType != null;
-            currentType = currentType.BaseType)
-          {
-            level++;
-          }
+          level++;
+        }
 
-          return level;
-        })
+        return level;
+      })
       .Aggregate(
         modelBuilder, (modelBuilder, type) =>
         {
@@ -80,10 +78,9 @@ public static class ModelBuilderExtensions
   {
     return assembly
       .GetTypes()
-      .Where(
-        type =>
-          !type.IsAbstract &&
-          typeof(IModelConfiguration).IsAssignableFrom(type))
+      .Where(type =>
+        !type.IsAbstract &&
+        typeof(IModelConfiguration).IsAssignableFrom(type))
       .Aggregate(
         modelBuilder,
         (modelBuilder, type) =>

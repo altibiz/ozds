@@ -38,28 +38,26 @@ public class ValidationQueries(
     var intermediaries = await context.Meters
       .Where(context.PrimaryKeyIn<MeterEntity>(meterIds))
       .Include(x => x.MeasurementValidator)
-      .Select(
-        x => new ReadMeasurementValidatorsByMeterIdsIntermediary
-        {
-          Meter = x,
-          MeasurementValidator = x.MeasurementValidator
-        })
+      .Select(x => new ReadMeasurementValidatorsByMeterIdsIntermediary
+      {
+        Meter = x,
+        MeasurementValidator = x.MeasurementValidator
+      })
       .ToDictionaryAsync(
         x => x.Meter.Id,
         x => x,
         cancellationToken);
 
     return meterIds
-      .Select(
-        id =>
+      .Select(id =>
+      {
+        if (intermediaries.TryGetValue(id, out var intermediary))
         {
-          if (intermediaries.TryGetValue(id, out var intermediary))
-          {
-            return intermediary.MeasurementValidator;
-          }
+          return intermediary.MeasurementValidator;
+        }
 
-          return default;
-        })
+        return default;
+      })
       .Cast<IMeasurementValidatorEntity?>()
       .ToList();
   }
@@ -100,29 +98,27 @@ public class ValidationQueries(
         context.ForeignKeyOf<MeterEntity>(
             nameof(MeterEntity<MeasurementEntity, AggregateEntity,
               MeasurementValidatorEntity>.MeasurementValidator))
-          .Suffix(
-            meter => new ReadMetersByMeasurementValidatorIdsInterMediary
-            {
-              Meter = (meter as MeterEntity)!,
-              MeasurementValidatorId =
-                (meter as MeterEntity)!.MeasurementValidatorId
-            }))
+          .Suffix(meter => new ReadMetersByMeasurementValidatorIdsInterMediary
+          {
+            Meter = (meter as MeterEntity)!,
+            MeasurementValidatorId =
+              (meter as MeterEntity)!.MeasurementValidatorId
+          }))
       .ToDictionaryAsync(
         x => x.MeasurementValidatorId,
         x => x,
         cancellationToken);
 
     return validatorIds
-      .Select(
-        id =>
+      .Select(id =>
+      {
+        if (intermediaries.TryGetValue(id, out var intermediary))
         {
-          if (intermediaries.TryGetValue(id, out var intermediary))
-          {
-            return intermediary.Meter;
-          }
+          return intermediary.Meter;
+        }
 
-          return default;
-        })
+        return default;
+      })
       .Cast<IMeterEntity?>()
       .ToList();
   }

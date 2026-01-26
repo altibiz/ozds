@@ -39,11 +39,10 @@ public class ApiV1MeasurementsController(
     }
 
     var scope = auth.Scopes
-      .FirstOrDefault(
-        scope =>
-          scope.ScopeModelType == modelReflector
-            .ResolveModelName(typeof(LocationModel))
-          && scope.ScopeModelId == locationId);
+      .FirstOrDefault(scope =>
+        scope.ScopeModelType == modelReflector
+          .ResolveModelName(typeof(LocationModel))
+        && scope.ScopeModelId == locationId);
     if (scope is null)
     {
       return Unauthorized();
@@ -181,11 +180,10 @@ public class ApiV1MeasurementsController(
     }
 
     var scope = auth.Scopes
-      .FirstOrDefault(
-        scope =>
-          scope.ScopeModelType == modelReflector
-            .ResolveModelName(typeof(NetworkUserModel))
-          && scope.ScopeModelId == networkUserId);
+      .FirstOrDefault(scope =>
+        scope.ScopeModelType == modelReflector
+          .ResolveModelName(typeof(NetworkUserModel))
+        && scope.ScopeModelId == networkUserId);
     if (scope is null)
     {
       return Unauthorized();
@@ -324,11 +322,10 @@ public class ApiV1MeasurementsController(
     }
 
     var scope = auth.Scopes
-      .FirstOrDefault(
-        scope =>
-          scope.ScopeModelType == modelReflector
-            .ResolveModelName(typeof(NetworkUserMeasurementLocationModel))
-          && scope.ScopeModelId == measurementLocationId);
+      .FirstOrDefault(scope =>
+        scope.ScopeModelType == modelReflector
+          .ResolveModelName(typeof(NetworkUserMeasurementLocationModel))
+        && scope.ScopeModelId == measurementLocationId);
     if (scope is null)
     {
       return Unauthorized();

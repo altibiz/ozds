@@ -32,14 +32,13 @@ public static class OzdsMigrationArguments
   {
     try
     {
-      var result = new Parser(
-        with =>
-        {
-          with.CaseInsensitiveEnumValues = true;
-          with.AutoHelp = true;
-          with.AutoVersion = true;
-          with.HelpWriter = Console.Out;
-        }).ParseArguments<
+      var result = new Parser(with =>
+      {
+        with.CaseInsensitiveEnumValues = true;
+        with.AutoHelp = true;
+        with.AutoVersion = true;
+        with.HelpWriter = Console.Out;
+      }).ParseArguments<
         OzdsMigrationMigrateArguments,
         OzdsMigrationGenerateArguments>(args);
 

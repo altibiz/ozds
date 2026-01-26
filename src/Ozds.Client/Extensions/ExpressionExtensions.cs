@@ -39,7 +39,7 @@ public static class ExpressionExtensions
     if (body is UnaryExpression unaryExpression
       && unaryExpression.NodeType == ExpressionType.Convert)
     {
-      return LabelExpression(unaryExpression.Operand);
+      return unaryExpression.Operand.LabelExpression();
     }
 
     throw new InvalidOperationException(

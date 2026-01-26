@@ -80,16 +80,15 @@ public class RepresentativeQueries(
     );
 
     return users.Items
-      .Select(
-        user => new MaybeRepresentingUserModel
-        {
-          User = modelUserEntityConverter.ToModel<UserModel>(user),
-          Representative = representatives
-              .FirstOrDefault(x => x.Id == user.Id)
-            is { } representative
-            ? modelEntityConverter.ToModel<RepresentativeModel>(representative)
-            : null
-        })
+      .Select(user => new MaybeRepresentingUserModel
+      {
+        User = modelUserEntityConverter.ToModel<UserModel>(user),
+        Representative = representatives
+            .FirstOrDefault(x => x.Id == user.Id)
+          is { } representative
+          ? modelEntityConverter.ToModel<RepresentativeModel>(representative)
+          : null
+      })
       .ToPaginatedList(users.TotalCount);
   }
 

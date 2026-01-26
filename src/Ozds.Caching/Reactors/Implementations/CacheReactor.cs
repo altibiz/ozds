@@ -32,21 +32,20 @@ public class CacheHandler(
       : new CacheEventPolicyContext(serviceProvider, cache, eventArgs);
     await Task.WhenAll(
       eventArgs.CacheConfiguration.Policies
-        .Select(
-          async policy =>
+        .Select(async policy =>
+        {
+          try
           {
-            try
-            {
-              await policy.HandleCacheEvent(policyContext, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-              logger.LogError(
-                ex,
-                "Policy {Policy} failed with {Key}",
-                policy.GetType().Name,
-                eventArgs.Key);
-            }
-          }));
+            await policy.HandleCacheEvent(policyContext, cancellationToken);
+          }
+          catch (Exception ex)
+          {
+            logger.LogError(
+              ex,
+              "Policy {Policy} failed with {Key}",
+              policy.GetType().Name,
+              eventArgs.Key);
+          }
+        }));
   }
 }

@@ -14,14 +14,14 @@ public partial class MeasurementLineChart : OzdsComponentBase
 {
   private readonly string _id = Guid.NewGuid().ToString();
 
-  private ApexChart<IMeasurement>? _chart = default!;
+  private ApexChart<IMeasurement>? _chart;
 
   private ApexChartOptions<IMeasurement> _options =
     new ApexChartOptions<IMeasurement>()
       .WithFixedScriptPath();
 
   [CascadingParameter]
-  public Breakpoint Breakpoint { get; set; } = default!;
+  public Breakpoint Breakpoint { get; set; }
 
   [CascadingParameter]
   public ThemeState ThemeState { get; set; } = default!;
@@ -36,10 +36,10 @@ public partial class MeasurementLineChart : OzdsComponentBase
   public MeasurementChartParameters Parameters { get; set; } = default!;
 
   [Parameter]
-  public bool Area { get; set; } = false;
+  public bool Area { get; set; }
 
   [Parameter]
-  public bool Brush { get; set; } = false;
+  public bool Brush { get; set; }
 
   [Parameter]
   public int Height { get; set; } = 300;

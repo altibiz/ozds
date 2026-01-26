@@ -53,14 +53,13 @@ public sealed class OzdsData : IAsyncDisposable
     builder.AddOzdsTime();
     builder.AddOzdsAssets();
     builder.AddOzdsData();
-    builder.Services.Configure<OzdsDataOptions>(
-      options =>
-      {
-        options.ConnectionString = postgresContainer.ConnectionString;
-        options.UseProxies = false;
-        options.WithServices = false;
-        options.LogSql = false;
-      });
+    builder.Services.Configure<OzdsDataOptions>(options =>
+    {
+      options.ConnectionString = postgresContainer.ConnectionString;
+      options.UseProxies = false;
+      options.WithServices = false;
+      options.LogSql = false;
+    });
 
     builder.Services.AddSingleton<TestInfrastructureFixture>();
     builder.Services.AddSingleton<TestMeasurementFixture>();

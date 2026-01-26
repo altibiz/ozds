@@ -18,33 +18,30 @@ public class NetworkUserInvoiceStateMachine
       () => AcknowledgeNetworkUserInvoice,
       x =>
       {
-        x.CorrelateBy(
-          (state, context) =>
-            state.NetworkUserInvoiceId
-            == context.Message.NetworkUserInvoiceId);
+        x.CorrelateBy((state, context) =>
+          state.NetworkUserInvoiceId
+          == context.Message.NetworkUserInvoiceId);
         x.SelectId(x => NewId.NextGuid());
 
         x.InsertOnInitial = true;
 
-        x.SetSagaFactory(
-          context =>
-            new NetworkUserInvoiceStateEntity
-            {
-              CorrelationId = context.CorrelationId ?? NewId.NextGuid(),
-              NetworkUserInvoiceId = context.Message.NetworkUserInvoiceId
-            });
+        x.SetSagaFactory(context =>
+          new NetworkUserInvoiceStateEntity
+          {
+            CorrelationId = context.CorrelationId ?? NewId.NextGuid(),
+            NetworkUserInvoiceId = context.Message.NetworkUserInvoiceId
+          });
       });
 
     Initially(
       When(AcknowledgeNetworkUserInvoice)
-        .Then(
-          context =>
-          {
-            context.Saga.NetworkUserInvoiceId
-              = context.Message.NetworkUserInvoiceId;
-            context.Saga.Approved
-              = context.Message.AutomaticallyApprove;
-          })
+        .Then(context =>
+        {
+          context.Saga.NetworkUserInvoiceId
+            = context.Message.NetworkUserInvoiceId;
+          context.Saga.Approved
+            = context.Message.AutomaticallyApprove;
+        })
         .Send(
           new Uri(
             options.Value.Messaging.Endpoints.InitiateNetworkUserInvoice),
@@ -56,9 +53,8 @@ public class NetworkUserInvoiceStateMachine
     WhenEnter(
       Initiated,
       x => x
-        .Activity(
-          activity => activity
-            .OfType<NetworkUserInvoiceRegistrationActivity>())
+        .Activity(activity => activity
+          .OfType<NetworkUserInvoiceRegistrationActivity>())
         .IfElse(
           context => context.Saga.BillId is not null,
           x => x
@@ -84,9 +80,8 @@ public class NetworkUserInvoiceStateMachine
     WhenEnter(
       Registered,
       x => x
-        .Activity(
-          activity => activity
-            .OfType<NetworkUserInvoiceApprovalActivity>())
+        .Activity(activity => activity
+          .OfType<NetworkUserInvoiceApprovalActivity>())
         .Send(
           new Uri(
             options.Value.Messaging.Endpoints.ApproveNetworkUserInvoice),

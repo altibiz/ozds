@@ -11,13 +11,13 @@ public partial class MultiEnumPicker<T> : OzdsComponentBase
   public IEnumerable<T> Value { get; set; } = default!;
 
   [Parameter]
-  public EventCallback<IEnumerable<T>> ValueChanged { get; set; } = default!;
+  public EventCallback<IEnumerable<T>> ValueChanged { get; set; }
 
   [Parameter]
   public string Title { get; set; } = default!;
 
   [Parameter]
-  public Func<T, string>? Label { get; set; } = default!;
+  public Func<T, string>? Label { get; set; }
 
   [Parameter]
   public Expression<Func<T>> For { get; set; } = default!;

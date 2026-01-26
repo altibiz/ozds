@@ -51,17 +51,15 @@ public class MeasurementBuffer(
     if (initialAggregateCount is 0)
     {
       aggregates = measurements
-        .SelectMany(
-          x => Enum.GetValues<IntervalModel>()
-            .Select(interval => aggregateConverter.ToAggregate(x, interval)))
-        .GroupBy(
-          x => new
-          {
-            x.MeterId,
-            x.MeasurementLocationId,
-            x.Timestamp,
-            x.Interval
-          })
+        .SelectMany(x => Enum.GetValues<IntervalModel>()
+          .Select(interval => aggregateConverter.ToAggregate(x, interval)))
+        .GroupBy(x => new
+        {
+          x.MeterId,
+          x.MeasurementLocationId,
+          x.Timestamp,
+          x.Interval
+        })
         .Select(x => x.Aggregate(aggregateUpserter.UpsertAggregate))
         .ToList();
     }
@@ -256,16 +254,15 @@ public class MeasurementBuffer(
       {
         var upserted = cached.Value
           .Aggregate(aggregateUpserter.UpsertAggregate);
-        if (!toStay.Any(
-            toStayAggregate =>
-              toStayAggregate.Interval == IntervalModel.QuarterHour
-              && upserted.Interval == IntervalModel.QuarterHour
-              && toStayAggregate.MeterId == upserted.MeterId
-              && toStayAggregate.MeasurementLocationId
-              == upserted.MeasurementLocationId
-              && toStayAggregate.Timestamp >= upserted.Timestamp
-              && toStayAggregate.Timestamp < upserted.Timestamp.Add(
-                time.IntervalTimeSpan(upserted.Interval, upserted.Timestamp)))
+        if (!toStay.Any(toStayAggregate =>
+            toStayAggregate.Interval == IntervalModel.QuarterHour
+            && upserted.Interval == IntervalModel.QuarterHour
+            && toStayAggregate.MeterId == upserted.MeterId
+            && toStayAggregate.MeasurementLocationId
+            == upserted.MeasurementLocationId
+            && toStayAggregate.Timestamp >= upserted.Timestamp
+            && toStayAggregate.Timestamp < upserted.Timestamp.Add(
+              time.IntervalTimeSpan(upserted.Interval, upserted.Timestamp)))
           && Aggregates.TryRemove(cached.Key, out var value))
         {
           upserted = value

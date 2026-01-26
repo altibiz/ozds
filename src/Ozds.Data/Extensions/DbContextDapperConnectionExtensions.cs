@@ -90,10 +90,9 @@ public static class DataDbContextDapperConnectionExtensions
     var entityTypeModel = context.Model.FindEntityType(entityType);
     var property = entityTypeModel
       ?.GetProperties()
-      .FirstOrDefault(
-        property => property
-          .GetColumnName()
-          .Equals(columnName, StringComparison.OrdinalIgnoreCase));
+      .FirstOrDefault(property => property
+        .GetColumnName()
+        .Equals(columnName, StringComparison.OrdinalIgnoreCase));
     return property;
   }
 

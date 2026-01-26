@@ -14,11 +14,10 @@ public static class MeasurementProcedureCompiler
     var parts = typeof(IMeasurementProcedureParts)
         .Assembly
         .GetTypes()
-        .Where(
-          type =>
-            !type.IsAbstract
-            && !type.IsGenericType
-            && typeof(IMeasurementProcedureParts).IsAssignableFrom(type))
+        .Where(type =>
+          !type.IsAbstract
+          && !type.IsGenericType
+          && typeof(IMeasurementProcedureParts).IsAssignableFrom(type))
         .Select(Activator.CreateInstance)
         .OfType<IMeasurementProcedureParts>()
         .FirstOrDefault(x => x.AggregateType == aggregateType)

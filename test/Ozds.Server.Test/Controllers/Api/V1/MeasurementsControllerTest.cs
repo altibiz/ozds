@@ -28,9 +28,8 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
     var measurementLocation = await MeasurementLocation.Create(
       cancellationToken,
       x => x
-        .WithMeter(
-          x => x
-            .WithMeterType(typeof(SchneideriEM3xxxMeterModel))));
+        .WithMeter(x => x
+          .WithMeterType(typeof(SchneideriEM3xxxMeterModel))));
 
     var scope = await Scope.CreateMeasurementForLocationWithRegisters(
       measurementLocation.Location,
@@ -93,12 +92,11 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
       fetchedMeasurement.Timestamp.Should().BeBefore(dateTo);
 
       var insertedMeasurement = inserted
-        .FirstOrDefault(
-          insertedMeasurement =>
-            insertedMeasurement.Timestamp == fetchedMeasurement.Timestamp
-            && insertedMeasurement.MeasurementLocationId
-            == fetchedMeasurement.MeasurementLocationId
-            && insertedMeasurement.MeterId == fetchedMeasurement.MeterId)!;
+        .FirstOrDefault(insertedMeasurement =>
+          insertedMeasurement.Timestamp == fetchedMeasurement.Timestamp
+          && insertedMeasurement.MeasurementLocationId
+          == fetchedMeasurement.MeasurementLocationId
+          && insertedMeasurement.MeterId == fetchedMeasurement.MeterId)!;
       insertedMeasurement.Should().NotBeNull();
 
       foreach (var register in registers)
@@ -106,9 +104,8 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
         var insertedValue = insertedMeasurement.RegisterValue(register);
 
         var fetchedValue = fetchedMeasurement.Registers
-          .FirstOrDefault(
-            fetchedRegister =>
-              fetchedRegister.Key == register.Name)!;
+          .FirstOrDefault(fetchedRegister =>
+            fetchedRegister.Key == register.Name)!;
         fetchedValue.Should().NotBeNull();
 
         fetchedValue.Value.Should().Be(insertedValue.ToString());
@@ -259,9 +256,8 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
     var measurementLocation = await MeasurementLocation.Create(
       cancellationToken,
       x => x
-        .WithMeter(
-          x => x
-            .WithMeterType(typeof(SchneideriEM3xxxMeterModel))));
+        .WithMeter(x => x
+          .WithMeterType(typeof(SchneideriEM3xxxMeterModel))));
 
     var scope = await Scope.CreateMeasurementForNetworkUserWithRegisters(
       measurementLocation.NetworkUser,
@@ -324,12 +320,11 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
       fetchedMeasurement.Timestamp.Should().BeBefore(dateTo);
 
       var insertedMeasurement = inserted
-        .FirstOrDefault(
-          insertedMeasurement =>
-            insertedMeasurement.Timestamp == fetchedMeasurement.Timestamp
-            && insertedMeasurement.MeasurementLocationId
-            == fetchedMeasurement.MeasurementLocationId
-            && insertedMeasurement.MeterId == fetchedMeasurement.MeterId)!;
+        .FirstOrDefault(insertedMeasurement =>
+          insertedMeasurement.Timestamp == fetchedMeasurement.Timestamp
+          && insertedMeasurement.MeasurementLocationId
+          == fetchedMeasurement.MeasurementLocationId
+          && insertedMeasurement.MeterId == fetchedMeasurement.MeterId)!;
       insertedMeasurement.Should().NotBeNull();
 
       foreach (var register in registers)
@@ -337,9 +332,8 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
         var insertedValue = insertedMeasurement.RegisterValue(register);
 
         var fetchedValue = fetchedMeasurement.Registers
-          .FirstOrDefault(
-            fetchedRegister =>
-              fetchedRegister.Key == register.Name)!;
+          .FirstOrDefault(fetchedRegister =>
+            fetchedRegister.Key == register.Name)!;
         fetchedValue.Should().NotBeNull();
 
         fetchedValue.Value.Should().Be(insertedValue.ToString());
@@ -361,9 +355,8 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
     var measurementLocation = await MeasurementLocation.Create(
       cancellationToken,
       x => x
-        .WithMeter(
-          x => x
-            .WithMeterType(typeof(SchneideriEM3xxxMeterModel))));
+        .WithMeter(x => x
+          .WithMeterType(typeof(SchneideriEM3xxxMeterModel))));
 
     var scope =
       await Scope.CreateMeasurementForMeasurementLocationWithRegisters(
@@ -429,12 +422,11 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
       fetchedMeasurement.Timestamp.Should().BeBefore(dateTo);
 
       var insertedMeasurement = inserted
-        .FirstOrDefault(
-          insertedMeasurement =>
-            insertedMeasurement.Timestamp == fetchedMeasurement.Timestamp
-            && insertedMeasurement.MeasurementLocationId
-            == fetchedMeasurement.MeasurementLocationId
-            && insertedMeasurement.MeterId == fetchedMeasurement.MeterId)!;
+        .FirstOrDefault(insertedMeasurement =>
+          insertedMeasurement.Timestamp == fetchedMeasurement.Timestamp
+          && insertedMeasurement.MeasurementLocationId
+          == fetchedMeasurement.MeasurementLocationId
+          && insertedMeasurement.MeterId == fetchedMeasurement.MeterId)!;
       insertedMeasurement.Should().NotBeNull();
 
       foreach (var register in registers)
@@ -442,9 +434,8 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
         var insertedValue = insertedMeasurement.RegisterValue(register);
 
         var fetchedValue = fetchedMeasurement.Registers
-          .FirstOrDefault(
-            fetchedRegister =>
-              fetchedRegister.Key == register.Name)!;
+          .FirstOrDefault(fetchedRegister =>
+            fetchedRegister.Key == register.Name)!;
         fetchedValue.Should().NotBeNull();
 
         fetchedValue.Value.Should().Be(insertedValue.ToString());

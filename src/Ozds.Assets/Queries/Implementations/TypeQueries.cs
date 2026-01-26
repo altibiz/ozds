@@ -27,17 +27,15 @@ public class TypeQueries : ITypeQueries
 
     var candidates = assembly
       .GetTypes()
-      .Where(
-        type =>
-          type.Namespace != null
-          && type.Namespace.StartsWith(@namespace))
+      .Where(type =>
+        type.Namespace != null
+        && type.Namespace.StartsWith(@namespace))
       .ToList();
 
     return candidates
-      .FirstOrDefault(
-        type =>
-          ResolveHumanFriendlyTypeName(type, type.Name, true)
-          == ResolveHumanFriendlyTypeName(type, name, true));
+      .FirstOrDefault(type =>
+        ResolveHumanFriendlyTypeName(type, type.Name, true)
+        == ResolveHumanFriendlyTypeName(type, name, true));
   }
 
   public IEnumerable<Type> ResolveSubtypes(
@@ -52,23 +50,19 @@ public class TypeQueries : ITypeQueries
 
     return @namespace is null
       ? assemblies
-        .SelectMany(
-          assembly => assembly
-            .GetTypes()
-            .Where(
-              assemblyType =>
-                assemblyType.IsAssignableTo(type)
-                && !assemblyType.IsAbstract))
+        .SelectMany(assembly => assembly
+          .GetTypes()
+          .Where(assemblyType =>
+            assemblyType.IsAssignableTo(type)
+            && !assemblyType.IsAbstract))
       : assemblies
-        .SelectMany(
-          assembly => assembly
-            .GetTypes()
-            .Where(
-              assemblyType =>
-                assemblyType.Namespace is not null
-                && assemblyType.Namespace.StartsWith(@namespace)
-                && assemblyType.IsAssignableTo(type)
-                && !assemblyType.IsAbstract));
+        .SelectMany(assembly => assembly
+          .GetTypes()
+          .Where(assemblyType =>
+            assemblyType.Namespace is not null
+            && assemblyType.Namespace.StartsWith(@namespace)
+            && assemblyType.IsAssignableTo(type)
+            && !assemblyType.IsAbstract));
   }
 
   private static string ResolveHumanFriendlyTypeName(

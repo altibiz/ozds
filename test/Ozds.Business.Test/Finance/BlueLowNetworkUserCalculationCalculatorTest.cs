@@ -33,80 +33,79 @@ public class BlueLowNetworkUserCalculationCalculatorTest
           .ToCustomization())
       .Build<BlueLowNetworkUserCalculationModel>()
       .CreateMany(Constants.DefaultFuzzCount)
-      .Select(
-        x =>
-        {
-          x.UsageNetworkUserCatalogueId =
-            x.ConcreteArchivedUsageNetworkUserCatalogue.Id;
-          x.SupplyRegulatoryCatalogueId =
-            x.ArchivedSupplyRegulatoryCatalogue.Id;
-          x.NetworkUserMeasurementLocationId =
-            x.ArchivedNetworkUserMeasurementLocation.Id;
-          x.Remark =
-            x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
-          x.MeterId = x.ArchivedMeter.Id;
+      .Select(x =>
+      {
+        x.UsageNetworkUserCatalogueId =
+          x.ConcreteArchivedUsageNetworkUserCatalogue.Id;
+        x.SupplyRegulatoryCatalogueId =
+          x.ArchivedSupplyRegulatoryCatalogue.Id;
+        x.NetworkUserMeasurementLocationId =
+          x.ArchivedNetworkUserMeasurementLocation.Id;
+        x.Remark =
+          x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
+        x.MeterId = x.ArchivedMeter.Id;
 
-          var faker = new Faker();
+        var faker = new Faker();
 
-          x.UsageActiveEnergyTotalImportT0.Total_EUR = System.Math.Round(
-            faker.Random.Decimal(
-              Constants.MinTotalValue,
-              Constants.MaxTotalValue),
-            2);
+        x.UsageActiveEnergyTotalImportT0.Total_EUR = System.Math.Round(
+          faker.Random.Decimal(
+            Constants.MinTotalValue,
+            Constants.MaxTotalValue),
+          2);
 
-          x.UsageReactiveEnergyTotalRampedT0.Total_EUR = System.Math.Round(
-            faker.Random.Decimal(
-              Constants.MinTotalValue,
-              Constants.MaxTotalValue),
-            2);
+        x.UsageReactiveEnergyTotalRampedT0.Total_EUR = System.Math.Round(
+          faker.Random.Decimal(
+            Constants.MinTotalValue,
+            Constants.MaxTotalValue),
+          2);
 
-          x.UsageMeterFee.Total_EUR = System.Math.Round(
-            faker.Random.Decimal(
-              Constants.MinTotalValue,
-              Constants.MaxTotalValue),
-            2);
+        x.UsageMeterFee.Total_EUR = System.Math.Round(
+          faker.Random.Decimal(
+            Constants.MinTotalValue,
+            Constants.MaxTotalValue),
+          2);
 
-          x.SupplyActiveEnergyTotalImportT1.Total_EUR = System.Math.Round(
-            faker.Random.Decimal(
-              Constants.MinTotalValue,
-              Constants.MaxTotalValue),
-            2);
+        x.SupplyActiveEnergyTotalImportT1.Total_EUR = System.Math.Round(
+          faker.Random.Decimal(
+            Constants.MinTotalValue,
+            Constants.MaxTotalValue),
+          2);
 
-          x.SupplyActiveEnergyTotalImportT2.Total_EUR = System.Math.Round(
-            faker.Random.Decimal(
-              Constants.MinTotalValue,
-              Constants.MaxTotalValue),
-            2);
+        x.SupplyActiveEnergyTotalImportT2.Total_EUR = System.Math.Round(
+          faker.Random.Decimal(
+            Constants.MinTotalValue,
+            Constants.MaxTotalValue),
+          2);
 
-          x.SupplyBusinessUsageFee.Total_EUR = System.Math.Round(
-            faker.Random.Decimal(
-              Constants.MinTotalValue,
-              Constants.MaxTotalValue),
-            2);
+        x.SupplyBusinessUsageFee.Total_EUR = System.Math.Round(
+          faker.Random.Decimal(
+            Constants.MinTotalValue,
+            Constants.MaxTotalValue),
+          2);
 
-          x.SupplyRenewableEnergyFee.Total_EUR = System.Math.Round(
-            faker.Random.Decimal(
-              Constants.MinTotalValue,
-              Constants.MaxTotalValue),
-            2);
+        x.SupplyRenewableEnergyFee.Total_EUR = System.Math.Round(
+          faker.Random.Decimal(
+            Constants.MinTotalValue,
+            Constants.MaxTotalValue),
+          2);
 
-          x.UsageFeeTotal_EUR = System.Math.Round(
-            x.UsageActiveEnergyTotalImportT0.Total
-            + x.UsageReactiveEnergyTotalRampedT0.Total
-            + x.UsageMeterFee.Total,
-            2);
-          x.SupplyFeeTotal_EUR = System.Math.Round(
-            x.SupplyActiveEnergyTotalImportT1.Total
-            + x.SupplyActiveEnergyTotalImportT2.Total
-            + x.SupplyBusinessUsageFee.Total
-            + x.SupplyRenewableEnergyFee.Total,
-            2);
-          x.Total_EUR = System.Math.Round(
-            x.SupplyFeeTotal_EUR + x.UsageFeeTotal_EUR,
-            2);
+        x.UsageFeeTotal_EUR = System.Math.Round(
+          x.UsageActiveEnergyTotalImportT0.Total
+          + x.UsageReactiveEnergyTotalRampedT0.Total
+          + x.UsageMeterFee.Total,
+          2);
+        x.SupplyFeeTotal_EUR = System.Math.Round(
+          x.SupplyActiveEnergyTotalImportT1.Total
+          + x.SupplyActiveEnergyTotalImportT2.Total
+          + x.SupplyBusinessUsageFee.Total
+          + x.SupplyRenewableEnergyFee.Total,
+          2);
+        x.Total_EUR = System.Math.Round(
+          x.SupplyFeeTotal_EUR + x.UsageFeeTotal_EUR,
+          2);
 
-          return x;
-        });
+        return x;
+      });
   }
 
   [Test]
@@ -120,59 +119,52 @@ public class BlueLowNetworkUserCalculationCalculatorTest
         new Mock<IServiceProvider>().Object);
 
     calculationItemCalculatorMock
-      .Setup(
-        x => x
-          .Calculate(
-            It.IsAny<CalculationItemBasisModel>(),
-            typeof(UsageActiveEnergyTotalImportT0CalculationItemModel)))
+      .Setup(x => x
+        .Calculate(
+          It.IsAny<CalculationItemBasisModel>(),
+          typeof(UsageActiveEnergyTotalImportT0CalculationItemModel)))
       .Returns(expected.UsageActiveEnergyTotalImportT0);
 
     calculationItemCalculatorMock
-      .Setup(
-        x => x
-          .Calculate(
-            It.IsAny<CalculationItemBasisModel>(),
-            typeof(UsageReactiveEnergyTotalRampedT0CalculationItemModel)))
+      .Setup(x => x
+        .Calculate(
+          It.IsAny<CalculationItemBasisModel>(),
+          typeof(UsageReactiveEnergyTotalRampedT0CalculationItemModel)))
       .Returns(expected.UsageReactiveEnergyTotalRampedT0);
 
     calculationItemCalculatorMock
-      .Setup(
-        x => x
-          .Calculate(
-            It.IsAny<CalculationItemBasisModel>(),
-            typeof(UsageMeterFeeCalculationItemModel)))
+      .Setup(x => x
+        .Calculate(
+          It.IsAny<CalculationItemBasisModel>(),
+          typeof(UsageMeterFeeCalculationItemModel)))
       .Returns(expected.UsageMeterFee);
 
     calculationItemCalculatorMock
-      .Setup(
-        x => x
-          .Calculate(
-            It.IsAny<CalculationItemBasisModel>(),
-            typeof(SupplyActiveEnergyTotalImportT1CalculationItemModel)))
+      .Setup(x => x
+        .Calculate(
+          It.IsAny<CalculationItemBasisModel>(),
+          typeof(SupplyActiveEnergyTotalImportT1CalculationItemModel)))
       .Returns(expected.SupplyActiveEnergyTotalImportT1);
 
     calculationItemCalculatorMock
-      .Setup(
-        x => x
-          .Calculate(
-            It.IsAny<CalculationItemBasisModel>(),
-            typeof(SupplyActiveEnergyTotalImportT2CalculationItemModel)))
+      .Setup(x => x
+        .Calculate(
+          It.IsAny<CalculationItemBasisModel>(),
+          typeof(SupplyActiveEnergyTotalImportT2CalculationItemModel)))
       .Returns(expected.SupplyActiveEnergyTotalImportT2);
 
     calculationItemCalculatorMock
-      .Setup(
-        x => x
-          .Calculate(
-            It.IsAny<CalculationItemBasisModel>(),
-            typeof(SupplyBusinessUsageCalculationItemModel)))
+      .Setup(x => x
+        .Calculate(
+          It.IsAny<CalculationItemBasisModel>(),
+          typeof(SupplyBusinessUsageCalculationItemModel)))
       .Returns(expected.SupplyBusinessUsageFee);
 
     calculationItemCalculatorMock
-      .Setup(
-        x => x
-          .Calculate(
-            It.IsAny<CalculationItemBasisModel>(),
-            typeof(SupplyRenewableEnergyCalculationItemModel)))
+      .Setup(x => x
+        .Calculate(
+          It.IsAny<CalculationItemBasisModel>(),
+          typeof(SupplyRenewableEnergyCalculationItemModel)))
       .Returns(expected.SupplyRenewableEnergyFee);
 
     var clockQueriesMock = new Mock<ClockQueries>(

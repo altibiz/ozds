@@ -88,16 +88,15 @@ public abstract class JobManagerBase<TContext>
 
     var jobsWithTriggers = contexts
       .Zip(triggerKeys)
-      .Select(
-        x =>
+      .Select(x =>
+      {
+        var (context, triggerKeys) = x;
+        return new
         {
-          var (context, triggerKeys) = x;
-          return new
-          {
-            Job = CreateJob(context),
-            Triggers = CreateTriggers(context, triggerKeys)
-          };
-        })
+          Job = CreateJob(context),
+          Triggers = CreateTriggers(context, triggerKeys)
+        };
+      })
       .ToDictionary(x => x.Job, x => x.Triggers)
       .AsReadOnly();
 
@@ -182,16 +181,15 @@ public abstract class JobManagerBase<TContext>
 
     var jobsWithTriggers = contexts
       .Zip(triggerKeys)
-      .Select(
-        x =>
+      .Select(x =>
+      {
+        var (context, triggerKeys) = x;
+        return new
         {
-          var (context, triggerKeys) = x;
-          return new
-          {
-            Job = CreateJob(context),
-            Triggers = CreateTriggers(context, triggerKeys)
-          };
-        })
+          Job = CreateJob(context),
+          Triggers = CreateTriggers(context, triggerKeys)
+        };
+      })
       .ToDictionary(x => x.Job, x => x.Triggers)
       .AsReadOnly();
 
@@ -275,10 +273,9 @@ public abstract class JobManagerBase<TContext>
   {
     triggerKeys ??= CreateTriggerKeys(context);
     return triggerKeys
-      .Select(
-        key => CreateTrigger(
-          TriggerBuilder.Create().WithIdentity(key),
-          context))
+      .Select(key => CreateTrigger(
+        TriggerBuilder.Create().WithIdentity(key),
+        context))
       .ToList();
   }
 
@@ -301,21 +298,20 @@ public abstract class JobManagerBase<TContext>
     var json = JsonSerializer.Serialize(
       triggerKeys
         .Zip(jobsWithTriggers)
-        .Select(
-          x =>
+        .Select(x =>
+        {
+          var (triggerKeys, jobWithTriggers) = x;
+
+          var firstTriggerKey = triggerKeys.First();
+          var firstTrigger = jobWithTriggers.Value.First();
+
+          return new
           {
-            var (triggerKeys, jobWithTriggers) = x;
-
-            var firstTriggerKey = triggerKeys.First();
-            var firstTrigger = jobWithTriggers.Value.First();
-
-            return new
-            {
-              firstTriggerKey.Group,
-              firstTriggerKey.Name,
-              Fire = firstTrigger.GetNextFireTimeUtc()
-            };
-          }),
+            firstTriggerKey.Group,
+            firstTriggerKey.Name,
+            Fire = firstTrigger.GetNextFireTimeUtc()
+          };
+        }),
       JobManagerBaseExtensions.JsonOptions
     );
 

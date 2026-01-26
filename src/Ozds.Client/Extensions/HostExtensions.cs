@@ -39,22 +39,20 @@ public static class HostExtensions
       .AddInteractiveServerComponents();
 
     builder.Services.AddServerSideBlazor()
-      .AddCircuitOptions(
-        options =>
+      .AddCircuitOptions(options =>
+      {
+        if (builder.Environment.IsDevelopment())
         {
-          if (builder.Environment.IsDevelopment())
-          {
-            options.DetailedErrors = true;
-          }
-        })
-      .AddHubOptions(
-        options =>
+          options.DetailedErrors = true;
+        }
+      })
+      .AddHubOptions(options =>
+      {
+        if (builder.Environment.IsDevelopment())
         {
-          if (builder.Environment.IsDevelopment())
-          {
-            options.EnableDetailedErrors = true;
-          }
-        });
+          options.EnableDetailedErrors = true;
+        }
+      });
 
     builder.Services.AddCascadingAuthenticationState();
 

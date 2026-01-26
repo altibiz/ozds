@@ -9,11 +9,10 @@ public class IgnoreKeysOptions(
 )
 {
   private readonly Lazy<HashSet<(string, Type?)>> keys =
-    new(
-      () => dbContext
-        .GetKeys()
-        .Select(x => (x.Name, x.DeclaringType))
-        .ToHashSet());
+    new(() => dbContext
+      .GetKeys()
+      .Select(x => (x.Name, x.DeclaringType))
+      .ToHashSet());
 
   public SelfReferenceEquivalencyAssertionOptions<TSelf> Configure<
     TSelf

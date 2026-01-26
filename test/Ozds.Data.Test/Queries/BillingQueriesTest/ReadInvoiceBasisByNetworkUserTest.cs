@@ -237,10 +237,9 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
           Meter = infrastructure.Meter,
           Aggregates = allMeasurements
             .OfType<AggregateEntity>()
-            .Where(
-              x =>
-                x.Timestamp >= fromDate
-                && x.Timestamp <= toDate)
+            .Where(x =>
+              x.Timestamp >= fromDate
+              && x.Timestamp <= toDate)
             .Concat(
               allMeasurements
                 .OfType<AggregateEntity>()

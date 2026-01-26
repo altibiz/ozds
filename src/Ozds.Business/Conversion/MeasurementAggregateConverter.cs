@@ -196,9 +196,8 @@ public class MeasurementAggregateConverter(
 
     converter = serviceProvider
         .GetServices<IMeasurementAggregateConverter>()
-        .FirstOrDefault(
-          converter =>
-            converter.CanConvertToAggregate(type))
+        .FirstOrDefault(converter =>
+          converter.CanConvertToAggregate(type))
       ?? throw new InvalidOperationException(
         $"No converter found for measurement type {type}.");
 

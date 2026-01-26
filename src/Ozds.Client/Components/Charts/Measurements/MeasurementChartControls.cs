@@ -143,9 +143,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
   private IEnumerable<MeasureModel> Measures()
   {
     return _parameters.MeasurementLocations
-      .SelectMany(
-        x => MeterNamingConvention
-          .CapabilitiesForMeterId(x.MeterId).Measures)
+      .SelectMany(x => MeterNamingConvention
+        .CapabilitiesForMeterId(x.MeterId).Measures)
       .Concat(Meters.SelectMany(x => x.Capabilities.Measures))
       .Distinct();
   }
@@ -159,9 +158,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
     IEnumerable<string> measurementLocationIds)
   {
     _parameters.MeasurementLocations = MeasurementLocations
-      .Where(
-        measurementLocation =>
-          measurementLocationIds.Contains(measurementLocation.Id))
+      .Where(measurementLocation =>
+        measurementLocationIds.Contains(measurementLocation.Id))
       .ToHashSet();
     var now = ClockQueries.Now();
     var fromDate = now.Subtract(
@@ -175,9 +173,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
   private async Task OnMetersChanged(IEnumerable<string> meterIds)
   {
     _parameters.Meters = Meters
-      .Where(
-        meter =>
-          meterIds.Contains(meter.Id))
+      .Where(meter =>
+        meterIds.Contains(meter.Id))
       .ToHashSet();
     var now = ClockQueries.Now();
     _parameters.FromDate = now.Subtract(
@@ -292,12 +289,11 @@ public partial class MeasurementChartControls : OzdsComponentBase
     _parameters.Measurements = new PaginatedList<IMeasurement>(
       fromMeters.Items
         .Concat(fromMeasurementLocations.Items)
-        .DistinctBy(
-          x =>
-            (x.MeterId,
-              x.MeasurementLocationId,
-              x.Timestamp,
-              x.GetType()))
+        .DistinctBy(x =>
+          (x.MeterId,
+            x.MeasurementLocationId,
+            x.Timestamp,
+            x.GetType()))
         .OrderBy(x => x.Timestamp)
         .ToList(),
       fromMeters.TotalCount + fromMeasurementLocations.TotalCount
@@ -328,21 +324,19 @@ public partial class MeasurementChartControls : OzdsComponentBase
     if (appropriateInterval is null)
     {
       var newMeasurements = measurements
-        .Where(
-          x =>
-            Meters.Exists(meter => meter.Id == x.MeterId)
-            || MeasurementLocations.Exists(
-              location => location.Id == x.MeasurementLocationId))
+        .Where(x =>
+          Meters.Exists(meter => meter.Id == x.MeterId)
+          || MeasurementLocations.Exists(location =>
+            location.Id == x.MeasurementLocationId))
         .ToList();
       var concatenated = _parameters.Measurements.Items
         .Concat(newMeasurements)
         .Where(x => x.Timestamp >= min)
-        .DistinctBy(
-          x =>
-            (x.MeterId,
-              x.MeasurementLocationId,
-              x.Timestamp,
-              x.GetType()))
+        .DistinctBy(x =>
+          (x.MeterId,
+            x.MeasurementLocationId,
+            x.Timestamp,
+            x.GetType()))
         .OrderBy(x => x.Timestamp)
         .ToList();
       _parameters.Measurements = new PaginatedList<IMeasurement>(
@@ -355,28 +349,24 @@ public partial class MeasurementChartControls : OzdsComponentBase
       var newAggregates = aggregates
         .Where(x => x.Timestamp >= minNew)
         .Where(x => x.Interval == appropriateInterval)
-        .Where(
-          x =>
-            Meters.Exists(meter => meter.Id == x.MeterId)
-            || MeasurementLocations.Exists(
-              location => location.Id == x.MeasurementLocationId))
+        .Where(x =>
+          Meters.Exists(meter => meter.Id == x.MeterId)
+          || MeasurementLocations.Exists(location =>
+            location.Id == x.MeasurementLocationId))
         .OfType<IAggregate>();
       var aggregated = _parameters.Measurements.Items.OfType<IAggregate>()
         .Concat(newAggregates)
         .Where(x => x.Timestamp >= min)
-        .GroupBy(
-          x =>
-            (x.Timestamp, x.MeasurementLocationId, x.MeterId, x.GetType()))
-        .Select(
-          x => x
-            .Aggregate(AggregateUpserter.UpsertAggregate))
+        .GroupBy(x =>
+          (x.Timestamp, x.MeasurementLocationId, x.MeterId, x.GetType()))
+        .Select(x => x
+          .Aggregate(AggregateUpserter.UpsertAggregate))
         .OfType<IMeasurement>()
-        .DistinctBy(
-          x =>
-            (x.MeterId,
-              x.MeasurementLocationId,
-              x.Timestamp,
-              x.GetType()))
+        .DistinctBy(x =>
+          (x.MeterId,
+            x.MeasurementLocationId,
+            x.Timestamp,
+            x.GetType()))
         .OrderBy(x => x.Timestamp)
         .ToList();
       _parameters.Measurements = new PaginatedList<IMeasurement>(

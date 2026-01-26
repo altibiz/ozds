@@ -78,23 +78,22 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    builder.Services.AddScoped(
-      services =>
+    builder.Services.AddScoped(services =>
+    {
+      var options = services
+        .GetRequiredService<IOptions<OzdsTranslationOptions>>().Value;
+
+      var clientOptions = new OpenAIClientOptions
       {
-        var options = services
-          .GetRequiredService<IOptions<OzdsTranslationOptions>>().Value;
+        Endpoint = new Uri(options.OpenAiApi.BaseUrl)
+      };
 
-        var clientOptions = new OpenAIClientOptions
-        {
-          Endpoint = new Uri(options.OpenAiApi.BaseUrl)
-        };
+      var clientCredential = new ApiKeyCredential(options.OpenAiApi.ApiKey);
 
-        var clientCredential = new ApiKeyCredential(options.OpenAiApi.ApiKey);
+      var client = new OpenAIClient(clientCredential, clientOptions);
 
-        var client = new OpenAIClient(clientCredential, clientOptions);
-
-        return client;
-      });
+      return client;
+    });
     builder.Services.AddScoped<TranslateClient>();
     return builder;
   }

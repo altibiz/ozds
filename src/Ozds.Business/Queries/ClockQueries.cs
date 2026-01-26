@@ -26,11 +26,10 @@ public class ClockQueries(
   )
   {
     return timeClockQueries.Future(interval, cancellationToken)
-      .Select(
-        x => new DateTimeOffsetRangeModel
-        {
-          DateFrom = x.DateFrom,
-          DateTo = x.DateTo
-        });
+      .Select(x => new DateTimeOffsetRangeModel
+      {
+        DateFrom = x.DateFrom,
+        DateTo = x.DateTo
+      });
   }
 }

@@ -68,12 +68,11 @@ public class MeasurementProcedures(
       .Select(p => p.GetColumnName(storeObjectIdentifier))
       .ToList();
     var primaryKeyColumns = primaryKey.Properties
-      .Select(
-        p => new
-        {
-          Property = p,
-          ColumnName = p.GetColumnName(storeObjectIdentifier)
-        })
+      .Select(p => new
+      {
+        Property = p,
+        ColumnName = p.GetColumnName(storeObjectIdentifier)
+      })
       .ToList();
     var columns = string.Join(", ", columnNames);
     var values = string
@@ -133,61 +132,55 @@ public class MeasurementProcedures(
       ", ",
       primaryKey.Properties
         .Where(x => x.GetColumnName(storeObjectIdentifier) != timestampColumn)
-        .Select(
-          property =>
-            $"inserted.{property.GetColumnName(storeObjectIdentifier)}"));
+        .Select(property =>
+          $"inserted.{property.GetColumnName(storeObjectIdentifier)}"));
     var primaryKeyValues = string.Join(
       ", ",
-      primaryKey.Properties.Select(
-        property =>
-          property.GetColumnName(storeObjectIdentifier)));
+      primaryKey.Properties.Select(property =>
+        property.GetColumnName(storeObjectIdentifier)));
     var primaryKeyInputEqualityCheck = string.Join(
       " AND ",
       primaryKey.Properties
-        .Select(
-          property =>
-          {
-            var columnName = property.GetColumnName(storeObjectIdentifier);
-            return $"{tableName}.{columnName}"
-              + $" = input.{columnName}"
-              + (property.ClrType.IsEnum
-                ? $"::{StringExtensions.ToSnakeCase(property.ClrType.Name)}"
-                : "");
-          }));
+        .Select(property =>
+        {
+          var columnName = property.GetColumnName(storeObjectIdentifier);
+          return $"{tableName}.{columnName}"
+            + $" = input.{columnName}"
+            + (property.ClrType.IsEnum
+              ? $"::{StringExtensions.ToSnakeCase(property.ClrType.Name)}"
+              : "");
+        }));
 
     string PrimaryKeyDeltaEqualityCheck(string deltaTable)
     {
       return string.Join(
         " AND ",
         primaryKey.Properties
-          .Where(
-            property =>
-            {
-              var columnName = property.GetColumnName(storeObjectIdentifier);
-              return columnName != timestampColumn
-                && columnName != intervalColumn;
-            })
-          .Select(
-            property =>
-            {
-              var columnName = property.GetColumnName(storeObjectIdentifier);
-              return $"{tableName}.{columnName}"
-                + $" = {deltaTable}.{columnName}"
-                + (property.ClrType.IsEnum
-                  ? $"::{StringExtensions.ToSnakeCase(property.ClrType.Name)}"
-                  : "");
-            }));
+          .Where(property =>
+          {
+            var columnName = property.GetColumnName(storeObjectIdentifier);
+            return columnName != timestampColumn
+              && columnName != intervalColumn;
+          })
+          .Select(property =>
+          {
+            var columnName = property.GetColumnName(storeObjectIdentifier);
+            return $"{tableName}.{columnName}"
+              + $" = {deltaTable}.{columnName}"
+              + (property.ClrType.IsEnum
+                ? $"::{StringExtensions.ToSnakeCase(property.ClrType.Name)}"
+                : "");
+          }));
     }
 
     var primaryKeyInsertedOldEqualityCheck = string.Join(
       " AND ",
       primaryKey.Properties
-        .Select(
-          property =>
-          {
-            var columnName = property.GetColumnName(storeObjectIdentifier);
-            return $"old.{columnName} = inserted.{columnName}";
-          }));
+        .Select(property =>
+        {
+          var columnName = property.GetColumnName(storeObjectIdentifier);
+          return $"old.{columnName} = inserted.{columnName}";
+        }));
     var columns = string.Join(
       ", ", properties
         .Select(p => p.GetColumnName()));
@@ -211,9 +204,8 @@ public class MeasurementProcedures(
 
     var upsertParts =
       parts.UpsertMeasurementProcedureParts
-        .Select(
-          part => MeasurementProcedureCompiler
-            .CompileUpsert(part, context, aggregateType))
+        .Select(part => MeasurementProcedureCompiler
+          .CompileUpsert(part, context, aggregateType))
         .ToList();
     upsertParts.Add(UpsertCount(context, aggregateType));
     if (interval != IntervalEntity.QuarterHour)
@@ -224,22 +216,19 @@ public class MeasurementProcedures(
     {
       upsertParts.AddRange(
         parts.DerivativeMeasurementProcedureParts
-          .Select(
-            part => MeasurementProcedureCompiler
-              .CompileDerivative(part, context, aggregateType)));
+          .Select(part => MeasurementProcedureCompiler
+            .CompileDerivative(part, context, aggregateType)));
     }
 
     var deltaParts =
       parts.DeltaMeasurementProcedureParts
-        .Select(
-          part => MeasurementProcedureCompiler
-            .CompileDelta(part, context, aggregateType, "inserted", "old"));
+        .Select(part => MeasurementProcedureCompiler
+          .CompileDelta(part, context, aggregateType, "inserted", "old"));
     var dailyDeriveParts =
       parts.DeriveMeasurementProcedureParts
-        .Select(
-          part => MeasurementProcedureCompiler
-            .CompileDerive(
-              part, context, aggregateType, "daily_delta", "new_count"))
+        .Select(part => MeasurementProcedureCompiler
+          .CompileDerive(
+            part, context, aggregateType, "daily_delta", "new_count"))
         .ToList();
     dailyDeriveParts.Add(
       DeriveQuarterHourCount(
@@ -249,10 +238,9 @@ public class MeasurementProcedures(
         "new_count"));
     var monthlyDeriveParts =
       parts.DeriveMeasurementProcedureParts
-        .Select(
-          part => MeasurementProcedureCompiler
-            .CompileDerive(
-              part, context, aggregateType, "monthly_delta", "new_count"))
+        .Select(part => MeasurementProcedureCompiler
+          .CompileDerive(
+            part, context, aggregateType, "monthly_delta", "new_count"))
         .ToList();
     monthlyDeriveParts.Add(
       DeriveQuarterHourCount(

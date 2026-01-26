@@ -91,9 +91,8 @@ public class CacheConfigurationBuilder
     IEnumerable<Type> WhereNamespace(IEnumerable<Type> types)
     {
       return @namespace is not null
-        ? types.Where(
-          type =>
-            type.Namespace is not null && type.Namespace.StartsWith(@namespace))
+        ? types.Where(type =>
+          type.Namespace is not null && type.Namespace.StartsWith(@namespace))
         : types;
     }
 
@@ -101,12 +100,10 @@ public class CacheConfigurationBuilder
       .SelectMany(type => WhereNamespace(type.GetTypes()));
 
     var baseTypes = types
-      .Where(
-        type => types
-          .Any(
-            concreteType =>
-              concreteType != type
-              && concreteType.IsAssignableTo(type)))
+      .Where(type => types
+        .Any(concreteType =>
+          concreteType != type
+          && concreteType.IsAssignableTo(type)))
       .ToList();
 
     var subtypes = baseTypes

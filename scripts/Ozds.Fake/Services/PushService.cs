@@ -46,17 +46,16 @@ public class PushService(
   {
     return clock
       .Future(TimeSpan.FromSeconds(arguments.Interval_s), cancellationToken)
-      .Select(
-        range => new PushWorkerItem(
-          range.DateFrom,
-          range.DateTo,
-          arguments.MessengerId,
-          arguments.MessengerApiKey,
-          ids,
-          10000,
-          arguments.Realtime
-            ? PushClientBufferBehavior.Realtime
-            : PushClientBufferBehavior.Buffer
-        ));
+      .Select(range => new PushWorkerItem(
+        range.DateFrom,
+        range.DateTo,
+        arguments.MessengerId,
+        arguments.MessengerApiKey,
+        ids,
+        10000,
+        arguments.Realtime
+          ? PushClientBufferBehavior.Realtime
+          : PushClientBufferBehavior.Buffer
+      ));
   }
 }

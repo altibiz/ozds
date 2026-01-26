@@ -27,10 +27,9 @@ public class DataChangeCacheDeleteHandler(
     CancellationToken cancellationToken)
   {
     foreach (var model in eventArgs.Models
-      .Where(
-        entry => entry.State
-          is DataModelChangedState.Removed
-          or DataModelChangedState.Modified)
+      .Where(entry => entry.State
+        is DataModelChangedState.Removed
+        or DataModelChangedState.Modified)
       .Select(entry => entry.Model)
       .OfType<ICached>())
     {

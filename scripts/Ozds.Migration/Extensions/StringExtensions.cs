@@ -17,9 +17,8 @@ public static class StringExtensions
       newline,
       value
         .Split(newline)
-        .Select(
-          line => line.StartsWith(new string(' ', indent))
-            ? line[indent..]
-            : line.TrimStart()));
+        .Select(line => line.StartsWith(new string(' ', indent))
+          ? line[indent..]
+          : line.TrimStart()));
   }
 }

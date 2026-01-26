@@ -30,11 +30,10 @@ public class MessengerJobManager(
     CancellationToken cancellationToken)
   {
     return Ensure(
-      details.Select(
-        details =>
-          new MessengerJobContext(
-            details.MessengerId,
-            details.InactivityDuration)),
+      details.Select(details =>
+        new MessengerJobContext(
+          details.MessengerId,
+          details.InactivityDuration)),
       cancellationToken);
   }
 
@@ -52,11 +51,10 @@ public class MessengerJobManager(
     CancellationToken cancellationToken)
   {
     return Reschedule(
-      details.Select(
-        details =>
-          new MessengerJobContext(
-            details.MessengerId,
-            details.InactivityDuration)),
+      details.Select(details =>
+        new MessengerJobContext(
+          details.MessengerId,
+          details.InactivityDuration)),
       cancellationToken);
   }
 
@@ -101,9 +99,8 @@ public class MessengerJobManager(
 
     return builder
       .StartAt(startAt)
-      .WithSimpleSchedule(
-        x => x
-          .WithMisfireHandlingInstructionNextWithExistingCount())
+      .WithSimpleSchedule(x => x
+        .WithMisfireHandlingInstructionNextWithExistingCount())
       .Build();
   }
 

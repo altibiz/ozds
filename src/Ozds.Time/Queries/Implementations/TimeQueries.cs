@@ -296,19 +296,18 @@ public class TimeQueries : ITimeQueries
 
     var year = localDateTime.Year;
 
-    return Enumerable.Range(1, 12).Select(
-      month =>
-      {
-        var localStartOfMonth = new DateTime(
-          year, month, 1, 0, 0, 0, DateTimeKind.Unspecified);
+    return Enumerable.Range(1, 12).Select(month =>
+    {
+      var localStartOfMonth = new DateTime(
+        year, month, 1, 0, 0, 0, DateTimeKind.Unspecified);
 
-        var utcStartOfMonth =
-          TimeZoneInfo.ConvertTimeToUtc(
-            localStartOfMonth,
-            CroatianTimeZone);
+      var utcStartOfMonth =
+        TimeZoneInfo.ConvertTimeToUtc(
+          localStartOfMonth,
+          CroatianTimeZone);
 
-        return new DateTimeOffset(utcStartOfMonth, TimeSpan.Zero);
-      });
+      return new DateTimeOffset(utcStartOfMonth, TimeSpan.Zero);
+    });
   }
 
   public DateTimeOffset GetStartOfMonthLastYear(
