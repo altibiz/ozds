@@ -288,7 +288,7 @@ public class MeasurementQueries(
 
     List<IMeasurementEntity> items = new();
 
-    var futureItems = new List<QueryDeferred<IMeasurementEntity>>();
+    var futureItems = new List<QueryFutureEnumerable<IMeasurementEntity>>();
 
     var types = interval is not null
       ? reflector.AggregateTypes
@@ -335,23 +335,28 @@ public class MeasurementQueries(
           foreignKeyParameter);
       filtered = filtered.Where(foreignKeyExpression);
 
-      var ordered = filtered
-        .OrderByDescending(measurement => measurement.Timestamp);
+      var lastTimestampByMeter = filtered.GroupBy(
+          m => m.MeterId
+      ).Select(
+        g => new {
+          MeterId = g.Key,
+          Timestamp = g.Max(x => x.Timestamp)
+        }
+      );
 
-      futureItems.Add(ordered.DeferredLastOrDefault());
+      var lastByEveryMeter = filtered.Join(
+        lastTimestampByMeter,
+        m => new { m.MeterId, m.Timestamp},
+        x => new { x.MeterId, x.Timestamp},
+        (m, _) => m
+      );
+
+      futureItems.Add(lastByEveryMeter.Future()!);
     }
 
     foreach (var futureItem in futureItems)
     {
-      var value = await futureItem
-        .FutureValue()
-        .ValueAsync(cancellationToken);
-      // NOTE: this is from DeferredLastOrDefault but because the nullability
-      // gets type-erased we have to check regardless
-      if (value is not null)
-      {
-        items.Add(value);
-      }
+      items.AddRange(await futureItem.ToListAsync(cancellationToken));
     }
 
     return items;
