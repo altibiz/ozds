@@ -336,9 +336,10 @@ public class MeasurementQueries(
       filtered = filtered.Where(foreignKeyExpression);
 
       var lastTimestampByMeter = filtered.GroupBy(
-          m => m.MeterId
+        m => m.MeterId
       ).Select(
-        g => new {
+        g => new
+        {
           MeterId = g.Key,
           Timestamp = g.Max(x => x.Timestamp)
         }
@@ -346,8 +347,8 @@ public class MeasurementQueries(
 
       var lastByEveryMeter = filtered.Join(
         lastTimestampByMeter,
-        m => new { m.MeterId, m.Timestamp},
-        x => new { x.MeterId, x.Timestamp},
+        m => new { m.MeterId, m.Timestamp },
+        x => new { x.MeterId, x.Timestamp },
         (m, _) => m
       );
 
