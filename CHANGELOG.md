@@ -7,18 +7,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and adheres to [Semantic Versioning](https://semver.org/).
 
-## Unreleased - 2025-01-22
+## Unreleased
 
 ### Changed
 
 - fixed unintended reset of the selected measurement points or meters on each
   property change (for now it's local fix but it could be done so that the state
   and params of chart control persist after reloading the page)
-
-## Unreleased - 2025-01-19
-
-### Changed
-
+- fix ReadLastByMeasurementLocationIds now returns latest measurement info for
+  all meters that have measurements
 - fix more decimal places on Column definitions for Regulatory catalogue
 - fix more decimal places on Column definitions for Network User catalogue
 
