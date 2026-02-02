@@ -170,6 +170,9 @@ format:
 
     # yapf --recursive --in-place --parallel '{{ root }}'
 
+    @just format-jb
+
+format-jb:
     dotnet jb cleanupcode '{{ sln }}' \
       --verbosity=WARN \
       --caches-home='{{ jbcache }}' \
