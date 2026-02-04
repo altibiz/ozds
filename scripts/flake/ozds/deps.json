@@ -136,8 +136,8 @@
   },
   {
     "pname": "HtmlSanitizer",
-    "version": "9.0.876",
-    "hash": "sha256-xQtrJafFAC9BfYNHvCRG4ukWDbnKoo1DZgIpIRGz/tw="
+    "version": "9.0.892",
+    "hash": "sha256-8ZVGH6RJ3QjgmwSGdVadS2pd3Tgq9IHXW7VHOX0slH0="
   },
   {
     "pname": "Humanizer.Core",
@@ -1078,11 +1078,6 @@
     "pname": "System.Collections.Immutable",
     "version": "6.0.0",
     "hash": "sha256-DKEbpFqXCIEfqp9p3ezqadn5b/S1YTk32/EQK+tEScs="
-  },
-  {
-    "pname": "System.Collections.Immutable",
-    "version": "9.0.1",
-    "hash": "sha256-23od93P7QHRzlL5NtKNUDujiYGeXRkkw7lXkyN4zOGY="
   },
   {
     "pname": "System.ComponentModel.Annotations",
