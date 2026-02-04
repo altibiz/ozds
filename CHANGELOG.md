@@ -7,17 +7,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and adheres to [Semantic Versioning](https://semver.org/).
 
-## Unreleased - 2026-01-30
+## Unreleased
 
 ### Changed
 
+- added new specific test for API returning latest measurements by meter
+- updated HtmlSanitizer to version 9.0.892
 - fix ReadLastByMeasurementLocationIds now returns latest measurement info for
   all meters that have measurements
-
-## Unreleased - 2026-01-19
-
-### Changed
-
 - fixed unintended reset of the selected measurement points or meters on each
   property change (for now it's local fix but it could be done so that the state
   and params of chart control persist after reloading the page)
