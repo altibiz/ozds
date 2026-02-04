@@ -26,11 +26,11 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
     var testRegisters = TestRegister.SchneideriEM3xxxSet;
 
     var measurementLocation = await MeasurementLocation.Create(
-     cancellationToken,
-     x => x
-       .WithMeter(
-         x => x
-           .WithMeterType(typeof(SchneideriEM3xxxMeterModel))));
+      cancellationToken,
+      x => x
+        .WithMeter(
+          x => x
+            .WithMeterType(typeof(SchneideriEM3xxxMeterModel))));
 
     var scope = await Scope.CreateMeasurementForLocationWithRegisters(
       measurementLocation.Location,
@@ -44,19 +44,19 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
       cancellationToken);
 
     var inserted = await Measurement
-    .Insert(
-      [
-        new MeasurementLocationMeterId(
+      .Insert(
+        [
+          new MeasurementLocationMeterId(
             measurementLocation.MeasurementLocation.Id,
             measurementLocation.Meter.Id)
-      ],
-      dateFrom,
-      dateTo,
-      cancellationToken
-    )
-    .OfType<IAggregate>()
-    .Where(aggregate => aggregate.Interval == IntervalModel.QuarterHour)
-    .ToListAsync(cancellationToken);
+        ],
+        dateFrom,
+        dateTo,
+        cancellationToken
+      )
+      .OfType<IAggregate>()
+      .Where(aggregate => aggregate.Interval == IntervalModel.QuarterHour)
+      .ToListAsync(cancellationToken);
 
     var client = Services.GetRequiredService<IOzdsApiV1Client>();
     var apiKeyManager = Services.GetRequiredService<ApiKeyManager>();
@@ -134,14 +134,15 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
               .WithMeterType(typeof(SchneideriEM3xxxMeterModel)));
 
     var measurementLocation = await MeasurementLocation.Create(
-        cancellationToken,
-        measurementLocationMeterConfigurator
-      );
+      cancellationToken,
+      measurementLocationMeterConfigurator
+    );
 
     var measurementLocations = (await Task.WhenAll(
       Enumerable
         .Range(0, NumberOfMeasurementLocations - 1)
-        .Select(_ => MeasurementLocation.Create(
+        .Select(
+          _ => MeasurementLocation.Create(
             measurementLocation,
             cancellationToken,
             measurementLocationMeterConfigurator
@@ -150,9 +151,9 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
     measurementLocations.Add(measurementLocation);
 
     var scope = await Scope.CreateMeasurementForLocationWithRegisters(
-     measurementLocation.Location,
-     testRegisters,
-     cancellationToken
+      measurementLocation.Location,
+      testRegisters,
+      cancellationToken
     );
 
     var apiKey = await ApiKey.CreateForUserAndScope(
@@ -160,29 +161,31 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
       scope.MeasurementScope,
       cancellationToken);
 
-    var insertionDateTo = DateTimeOffset.Parse(DateTo, CultureInfo.InvariantCulture);
+    var insertionDateTo = DateTimeOffset.Parse(
+      DateTo, CultureInfo.InvariantCulture);
     var insertionDateFrom = insertionDateTo.AddDays(-1);
 
     var inserted = await measurementLocations.Select(
-      m => Measurement.Insert(
-          [
-            new MeasurementLocationMeterId(
+        m => Measurement.Insert(
+            [
+              new MeasurementLocationMeterId(
                 m.MeasurementLocation.Id,
                 m.Meter.Id
               )
-          ],
-          insertionDateFrom,
-          insertionDateTo,
-          cancellationToken
+            ],
+            insertionDateFrom,
+            insertionDateTo,
+            cancellationToken
+          )
+          .OfType<IAggregate>()
+          .Where(
+            aggregate =>
+              aggregate.Interval == IntervalModel.QuarterHour
+          )
       )
-      .OfType<IAggregate>()
-      .Where(aggregate =>
-        aggregate.Interval == IntervalModel.QuarterHour
-      )
-    )
-    .ToAsyncEnumerable()
-    .SelectMany(x => x)
-    .ToListAsync(cancellationToken);
+      .ToAsyncEnumerable()
+      .SelectMany(x => x)
+      .ToListAsync(cancellationToken);
 
     var client = Services.GetRequiredService<IOzdsApiV1Client>();
     var apiKeyManager = Services.GetRequiredService<ApiKeyManager>();
@@ -201,8 +204,9 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
       .GroupBy(
         m => (m.MeterId, m.MeasurementLocationId)
       )
-      .Select(mg =>
-        mg.MaxBy(m => m.Timestamp)!
+      .Select(
+        mg =>
+          mg.MaxBy(m => m.Timestamp)!
       );
 
     fetched.LocationId.Should().Be(measurementLocation.Location.Id);
@@ -217,7 +221,6 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
 
     foreach (var fetchedMeasurement in fetched.Measurements)
     {
-
       var insertedMeasurement = insertedLatestMeasurements
         .FirstOrDefault(
           insertedMeasurement =>
