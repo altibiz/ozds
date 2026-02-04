@@ -47,7 +47,8 @@ public class TestMeasurementLocationFixture(
 
     var trackableFixture = new TestTrackableFixture(composition);
 
-    var measurementLocation = await trackableFixture.Create<NetworkUserMeasurementLocationModel>(
+    var measurementLocation =
+      await trackableFixture.Create<NetworkUserMeasurementLocationModel>(
         cancellationToken,
         m =>
         {
@@ -60,18 +61,18 @@ public class TestMeasurementLocationFixture(
       );
 
     return new MeasurementLocationWithNetworkUserAndMeter(
-        basis.RegulatoryCatalogue,
-        basis.RedLowNetworkUserCatalogue,
-        basis.BlueLowNetworkUserCatalogue,
-        basis.WhiteLowNetworkUserCatalogue,
-        basis.WhiteMediumNetworkUserCatalogue,
-        basis.Messenger,
-        basis.Location,
-        basis.NetworkUser,
-        meter.MeasurementValidator,
-        meter.Meter,
-        measurementLocation
-      );
+      basis.RegulatoryCatalogue,
+      basis.RedLowNetworkUserCatalogue,
+      basis.BlueLowNetworkUserCatalogue,
+      basis.WhiteLowNetworkUserCatalogue,
+      basis.WhiteMediumNetworkUserCatalogue,
+      basis.Messenger,
+      basis.Location,
+      basis.NetworkUser,
+      meter.MeasurementValidator,
+      meter.Meter,
+      measurementLocation
+    );
   }
 
   public async Task<MeasurementLocationWithNetworkUserAndMeter>
