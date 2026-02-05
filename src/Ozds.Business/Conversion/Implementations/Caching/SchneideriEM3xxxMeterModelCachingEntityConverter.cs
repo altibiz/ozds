@@ -8,10 +8,10 @@ namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class SchneideriEM3xxxMeterModelCachingEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelCachingEntityConverter<
-  SchneideriEM3xxxMeterModel,
-  MeterModel,
-  SchneideriEM3xxxMeterEntity,
-  MeterEntity>(serviceProvider)
-{
-}
+)
+  : InheritingModelCachingEntityConverter<
+    SchneideriEM3xxxMeterModel,
+    MeterModel,
+    SchneideriEM3xxxMeterEntity,
+    MeterEntity
+  >(serviceProvider) { }

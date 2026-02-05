@@ -7,11 +7,13 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class CumulativeAggregateMeasureEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  CumulativeAggregateMeasureModel,
-  AggregateMeasureModel,
-  CumulativeAggregateMeasureEntity,
-  AggregateMeasureEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    CumulativeAggregateMeasureModel,
+    AggregateMeasureModel,
+    CumulativeAggregateMeasureEntity,
+    AggregateMeasureEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     CumulativeAggregateMeasureModel model,

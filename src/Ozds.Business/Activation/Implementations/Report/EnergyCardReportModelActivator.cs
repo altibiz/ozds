@@ -6,7 +6,8 @@ namespace Ozds.Business.Activation.Implementations.Report;
 
 public class EnergyCardReportModelActivator(IServiceProvider serviceProvider)
   : InheritingModelActivator<EnergyCardReportModel, ReportModel>(
-    serviceProvider)
+    serviceProvider
+  )
 {
   public override void Initialize(EnergyCardReportModel model)
   {

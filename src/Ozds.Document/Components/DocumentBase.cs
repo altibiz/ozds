@@ -24,10 +24,7 @@ public abstract class DocumentBase : ComponentBase
 
   public string Translate(Type type)
   {
-    return LocalizationQueries.Translate(
-      CultureQueries.CroatianCulture,
-      type
-    );
+    return LocalizationQueries.Translate(CultureQueries.CroatianCulture, type);
   }
 
   public MarkupString Svg(string name)

@@ -2,10 +2,8 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Caching.Entities.Abstractions;
-using CachingIdentifiableMutations =
-  Ozds.Caching.Mutations.IdentifiableEntityMutations;
-using CachingIdentifiableQueries =
-  Ozds.Caching.Queries.IdentifiableEntityQueries;
+using CachingIdentifiableMutations = Ozds.Caching.Mutations.IdentifiableEntityMutations;
+using CachingIdentifiableQueries = Ozds.Caching.Queries.IdentifiableEntityQueries;
 using DataAuditableQueries = Ozds.Data.Queries.AuditableQueries;
 
 namespace Ozds.Business.Queries;
@@ -37,13 +35,13 @@ public class AuditableQueries(
     if (!modelType.IsAssignableTo(typeof(IAuditableIdentifiable)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IAuditableIdentifiable)}");
+        $"Type {modelType} is not assignable to {typeof(IAuditableIdentifiable)}"
+      );
     }
 
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
-      var cachedEntityType = modelCachingEntityConverter
-        .EntityType(modelType);
+      var cachedEntityType = modelCachingEntityConverter.EntityType(modelType);
 
       var cachedEntity = await cachingQueries.Read(
         cachedEntityType,
@@ -62,8 +60,7 @@ public class AuditableQueries(
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
-    var entity = await queries.ReadById(
-      entityType, id, cancellationToken);
+    var entity = await queries.ReadById(entityType, id, cancellationToken);
     if (entity is null)
     {
       return default;
@@ -73,8 +70,8 @@ public class AuditableQueries(
 
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
-      var cachingEntity = modelCachingEntityConverter
-        .ToEntity<IIdentifiableEntity>(model);
+      var cachingEntity =
+        modelCachingEntityConverter.ToEntity<IIdentifiableEntity>(model);
       await cachingMutations.Create(cachingEntity, cancellationToken);
     }
 
@@ -87,11 +84,7 @@ public class AuditableQueries(
   )
     where T : class, IAuditableIdentifiable
   {
-    var models = await ReadByIds(
-      typeof(T),
-      ids,
-      cancellationToken
-    );
+    var models = await ReadByIds(typeof(T), ids, cancellationToken);
     return models.OfType<T>().ToList();
   }
 
@@ -104,7 +97,8 @@ public class AuditableQueries(
     if (!modelType.IsAssignableTo(typeof(IAuditableIdentifiable)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IAuditableIdentifiable)}");
+        $"Type {modelType} is not assignable to {typeof(IAuditableIdentifiable)}"
+      );
     }
 
     var toFetch = ids.ToList();
@@ -112,8 +106,7 @@ public class AuditableQueries(
 
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
-      var cachedEntityType = modelCachingEntityConverter
-        .EntityType(modelType);
+      var cachedEntityType = modelCachingEntityConverter.EntityType(modelType);
 
       var fromCache = toFetch.ToList();
       foreach (var id in fromCache)
@@ -140,21 +133,15 @@ public class AuditableQueries(
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
-    var entities = await queries.ReadByIds(
-      entityType,
-      ids,
-      cancellationToken
-    );
+    var entities = await queries.ReadByIds(entityType, ids, cancellationToken);
 
-    var models = entities
-      .Select(modelEntityConverter.ToModel)
-      .ToList();
+    var models = entities.Select(modelEntityConverter.ToModel).ToList();
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
       foreach (var model in models)
       {
-        var cachedEntity = modelCachingEntityConverter
-          .ToEntity<IIdentifiableEntity>(model);
+        var cachedEntity =
+          modelCachingEntityConverter.ToEntity<IIdentifiableEntity>(model);
         await cachingMutations.Create(cachedEntity, cancellationToken);
       }
     }
@@ -170,11 +157,7 @@ public class AuditableQueries(
   )
     where T : class, IAuditableIdentifiable
   {
-    var models = await ReadByIdsOrdered(
-      typeof(T),
-      ids,
-      cancellationToken
-    );
+    var models = await ReadByIdsOrdered(typeof(T), ids, cancellationToken);
     return models.Cast<T?>().ToList();
   }
 
@@ -187,7 +170,8 @@ public class AuditableQueries(
     if (!modelType.IsAssignableTo(typeof(IAuditableIdentifiable)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IAuditableIdentifiable)}");
+        $"Type {modelType} is not assignable to {typeof(IAuditableIdentifiable)}"
+      );
     }
 
     var toFetch = ids.ToList();
@@ -195,8 +179,7 @@ public class AuditableQueries(
 
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
-      var cachedEntityType = modelCachingEntityConverter
-        .EntityType(modelType);
+      var cachedEntityType = modelCachingEntityConverter.EntityType(modelType);
 
       var fromCache = toFetch.ToList();
       for (var i = 0; i < fromCache.Count; i++)
@@ -228,9 +211,9 @@ public class AuditableQueries(
     );
 
     var models = entities
-      .Select(entity => entity is null
-        ? null
-        : modelEntityConverter.ToModel(entity))
+      .Select(entity =>
+        entity is null ? null : modelEntityConverter.ToModel(entity)
+      )
       .ToList();
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
@@ -241,8 +224,8 @@ public class AuditableQueries(
           continue;
         }
 
-        var cachedEntity = modelCachingEntityConverter
-          .ToEntity<IIdentifiableEntity>(model);
+        var cachedEntity =
+          modelCachingEntityConverter.ToEntity<IIdentifiableEntity>(model);
         await cachingMutations.Create(cachedEntity, cancellationToken);
       }
     }
@@ -279,7 +262,8 @@ public class AuditableQueries(
       title,
       pageNumber,
       cancellationToken,
-      pageCount);
+      pageCount
+    );
 
     return models.Items.OfType<T>().ToPaginatedList(models.TotalCount);
   }
@@ -302,12 +286,9 @@ public class AuditableQueries(
       pageCount
     );
 
-    var models = page.Items
-      .Select(modelEntityConverter.ToModel)
-      .ToList();
+    var models = page.Items.Select(modelEntityConverter.ToModel).ToList();
 
-    return models
-      .ToPaginatedList(page.TotalCount);
+    return models.ToPaginatedList(page.TotalCount);
   }
 
   public async Task<PaginatedList<T>> Read<T>(
@@ -324,9 +305,7 @@ public class AuditableQueries(
       pageCount
     );
 
-    return models.Items
-      .OfType<T>()
-      .ToPaginatedList(models.TotalCount);
+    return models.Items.OfType<T>().ToPaginatedList(models.TotalCount);
   }
 
   public async Task<PaginatedList<object>> Read(
@@ -339,7 +318,8 @@ public class AuditableQueries(
     if (!modelType.IsAssignableTo(typeof(IAuditable)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IAuditable)}");
+        $"Type {modelType} is not assignable to {typeof(IAuditable)}"
+      );
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
@@ -350,8 +330,8 @@ public class AuditableQueries(
       pageCount
     );
 
-    return entities.Items
-      .Select(modelEntityConverter.ToModel)
+    return entities
+      .Items.Select(modelEntityConverter.ToModel)
       .ToPaginatedList(entities.TotalCount);
   }
 }

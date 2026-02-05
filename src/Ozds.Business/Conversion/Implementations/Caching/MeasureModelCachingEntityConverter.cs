@@ -19,7 +19,7 @@ public class MeasureModelCachingEntityConverter
       MeasureModel.ActiveEnergy => MeasureEntity.ActiveEnergy,
       MeasureModel.ReactiveEnergy => MeasureEntity.ReactiveEnergy,
       MeasureModel.ApparentEnergy => MeasureEntity.ApparentEnergy,
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -35,7 +35,7 @@ public class MeasureModelCachingEntityConverter
       MeasureEntity.ActiveEnergy => MeasureModel.ActiveEnergy,
       MeasureEntity.ReactiveEnergy => MeasureModel.ReactiveEnergy,
       MeasureEntity.ApparentEnergy => MeasureModel.ApparentEnergy,
-      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null),
     };
   }
 }

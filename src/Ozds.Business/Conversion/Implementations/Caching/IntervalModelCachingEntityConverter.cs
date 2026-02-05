@@ -14,7 +14,7 @@ public class IntervalModelCachingEntityConverter
       IntervalModel.QuarterHour => IntervalEntity.QuarterHour,
       IntervalModel.Day => IntervalEntity.Day,
       IntervalModel.Month => IntervalEntity.Month,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 
@@ -25,7 +25,7 @@ public class IntervalModelCachingEntityConverter
       IntervalEntity.QuarterHour => IntervalModel.QuarterHour,
       IntervalEntity.Day => IntervalModel.Day,
       IntervalEntity.Month => IntervalModel.Month,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 }

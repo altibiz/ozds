@@ -9,14 +9,12 @@ using Ozds.Jobs.Manager.Abstractions;
 
 namespace Ozds.Business.Reactors.Implementations;
 
-public class JobsMeasurementDeletionJobReactor(
-  IServiceProvider serviceProvider
-) : Reactor<
-  JobsArchivalJobEventArgs,
-  IJobsArchivalJobSubscriber,
-  JobsMeasurementDeletionJobHandler>(serviceProvider)
-{
-}
+public class JobsMeasurementDeletionJobReactor(IServiceProvider serviceProvider)
+  : Reactor<
+    JobsArchivalJobEventArgs,
+    IJobsArchivalJobSubscriber,
+    JobsMeasurementDeletionJobHandler
+  >(serviceProvider) { }
 
 public class JobsMeasurementDeletionJobHandler(
   MeasurementMutations mutations,
@@ -32,17 +30,17 @@ public class JobsMeasurementDeletionJobHandler(
 
   public override async Task Handle(
     JobsArchivalJobEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var dateFrom = clockQueries
       .Now()
       .Subtract(
         TimeSpan.FromSeconds(
-          options.Value.Reactor.MeasurementDeletionJobIntervalSeconds));
+          options.Value.Reactor.MeasurementDeletionJobIntervalSeconds
+        )
+      );
 
-    await mutations.DeleteOlderThan(
-      dateFrom,
-      cancellationToken
-    );
+    await mutations.DeleteOlderThan(dateFrom, cancellationToken);
   }
 }

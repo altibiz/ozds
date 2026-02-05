@@ -92,46 +92,47 @@ public static class HostExtensions
     return builder;
   }
 
-  private static void AddDatabase(
-    this IHostApplicationBuilder builder
-  )
+  private static void AddDatabase(this IHostApplicationBuilder builder)
   {
-    builder.Services.AddPooledDbContextFactory<MessagingDbContext>((
-      services,
-      builder) =>
-    {
-      var messagingOptions = services
-        .GetRequiredService<IOptions<OzdsMessagingOptions>>().Value;
-      var environment = services
-        .GetRequiredService<IHostEnvironment>();
-
-      builder
-        .UseNpgsql(
-          messagingOptions.PersistenceConnectionString, m =>
-          {
-            m.MigrationsAssembly(
-              typeof(MessagingDbContext).Assembly.GetName().Name);
-            m.MigrationsHistoryTable(
-              $"__Ozds{nameof(MessagingDbContext)}");
-          })
-        .UseSnakeCaseNamingConvention();
-
-      if (environment.IsDevelopment())
+    builder.Services.AddPooledDbContextFactory<MessagingDbContext>(
+      (services, builder) =>
       {
-        builder.ConfigureWarnings(warnings => warnings
-          .Throw(RelationalEventId.MultipleCollectionIncludeWarning));
+        var messagingOptions = services
+          .GetRequiredService<IOptions<OzdsMessagingOptions>>()
+          .Value;
+        var environment = services.GetRequiredService<IHostEnvironment>();
+
+        builder
+          .UseNpgsql(
+            messagingOptions.PersistenceConnectionString,
+            m =>
+            {
+              m.MigrationsAssembly(
+                typeof(MessagingDbContext).Assembly.GetName().Name
+              );
+              m.MigrationsHistoryTable($"__Ozds{nameof(MessagingDbContext)}");
+            }
+          )
+          .UseSnakeCaseNamingConvention();
+
+        if (environment.IsDevelopment())
+        {
+          builder.ConfigureWarnings(warnings =>
+            warnings.Throw(RelationalEventId.MultipleCollectionIncludeWarning)
+          );
+        }
       }
-    });
+    );
   }
 
-  private static void AddBus(
-    this IHostApplicationBuilder builder
-  )
+  private static void AddBus(this IHostApplicationBuilder builder)
   {
     builder.Services.AddMassTransit(config =>
     {
-      var connectionString = ConfigureOzdsMessagingOptions
-        .ParseConnectionString(builder.Configuration);
+      var connectionString =
+        ConfigureOzdsMessagingOptions.ParseConnectionString(
+          builder.Configuration
+        );
 
       var assembly = typeof(MessagingDbContext).Assembly;
 
@@ -154,46 +155,56 @@ public static class HostExtensions
 
       config.AddSagas(assembly);
       config.SetSagaRepositoryProvider(
-        new OzdsSagaRepositoryRegistrationProvider());
+        new OzdsSagaRepositoryRegistrationProvider()
+      );
 
-      if (connectionString is OzdsMessagingParsedRabbitMqConnectionString
-        rabbitMqConnectionString)
+      if (
+        connectionString
+        is OzdsMessagingParsedRabbitMqConnectionString rabbitMqConnectionString
+      )
       {
-        config.UsingRabbitMq((context, cfg) =>
-        {
-          cfg.Host(
-            rabbitMqConnectionString.Host,
-            (ushort)rabbitMqConnectionString.Port,
-            rabbitMqConnectionString.VirtualHost,
-            cfg =>
-            {
-              cfg.Username(rabbitMqConnectionString.User);
-              cfg.Password(rabbitMqConnectionString.Password);
-            });
-          cfg.ConfigureEndpoints(context);
-        });
+        config.UsingRabbitMq(
+          (context, cfg) =>
+          {
+            cfg.Host(
+              rabbitMqConnectionString.Host,
+              (ushort)rabbitMqConnectionString.Port,
+              rabbitMqConnectionString.VirtualHost,
+              cfg =>
+              {
+                cfg.Username(rabbitMqConnectionString.User);
+                cfg.Password(rabbitMqConnectionString.Password);
+              }
+            );
+            cfg.ConfigureEndpoints(context);
+          }
+        );
       }
-      else if (connectionString
-        is OzdsMessagingParsedAzureServiceBusConnectionString
-        azureServiceBusConnectionString)
+      else if (
+        connectionString
+        is OzdsMessagingParsedAzureServiceBusConnectionString azureServiceBusConnectionString
+      )
       {
-        config.UsingAzureServiceBus((context, cfg) =>
-        {
-          cfg.Host(azureServiceBusConnectionString.ConnectionString);
-          cfg.ConfigureEndpoints(context);
-        });
+        config.UsingAzureServiceBus(
+          (context, cfg) =>
+          {
+            cfg.Host(azureServiceBusConnectionString.ConnectionString);
+            cfg.ConfigureEndpoints(context);
+          }
+        );
       }
       else
       {
-        throw new InvalidOperationException(
-          "Unknown connection string type");
+        throw new InvalidOperationException("Unknown connection string type");
       }
     });
 
-    builder.Services
-      .RemoveHostedService<BusOutboxDeliveryService<MessagingDbContext>>();
-    builder.Services
-      .RemoveHostedService<InboxCleanupService<MessagingDbContext>>();
+    builder.Services.RemoveHostedService<
+      BusOutboxDeliveryService<MessagingDbContext>
+    >();
+    builder.Services.RemoveHostedService<
+      InboxCleanupService<MessagingDbContext>
+    >();
   }
 
   private sealed class OzdsSagaRepositoryRegistrationProvider
@@ -209,13 +220,16 @@ public static class HostExtensions
         config.ConcurrencyMode = ConcurrencyMode.Optimistic;
         // NOTE: yea its a function to a function and
         // idk why the API is like that but it works
-        config.DatabaseFactory(services => () =>
-        {
-          var factory = services
-            .GetRequiredService<IDbContextFactory<MessagingDbContext>>();
-          var dbContext = factory.CreateDbContext();
-          return dbContext;
-        });
+        config.DatabaseFactory(services =>
+          () =>
+          {
+            var factory = services.GetRequiredService<
+              IDbContextFactory<MessagingDbContext>
+            >();
+            var dbContext = factory.CreateDbContext();
+            return dbContext;
+          }
+        );
         config.UsePostgres();
       });
     }

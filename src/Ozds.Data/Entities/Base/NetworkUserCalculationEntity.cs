@@ -6,7 +6,8 @@ using Ozds.Data.Extensions;
 namespace Ozds.Data.Entities.Base;
 
 public class NetworkUserCalculationEntity
-  : CalculationEntity, INetworkUserCalculationEntity
+  : CalculationEntity,
+    INetworkUserCalculationEntity
 {
   protected long _networkUserInvoiceId;
   protected long _networkUserMeasurementLocationId;
@@ -16,25 +17,16 @@ public class NetworkUserCalculationEntity
   public virtual NetworkUserInvoiceEntity NetworkUserInvoice { get; set; } =
     default!;
 
-  public RegulatoryCatalogueEntity ArchivedSupplyRegulatoryCatalogue
-  {
-    get;
-    set;
-  } =
+  public RegulatoryCatalogueEntity ArchivedSupplyRegulatoryCatalogue { get; set; } =
     default!;
 
-  public virtual RegulatoryCatalogueEntity SupplyRegulatoryCatalogue
-  {
-    get;
-    set;
-  } = default!;
-
-  public virtual NetworkUserMeasurementLocationEntity
-    NetworkUserMeasurementLocation { get; set; } =
+  public virtual RegulatoryCatalogueEntity SupplyRegulatoryCatalogue { get; set; } =
     default!;
 
-  public NetworkUserMeasurementLocationEntity
-    ArchivedNetworkUserMeasurementLocation { get; set; } =
+  public virtual NetworkUserMeasurementLocationEntity NetworkUserMeasurementLocation { get; set; } =
+    default!;
+
+  public NetworkUserMeasurementLocationEntity ArchivedNetworkUserMeasurementLocation { get; set; } =
     default!;
 
   public string Kind { get; set; } = default!;
@@ -64,11 +56,8 @@ public class NetworkUserCalculationEntity
   }
 }
 
-public class
-  NetworkUserCalculationEntityTypeHierarchyConfiguration :
-  EntityTypeHierarchyConfiguration
-  <
-    NetworkUserCalculationEntity>
+public class NetworkUserCalculationEntityTypeHierarchyConfiguration
+  : EntityTypeHierarchyConfiguration<NetworkUserCalculationEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
@@ -83,7 +72,8 @@ public class
       .HasIndex(
         "_networkUserMeasurementLocationId",
         nameof(NetworkUserCalculationEntity.FromDate),
-        nameof(NetworkUserCalculationEntity.ToDate))
+        nameof(NetworkUserCalculationEntity.ToDate)
+      )
       .IsUnique();
 
     builder
@@ -93,28 +83,29 @@ public class
 
     builder
       .HasOne(
-        nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation))
+        nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation)
+      )
       .WithMany(
-        nameof(NetworkUserMeasurementLocationEntity
-          .NetworkUserCalculations))
+        nameof(NetworkUserMeasurementLocationEntity.NetworkUserCalculations)
+      )
       .HasForeignKey("_networkUserMeasurementLocationId");
 
-    builder
-      .ArchivedProperty(
-        nameof(NetworkUserCalculationEntity
-          .ArchivedNetworkUserMeasurementLocation));
+    builder.ArchivedProperty(
+      nameof(
+        NetworkUserCalculationEntity.ArchivedNetworkUserMeasurementLocation
+      )
+    );
 
     builder.Ignore(
-      nameof(NetworkUserCalculationEntity
-        .NetworkUserMeasurementLocationId));
+      nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocationId)
+    );
     builder
       .Property("_networkUserMeasurementLocationId")
       .HasColumnName("network_user_measurement_location_id");
 
-    builder
-      .ArchivedProperty(
-        nameof(NetworkUserCalculationEntity
-          .ArchivedSupplyRegulatoryCatalogue));
+    builder.ArchivedProperty(
+      nameof(NetworkUserCalculationEntity.ArchivedSupplyRegulatoryCatalogue)
+    );
 
     builder.Ignore(nameof(NetworkUserCalculationEntity.NetworkUserInvoiceId));
     builder
@@ -127,8 +118,8 @@ public class
       .HasForeignKey("_supplyRegulatoryCatalogueId");
 
     builder.Ignore(
-      nameof(NetworkUserCalculationEntity
-        .SupplyRegulatoryCatalogueId));
+      nameof(NetworkUserCalculationEntity.SupplyRegulatoryCatalogueId)
+    );
     builder
       .Property("_supplyRegulatoryCatalogueId")
       .HasColumnName("supply_regulatory_catalogue_id");
@@ -138,7 +129,8 @@ public class
       .WithMany(nameof(MeterEntity.NetworkUserCalculations))
       .HasForeignKey(nameof(NetworkUserCalculationEntity.MeterId));
 
-    builder
-      .ArchivedProperty(nameof(NetworkUserCalculationEntity.ArchivedMeter));
+    builder.ArchivedProperty(
+      nameof(NetworkUserCalculationEntity.ArchivedMeter)
+    );
   }
 }

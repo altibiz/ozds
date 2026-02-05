@@ -94,62 +94,64 @@ public static class HostExtensions
     return builder;
   }
 
-  private static void AddDatabase(
-    this IHostApplicationBuilder builder
-  )
+  private static void AddDatabase(this IHostApplicationBuilder builder)
   {
-    builder.Services.AddPooledDbContextFactory<DataDbContext>((
-      services,
-      options) =>
-    {
-      var dataOptions = services
-        .GetRequiredService<IOptions<OzdsDataOptions>>().Value;
-      var environment = services
-        .GetRequiredService<IHostEnvironment>();
-
-      if (environment.IsDevelopment() && dataOptions.LogSql)
+    builder.Services.AddPooledDbContextFactory<DataDbContext>(
+      (services, options) =>
       {
-        options.EnableSensitiveDataLogging();
-        options.EnableDetailedErrors();
-        options.UseLoggerFactory(
-          LoggerFactory.Create(builder => builder.AddConsole())
+        var dataOptions = services
+          .GetRequiredService<IOptions<OzdsDataOptions>>()
+          .Value;
+        var environment = services.GetRequiredService<IHostEnvironment>();
+
+        if (environment.IsDevelopment() && dataOptions.LogSql)
+        {
+          options.EnableSensitiveDataLogging();
+          options.EnableDetailedErrors();
+          options.UseLoggerFactory(
+            LoggerFactory.Create(builder => builder.AddConsole())
+          );
+        }
+
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(
+          dataOptions.ConnectionString
         );
-      }
-
-      var dataSourceBuilder =
-        new NpgsqlDataSourceBuilder(dataOptions.ConnectionString);
-      dataSourceBuilder.ApplyConfigurationsFromAssembly(
-        Assembly.GetExecutingAssembly());
-      var dataSource = dataSourceBuilder.Build();
-
-      options
-        .UseNpgsql(
-          dataSource,
-          options =>
-          {
-            options.MigrationsAssembly(
-              typeof(DataDbContext).Assembly.GetName().Name);
-            options.MigrationsHistoryTable(
-              $"__Ozds{nameof(DataDbContext)}");
-          })
-        .UseTimescale()
-        .AddServedSaveChangesInterceptorsFromAssembly(
-          typeof(HostExtensions).Assembly,
-          services
+        dataSourceBuilder.ApplyConfigurationsFromAssembly(
+          Assembly.GetExecutingAssembly()
         );
+        var dataSource = dataSourceBuilder.Build();
 
-      if (environment.IsDevelopment())
-      {
-        options.ConfigureWarnings(warnings => warnings
-          .Throw(RelationalEventId.MultipleCollectionIncludeWarning));
+        options
+          .UseNpgsql(
+            dataSource,
+            options =>
+            {
+              options.MigrationsAssembly(
+                typeof(DataDbContext).Assembly.GetName().Name
+              );
+              options.MigrationsHistoryTable($"__Ozds{nameof(DataDbContext)}");
+            }
+          )
+          .UseTimescale()
+          .AddServedSaveChangesInterceptorsFromAssembly(
+            typeof(HostExtensions).Assembly,
+            services
+          );
+
+        if (environment.IsDevelopment())
+        {
+          options.ConfigureWarnings(warnings =>
+            warnings.Throw(RelationalEventId.MultipleCollectionIncludeWarning)
+          );
+        }
+
+        if (dataOptions.UseProxies)
+        {
+          options = options.UseLazyLoadingProxies();
+        }
+
+        options.UseSnakeCaseNamingConvention();
       }
-
-      if (dataOptions.UseProxies)
-      {
-        options = options.UseLazyLoadingProxies();
-      }
-
-      options.UseSnakeCaseNamingConvention();
-    });
+    );
   }
 }

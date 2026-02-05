@@ -9,9 +9,8 @@ using Ozds.Data.Procedures.Compilers;
 
 namespace Ozds.Data.Procedures;
 
-public class MeasurementProcedures(
-  PostgresqlProcedures postgresqlProcedures
-) : IProcedures
+public class MeasurementProcedures(PostgresqlProcedures postgresqlProcedures)
+  : IProcedures
 {
   public string CallUpsertMeasurements(
     DataDbContext context,
@@ -44,44 +43,49 @@ public class MeasurementProcedures(
     );
   }
 
-  public string OverwriteUpsertMeasurements(
-    DataDbContext context,
-    Type type
-  )
+  public string OverwriteUpsertMeasurements(DataDbContext context, Type type)
   {
-    var entityType = context.Model.FindEntityType(type)
+    var entityType =
+      context.Model.FindEntityType(type)
       ?? throw new InvalidOperationException(
-        $"No entity type found for {type}.");
-    var storeObjectIdentifier = StoreObjectIdentifier
-        .Create(entityType, StoreObjectType.Table)
+        $"No entity type found for {type}."
+      );
+    var storeObjectIdentifier =
+      StoreObjectIdentifier.Create(entityType, StoreObjectType.Table)
       ?? throw new InvalidOperationException(
-        $"No store object identifier found for {type}.");
-    var primaryKey = entityType.FindPrimaryKey()
+        $"No store object identifier found for {type}."
+      );
+    var primaryKey =
+      entityType.FindPrimaryKey()
       ?? throw new InvalidOperationException(
-        $"No primary key found for {entityType.Name}.");
+        $"No primary key found for {entityType.Name}."
+      );
     var properties = entityType.GetScalarPropertiesRecursive().ToList();
 
-    var tableName = entityType.GetTableName()
+    var tableName =
+      entityType.GetTableName()
       ?? throw new InvalidOperationException(
-        $"No table name found for {type}.");
+        $"No table name found for {type}."
+      );
     var columnNames = properties
       .Select(p => p.GetColumnName(storeObjectIdentifier))
       .ToList();
-    var primaryKeyColumns = primaryKey.Properties
-      .Select(p => new
+    var primaryKeyColumns = primaryKey
+      .Properties.Select(p => new
       {
         Property = p,
-        ColumnName = p.GetColumnName(storeObjectIdentifier)
+        ColumnName = p.GetColumnName(storeObjectIdentifier),
       })
       .ToList();
     var columns = string.Join(", ", columnNames);
-    var values = string
-      .Join(", ", columnNames.Select(x => $"{tableName}.{x}"));
+    var values = string.Join(", ", columnNames.Select(x => $"{tableName}.{x}"));
     var conflict = string.Join(
       ", ",
-      primaryKeyColumns.Select(c => c.ColumnName));
+      primaryKeyColumns.Select(c => c.ColumnName)
+    );
 
-    var query = $@"
+    var query =
+      $@"
       INSERT INTO {tableName} ({columns})
       SELECT {values}
       FROM jsonb_populate_recordset(null::{tableName}, $1) AS {tableName}
@@ -103,60 +107,73 @@ public class MeasurementProcedures(
     IntervalEntity interval
   )
   {
-    var entityType = context.Model.FindEntityType(aggregateType)
+    var entityType =
+      context.Model.FindEntityType(aggregateType)
       ?? throw new InvalidOperationException(
-        $"No entity type found for {aggregateType}.");
-    var storeObjectIdentifier = StoreObjectIdentifier
-        .Create(entityType, StoreObjectType.Table)
+        $"No entity type found for {aggregateType}."
+      );
+    var storeObjectIdentifier =
+      StoreObjectIdentifier.Create(entityType, StoreObjectType.Table)
       ?? throw new InvalidOperationException(
-        $"No store object identifier found for {aggregateType}.");
-    var properties = entityType
-      .GetScalarPropertiesRecursive()
-      .ToList();
-    var primaryKey = entityType.FindPrimaryKey()
+        $"No store object identifier found for {aggregateType}."
+      );
+    var properties = entityType.GetScalarPropertiesRecursive().ToList();
+    var primaryKey =
+      entityType.FindPrimaryKey()
       ?? throw new InvalidOperationException(
-        $"No primary key found for {entityType.Name}.");
+        $"No primary key found for {entityType.Name}."
+      );
 
-    var tableName = context.GetTableName(aggregateType)
+    var tableName =
+      context.GetTableName(aggregateType)
       ?? throw new InvalidOperationException(
-        $"No table name found for {aggregateType}.");
-    var timestampColumn = context
-      .GetColumnName(
-        aggregateType,
-        [nameof(IAggregateEntity.Timestamp)]);
-    var intervalColumn = context
-      .GetColumnName(
-        aggregateType,
-        [nameof(IAggregateEntity.Interval)]);
+        $"No table name found for {aggregateType}."
+      );
+    var timestampColumn = context.GetColumnName(
+      aggregateType,
+      [nameof(IAggregateEntity.Timestamp)]
+    );
+    var intervalColumn = context.GetColumnName(
+      aggregateType,
+      [nameof(IAggregateEntity.Interval)]
+    );
     var insertedPrimaryKeyValues = string.Join(
       ", ",
-      primaryKey.Properties
-        .Where(x => x.GetColumnName(storeObjectIdentifier) != timestampColumn)
+      primaryKey
+        .Properties.Where(x =>
+          x.GetColumnName(storeObjectIdentifier) != timestampColumn
+        )
         .Select(property =>
-          $"inserted.{property.GetColumnName(storeObjectIdentifier)}"));
+          $"inserted.{property.GetColumnName(storeObjectIdentifier)}"
+        )
+    );
     var primaryKeyValues = string.Join(
       ", ",
       primaryKey.Properties.Select(property =>
-        property.GetColumnName(storeObjectIdentifier)));
+        property.GetColumnName(storeObjectIdentifier)
+      )
+    );
     var primaryKeyInputEqualityCheck = string.Join(
       " AND ",
-      primaryKey.Properties
-        .Select(property =>
-        {
-          var columnName = property.GetColumnName(storeObjectIdentifier);
-          return $"{tableName}.{columnName}"
-            + $" = input.{columnName}"
-            + (property.ClrType.IsEnum
+      primaryKey.Properties.Select(property =>
+      {
+        var columnName = property.GetColumnName(storeObjectIdentifier);
+        return $"{tableName}.{columnName}"
+          + $" = input.{columnName}"
+          + (
+            property.ClrType.IsEnum
               ? $"::{StringExtensions.ToSnakeCase(property.ClrType.Name)}"
-              : "");
-        }));
+              : ""
+          );
+      })
+    );
 
     string PrimaryKeyDeltaEqualityCheck(string deltaTable)
     {
       return string.Join(
         " AND ",
-        primaryKey.Properties
-          .Where(property =>
+        primaryKey
+          .Properties.Where(property =>
           {
             var columnName = property.GetColumnName(storeObjectIdentifier);
             return columnName != timestampColumn
@@ -167,31 +184,38 @@ public class MeasurementProcedures(
             var columnName = property.GetColumnName(storeObjectIdentifier);
             return $"{tableName}.{columnName}"
               + $" = {deltaTable}.{columnName}"
-              + (property.ClrType.IsEnum
-                ? $"::{StringExtensions.ToSnakeCase(property.ClrType.Name)}"
-                : "");
-          }));
+              + (
+                property.ClrType.IsEnum
+                  ? $"::{StringExtensions.ToSnakeCase(property.ClrType.Name)}"
+                  : ""
+              );
+          })
+      );
     }
 
     var primaryKeyInsertedOldEqualityCheck = string.Join(
       " AND ",
-      primaryKey.Properties
-        .Select(property =>
-        {
-          var columnName = property.GetColumnName(storeObjectIdentifier);
-          return $"old.{columnName} = inserted.{columnName}";
-        }));
-    var columns = string.Join(
-      ", ", properties
-        .Select(p => p.GetColumnName()));
-    var values = string
-      .Join(", ", properties.Select(x => $"{tableName}.{x.GetColumnName()}"));
-    var inputValues = string
-      .Join(", ", properties.Select(x => $"input.{x.GetColumnName()}"));
-    var dayIntervalValue =
-      StringExtensions.ToSnakeCase(IntervalEntity.Day.ToString());
-    var monthIntervalValue =
-      StringExtensions.ToSnakeCase(IntervalEntity.Month.ToString());
+      primaryKey.Properties.Select(property =>
+      {
+        var columnName = property.GetColumnName(storeObjectIdentifier);
+        return $"old.{columnName} = inserted.{columnName}";
+      })
+    );
+    var columns = string.Join(", ", properties.Select(p => p.GetColumnName()));
+    var values = string.Join(
+      ", ",
+      properties.Select(x => $"{tableName}.{x.GetColumnName()}")
+    );
+    var inputValues = string.Join(
+      ", ",
+      properties.Select(x => $"input.{x.GetColumnName()}")
+    );
+    var dayIntervalValue = StringExtensions.ToSnakeCase(
+      IntervalEntity.Day.ToString()
+    );
+    var monthIntervalValue = StringExtensions.ToSnakeCase(
+      IntervalEntity.Month.ToString()
+    );
     var intervalTypeName = StringExtensions.ToSnakeCase(nameof(IntervalEntity));
     var intervalValue = StringExtensions.ToSnakeCase(interval.ToString());
 
@@ -199,14 +223,15 @@ public class MeasurementProcedures(
     if (parts is null)
     {
       throw new InvalidOperationException(
-        $"No measurement procedure parts found for {aggregateType}.");
+        $"No measurement procedure parts found for {aggregateType}."
+      );
     }
 
-    var upsertParts =
-      parts.UpsertMeasurementProcedureParts
-        .Select(part => MeasurementProcedureCompiler
-          .CompileUpsert(part, context, aggregateType))
-        .ToList();
+    var upsertParts = parts
+      .UpsertMeasurementProcedureParts.Select(part =>
+        MeasurementProcedureCompiler.CompileUpsert(part, context, aggregateType)
+      )
+      .ToList();
     upsertParts.Add(UpsertCount(context, aggregateType));
     if (interval != IntervalEntity.QuarterHour)
     {
@@ -215,41 +240,61 @@ public class MeasurementProcedures(
     else
     {
       upsertParts.AddRange(
-        parts.DerivativeMeasurementProcedureParts
-          .Select(part => MeasurementProcedureCompiler
-            .CompileDerivative(part, context, aggregateType)));
+        parts.DerivativeMeasurementProcedureParts.Select(part =>
+          MeasurementProcedureCompiler.CompileDerivative(
+            part,
+            context,
+            aggregateType
+          )
+        )
+      );
     }
 
-    var deltaParts =
-      parts.DeltaMeasurementProcedureParts
-        .Select(part => MeasurementProcedureCompiler
-          .CompileDelta(part, context, aggregateType, "inserted", "old"));
-    var dailyDeriveParts =
-      parts.DeriveMeasurementProcedureParts
-        .Select(part => MeasurementProcedureCompiler
-          .CompileDerive(
-            part, context, aggregateType, "daily_delta", "new_count"))
-        .ToList();
-    dailyDeriveParts.Add(
-      DeriveQuarterHourCount(
+    var deltaParts = parts.DeltaMeasurementProcedureParts.Select(part =>
+      MeasurementProcedureCompiler.CompileDelta(
+        part,
         context,
         aggregateType,
-        "daily_delta",
-        "new_count"));
-    var monthlyDeriveParts =
-      parts.DeriveMeasurementProcedureParts
-        .Select(part => MeasurementProcedureCompiler
-          .CompileDerive(
-            part, context, aggregateType, "monthly_delta", "new_count"))
-        .ToList();
+        "inserted",
+        "old"
+      )
+    );
+    var dailyDeriveParts = parts
+      .DeriveMeasurementProcedureParts.Select(part =>
+        MeasurementProcedureCompiler.CompileDerive(
+          part,
+          context,
+          aggregateType,
+          "daily_delta",
+          "new_count"
+        )
+      )
+      .ToList();
+    dailyDeriveParts.Add(
+      DeriveQuarterHourCount(context, aggregateType, "daily_delta", "new_count")
+    );
+    var monthlyDeriveParts = parts
+      .DeriveMeasurementProcedureParts.Select(part =>
+        MeasurementProcedureCompiler.CompileDerive(
+          part,
+          context,
+          aggregateType,
+          "monthly_delta",
+          "new_count"
+        )
+      )
+      .ToList();
     monthlyDeriveParts.Add(
       DeriveQuarterHourCount(
         context,
         aggregateType,
         "monthly_delta",
-        "new_count"));
+        "new_count"
+      )
+    );
 
-    var query = $@"
+    var query =
+      $@"
       INSERT INTO {tableName} ({columns})
       SELECT {inputValues}
       FROM jsonb_populate_recordset(null::{tableName}, $1) AS input
@@ -259,7 +304,8 @@ public class MeasurementProcedures(
     ";
     if (interval == IntervalEntity.QuarterHour)
     {
-      query = $@"
+      query =
+        $@"
         WITH
           input AS (
             SELECT {values}
@@ -353,16 +399,13 @@ public class MeasurementProcedures(
     );
   }
 
-  private static string UpsertCount(
-    DataDbContext context,
-    Type aggregateType
-  )
+  private static string UpsertCount(DataDbContext context, Type aggregateType)
   {
     var tableName = context.GetTableName(aggregateType);
-    var countColumn = context
-      .GetColumnName(
-        aggregateType,
-        [nameof(IAggregateEntity.Count)]);
+    var countColumn = context.GetColumnName(
+      aggregateType,
+      [nameof(IAggregateEntity.Count)]
+    );
     return $@"
       {countColumn} = {tableName}.{countColumn} +
         EXCLUDED.{countColumn}
@@ -374,10 +417,10 @@ public class MeasurementProcedures(
     Type aggregateType
   )
   {
-    var quarterHourCountColumn = context
-      .GetColumnName(
-        aggregateType,
-        [nameof(IAggregateEntity.QuarterHourCount)]);
+    var quarterHourCountColumn = context.GetColumnName(
+      aggregateType,
+      [nameof(IAggregateEntity.QuarterHourCount)]
+    );
     return $@"{quarterHourCountColumn} = 1";
   }
 
@@ -388,10 +431,10 @@ public class MeasurementProcedures(
     string newCountColumn
   )
   {
-    var quarterHourCountColumn = context
-      .GetColumnName(
-        aggregateType,
-        [nameof(IAggregateEntity.QuarterHourCount)]);
+    var quarterHourCountColumn = context.GetColumnName(
+      aggregateType,
+      [nameof(IAggregateEntity.QuarterHourCount)]
+    );
     return $@"
       {quarterHourCountColumn} = GREATEST(
         1,
@@ -400,16 +443,9 @@ public class MeasurementProcedures(
     ";
   }
 
-  public string DeleteUpsertMeasurements(
-    DataDbContext context,
-    Type type
-  )
+  public string DeleteUpsertMeasurements(DataDbContext context, Type type)
   {
-    return postgresqlProcedures.DeleteBatchMutation(
-      context,
-      type,
-      "upsert"
-    );
+    return postgresqlProcedures.DeleteBatchMutation(context, type, "upsert");
   }
 
   public string DeleteUpsertAggregates(

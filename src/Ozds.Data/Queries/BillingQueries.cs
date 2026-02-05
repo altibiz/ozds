@@ -21,29 +21,29 @@ public class BillingQueries(
 {
   private static readonly JsonSerializerOptions JsonSerializerOptions = new()
   {
-    WriteIndented = true
+    WriteIndented = true,
   };
 
-  public async Task<NetworkUserInvoiceBasisEntity>
-    ReadInvoiceBasisByNetworkUser(
-      string networkUserId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<NetworkUserInvoiceBasisEntity> ReadInvoiceBasisByNetworkUser(
+    string networkUserId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var networkUser = await context.NetworkUsers
-        .Where(
-          context.PrimaryKeyEquals<NetworkUserEntity>(
-            networkUserId))
+    var networkUser =
+      await context
+        .NetworkUsers.Where(
+          context.PrimaryKeyEquals<NetworkUserEntity>(networkUserId)
+        )
         .Include(x => x.Location)
         .Include(x => x.Location.RegulatoryCatalogue)
-        .FirstOrDefaultAsync(cancellationToken) ??
-      throw new InvalidOperationException(
-        "Network user not found");
+        .FirstOrDefaultAsync(cancellationToken)
+      ?? throw new InvalidOperationException("Network user not found");
 
     var calculationBases = await ReadCalculationBasesByNetworkUser(
       networkUserId,
@@ -59,34 +59,38 @@ public class BillingQueries(
       RegulatoryCatalogue = networkUser.Location.RegulatoryCatalogue,
       FromDate = fromDate,
       ToDate = toDate,
-      NetworkUserCalculationBases = calculationBases
+      NetworkUserCalculationBases = calculationBases,
     };
   }
 
-  private async Task<List<NetworkUserCalculationBasisEntity>>
-    ReadCalculationBasesByNetworkUser(
-      string networkUserId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  private async Task<
+    List<NetworkUserCalculationBasisEntity>
+  > ReadCalculationBasesByNetworkUser(
+    string networkUserId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var bases =
-      await ReadCalculationBasesByNetworkUser(
-        networkUserId,
-        cancellationToken);
+    var bases = await ReadCalculationBasesByNetworkUser(
+      networkUserId,
+      cancellationToken
+    );
 
     foreach (var aggregateType in reflector.AggregateTypes)
     {
       // NOTE: IsAssignableTo is used because proxies
-      var applicableBases = bases.Where(x =>
+      var applicableBases = bases
+        .Where(x =>
           x.Meter.GetType()
             .IsAssignableTo(
-              reflector
-                .ResolveMeasurementMeterType(aggregateType)))
+              reflector.ResolveMeasurementMeterType(aggregateType)
+            )
+        )
         .ToList();
 
       if (applicableBases.Count == 0)
@@ -105,8 +109,8 @@ public class BillingQueries(
       foreach (var enriched in enrichedBases)
       {
         var original = bases.First(x =>
-          x.MeasurementLocation.Id
-          == enriched.MeasurementLocation.Id);
+          x.MeasurementLocation.Id == enriched.MeasurementLocation.Id
+        );
         original.Aggregates = enriched.Aggregates;
         original.MeasuredFromDate = enriched.MeasuredFromDate;
         original.MeasuredToDate = enriched.MeasuredToDate;
@@ -120,67 +124,72 @@ public class BillingQueries(
     return bases;
   }
 
-  private async Task<List<NetworkUserCalculationBasisEntity>>
-    ReadCalculationBasesByNetworkUser(
-      string networkUserId,
-      CancellationToken cancellationToken
-    )
+  private async Task<
+    List<NetworkUserCalculationBasisEntity>
+  > ReadCalculationBasesByNetworkUser(
+    string networkUserId,
+    CancellationToken cancellationToken
+  )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    return await context.MeasurementLocations
-      .OfType<NetworkUserMeasurementLocationEntity>()
+    return await context
+      .MeasurementLocations.OfType<NetworkUserMeasurementLocationEntity>()
       .Where(
         context.ForeignKeyEquals<NetworkUserMeasurementLocationEntity>(
           nameof(NetworkUserMeasurementLocationEntity.NetworkUser),
-          networkUserId))
+          networkUserId
+        )
+      )
       .Include(x => x.NetworkUserCatalogue)
       .Include(x => x.Meter)
       .Include(x => x.NetworkUser)
-      .ThenInclude(x => x.Location)
-      .ThenInclude(x => x.RegulatoryCatalogue)
+        .ThenInclude(x => x.Location)
+          .ThenInclude(x => x.RegulatoryCatalogue)
       .Select(x => new NetworkUserCalculationBasisEntity
       {
         Location = x.NetworkUser.Location,
         NetworkUser = x.NetworkUser,
         MeasurementLocation = x,
-        UsageNetworkUserCatalogue =
-          x.NetworkUserCatalogue,
-        SupplyRegulatoryCatalogue =
-          x.NetworkUser.Location.RegulatoryCatalogue,
-        Meter = x.Meter
+        UsageNetworkUserCatalogue = x.NetworkUserCatalogue,
+        SupplyRegulatoryCatalogue = x.NetworkUser.Location.RegulatoryCatalogue,
+        Meter = x.Meter,
       })
       .ToListAsync(cancellationToken);
   }
 
-  private async Task<List<NetworkUserCalculationBasisEntity>>
-    ReadCalculationBaseAggregates(
-      Type aggregateType,
-      List<NetworkUserCalculationBasisEntity> bases,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  private async Task<
+    List<NetworkUserCalculationBasisEntity>
+  > ReadCalculationBaseAggregates(
+    Type aggregateType,
+    List<NetworkUserCalculationBasisEntity> bases,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
     if (bases.Count == 0)
     {
       return new List<NetworkUserCalculationBasisEntity>();
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     var table = reflector.ResolveEntityTable(aggregateType);
 
-    var quarterHourIntervalValue =
-      StringExtensions.ToSnakeCase(IntervalEntity.QuarterHour.ToString());
+    var quarterHourIntervalValue = StringExtensions.ToSnakeCase(
+      IntervalEntity.QuarterHour.ToString()
+    );
     var intervalTypeName = StringExtensions.ToSnakeCase(nameof(IntervalEntity));
 
     var parameters = new Dictionary<string, object?>
     {
       { "from", fromDate },
-      { "to", toDate }
+      { "to", toDate },
     };
 
     var locationValueRows = new List<string>();
@@ -192,7 +201,8 @@ public class BillingQueries(
       locationValueRows.Add($"(@{paramName})");
     }
 
-    var joinLocationsClause = $@"
+    var joinLocationsClause =
+      $@"
         JOIN (
             VALUES {string.Join(", ", locationValueRows)}
         ) AS selected_locations(location_id)
@@ -200,7 +210,8 @@ public class BillingQueries(
             = aggregates.measurement_location_id
     ";
 
-    var inWindowAggregatesSql = $@"
+    var inWindowAggregatesSql =
+      $@"
       SELECT *
       FROM {table} aggregates
       {joinLocationsClause}
@@ -213,19 +224,19 @@ public class BillingQueries(
     logger.LogDebug(
       "In window aggregates\nSql: {Sql}\nParameters: {Parameters}",
       inWindowAggregatesSql,
-      JsonSerializer.Serialize(
-        parameters,
-        JsonSerializerOptions));
+      JsonSerializer.Serialize(parameters, JsonSerializerOptions)
+    );
 
-    var inWindowAggregates = await context
-      .DapperCommand<AggregateEntity>(
-        aggregateType,
-        inWindowAggregatesSql,
-        cancellationToken,
-        parameters,
-        300);
+    var inWindowAggregates = await context.DapperCommand<AggregateEntity>(
+      aggregateType,
+      inWindowAggregatesSql,
+      cancellationToken,
+      parameters,
+      300
+    );
 
-    var nextBoundariesSql = $@"
+    var nextBoundariesSql =
+      $@"
       SELECT picked.*
       FROM (
         VALUES {string.Join(", ", locationValueRows)}
@@ -246,17 +257,16 @@ public class BillingQueries(
     logger.LogDebug(
       "Next boundaries\nSql: {Sql}\nParameters: {Parameters}",
       nextBoundariesSql,
-      JsonSerializer.Serialize(
-        parameters,
-        JsonSerializerOptions));
+      JsonSerializer.Serialize(parameters, JsonSerializerOptions)
+    );
 
-    var nextBoundaries = await context
-      .DapperCommand<AggregateEntity>(
-        aggregateType,
-        nextBoundariesSql,
-        cancellationToken,
-        parameters,
-        300);
+    var nextBoundaries = await context.DapperCommand<AggregateEntity>(
+      aggregateType,
+      nextBoundariesSql,
+      cancellationToken,
+      parameters,
+      300
+    );
 
     var locationsWithData = inWindowAggregates
       .Select(x => x.MeasurementLocationId)
@@ -282,7 +292,8 @@ public class BillingQueries(
         blackoutRows.Add($"(@{parameterName})");
       }
 
-      var lastReadingsBeforeBlackoutSql = $@"
+      var lastReadingsBeforeBlackoutSql =
+        $@"
         SELECT picked.*
         FROM (
           VALUES {string.Join(", ", blackoutRows)}
@@ -303,17 +314,17 @@ public class BillingQueries(
       logger.LogDebug(
         "Last readings before blackout\nSql: {Sql}\nParameters: {Parameters}",
         lastReadingsBeforeBlackoutSql,
-        JsonSerializer.Serialize(
-          blackoutParameters,
-          JsonSerializerOptions));
+        JsonSerializer.Serialize(blackoutParameters, JsonSerializerOptions)
+      );
 
-      var lastReadingsBeforeBlackout = await context
-        .DapperCommand<AggregateEntity>(
+      var lastReadingsBeforeBlackout =
+        await context.DapperCommand<AggregateEntity>(
           aggregateType,
           lastReadingsBeforeBlackoutSql,
           cancellationToken,
           blackoutParameters,
-          300);
+          300
+        );
 
       if (lastReadingsBeforeBlackout.Count != 0)
       {
@@ -322,7 +333,7 @@ public class BillingQueries(
           {
             "interval",
             StringExtensions.ToSnakeCase(nameof(IntervalEntity.QuarterHour))
-          }
+          },
         };
 
         var targetRows = new List<string>();
@@ -335,8 +346,9 @@ public class BillingQueries(
           var locationParameter = $"target_location{targetIndex}";
           var dateParameter = $"target_date{targetIndex}";
 
-          targetParameters[locationParameter] =
-            long.Parse(reading.MeasurementLocationId);
+          targetParameters[locationParameter] = long.Parse(
+            reading.MeasurementLocationId
+          );
           targetParameters[dateParameter] = monthStart;
 
           targetRows.Add($"(@{locationParameter}, @{dateParameter})");
@@ -346,7 +358,8 @@ public class BillingQueries(
 
         if (targetRows.Count != 0)
         {
-          var actualStartBoundariesSql = $@"
+          var actualStartBoundariesSql =
+            $@"
             SELECT picked.*
             FROM (
               VALUES {string.Join(", ", targetRows)}
@@ -368,90 +381,104 @@ public class BillingQueries(
             JsonSerializer.Serialize(
               targetParameters,
 #pragma warning disable CA1869 // Cache and reuse 'JsonSerializerOptions' instances
-              new JsonSerializerOptions { WriteIndented = true }));
+              new JsonSerializerOptions { WriteIndented = true }
+            )
+          );
 #pragma warning restore CA1869 // Cache and reuse 'JsonSerializerOptions' instances
 
-          actualStartBoundaries = await context
-            .DapperCommand<AggregateEntity>(
-              aggregateType,
-              actualStartBoundariesSql,
-              cancellationToken,
-              targetParameters,
-              300);
+          actualStartBoundaries = await context.DapperCommand<AggregateEntity>(
+            aggregateType,
+            actualStartBoundariesSql,
+            cancellationToken,
+            targetParameters,
+            300
+          );
         }
       }
     }
 
-    return bases.Select(basis =>
-    {
-      var locationId = basis.MeasurementLocation.Id;
-
-      var locationAggregates = inWindowAggregates
-        .Where(x => x.MeasurementLocationId == locationId)
-        .OrderBy(x => x.Timestamp)
-        .ToList();
-
-      var next = nextBoundaries
-        .FirstOrDefault(x => x.MeasurementLocationId == locationId);
-
-      var previous = actualStartBoundaries
-        .FirstOrDefault(x => x.MeasurementLocationId == locationId);
-
-      AggregateEntity? startAggregate = null;
-      AggregateEntity? endAggregate = null;
-
-      if (locationAggregates.Count != 0)
+    return bases
+      .Select(basis =>
       {
-        startAggregate = locationAggregates.First();
-        endAggregate = next;
-      }
-      else
-      {
-        startAggregate = previous;
-        endAggregate = next;
-      }
+        var locationId = basis.MeasurementLocation.Id;
 
-      var resultAggregates = new List<AggregateEntity>(locationAggregates);
+        var locationAggregates = inWindowAggregates
+          .Where(x => x.MeasurementLocationId == locationId)
+          .OrderBy(x => x.Timestamp)
+          .ToList();
 
-      if (startAggregate != null && !resultAggregates
-        .Exists(x => x.Timestamp == startAggregate.Timestamp))
-      {
-        resultAggregates.Insert(0, startAggregate);
-      }
+        var next = nextBoundaries.FirstOrDefault(x =>
+          x.MeasurementLocationId == locationId
+        );
 
-      if (endAggregate != null && !resultAggregates
-        .Exists(x => x.Timestamp == endAggregate.Timestamp))
-      {
-        resultAggregates.Add(endAggregate);
-      }
+        var previous = actualStartBoundaries.FirstOrDefault(x =>
+          x.MeasurementLocationId == locationId
+        );
 
-      var measuredFrom = startAggregate?.Timestamp ?? fromDate;
-      var measuredTo = endAggregate?.Timestamp ?? toDate;
+        AggregateEntity? startAggregate = null;
+        AggregateEntity? endAggregate = null;
 
-      var billedFrom = startAggregate is not null
-        ? timeQueries.GetStartOfMonth(startAggregate.Timestamp)
-        : fromDate;
+        if (locationAggregates.Count != 0)
+        {
+          startAggregate = locationAggregates.First();
+          endAggregate = next;
+        }
+        else
+        {
+          startAggregate = previous;
+          endAggregate = next;
+        }
 
-      var billedTo = endAggregate is not null
-        ? timeQueries.GetStartOfMonth(endAggregate.Timestamp)
-        : toDate;
+        var resultAggregates = new List<AggregateEntity>(locationAggregates);
 
-      return new NetworkUserCalculationBasisEntity
-      {
-        Location = basis.Location,
-        NetworkUser = basis.NetworkUser,
-        MeasurementLocation = basis.MeasurementLocation,
-        UsageNetworkUserCatalogue = basis.UsageNetworkUserCatalogue,
-        SupplyRegulatoryCatalogue = basis.SupplyRegulatoryCatalogue,
-        Meter = basis.Meter,
-        Aggregates = resultAggregates.OrderBy(x => x.Timestamp).ToList(),
-        MeasuredFromDate = measuredFrom,
-        MeasuredToDate = measuredTo,
-        BilledFromDate = billedFrom,
-        BilledToDate = billedTo,
-        FromDate = fromDate,
-        ToDate = toDate
-      };
-    }).ToList();
+        if (
+          startAggregate != null
+          && !resultAggregates.Exists(x =>
+            x.Timestamp == startAggregate.Timestamp
+          )
+        )
+        {
+          resultAggregates.Insert(0, startAggregate);
+        }
+
+        if (
+          endAggregate != null
+          && !resultAggregates.Exists(x =>
+            x.Timestamp == endAggregate.Timestamp
+          )
+        )
+        {
+          resultAggregates.Add(endAggregate);
+        }
+
+        var measuredFrom = startAggregate?.Timestamp ?? fromDate;
+        var measuredTo = endAggregate?.Timestamp ?? toDate;
+
+        var billedFrom = startAggregate is not null
+          ? timeQueries.GetStartOfMonth(startAggregate.Timestamp)
+          : fromDate;
+
+        var billedTo = endAggregate is not null
+          ? timeQueries.GetStartOfMonth(endAggregate.Timestamp)
+          : toDate;
+
+        return new NetworkUserCalculationBasisEntity
+        {
+          Location = basis.Location,
+          NetworkUser = basis.NetworkUser,
+          MeasurementLocation = basis.MeasurementLocation,
+          UsageNetworkUserCatalogue = basis.UsageNetworkUserCatalogue,
+          SupplyRegulatoryCatalogue = basis.SupplyRegulatoryCatalogue,
+          Meter = basis.Meter,
+          Aggregates = resultAggregates.OrderBy(x => x.Timestamp).ToList(),
+          MeasuredFromDate = measuredFrom,
+          MeasuredToDate = measuredTo,
+          BilledFromDate = billedFrom,
+          BilledToDate = billedTo,
+          FromDate = fromDate,
+          ToDate = toDate,
+        };
+      })
+      .ToList();
   }
 }

@@ -16,10 +16,8 @@ public sealed class PlaywrightHtmlToPdfRenderer(
 
     logger.LogInformation("Launching browser");
     var browser = await playwright.Chromium.LaunchAsync(
-      new BrowserTypeLaunchOptions
-      {
-        Headless = true
-      });
+      new BrowserTypeLaunchOptions { Headless = true }
+    );
 
     logger.LogInformation("Starting browser context");
     var context = await browser.NewContextAsync();
@@ -101,10 +99,12 @@ public sealed class PlaywrightHtmlToPdfRenderer(
       }
 
       await page.SetContentAsync(
-        html, new PageSetContentOptions
+        html,
+        new PageSetContentOptions
         {
-          WaitUntil = WaitUntilState.DOMContentLoaded
-        });
+          WaitUntil = WaitUntilState.DOMContentLoaded,
+        }
+      );
       if (cancellationToken.IsCancellationRequested)
       {
         await page.CloseAsync();
@@ -112,11 +112,8 @@ public sealed class PlaywrightHtmlToPdfRenderer(
       }
 
       var pdfBytes = await page.PdfAsync(
-        new PagePdfOptions
-        {
-          Format = "A4",
-          PrintBackground = true
-        });
+        new PagePdfOptions { Format = "A4", PrintBackground = true }
+      );
       if (cancellationToken.IsCancellationRequested)
       {
         await page.CloseAsync();

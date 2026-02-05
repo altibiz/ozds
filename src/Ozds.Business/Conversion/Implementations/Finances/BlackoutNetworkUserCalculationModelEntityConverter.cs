@@ -8,11 +8,13 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 
 public class BlackoutNetworkUserCalculationModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  BlackoutNetworkUserCalculationModel,
-  NetworkUserCalculationModel,
-  BlackoutNetworkUserCalculationEntity,
-  NetworkUserCalculationEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    BlackoutNetworkUserCalculationModel,
+    NetworkUserCalculationModel,
+    BlackoutNetworkUserCalculationEntity,
+    NetworkUserCalculationEntity
+  >(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();
@@ -26,7 +28,8 @@ public class BlackoutNetworkUserCalculationModelEntityConverter(
     entity.UsageNetworkUserCatalogueId = model.UsageNetworkUserCatalogueId;
     entity.ArchivedUsageNetworkUserCatalogue =
       modelEntityConverter.ToEntity<NetworkUserCatalogueEntity>(
-        model.ConcreteArchivedUsageNetworkUserCatalogue);
+        model.ConcreteArchivedUsageNetworkUserCatalogue
+      );
     entity.Total_EUR = model.Total_EUR;
   }
 
@@ -39,7 +42,8 @@ public class BlackoutNetworkUserCalculationModelEntityConverter(
     model.UsageNetworkUserCatalogueId = entity.UsageNetworkUserCatalogueId;
     model.ConcreteArchivedUsageNetworkUserCatalogue =
       modelEntityConverter.ToModel<NetworkUserCatalogueModel>(
-        entity.ArchivedUsageNetworkUserCatalogue);
+        entity.ArchivedUsageNetworkUserCatalogue
+      );
     model.Total_EUR = entity.Total_EUR;
   }
 }

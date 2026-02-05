@@ -4,17 +4,13 @@ public class CacheEntryConfigurationBuilder
 {
   private readonly CacheEntryConfiguration entry = new();
 
-  public CacheEntryConfigurationBuilder WithHardTtl(
-    TimeSpan? hardTtl
-  )
+  public CacheEntryConfigurationBuilder WithHardTtl(TimeSpan? hardTtl)
   {
     entry.HardTtl = hardTtl;
     return this;
   }
 
-  public CacheEntryConfigurationBuilder WithSoftTtl(
-    TimeSpan? softTtl
-  )
+  public CacheEntryConfigurationBuilder WithSoftTtl(TimeSpan? softTtl)
   {
     entry.SoftTtl = softTtl;
     return this;

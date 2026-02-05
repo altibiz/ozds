@@ -10,6 +10,4 @@ public abstract class FeeCalculationItemEntity : CalculationItemEntity
   }
 }
 
-public class UsageMeterFeeCalculationItemEntity : FeeCalculationItemEntity
-{
-}
+public class UsageMeterFeeCalculationItemEntity : FeeCalculationItemEntity { }

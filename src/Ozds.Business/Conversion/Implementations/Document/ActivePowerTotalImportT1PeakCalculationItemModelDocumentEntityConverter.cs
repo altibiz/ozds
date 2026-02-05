@@ -5,14 +5,15 @@ using Ozds.Document.Entities;
 
 namespace Ozds.Business.Conversion.Implementations.Document;
 
-public class
-  ActivePowerTotalImportT1PeakCalculationItemModelDocumentEntityConverter(
-    IServiceProvider serviceProvider
-  ) : InheritingModelDocumentEntityConverter<
-  ActivePowerTotalImportT1PeakCalculationItemModel,
-  CalculationItemModel,
-  ActivePowerTotalImportT1PeakCalculationItemEntity,
-  CalculationItemEntity>(serviceProvider)
+public class ActivePowerTotalImportT1PeakCalculationItemModelDocumentEntityConverter(
+  IServiceProvider serviceProvider
+)
+  : InheritingModelDocumentEntityConverter<
+    ActivePowerTotalImportT1PeakCalculationItemModel,
+    CalculationItemModel,
+    ActivePowerTotalImportT1PeakCalculationItemEntity,
+    CalculationItemEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     ActivePowerTotalImportT1PeakCalculationItemModel model,
@@ -25,13 +26,12 @@ public class
   }
 }
 
-public class
-  UsageActivePowerTotalImportT1PeakCalculationItemModelDocumentEntityConverter(
-    IServiceProvider serviceProvider
-  ) : InheritingModelDocumentEntityConverter<
-  UsageActivePowerTotalImportT1PeakCalculationItemModel,
-  ActivePowerTotalImportT1PeakCalculationItemModel,
-  UsageActivePowerTotalImportT1PeakCalculationItemEntity,
-  ActivePowerTotalImportT1PeakCalculationItemEntity>(serviceProvider)
-{
-}
+public class UsageActivePowerTotalImportT1PeakCalculationItemModelDocumentEntityConverter(
+  IServiceProvider serviceProvider
+)
+  : InheritingModelDocumentEntityConverter<
+    UsageActivePowerTotalImportT1PeakCalculationItemModel,
+    ActivePowerTotalImportT1PeakCalculationItemModel,
+    UsageActivePowerTotalImportT1PeakCalculationItemEntity,
+    ActivePowerTotalImportT1PeakCalculationItemEntity
+  >(serviceProvider) { }

@@ -6,9 +6,8 @@ using Ozds.Fake.Faking.Base;
 
 namespace Ozds.Fake.Faking.Implementations.Measurements;
 
-public class MessengerModelFaker(
-  IServiceProvider serviceProvider
-) : InheritingModelFaker<MessengerModel, TrackableModel>(serviceProvider)
+public class MessengerModelFaker(IServiceProvider serviceProvider)
+  : InheritingModelFaker<MessengerModel, TrackableModel>(serviceProvider)
 {
   private readonly ModelFaker modelFaker =
     serviceProvider.GetRequiredService<ModelFaker>();
@@ -20,7 +19,8 @@ public class MessengerModelFaker(
   {
     base.Initialize(model, faker);
 
-    model.Id = namingConvention.IdPrefixForMessengerType(model.GetType())
+    model.Id =
+      namingConvention.IdPrefixForMessengerType(model.GetType())
       + "-"
       + string.Join(string.Empty, faker.Random.Digits(7));
 

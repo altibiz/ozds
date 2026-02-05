@@ -9,7 +9,8 @@ public class PhysicalPersonModelEntityConverter
 {
   public override void InitializeEntity(
     PhysicalPersonModel model,
-    PhysicalPersonEntity entity)
+    PhysicalPersonEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.Name = model.Name;
@@ -19,7 +20,8 @@ public class PhysicalPersonModelEntityConverter
 
   public override void InitializeModel(
     PhysicalPersonEntity entity,
-    PhysicalPersonModel model)
+    PhysicalPersonModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.Name = entity.Name;

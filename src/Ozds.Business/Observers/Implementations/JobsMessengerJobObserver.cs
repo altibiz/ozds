@@ -9,21 +9,24 @@ namespace Ozds.Business.Observers.Implementations;
 public class JobsMessengerJobRelay(
   IServiceProvider serviceProvider,
   IMessengerJobSubscriber subscriber
-) : Relay<
-  MessengerJobEventArgs,
-  JobsMessengerJobEventArgs,
-  JobsMessengerJobPipe>(
-  serviceProvider
-), IJobsMessengerJobSubscriber
+)
+  : Relay<
+    MessengerJobEventArgs,
+    JobsMessengerJobEventArgs,
+    JobsMessengerJobPipe
+  >(serviceProvider),
+    IJobsMessengerJobSubscriber
 {
   protected override void SubscribeIn(
-    EventHandler<MessengerJobEventArgs> eventHandler)
+    EventHandler<MessengerJobEventArgs> eventHandler
+  )
   {
     subscriber.Subscribe(eventHandler);
   }
 
   protected override void UnsubscribeIn(
-    EventHandler<MessengerJobEventArgs> eventHandler)
+    EventHandler<MessengerJobEventArgs> eventHandler
+  )
   {
     subscriber.Unsubscribe(eventHandler);
   }
@@ -34,7 +37,8 @@ public class JobsMessengerJobPipe
 {
   public Task<JobsMessengerJobEventArgs> Transform(
     MessengerJobEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var modelEventArgs = new JobsMessengerJobEventArgs
     {
@@ -43,7 +47,7 @@ public class JobsMessengerJobPipe
       StartedAt = eventArgs.StartedAt,
       ScheduledFireAt = eventArgs.ScheduledFireAt,
       FiredAt = eventArgs.FiredAt,
-      RefireCount = eventArgs.RefireCount
+      RefireCount = eventArgs.RefireCount,
     };
     return Task.FromResult(modelEventArgs);
   }

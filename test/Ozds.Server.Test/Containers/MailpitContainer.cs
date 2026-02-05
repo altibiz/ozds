@@ -15,8 +15,7 @@ public sealed class MailpitContainer : IComposableService<MailpitContainer>
 
   private const string MailpitPassword = "ozds";
 
-  private const string MailpitReady =
-    """.*\[http\] accessible via.*""";
+  private const string MailpitReady = """.*\[http\] accessible via.*""";
 
   private readonly IContainer container;
 
@@ -87,12 +86,8 @@ public sealed class MailpitContainer : IComposableService<MailpitContainer>
   {
     var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     var wait = isWindows
-      ? Wait
-        .ForWindowsContainer()
-        .UntilMessageIsLogged(MailpitReady)
-      : Wait
-        .ForUnixContainer()
-        .UntilMessageIsLogged(MailpitReady);
+      ? Wait.ForWindowsContainer().UntilMessageIsLogged(MailpitReady)
+      : Wait.ForUnixContainer().UntilMessageIsLogged(MailpitReady);
 
     var host = network.Host<MailpitContainer>();
     var hostSmtpPort = network.Port<MailpitContainer>("smtp");
@@ -111,8 +106,8 @@ public sealed class MailpitContainer : IComposableService<MailpitContainer>
       .Build();
 
     return Task.FromResult(
-      new MailpitContainer(
-        container, host, hostSmtpPort, hostHttpPort));
+      new MailpitContainer(container, host, hostSmtpPort, hostHttpPort)
+    );
   }
 
   public Task Configure(

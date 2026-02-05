@@ -10,7 +10,8 @@ public class DocumentLayoutBase : DocumentBase
 
   [DynamicDependency(
     DynamicallyAccessedMemberTypes.All,
-    typeof(DocumentLayoutBase))]
+    typeof(DocumentLayoutBase)
+  )]
   public override Task SetParametersAsync(ParameterView parameters)
   {
     return base.SetParametersAsync(parameters);

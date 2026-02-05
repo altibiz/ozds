@@ -15,7 +15,8 @@ public static class CancellationExtensions
         await Task.Delay(timeSpan, cts.Token);
         await cts.CancelAsync();
       },
-      cancellationToken);
+      cancellationToken
+    );
     return cts;
   }
 }

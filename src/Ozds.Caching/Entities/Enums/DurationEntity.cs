@@ -8,5 +8,5 @@ public enum DurationEntity
   Day,
   Week,
   Month,
-  Year
+  Year,
 }

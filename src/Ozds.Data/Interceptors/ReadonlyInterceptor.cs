@@ -30,9 +30,7 @@ public class ReadonlyInterceptor(IServiceProvider serviceProvider)
     return await base.SavingChangesAsync(eventData, result, cancellationToken);
   }
 
-  public void PreventReadonlyModifications(
-    DbContextEventData eventData
-  )
+  public void PreventReadonlyModifications(DbContextEventData eventData)
   {
     if (eventData.Context is null)
     {
@@ -40,17 +38,22 @@ public class ReadonlyInterceptor(IServiceProvider serviceProvider)
     }
 
     eventData.Context.ChangeTracker.DetectChanges();
-    var entries = eventData.Context.ChangeTracker
-      .Entries<IReadonlyEntity>()
+    var entries = eventData
+      .Context.ChangeTracker.Entries<IReadonlyEntity>()
       .ToList();
 
-    if (entries.Find(entry =>
-        entry.State is Microsoft.EntityFrameworkCore.EntityState.Modified
-          or Microsoft.EntityFrameworkCore.EntityState.Deleted) is
-      { } entry)
+    if (
+      entries.Find(entry =>
+        entry.State
+          is Microsoft.EntityFrameworkCore.EntityState.Modified
+            or Microsoft.EntityFrameworkCore.EntityState.Deleted
+      ) is
+      { } entry
+    )
     {
       throw new InvalidOperationException(
-        $"Cannot modify readonly entity {entry.Entity.GetType().Name}.");
+        $"Cannot modify readonly entity {entry.Entity.GetType().Name}."
+      );
     }
   }
 }

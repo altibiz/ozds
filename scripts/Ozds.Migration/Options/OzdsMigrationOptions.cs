@@ -5,12 +5,10 @@ namespace Ozds.Migration.Options;
 #pragma warning disable S2094 // Classes should not be empty
 public class OzdsMigrationOptions
 #pragma warning restore S2094 // Classes should not be empty
-{
-}
+{ }
 
-public class ConfigureOzdsMigrationOptions(
-  IConfiguration configuration
-) : IConfigureOptions<OzdsMigrationOptions>
+public class ConfigureOzdsMigrationOptions(IConfiguration configuration)
+  : IConfigureOptions<OzdsMigrationOptions>
 {
   public void Configure(OzdsMigrationOptions options)
   {

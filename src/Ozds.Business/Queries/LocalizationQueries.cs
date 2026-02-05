@@ -3,10 +3,8 @@ using System.Linq.Expressions;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries.Abstractions;
-using AssetCultureQueries =
-  Ozds.Assets.Queries.Abstractions.ICultureQueries;
-using AssetLocalizationQueries =
-  Ozds.Assets.Queries.Abstractions.ILocalizationQueries;
+using AssetCultureQueries = Ozds.Assets.Queries.Abstractions.ICultureQueries;
+using AssetLocalizationQueries = Ozds.Assets.Queries.Abstractions.ILocalizationQueries;
 
 namespace Ozds.Business.Queries;
 
@@ -85,8 +83,7 @@ public class LocalizationQueries(
     return localizationQueries.DateTimeString(dateTimeOffset);
   }
 
-  public DateTimeOffset DateTimeApplyOffset(
-    DateTimeOffset dateTimeOffset)
+  public DateTimeOffset DateTimeApplyOffset(DateTimeOffset dateTimeOffset)
   {
     return localizationQueries.DateTimeApplyOffset(dateTimeOffset);
   }
@@ -124,7 +121,7 @@ public class LocalizationQueries(
         DurationModel.Week => "weeks",
         DurationModel.Month => "months",
         DurationModel.Year => "years",
-        _ => throw new NotImplementedException()
+        _ => throw new NotImplementedException(),
       };
     }
     else
@@ -138,22 +135,20 @@ public class LocalizationQueries(
         DurationModel.Week => "a week",
         DurationModel.Month => "a month",
         DurationModel.Year => "a year",
-        _ => throw new NotImplementedException()
+        _ => throw new NotImplementedException(),
       };
     }
 
     return localizationQueries.Translate(culture, nonLocalized);
   }
 
-  public string TranslatePeriod(
-    CultureInfo culture,
-    PeriodModel duration
-  )
+  public string TranslatePeriod(CultureInfo culture, PeriodModel duration)
   {
     var translatedDuration = TranslateDuration(
       culture,
       duration.Duration,
-      duration.Multiplier != 1);
+      duration.Multiplier != 1
+    );
 
     return $"{duration.Multiplier} {translatedDuration}";
   }

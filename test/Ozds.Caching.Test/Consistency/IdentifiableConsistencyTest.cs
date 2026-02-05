@@ -8,11 +8,10 @@ public class IdentifiableConsistencyTest : OzdsCachingTestBase
 {
   [Test]
   [MethodDataSource(nameof(IdentifiableEntities))]
-  public async Task
-    DeleteCreate_EventuallyConsistent_WhenIdentifiableEntityIsCreated(
-      Type type,
-      CancellationToken cancellationToken
-    )
+  public async Task DeleteCreate_EventuallyConsistent_WhenIdentifiableEntityIsCreated(
+    Type type,
+    CancellationToken cancellationToken
+  )
   {
     var entity = EntityFactory.Create<IIdentifiableEntity>(type);
     var updated = EntityFactory.Create<IIdentifiableEntity>(type);

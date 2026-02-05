@@ -4,17 +4,19 @@ using Ozds.Data.Test.Extensions;
 
 namespace Ozds.Data.Test.Specimens;
 
-public class IgnoreIgnoredPropertiesSpecimenBuilder(
-  DbContext dbContext
-) : ISpecimenBuilder
+public class IgnoreIgnoredPropertiesSpecimenBuilder(DbContext dbContext)
+  : ISpecimenBuilder
 {
-  private readonly Lazy<HashSet<MemberInfo>> ignoredProperties =
-    new(dbContext.GetIgnoredProperties);
+  private readonly Lazy<HashSet<MemberInfo>> ignoredProperties = new(
+    dbContext.GetIgnoredProperties
+  );
 
   public object Create(object request, ISpecimenContext context)
   {
-    if (request is PropertyInfo or FieldInfo
-      && ignoredProperties.Value.Contains(request))
+    if (
+      request is PropertyInfo or FieldInfo
+      && ignoredProperties.Value.Contains(request)
+    )
     {
       return new OmitSpecimen();
     }

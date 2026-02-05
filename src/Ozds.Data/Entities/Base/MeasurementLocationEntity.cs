@@ -3,8 +3,9 @@ using Ozds.Data.Context;
 
 namespace Ozds.Data.Entities.Base;
 
-public class MeasurementLocationEntity : TrackableEntity,
-  IMeasurementLocationEntity
+public class MeasurementLocationEntity
+  : TrackableEntity,
+    IMeasurementLocationEntity
 {
   public virtual MeterEntity Meter { get; set; } = default!;
 
@@ -12,8 +13,8 @@ public class MeasurementLocationEntity : TrackableEntity,
   public string MeterId { get; set; } = default!;
 }
 
-public class MeasurementLocationEntityTypeHierarchyConfiguration :
-  EntityTypeHierarchyConfiguration<MeasurementLocationEntity>
+public class MeasurementLocationEntityTypeHierarchyConfiguration
+  : EntityTypeHierarchyConfiguration<MeasurementLocationEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
@@ -27,8 +28,14 @@ public class MeasurementLocationEntityTypeHierarchyConfiguration :
     builder
       .HasOne(nameof(MeasurementLocationEntity.Meter))
       .WithOne(
-        nameof(MeterEntity<MeasurementEntity, AggregateEntity,
-          MeasurementValidatorEntity>.MeasurementLocation))
+        nameof(
+          MeterEntity<
+            MeasurementEntity,
+            AggregateEntity,
+            MeasurementValidatorEntity
+          >.MeasurementLocation
+        )
+      )
       .HasForeignKey(entity.Name, nameof(MeasurementLocationEntity.MeterId));
   }
 }

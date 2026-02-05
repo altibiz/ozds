@@ -6,9 +6,10 @@ namespace Ozds.Business.Activation.Implementations.System;
 
 public class NotificationRecipientModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<NotificationRecipientModel, JoinModel>(
-  serviceProvider
 )
+  : InheritingModelActivator<NotificationRecipientModel, JoinModel>(
+    serviceProvider
+  )
 {
   public override void Initialize(NotificationRecipientModel model)
   {

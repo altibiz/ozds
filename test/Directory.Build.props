@@ -1,5 +1,4 @@
 <Project>
-
   <Import Project="../Directory.Build.props" />
 
   <PropertyGroup>
@@ -17,14 +16,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="TUnit"/>
-    <Using Include="Moq"/>
-    <Using Include="FluentAssertions"/>
-    <Using Include="Bogus"/>
-    <Using Include="AutoFixture"/>
-    <Using Include="AutoFixture.Kernel"/>
-    <Using Include="AutoFixture.AutoMoq"/>
-    <Using Include="$(ProjectName).Fixtures"/>
+    <Using Include="TUnit" />
+    <Using Include="Moq" />
+    <Using Include="FluentAssertions" />
+    <Using Include="Bogus" />
+    <Using Include="AutoFixture" />
+    <Using Include="AutoFixture.Kernel" />
+    <Using Include="AutoFixture.AutoMoq" />
+    <Using Include="$(ProjectName).Fixtures" />
   </ItemGroup>
 
   <!-- NOTE: disabling TUnit warnings here because native AOT -->
@@ -32,5 +31,4 @@
     <!-- Return a `Func<T>` rather than a `<T>`. -->
     <NoWarn>$(NoWarn);TUnit0046</NoWarn>
   </PropertyGroup>
-
 </Project>

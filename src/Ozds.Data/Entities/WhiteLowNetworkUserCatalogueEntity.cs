@@ -15,32 +15,32 @@ public class WhiteLowNetworkUserCatalogueEntity
 #pragma warning restore CA1707
 }
 
-public class
-  WhiteLowNetworkUserCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
-  WhiteLowNetworkUserCatalogueEntity>
+public class WhiteLowNetworkUserCatalogueEntityTypeConfiguration
+  : EntityTypeConfiguration<WhiteLowNetworkUserCatalogueEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<WhiteLowNetworkUserCatalogueEntity> builder)
+    EntityTypeBuilder<WhiteLowNetworkUserCatalogueEntity> builder
+  )
   {
-    builder
-      .MonetaryValue(
-        nameof(WhiteLowNetworkUserCatalogueEntity
-          .ActiveEnergyTotalImportT1Price_EUR),
-        "active_energy_total_import_t1_price_eur"
-      );
+    builder.MonetaryValue(
+      nameof(
+        WhiteLowNetworkUserCatalogueEntity.ActiveEnergyTotalImportT1Price_EUR
+      ),
+      "active_energy_total_import_t1_price_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(WhiteLowNetworkUserCatalogueEntity
-          .ActiveEnergyTotalImportT2Price_EUR),
-        "active_energy_total_import_t2_price_eur"
-      );
+    builder.MonetaryValue(
+      nameof(
+        WhiteLowNetworkUserCatalogueEntity.ActiveEnergyTotalImportT2Price_EUR
+      ),
+      "active_energy_total_import_t2_price_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(WhiteLowNetworkUserCatalogueEntity
-          .ReactiveEnergyTotalRampedT0Price_EUR),
-        "reactive_energy_total_ramped_t0_price_eur"
-      );
+    builder.MonetaryValue(
+      nameof(
+        WhiteLowNetworkUserCatalogueEntity.ReactiveEnergyTotalRampedT0Price_EUR
+      ),
+      "reactive_energy_total_ramped_t0_price_eur"
+    );
   }
 }

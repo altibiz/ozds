@@ -4,9 +4,11 @@ using Ozds.Fake.Records;
 namespace Ozds.Fake.Generation.Implementations;
 
 public class SchneideriEM3xxxRepeatingCsvResourceMeasurementGenerator(
-  IServiceProvider serviceProvider) :
-  RepeatingCsvResourceMeasurementGenerator<SchneideriEM3xxxMeasurementRecord>(
-    serviceProvider)
+  IServiceProvider serviceProvider
+)
+  : RepeatingCsvResourceMeasurementGenerator<SchneideriEM3xxxMeasurementRecord>(
+    serviceProvider
+  )
 {
   protected override string CsvResourceName
   {

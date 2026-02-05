@@ -9,7 +9,7 @@ public enum DuplexEntity
   Any,
   Net,
   Import,
-  Export
+  Export,
 }
 
 public class DuplexEntityTypeConfiguration : IModelConfiguration
@@ -20,8 +20,8 @@ public class DuplexEntityTypeConfiguration : IModelConfiguration
   }
 }
 
-public class
-  DuplexEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class DuplexEntityNpgsqlDataSourceConfiguration
+  : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

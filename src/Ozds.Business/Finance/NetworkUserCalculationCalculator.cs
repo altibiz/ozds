@@ -6,16 +6,15 @@ using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance;
 
-public class NetworkUserCalculationCalculator(
-  IServiceProvider serviceProvider
-)
+public class NetworkUserCalculationCalculator(IServiceProvider serviceProvider)
 {
   // NOTE: virtual to allow mocking
   public virtual NetworkUserCalculationModel Calculate(
-    NetworkUserCalculationBasisModel basis)
+    NetworkUserCalculationBasisModel basis
+  )
   {
-    var blackoutCalculator = serviceProvider
-      .GetRequiredService<BlackoutNetworkUserCalculationCalculator>();
+    var blackoutCalculator =
+      serviceProvider.GetRequiredService<BlackoutNetworkUserCalculationCalculator>();
 
     if (blackoutCalculator.CanCalculate(basis))
     {
@@ -27,15 +26,18 @@ public class NetworkUserCalculationCalculator(
         .FirstOrDefault(calculator => calculator.CanCalculate(basis))
         ?.Calculate(basis)
       ?? throw new InvalidOperationException(
-        $"No calculator found for calculation {basis.GetType()}.");
+        $"No calculator found for calculation {basis.GetType()}."
+      );
   }
 
   public TCalculation Calculate<TCalculation>(
-    NetworkUserCalculationBasisModel basis)
+    NetworkUserCalculationBasisModel basis
+  )
     where TCalculation : class, INetworkUserCalculation
   {
     return Calculate(basis) as TCalculation
       ?? throw new InvalidOperationException(
-        $"No calculator found for calculation {basis.GetType()}.");
+        $"No calculator found for calculation {basis.GetType()}."
+      );
   }
 }

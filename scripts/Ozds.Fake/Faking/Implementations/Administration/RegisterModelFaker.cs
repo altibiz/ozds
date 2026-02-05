@@ -6,11 +6,8 @@ using Ozds.Fake.Faking.Base;
 
 namespace Ozds.Fake.Implementations.Administration;
 
-public class RegisterModelFaker(
-  IServiceProvider serviceProvider
-) : InheritingModelFaker<RegisterModel, TrackableModel>(
-  serviceProvider
-)
+public class RegisterModelFaker(IServiceProvider serviceProvider)
+  : InheritingModelFaker<RegisterModel, TrackableModel>(serviceProvider)
 {
   public override void Initialize(RegisterModel model, Faker faker)
   {

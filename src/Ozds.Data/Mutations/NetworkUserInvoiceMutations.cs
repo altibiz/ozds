@@ -20,27 +20,33 @@ public class NetworkUserInvoiceMutations(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-    await context.NetworkUserInvoices
-      .Where(context.PrimaryKeyEquals<NetworkUserInvoiceEntity>(id))
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
+    await context
+      .NetworkUserInvoices.Where(
+        context.PrimaryKeyEquals<NetworkUserInvoiceEntity>(id)
+      )
       .ExecuteUpdateAsync(
         s => s.SetProperty(x => x.BillId, registrationId),
-        cancellationToken);
+        cancellationToken
+      );
   }
 
   // NOTE: returns whether created or already existing
   public async Task<bool> CreateCalculatedInvoice(
     CalculatedNetworkUserInvoiceEntity invoice,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     try
     {
-      await using var transaction = await context.Database
-        .BeginTransactionAsync(cancellationToken);
+      await using var transaction =
+        await context.Database.BeginTransactionAsync(cancellationToken);
 
       context.Add(invoice.Invoice);
       await context.SaveChangesAsync(cancellationToken);
@@ -61,10 +67,12 @@ public class NetworkUserInvoiceMutations(
       return true;
     }
     // NOTE: unique index violation on invoice
-    catch (DbUpdateException ex) when (
-      ex.InnerException is PostgresException pgEx &&
-      pgEx.SqlState == "23505" &&
-      pgEx.TableName == reflector.ResolveEntityTable(invoice.Invoice.GetType()))
+    catch (DbUpdateException ex)
+      when (ex.InnerException is PostgresException pgEx
+        && pgEx.SqlState == "23505"
+        && pgEx.TableName
+          == reflector.ResolveEntityTable(invoice.Invoice.GetType())
+      )
     {
       if (context.Database.CurrentTransaction is { } transaction)
       {

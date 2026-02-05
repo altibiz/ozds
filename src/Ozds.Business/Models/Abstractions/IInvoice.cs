@@ -1,5 +1,3 @@
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IInvoice : IFinancial
-{
-}
+public interface IInvoice : IFinancial { }

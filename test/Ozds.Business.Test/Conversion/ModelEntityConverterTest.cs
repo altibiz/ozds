@@ -10,14 +10,16 @@ public class ModelEntityConverterTest : OzdsBusinessHostTestBase
 {
   public static IEnumerable<Type> TestData()
   {
-    return AppDomain.CurrentDomain
-      .GetAssemblies()
+    return AppDomain
+      .CurrentDomain.GetAssemblies()
       .Where(x => x.FullName is { } name && name.Contains("Ozds"))
-      .SelectMany(assembly => assembly
-        .GetTypes()
-        .Where(type =>
-          !type.IsGenericType &&
-          type.IsAssignableTo(typeof(IModel))));
+      .SelectMany(assembly =>
+        assembly
+          .GetTypes()
+          .Where(type =>
+            !type.IsGenericType && type.IsAssignableTo(typeof(IModel))
+          )
+      );
   }
 
   [Test]
@@ -27,15 +29,14 @@ public class ModelEntityConverterTest : OzdsBusinessHostTestBase
     using var scope = Host.Services.CreateScope();
     var serviceProvider = scope.ServiceProvider;
 
-    var activator = serviceProvider
-      .GetRequiredService<ModelActivator>();
-    var modelEntityConverter = serviceProvider
-      .GetRequiredService<ModelEntityConverter>();
+    var activator = serviceProvider.GetRequiredService<ModelActivator>();
+    var modelEntityConverter =
+      serviceProvider.GetRequiredService<ModelEntityConverter>();
 
     var activationType = TestData()
       .FirstOrDefault(type =>
-        !type.IsGenericType
-        && type.IsAssignableTo(modelType))!;
+        !type.IsGenericType && type.IsAssignableTo(modelType)
+      )!;
     activationType.Should().NotBeNull();
     var activated = activator.ActivateDynamic(activationType);
     activated.Should().NotBeNull().And.BeAssignableTo(activationType);
@@ -46,15 +47,26 @@ public class ModelEntityConverterTest : OzdsBusinessHostTestBase
 
     var converted = modelEntityConverter.ToModel(entity);
     converted.Should().NotBeNull().And.BeAssignableTo(modelType);
-    converted.Should().BeEquivalentTo(
-      activated, options => options
-        .Excluding(x =>
-          x.Name == "Created"
-          || (x.DeclaringType.IsAssignableTo(typeof(IJoin))
-            && x.Name == "ActivationSide")
-          || (x.DeclaringType.IsAssignableTo(typeof(IJoin))
-            && x.Name == "ActivationId")
-          || (x.DeclaringType.IsAssignableTo(typeof(ApiKeyModel))
-            && x.Name == "Value")));
+    converted
+      .Should()
+      .BeEquivalentTo(
+        activated,
+        options =>
+          options.Excluding(x =>
+            x.Name == "Created"
+            || (
+              x.DeclaringType.IsAssignableTo(typeof(IJoin))
+              && x.Name == "ActivationSide"
+            )
+            || (
+              x.DeclaringType.IsAssignableTo(typeof(IJoin))
+              && x.Name == "ActivationId"
+            )
+            || (
+              x.DeclaringType.IsAssignableTo(typeof(ApiKeyModel))
+              && x.Name == "Value"
+            )
+          )
+      );
   }
 }

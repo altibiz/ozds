@@ -6,7 +6,8 @@ public abstract class InheritingModelCachingEntityConverter<
   TModel,
   TSuperModel,
   TEntity,
-  TSuperEntity>(IServiceProvider serviceProvider)
+  TSuperEntity
+>(IServiceProvider serviceProvider)
   : ConcreteModelCachingEntityConverter<TModel, TEntity>
   where TModel : notnull, TSuperModel
   where TEntity : notnull, TSuperEntity
@@ -21,11 +22,12 @@ public abstract class InheritingModelCachingEntityConverter<
   {
     _baseEntityConverter ??=
       serviceProvider
-          .GetServices<IModelCachingEntityConverter>()
-          .FirstOrDefault(x => x.EntityType == typeof(TSuperEntity))
+        .GetServices<IModelCachingEntityConverter>()
+        .FirstOrDefault(x => x.EntityType == typeof(TSuperEntity))
         as InitializingModelCachingEntityConverter
       ?? throw new InvalidOperationException(
-        $"No model entity converter found for type {typeof(TSuperEntity)}");
+        $"No model entity converter found for type {typeof(TSuperEntity)}"
+      );
 
     base.InitializeEntity(model, entity);
     _baseEntityConverter.InitializeEntity(model, entity);
@@ -35,11 +37,12 @@ public abstract class InheritingModelCachingEntityConverter<
   {
     _baseModelConverter ??=
       serviceProvider
-          .GetServices<IModelCachingEntityConverter>()
-          .FirstOrDefault(x => x.ModelType == typeof(TSuperModel))
+        .GetServices<IModelCachingEntityConverter>()
+        .FirstOrDefault(x => x.ModelType == typeof(TSuperModel))
         as InitializingModelCachingEntityConverter
       ?? throw new InvalidOperationException(
-        $"No model entity converter found for type {typeof(TSuperModel)}");
+        $"No model entity converter found for type {typeof(TSuperModel)}"
+      );
 
     base.InitializeModel(entity, model);
     _baseModelConverter.InitializeModel(entity, model);

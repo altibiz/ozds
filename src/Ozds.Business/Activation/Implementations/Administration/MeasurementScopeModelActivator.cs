@@ -4,11 +4,8 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Activation.Implementations.Administration;
 
-public class MeasurementScopeModelActivator(
-  IServiceProvider serviceProvider
-) : InheritingModelActivator<MeasurementScopeModel, ScopeModel>(
-  serviceProvider
-)
+public class MeasurementScopeModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<MeasurementScopeModel, ScopeModel>(serviceProvider)
 {
   public override void Initialize(MeasurementScopeModel model)
   {

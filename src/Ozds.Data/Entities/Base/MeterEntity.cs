@@ -9,7 +9,9 @@ namespace Ozds.Data.Entities.Base;
 // NOTE: don't make this thing abstract for now - archived properties break
 
 public class MeterEntity
-  : TrackableEntity, ICustomIdentifiableEntity, IMeterEntity
+  : TrackableEntity,
+    ICustomIdentifiableEntity,
+    IMeterEntity
 {
   private long _measurementValidatorId;
 
@@ -18,12 +20,11 @@ public class MeterEntity
   public virtual MeasurementLocationEntity? MeasurementLocation { get; set; } =
     default!;
 
-  public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations { get; set; } =
+  public virtual ICollection<NetworkUserCalculationEntity> NetworkUserCalculations { get; set; } =
     default!;
 
-  public virtual ICollection<MeterNotificationEntity>
-    InactivityNotifications { get; set; } = default!;
+  public virtual ICollection<MeterNotificationEntity> InactivityNotifications { get; set; } =
+    default!;
 
   public virtual MeasurementValidatorEntity MeasurementValidator { get; set; } =
     default!;
@@ -45,9 +46,7 @@ public class MeterEntity
   }
 }
 
-public class MeterEntity<
-  TMeasurement,
-  TAggregate,
+public class MeterEntity<TMeasurement, TAggregate,
 #pragma warning disable S2326 // Unused type parameters should be removed
   TMeasurementValidator
 #pragma warning restore S2326 // Unused type parameters should be removed
@@ -62,9 +61,8 @@ public class MeterEntity<
   public virtual ICollection<TAggregate> Aggregates { get; set; } = default!;
 }
 
-public class
-  MeterInheritedEntityTypeConfiguration :
-  EntityTypeHierarchyConfiguration<MeterEntity>
+public class MeterInheritedEntityTypeConfiguration
+  : EntityTypeHierarchyConfiguration<MeterEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
@@ -85,13 +83,11 @@ public class
       .HasColumnName("connection_power_w");
 
     builder
-      .HasOne(
-        nameof(MeterEntity.MeasurementValidator))
+      .HasOne(nameof(MeterEntity.MeasurementValidator))
       .WithMany(nameof(MeasurementValidatorEntity<MeterEntity>.Meters))
       .HasForeignKey("_measurementValidatorId");
 
-    builder.Ignore(
-      nameof(MeterEntity.MeasurementValidatorId));
+    builder.Ignore(nameof(MeterEntity.MeasurementValidatorId));
     builder
       .Property("_measurementValidatorId")
       .HasColumnName("measurement_validator_id");
@@ -106,14 +102,26 @@ public class
     {
       builder
         .HasMany(
-          nameof(MeterEntity<MeasurementEntity, AggregateEntity,
-            MeasurementValidatorEntity>.Measurements))
+          nameof(
+            MeterEntity<
+              MeasurementEntity,
+              AggregateEntity,
+              MeasurementValidatorEntity
+            >.Measurements
+          )
+        )
         .WithOne(nameof(MeasurementEntity<MeterEntity>.Meter));
 
       builder
         .HasMany(
-          nameof(MeterEntity<MeasurementEntity, AggregateEntity,
-            MeasurementValidatorEntity>.Aggregates))
+          nameof(
+            MeterEntity<
+              MeasurementEntity,
+              AggregateEntity,
+              MeasurementValidatorEntity
+            >.Aggregates
+          )
+        )
         .WithOne(nameof(AggregateEntity<MeterEntity>.Meter));
     }
   }

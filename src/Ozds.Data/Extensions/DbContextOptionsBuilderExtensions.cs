@@ -16,16 +16,17 @@ public static class DbContextOptionsBuilderExtensions
   {
     return builder
       .ReplaceService<IMigrationsSqlGenerator, TimescaleMigrationSqlGenerator>()
-      .ReplaceService<IRelationalAnnotationProvider,
-        TimescaleAnnotationProvider>();
+      .ReplaceService<
+        IRelationalAnnotationProvider,
+        TimescaleAnnotationProvider
+      >();
   }
 
-  public static DbContextOptionsBuilder
-    AddServedSaveChangesInterceptorsFromAssembly(
-      this DbContextOptionsBuilder builder,
-      Assembly assembly,
-      IServiceProvider serviceProvider
-    )
+  public static DbContextOptionsBuilder AddServedSaveChangesInterceptorsFromAssembly(
+    this DbContextOptionsBuilder builder,
+    Assembly assembly,
+    IServiceProvider serviceProvider
+  )
   {
     return builder.AddInterceptors(
       assembly
@@ -36,9 +37,8 @@ public static class DbContextOptionsBuilderExtensions
         {
           try
           {
-            return (IInterceptor?)Activator.CreateInstance(
-              type,
-              serviceProvider);
+            return (IInterceptor?)
+              Activator.CreateInstance(type, serviceProvider);
           }
           catch (Exception)
           {
@@ -49,6 +49,7 @@ public static class DbContextOptionsBuilderExtensions
         .OfType<ServedInterceptor>()
         .OrderBy(interceptor => interceptor.Order)
         .OfType<IInterceptor>()
-        .ToArray());
+        .ToArray()
+    );
   }
 }

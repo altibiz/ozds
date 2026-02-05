@@ -5,6 +5,4 @@ using Ozds.Caching.Entities.Base;
 namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class JoinModelCachingEntityConverter
-  : ConcreteModelCachingEntityConverter<JoinModel, JoinEntity>
-{
-}
+  : ConcreteModelCachingEntityConverter<JoinModel, JoinEntity> { }

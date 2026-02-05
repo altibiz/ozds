@@ -16,8 +16,8 @@ public class NetworkUserInvoiceStateEntity : StateEntity
   public bool Approved { get; set; }
 }
 
-public class
-  NetworkUserInvoiceStateMap : SagaClassMap<NetworkUserInvoiceStateEntity>
+public class NetworkUserInvoiceStateMap
+  : SagaClassMap<NetworkUserInvoiceStateEntity>
 {
   protected override void Configure(
     EntityTypeBuilder<NetworkUserInvoiceStateEntity> entity,
@@ -28,12 +28,8 @@ public class
 
     entity.ConfigureEntity();
 
-    entity
-      .Property(x => x.NetworkUserInvoiceId)
-      .IsRequired();
+    entity.Property(x => x.NetworkUserInvoiceId).IsRequired();
 
-    entity
-      .HasIndex(x => x.NetworkUserInvoiceId)
-      .IsUnique();
+    entity.HasIndex(x => x.NetworkUserInvoiceId).IsUnique();
   }
 }

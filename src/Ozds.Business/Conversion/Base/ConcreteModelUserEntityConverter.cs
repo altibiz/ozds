@@ -15,13 +15,9 @@ public abstract class ConcreteModelUserEntityConverter<TModel, TEntity>
     get { return typeof(TModel); }
   }
 
-  public virtual void InitializeEntity(TModel model, TEntity entity)
-  {
-  }
+  public virtual void InitializeEntity(TModel model, TEntity entity) { }
 
-  public virtual void InitializeModel(TEntity entity, TModel model)
-  {
-  }
+  public virtual void InitializeModel(TEntity entity, TModel model) { }
 
   public virtual TEntity ToEntity(TModel model)
   {

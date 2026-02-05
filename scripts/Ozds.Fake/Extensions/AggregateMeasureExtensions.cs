@@ -14,7 +14,7 @@ public static class AggregateMeasureExtensions
       Min = measure.Min,
       MinTimestamp = measure.MinTimestamp,
       Max = measure.Max,
-      MaxTimestamp = measure.MaxTimestamp
+      MaxTimestamp = measure.MaxTimestamp,
     };
   }
 
@@ -25,7 +25,7 @@ public static class AggregateMeasureExtensions
     return new CumulativeAggregateMeasureModel
     {
       Min = measure.Min,
-      Max = measure.Max
+      Max = measure.Max,
     };
   }
 
@@ -39,7 +39,7 @@ public static class AggregateMeasureExtensions
       Min = measure.Min,
       MinTimestamp = measure.MinTimestamp,
       Max = measure.Max,
-      MaxTimestamp = measure.MaxTimestamp
+      MaxTimestamp = measure.MaxTimestamp,
     };
   }
 }

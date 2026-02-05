@@ -13,6 +13,5 @@ public interface INetworkUserCalculation : ICalculation
   public NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue { get; }
   public RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue { get; }
 
-  public NetworkUserMeasurementLocationModel
-    ArchivedNetworkUserMeasurementLocation { get; }
+  public NetworkUserMeasurementLocationModel ArchivedNetworkUserMeasurementLocation { get; }
 }

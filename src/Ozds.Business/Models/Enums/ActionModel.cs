@@ -8,7 +8,7 @@ public enum ActionModel
   Update,
   Delete,
   Restore,
-  Forget
+  Forget,
 }
 
 public static class ActionModelExtensions
@@ -24,7 +24,7 @@ public static class ActionModelExtensions
       ActionModel.Delete => "Delete",
       ActionModel.Restore => "Restore",
       ActionModel.Forget => "Forget",
-      _ => throw new ArgumentOutOfRangeException(nameof(action))
+      _ => throw new ArgumentOutOfRangeException(nameof(action)),
     };
   }
 }

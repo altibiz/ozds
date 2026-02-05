@@ -34,10 +34,7 @@ public class MeasurementQueries(
     var timeSpan = time.ResolutionTimeSpan(resolution, toDate, multiplier);
     fromDate = fromDate == default ? toDate.Subtract(timeSpan) : fromDate;
 
-    var appropriateIntervalModel = time.AppropriateInterval(
-      timeSpan,
-      fromDate
-    );
+    var appropriateIntervalModel = time.AppropriateInterval(timeSpan, fromDate);
 
     return await ReadByMeterIds(
       meterIds,
@@ -64,15 +61,19 @@ public class MeasurementQueries(
     var isAggregate = appropriateInterval is not null;
 
     var modelIdsByEntityType = meterIds
-      .GroupBy(id => isAggregate
-        ? modelEntityConverter.EntityType(
-          meterNamingConvention.AggregateTypeForMeterId(id)
-        )
-        : modelEntityConverter.EntityType(
-          meterNamingConvention.MeasurementTypeForMeterId(id)
-        ))
-      .Select(group =>
-        new KeyValuePair<Type, IEnumerable<string>>(group.Key, group))
+      .GroupBy(id =>
+        isAggregate
+          ? modelEntityConverter.EntityType(
+            meterNamingConvention.AggregateTypeForMeterId(id)
+          )
+          : modelEntityConverter.EntityType(
+            meterNamingConvention.MeasurementTypeForMeterId(id)
+          )
+      )
+      .Select(group => new KeyValuePair<Type, IEnumerable<string>>(
+        group.Key,
+        group
+      ))
       .ToList();
 
     var entities = await queries.ReadByMeterIds(
@@ -91,7 +92,7 @@ public class MeasurementQueries(
         (
           appropriateIntervalModel is not null
             ? x is IAggregate aggregate
-            && aggregate.Interval == appropriateIntervalModel
+              && aggregate.Interval == appropriateIntervalModel
             : x is not IAggregate
         )
         && meterIds.Any(y => y == x.MeterId)
@@ -176,10 +177,7 @@ public class MeasurementQueries(
     var timeSpan = time.ResolutionTimeSpan(resolution, toDate, multiplier);
     fromDate = fromDate == default ? toDate.Subtract(timeSpan) : fromDate;
 
-    var appropriateIntervalModel = time.AppropriateInterval(
-      timeSpan,
-      fromDate
-    );
+    var appropriateIntervalModel = time.AppropriateInterval(timeSpan, fromDate);
 
     return await ReadByMeasurementLocationIds(
       measurementLocationIds,
@@ -218,7 +216,7 @@ public class MeasurementQueries(
         (
           appropriateIntervalModel is not null
             ? x is IAggregate aggregate
-            && aggregate.Interval == appropriateIntervalModel
+              && aggregate.Interval == appropriateIntervalModel
             : x is not IAggregate
         )
         && measurementLocationIds.Any(y => y == x.MeasurementLocationId)

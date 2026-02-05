@@ -24,9 +24,9 @@ public partial class NetworkUserRepresentativeDashboard : OzdsComponentBase
   private TimeQueries TimeQueries { get; set; } = default!;
 
   // TODO: better way to do this
-  private sealed class MonthlyMeasurement(
-    List<IMeasurement> Aggregates
-  ) : Model, IMeasurement
+  private sealed class MonthlyMeasurement(List<IMeasurement> Aggregates)
+    : Model,
+      IMeasurement
   {
     public string MeterId
     {
@@ -74,9 +74,12 @@ public partial class NetworkUserRepresentativeDashboard : OzdsComponentBase
       {
         return Aggregates.Count == 0
           ? TariffMeasure<decimal>.Null
-          : Aggregates.Skip(1).Aggregate(
-            Aggregates.First().ActiveEnergy_Wh,
-            (x, y) => x.Add(y.ActiveEnergy_Wh));
+          : Aggregates
+            .Skip(1)
+            .Aggregate(
+              Aggregates.First().ActiveEnergy_Wh,
+              (x, y) => x.Add(y.ActiveEnergy_Wh)
+            );
       }
     }
 
@@ -86,9 +89,12 @@ public partial class NetworkUserRepresentativeDashboard : OzdsComponentBase
       {
         return Aggregates.Count == 0
           ? TariffMeasure<decimal>.Null
-          : Aggregates.Skip(1).Aggregate(
-            Aggregates.First().ReactiveEnergy_VARh,
-            (x, y) => x.Add(y.ReactiveEnergy_VARh));
+          : Aggregates
+            .Skip(1)
+            .Aggregate(
+              Aggregates.First().ReactiveEnergy_VARh,
+              (x, y) => x.Add(y.ReactiveEnergy_VARh)
+            );
       }
     }
 
@@ -98,9 +104,12 @@ public partial class NetworkUserRepresentativeDashboard : OzdsComponentBase
       {
         return Aggregates.Count == 0
           ? TariffMeasure<decimal>.Null
-          : Aggregates.Skip(1).Aggregate(
-            Aggregates.First().ApparentEnergy_VAh,
-            (x, y) => x.Add(y.ApparentEnergy_VAh));
+          : Aggregates
+            .Skip(1)
+            .Aggregate(
+              Aggregates.First().ApparentEnergy_VAh,
+              (x, y) => x.Add(y.ApparentEnergy_VAh)
+            );
       }
     }
   }

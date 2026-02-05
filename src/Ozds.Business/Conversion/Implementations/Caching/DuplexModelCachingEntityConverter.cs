@@ -15,7 +15,7 @@ public class DuplexModelCachingEntityConverter
       DuplexModel.Net => DuplexEntity.Net,
       DuplexModel.Import => DuplexEntity.Import,
       DuplexModel.Export => DuplexEntity.Export,
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -27,7 +27,7 @@ public class DuplexModelCachingEntityConverter
       DuplexEntity.Net => DuplexModel.Net,
       DuplexEntity.Import => DuplexModel.Import,
       DuplexEntity.Export => DuplexModel.Export,
-      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null),
     };
   }
 }

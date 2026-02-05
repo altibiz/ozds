@@ -1,5 +1,3 @@
 namespace Ozds.Data.Entities.Abstractions;
 
-public interface INetworkUserCatalogueEntity : ICatalogueEntity
-{
-}
+public interface INetworkUserCatalogueEntity : ICatalogueEntity { }

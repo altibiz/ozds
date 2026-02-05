@@ -30,7 +30,11 @@ public class ReportMutations(
       .Select(converter.ToEntity);
 
     return await mutations.Create(
-      fileName, culture, entities, cancellationToken);
+      fileName,
+      culture,
+      entities,
+      cancellationToken
+    );
   }
 
   public async Task<string> Export<T>(
@@ -46,7 +50,11 @@ public class ReportMutations(
       .Select(converter.ToEntity);
 
     return await mutations.Create(
-      fileName, culture, entities, cancellationToken);
+      fileName,
+      culture,
+      entities,
+      cancellationToken
+    );
   }
 
   public async Task Import<T>(
@@ -58,15 +66,16 @@ public class ReportMutations(
   {
     var entityType = converter.EntityType(typeof(T));
 
-    using var streamer = queries
-      .Read(fileName, culture, entityType, stream, cancellationToken);
-    await foreach (var entities in streamer
-      .Stream()
-      .Chunk(cancellationToken))
+    using var streamer = queries.Read(
+      fileName,
+      culture,
+      entityType,
+      stream,
+      cancellationToken
+    );
+    await foreach (var entities in streamer.Stream().Chunk(cancellationToken))
     {
-      var models = entities
-        .OfType<object>()
-        .Select(converter.ToModel<T>);
+      var models = entities.OfType<object>().Select(converter.ToModel<T>);
 
       foreach (var model in models)
       {
@@ -99,11 +108,14 @@ public class ReportMutations(
   {
     var entityType = converter.EntityType(type);
 
-    using var streamer = queries
-      .Read(fileName, culture, entityType, stream, cancellationToken);
-    await foreach (var entities in streamer
-      .Stream()
-      .Chunk(cancellationToken))
+    using var streamer = queries.Read(
+      fileName,
+      culture,
+      entityType,
+      stream,
+      cancellationToken
+    );
+    await foreach (var entities in streamer.Stream().Chunk(cancellationToken))
     {
       var models = entities.Select(converter.ToModel);
 

@@ -26,12 +26,7 @@ public partial class NetworkUserInvoicePreviewDocumentPage : OzdsComponentBase
 
     var invoice = await ScopedServices
       .GetRequiredService<NetworkUserInvoiceMutations>()
-      .Preview(
-        NetworkUserId,
-        from,
-        to,
-        CancellationToken
-      );
+      .Preview(NetworkUserId, from, to, CancellationToken);
     if (invoice is null)
     {
       return null;
@@ -48,7 +43,7 @@ public partial class NetworkUserInvoicePreviewDocumentPage : OzdsComponentBase
     return new CalculatedNetworkUserInvoiceModelWithHtml
     {
       Invoice = invoice,
-      Html = html
+      Html = html,
     };
   }
 

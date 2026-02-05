@@ -3,8 +3,8 @@ using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Aggregation.Implementations;
 
-public class CumulativeAggregateMeasureUpserter :
-  ConcreteAggregateMeasureUpserter<CumulativeAggregateMeasureModel>
+public class CumulativeAggregateMeasureUpserter
+  : ConcreteAggregateMeasureUpserter<CumulativeAggregateMeasureModel>
 {
   protected override CumulativeAggregateMeasureModel UpsertConcreteModel(
     CumulativeAggregateMeasureModel lhs,
@@ -13,11 +13,7 @@ public class CumulativeAggregateMeasureUpserter :
     long rhsCount
   )
   {
-    return lhs.Upsert(
-      lhsCount,
-      rhs,
-      rhsCount
-    );
+    return lhs.Upsert(lhsCount, rhs, rhsCount);
   }
 }
 
@@ -35,7 +31,7 @@ public static class CumulativeAggregateMeasureUpserterExtensions
     return new CumulativeAggregateMeasureModel
     {
       Min = lhs.Min < rhs.Min ? lhs.Min : rhs.Min,
-      Max = lhs.Max > rhs.Max ? lhs.Max : rhs.Max
+      Max = lhs.Max > rhs.Max ? lhs.Max : rhs.Max,
     };
   }
 }

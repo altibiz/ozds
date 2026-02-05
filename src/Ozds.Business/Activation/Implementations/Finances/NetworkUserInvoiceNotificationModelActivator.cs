@@ -6,9 +6,11 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 
 public class NetworkUserInvoiceNotificationModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  NetworkUserInvoiceNotificationModel,
-  NotificationModel>(serviceProvider)
+)
+  : InheritingModelActivator<
+    NetworkUserInvoiceNotificationModel,
+    NotificationModel
+  >(serviceProvider)
 {
   public override void Initialize(NetworkUserInvoiceNotificationModel model)
   {

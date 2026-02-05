@@ -4,9 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ozds.Jobs.Context;
 
-public class JobsDbContext(
-  DbContextOptions<JobsDbContext> options
-) : DbContext(options)
+public class JobsDbContext(DbContextOptions<JobsDbContext> options)
+  : DbContext(options)
 {
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

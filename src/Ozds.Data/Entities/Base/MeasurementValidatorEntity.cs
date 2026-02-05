@@ -4,11 +4,11 @@ using Ozds.Data.Entities.Abstractions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class MeasurementValidatorEntity : TrackableEntity,
-  IMeasurementValidatorEntity
+public class MeasurementValidatorEntity
+  : TrackableEntity,
+    IMeasurementValidatorEntity
 {
-  public virtual ICollection<MeterEntity> Meters { get; set; } =
-    default!;
+  public virtual ICollection<MeterEntity> Meters { get; set; } = default!;
 
   public string Kind { get; set; } = default!;
 }
@@ -18,12 +18,10 @@ public class MeasurementValidatorEntity<
   TMeter
 #pragma warning restore S2326 // Unused type parameters should be removed
 > : MeasurementValidatorEntity
-  where TMeter : MeterEntity
-{
-}
+  where TMeter : MeterEntity { }
 
-public class MeasurementValidatorEntityTypeHierarchyConfiguration :
-  EntityTypeHierarchyConfiguration<MeasurementValidatorEntity>
+public class MeasurementValidatorEntityTypeHierarchyConfiguration
+  : EntityTypeHierarchyConfiguration<MeasurementValidatorEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {

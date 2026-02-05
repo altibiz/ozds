@@ -22,7 +22,8 @@ public class ApiV1MeasurementsController(
   [ProducesResponseType(
     typeof(QuarterHourlyAggregatesByLocationResponse),
     StatusCodes.Status200OK,
-    "application/json")]
+    "application/json"
+  )]
   public async Task<IActionResult> QuarterHourlyAggregatesByLocation(
     [FromRoute] string locationId,
     [FromQuery] DateTimeOffset? dateFrom,
@@ -31,18 +32,19 @@ public class ApiV1MeasurementsController(
     CancellationToken cancellationToken
   )
   {
-    var auth = HttpContext.Items[ApiKeyAuthAttribute.ApiKeyAuthItemKey]
+    var auth =
+      HttpContext.Items[ApiKeyAuthAttribute.ApiKeyAuthItemKey]
       as ApiKeyAuthModel;
     if (auth is null)
     {
       return Unauthorized();
     }
 
-    var scope = auth.Scopes
-      .FirstOrDefault(scope =>
-        scope.ScopeModelType == modelReflector
-          .ResolveModelName(typeof(LocationModel))
-        && scope.ScopeModelId == locationId);
+    var scope = auth.Scopes.FirstOrDefault(scope =>
+      scope.ScopeModelType
+        == modelReflector.ResolveModelName(typeof(LocationModel))
+      && scope.ScopeModelId == locationId
+    );
     if (scope is null)
     {
       return Unauthorized();
@@ -53,8 +55,8 @@ public class ApiV1MeasurementsController(
       return Unauthorized();
     }
 
-    var measurementLocations = await measurementLocationQueries
-      .ReadByLocationId(
+    var measurementLocations =
+      await measurementLocationQueries.ReadByLocationId(
         locationId,
         cancellationToken
       );
@@ -69,13 +71,14 @@ public class ApiV1MeasurementsController(
           0,
           locationId,
           new List<QuarterHourlyAggregatesByLocationResponseMeasurement>()
-        ));
+        )
+      );
     }
 
     if (dateFrom is null || dateTo is null || page is null)
     {
-      var lastMeasurements = await measurementQueries
-        .ReadByMeasurementLocationIdsLast(
+      var lastMeasurements =
+        await measurementQueries.ReadByMeasurementLocationIdsLast(
           measurementLocations.Select(x => x.Id),
           cancellationToken,
           IntervalModel.QuarterHour
@@ -111,11 +114,12 @@ public class ApiV1MeasurementsController(
           lastMeasurements.Count,
           locationId,
           lastMeasurementsJson
-        ));
+        )
+      );
     }
 
-    var pageMeasurements = await measurementQueries
-      .ReadByMeasurementLocationIds(
+    var pageMeasurements =
+      await measurementQueries.ReadByMeasurementLocationIds(
         measurementLocations.Select(x => x.Id),
         IntervalModel.QuarterHour,
         dateFrom.Value,
@@ -154,7 +158,8 @@ public class ApiV1MeasurementsController(
         pageMeasurements.TotalCount,
         locationId,
         pagedMeasurementsJson
-      ));
+      )
+    );
   }
 
   [HttpGet]
@@ -163,7 +168,8 @@ public class ApiV1MeasurementsController(
   [ProducesResponseType(
     typeof(QuarterHourlyAggregatesByNetworkUserResponse),
     StatusCodes.Status200OK,
-    "application/json")]
+    "application/json"
+  )]
   public async Task<IActionResult> QuarterHourlyAggregatesByNetworkUser(
     [FromRoute] string networkUserId,
     [FromQuery] DateTimeOffset? dateFrom,
@@ -172,18 +178,19 @@ public class ApiV1MeasurementsController(
     CancellationToken cancellationToken
   )
   {
-    var auth = HttpContext.Items[ApiKeyAuthAttribute.ApiKeyAuthItemKey]
+    var auth =
+      HttpContext.Items[ApiKeyAuthAttribute.ApiKeyAuthItemKey]
       as ApiKeyAuthModel;
     if (auth is null)
     {
       return Unauthorized();
     }
 
-    var scope = auth.Scopes
-      .FirstOrDefault(scope =>
-        scope.ScopeModelType == modelReflector
-          .ResolveModelName(typeof(NetworkUserModel))
-        && scope.ScopeModelId == networkUserId);
+    var scope = auth.Scopes.FirstOrDefault(scope =>
+      scope.ScopeModelType
+        == modelReflector.ResolveModelName(typeof(NetworkUserModel))
+      && scope.ScopeModelId == networkUserId
+    );
     if (scope is null)
     {
       return Unauthorized();
@@ -194,8 +201,8 @@ public class ApiV1MeasurementsController(
       return Unauthorized();
     }
 
-    var measurementLocations = await measurementLocationQueries
-      .ReadByNetworkUserId(
+    var measurementLocations =
+      await measurementLocationQueries.ReadByNetworkUserId(
         networkUserId,
         cancellationToken
       );
@@ -210,13 +217,14 @@ public class ApiV1MeasurementsController(
           0,
           networkUserId,
           new List<QuarterHourlyAggregatesByNetworkUserResponseMeasurement>()
-        ));
+        )
+      );
     }
 
     if (dateFrom is null || dateTo is null || page is null)
     {
-      var lastMeasurements = await measurementQueries
-        .ReadByMeasurementLocationIdsLast(
+      var lastMeasurements =
+        await measurementQueries.ReadByMeasurementLocationIdsLast(
           measurementLocations.Select(x => x.Id),
           cancellationToken,
           IntervalModel.QuarterHour
@@ -252,11 +260,12 @@ public class ApiV1MeasurementsController(
           lastMeasurements.Count,
           networkUserId,
           lastMeasurementsJson
-        ));
+        )
+      );
     }
 
-    var pageMeasurements = await measurementQueries
-      .ReadByMeasurementLocationIds(
+    var pageMeasurements =
+      await measurementQueries.ReadByMeasurementLocationIds(
         measurementLocations.Select(x => x.Id),
         IntervalModel.QuarterHour,
         dateFrom.Value,
@@ -295,17 +304,20 @@ public class ApiV1MeasurementsController(
         pageMeasurements.TotalCount,
         networkUserId,
         pagedMeasurementsJson
-      ));
+      )
+    );
   }
 
   [HttpGet]
   [Route(
-    "quarter-hourly-aggregates-by-measurement-location/{measurementLocationId}")]
+    "quarter-hourly-aggregates-by-measurement-location/{measurementLocationId}"
+  )]
   [ProducesResponseType(StatusCodes.Status404NotFound)]
   [ProducesResponseType(
     typeof(QuarterHourlyAggregatesByMeasurementLocationResponse),
     StatusCodes.Status200OK,
-    "application/json")]
+    "application/json"
+  )]
   public async Task<IActionResult> QuarterHourlyAggregatesByMeasurementLocation(
     [FromRoute] string measurementLocationId,
     [FromQuery] DateTimeOffset? dateFrom,
@@ -314,18 +326,21 @@ public class ApiV1MeasurementsController(
     CancellationToken cancellationToken
   )
   {
-    var auth = HttpContext.Items[ApiKeyAuthAttribute.ApiKeyAuthItemKey]
+    var auth =
+      HttpContext.Items[ApiKeyAuthAttribute.ApiKeyAuthItemKey]
       as ApiKeyAuthModel;
     if (auth is null)
     {
       return Unauthorized();
     }
 
-    var scope = auth.Scopes
-      .FirstOrDefault(scope =>
-        scope.ScopeModelType == modelReflector
-          .ResolveModelName(typeof(NetworkUserMeasurementLocationModel))
-        && scope.ScopeModelId == measurementLocationId);
+    var scope = auth.Scopes.FirstOrDefault(scope =>
+      scope.ScopeModelType
+        == modelReflector.ResolveModelName(
+          typeof(NetworkUserMeasurementLocationModel)
+        )
+      && scope.ScopeModelId == measurementLocationId
+    );
     if (scope is null)
     {
       return Unauthorized();
@@ -338,16 +353,15 @@ public class ApiV1MeasurementsController(
 
     if (dateFrom is null || dateTo is null || page is null)
     {
-      var lastMeasurements = await measurementQueries
-        .ReadByMeasurementLocationIdsLast(
+      var lastMeasurements =
+        await measurementQueries.ReadByMeasurementLocationIdsLast(
           [measurementLocationId],
           cancellationToken,
           IntervalModel.QuarterHour
         );
 
       var lastMeasurementsJson =
-        new List<
-          QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement>();
+        new List<QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement>();
       foreach (var measurement in lastMeasurements)
       {
         var measurementJson =
@@ -376,11 +390,12 @@ public class ApiV1MeasurementsController(
           lastMeasurements.Count,
           measurementLocationId,
           lastMeasurementsJson
-        ));
+        )
+      );
     }
 
-    var pageMeasurements = await measurementQueries
-      .ReadByMeasurementLocationIds(
+    var pageMeasurements =
+      await measurementQueries.ReadByMeasurementLocationIds(
         [measurementLocationId],
         IntervalModel.QuarterHour,
         dateFrom.Value,
@@ -390,8 +405,7 @@ public class ApiV1MeasurementsController(
       );
 
     var pagedMeasurementsJson =
-      new List<
-        QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement>();
+      new List<QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement>();
     foreach (var measurement in pageMeasurements.Items)
     {
       var measurementJson =
@@ -420,7 +434,8 @@ public class ApiV1MeasurementsController(
         pageMeasurements.TotalCount,
         measurementLocationId,
         pagedMeasurementsJson
-      ));
+      )
+    );
   }
 
   private sealed record QuarterHourlyAggregatesByLocationResponse(
@@ -464,15 +479,13 @@ public class ApiV1MeasurementsController(
     int? PageSize,
     int? TotalCount,
     string MeasurementLocationId,
-    IList<QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement>
-      Measurements
+    IList<QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement> Measurements
   );
 
-  private sealed record
-    QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement(
-      DateTimeOffset Timestamp,
-      string MeterId,
-      string MeasurementLocationId,
-      IDictionary<string, string> Registers
-    );
+  private sealed record QuarterHourlyAggregatesByMeasurementLocationResponseMeasurement(
+    DateTimeOffset Timestamp,
+    string MeterId,
+    string MeasurementLocationId,
+    IDictionary<string, string> Registers
+  );
 }

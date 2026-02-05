@@ -9,32 +9,33 @@ namespace Ozds.Business.Observers.Implementations;
 public class JobsMeterJobRelay(
   IServiceProvider serviceProvider,
   IMeterJobSubscriber subscriber
-) : Relay<
-  MeterJobEventArgs,
-  JobsMeterJobEventArgs,
-  JobsMeterJobPipe>(
-  serviceProvider
-), IJobsMeterJobSubscriber
+)
+  : Relay<MeterJobEventArgs, JobsMeterJobEventArgs, JobsMeterJobPipe>(
+    serviceProvider
+  ),
+    IJobsMeterJobSubscriber
 {
   protected override void SubscribeIn(
-    EventHandler<MeterJobEventArgs> eventHandler)
+    EventHandler<MeterJobEventArgs> eventHandler
+  )
   {
     subscriber.Subscribe(eventHandler);
   }
 
   protected override void UnsubscribeIn(
-    EventHandler<MeterJobEventArgs> eventHandler)
+    EventHandler<MeterJobEventArgs> eventHandler
+  )
   {
     subscriber.Unsubscribe(eventHandler);
   }
 }
 
-public class JobsMeterJobPipe
-  : IPipe<MeterJobEventArgs, JobsMeterJobEventArgs>
+public class JobsMeterJobPipe : IPipe<MeterJobEventArgs, JobsMeterJobEventArgs>
 {
   public Task<JobsMeterJobEventArgs> Transform(
     MeterJobEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var modelEventArgs = new JobsMeterJobEventArgs
     {
@@ -43,7 +44,7 @@ public class JobsMeterJobPipe
       StartedAt = eventArgs.StartedAt,
       ScheduledFireAt = eventArgs.ScheduledFireAt,
       FiredAt = eventArgs.FiredAt,
-      RefireCount = eventArgs.RefireCount
+      RefireCount = eventArgs.RefireCount,
     };
     return Task.FromResult(modelEventArgs);
   }

@@ -29,14 +29,13 @@ public class AppReportController(
   {
     var (start, end) = time.GetMonthRange(year, month);
 
-    var energyCards = await reportQueries
-      .ReadEnergyCardReportsByLocation(
-        culture,
-        locationId,
-        start,
-        end,
-        cancellationToken
-      );
+    var energyCards = await reportQueries.ReadEnergyCardReportsByLocation(
+      culture,
+      locationId,
+      start,
+      end,
+      cancellationToken
+    );
     if (energyCards is null)
     {
       return NotFound();
@@ -46,7 +45,8 @@ public class AppReportController(
       localizationQueries.Translate(culture, "location-")
       + locationId
       + localizationQueries.Translate(culture, "-energy-card-for-")
-      + end.ToString("MM-yyyy") + ".csv";
+      + end.ToString("MM-yyyy")
+      + ".csv";
 
     var csv = await reportMutations.Export(
       fileName,
@@ -62,7 +62,8 @@ public class AppReportController(
 
   [HttpGet]
   [Route(
-    "network-user-energy-card/{culture}/{networkUserId}/{year:int}/{month:int}")]
+    "network-user-energy-card/{culture}/{networkUserId}/{year:int}/{month:int}"
+  )]
   public async Task<IActionResult> NetworkUserEnergyCard(
     CultureInfo culture,
     string networkUserId,
@@ -73,14 +74,13 @@ public class AppReportController(
   {
     var (start, end) = time.GetMonthRange(year, month);
 
-    var energyCards = await reportQueries
-      .ReadEnergyCardReportsByNetworkUser(
-        culture,
-        networkUserId,
-        start,
-        end,
-        cancellationToken
-      );
+    var energyCards = await reportQueries.ReadEnergyCardReportsByNetworkUser(
+      culture,
+      networkUserId,
+      start,
+      end,
+      cancellationToken
+    );
     if (energyCards is null)
     {
       return NotFound();
@@ -90,7 +90,8 @@ public class AppReportController(
       localizationQueries.Translate(culture, "network-user-")
       + networkUserId
       + localizationQueries.Translate(culture, "-energy-card-for-")
-      + end.ToString("MM-yyyy") + ".csv";
+      + end.ToString("MM-yyyy")
+      + ".csv";
     var csv = await reportMutations.Export(
       fileName,
       culture,
@@ -105,7 +106,8 @@ public class AppReportController(
 
   [HttpGet]
   [Route(
-    "measurement-location-accounting-period/{culture}/{measurementLocationId}/{year:int}/{month:int}")]
+    "measurement-location-accounting-period/{culture}/{measurementLocationId}/{year:int}/{month:int}"
+  )]
   public async Task<IActionResult> MeasurementLocationAccountingPeriod(
     CultureInfo culture,
     string measurementLocationId,
@@ -116,14 +118,13 @@ public class AppReportController(
   {
     var (start, end) = time.GetMonthRange(year, month);
 
-    var accountingPeriod = await reportQueries
-      .ReadAccountingPeriodReports(
-        culture,
-        measurementLocationId,
-        start,
-        end,
-        cancellationToken
-      );
+    var accountingPeriod = await reportQueries.ReadAccountingPeriodReports(
+      culture,
+      measurementLocationId,
+      start,
+      end,
+      cancellationToken
+    );
     if (accountingPeriod is null)
     {
       return NotFound();
@@ -133,7 +134,8 @@ public class AppReportController(
       localizationQueries.Translate(culture, "measurement-location-")
       + measurementLocationId
       + localizationQueries.Translate(culture, "-accounting-period-for-")
-      + end.ToString("MM-yyyy") + ".csv";
+      + end.ToString("MM-yyyy")
+      + ".csv";
 
     var csv = await reportMutations.Export(
       fileName,
@@ -149,7 +151,8 @@ public class AppReportController(
 
   [HttpGet]
   [Route(
-    "measurement-location-load-curve/{culture}/{measurementLocationId}/{obisString}/{year:int}/{month:int}")]
+    "measurement-location-load-curve/{culture}/{measurementLocationId}/{obisString}/{year:int}/{month:int}"
+  )]
   public async Task<IActionResult> MeasurementLocationLoadCurve(
     CultureInfo culture,
     string measurementLocationId,
@@ -163,15 +166,14 @@ public class AppReportController(
 
     var obis = obisString.ToObis();
 
-    var loadCurves = await reportQueries
-      .ReadLoadCurveReports(
-        culture,
-        measurementLocationId,
-        obis,
-        start,
-        end,
-        cancellationToken
-      );
+    var loadCurves = await reportQueries.ReadLoadCurveReports(
+      culture,
+      measurementLocationId,
+      obis,
+      start,
+      end,
+      cancellationToken
+    );
     if (loadCurves is null)
     {
       return NotFound();
@@ -181,7 +183,8 @@ public class AppReportController(
       localizationQueries.Translate(culture, "measurement-location-")
       + measurementLocationId
       + localizationQueries.Translate(culture, "-load-curve-for-")
-      + end.ToString("MM-yyyy") + ".csv";
+      + end.ToString("MM-yyyy")
+      + ".csv";
 
     var csv = await reportMutations.Export(
       fileName,
@@ -207,8 +210,8 @@ public class AppReportController(
   {
     var (start, end) = time.GetMonthRange(year, month);
 
-    var accountingPeriod = await reportQueries
-      .ReadAccountingPeriodReportsByMeter(
+    var accountingPeriod =
+      await reportQueries.ReadAccountingPeriodReportsByMeter(
         culture,
         meterId,
         start,
@@ -224,7 +227,8 @@ public class AppReportController(
       localizationQueries.Translate(culture, "meter-")
       + meterId
       + localizationQueries.Translate(culture, "-accounting-period-for-")
-      + end.ToString("MM-yyyy") + ".csv";
+      + end.ToString("MM-yyyy")
+      + ".csv";
 
     var csv = await reportMutations.Export(
       fileName,
@@ -240,7 +244,8 @@ public class AppReportController(
 
   [HttpGet]
   [Route(
-    "meter-load-curve/{culture}/{meterId}/{obisString}/{year:int}/{month:int}")]
+    "meter-load-curve/{culture}/{meterId}/{obisString}/{year:int}/{month:int}"
+  )]
   public async Task<IActionResult> MeterLoadCurve(
     CultureInfo culture,
     string meterId,
@@ -254,15 +259,14 @@ public class AppReportController(
 
     var obis = obisString.ToObis();
 
-    var loadCurves = await reportQueries
-      .ReadLoadCurveReportsByMeter(
-        culture,
-        meterId,
-        obis,
-        start,
-        end,
-        cancellationToken
-      );
+    var loadCurves = await reportQueries.ReadLoadCurveReportsByMeter(
+      culture,
+      meterId,
+      obis,
+      start,
+      end,
+      cancellationToken
+    );
     if (loadCurves is null)
     {
       return NotFound();
@@ -272,7 +276,8 @@ public class AppReportController(
       localizationQueries.Translate(culture, "meter-")
       + meterId
       + localizationQueries.Translate(culture, "-load-curve-for-")
-      + end.ToString("MM-yyyy") + ".csv";
+      + end.ToString("MM-yyyy")
+      + ".csv";
 
     var csv = await reportMutations.Export(
       fileName,

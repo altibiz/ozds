@@ -4,8 +4,8 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Complex;
 
-public abstract class
-  ActivePowerTotalImportT1PeakCalculationItemModel : CalculationItemModel
+public abstract class ActivePowerTotalImportT1PeakCalculationItemModel
+  : CalculationItemModel
 {
   [Required]
   public required decimal Peak_kW { get; set; }

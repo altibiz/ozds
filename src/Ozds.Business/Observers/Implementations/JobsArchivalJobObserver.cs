@@ -9,20 +9,22 @@ namespace Ozds.Business.Observers.Implementations;
 public class JobsArchivalJobRelay(
   IServiceProvider serviceProvider,
   IArchivalJobSubscriber subscriber
-) : Relay<
-    ArchivalJobEventArgs,
-    JobsArchivalJobEventArgs,
-    JobsArchivalJobPipe>(serviceProvider),
-  IJobsArchivalJobSubscriber
+)
+  : Relay<ArchivalJobEventArgs, JobsArchivalJobEventArgs, JobsArchivalJobPipe>(
+    serviceProvider
+  ),
+    IJobsArchivalJobSubscriber
 {
   protected override void SubscribeIn(
-    EventHandler<ArchivalJobEventArgs> eventHandler)
+    EventHandler<ArchivalJobEventArgs> eventHandler
+  )
   {
     subscriber.Subscribe(eventHandler);
   }
 
   protected override void UnsubscribeIn(
-    EventHandler<ArchivalJobEventArgs> eventHandler)
+    EventHandler<ArchivalJobEventArgs> eventHandler
+  )
   {
     subscriber.Unsubscribe(eventHandler);
   }
@@ -33,7 +35,8 @@ public class JobsArchivalJobPipe
 {
   public Task<JobsArchivalJobEventArgs> Transform(
     ArchivalJobEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var modelEventArgs = new JobsArchivalJobEventArgs();
     return Task.FromResult(modelEventArgs);

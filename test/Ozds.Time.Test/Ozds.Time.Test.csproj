@@ -1,7 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <ItemGroup>
     <ProjectReference Include="../../src/Ozds.Time/Ozds.Time.csproj" />
   </ItemGroup>
-
 </Project>

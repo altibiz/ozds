@@ -10,9 +10,7 @@ public sealed class AltibizFake : IComposableService<AltibizFake>
 
   private OzdsFakeHost? host;
 
-  private AltibizFake()
-  {
-  }
+  private AltibizFake() { }
 
   public string NetworkUserInvoiceStateQueue
   {
@@ -35,7 +33,16 @@ public sealed class AltibizFake : IComposableService<AltibizFake>
     var testBinDir = Directory.GetCurrentDirectory();
     var fakeDir = Path.GetFullPath(
       Path.Combine(
-        testBinDir, "..", "..", "..", "..", "..", "scripts", "Ozds.Fake"));
+        testBinDir,
+        "..",
+        "..",
+        "..",
+        "..",
+        "..",
+        "scripts",
+        "Ozds.Fake"
+      )
+    );
 
     var arguments = new OzdsFakeAltibizArguments();
 
@@ -43,11 +50,13 @@ public sealed class AltibizFake : IComposableService<AltibizFake>
     {
       EnvironmentName = "Development",
       ApplicationName = "Ozds.Fake",
-      ContentRootPath = fakeDir
+      ContentRootPath = fakeDir,
     };
 
     host = new OzdsFakeHost(
-      arguments, settings, builder =>
+      arguments,
+      settings,
+      builder =>
       {
         builder.Configuration.AddInMemoryCollection(
           new Dictionary<string, string?>
@@ -75,9 +84,11 @@ public sealed class AltibizFake : IComposableService<AltibizFake>
             {
               "Ozds:Fake:Messaging:Sagas:NetworkUserInvoiceState",
               NetworkUserInvoiceStateQueue
-            }
-          });
-      });
+            },
+          }
+        );
+      }
+    );
 
     return Task.CompletedTask;
   }
@@ -86,9 +97,7 @@ public sealed class AltibizFake : IComposableService<AltibizFake>
   {
     if (host is null)
     {
-      throw new InvalidOperationException(
-        "Altibiz fake not configured"
-      );
+      throw new InvalidOperationException("Altibiz fake not configured");
     }
 
     await host.StartAsync(cancellationToken);
@@ -99,9 +108,7 @@ public sealed class AltibizFake : IComposableService<AltibizFake>
   {
     if (host is null)
     {
-      throw new InvalidOperationException(
-        "Altibiz fake not configured"
-      );
+      throw new InvalidOperationException("Altibiz fake not configured");
     }
 
     Console.WriteLine("Stopping Altibiz fake...");

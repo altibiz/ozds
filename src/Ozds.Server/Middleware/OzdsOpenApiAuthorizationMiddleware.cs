@@ -14,16 +14,19 @@ public class OzdsOpenApiAuthorizationMiddleware
 
   public async Task InvokeAsync(HttpContext context)
   {
-    if (context.Request.Path.StartsWithSegments("/api")
+    if (
+      context.Request.Path.StartsWithSegments("/api")
       && (context.Request.Path.Value?.Contains("openapi") ?? false)
-      && (!context.User.Identity?.IsAuthenticated ?? true))
+      && (!context.User.Identity?.IsAuthenticated ?? true)
+    )
     {
       await context.ChallengeAsync(
         HostExtensions.ChallengeScheme,
         new AuthenticationProperties
         {
-          RedirectUri = context.Request.Path.ToString()
-        });
+          RedirectUri = context.Request.Path.ToString(),
+        }
+      );
       return;
     }
 

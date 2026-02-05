@@ -26,7 +26,8 @@ public class AggregateModelReportEntityConverter(
 
   public override void InitializeModel(
     AggregateEntity entity,
-    AggregateModel model)
+    AggregateModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.MeterId = entity.MeterId;

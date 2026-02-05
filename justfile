@@ -176,7 +176,7 @@ format-prettier:
       '{{ root }}'
 
 format-csharp:
-    dotnet csharpier format '{{ sln }}'
+    dotnet csharpier format '{{ root }}'
 
 deps:
     exec \

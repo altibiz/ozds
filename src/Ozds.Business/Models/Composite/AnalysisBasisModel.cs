@@ -15,8 +15,7 @@ public class AnalysisBasisModel : IComposite
 
   public NetworkUserModel? NetworkUser { get; set; } = default!;
 
-  public MeasurementLocationModel MeasurementLocation { get; set; } =
-    default!;
+  public MeasurementLocationModel MeasurementLocation { get; set; } = default!;
 
   public MeterModel Meter { get; set; } = default!;
 

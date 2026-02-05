@@ -7,27 +7,27 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 
 public class RedLowNetworkUserCalculationModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  RedLowNetworkUserCalculationModel,
-  MeteredNetworkUserCalculationModel>(serviceProvider)
+)
+  : InheritingModelActivator<
+    RedLowNetworkUserCalculationModel,
+    MeteredNetworkUserCalculationModel
+  >(serviceProvider)
 {
   private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();
 
-  public override void Initialize(
-    RedLowNetworkUserCalculationModel model
-  )
+  public override void Initialize(RedLowNetworkUserCalculationModel model)
   {
     base.Initialize(model);
 
-    model.UsageActiveEnergyTotalImportT1 = modelActivator
-      .Activate<UsageActiveEnergyTotalImportT1CalculationItemModel>();
-    model.UsageActiveEnergyTotalImportT2 = modelActivator
-      .Activate<UsageActiveEnergyTotalImportT2CalculationItemModel>();
-    model.UsageReactiveEnergyTotalRampedT0 = modelActivator
-      .Activate<UsageReactiveEnergyTotalRampedT0CalculationItemModel>();
-    model.UsageActivePowerTotalImportT1Peak = modelActivator
-      .Activate<UsageActivePowerTotalImportT1PeakCalculationItemModel>();
+    model.UsageActiveEnergyTotalImportT1 =
+      modelActivator.Activate<UsageActiveEnergyTotalImportT1CalculationItemModel>();
+    model.UsageActiveEnergyTotalImportT2 =
+      modelActivator.Activate<UsageActiveEnergyTotalImportT2CalculationItemModel>();
+    model.UsageReactiveEnergyTotalRampedT0 =
+      modelActivator.Activate<UsageReactiveEnergyTotalRampedT0CalculationItemModel>();
+    model.UsageActivePowerTotalImportT1Peak =
+      modelActivator.Activate<UsageActivePowerTotalImportT1PeakCalculationItemModel>();
     model.ConcreteArchivedUsageNetworkUserCatalogue = default!;
   }
 }

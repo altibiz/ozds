@@ -4,9 +4,7 @@ using TUnit.Core.Enums;
 
 namespace Ozds.Server.Test.Base;
 
-public class OzdsServerTestBase(
-  Action<ServiceComposition>? configure = null
-)
+public class OzdsServerTestBase(Action<ServiceComposition>? configure = null)
 {
   private ServiceComposition? composition;
   private Action<ServiceComposition>? configure = configure;
@@ -16,9 +14,10 @@ public class OzdsServerTestBase(
   {
     get
     {
-      return composition ?? throw new InvalidOperationException(
-        "Container composition not initialized"
-      );
+      return composition
+        ?? throw new InvalidOperationException(
+          "Container composition not initialized"
+        );
     }
   }
 
@@ -113,8 +112,16 @@ public class OzdsServerTestBase(
       var testBinDir = Directory.GetCurrentDirectory();
       var screenshotDir = Path.GetFullPath(
         Path.Combine(
-          testBinDir, "..", "..", "..", "..", "..",
-          "artifacts", "screenshots"));
+          testBinDir,
+          "..",
+          "..",
+          "..",
+          "..",
+          "..",
+          "artifacts",
+          "screenshots"
+        )
+      );
       var date = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
       var path = Path.Combine(
         screenshotDir,
@@ -124,13 +131,15 @@ public class OzdsServerTestBase(
       try
       {
         await composition.Playwright.Page.ScreenshotAsync(
-          new PageScreenshotOptions { Path = path });
+          new PageScreenshotOptions { Path = path }
+        );
       }
       catch (Exception ex)
       {
         await Console.Error.WriteLineAsync(
           "Failed to take screenshot after failure"
-          + $" of {testName} at {path}:{Environment.NewLine}{ex}");
+            + $" of {testName} at {path}:{Environment.NewLine}{ex}"
+        );
       }
     }
 

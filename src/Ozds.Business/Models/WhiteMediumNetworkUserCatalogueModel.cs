@@ -32,7 +32,7 @@ public class WhiteMediumNetworkUserCatalogueModel : NetworkUserCatalogueModel
         ObisModel.ActiveEnergyTotalImportT2_kWh,
         ObisModel.ActivePowerTotalImportT1_kW,
         ObisModel.ReactiveEnergyTotalImportT0_kVARh,
-        ObisModel.ReactiveEnergyTotalExportT0_kVARh
+        ObisModel.ReactiveEnergyTotalExportT0_kVARh,
       ];
     }
   }

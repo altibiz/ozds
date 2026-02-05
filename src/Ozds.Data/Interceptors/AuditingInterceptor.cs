@@ -42,8 +42,11 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
     CancellationToken cancellationToken = default
   )
   {
-    var baseResult = await base
-      .SavingChangesAsync(eventData, result, cancellationToken);
+    var baseResult = await base.SavingChangesAsync(
+      eventData,
+      result,
+      cancellationToken
+    );
 
     var context = eventData.Context;
     if (context is null)
@@ -71,7 +74,8 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
     var state = State(context);
     Task.Run(
       () => Audited(serviceProvider, state, CancellationToken.None),
-      CancellationToken.None);
+      CancellationToken.None
+    );
 
     return base.SavedChanges(eventData, result);
   }
@@ -91,7 +95,8 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
     var state = AsyncState(context);
     Task.Run(
       () => Audited(serviceProvider, state, CancellationToken.None),
-      CancellationToken.None);
+      CancellationToken.None
+    );
 
     return base.SavedChangesAsync(eventData, result, cancellationToken);
   }
@@ -107,10 +112,14 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
         {
           if (
             auditable is ITrackableEntity trackableRestoring
-            && trackableRestoring.Restore && trackableRestoring.IsDeleted)
+            && trackableRestoring.Restore
+            && trackableRestoring.IsDeleted
+          )
           {
-            entry.Original.State =
-              Microsoft.EntityFrameworkCore.EntityState.Modified;
+            entry.Original.State = Microsoft
+              .EntityFrameworkCore
+              .EntityState
+              .Modified;
             trackableRestoring.IsDeleted = false;
             trackableRestoring.DeletedOn = null;
             trackableRestoring.DeletedById = null;
@@ -128,8 +137,10 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
             }
           }
         }
-        else if (entry.State is EntityState.Modified
-          && auditable is ITrackableEntity trackableModifying)
+        else if (
+          entry.State is EntityState.Modified
+          && auditable is ITrackableEntity trackableModifying
+        )
         {
           trackableModifying.LastUpdatedOn = state.Now;
           if (representativeId is not null)
@@ -141,12 +152,16 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
             trackableModifying.LastUpdatedById = null;
           }
         }
-        else if (entry.State is EntityState.Deleted
+        else if (
+          entry.State is EntityState.Deleted
           && auditable is ITrackableEntity trackableDeleting
-          && !(trackableDeleting.Forget || trackableDeleting.IsDeleted))
+          && !(trackableDeleting.Forget || trackableDeleting.IsDeleted)
+        )
         {
-          entry.Original.State =
-            Microsoft.EntityFrameworkCore.EntityState.Modified;
+          entry.Original.State = Microsoft
+            .EntityFrameworkCore
+            .EntityState
+            .Modified;
           trackableDeleting.IsDeleted = true;
           trackableDeleting.DeletedOn = state.Now;
           if (representativeId is not null)
@@ -188,19 +203,22 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
     CancellationToken cancellationToken
   )
   {
-    var entityReflector = serviceProvider
-      .GetRequiredService<EntityReflector>();
+    var entityReflector = serviceProvider.GetRequiredService<EntityReflector>();
 
-    var factory = serviceProvider
-      .GetRequiredService<IDbContextFactory<DataDbContext>>();
+    var factory = serviceProvider.GetRequiredService<
+      IDbContextFactory<DataDbContext>
+    >();
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     foreach (var entry in state.Entries)
     {
-      if (entry.Entity is IAuditableEntity auditable
-        && auditable is not ITrackableEntity)
+      if (
+        entry.Entity is IAuditableEntity auditable
+        && auditable is not ITrackableEntity
+      )
       {
         if (entry.State is EntityState.Added)
         {
@@ -210,7 +228,9 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               entry,
               auditable,
               AuditEntity.Creation,
-              state.Now));
+              state.Now
+            )
+          );
         }
         else if (entry.State is EntityState.Deleted)
         {
@@ -220,7 +240,9 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               entry,
               auditable,
               AuditEntity.Deletion,
-              state.Now));
+              state.Now
+            )
+          );
         }
       }
 
@@ -236,7 +258,9 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
                 entry,
                 trackable,
                 AuditEntity.Restoration,
-                state.Now));
+                state.Now
+              )
+            );
           }
           else
           {
@@ -246,7 +270,9 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
                 entry,
                 trackable,
                 AuditEntity.Creation,
-                state.Now));
+                state.Now
+              )
+            );
           }
         }
         else if (entry.State is EntityState.Modified)
@@ -257,7 +283,9 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
               entry,
               trackable,
               AuditEntity.Modification,
-              state.Now));
+              state.Now
+            )
+          );
         }
         else if (entry.State is EntityState.Deleted)
         {
@@ -269,7 +297,9 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
                 entry,
                 trackable,
                 AuditEntity.Forgetting,
-                state.Now));
+                state.Now
+              )
+            );
           }
           else
           {
@@ -279,7 +309,9 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
                 entry,
                 trackable,
                 AuditEntity.Deletion,
-                state.Now));
+                state.Now
+              )
+            );
           }
         }
       }
@@ -306,13 +338,10 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
       AuditEntity.Deletion => "Deleted",
       AuditEntity.Restoration => "Restored",
       AuditEntity.Forgetting => "Forgotten",
-      _ => throw new ArgumentOutOfRangeException(nameof(audit))
+      _ => throw new ArgumentOutOfRangeException(nameof(audit)),
     };
 
-    var content = new AuditContent(
-      type,
-      entry.Properties
-    );
+    var content = new AuditContent(type, entry.Properties);
 
     // NOTE: https://stackoverflow.com/a/73048230
     var contentJson = JsonSerializer
@@ -326,43 +355,45 @@ public class AuditingInterceptor(IServiceProvider serviceProvider)
       return new RepresentativeAuditEventEntity
       {
         Timestamp = now,
-        Title =
-          $"{type} {auditable.GetType().Name} {auditable.AuditingTitle}",
+        Title = $"{type} {auditable.GetType().Name} {auditable.AuditingTitle}",
         RepresentativeId = representativeId,
         Level = LevelEntity.Debug,
         Audit = audit,
         Content = contentJson,
         AuditableEntityId = auditable.AuditingId,
-        AuditableEntityType = entityReflector
-            .ResolveEntityName(auditable.GetType())
+        AuditableEntityType =
+          entityReflector.ResolveEntityName(auditable.GetType())
           ?? throw new InvalidOperationException(
-            $"No type name found for {auditable.GetType()}"),
-        AuditableEntityTable = entityReflector
-            .ResolveEntityTable(auditable.GetType())
+            $"No type name found for {auditable.GetType()}"
+          ),
+        AuditableEntityTable =
+          entityReflector.ResolveEntityTable(auditable.GetType())
           ?? throw new InvalidOperationException(
-            $"No table found for {auditable.GetType()}"),
-        Categories = [CategoryEntity.All, CategoryEntity.Audit]
+            $"No table found for {auditable.GetType()}"
+          ),
+        Categories = [CategoryEntity.All, CategoryEntity.Audit],
       };
     }
 
     return new SystemAuditEventEntity
     {
       Timestamp = now,
-      Title =
-        $"{type} {auditable.GetType().Name} {auditable.AuditingTitle}",
+      Title = $"{type} {auditable.GetType().Name} {auditable.AuditingTitle}",
       Level = LevelEntity.Debug,
       Audit = audit,
       Content = contentJson,
       AuditableEntityId = auditable.AuditingId,
-      AuditableEntityType = entityReflector
-          .ResolveEntityName(auditable.GetType())
+      AuditableEntityType =
+        entityReflector.ResolveEntityName(auditable.GetType())
         ?? throw new InvalidOperationException(
-          $"No type name found for {auditable.GetType()}"),
-      AuditableEntityTable = entityReflector
-          .ResolveEntityTable(auditable.GetType())
+          $"No type name found for {auditable.GetType()}"
+        ),
+      AuditableEntityTable =
+        entityReflector.ResolveEntityTable(auditable.GetType())
         ?? throw new InvalidOperationException(
-          $"No table found for {auditable.GetType()}"),
-      Categories = [CategoryEntity.All, CategoryEntity.Audit]
+          $"No table found for {auditable.GetType()}"
+        ),
+      Categories = [CategoryEntity.All, CategoryEntity.Audit],
     };
   }
 

@@ -8,7 +8,8 @@ using Ozds.Data.Procedures.Builders;
 namespace Ozds.Data.Entities.Complex;
 
 public class DerivedAggregateMeasureEntity
-  : AggregateMeasureEntity, IDerivedMeasureEntity
+  : AggregateMeasureEntity,
+    IDerivedMeasureEntity
 {
   public DateTimeOffset MinTimestamp { get; set; } = default!;
 
@@ -64,38 +65,47 @@ public static class DerivedAggregateMeasureEntityExtensions
       .DerivativePower(
         value.Suffix(x => x.Avg),
         cumulative.Suffix(x => x.Min),
-        cumulative.Suffix(x => x.Max))
+        cumulative.Suffix(x => x.Max)
+      )
       .DerivativePower(
         value.Suffix(x => x.Min),
         cumulative.Suffix(x => x.Min),
-        cumulative.Suffix(x => x.Max))
+        cumulative.Suffix(x => x.Max)
+      )
       .DerivativePowerTimestamp(
         value.Suffix(x => x.Min),
-        value.Suffix(x => x.MinTimestamp))
+        value.Suffix(x => x.MinTimestamp)
+      )
       .DerivativePower(
         value.Suffix(x => x.Max),
         cumulative.Suffix(x => x.Min),
-        cumulative.Suffix(x => x.Max))
+        cumulative.Suffix(x => x.Max)
+      )
       .DerivativePowerTimestamp(
         value.Suffix(x => x.Max),
-        value.Suffix(x => x.MaxTimestamp))
+        value.Suffix(x => x.MaxTimestamp)
+      )
       .DeltaAverage(value.Suffix(x => x.Avg))
       .DeltaMin(value.Suffix(x => x.Min))
       .DeltaMinTimestamp(
         value.Suffix(x => x.Min),
-        value.Suffix(x => x.MinTimestamp))
+        value.Suffix(x => x.MinTimestamp)
+      )
       .DeltaMax(value.Suffix(x => x.Max))
       .DeltaMaxTimestamp(
         value.Suffix(x => x.Max),
-        value.Suffix(x => x.MaxTimestamp))
+        value.Suffix(x => x.MaxTimestamp)
+      )
       .DeriveAverage(value.Suffix(x => x.Avg))
       .DeriveMin(value.Suffix(x => x.Min))
       .DeriveMinTimestamp(
         value.Suffix(x => x.Min),
-        value.Suffix(x => x.MinTimestamp))
+        value.Suffix(x => x.MinTimestamp)
+      )
       .DeriveMax(value.Suffix(x => x.Max))
       .DeriveMaxTimestamp(
         value.Suffix(x => x.Max),
-        value.Suffix(x => x.MaxTimestamp));
+        value.Suffix(x => x.MaxTimestamp)
+      );
   }
 }

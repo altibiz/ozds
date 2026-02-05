@@ -9,9 +9,7 @@ public partial class OzdsCachingTestBase
     TimeSpan? timeout = null
   )
   {
-    await Task.Delay(
-      timeout ?? Constants.DefaultTimeout,
-      cancellationToken);
+    await Task.Delay(timeout ?? Constants.DefaultTimeout, cancellationToken);
   }
 
   protected bool NotNull<T>(T? value, DateTimeOffset _)
@@ -39,14 +37,12 @@ public partial class OzdsCachingTestBase
       typeof(T).IsAssignableTo(typeof(IIdentifiableEntity))
         ? async () =>
           (T?)await IdentifiableQueries.Read(type, id, cancellationToken)
-        : typeof(T).IsAssignableTo(typeof(ICompositeEntity))
-          ? async () =>
-            (T?)await CompositeQueries.Read(type, id, cancellationToken)
-          : typeof(T).IsAssignableTo(typeof(IJoinEntity))
-            ? async () =>
-              (T?)await JoinQueries.Read(type, id, cancellationToken)
-            : async () =>
-              (T?)await EntityQueries.Read(type, id, cancellationToken);
+      : typeof(T).IsAssignableTo(typeof(ICompositeEntity))
+        ? async () =>
+          (T?)await CompositeQueries.Read(type, id, cancellationToken)
+      : typeof(T).IsAssignableTo(typeof(IJoinEntity))
+        ? async () => (T?)await JoinQueries.Read(type, id, cancellationToken)
+      : async () => (T?)await EntityQueries.Read(type, id, cancellationToken);
 
     var result = await update();
     var start = DateTimeOffset.UtcNow;

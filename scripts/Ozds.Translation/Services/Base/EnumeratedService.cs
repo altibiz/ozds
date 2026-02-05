@@ -19,8 +19,6 @@ public abstract class EnumeratedService<TItem, TWorker>(
       await worker.ExecuteAsync(item, stoppingToken);
     }
 
-    services
-      .GetRequiredService<IHostApplicationLifetime>()
-      .StopApplication();
+    services.GetRequiredService<IHostApplicationLifetime>().StopApplication();
   }
 }

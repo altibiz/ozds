@@ -13,15 +13,15 @@ public partial class TrackableDetails : OzdsDetailsComponentBase<ITrackable>
     int pageCount
   )
   {
-    var queries = ScopedServices
-      .GetRequiredService<EventQueries>();
+    var queries = ScopedServices.GetRequiredService<EventQueries>();
 
     var events = await queries.ReadAuditEvents<IAuditEvent>(
       Model,
       page,
       CancellationToken,
       pageCount,
-      search);
+      search
+    );
 
     return events;
   }

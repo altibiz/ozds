@@ -17,11 +17,8 @@ public class OzdsExceptionMiddleware(
     catch (Exception ex)
     {
       publisher.Publish(
-        new ErrorEventArgs
-        {
-          Message = ex.Message,
-          Exception = ex
-        });
+        new ErrorEventArgs { Message = ex.Message, Exception = ex }
+      );
 
       throw;
     }

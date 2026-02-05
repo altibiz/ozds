@@ -3,9 +3,7 @@ using Ozds.Caching.Profiles.Base;
 
 namespace Ozds.Caching.Entities.Abstractions;
 
-public interface IEntity
-{
-}
+public interface IEntity { }
 
 public class EntityProfiler : Profiler<IEntity>
 {

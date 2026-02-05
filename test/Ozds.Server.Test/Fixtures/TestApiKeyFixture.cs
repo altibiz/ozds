@@ -5,9 +5,7 @@ using Ozds.Server.Test.Containers;
 
 namespace Ozds.Server.Test.Fixtures;
 
-public class TestApiKeyFixture(
-  ServiceComposition composition
-)
+public class TestApiKeyFixture(ServiceComposition composition)
 {
   public async Task<ApiKeyWithApiKeyScope> CreateForUserAndScope(
     TestUser testUser,
@@ -24,19 +22,21 @@ public class TestApiKeyFixture(
 
     var trackableFixture = new TestTrackableFixture(composition);
 
-    var modelReflector = composition.Ozds.Services
-      .GetRequiredService<ModelReflector>();
+    var modelReflector =
+      composition.Ozds.Services.GetRequiredService<ModelReflector>();
 
     var apiKey = await trackableFixture.Create<ApiKeyModel>(
       cancellationToken,
       apiKey =>
       {
-        apiKey.PrincipalModelType = modelReflector
-          .ResolveModelName(typeof(RepresentativeModel));
+        apiKey.PrincipalModelType = modelReflector.ResolveModelName(
+          typeof(RepresentativeModel)
+        );
         apiKey.PrincipalModelId = testUser.Id;
 
         configurator.ConfigureApiKey(apiKey);
-      });
+      }
+    );
 
     var auditableFixture = new TestAuditableFixture(composition);
 
@@ -48,24 +48,20 @@ public class TestApiKeyFixture(
         apiKeyScope.ApiKeyId = apiKey.Id;
 
         configurator.ConfigureApiKeyScope(apiKeyScope);
-      });
-
-    return new ApiKeyWithApiKeyScope(
-      apiKey,
-      apiKeyScope
+      }
     );
+
+    return new ApiKeyWithApiKeyScope(apiKey, apiKeyScope);
   }
 
   public class Configurator
   {
-    public Action<ApiKeyModel> ConfigureApiKey { get; private set; } =
-      _ => { };
+    public Action<ApiKeyModel> ConfigureApiKey { get; private set; } = _ => { };
 
     public Action<ApiKeyScopeModel> ConfigureApiKeyScope { get; private set; } =
       _ => { };
 
-    public Configurator WithApiKey(
-      Action<ApiKeyModel> configure)
+    public Configurator WithApiKey(Action<ApiKeyModel> configure)
     {
       var prior = ConfigureApiKey;
       ConfigureApiKey = x =>
@@ -76,8 +72,7 @@ public class TestApiKeyFixture(
       return this;
     }
 
-    public Configurator WithApiKeyScope(
-      Action<ApiKeyScopeModel> configure)
+    public Configurator WithApiKeyScope(Action<ApiKeyScopeModel> configure)
     {
       var prior = ConfigureApiKeyScope;
       ConfigureApiKeyScope = x =>

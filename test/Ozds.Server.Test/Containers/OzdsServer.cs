@@ -80,9 +80,7 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
     {
       if (host is null)
       {
-        throw new InvalidOperationException(
-          "Ozds server not configured"
-        );
+        throw new InvalidOperationException("Ozds server not configured");
       }
 
       return host.Services;
@@ -107,9 +105,11 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
   {
     var urls = $"{HttpsBaseUrl};{HttpBaseUrl}";
 
-    if ((Domain == "127.0.0.1" || Domain == "localhost")
+    if (
+      (Domain == "127.0.0.1" || Domain == "localhost")
       && composition.Authelia.CookieDomain != "127.0.0.1"
-      && composition.Authelia.CookieDomain != "localhost")
+      && composition.Authelia.CookieDomain != "localhost"
+    )
     {
       var autheliaHttpsUrl =
         $"https://{composition.Authelia.CookieDomain}:{HttpsPort}";
@@ -122,7 +122,16 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
     var testBinDir = Directory.GetCurrentDirectory();
     var serverDir = Path.GetFullPath(
       Path.Combine(
-        testBinDir, "..", "..", "..", "..", "..", "src", "Ozds.Server"));
+        testBinDir,
+        "..",
+        "..",
+        "..",
+        "..",
+        "..",
+        "src",
+        "Ozds.Server"
+      )
+    );
 
     var args = new[]
     {
@@ -133,11 +142,12 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
       "--environment",
       "Development",
       "--applicationname",
-      "Ozds.Server"
+      "Ozds.Server",
     };
 
     host = new OzdsServerHost(
-      args, appBuilder =>
+      args,
+      appBuilder =>
       {
         var dictionary = new Dictionary<string, string?>
         {
@@ -145,10 +155,7 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
             "Ozds:Data:ConnectionString",
             composition.Postgres.HostConnectionString
           },
-          {
-            "Ozds:Data:MigrateOnStartup",
-            "true"
-          },
+          { "Ozds:Data:MigrateOnStartup", "true" },
           {
             "Ozds:Messaging:ConnectionString",
             composition.RabbitMq.HostConnectionString
@@ -157,10 +164,7 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
             "Ozds:Messaging:PersistenceConnectionString",
             composition.Postgres.HostConnectionString
           },
-          {
-            "Ozds:Messaging:MigrateOnStartup",
-            "true"
-          },
+          { "Ozds:Messaging:MigrateOnStartup", "true" },
           {
             "Ozds:Messaging:Endpoints:AcknowledgeNetworkUserInvoice",
             $"queue:{composition.Altibiz.NetworkUserInvoiceStateQueue}"
@@ -173,22 +177,13 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
             "Ozds:Email:Smtp:ConnectionString",
             composition.Mailpit.HostConnectionString
           },
-          {
-            "Ozds:Email:From:Name",
-            EmailFromName
-          },
-          {
-            "Ozds:Email:From:Address",
-            EmailFromAddress
-          },
+          { "Ozds:Email:From:Name", EmailFromName },
+          { "Ozds:Email:From:Address", EmailFromAddress },
           {
             "Ozds:Jobs:ConnectionString",
             composition.Postgres.HostConnectionString
           },
-          {
-            "Ozds:Jobs:MigrateOnStartup",
-            "true"
-          },
+          { "Ozds:Jobs:MigrateOnStartup", "true" },
           {
             "Ozds:Users:Oidc:ConnectionString",
             composition.Authelia.HostConnectionString
@@ -197,22 +192,10 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
             "Ozds:Users:Oidc:AuthLogoutSubpath",
             composition.Authelia.LogoutSubpath
           },
-          {
-            "Ozds:Users:Oidc:UserIdKey",
-            composition.Authelia.UserIdKey
-          },
-          {
-            "Ozds:Users:Oidc:UserIdClaim",
-            composition.Authelia.UserIdClaim
-          },
-          {
-            "Ozds:Users:Oidc:SignInCallbackSubpath",
-            SignInCallbackSubpath
-          },
-          {
-            "Ozds:Users:Oidc:SignOutCallbackSubpath",
-            SignOutCallbackSubpath
-          },
+          { "Ozds:Users:Oidc:UserIdKey", composition.Authelia.UserIdKey },
+          { "Ozds:Users:Oidc:UserIdClaim", composition.Authelia.UserIdClaim },
+          { "Ozds:Users:Oidc:SignInCallbackSubpath", SignInCallbackSubpath },
+          { "Ozds:Users:Oidc:SignOutCallbackSubpath", SignOutCallbackSubpath },
           {
             "Ozds:Users:Ldap:ConnectionString",
             composition.Lldap.HostConnectionString
@@ -225,10 +208,7 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
             "Ozds:Users:Ldap:UserOrganizationalUnit",
             composition.Lldap.UserOrganizationalUnit
           },
-          {
-            "Ozds:Users:Ldap:BaseDn",
-            composition.Lldap.BaseDn
-          },
+          { "Ozds:Users:Ldap:BaseDn", composition.Lldap.BaseDn },
           {
             "Ozds:Users:Ldap:UserIdAttribute",
             composition.Lldap.UserIdAttribute
@@ -241,22 +221,21 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
             "Ozds:Users:Ldap:UserEmailAttribute",
             composition.Lldap.UserEmailAttribute
           },
-          {
-            "Ozds:Fake:Client:BaseUrl",
-            HttpBaseUrl
-          },
-          {
-            "Ozds:Sdk:BaseUrl",
-            HttpBaseUrl
-          }
+          { "Ozds:Fake:Client:BaseUrl", HttpBaseUrl },
+          { "Ozds:Sdk:BaseUrl", HttpBaseUrl },
         };
 
-        foreach (var (userObjectClass, index) in
-          composition.Lldap.UserObjectClasses.Select((x, i) => (x, i)))
+        foreach (
+          var (
+            userObjectClass,
+            index
+          ) in composition.Lldap.UserObjectClasses.Select((x, i) => (x, i))
+        )
         {
           dictionary.Add(
             $"Ozds:Users:Ldap:UserObjectClasses:{index}",
-            userObjectClass);
+            userObjectClass
+          );
         }
 
         appBuilder.Configuration.AddInMemoryCollection(dictionary);
@@ -268,7 +247,8 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
 
         appBuilder.AddOzdsFake(new OzdsFakeBypassArguments());
         appBuilder.AddOzdsSdk();
-      });
+      }
+    );
 
     return Task.CompletedTask;
   }
@@ -278,9 +258,7 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
     // NOTE: this makes it start...
     if (host is null)
     {
-      throw new InvalidOperationException(
-        "Ozds server not configured"
-      );
+      throw new InvalidOperationException("Ozds server not configured");
     }
 
     await host.StartAsync(cancellationToken);
@@ -291,9 +269,7 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
   {
     if (host is null)
     {
-      throw new InvalidOperationException(
-        "Ozds server not configured"
-      );
+      throw new InvalidOperationException("Ozds server not configured");
     }
 
     Console.WriteLine($"Stopping Ozds on '{HttpBaseUrl}'...");
@@ -311,7 +287,8 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
   }
 
   public void ConfigureHost(
-    Action<IHostApplicationBuilder>? configureHost = null)
+    Action<IHostApplicationBuilder>? configureHost = null
+  )
   {
     this.configureHost = configureHost;
   }

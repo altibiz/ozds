@@ -14,10 +14,7 @@ public sealed class OzdsData : IAsyncDisposable
 
   private readonly AsyncServiceScope scope;
 
-  private OzdsData(
-    IHost host,
-    AsyncServiceScope scope
-  )
+  private OzdsData(IHost host, AsyncServiceScope scope)
   {
     this.host = host;
     this.scope = scope;
@@ -43,12 +40,11 @@ public sealed class OzdsData : IAsyncDisposable
 
     builder.Services.AddLogging();
     builder.Services.AddSingleton<IConfiguration>(
-      new ConfigurationBuilder().Build());
+      new ConfigurationBuilder().Build()
+    );
     builder.Services.AddSingleton<IHostEnvironment>(
-      new HostingEnvironment
-      {
-        EnvironmentName = "Production"
-      });
+      new HostingEnvironment { EnvironmentName = "Production" }
+    );
 
     builder.AddOzdsTime();
     builder.AddOzdsAssets();
@@ -68,8 +64,8 @@ public sealed class OzdsData : IAsyncDisposable
 
     var scope = host.Services.CreateAsyncScope();
 
-    await using var migrationContext = await scope.ServiceProvider
-      .GetRequiredService<IDbContextFactory<DataDbContext>>()
+    await using var migrationContext = await scope
+      .ServiceProvider.GetRequiredService<IDbContextFactory<DataDbContext>>()
       .CreateDbContextAsync(cancellationToken);
     await migrationContext.Database.MigrateAsync(cancellationToken);
 

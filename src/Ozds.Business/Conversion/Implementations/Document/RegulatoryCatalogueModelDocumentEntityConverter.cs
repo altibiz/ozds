@@ -7,7 +7,8 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 public class RegulatoryCatalogueModelDocumentEntityConverter
   : ConcreteModelDocumentEntityConverter<
     RegulatoryCatalogueModel,
-    RegulatoryCatalogueEntity>
+    RegulatoryCatalogueEntity
+  >
 {
   public override void InitializeEntity(
     RegulatoryCatalogueModel model,

@@ -15,8 +15,7 @@ public record class MeasurementLocationMeterId(
     get { return string.Join('-', MeterId.Split('-').Take(2)); }
   }
 
-  public static MeasurementLocationMeterId FromString(
-    string id)
+  public static MeasurementLocationMeterId FromString(string id)
   {
     var parts = id.Split(":");
     return new MeasurementLocationMeterId(parts[0], parts[1]);

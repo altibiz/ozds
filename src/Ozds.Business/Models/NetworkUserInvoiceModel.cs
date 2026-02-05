@@ -15,11 +15,8 @@ public class NetworkUserInvoiceModel : InvoiceModel, INetworkUserInvoice
   public required NetworkUserModel ArchivedNetworkUser { get; set; } = default!;
 
   [Required]
-  public required RegulatoryCatalogueModel ArchivedRegulatoryCatalogue
-  {
-    get;
-    set;
-  } = default!;
+  public required RegulatoryCatalogueModel ArchivedRegulatoryCatalogue { get; set; } =
+    default!;
 
   [Required]
   public required decimal UsageActiveEnergyTotalImportT0Fee_EUR { get; set; } =
@@ -34,12 +31,12 @@ public class NetworkUserInvoiceModel : InvoiceModel, INetworkUserInvoice
     default!;
 
   [Required]
-  public required decimal
-    UsageActivePowerTotalImportT1PeakFee_EUR { get; set; } = default!;
+  public required decimal UsageActivePowerTotalImportT1PeakFee_EUR { get; set; } =
+    default!;
 
   [Required]
-  public required decimal
-    UsageReactiveEnergyTotalRampedT0Fee_EUR { get; set; } = default!;
+  public required decimal UsageReactiveEnergyTotalRampedT0Fee_EUR { get; set; } =
+    default!;
 
   [Required]
   public required decimal UsageMeterFee_EUR { get; set; } = default!;

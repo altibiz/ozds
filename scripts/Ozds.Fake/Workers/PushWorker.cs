@@ -38,20 +38,16 @@ public class PushWorker(
       item.DateFrom,
       item.DateTo,
       item.Ids,
-      stoppingToken);
-
-    var models = recordConverter.ConvertToModels(
-      records,
       stoppingToken
     );
 
-    var requests = pushRequestConverter.ToPushRequests(
-      models,
-      stoppingToken
-    );
+    var models = recordConverter.ConvertToModels(records, stoppingToken);
 
-    await foreach (var batch in enumerable
-      .Batch(requests, item.BatchSize, stoppingToken))
+    var requests = pushRequestConverter.ToPushRequests(models, stoppingToken);
+
+    await foreach (
+      var batch in enumerable.Batch(requests, item.BatchSize, stoppingToken)
+    )
     {
       var request = await packer.Pack(
         item.MessengerId,

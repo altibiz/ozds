@@ -14,25 +14,25 @@ public class BlueLowNetworkUserCatalogueEntity
 #pragma warning restore CA1707
 }
 
-public class
-  BlueLowNetworkUserCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
-  BlueLowNetworkUserCatalogueEntity>
+public class BlueLowNetworkUserCatalogueEntityTypeConfiguration
+  : EntityTypeConfiguration<BlueLowNetworkUserCatalogueEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<BlueLowNetworkUserCatalogueEntity> builder)
+    EntityTypeBuilder<BlueLowNetworkUserCatalogueEntity> builder
+  )
   {
-    builder
-      .MonetaryValue(
-        nameof(BlueLowNetworkUserCatalogueEntity
-          .ActiveEnergyTotalImportT0Price_EUR),
-        "active_energy_total_import_t0_price_eur"
-      );
+    builder.MonetaryValue(
+      nameof(
+        BlueLowNetworkUserCatalogueEntity.ActiveEnergyTotalImportT0Price_EUR
+      ),
+      "active_energy_total_import_t0_price_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(BlueLowNetworkUserCatalogueEntity
-          .ReactiveEnergyTotalRampedT0Price_EUR),
-        "reactive_energy_total_ramped_t0_price_eur"
-      );
+    builder.MonetaryValue(
+      nameof(
+        BlueLowNetworkUserCatalogueEntity.ReactiveEnergyTotalRampedT0Price_EUR
+      ),
+      "reactive_energy_total_ramped_t0_price_eur"
+    );
   }
 }

@@ -4,9 +4,7 @@ using Ozds.Jobs.Observers.EventArgs;
 
 namespace Ozds.Jobs.Observers.Implementations;
 
-public class MeterJobManager :
-  Observer<MeterJobEventArgs>,
-  IMeterJobPublisher,
-  IMeterJobSubscriber
-{
-}
+public class MeterJobManager
+  : Observer<MeterJobEventArgs>,
+    IMeterJobPublisher,
+    IMeterJobSubscriber { }

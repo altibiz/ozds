@@ -16,5 +16,5 @@ public enum EntityChangingState
 {
   Adding,
   Modifying,
-  Removing
+  Removing,
 }

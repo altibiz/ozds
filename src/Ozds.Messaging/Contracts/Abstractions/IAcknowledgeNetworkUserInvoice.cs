@@ -12,8 +12,7 @@ public interface IAcknowledgeNetworkUserInvoiceItem
 }
 
 [MessageUrn("acknowledge-network-user-invoice")]
-public interface IAcknowledgeNetworkUserInvoice
-  : INetworkUserInvoiceCommand
+public interface IAcknowledgeNetworkUserInvoice : INetworkUserInvoiceCommand
 {
   public string SubProjectCode { get; }
   public DateTimeOffset InvoiceDate { get; }

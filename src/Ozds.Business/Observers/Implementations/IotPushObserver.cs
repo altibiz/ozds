@@ -13,18 +13,18 @@ namespace Ozds.Business.Observers.Implementations;
 public class IotPushRelay(
   IServiceProvider serviceProvider,
   IPushSubscriber subscriber
-) : Relay<PushEventArgs, IotPushEventArgs, IotPushPipe>(
-  serviceProvider
-), IIotPushSubscriber
+)
+  : Relay<PushEventArgs, IotPushEventArgs, IotPushPipe>(serviceProvider),
+    IIotPushSubscriber
 {
-  protected override void SubscribeIn(
-    EventHandler<PushEventArgs> eventHandler)
+  protected override void SubscribeIn(EventHandler<PushEventArgs> eventHandler)
   {
     subscriber.Subscribe(eventHandler);
   }
 
   protected override void UnsubscribeIn(
-    EventHandler<PushEventArgs> eventHandler)
+    EventHandler<PushEventArgs> eventHandler
+  )
   {
     subscriber.Unsubscribe(eventHandler);
   }
@@ -37,32 +37,36 @@ public class IotPushPipe(
 {
   public async Task<IotPushEventArgs> Transform(
     PushEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var bufferBehavior = eventArgs.BufferBehavior switch
     {
-      PushEventBufferBehavior.Realtime =>
-        MeasurementBufferBehavior.Realtime,
-      PushEventBufferBehavior.Buffer =>
-        MeasurementBufferBehavior.Buffer,
-      PushEventBufferBehavior.Aggregate =>
-        MeasurementBufferBehavior.Aggregate,
-      _ => throw new ArgumentOutOfRangeException(nameof(eventArgs))
+      PushEventBufferBehavior.Realtime => MeasurementBufferBehavior.Realtime,
+      PushEventBufferBehavior.Buffer => MeasurementBufferBehavior.Buffer,
+      PushEventBufferBehavior.Aggregate => MeasurementBufferBehavior.Aggregate,
+      _ => throw new ArgumentOutOfRangeException(nameof(eventArgs)),
     };
 
     var modelMeasurements = new List<IMeasurement>();
     foreach (var meterPushRequest in eventArgs.Request.Measurements)
     {
-      if (await measurementLocationQueries.ReadByMeterId(
+      if (
+        await measurementLocationQueries.ReadByMeterId(
           meterPushRequest.MeterId,
-          cancellationToken)
-        is { } measurementLocation)
+          cancellationToken
+        ) is
+        { } measurementLocation
+      )
       {
         modelMeasurements.Add(
-          PushRequestConverter
-            .ToMeasurement(
-              new MeterPushRequestWithMeasurementLocationId(
-                meterPushRequest, measurementLocation.Id)));
+          PushRequestConverter.ToMeasurement(
+            new MeterPushRequestWithMeasurementLocationId(
+              meterPushRequest,
+              measurementLocation.Id
+            )
+          )
+        );
       }
     }
 
@@ -70,7 +74,7 @@ public class IotPushPipe(
     {
       BufferBehavior = bufferBehavior,
       Measurements = modelMeasurements,
-      MessengerId = eventArgs.MessengerId
+      MessengerId = eventArgs.MessengerId,
     };
 
     return modelEventArgs;

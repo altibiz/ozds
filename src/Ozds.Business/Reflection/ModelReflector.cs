@@ -6,20 +6,15 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Reflection;
 
-public class ModelReflector(
-  ITypeQueries typeQueries
-)
+public class ModelReflector(ITypeQueries typeQueries)
 {
-  private readonly Assembly modelsAssembly =
-    typeof(ModelReflector).Assembly;
+  private readonly Assembly modelsAssembly = typeof(ModelReflector).Assembly;
 
   private readonly string modelsNamespace = "Ozds.Business.Models";
 
-  private readonly ConcurrentDictionary<string, Type> nameToTypeCache =
-    new();
+  private readonly ConcurrentDictionary<string, Type> nameToTypeCache = new();
 
-  private readonly ConcurrentDictionary<Type, string> typeToNameCache =
-    new();
+  private readonly ConcurrentDictionary<Type, string> typeToNameCache = new();
 
   public List<Type?> ScopeTypeList
   {
@@ -30,27 +25,22 @@ public class ModelReflector(
         typeof(LocationModel),
         typeof(NetworkUserModel),
         typeof(NetworkUserMeasurementLocationModel),
-        null
+        null,
       ];
     }
   }
 
   public List<Type> PrincipalTypeList
   {
-    get
-    {
-      return
-      [
-        typeof(RepresentativeModel),
-        typeof(IMessenger)
-      ];
-    }
+    get { return [typeof(RepresentativeModel), typeof(IMessenger)]; }
   }
 
   public string ResolveModelName(Type modelType)
   {
-    if (modelType.Namespace == null
-      || !modelType.Namespace.StartsWith(modelsNamespace))
+    if (
+      modelType.Namespace == null
+      || !modelType.Namespace.StartsWith(modelsNamespace)
+    )
     {
       throw new InvalidOperationException("Model type not found");
     }
@@ -73,11 +63,12 @@ public class ModelReflector(
       return type;
     }
 
-    type = typeQueries.ResolveTypeFromHumanFriendlyName(
-      modelsAssembly,
-      modelsNamespace,
-      name
-    ) ?? throw new InvalidOperationException("Model type not found");
+    type =
+      typeQueries.ResolveTypeFromHumanFriendlyName(
+        modelsAssembly,
+        modelsNamespace,
+        name
+      ) ?? throw new InvalidOperationException("Model type not found");
 
     nameToTypeCache.TryAdd(name, type);
 

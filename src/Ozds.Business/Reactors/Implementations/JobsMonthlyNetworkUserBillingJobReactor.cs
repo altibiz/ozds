@@ -9,12 +9,12 @@ namespace Ozds.Business.Reactors.Implementations;
 
 public class JobsMonthlyNetworkUserBillingJobReactor(
   IServiceProvider serviceProvider
-) : Reactor<
-  JobsBillingJobEventArgs,
-  IJobsBillingJobSubscriber,
-  JobsMonthlyNetworkUserBillingJobHandler>(serviceProvider)
-{
-}
+)
+  : Reactor<
+    JobsBillingJobEventArgs,
+    IJobsBillingJobSubscriber,
+    JobsMonthlyNetworkUserBillingJobHandler
+  >(serviceProvider) { }
 
 public class JobsMonthlyNetworkUserBillingJobHandler(
   TrackableQueries trackableQueries,
@@ -25,12 +25,13 @@ public class JobsMonthlyNetworkUserBillingJobHandler(
 {
   public override async Task Handle(
     JobsBillingJobEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
-    var networkUser = await trackableQueries
-      .ReadById<NetworkUserModel>(
-        eventArgs.NetworkUserId,
-        cancellationToken);
+    var networkUser = await trackableQueries.ReadById<NetworkUserModel>(
+      eventArgs.NetworkUserId,
+      cancellationToken
+    );
     if (networkUser is null)
     {
       return;

@@ -17,7 +17,8 @@ public class ValidationQueries(
   {
     var entity = await queries.ReadMeasurementValidatorByMeterId(
       meterId,
-      cancellationToken);
+      cancellationToken
+    );
     if (entity is null)
     {
       return null;
@@ -28,20 +29,24 @@ public class ValidationQueries(
     return model;
   }
 
-  public async Task<List<IMeasurementValidator?>>
-    ReadMeasurementValidatorsByMeterIdsOrdered(
-      IEnumerable<string> meterIds,
-      CancellationToken cancellationToken
-    )
+  public async Task<
+    List<IMeasurementValidator?>
+  > ReadMeasurementValidatorsByMeterIdsOrdered(
+    IEnumerable<string> meterIds,
+    CancellationToken cancellationToken
+  )
   {
     var entities = await queries.ReadMeasurementValidatorsByMeterIdsOrdered(
       meterIds,
-      cancellationToken);
+      cancellationToken
+    );
 
     var models = entities
-      .Select(entity => entity is null
-        ? null
-        : modelEntityConverter.ToModel<IMeasurementValidator>(entity))
+      .Select(entity =>
+        entity is null
+          ? null
+          : modelEntityConverter.ToModel<IMeasurementValidator>(entity)
+      )
       .ToList();
 
     return models;
@@ -54,7 +59,8 @@ public class ValidationQueries(
   {
     var entity = await queries.ReadMeterByMeasurementValidatorId(
       validatorId,
-      cancellationToken);
+      cancellationToken
+    );
     if (entity is null)
     {
       return null;
@@ -71,12 +77,13 @@ public class ValidationQueries(
   {
     var entities = await queries.ReadMetersByMeasurementValidatorIdsOrdered(
       validatorIds,
-      cancellationToken);
+      cancellationToken
+    );
 
     var models = entities
-      .Select(entity => entity is null
-        ? null
-        : modelEntityConverter.ToModel<IMeter>(entity))
+      .Select(entity =>
+        entity is null ? null : modelEntityConverter.ToModel<IMeter>(entity)
+      )
       .ToList();
 
     return models;

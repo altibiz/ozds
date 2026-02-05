@@ -7,11 +7,11 @@ using Ozds.Caching.Entities.Base;
 namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class AbbB2xMeterModelCachingEntityConverter(
-  IServiceProvider serviceProvider)
+  IServiceProvider serviceProvider
+)
   : InheritingModelCachingEntityConverter<
     AbbB2xMeterModel,
     MeterModel,
     AbbB2xMeterEntity,
-    MeterEntity>(serviceProvider)
-{
-}
+    MeterEntity
+  >(serviceProvider) { }

@@ -22,19 +22,20 @@ public abstract class DependencyPolicy : Policy
     CancellationToken cancellationToken
   )
   {
-    if (policyContext
-      is CreateCacheEventPolicyContext createCachePolicyContext)
+    if (policyContext is CreateCacheEventPolicyContext createCachePolicyContext)
     {
       await policyContext.Cache.Create(
         createCachePolicyContext.CreateEventArgs.Key,
         createCachePolicyContext.CreateEventArgs.Value,
-        cancellationToken);
+        cancellationToken
+      );
     }
     else
     {
       await policyContext.Cache.Delete(
         policyContext.EventArgs.Key,
-        cancellationToken);
+        cancellationToken
+      );
     }
   }
 
@@ -45,24 +46,24 @@ public abstract class DependencyPolicy : Policy
   {
     var cacheKey = policyContext.EventArgs.Key;
 
-    var dependencies = await
-      GetDependencies(policyContext, cancellationToken)
-        .ToListAsync(cancellationToken);
+    var dependencies = await GetDependencies(policyContext, cancellationToken)
+      .ToListAsync(cancellationToken);
     if (dependencies.Count == 0)
     {
       return;
     }
 
-    var entityReflector = policyContext.ServiceProvider
-      .GetRequiredService<EntityReflector>();
+    var entityReflector =
+      policyContext.ServiceProvider.GetRequiredService<EntityReflector>();
     var cache = new DependencyPolicyCache(policyContext.Cache);
 
     var dependencyEntity = new DependenciesEntity();
 
     foreach (var dependency in dependencies)
     {
-      var dependencyKey = entityReflector
-        .ResolveEntityKeyFromIdentifiable(dependency);
+      var dependencyKey = entityReflector.ResolveEntityKeyFromIdentifiable(
+        dependency
+      );
 
       dependencyEntity.Dependencies.Add(dependencyKey);
 
@@ -78,7 +79,8 @@ public abstract class DependencyPolicy : Policy
     await cache.CreateDependencies(
       cacheKey,
       dependencyEntity,
-      cancellationToken);
+      cancellationToken
+    );
   }
 
   protected async Task EvictDependencyReferences(
@@ -90,9 +92,12 @@ public abstract class DependencyPolicy : Policy
   {
     cacheKey ??= policyContext.EventArgs.Key;
 
-    var dependencies = await
-      GetDependencyReferences(policyContext, cancellationToken, value)
-        .ToListAsync(cancellationToken);
+    var dependencies = await GetDependencyReferences(
+        policyContext,
+        cancellationToken,
+        value
+      )
+      .ToListAsync(cancellationToken);
     if (dependencies.Count == 0)
     {
       return;
@@ -100,9 +105,7 @@ public abstract class DependencyPolicy : Policy
 
     var cache = new DependencyPolicyCache(policyContext.Cache);
 
-    await cache.DeleteDependencies(
-      cacheKey,
-      cancellationToken);
+    await cache.DeleteDependencies(cacheKey, cancellationToken);
 
     foreach (var dependency in dependencies)
     {
@@ -123,17 +126,17 @@ public abstract class DependencyPolicy : Policy
     var cache = new DependencyPolicyCache(policyContext.Cache);
 
     var cacheKey = policyContext.EventArgs.Key;
-    reverseDependencies ??= await cache
-      .ReadReverseDependencies(
-        cacheKey,
-        cancellationToken);
+    reverseDependencies ??= await cache.ReadReverseDependencies(
+      cacheKey,
+      cancellationToken
+    );
     if (reverseDependencies is null)
     {
       return;
     }
 
-    var reflector = policyContext.ServiceProvider
-      .GetRequiredService<EntityReflector>();
+    var reflector =
+      policyContext.ServiceProvider.GetRequiredService<EntityReflector>();
 
     foreach (var reverseDependency in reverseDependencies.ReverseDependencies)
     {
@@ -148,10 +151,7 @@ public abstract class DependencyPolicy : Policy
         reverseDependency,
         value
       );
-      await cache.Delete(
-        reverseDependency,
-        cancellationToken
-      );
+      await cache.Delete(reverseDependency, cancellationToken);
     }
   }
 
@@ -161,8 +161,8 @@ public abstract class DependencyPolicy : Policy
     object? value = null
   )
   {
-    var entityReflector = policyContext.ServiceProvider
-      .GetRequiredService<EntityReflector>();
+    var entityReflector =
+      policyContext.ServiceProvider.GetRequiredService<EntityReflector>();
 
     return GetDependencies(policyContext, cancellationToken, value)
       .Select(entityReflector.ResolveEntityKeyFromIdentifiable);
@@ -180,39 +180,49 @@ public abstract class DependencyPolicy : Policy
       yield break;
     }
 
-    foreach (var property in value
-      .GetType()
-      .GetProperties()
-      .Where(property => property.CanRead)
-      .Where(property =>
-        property.PropertyType.IsAssignableTo(typeof(IIdentifiableEntity))
-        || property.PropertyType
-          .IsAssignableTo(typeof(IEnumerable<IIdentifiableEntity>))))
+    foreach (
+      var property in value
+        .GetType()
+        .GetProperties()
+        .Where(property => property.CanRead)
+        .Where(property =>
+          property.PropertyType.IsAssignableTo(typeof(IIdentifiableEntity))
+          || property.PropertyType.IsAssignableTo(
+            typeof(IEnumerable<IIdentifiableEntity>)
+          )
+        )
+    )
     {
       var dependencyValue = property.GetValue(value);
       if (dependencyValue is IIdentifiableEntity identifiable)
       {
-        await foreach (var dependency in
-          GetDependencies(
+        await foreach (
+          var dependency in GetDependencies(
             policyContext,
             cancellationToken,
-            identifiable))
+            identifiable
+          )
+        )
         {
           yield return dependency;
         }
 
         yield return identifiable;
       }
-      else if (dependencyValue
-        is IEnumerable<IIdentifiableEntity> dependencyIdentifiables)
+      else if (
+        dependencyValue
+        is IEnumerable<IIdentifiableEntity> dependencyIdentifiables
+      )
       {
         foreach (var dependencyIdentifiable in dependencyIdentifiables)
         {
-          await foreach (var dependency in
-            GetDependencies(
+          await foreach (
+            var dependency in GetDependencies(
               policyContext,
               cancellationToken,
-              dependencyIdentifiable))
+              dependencyIdentifiable
+            )
+          )
           {
             yield return dependency;
           }

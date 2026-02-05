@@ -6,18 +6,15 @@ using Ozds.Caching.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.Caching;
 
-public class ApiKeyModelCachingEntityConverter(
-  IServiceProvider serviceProvider
-) : InheritingModelCachingEntityConverter<
-  ApiKeyModel,
-  TrackableModel,
-  ApiKeyEntity,
-  TrackableEntity>(serviceProvider)
+public class ApiKeyModelCachingEntityConverter(IServiceProvider serviceProvider)
+  : InheritingModelCachingEntityConverter<
+    ApiKeyModel,
+    TrackableModel,
+    ApiKeyEntity,
+    TrackableEntity
+  >(serviceProvider)
 {
-  public override void InitializeEntity(
-    ApiKeyModel model,
-    ApiKeyEntity entity
-  )
+  public override void InitializeEntity(ApiKeyModel model, ApiKeyEntity entity)
   {
     base.InitializeEntity(model, entity);
 
@@ -27,10 +24,7 @@ public class ApiKeyModelCachingEntityConverter(
     entity.ExpiresOn = model.ExpiresOn;
   }
 
-  public override void InitializeModel(
-    ApiKeyEntity entity,
-    ApiKeyModel model
-  )
+  public override void InitializeModel(ApiKeyEntity entity, ApiKeyModel model)
   {
     base.InitializeModel(entity, model);
 

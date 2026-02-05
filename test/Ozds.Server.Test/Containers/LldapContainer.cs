@@ -24,8 +24,7 @@ public sealed class LldapContainer : IComposableService<LldapContainer>
 
   private const string LldapPassword = "admin-ozds";
 
-  private const string LldapReady =
-    ".*DB Cleanup Cron started.*";
+  private const string LldapReady = ".*DB Cleanup Cron started.*";
 
   private const string LldapUserFilterObjectClass = "person";
 
@@ -42,7 +41,7 @@ public sealed class LldapContainer : IComposableService<LldapContainer>
     "inetOrgPerson",
     "posixAccount",
     "shadowAccount",
-    "top"
+    "top",
   ];
 
   private readonly string configFilePath;
@@ -175,24 +174,19 @@ public sealed class LldapContainer : IComposableService<LldapContainer>
   {
     var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     var wait = isWindows
-      ? Wait
-        .ForWindowsContainer()
+      ? Wait.ForWindowsContainer()
         .UntilMessageIsLogged(
-          LldapReady, wait => wait
-            .WithTimeout(TimeSpan.FromSeconds(30_000)))
-      : Wait
-        .ForUnixContainer()
-        .UntilMessageIsLogged(LldapReady);
+          LldapReady,
+          wait => wait.WithTimeout(TimeSpan.FromSeconds(30_000))
+        )
+      : Wait.ForUnixContainer().UntilMessageIsLogged(LldapReady);
 
     var tmpDir = Path.Combine(
       Path.GetTempPath(),
       $"ozds-client-test-lldap-{Guid.NewGuid()}"
     );
     Directory.CreateDirectory(tmpDir);
-    var configFilePath = Path.Combine(
-      tmpDir,
-      "lldap_config.toml"
-    );
+    var configFilePath = Path.Combine(tmpDir, "lldap_config.toml");
     await File.WriteAllTextAsync(configFilePath, "", cancellationToken);
 
     var host = network.Host<LldapContainer>();
@@ -208,11 +202,18 @@ public sealed class LldapContainer : IComposableService<LldapContainer>
       .WithBindMount(
         configFilePath,
         "/data/lldap_config.toml",
-        AccessMode.ReadWrite)
+        AccessMode.ReadWrite
+      )
       .Build();
 
     return new LldapContainer(
-      container, host, hostLdapPort, hostHttpPort, tmpDir, configFilePath);
+      container,
+      host,
+      hostLdapPort,
+      hostHttpPort,
+      tmpDir,
+      configFilePath
+    );
   }
 
   public async Task Configure(
@@ -221,10 +222,11 @@ public sealed class LldapContainer : IComposableService<LldapContainer>
   )
   {
     var assembly = Assembly.GetExecutingAssembly();
-    using var stream = assembly.GetManifestResourceStream(
-        "Ozds.Server.Test.Assets.lldap-config.toml.template")
-      ?? throw new InvalidOperationException(
-        "Lldap config template not found");
+    using var stream =
+      assembly.GetManifestResourceStream(
+        "Ozds.Server.Test.Assets.lldap-config.toml.template"
+      )
+      ?? throw new InvalidOperationException("Lldap config template not found");
     using var reader = new StreamReader(stream);
     var configTemplate = await reader.ReadToEndAsync(cancellationToken);
     var configContent = configTemplate

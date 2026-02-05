@@ -45,17 +45,10 @@ public record TestUser(
   );
 
   public static readonly IReadOnlyCollection<TestUser> Users =
-    new List<TestUser>
-    {
-      Operator,
-      Location,
-      NetworkUser
-    };
+    new List<TestUser> { Operator, Location, NetworkUser };
 }
 
-public class TestUserFixture(
-  ServiceComposition composition
-)
+public class TestUserFixture(ServiceComposition composition)
 {
   public async Task Create(
     TestUser testUser,
@@ -66,8 +59,7 @@ public class TestUserFixture(
   {
     await using var scope = composition.Ozds.Services.CreateAsyncScope();
 
-    var activator = scope.ServiceProvider
-      .GetRequiredService<ModelActivator>();
+    var activator = scope.ServiceProvider.GetRequiredService<ModelActivator>();
 
     var user = activator.Activate<UserModel>();
     TestUserToUserModel(testUser, user);
@@ -78,41 +70,29 @@ public class TestUserFixture(
     var representative = activator.Activate<RepresentativeModel>();
     TestUserToRepresentativeModel(testUser, representative);
 
-    var userMutations = scope.ServiceProvider
-      .GetRequiredService<UserMutations>();
-    await userMutations.Create(
-      user,
-      cancellationToken
-    );
+    var userMutations =
+      scope.ServiceProvider.GetRequiredService<UserMutations>();
+    await userMutations.Create(user, cancellationToken);
 
-    var passwordMutations = scope.ServiceProvider
-      .GetRequiredService<PasswordMutations>();
-    await passwordMutations.Update(
-      password,
-      cancellationToken
-    );
+    var passwordMutations =
+      scope.ServiceProvider.GetRequiredService<PasswordMutations>();
+    await passwordMutations.Update(password, cancellationToken);
 
-    var trackableMutations = scope.ServiceProvider
-      .GetRequiredService<TrackableMutations>();
-    await trackableMutations.Create(
-      representative,
-      cancellationToken
-    );
+    var trackableMutations =
+      scope.ServiceProvider.GetRequiredService<TrackableMutations>();
+    await trackableMutations.Create(representative, cancellationToken);
 
-    var modelMutations = scope.ServiceProvider
-      .GetRequiredService<ModelMutations>();
+    var modelMutations =
+      scope.ServiceProvider.GetRequiredService<ModelMutations>();
     if (locations is not null)
     {
       foreach (var location in locations)
       {
-        var locationRepresentative = activator
-          .Activate<LocationRepresentativeModel>();
+        var locationRepresentative =
+          activator.Activate<LocationRepresentativeModel>();
         locationRepresentative.RepresentativeId = representative.Id;
         locationRepresentative.LocationId = location.Id;
-        await modelMutations.Create(
-          locationRepresentative,
-          cancellationToken
-        );
+        await modelMutations.Create(locationRepresentative, cancellationToken);
       }
     }
 
@@ -120,8 +100,8 @@ public class TestUserFixture(
     {
       foreach (var networkUser in networkUsers)
       {
-        var networkUserRepresentative = activator
-          .Activate<NetworkUserRepresentativeModel>();
+        var networkUserRepresentative =
+          activator.Activate<NetworkUserRepresentativeModel>();
         networkUserRepresentative.RepresentativeId = representative.Id;
         networkUserRepresentative.NetworkUserId = networkUser.Id;
         await modelMutations.Create(
@@ -139,8 +119,8 @@ public class TestUserFixture(
   {
     if (user is null)
     {
-      var activator = composition.Ozds.Services
-        .GetRequiredService<ModelActivator>();
+      var activator =
+        composition.Ozds.Services.GetRequiredService<ModelActivator>();
       user = activator.Activate<UserModel>();
     }
 
@@ -157,8 +137,8 @@ public class TestUserFixture(
   {
     if (password is null)
     {
-      var activator = composition.Ozds.Services
-        .GetRequiredService<ModelActivator>();
+      var activator =
+        composition.Ozds.Services.GetRequiredService<ModelActivator>();
       password = activator.Activate<PasswordModel>();
     }
 
@@ -176,8 +156,8 @@ public class TestUserFixture(
   {
     if (representative is null)
     {
-      var activator = composition.Ozds.Services
-        .GetRequiredService<ModelActivator>();
+      var activator =
+        composition.Ozds.Services.GetRequiredService<ModelActivator>();
       representative = activator.Activate<RepresentativeModel>();
     }
 
@@ -187,25 +167,26 @@ public class TestUserFixture(
     {
       Name = testUser.Name,
       Email = testUser.Email,
-      PhoneNumber = testUser.PhoneNumber
+      PhoneNumber = testUser.PhoneNumber,
     };
     representative.Role = testUser.Role;
     representative.Topics = [];
     return representative;
   }
 
-  public async Task LoginOnLoginPage(
-    TestUser @as,
-    CancellationToken _
-  )
+  public async Task LoginOnLoginPage(TestUser @as, CancellationToken _)
   {
-    await composition.Playwright.Page
-      .FillAsync("input[id=username-textfield]", @as.Name);
-    await composition.Playwright.Page
-      .FillAsync("input[id=password-textfield]", @as.Password);
-    await composition.Playwright.Page
-      .ClickAsync("button[id=sign-in-button]");
-    await composition.Playwright.Page
-      .ClickAsync("button[id=openid-consent-accept]");
+    await composition.Playwright.Page.FillAsync(
+      "input[id=username-textfield]",
+      @as.Name
+    );
+    await composition.Playwright.Page.FillAsync(
+      "input[id=password-textfield]",
+      @as.Password
+    );
+    await composition.Playwright.Page.ClickAsync("button[id=sign-in-button]");
+    await composition.Playwright.Page.ClickAsync(
+      "button[id=openid-consent-accept]"
+    );
   }
 }

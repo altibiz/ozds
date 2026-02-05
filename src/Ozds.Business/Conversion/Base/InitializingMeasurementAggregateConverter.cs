@@ -28,5 +28,6 @@ public abstract class InitializingMeasurementAggregateConverter
   public abstract void Initialize(
     IAggregate aggregate,
     IMeasurement measurement,
-    IntervalModel interval);
+    IntervalModel interval
+  );
 }

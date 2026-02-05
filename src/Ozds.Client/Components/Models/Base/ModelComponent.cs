@@ -45,7 +45,8 @@ public abstract partial class ModelComponent : ComponentBase
     var fixedParameters = CreateParameters();
     fixedParameters.Add(
       nameof(OzdsModelComponentBase<object>.Isolate),
-      Isolate);
+      Isolate
+    );
     return fixedParameters;
   }
 

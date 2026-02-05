@@ -12,7 +12,8 @@ public static class DbContextQueryableExtensions
     entityType ??= typeof(T);
     return context.GetQueryable(entityType) as IQueryable<T>
       ?? throw new InvalidOperationException(
-        $"No DbSet found for {entityType} -> {typeof(T)}");
+        $"No DbSet found for {entityType} -> {typeof(T)}"
+      );
   }
 
   public static IQueryable<object> GetQueryable(
@@ -22,9 +23,11 @@ public static class DbContextQueryableExtensions
   {
     var method = typeof(DbContext)
       .GetMethods()
-      .FirstOrDefault(m => m.Name == nameof(DbContext.Set)
+      .FirstOrDefault(m =>
+        m.Name == nameof(DbContext.Set)
         && m.IsGenericMethodDefinition
-        && m.GetParameters().Length == 0)
+        && m.GetParameters().Length == 0
+      )
       ?.MakeGenericMethod(type);
     return method?.Invoke(context, null) as IQueryable<object>
       ?? throw new InvalidOperationException($"No DbSet found for {type}");

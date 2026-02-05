@@ -21,21 +21,24 @@ public class DocumentRendererTest
 
     using var scope = host.Services.CreateScope();
 
-    var documentRenderer = scope.ServiceProvider
-      .GetRequiredService<DocumentRenderer>();
+    var documentRenderer =
+      scope.ServiceProvider.GetRequiredService<DocumentRenderer>();
 
     var factory = new CalculatedNetworkUserInvoiceEntityFactory();
     var entities = factory.Create();
 
     foreach (var entity in entities)
     {
-      var html = await documentRenderer
-        .RenderCalculatedNetworkUserInvoiceToHtml(
-          entity, cancellationToken);
+      var html =
+        await documentRenderer.RenderCalculatedNetworkUserInvoiceToHtml(
+          entity,
+          cancellationToken
+        );
       html.Should().NotBeNull();
-      var pdf = await documentRenderer
-        .RenderCalculatedNetworkUserInvoiceToPdf(
-          entity, cancellationToken);
+      var pdf = await documentRenderer.RenderCalculatedNetworkUserInvoiceToPdf(
+        entity,
+        cancellationToken
+      );
       pdf.Should().NotBeNull();
     }
   }

@@ -30,7 +30,8 @@ public abstract class TrackableModel : IdentifiableModel, ITrackableIdentifiable
   public required string? DeletedById { get; set; }
 
   public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
+    ValidationContext validationContext
+  )
   {
     foreach (var validationResult in base.Validate(validationContext))
     {
@@ -43,36 +44,46 @@ public abstract class TrackableModel : IdentifiableModel, ITrackableIdentifiable
     }
 
     if (
-      validationContext.MemberName is null or nameof(IsDeleted)
-        or nameof(DeletedOn) &&
-      IsDeleted && !DeletedOn.HasValue
+      validationContext.MemberName
+        is null
+          or nameof(IsDeleted)
+          or nameof(DeletedOn)
+      && IsDeleted
+      && !DeletedOn.HasValue
     )
     {
       yield return new ValidationResult(
         "Deleted on must be set if is deleted is true",
-        new[] { nameof(IsDeleted), nameof(DeletedOn) });
+        new[] { nameof(IsDeleted), nameof(DeletedOn) }
+      );
     }
 
     if (
-      validationContext.MemberName is null or nameof(LastUpdatedOn)
-        or nameof(DeletedOn) &&
-      LastUpdatedOn > DeletedOn
+      validationContext.MemberName
+        is null
+          or nameof(LastUpdatedOn)
+          or nameof(DeletedOn)
+      && LastUpdatedOn > DeletedOn
     )
     {
       yield return new ValidationResult(
         "Last updated on must be before deleted on",
-        new[] { nameof(LastUpdatedOn), nameof(DeletedOn) });
+        new[] { nameof(LastUpdatedOn), nameof(DeletedOn) }
+      );
     }
 
     if (
-      validationContext.MemberName is null or nameof(CreatedOn)
-        or nameof(LastUpdatedOn) &&
-      CreatedOn > LastUpdatedOn
+      validationContext.MemberName
+        is null
+          or nameof(CreatedOn)
+          or nameof(LastUpdatedOn)
+      && CreatedOn > LastUpdatedOn
     )
     {
       yield return new ValidationResult(
         "Created on must be before last updated on",
-        new[] { nameof(CreatedOn), nameof(LastUpdatedOn) });
+        new[] { nameof(CreatedOn), nameof(LastUpdatedOn) }
+      );
     }
 
     var clock = validationContext.GetRequiredService<ClockQueries>();
@@ -80,33 +91,36 @@ public abstract class TrackableModel : IdentifiableModel, ITrackableIdentifiable
     var now = clock.Timestamp();
 
     if (
-      validationContext.MemberName is null or nameof(CreatedOn) &&
-      CreatedOn > now
+      validationContext.MemberName is null or nameof(CreatedOn)
+      && CreatedOn > now
     )
     {
       yield return new ValidationResult(
         "Created on must be in the past",
-        new[] { nameof(CreatedOn) });
+        new[] { nameof(CreatedOn) }
+      );
     }
 
     if (
-      validationContext.MemberName is null or nameof(LastUpdatedOn) &&
-      LastUpdatedOn > now
+      validationContext.MemberName is null or nameof(LastUpdatedOn)
+      && LastUpdatedOn > now
     )
     {
       yield return new ValidationResult(
         "Created on must be in the past",
-        new[] { nameof(LastUpdatedOn) });
+        new[] { nameof(LastUpdatedOn) }
+      );
     }
 
     if (
-      validationContext.MemberName is null or nameof(DeletedOn) &&
-      DeletedOn > now
+      validationContext.MemberName is null or nameof(DeletedOn)
+      && DeletedOn > now
     )
     {
       yield return new ValidationResult(
         "Created on must be in the past",
-        new[] { nameof(DeletedOn) });
+        new[] { nameof(DeletedOn) }
+      );
     }
   }
 }

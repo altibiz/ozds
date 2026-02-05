@@ -6,7 +6,7 @@ public enum AggregationModel
 {
   Min,
   Max,
-  Avg
+  Avg,
 }
 
 public static class AggregationModelExtensions
@@ -18,7 +18,7 @@ public static class AggregationModelExtensions
       AggregationModel.Min => "Min",
       AggregationModel.Max => "Max",
       AggregationModel.Avg => "Avg",
-      _ => throw new ArgumentOutOfRangeException(nameof(phase), phase, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(phase), phase, null),
     };
   }
 
@@ -36,15 +36,15 @@ public static class AggregationModelExtensions
       _ => measure switch
       {
         MeasureModel.Voltage
-          or MeasureModel.Current
-          or MeasureModel.ActivePower
-          or MeasureModel.ReactivePower
-          or MeasureModel.ApparentPower => phasic.AggregateAvg(),
+        or MeasureModel.Current
+        or MeasureModel.ActivePower
+        or MeasureModel.ReactivePower
+        or MeasureModel.ApparentPower => phasic.AggregateAvg(),
         MeasureModel.ActiveEnergy
-          or MeasureModel.ReactiveEnergy
-          or MeasureModel.ApparentEnergy => phasic.AggregateMax(),
-        _ => phasic
-      }
+        or MeasureModel.ReactiveEnergy
+        or MeasureModel.ApparentEnergy => phasic.AggregateMax(),
+        _ => phasic,
+      },
     };
   }
 }

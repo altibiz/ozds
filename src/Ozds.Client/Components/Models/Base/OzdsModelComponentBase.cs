@@ -7,7 +7,8 @@ namespace Ozds.Client.Components.Models.Base;
 // NITPICK: decouple from IModelComponentProvider
 
 public abstract partial class OzdsModelComponentBase<TModel>
-  : OzdsComponentBase, IModelComponentProvider
+  : OzdsComponentBase,
+    IModelComponentProvider
 {
   private Type? baseComponentType;
 
@@ -56,7 +57,8 @@ public abstract partial class OzdsModelComponentBase<TModel>
     if (!baseModelType.IsAssignableFrom(ModelType))
     {
       throw new InvalidOperationException(
-        $"{baseModelType} is not assignable from {ModelType}");
+        $"{baseModelType} is not assignable from {ModelType}"
+      );
     }
 
     return Provider.GetComponentType(baseModelType, ComponentKind);
@@ -68,7 +70,8 @@ public abstract partial class OzdsModelComponentBase<TModel>
     if (baseModelType is null)
     {
       throw new InvalidOperationException(
-        $"No base type found for {ModelType.FullName}");
+        $"No base type found for {ModelType.FullName}"
+      );
     }
 
     return Provider.GetComponentType(baseModelType, ComponentKind);

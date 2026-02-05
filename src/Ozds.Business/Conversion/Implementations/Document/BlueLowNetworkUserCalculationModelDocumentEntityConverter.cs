@@ -7,11 +7,13 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class BlueLowNetworkUserCalculationModelDocumentEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
-  BlueLowNetworkUserCalculationModel,
-  MeteredNetworkUserCalculationModel,
-  BlueLowNetworkUserCalculationEntity,
-  MeteredNetworkUserCalculationEntity>(serviceProvider)
+)
+  : InheritingModelDocumentEntityConverter<
+    BlueLowNetworkUserCalculationModel,
+    MeteredNetworkUserCalculationModel,
+    BlueLowNetworkUserCalculationEntity,
+    MeteredNetworkUserCalculationEntity
+  >(serviceProvider)
 {
   private readonly ModelDocumentEntityConverter modelDocumentEntityConverter =
     serviceProvider.GetRequiredService<ModelDocumentEntityConverter>();
@@ -22,14 +24,17 @@ public class BlueLowNetworkUserCalculationModelDocumentEntityConverter(
   )
   {
     base.InitializeEntity(model, entity);
-    entity.UsageActiveEnergyTotalImportT0 = modelDocumentEntityConverter
-      .ToEntity<UsageActiveEnergyTotalImportT0CalculationItemEntity>(
-        model.UsageActiveEnergyTotalImportT0);
-    entity.UsageReactiveEnergyTotalRampedT0 = modelDocumentEntityConverter
-      .ToEntity<UsageReactiveEnergyTotalRampedT0CalculationItemEntity>(
-        model.UsageReactiveEnergyTotalRampedT0);
-    entity.ConcreteUsageNetworkUserCatalogue = modelDocumentEntityConverter
-      .ToEntity<BlueLowNetworkUserCatalogueEntity>(
-        model.ConcreteArchivedUsageNetworkUserCatalogue);
+    entity.UsageActiveEnergyTotalImportT0 =
+      modelDocumentEntityConverter.ToEntity<UsageActiveEnergyTotalImportT0CalculationItemEntity>(
+        model.UsageActiveEnergyTotalImportT0
+      );
+    entity.UsageReactiveEnergyTotalRampedT0 =
+      modelDocumentEntityConverter.ToEntity<UsageReactiveEnergyTotalRampedT0CalculationItemEntity>(
+        model.UsageReactiveEnergyTotalRampedT0
+      );
+    entity.ConcreteUsageNetworkUserCatalogue =
+      modelDocumentEntityConverter.ToEntity<BlueLowNetworkUserCatalogueEntity>(
+        model.ConcreteArchivedUsageNetworkUserCatalogue
+      );
   }
 }

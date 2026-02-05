@@ -5,9 +5,10 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 
 public class NetworkUserCalculationModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  NetworkUserCalculationModel,
-  CalculationModel>(serviceProvider)
+)
+  : InheritingModelActivator<NetworkUserCalculationModel, CalculationModel>(
+    serviceProvider
+  )
 {
   public override void Initialize(NetworkUserCalculationModel model)
   {

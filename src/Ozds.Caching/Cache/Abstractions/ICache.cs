@@ -7,15 +7,15 @@ public interface ICache
   public Task CreateObject(
     string key,
     object value,
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 
   public Task<object?> ReadObject(
     string key,
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 
-  public Task DeleteObject(
-    string key,
-    CancellationToken cancellationToken);
+  public Task DeleteObject(string key, CancellationToken cancellationToken);
 }
 
 public interface IConfigurableCache : ICache
@@ -27,7 +27,8 @@ public interface ICache<TValue> : ICache
 {
   async Task<object?> ICache.ReadObject(
     string key,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return await Read(key, cancellationToken);
   }
@@ -35,33 +36,27 @@ public interface ICache<TValue> : ICache
   async Task ICache.CreateObject(
     string key,
     object value,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     await Create(key, (TValue)value, cancellationToken);
   }
 
   async Task ICache.DeleteObject(
     string key,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     await Delete(key, cancellationToken);
   }
 
-  Task<TValue?> Read(
-    string key,
-    CancellationToken cancellationToken);
+  Task<TValue?> Read(string key, CancellationToken cancellationToken);
 
-  Task Create(
-    string key,
-    TValue value,
-    CancellationToken cancellationToken);
+  Task Create(string key, TValue value, CancellationToken cancellationToken);
 
-  Task Delete(
-    string key,
-    CancellationToken cancellationToken);
+  Task Delete(string key, CancellationToken cancellationToken);
 }
 
 public interface IConfigurableCache<TValue>
-  : ICache<TValue>, IConfigurableCache
-{
-}
+  : ICache<TValue>,
+    IConfigurableCache { }

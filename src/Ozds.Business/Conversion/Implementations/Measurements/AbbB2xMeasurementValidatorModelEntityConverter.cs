@@ -9,11 +9,13 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class AbbB2xMeasurementValidatorModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  AbbB2xMeasurementValidatorModel,
-  TrackableModel,
-  AbbB2xMeasurementValidatorEntity,
-  TrackableEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    AbbB2xMeasurementValidatorModel,
+    TrackableModel,
+    AbbB2xMeasurementValidatorEntity,
+    TrackableEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     AbbB2xMeasurementValidatorModel model,

@@ -6,9 +6,7 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 public class FeeCalculationItemModelActivator
   : ConcreteModelActivator<FeeCalculationItemModel>
 {
-  public override void Initialize(
-    FeeCalculationItemModel model
-  )
+  public override void Initialize(FeeCalculationItemModel model)
   {
     base.Initialize(model);
 
@@ -18,8 +16,8 @@ public class FeeCalculationItemModelActivator
 
 public class UsageMeterFeeCalculationItemModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  UsageMeterFeeCalculationItemModel,
-  FeeCalculationItemModel>(serviceProvider)
-{
-}
+)
+  : InheritingModelActivator<
+    UsageMeterFeeCalculationItemModel,
+    FeeCalculationItemModel
+  >(serviceProvider) { }

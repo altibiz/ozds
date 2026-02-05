@@ -8,22 +8,23 @@ public class ModelActivatorTest : OzdsBusinessHostTestBase
 {
   public static IEnumerable<Type> TestData()
   {
-    return AppDomain.CurrentDomain
-      .GetAssemblies()
+    return AppDomain
+      .CurrentDomain.GetAssemblies()
       .Where(x => x.FullName is { } name && name.Contains("Ozds"))
-      .SelectMany(assembly => assembly
-        .GetTypes()
-        .Where(type =>
-          !type.IsGenericType
-          && type.IsAssignableTo(typeof(IModel))));
+      .SelectMany(assembly =>
+        assembly
+          .GetTypes()
+          .Where(type =>
+            !type.IsGenericType && type.IsAssignableTo(typeof(IModel))
+          )
+      );
   }
 
   [Test]
   [MethodDataSource(nameof(TestData))]
   public void Activates(Type modelType)
   {
-    var activator = Host.Services
-      .GetRequiredService<ModelActivator>();
+    var activator = Host.Services.GetRequiredService<ModelActivator>();
 
     var model = activator.ActivateDynamic(modelType);
     model.Should().NotBeNull().And.BeAssignableTo(modelType);

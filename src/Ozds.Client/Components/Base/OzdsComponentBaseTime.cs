@@ -15,8 +15,7 @@ public abstract partial class OzdsComponentBase : DisposableComponentBase
   {
     get
     {
-      return timeQueries ??= ScopedServices
-        .GetRequiredService<TimeQueries>();
+      return timeQueries ??= ScopedServices.GetRequiredService<TimeQueries>();
     }
   }
 

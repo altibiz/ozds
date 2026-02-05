@@ -29,8 +29,7 @@ public class ApiKeyQueries(
     );
 
     var models = entities
-      .Items
-      .Select(modelEntityConverter.ToModel<ApiKeyModel>)
+      .Items.Select(modelEntityConverter.ToModel<ApiKeyModel>)
       .ToPaginatedList(entities.TotalCount);
 
     return models;
@@ -55,8 +54,7 @@ public class ApiKeyQueries(
     );
 
     var models = entities
-      .Items
-      .Select(modelEntityConverter.ToModel<ApiKeyModel>)
+      .Items.Select(modelEntityConverter.ToModel<ApiKeyModel>)
       .ToPaginatedList(entities.TotalCount);
 
     return models;

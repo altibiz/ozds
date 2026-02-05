@@ -7,12 +7,14 @@ using Ozds.Caching.Entities.Complex;
 namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class MessengerModelCachingEntityConverter(
-  IServiceProvider serviceProvider)
+  IServiceProvider serviceProvider
+)
   : InheritingModelCachingEntityConverter<
     MessengerModel,
     TrackableModel,
     MessengerEntity,
-    TrackableEntity>(serviceProvider)
+    TrackableEntity
+  >(serviceProvider)
 {
   private readonly ModelCachingEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelCachingEntityConverter>();
@@ -25,9 +27,11 @@ public class MessengerModelCachingEntityConverter(
     base.InitializeEntity(model, entity);
     entity.LocationId = model.LocationId;
     entity.MaxInactivityPeriod = modelEntityConverter.ToEntity<PeriodEntity>(
-      model.MaxInactivityPeriod);
+      model.MaxInactivityPeriod
+    );
     entity.PushDelayPeriod = modelEntityConverter.ToEntity<PeriodEntity>(
-      model.PushDelayPeriod);
+      model.PushDelayPeriod
+    );
   }
 
   public override void InitializeModel(
@@ -38,8 +42,10 @@ public class MessengerModelCachingEntityConverter(
     base.InitializeModel(entity, model);
     model.LocationId = entity.LocationId;
     model.MaxInactivityPeriod = modelEntityConverter.ToModel<PeriodModel>(
-      entity.MaxInactivityPeriod);
+      entity.MaxInactivityPeriod
+    );
     model.PushDelayPeriod = modelEntityConverter.ToModel<PeriodModel>(
-      entity.PushDelayPeriod);
+      entity.PushDelayPeriod
+    );
   }
 }

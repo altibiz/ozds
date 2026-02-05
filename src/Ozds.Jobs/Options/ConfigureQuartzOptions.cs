@@ -3,9 +3,8 @@ using Quartz;
 
 namespace Ozds.Jobs.Options;
 
-public class ConfigureQuartzOptions(
-  IOptions<OzdsJobsOptions> jobsOptions
-) : IConfigureOptions<QuartzOptions>
+public class ConfigureQuartzOptions(IOptions<OzdsJobsOptions> jobsOptions)
+  : IConfigureOptions<QuartzOptions>
 {
   public void Configure(QuartzOptions options)
   {

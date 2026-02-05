@@ -19,17 +19,21 @@ public class CreateMeasurementsTest : OzdsDataTestBase
   [Repeat(2)]
   public async Task FinishesInTimeTest(CancellationToken cancellationToken)
   {
-    var reflector = ServiceProvider
-      .GetRequiredService<EntityReflector>();
+    var reflector = ServiceProvider.GetRequiredService<EntityReflector>();
 
     var infrastructures = await Task.WhenAll(
-      reflector.MeasurementTypes
-        .Concat(reflector.AggregateTypes)
-        .Select(measurementType => Infrastructure.Create(
-          cancellationToken,
-          x => x.WithMeterType(
-            reflector
-              .ResolveMeasurementMeterType(measurementType)))));
+      reflector
+        .MeasurementTypes.Concat(reflector.AggregateTypes)
+        .Select(measurementType =>
+          Infrastructure.Create(
+            cancellationToken,
+            x =>
+              x.WithMeterType(
+                reflector.ResolveMeasurementMeterType(measurementType)
+              )
+          )
+        )
+    );
 
     var infrastructureMeasurements = await Task.WhenAll(
       infrastructures
@@ -48,17 +52,18 @@ public class CreateMeasurementsTest : OzdsDataTestBase
           .GetValues<IntervalEntity>()
           .Cast<IntervalEntity?>()
           .Append(null)
-          .Select(interval => Measurements
-            .Create(
+          .Select(interval =>
+            Measurements.Create(
               infrastructure,
               cancellationToken,
-              x => x
-                .WithCount(Constants.MeasurementCount)
-                .WithInterval(interval)))));
+              x =>
+                x.WithCount(Constants.MeasurementCount).WithInterval(interval)
+            )
+          )
+      )
+    );
 
-    var measurements = infrastructureMeasurements
-      .SelectMany(x => x)
-      .ToList();
+    var measurements = infrastructureMeasurements.SelectMany(x => x).ToList();
 
     var stopwatch = Stopwatch.StartNew();
     await ServiceProvider
@@ -74,34 +79,38 @@ public class CreateMeasurementsTest : OzdsDataTestBase
     CancellationToken cancellationToken
   )
   {
-    var reflector = ServiceProvider
-      .GetRequiredService<EntityReflector>();
+    var reflector = ServiceProvider.GetRequiredService<EntityReflector>();
 
     var infrastructures = await Task.WhenAll(
-      reflector.MeasurementTypes
-        .Select(measurementType => Infrastructure.Create(
+      reflector.MeasurementTypes.Select(measurementType =>
+        Infrastructure.Create(
           cancellationToken,
-          x => x.WithMeterType(
-            reflector
-              .ResolveMeasurementMeterType(measurementType)))));
+          x =>
+            x.WithMeterType(
+              reflector.ResolveMeasurementMeterType(measurementType)
+            )
+        )
+      )
+    );
 
     var infrastructureMeasurements = await Task.WhenAll(
-      infrastructures
-        .SelectMany(infrastructure => Enum
-          .GetValues<IntervalEntity>()
+      infrastructures.SelectMany(infrastructure =>
+        Enum.GetValues<IntervalEntity>()
           .Cast<IntervalEntity?>()
           .Append(null)
-          .Select(interval => Measurements
-            .Create(
+          .Select(interval =>
+            Measurements.Create(
               infrastructure,
               cancellationToken,
-              x => x
-                .WithCount(Constants.MassiveMeasurementCount)
-                .WithInterval(interval)))));
+              x =>
+                x.WithCount(Constants.MassiveMeasurementCount)
+                  .WithInterval(interval)
+            )
+          )
+      )
+    );
 
-    var measurements = infrastructureMeasurements
-      .SelectMany(x => x)
-      .ToList();
+    var measurements = infrastructureMeasurements.SelectMany(x => x).ToList();
 
     var stopwatch = Stopwatch.StartNew();
     var actual = await ServiceProvider
@@ -115,167 +124,200 @@ public class CreateMeasurementsTest : OzdsDataTestBase
   [Test]
   public async Task IsValidTest(CancellationToken cancellationToken)
   {
-    var reflector = ServiceProvider
-      .GetRequiredService<EntityReflector>();
+    var reflector = ServiceProvider.GetRequiredService<EntityReflector>();
 
     var infrastructures = await Task.WhenAll(
-      reflector.MeasurementTypes
-        .Concat(reflector.AggregateTypes)
-        .Select(measurementType => Infrastructure.Create(
-          cancellationToken,
-          x => x.WithMeterType(
-            reflector
-              .ResolveMeasurementMeterType(measurementType)))));
+      reflector
+        .MeasurementTypes.Concat(reflector.AggregateTypes)
+        .Select(measurementType =>
+          Infrastructure.Create(
+            cancellationToken,
+            x =>
+              x.WithMeterType(
+                reflector.ResolveMeasurementMeterType(measurementType)
+              )
+          )
+        )
+    );
 
     var infrastructureMeasurements = await Task.WhenAll(
-      infrastructures
-        .SelectMany(infrastructure => Enum
-          .GetValues<IntervalEntity>()
+      infrastructures.SelectMany(infrastructure =>
+        Enum.GetValues<IntervalEntity>()
           .Cast<IntervalEntity?>()
           .Append(null)
-          .Select(interval => Measurements
-            .Create(
+          .Select(interval =>
+            Measurements.Create(
               infrastructure,
               cancellationToken,
-              x => x
-                .WithCount(Constants.MeasurementCountFew)
-                .WithInterval(interval)))));
+              x =>
+                x.WithCount(Constants.MeasurementCountFew)
+                  .WithInterval(interval)
+            )
+          )
+      )
+    );
 
-    var measurements = infrastructureMeasurements
-      .SelectMany(x => x)
-      .ToList();
+    var measurements = infrastructureMeasurements.SelectMany(x => x).ToList();
 
-    var byproduct = (await ServiceProvider
+    var byproduct = (
+      await ServiceProvider
         .GetRequiredService<MeasurementMutations>()
-        .Create(
-          measurements,
-          cancellationToken))
-      .OrderBy(x => x is IAggregateEntity aggregate
-        ? aggregate.Interval
-        : (IntervalEntity?)null)
-      .ThenBy(x => (
-        x.GetType().Name,
-        x.MeterId,
-        x.MeasurementLocationId,
-        x.Timestamp,
+        .Create(measurements, cancellationToken)
+    )
+      .OrderBy(x =>
         x is IAggregateEntity aggregate
           ? aggregate.Interval
           : (IntervalEntity?)null
-      ))
+      )
+      .ThenBy(x =>
+        (
+          x.GetType().Name,
+          x.MeterId,
+          x.MeasurementLocationId,
+          x.Timestamp,
+          x is IAggregateEntity aggregate
+            ? aggregate.Interval
+            : (IntervalEntity?)null
+        )
+      )
       .ToList();
 
     await using var context = await ServiceProvider
       .GetRequiredService<IDbContextFactory<DataDbContext>>()
       .CreateDbContextAsync(cancellationToken);
 
-    var actual = (await context.AbbB2xAggregates
-        .ToListAsync(cancellationToken))
+    var actual = (await context.AbbB2xAggregates.ToListAsync(cancellationToken))
       .OfType<IMeasurementEntity>()
+      .Concat(await context.AbbB2xMeasurements.ToListAsync(cancellationToken))
       .Concat(
-        await context.AbbB2xMeasurements
-          .ToListAsync(cancellationToken))
+        await context.SchneideriEM3xxxAggregates.ToListAsync(cancellationToken)
+      )
       .Concat(
-        await context.SchneideriEM3xxxAggregates
-          .ToListAsync(cancellationToken))
-      .Concat(
-        await context.SchneideriEM3xxxMeasurements
-          .ToListAsync(cancellationToken))
-      .OrderBy(x => x is IAggregateEntity aggregate
-        ? aggregate.Interval
-        : (IntervalEntity?)null)
-      .ThenBy(x => (
-        x.GetType().Name,
-        x.MeterId,
-        x.MeasurementLocationId,
-        x.Timestamp,
+        await context.SchneideriEM3xxxMeasurements.ToListAsync(
+          cancellationToken
+        )
+      )
+      .OrderBy(x =>
         x is IAggregateEntity aggregate
           ? aggregate.Interval
           : (IntervalEntity?)null
-      ))
+      )
+      .ThenBy(x =>
+        (
+          x.GetType().Name,
+          x.MeterId,
+          x.MeasurementLocationId,
+          x.Timestamp,
+          x is IAggregateEntity aggregate
+            ? aggregate.Interval
+            : (IntervalEntity?)null
+        )
+      )
       .ToList();
 
     byproduct.Should().BeContextuallyEquivalentTo(context, actual);
 
     measurements.Should().NotBeContextuallyEquivalentTo(context, actual);
 
-    var time = ServiceProvider
-      .GetRequiredService<ITimeQueries>();
+    var time = ServiceProvider.GetRequiredService<ITimeQueries>();
 
     var expected = measurements
-      .GroupBy(x => (
-        x.GetType(),
-        x.MeterId,
-        x.MeasurementLocationId,
-        x.Timestamp,
-        x is IAggregateEntity aggregate
-          ? aggregate.Interval
-          : (IntervalEntity?)null
-      ))
+      .GroupBy(x =>
+        (
+          x.GetType(),
+          x.MeterId,
+          x.MeasurementLocationId,
+          x.Timestamp,
+          x is IAggregateEntity aggregate
+            ? aggregate.Interval
+            : (IntervalEntity?)null
+        )
+      )
       .Select(x =>
         x.Key.Item4 is { }
-          ? x.Aggregate((lhs, rhs) => (lhs, rhs) switch
-          {
-            (AbbB2xAggregateEntity lhsAggregate,
-              AbbB2xAggregateEntity rhsAggregate) => Upserts
-                .Upsert(lhsAggregate, rhsAggregate),
-            (SchneideriEM3xxxAggregateEntity lhsAggregate,
-              SchneideriEM3xxxAggregateEntity rhsAggregate) => Upserts
-                .Upsert(lhsAggregate, rhsAggregate),
-            _ => lhs
-          })
-          : x.First())
+          ? x.Aggregate(
+            (lhs, rhs) =>
+              (lhs, rhs) switch
+              {
+                (
+                  AbbB2xAggregateEntity lhsAggregate,
+                  AbbB2xAggregateEntity rhsAggregate
+                ) => Upserts.Upsert(lhsAggregate, rhsAggregate),
+                (
+                  SchneideriEM3xxxAggregateEntity lhsAggregate,
+                  SchneideriEM3xxxAggregateEntity rhsAggregate
+                ) => Upserts.Upsert(lhsAggregate, rhsAggregate),
+                _ => lhs,
+              }
+          )
+          : x.First()
+      )
       .ToList();
-    expected = expected.Select(item =>
+    expected = expected
+      .Select(item =>
         item is IAggregateEntity aggregateItem
         && aggregateItem.Interval != IntervalEntity.QuarterHour
           ? aggregateItem switch
           {
-            AbbB2xAggregateEntity abbB2XAggregateItem =>
-              expected
-                .OfType<AbbB2xAggregateEntity>()
-                .Where(x => x.Interval == IntervalEntity.QuarterHour)
-                .Where(x => x.MeterId == abbB2XAggregateItem.MeterId)
-                .Where(x => x.MeasurementLocationId
-                  == abbB2XAggregateItem.MeasurementLocationId)
-                .Where(x => x.Timestamp >= abbB2XAggregateItem.Timestamp
-                  && x.Timestamp < abbB2XAggregateItem.Timestamp
-                    .Add(
-                      time.IntervalTimeSpan(
-                        abbB2XAggregateItem.Interval
-                          .ToTimeEntity(),
-                        abbB2XAggregateItem.Timestamp)))
-                .Aggregate(abbB2XAggregateItem, Upserts.Upsert),
+            AbbB2xAggregateEntity abbB2XAggregateItem => expected
+              .OfType<AbbB2xAggregateEntity>()
+              .Where(x => x.Interval == IntervalEntity.QuarterHour)
+              .Where(x => x.MeterId == abbB2XAggregateItem.MeterId)
+              .Where(x =>
+                x.MeasurementLocationId
+                == abbB2XAggregateItem.MeasurementLocationId
+              )
+              .Where(x =>
+                x.Timestamp >= abbB2XAggregateItem.Timestamp
+                && x.Timestamp
+                  < abbB2XAggregateItem.Timestamp.Add(
+                    time.IntervalTimeSpan(
+                      abbB2XAggregateItem.Interval.ToTimeEntity(),
+                      abbB2XAggregateItem.Timestamp
+                    )
+                  )
+              )
+              .Aggregate(abbB2XAggregateItem, Upserts.Upsert),
             SchneideriEM3xxxAggregateEntity schneideriEM3xxxAggregateItem =>
               expected
                 .OfType<SchneideriEM3xxxAggregateEntity>()
                 .Where(x => x.Interval == IntervalEntity.QuarterHour)
                 .Where(x => x.MeterId == schneideriEM3xxxAggregateItem.MeterId)
-                .Where(x => x.MeasurementLocationId
-                  == schneideriEM3xxxAggregateItem.MeasurementLocationId)
+                .Where(x =>
+                  x.MeasurementLocationId
+                  == schneideriEM3xxxAggregateItem.MeasurementLocationId
+                )
                 .Where(x =>
                   x.Timestamp >= schneideriEM3xxxAggregateItem.Timestamp
-                  && x.Timestamp < schneideriEM3xxxAggregateItem.Timestamp
-                    .Add(
+                  && x.Timestamp
+                    < schneideriEM3xxxAggregateItem.Timestamp.Add(
                       time.IntervalTimeSpan(
-                        schneideriEM3xxxAggregateItem.Interval
-                          .ToTimeEntity(),
-                        schneideriEM3xxxAggregateItem.Timestamp)))
+                        schneideriEM3xxxAggregateItem.Interval.ToTimeEntity(),
+                        schneideriEM3xxxAggregateItem.Timestamp
+                      )
+                    )
+                )
                 .Aggregate(schneideriEM3xxxAggregateItem, Upserts.Upsert),
-            _ => item
+            _ => item,
           }
-          : item)
-      .OrderBy(x => x is IAggregateEntity aggregate
-        ? aggregate.Interval
-        : (IntervalEntity?)null)
-      .ThenBy(x => (
-        x.GetType().Name,
-        x.MeterId,
-        x.MeasurementLocationId,
-        x.Timestamp,
+          : item
+      )
+      .OrderBy(x =>
         x is IAggregateEntity aggregate
           ? aggregate.Interval
           : (IntervalEntity?)null
-      ))
+      )
+      .ThenBy(x =>
+        (
+          x.GetType().Name,
+          x.MeterId,
+          x.MeasurementLocationId,
+          x.Timestamp,
+          x is IAggregateEntity aggregate
+            ? aggregate.Interval
+            : (IntervalEntity?)null
+        )
+      )
       .ToList();
 
     actual.Should().BeContextuallyEquivalentTo(context, expected);
@@ -306,116 +348,146 @@ public class CreateMeasurementsTest : OzdsDataTestBase
           lhs.VoltageL1AnyT0_V,
           lhs.Count,
           rhs.VoltageL1AnyT0_V,
-          rhs.Count);
+          rhs.Count
+        );
         result.VoltageL2AnyT0_V = Upsert(
           lhs.VoltageL2AnyT0_V,
           lhs.Count,
           rhs.VoltageL2AnyT0_V,
-          rhs.Count);
+          rhs.Count
+        );
         result.VoltageL3AnyT0_V = Upsert(
           lhs.VoltageL3AnyT0_V,
           lhs.Count,
           rhs.VoltageL3AnyT0_V,
-          rhs.Count);
+          rhs.Count
+        );
         result.CurrentL1AnyT0_A = Upsert(
           lhs.CurrentL1AnyT0_A,
           lhs.Count,
           rhs.CurrentL1AnyT0_A,
-          rhs.Count);
+          rhs.Count
+        );
         result.CurrentL2AnyT0_A = Upsert(
           lhs.CurrentL2AnyT0_A,
           lhs.Count,
           rhs.CurrentL2AnyT0_A,
-          rhs.Count);
+          rhs.Count
+        );
         result.CurrentL3AnyT0_A = Upsert(
           lhs.CurrentL3AnyT0_A,
           lhs.Count,
           rhs.CurrentL3AnyT0_A,
-          rhs.Count);
+          rhs.Count
+        );
         result.ActivePowerL1NetT0_W = Upsert(
           lhs.ActivePowerL1NetT0_W,
           lhs.Count,
           rhs.ActivePowerL1NetT0_W,
-          rhs.Count);
+          rhs.Count
+        );
         result.ActivePowerL2NetT0_W = Upsert(
           lhs.ActivePowerL2NetT0_W,
           lhs.Count,
           rhs.ActivePowerL2NetT0_W,
-          rhs.Count);
+          rhs.Count
+        );
         result.ActivePowerL3NetT0_W = Upsert(
           lhs.ActivePowerL3NetT0_W,
           lhs.Count,
           rhs.ActivePowerL3NetT0_W,
-          rhs.Count);
+          rhs.Count
+        );
         result.ReactivePowerL1NetT0_VAR = Upsert(
           lhs.ReactivePowerL1NetT0_VAR,
           lhs.Count,
           rhs.ReactivePowerL1NetT0_VAR,
-          rhs.Count);
+          rhs.Count
+        );
         result.ReactivePowerL2NetT0_VAR = Upsert(
           lhs.ReactivePowerL2NetT0_VAR,
           lhs.Count,
           rhs.ReactivePowerL2NetT0_VAR,
-          rhs.Count);
+          rhs.Count
+        );
         result.ReactivePowerL3NetT0_VAR = Upsert(
           lhs.ReactivePowerL3NetT0_VAR,
           lhs.Count,
           rhs.ReactivePowerL3NetT0_VAR,
-          rhs.Count);
+          rhs.Count
+        );
         result.ActiveEnergyL1ImportT0_Wh = Upsert(
           lhs.ActiveEnergyL1ImportT0_Wh,
-          rhs.ActiveEnergyL1ImportT0_Wh);
+          rhs.ActiveEnergyL1ImportT0_Wh
+        );
         result.ActiveEnergyL2ImportT0_Wh = Upsert(
           lhs.ActiveEnergyL2ImportT0_Wh,
-          rhs.ActiveEnergyL2ImportT0_Wh);
+          rhs.ActiveEnergyL2ImportT0_Wh
+        );
         result.ActiveEnergyL3ImportT0_Wh = Upsert(
           lhs.ActiveEnergyL3ImportT0_Wh,
-          rhs.ActiveEnergyL3ImportT0_Wh);
+          rhs.ActiveEnergyL3ImportT0_Wh
+        );
         result.ReactiveEnergyL1ImportT0_VARh = Upsert(
           lhs.ReactiveEnergyL1ImportT0_VARh,
-          rhs.ReactiveEnergyL1ImportT0_VARh);
+          rhs.ReactiveEnergyL1ImportT0_VARh
+        );
         result.ReactiveEnergyL2ImportT0_VARh = Upsert(
           lhs.ReactiveEnergyL2ImportT0_VARh,
-          rhs.ReactiveEnergyL2ImportT0_VARh);
+          rhs.ReactiveEnergyL2ImportT0_VARh
+        );
         result.ReactiveEnergyL3ImportT0_VARh = Upsert(
           lhs.ReactiveEnergyL3ImportT0_VARh,
-          rhs.ReactiveEnergyL3ImportT0_VARh);
+          rhs.ReactiveEnergyL3ImportT0_VARh
+        );
         result.ActiveEnergyL1ExportT0_Wh = Upsert(
           lhs.ActiveEnergyL1ExportT0_Wh,
-          rhs.ActiveEnergyL1ExportT0_Wh);
+          rhs.ActiveEnergyL1ExportT0_Wh
+        );
         result.ActiveEnergyL2ExportT0_Wh = Upsert(
           lhs.ActiveEnergyL2ExportT0_Wh,
-          rhs.ActiveEnergyL2ExportT0_Wh);
+          rhs.ActiveEnergyL2ExportT0_Wh
+        );
         result.ActiveEnergyL3ExportT0_Wh = Upsert(
           lhs.ActiveEnergyL3ExportT0_Wh,
-          rhs.ActiveEnergyL3ExportT0_Wh);
+          rhs.ActiveEnergyL3ExportT0_Wh
+        );
         result.ReactiveEnergyL1ExportT0_VARh = Upsert(
           lhs.ReactiveEnergyL1ExportT0_VARh,
-          rhs.ReactiveEnergyL1ExportT0_VARh);
+          rhs.ReactiveEnergyL1ExportT0_VARh
+        );
         result.ReactiveEnergyL2ExportT0_VARh = Upsert(
           lhs.ReactiveEnergyL2ExportT0_VARh,
-          rhs.ReactiveEnergyL2ExportT0_VARh);
+          rhs.ReactiveEnergyL2ExportT0_VARh
+        );
         result.ReactiveEnergyL3ExportT0_VARh = Upsert(
           lhs.ReactiveEnergyL3ExportT0_VARh,
-          rhs.ReactiveEnergyL3ExportT0_VARh);
+          rhs.ReactiveEnergyL3ExportT0_VARh
+        );
         result.ActiveEnergyTotalImportT0_Wh = Upsert(
           lhs.ActiveEnergyTotalImportT0_Wh,
-          rhs.ActiveEnergyTotalImportT0_Wh);
+          rhs.ActiveEnergyTotalImportT0_Wh
+        );
         result.ActiveEnergyTotalExportT0_Wh = Upsert(
           lhs.ActiveEnergyTotalExportT0_Wh,
-          rhs.ActiveEnergyTotalExportT0_Wh);
+          rhs.ActiveEnergyTotalExportT0_Wh
+        );
         result.ReactiveEnergyTotalImportT0_VARh = Upsert(
           lhs.ReactiveEnergyTotalImportT0_VARh,
-          rhs.ReactiveEnergyTotalImportT0_VARh);
+          rhs.ReactiveEnergyTotalImportT0_VARh
+        );
         result.ReactiveEnergyTotalExportT0_VARh = Upsert(
           lhs.ReactiveEnergyTotalExportT0_VARh,
-          rhs.ReactiveEnergyTotalExportT0_VARh);
+          rhs.ReactiveEnergyTotalExportT0_VARh
+        );
         result.ActiveEnergyTotalImportT1_Wh = Upsert(
           lhs.ActiveEnergyTotalImportT1_Wh,
-          rhs.ActiveEnergyTotalImportT1_Wh);
+          rhs.ActiveEnergyTotalImportT1_Wh
+        );
         result.ActiveEnergyTotalImportT2_Wh = Upsert(
           lhs.ActiveEnergyTotalImportT2_Wh,
-          rhs.ActiveEnergyTotalImportT2_Wh);
+          rhs.ActiveEnergyTotalImportT2_Wh
+        );
       }
       else
       {
@@ -470,75 +542,93 @@ public class CreateMeasurementsTest : OzdsDataTestBase
         result.DerivedActivePowerL1ImportT0_W = Upsert(
           lhs.ActiveEnergyL1ImportT0_Wh,
           rhs.ActiveEnergyL1ImportT0_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerL2ImportT0_W = Upsert(
           lhs.ActiveEnergyL2ImportT0_Wh,
           rhs.ActiveEnergyL2ImportT0_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerL3ImportT0_W = Upsert(
           lhs.ActiveEnergyL3ImportT0_Wh,
           rhs.ActiveEnergyL3ImportT0_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedReactivePowerL1ImportT0_VAR = Upsert(
           lhs.ReactiveEnergyL1ImportT0_VARh,
           rhs.ReactiveEnergyL1ImportT0_VARh,
-          timestamp);
+          timestamp
+        );
         result.DerivedReactivePowerL2ImportT0_VAR = Upsert(
           lhs.ReactiveEnergyL2ImportT0_VARh,
           rhs.ReactiveEnergyL2ImportT0_VARh,
-          timestamp);
+          timestamp
+        );
         result.DerivedReactivePowerL3ImportT0_VAR = Upsert(
           lhs.ReactiveEnergyL3ImportT0_VARh,
           rhs.ReactiveEnergyL3ImportT0_VARh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerL1ExportT0_W = Upsert(
           lhs.ActiveEnergyL1ImportT0_Wh,
           rhs.ActiveEnergyL1ImportT0_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerL2ExportT0_W = Upsert(
           lhs.ActiveEnergyL2ImportT0_Wh,
           rhs.ActiveEnergyL2ImportT0_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerL3ExportT0_W = Upsert(
           lhs.ActiveEnergyL3ImportT0_Wh,
           rhs.ActiveEnergyL3ImportT0_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedReactivePowerL1ExportT0_VAR = Upsert(
           lhs.ReactiveEnergyL1ImportT0_VARh,
           rhs.ReactiveEnergyL1ImportT0_VARh,
-          timestamp);
+          timestamp
+        );
         result.DerivedReactivePowerL2ExportT0_VAR = Upsert(
           lhs.ReactiveEnergyL2ImportT0_VARh,
           rhs.ReactiveEnergyL2ImportT0_VARh,
-          timestamp);
+          timestamp
+        );
         result.DerivedReactivePowerL3ExportT0_VAR = Upsert(
           lhs.ReactiveEnergyL3ImportT0_VARh,
           rhs.ReactiveEnergyL3ImportT0_VARh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerTotalImportT0_W = Upsert(
           lhs.ActiveEnergyTotalImportT0_Wh,
           rhs.ActiveEnergyTotalImportT0_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerTotalExportT0_W = Upsert(
           lhs.ActiveEnergyTotalExportT0_Wh,
           rhs.ActiveEnergyTotalExportT0_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedReactivePowerTotalImportT0_VAR = Upsert(
           lhs.ReactiveEnergyTotalImportT0_VARh,
           rhs.ReactiveEnergyTotalImportT0_VARh,
-          timestamp);
+          timestamp
+        );
         result.DerivedReactivePowerTotalExportT0_VAR = Upsert(
           lhs.ReactiveEnergyTotalExportT0_VARh,
           rhs.ReactiveEnergyTotalExportT0_VARh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerTotalImportT1_W = Upsert(
           lhs.ActiveEnergyTotalImportT1_Wh,
           rhs.ActiveEnergyTotalImportT1_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerTotalImportT2_W = Upsert(
           lhs.ActiveEnergyTotalImportT2_Wh,
           rhs.ActiveEnergyTotalImportT2_Wh,
-          timestamp);
+          timestamp
+        );
       }
       else
       {
@@ -547,92 +637,110 @@ public class CreateMeasurementsTest : OzdsDataTestBase
           lhs.DerivedActivePowerL1ImportT0_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL1ImportT0_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerL2ImportT0_W = Upsert(
           lhs.DerivedActivePowerL2ImportT0_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL2ImportT0_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerL3ImportT0_W = Upsert(
           lhs.DerivedActivePowerL3ImportT0_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL3ImportT0_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedReactivePowerL1ImportT0_VAR = Upsert(
           lhs.DerivedReactivePowerL1ImportT0_VAR,
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL1ImportT0_VAR,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedReactivePowerL2ImportT0_VAR = Upsert(
           lhs.DerivedReactivePowerL2ImportT0_VAR,
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL2ImportT0_VAR,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedReactivePowerL3ImportT0_VAR = Upsert(
           lhs.DerivedReactivePowerL3ImportT0_VAR,
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL3ImportT0_VAR,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerL1ExportT0_W = Upsert(
           lhs.DerivedActivePowerL1ExportT0_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL1ExportT0_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerL2ExportT0_W = Upsert(
           lhs.DerivedActivePowerL2ExportT0_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL2ExportT0_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerL3ExportT0_W = Upsert(
           lhs.DerivedActivePowerL3ExportT0_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL3ExportT0_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedReactivePowerL1ExportT0_VAR = Upsert(
           lhs.DerivedReactivePowerL1ExportT0_VAR,
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL1ExportT0_VAR,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedReactivePowerL2ExportT0_VAR = Upsert(
           lhs.DerivedReactivePowerL2ExportT0_VAR,
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL2ExportT0_VAR,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedReactivePowerL3ExportT0_VAR = Upsert(
           lhs.DerivedReactivePowerL3ExportT0_VAR,
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL3ExportT0_VAR,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerTotalImportT0_W = Upsert(
           lhs.DerivedActivePowerTotalImportT0_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalImportT0_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerTotalExportT0_W = Upsert(
           lhs.DerivedActivePowerTotalExportT0_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalExportT0_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedReactivePowerTotalImportT0_VAR = Upsert(
           lhs.DerivedReactivePowerTotalImportT0_VAR,
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerTotalImportT0_VAR,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedReactivePowerTotalExportT0_VAR = Upsert(
           lhs.DerivedReactivePowerTotalExportT0_VAR,
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerTotalExportT0_VAR,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerTotalImportT1_W = Upsert(
           lhs.DerivedActivePowerTotalImportT1_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalImportT1_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerTotalImportT2_W = Upsert(
           lhs.DerivedActivePowerTotalImportT2_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalImportT2_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
       }
 
       return result;
@@ -661,84 +769,104 @@ public class CreateMeasurementsTest : OzdsDataTestBase
           lhs.VoltageL1AnyT0_V,
           lhs.Count,
           rhs.VoltageL1AnyT0_V,
-          rhs.Count);
+          rhs.Count
+        );
         result.VoltageL2AnyT0_V = Upsert(
           lhs.VoltageL2AnyT0_V,
           lhs.Count,
           rhs.VoltageL2AnyT0_V,
-          rhs.Count);
+          rhs.Count
+        );
         result.VoltageL3AnyT0_V = Upsert(
           lhs.VoltageL3AnyT0_V,
           lhs.Count,
           rhs.VoltageL3AnyT0_V,
-          rhs.Count);
+          rhs.Count
+        );
         result.CurrentL1AnyT0_A = Upsert(
           lhs.CurrentL1AnyT0_A,
           lhs.Count,
           rhs.CurrentL1AnyT0_A,
-          rhs.Count);
+          rhs.Count
+        );
         result.CurrentL2AnyT0_A = Upsert(
           lhs.CurrentL2AnyT0_A,
           lhs.Count,
           rhs.CurrentL2AnyT0_A,
-          rhs.Count);
+          rhs.Count
+        );
         result.CurrentL3AnyT0_A = Upsert(
           lhs.CurrentL3AnyT0_A,
           lhs.Count,
           rhs.CurrentL3AnyT0_A,
-          rhs.Count);
+          rhs.Count
+        );
         result.ActivePowerL1NetT0_W = Upsert(
           lhs.ActivePowerL1NetT0_W,
           lhs.Count,
           rhs.ActivePowerL1NetT0_W,
-          rhs.Count);
+          rhs.Count
+        );
         result.ActivePowerL2NetT0_W = Upsert(
           lhs.ActivePowerL2NetT0_W,
           lhs.Count,
           rhs.ActivePowerL2NetT0_W,
-          rhs.Count);
+          rhs.Count
+        );
         result.ActivePowerL3NetT0_W = Upsert(
           lhs.ActivePowerL3NetT0_W,
           lhs.Count,
           rhs.ActivePowerL3NetT0_W,
-          rhs.Count);
+          rhs.Count
+        );
         result.ReactivePowerTotalNetT0_VAR = Upsert(
           lhs.ReactivePowerTotalNetT0_VAR,
           lhs.Count,
           rhs.ReactivePowerTotalNetT0_VAR,
-          rhs.Count);
+          rhs.Count
+        );
         result.ApparentPowerTotalNetT0_VA = Upsert(
           lhs.ApparentPowerTotalNetT0_VA,
           lhs.Count,
           rhs.ApparentPowerTotalNetT0_VA,
-          rhs.Count);
+          rhs.Count
+        );
         result.ActiveEnergyL1ImportT0_Wh = Upsert(
           lhs.ActiveEnergyL1ImportT0_Wh,
-          rhs.ActiveEnergyL1ImportT0_Wh);
+          rhs.ActiveEnergyL1ImportT0_Wh
+        );
         result.ActiveEnergyL2ImportT0_Wh = Upsert(
           lhs.ActiveEnergyL2ImportT0_Wh,
-          rhs.ActiveEnergyL2ImportT0_Wh);
+          rhs.ActiveEnergyL2ImportT0_Wh
+        );
         result.ActiveEnergyL3ImportT0_Wh = Upsert(
           lhs.ActiveEnergyL3ImportT0_Wh,
-          rhs.ActiveEnergyL3ImportT0_Wh);
+          rhs.ActiveEnergyL3ImportT0_Wh
+        );
         result.ActiveEnergyTotalImportT0_Wh = Upsert(
           lhs.ActiveEnergyTotalImportT0_Wh,
-          rhs.ActiveEnergyTotalImportT0_Wh);
+          rhs.ActiveEnergyTotalImportT0_Wh
+        );
         result.ActiveEnergyTotalExportT0_Wh = Upsert(
           lhs.ActiveEnergyTotalExportT0_Wh,
-          rhs.ActiveEnergyTotalExportT0_Wh);
+          rhs.ActiveEnergyTotalExportT0_Wh
+        );
         result.ReactiveEnergyTotalImportT0_VARh = Upsert(
           lhs.ReactiveEnergyTotalImportT0_VARh,
-          rhs.ReactiveEnergyTotalImportT0_VARh);
+          rhs.ReactiveEnergyTotalImportT0_VARh
+        );
         result.ReactiveEnergyTotalExportT0_VARh = Upsert(
           lhs.ReactiveEnergyTotalExportT0_VARh,
-          rhs.ReactiveEnergyTotalExportT0_VARh);
+          rhs.ReactiveEnergyTotalExportT0_VARh
+        );
         result.ActiveEnergyTotalImportT1_Wh = Upsert(
           lhs.ActiveEnergyTotalImportT1_Wh,
-          rhs.ActiveEnergyTotalImportT1_Wh);
+          rhs.ActiveEnergyTotalImportT1_Wh
+        );
         result.ActiveEnergyTotalImportT2_Wh = Upsert(
           lhs.ActiveEnergyTotalImportT2_Wh,
-          rhs.ActiveEnergyTotalImportT2_Wh);
+          rhs.ActiveEnergyTotalImportT2_Wh
+        );
       }
       else
       {
@@ -777,39 +905,48 @@ public class CreateMeasurementsTest : OzdsDataTestBase
         result.DerivedActivePowerL1ImportT0_W = Upsert(
           lhs.ActiveEnergyL1ImportT0_Wh,
           rhs.ActiveEnergyL1ImportT0_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerL2ImportT0_W = Upsert(
           lhs.ActiveEnergyL2ImportT0_Wh,
           rhs.ActiveEnergyL2ImportT0_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerL3ImportT0_W = Upsert(
           lhs.ActiveEnergyL3ImportT0_Wh,
           rhs.ActiveEnergyL3ImportT0_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerTotalImportT0_W = Upsert(
           lhs.ActiveEnergyTotalImportT0_Wh,
           rhs.ActiveEnergyTotalImportT0_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerTotalExportT0_W = Upsert(
           lhs.ActiveEnergyTotalExportT0_Wh,
           rhs.ActiveEnergyTotalExportT0_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedReactivePowerTotalImportT0_VAR = Upsert(
           lhs.ReactiveEnergyTotalImportT0_VARh,
           rhs.ReactiveEnergyTotalImportT0_VARh,
-          timestamp);
+          timestamp
+        );
         result.DerivedReactivePowerTotalExportT0_VAR = Upsert(
           lhs.ReactiveEnergyTotalExportT0_VARh,
           rhs.ReactiveEnergyTotalExportT0_VARh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerTotalImportT1_W = Upsert(
           lhs.ActiveEnergyTotalImportT1_Wh,
           rhs.ActiveEnergyTotalImportT1_Wh,
-          timestamp);
+          timestamp
+        );
         result.DerivedActivePowerTotalImportT2_W = Upsert(
           lhs.ActiveEnergyTotalImportT2_Wh,
           rhs.ActiveEnergyTotalImportT2_Wh,
-          timestamp);
+          timestamp
+        );
       }
       else
       {
@@ -818,47 +955,56 @@ public class CreateMeasurementsTest : OzdsDataTestBase
           lhs.DerivedActivePowerL1ImportT0_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL1ImportT0_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerL2ImportT0_W = Upsert(
           lhs.DerivedActivePowerL2ImportT0_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL2ImportT0_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerL3ImportT0_W = Upsert(
           lhs.DerivedActivePowerL3ImportT0_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL3ImportT0_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerTotalImportT0_W = Upsert(
           lhs.DerivedActivePowerTotalImportT0_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalImportT0_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerTotalExportT0_W = Upsert(
           lhs.DerivedActivePowerTotalExportT0_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalExportT0_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedReactivePowerTotalImportT0_VAR = Upsert(
           lhs.DerivedReactivePowerTotalImportT0_VAR,
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerTotalImportT0_VAR,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedReactivePowerTotalExportT0_VAR = Upsert(
           lhs.DerivedReactivePowerTotalExportT0_VAR,
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerTotalExportT0_VAR,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerTotalImportT1_W = Upsert(
           lhs.DerivedActivePowerTotalImportT1_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalImportT1_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
         result.DerivedActivePowerTotalImportT2_W = Upsert(
           lhs.DerivedActivePowerTotalImportT2_W,
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalImportT2_W,
-          rhs.QuarterHourCount);
+          rhs.QuarterHourCount
+        );
       }
 
       return result;
@@ -873,8 +1019,7 @@ public class CreateMeasurementsTest : OzdsDataTestBase
     {
       return new InstantaneousAggregateMeasureEntity
       {
-        Avg = (lhs.Avg * lhsCount + rhs.Avg * rhsCount)
-          / (lhsCount + rhsCount),
+        Avg = (lhs.Avg * lhsCount + rhs.Avg * rhsCount) / (lhsCount + rhsCount),
         Min = Math.Min(lhs.Min, rhs.Min),
         MinTimestamp = rhs.Min < lhs.Min
           ? rhs.MinTimestamp
@@ -895,8 +1040,7 @@ public class CreateMeasurementsTest : OzdsDataTestBase
     {
       return new DerivedAggregateMeasureEntity
       {
-        Avg = (lhs.Avg * lhsCount + rhs.Avg * rhsCount)
-          / (lhsCount + rhsCount),
+        Avg = (lhs.Avg * lhsCount + rhs.Avg * rhsCount) / (lhsCount + rhsCount),
         Min = Math.Min(lhs.Min, rhs.Min),
         MinTimestamp = rhs.Min < lhs.Min
           ? rhs.MinTimestamp
@@ -916,7 +1060,7 @@ public class CreateMeasurementsTest : OzdsDataTestBase
       return new CumulativeAggregateMeasureEntity
       {
         Min = Math.Min(lhs.Min, rhs.Min),
-        Max = Math.Max(lhs.Max, rhs.Max)
+        Max = Math.Max(lhs.Max, rhs.Max),
       };
     }
 
@@ -926,15 +1070,14 @@ public class CreateMeasurementsTest : OzdsDataTestBase
       DateTimeOffset timestamp
     )
     {
-      var value =
-        (Math.Max(lhs.Max, rhs.Max) - Math.Min(lhs.Min, rhs.Min)) * 4;
+      var value = (Math.Max(lhs.Max, rhs.Max) - Math.Min(lhs.Min, rhs.Min)) * 4;
       return new DerivedAggregateMeasureEntity
       {
         Avg = value,
         Min = value,
         MinTimestamp = timestamp,
         Max = value,
-        MaxTimestamp = timestamp
+        MaxTimestamp = timestamp,
       };
     }
   }

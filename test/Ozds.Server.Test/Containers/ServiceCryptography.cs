@@ -11,9 +11,7 @@ public static class ServiceCryptography
     return BCrypt.Net.BCrypt.HashPassword(password);
   }
 
-  public static (string, string) Rs256KeyPair(
-    string subjectName
-  )
+  public static (string, string) Rs256KeyPair(string subjectName)
   {
     using var rsa = RSA.Create(2048);
 
@@ -26,19 +24,24 @@ public static class ServiceCryptography
     );
 
     request.CertificateExtensions.Add(
-      new X509BasicConstraintsExtension(true, false, 0, true));
+      new X509BasicConstraintsExtension(true, false, 0, true)
+    );
     request.CertificateExtensions.Add(
       new X509KeyUsageExtension(
         X509KeyUsageFlags.DigitalSignature
-        | X509KeyUsageFlags.KeyEncipherment
-        | X509KeyUsageFlags.KeyCertSign,
-        true));
+          | X509KeyUsageFlags.KeyEncipherment
+          | X509KeyUsageFlags.KeyCertSign,
+        true
+      )
+    );
     request.CertificateExtensions.Add(
-      new X509SubjectKeyIdentifierExtension(request.PublicKey, false));
+      new X509SubjectKeyIdentifierExtension(request.PublicKey, false)
+    );
 
     var certificate = request.CreateSelfSigned(
       DateTimeOffset.UtcNow.AddDays(-1),
-      DateTimeOffset.UtcNow.AddYears(1));
+      DateTimeOffset.UtcNow.AddYears(1)
+    );
 
     var privateKeyBytes = rsa.ExportPkcs8PrivateKey();
     var privateKeyPem = new StringBuilder();
@@ -46,7 +49,9 @@ public static class ServiceCryptography
     privateKeyPem.AppendLine(
       Convert.ToBase64String(
         privateKeyBytes,
-        Base64FormattingOptions.InsertLineBreaks));
+        Base64FormattingOptions.InsertLineBreaks
+      )
+    );
     privateKeyPem.AppendLine("-----END PRIVATE KEY-----");
 
     var certificatePem = new StringBuilder();
@@ -54,7 +59,9 @@ public static class ServiceCryptography
     certificatePem.AppendLine(
       Convert.ToBase64String(
         certificate.Export(X509ContentType.Cert),
-        Base64FormattingOptions.InsertLineBreaks));
+        Base64FormattingOptions.InsertLineBreaks
+      )
+    );
     certificatePem.AppendLine("-----END CERTIFICATE-----");
 
     return (privateKeyPem.ToString(), certificatePem.ToString());
@@ -81,10 +88,12 @@ public static class ServiceCryptography
 
     // NOTE: Authelia uses glibc base64
     // which uses '.' instead of '+' without padding...
-    var saltBase64 = Convert.ToBase64String(salt)
+    var saltBase64 = Convert
+      .ToBase64String(salt)
       .Replace("+", ".")
       .TrimEnd('=');
-    var hashBase64 = Convert.ToBase64String(passwordHash)
+    var hashBase64 = Convert
+      .ToBase64String(passwordHash)
       .Replace("+", ".")
       .TrimEnd('=');
 

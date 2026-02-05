@@ -6,19 +6,19 @@ using Ozds.Business.Options;
 
 namespace Ozds.Business.Authorization;
 
-public class ApiKeyManager(
-  IOptions<OzdsBusinessOptions> options
-)
+public class ApiKeyManager(IOptions<OzdsBusinessOptions> options)
 {
   public const string ApiKeySeparator = ":";
 
   private readonly byte[] secret = Encoding.UTF8.GetBytes(
-    options.Value.Authorization.HmacSecret);
+    options.Value.Authorization.HmacSecret
+  );
 
   public string Generate()
   {
     var bytes = RandomNumberGenerator.GetBytes(32);
-    var apiKey = Convert.ToBase64String(bytes)
+    var apiKey = Convert
+      .ToBase64String(bytes)
       .TrimEnd('=')
       .Replace('+', '-')
       .Replace('/', '_');

@@ -8,9 +8,7 @@ using Ozds.Client.State;
 namespace Ozds.Client.Components.Streaming;
 
 public class Loading<T> : MappedLoading<T, T>
-  where T : notnull
-{
-}
+  where T : notnull { }
 
 public partial class MappedLoading<T, TMapped> : OzdsComponentBase
   where T : notnull
@@ -171,13 +169,14 @@ public partial class MappedLoading<T, TMapped> : OzdsComponentBase
     {
       try
       {
-        var activator = ScopedServices
-          .GetRequiredService<ModelActivator>();
-        var created = (T)activator.ActivateDynamic(
-          _activationType ?? typeof(T));
-        if (created is IJoin join
+        var activator = ScopedServices.GetRequiredService<ModelActivator>();
+        var created = (T)
+          activator.ActivateDynamic(_activationType ?? typeof(T));
+        if (
+          created is IJoin join
           && JoinActivationSide != null
-          && JoinActivationId != null)
+          && JoinActivationId != null
+        )
         {
           join.ActivationSide = JoinActivationSide;
           join.ActivationId = JoinActivationId;
@@ -228,9 +227,11 @@ public partial class MappedLoading<T, TMapped> : OzdsComponentBase
       try
       {
         _state = _state.WithValue(
-          (T?)await ScopedServices
-            .GetRequiredService<TrackableQueries>()
-            .ReadById(typeof(T), Id, CancellationToken));
+          (T?)
+            await ScopedServices
+              .GetRequiredService<TrackableQueries>()
+              .ReadById(typeof(T), Id, CancellationToken)
+        );
       }
       catch (Exception e)
       {
@@ -243,9 +244,11 @@ public partial class MappedLoading<T, TMapped> : OzdsComponentBase
       try
       {
         _state = _state.WithValue(
-          (T?)await ScopedServices
-            .GetRequiredService<IdentifiableQueries>()
-            .ReadById(typeof(T), Id, CancellationToken));
+          (T?)
+            await ScopedServices
+              .GetRequiredService<IdentifiableQueries>()
+              .ReadById(typeof(T), Id, CancellationToken)
+        );
       }
       catch (Exception e)
       {
@@ -279,13 +282,14 @@ public partial class MappedLoading<T, TMapped> : OzdsComponentBase
     {
       try
       {
-        var activator = ScopedServices
-          .GetRequiredService<ModelActivator>();
-        var created = (T)activator.ActivateDynamic(
-          _activationType ?? typeof(T));
-        if (created is IJoin join
+        var activator = ScopedServices.GetRequiredService<ModelActivator>();
+        var created = (T)
+          activator.ActivateDynamic(_activationType ?? typeof(T));
+        if (
+          created is IJoin join
           && JoinActivationSide != null
-          && JoinActivationId != null)
+          && JoinActivationId != null
+        )
         {
           join.ActivationSide = JoinActivationSide;
           join.ActivationId = JoinActivationId;
@@ -321,12 +325,13 @@ public partial class MappedLoading<T, TMapped> : OzdsComponentBase
     {
       try
       {
-        var activator = ScopedServices
-          .GetRequiredService<ModelActivator>();
+        var activator = ScopedServices.GetRequiredService<ModelActivator>();
         var created = (T)activator.ActivateDynamic(_activationType);
-        if (created is IJoin join
+        if (
+          created is IJoin join
           && JoinActivationSide != null
-          && JoinActivationId != null)
+          && JoinActivationId != null
+        )
         {
           join.ActivationSide = JoinActivationSide;
           join.ActivationId = JoinActivationId;
@@ -344,12 +349,13 @@ public partial class MappedLoading<T, TMapped> : OzdsComponentBase
     {
       try
       {
-        var activator = ScopedServices
-          .GetRequiredService<ModelActivator>();
+        var activator = ScopedServices.GetRequiredService<ModelActivator>();
         var created = (T)activator.ActivateDynamic(_activationType);
-        if (created is IJoin join
+        if (
+          created is IJoin join
           && JoinActivationSide != null
-          && JoinActivationId != null)
+          && JoinActivationId != null
+        )
         {
           join.ActivationSide = JoinActivationSide;
           join.ActivationId = JoinActivationId;

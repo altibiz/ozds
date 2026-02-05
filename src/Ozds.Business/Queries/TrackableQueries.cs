@@ -2,10 +2,8 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Caching.Entities.Abstractions;
-using CachingIdentifiableMutations =
-  Ozds.Caching.Mutations.IdentifiableEntityMutations;
-using CachingIdentifiableQueries =
-  Ozds.Caching.Queries.IdentifiableEntityQueries;
+using CachingIdentifiableMutations = Ozds.Caching.Mutations.IdentifiableEntityMutations;
+using CachingIdentifiableQueries = Ozds.Caching.Queries.IdentifiableEntityQueries;
 using DataTrackableQueries = Ozds.Data.Queries.TrackableQueries;
 
 namespace Ozds.Business.Queries;
@@ -37,13 +35,13 @@ public class TrackableQueries(
     if (!modelType.IsAssignableTo(typeof(ITrackableIdentifiable)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(ITrackableIdentifiable)}");
+        $"Type {modelType} is not assignable to {typeof(ITrackableIdentifiable)}"
+      );
     }
 
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
-      var cachedEntityType = modelCachingEntityConverter
-        .EntityType(modelType);
+      var cachedEntityType = modelCachingEntityConverter.EntityType(modelType);
 
       var cachedEntity = await cachingQueries.Read(
         cachedEntityType,
@@ -62,8 +60,7 @@ public class TrackableQueries(
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
-    var entity = await queries.ReadById(
-      entityType, id, cancellationToken);
+    var entity = await queries.ReadById(entityType, id, cancellationToken);
     if (entity is null)
     {
       return default;
@@ -73,8 +70,8 @@ public class TrackableQueries(
 
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
-      var cachingEntity = modelCachingEntityConverter
-        .ToEntity<IIdentifiableEntity>(model);
+      var cachingEntity =
+        modelCachingEntityConverter.ToEntity<IIdentifiableEntity>(model);
       await cachingMutations.Create(cachingEntity, cancellationToken);
     }
 
@@ -88,12 +85,7 @@ public class TrackableQueries(
   )
     where T : class, ITrackableIdentifiable
   {
-    var models = await ReadByIds(
-      typeof(T),
-      ids,
-      cancellationToken,
-      deleted
-    );
+    var models = await ReadByIds(typeof(T), ids, cancellationToken, deleted);
     return models.OfType<T>().ToList();
   }
 
@@ -107,7 +99,8 @@ public class TrackableQueries(
     if (!modelType.IsAssignableTo(typeof(ITrackableIdentifiable)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(ITrackableIdentifiable)}");
+        $"Type {modelType} is not assignable to {typeof(ITrackableIdentifiable)}"
+      );
     }
 
     var toFetch = ids.ToList();
@@ -115,8 +108,7 @@ public class TrackableQueries(
 
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
-      var cachedEntityType = modelCachingEntityConverter
-        .EntityType(modelType);
+      var cachedEntityType = modelCachingEntityConverter.EntityType(modelType);
 
       var fromCache = toFetch.ToList();
       foreach (var id in fromCache)
@@ -150,15 +142,13 @@ public class TrackableQueries(
       deleted
     );
 
-    var models = entities
-      .Select(modelEntityConverter.ToModel)
-      .ToList();
+    var models = entities.Select(modelEntityConverter.ToModel).ToList();
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
       foreach (var model in models)
       {
-        var cachedEntity = modelCachingEntityConverter
-          .ToEntity<IIdentifiableEntity>(model);
+        var cachedEntity =
+          modelCachingEntityConverter.ToEntity<IIdentifiableEntity>(model);
         await cachingMutations.Create(cachedEntity, cancellationToken);
       }
     }
@@ -194,7 +184,8 @@ public class TrackableQueries(
     if (!modelType.IsAssignableTo(typeof(ITrackableIdentifiable)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(ITrackableIdentifiable)}");
+        $"Type {modelType} is not assignable to {typeof(ITrackableIdentifiable)}"
+      );
     }
 
     var toFetch = ids.ToList();
@@ -202,8 +193,7 @@ public class TrackableQueries(
 
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
-      var cachedEntityType = modelCachingEntityConverter
-        .EntityType(modelType);
+      var cachedEntityType = modelCachingEntityConverter.EntityType(modelType);
 
       var fromCache = toFetch.ToList();
       for (var i = 0; i < fromCache.Count; i++)
@@ -236,9 +226,9 @@ public class TrackableQueries(
     );
 
     var models = entities
-      .Select(entity => entity is null
-        ? null
-        : modelEntityConverter.ToModel(entity))
+      .Select(entity =>
+        entity is null ? null : modelEntityConverter.ToModel(entity)
+      )
       .ToList();
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
@@ -249,8 +239,8 @@ public class TrackableQueries(
           continue;
         }
 
-        var cachedEntity = modelCachingEntityConverter
-          .ToEntity<IIdentifiableEntity>(model);
+        var cachedEntity =
+          modelCachingEntityConverter.ToEntity<IIdentifiableEntity>(model);
         await cachingMutations.Create(cachedEntity, cancellationToken);
       }
     }
@@ -288,7 +278,8 @@ public class TrackableQueries(
       title,
       pageNumber,
       cancellationToken,
-      pageCount);
+      pageCount
+    );
 
     return models.Items.OfType<T>().ToPaginatedList(models.TotalCount);
   }
@@ -313,12 +304,9 @@ public class TrackableQueries(
       deleted
     );
 
-    var models = page.Items
-      .Select(modelEntityConverter.ToModel)
-      .ToList();
+    var models = page.Items.Select(modelEntityConverter.ToModel).ToList();
 
-    return models
-      .ToPaginatedList(page.TotalCount);
+    return models.ToPaginatedList(page.TotalCount);
   }
 
   public async Task<PaginatedList<T>> Read<T>(
@@ -337,9 +325,7 @@ public class TrackableQueries(
       deleted
     );
 
-    return models.Items
-      .OfType<T>()
-      .ToPaginatedList(models.TotalCount);
+    return models.Items.OfType<T>().ToPaginatedList(models.TotalCount);
   }
 
   public async Task<PaginatedList<object>> Read(
@@ -353,7 +339,8 @@ public class TrackableQueries(
     if (!modelType.IsAssignableTo(typeof(ITrackable)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(ITrackable)}");
+        $"Type {modelType} is not assignable to {typeof(ITrackable)}"
+      );
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
@@ -365,8 +352,8 @@ public class TrackableQueries(
       deleted
     );
 
-    return entities.Items
-      .Select(modelEntityConverter.ToModel)
+    return entities
+      .Items.Select(modelEntityConverter.ToModel)
       .ToPaginatedList(entities.TotalCount);
   }
 }

@@ -9,7 +9,8 @@ public class InvoiceModelEntityConverter(IServiceProvider serviceProvider)
     InvoiceModel,
     FinancialModel,
     InvoiceEntity,
-    FinancialEntity>(serviceProvider)
+    FinancialEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     InvoiceModel model,
@@ -22,10 +23,7 @@ public class InvoiceModelEntityConverter(IServiceProvider serviceProvider)
     entity.InvoiceTotalWithTax_EUR = model.InvoiceTotalWithTax_EUR;
   }
 
-  public override void InitializeModel(
-    InvoiceEntity entity,
-    InvoiceModel model
-  )
+  public override void InitializeModel(InvoiceEntity entity, InvoiceModel model)
   {
     base.InitializeModel(entity, model);
     model.InvoiceTaxRate_Percent = entity.InvoiceTaxRate_Percent;

@@ -9,8 +9,7 @@ using Ozds.Data.Entities;
 using Ozds.Data.Entities.Base;
 using Ozds.Data.Entities.Composite;
 using DataInvoiceQueries = Ozds.Data.Queries.InvoiceQueries;
-using DataNetworkUserInvoiceMutations =
-  Ozds.Data.Mutations.NetworkUserInvoiceMutations;
+using DataNetworkUserInvoiceMutations = Ozds.Data.Mutations.NetworkUserInvoiceMutations;
 
 namespace Ozds.Business.Mutations;
 
@@ -33,33 +32,33 @@ public class NetworkUserInvoiceMutations(
     await mutations.UpdateBillId(id, registrationId, cancellationToken);
   }
 
-  public async Task<CalculatedNetworkUserInvoiceModel>
-    Preview(
-      string networkUserId,
-      DateTimeOffset dateFrom,
-      DateTimeOffset dateTo,
-      CancellationToken cancellationToken
-    )
+  public async Task<CalculatedNetworkUserInvoiceModel> Preview(
+    string networkUserId,
+    DateTimeOffset dateFrom,
+    DateTimeOffset dateTo,
+    CancellationToken cancellationToken
+  )
   {
     await using var scope = factory.CreateAsyncScope();
-    var billingQueries = scope.ServiceProvider
-      .GetRequiredService<BillingQueries>();
-    var basis = await billingQueries
-      .ReadInvoiceBasisByNetworkUser(
-        networkUserId,
-        dateFrom,
-        dateTo,
-        cancellationToken
-      );
+    var billingQueries =
+      scope.ServiceProvider.GetRequiredService<BillingQueries>();
+    var basis = await billingQueries.ReadInvoiceBasisByNetworkUser(
+      networkUserId,
+      dateFrom,
+      dateTo,
+      cancellationToken
+    );
     var invoice = invoiceCalculator.Calculate(basis);
     var culture = localizationQueries.CroatianCulture;
     var previewText = localizationQueries.Translate(
       culture,
       localizationQueries.Translate(
         localizationQueries.CroatianCulture,
-        "This invoice is a preview.")
+        "This invoice is a preview."
+      )
     );
-    invoice.Invoice.Remark = $@"
+    invoice.Invoice.Remark =
+      $@"
       <div>
         <p><strong>{previewText}</strong></p>
         <p>{invoice.Invoice.Remark}</p>
@@ -68,24 +67,22 @@ public class NetworkUserInvoiceMutations(
     return invoice;
   }
 
-  public async Task<CalculatedNetworkUserInvoiceModel>
-    Create(
-      string networkUserId,
-      DateTimeOffset dateFrom,
-      DateTimeOffset dateTo,
-      CancellationToken cancellationToken
-    )
+  public async Task<CalculatedNetworkUserInvoiceModel> Create(
+    string networkUserId,
+    DateTimeOffset dateFrom,
+    DateTimeOffset dateTo,
+    CancellationToken cancellationToken
+  )
   {
     await using var scope = factory.CreateAsyncScope();
-    var billingQueries = scope.ServiceProvider
-      .GetRequiredService<BillingQueries>();
-    var basis = await billingQueries
-      .ReadInvoiceBasisByNetworkUser(
-        networkUserId,
-        dateFrom,
-        dateTo,
-        cancellationToken
-      );
+    var billingQueries =
+      scope.ServiceProvider.GetRequiredService<BillingQueries>();
+    var basis = await billingQueries.ReadInvoiceBasisByNetworkUser(
+      networkUserId,
+      dateFrom,
+      dateTo,
+      cancellationToken
+    );
     var invoice = invoiceCalculator.Calculate(basis);
     invoice = await CreateCalculatedInvoice(invoice, cancellationToken);
     return invoice;
@@ -93,18 +90,24 @@ public class NetworkUserInvoiceMutations(
 
   private async Task<CalculatedNetworkUserInvoiceModel> CreateCalculatedInvoice(
     CalculatedNetworkUserInvoiceModel invoice,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
-    var representativeId = await representativeQueries
-      .ReadAuthenticatedRepresentativeId(cancellationToken);
+    var representativeId =
+      await representativeQueries.ReadAuthenticatedRepresentativeId(
+        cancellationToken
+      );
 
     var entity = new CalculatedNetworkUserInvoiceEntity
     {
-      Calculations = invoice.Calculations
-        .Select(modelEntityConverter.ToEntity<NetworkUserCalculationEntity>)
+      Calculations = invoice
+        .Calculations.Select(
+          modelEntityConverter.ToEntity<NetworkUserCalculationEntity>
+        )
         .ToList(),
-      Invoice = modelEntityConverter
-        .ToEntity<NetworkUserInvoiceEntity>(invoice.Invoice)
+      Invoice = modelEntityConverter.ToEntity<NetworkUserInvoiceEntity>(
+        invoice.Invoice
+      ),
     };
 
     foreach (var calculation in entity.Calculations)
@@ -131,7 +134,8 @@ public class NetworkUserInvoiceMutations(
       if (entity is null)
       {
         throw new InvalidOperationException(
-          "Could not find calculated invoice.");
+          "Could not find calculated invoice."
+        );
       }
     }
 
@@ -140,9 +144,11 @@ public class NetworkUserInvoiceMutations(
       Invoice = modelEntityConverter.ToModel<NetworkUserInvoiceModel>(
         entity.Invoice
       ),
-      Calculations = entity.Calculations
-        .Select(modelEntityConverter.ToModel<NetworkUserCalculationModel>)
-        .ToList()
+      Calculations = entity
+        .Calculations.Select(
+          modelEntityConverter.ToModel<NetworkUserCalculationModel>
+        )
+        .ToList(),
     };
 
     return model;

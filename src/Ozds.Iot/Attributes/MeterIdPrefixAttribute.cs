@@ -14,15 +14,17 @@ public class MeterIdPrefixAttribute(string Prefix) : Attribute
   private static ReadOnlyDictionary<string, Type> GetMeterIdPrefixes()
   {
     var result = new Dictionary<string, Type>();
-    var assemblyTypes =
-      typeof(MeterIdPrefixAttribute).Assembly
-        .GetTypes()
-        .Where(t => !t.IsAbstract && !t.IsGenericType);
+    var assemblyTypes = typeof(MeterIdPrefixAttribute)
+      .Assembly.GetTypes()
+      .Where(t => !t.IsAbstract && !t.IsGenericType);
     foreach (var assemblyType in assemblyTypes)
     {
-      if (assemblyType
+      if (
+        assemblyType
           .GetCustomAttributes<MeterIdPrefixAttribute>()
-          .FirstOrDefault() is { } attribute)
+          .FirstOrDefault() is
+        { } attribute
+      )
       {
         result[attribute.Prefix] = assemblyType;
       }

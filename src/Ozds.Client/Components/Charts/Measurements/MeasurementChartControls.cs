@@ -33,15 +33,12 @@ public partial class MeasurementChartControls : OzdsComponentBase
     default!;
 
   [Inject]
-  private IDataModelsChangedSubscriber
-    DataModelsChangedSubscriber { get; set; } = default!;
+  private IDataModelsChangedSubscriber DataModelsChangedSubscriber { get; set; } =
+    default!;
 
   [Inject]
-  private IMeasurementsBufferedSubscriber MeasurementsBufferedSubscriber
-  {
-    get;
-    set;
-  } = default!;
+  private IMeasurementsBufferedSubscriber MeasurementsBufferedSubscriber { get; set; } =
+    default!;
 
   [Inject]
   private AggregateUpserter AggregateUpserter { get; set; } = default!;
@@ -59,9 +56,12 @@ public partial class MeasurementChartControls : OzdsComponentBase
   {
     var now = ClockQueries.Now();
     var fromDate = now.Subtract(
-      TimeQueries
-        .ResolutionTimeSpan(
-          _parameters.Resolution, now, _parameters.Multiplier));
+      TimeQueries.ResolutionTimeSpan(
+        _parameters.Resolution,
+        now,
+        _parameters.Multiplier
+      )
+    );
     _parameters.FromDate = fromDate;
 
     DataModelsChangedSubscriber.Subscribe(OnDataModelsChanged);
@@ -86,9 +86,11 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   protected override void OnParametersSet()
   {
-    if (_parameters.MeasurementLocations.Count == 0
+    if (
+      _parameters.MeasurementLocations.Count == 0
       && _parameters.Meters.Count == 0
-      && _initParamsSet)
+      && _initParamsSet
+    )
     {
       return;
     }
@@ -109,15 +111,13 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
     if (_parameters.MeasurementLocations.Count > 0)
     {
-      _parameters.MeasurementLocations
-        .IntersectWith(MeasurementLocations);
+      _parameters.MeasurementLocations.IntersectWith(MeasurementLocations);
       return;
     }
 
     if (_parameters.Meters.Count > 0)
     {
-      _parameters.Meters
-        .IntersectWith(Meters);
+      _parameters.Meters.IntersectWith(Meters);
       return;
     }
 
@@ -134,17 +134,16 @@ public partial class MeasurementChartControls : OzdsComponentBase
     {
       _initParamsSet = true;
 
-      _parameters.Meters = Meters
-        .Take(1)
-        .ToHashSet();
+      _parameters.Meters = Meters.Take(1).ToHashSet();
     }
   }
 
   private IEnumerable<MeasureModel> Measures()
   {
-    return _parameters.MeasurementLocations
-      .SelectMany(x => MeterNamingConvention
-        .CapabilitiesForMeterId(x.MeterId).Measures)
+    return _parameters
+      .MeasurementLocations.SelectMany(x =>
+        MeterNamingConvention.CapabilitiesForMeterId(x.MeterId).Measures
+      )
       .Concat(Meters.SelectMany(x => x.Capabilities.Measures))
       .Distinct();
   }
@@ -155,17 +154,22 @@ public partial class MeasurementChartControls : OzdsComponentBase
   }
 
   private async Task OnMeasurementLocationsChanged(
-    IEnumerable<string> measurementLocationIds)
+    IEnumerable<string> measurementLocationIds
+  )
   {
     _parameters.MeasurementLocations = MeasurementLocations
       .Where(measurementLocation =>
-        measurementLocationIds.Contains(measurementLocation.Id))
+        measurementLocationIds.Contains(measurementLocation.Id)
+      )
       .ToHashSet();
     var now = ClockQueries.Now();
     var fromDate = now.Subtract(
-      TimeQueries
-        .ResolutionTimeSpan(
-          _parameters.Resolution, now, _parameters.Multiplier));
+      TimeQueries.ResolutionTimeSpan(
+        _parameters.Resolution,
+        now,
+        _parameters.Multiplier
+      )
+    );
     _parameters.FromDate = fromDate;
     await Fetch();
   }
@@ -173,15 +177,16 @@ public partial class MeasurementChartControls : OzdsComponentBase
   private async Task OnMetersChanged(IEnumerable<string> meterIds)
   {
     _parameters.Meters = Meters
-      .Where(meter =>
-        meterIds.Contains(meter.Id))
+      .Where(meter => meterIds.Contains(meter.Id))
       .ToHashSet();
     var now = ClockQueries.Now();
     _parameters.FromDate = now.Subtract(
       TimeQueries.ResolutionTimeSpan(
         _parameters.Resolution,
         now,
-        _parameters.Multiplier));
+        _parameters.Multiplier
+      )
+    );
     await Fetch();
   }
 
@@ -192,9 +197,12 @@ public partial class MeasurementChartControls : OzdsComponentBase
     {
       var now = ClockQueries.Now();
       var fromDate = now.Subtract(
-        TimeQueries
-          .ResolutionTimeSpan(
-            _parameters.Resolution, now, _parameters.Multiplier));
+        TimeQueries.ResolutionTimeSpan(
+          _parameters.Resolution,
+          now,
+          _parameters.Multiplier
+        )
+      );
       _parameters.FromDate = fromDate;
       await Fetch();
     }
@@ -207,9 +215,12 @@ public partial class MeasurementChartControls : OzdsComponentBase
     {
       var now = ClockQueries.Now();
       var fromDate = now.Subtract(
-        TimeQueries
-          .ResolutionTimeSpan(
-            _parameters.Resolution, now, _parameters.Multiplier));
+        TimeQueries.ResolutionTimeSpan(
+          _parameters.Resolution,
+          now,
+          _parameters.Multiplier
+        )
+      );
       _parameters.FromDate = fromDate;
     }
 
@@ -223,9 +234,12 @@ public partial class MeasurementChartControls : OzdsComponentBase
     {
       var now = ClockQueries.Now();
       var fromDate = now.Subtract(
-        TimeQueries
-          .ResolutionTimeSpan(
-            _parameters.Resolution, now, _parameters.Multiplier));
+        TimeQueries.ResolutionTimeSpan(
+          _parameters.Resolution,
+          now,
+          _parameters.Multiplier
+        )
+      );
       _parameters.FromDate = fromDate;
     }
 
@@ -234,16 +248,17 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   private void OnDataModelsChanged(
     object? _sender,
-    DataModelsChangedEventArgs args)
+    DataModelsChangedEventArgs args
+  )
   {
-    var measurements = args.Models
-      .Where(x => x.State is DataModelChangedState.Added)
+    var measurements = args
+      .Models.Where(x => x.State is DataModelChangedState.Added)
       .Select(x => x.Model)
       .OfType<IMeasurement>()
       .Where(x => x is not IAggregate)
       .ToList();
-    var aggregates = args.Models
-      .Where(x => x.State is DataModelChangedState.Added)
+    var aggregates = args
+      .Models.Where(x => x.State is DataModelChangedState.Added)
       .Select(x => x.Model)
       .OfType<IAggregate>()
       .ToList();
@@ -253,7 +268,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   private void OnMeasurementsBuffered(
     object? _sender,
-    MeasurementsBufferedEventArgs args)
+    MeasurementsBufferedEventArgs args
+  )
   {
     Refresh(args.Measurements.ToList(), new List<IAggregate>());
   }
@@ -266,7 +282,9 @@ public partial class MeasurementChartControls : OzdsComponentBase
       TimeQueries.ResolutionTimeSpan(
         _parameters.Resolution,
         fromDate,
-        _parameters.Multiplier));
+        _parameters.Multiplier
+      )
+    );
     var fromMeters = await queries.ReadByMeterIds(
       _parameters.Meters.Select(x => x.Id).ToList(),
       _parameters.Resolution,
@@ -276,24 +294,21 @@ public partial class MeasurementChartControls : OzdsComponentBase
       fromDate: fromDate,
       toDate: toDate
     );
-    var fromMeasurementLocations = await queries
-      .ReadByMeasurementLocationIds(
-        _parameters.MeasurementLocations.Select(x => x.Id).ToList(),
-        _parameters.Resolution,
-        _parameters.Multiplier,
-        0,
-        CancellationToken,
-        fromDate,
-        toDate
-      );
+    var fromMeasurementLocations = await queries.ReadByMeasurementLocationIds(
+      _parameters.MeasurementLocations.Select(x => x.Id).ToList(),
+      _parameters.Resolution,
+      _parameters.Multiplier,
+      0,
+      CancellationToken,
+      fromDate,
+      toDate
+    );
     _parameters.Measurements = new PaginatedList<IMeasurement>(
-      fromMeters.Items
-        .Concat(fromMeasurementLocations.Items)
+      fromMeters
+        .Items.Concat(fromMeasurementLocations.Items)
         .DistinctBy(x =>
-          (x.MeterId,
-            x.MeasurementLocationId,
-            x.Timestamp,
-            x.GetType()))
+          (x.MeterId, x.MeasurementLocationId, x.Timestamp, x.GetType())
+        )
         .OrderBy(x => x.Timestamp)
         .ToList(),
       fromMeters.TotalCount + fromMeasurementLocations.TotalCount
@@ -302,11 +317,12 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   private void Refresh(
     List<IMeasurement> measurements,
-    List<IAggregate> aggregates)
+    List<IAggregate> aggregates
+  )
   {
-    if (!_parameters.Refresh
-      || (measurements.Count == 0
-        && aggregates.Count == 0))
+    if (
+      !_parameters.Refresh || (measurements.Count == 0 && aggregates.Count == 0)
+    )
     {
       return;
     }
@@ -315,7 +331,8 @@ public partial class MeasurementChartControls : OzdsComponentBase
     var timeSpan = TimeQueries.ResolutionTimeSpan(
       _parameters.Resolution,
       now,
-      _parameters.Multiplier);
+      _parameters.Multiplier
+    );
     var min = now.Subtract(timeSpan);
     var minNew =
       _parameters.Measurements.Items.LastOrDefault()?.Timestamp ?? min;
@@ -327,16 +344,16 @@ public partial class MeasurementChartControls : OzdsComponentBase
         .Where(x =>
           Meters.Exists(meter => meter.Id == x.MeterId)
           || MeasurementLocations.Exists(location =>
-            location.Id == x.MeasurementLocationId))
+            location.Id == x.MeasurementLocationId
+          )
+        )
         .ToList();
-      var concatenated = _parameters.Measurements.Items
-        .Concat(newMeasurements)
+      var concatenated = _parameters
+        .Measurements.Items.Concat(newMeasurements)
         .Where(x => x.Timestamp >= min)
         .DistinctBy(x =>
-          (x.MeterId,
-            x.MeasurementLocationId,
-            x.Timestamp,
-            x.GetType()))
+          (x.MeterId, x.MeasurementLocationId, x.Timestamp, x.GetType())
+        )
         .OrderBy(x => x.Timestamp)
         .ToList();
       _parameters.Measurements = new PaginatedList<IMeasurement>(
@@ -352,27 +369,29 @@ public partial class MeasurementChartControls : OzdsComponentBase
         .Where(x =>
           Meters.Exists(meter => meter.Id == x.MeterId)
           || MeasurementLocations.Exists(location =>
-            location.Id == x.MeasurementLocationId))
+            location.Id == x.MeasurementLocationId
+          )
+        )
         .OfType<IAggregate>();
-      var aggregated = _parameters.Measurements.Items.OfType<IAggregate>()
+      var aggregated = _parameters
+        .Measurements.Items.OfType<IAggregate>()
         .Concat(newAggregates)
         .Where(x => x.Timestamp >= min)
         .GroupBy(x =>
-          (x.Timestamp, x.MeasurementLocationId, x.MeterId, x.GetType()))
-        .Select(x => x
-          .Aggregate(AggregateUpserter.UpsertAggregate))
+          (x.Timestamp, x.MeasurementLocationId, x.MeterId, x.GetType())
+        )
+        .Select(x => x.Aggregate(AggregateUpserter.UpsertAggregate))
         .OfType<IMeasurement>()
         .DistinctBy(x =>
-          (x.MeterId,
-            x.MeasurementLocationId,
-            x.Timestamp,
-            x.GetType()))
+          (x.MeterId, x.MeasurementLocationId, x.Timestamp, x.GetType())
+        )
         .OrderBy(x => x.Timestamp)
         .ToList();
       _parameters.Measurements = new PaginatedList<IMeasurement>(
         aggregated.ToList(),
         _parameters.Measurements.TotalCount
-        - _parameters.Measurements.Items.Count + aggregated.Count
+          - _parameters.Measurements.Items.Count
+          + aggregated.Count
       );
     }
 

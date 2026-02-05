@@ -4,9 +4,7 @@ using Ozds.Report.Serialization.Abstractions;
 
 namespace Ozds.Report.Queries;
 
-public class ReportQueries(
-  IServiceProvider services
-) : IQueries
+public class ReportQueries(IServiceProvider services) : IQueries
 {
   public IImportStreamer<T> Read<T>(
     string fileName,
@@ -35,7 +33,8 @@ public class ReportQueries(
     string fileName,
     CultureInfo culture,
     Stream stream,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var importer = GetImporter(fileName);
 
@@ -47,22 +46,23 @@ public class ReportQueries(
     CultureInfo culture,
     Type type,
     Stream stream,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var importer = GetImporter(fileName);
 
     return importer.Import(culture, type, stream, cancellationToken);
   }
 
-  private IImporter GetImporter(
-    string fileName
-  )
+  private IImporter GetImporter(string fileName)
   {
-    var importer = services
+    var importer =
+      services
         .GetServices<IImporter>()
         .FirstOrDefault(x => fileName.EndsWith(x.Extension))
       ?? throw new InvalidOperationException(
-        $"Exporter for {fileName} not found.");
+        $"Exporter for {fileName} not found."
+      );
 
     return importer;
   }

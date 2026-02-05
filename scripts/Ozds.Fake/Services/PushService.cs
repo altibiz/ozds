@@ -16,23 +16,22 @@ public class PushService(
   private readonly List<MeasurementLocationMeterId> ids = new();
   private readonly IServiceProvider services = services;
 
-  public override async Task StartAsync(
-    CancellationToken cancellationToken
-  )
+  public override async Task StartAsync(CancellationToken cancellationToken)
   {
     {
       await using var scope = services.CreateAsyncScope();
 
-      var client = scope.ServiceProvider
-        .GetRequiredService<InsertClient>();
+      var client = scope.ServiceProvider.GetRequiredService<InsertClient>();
 
       var meterIds = arguments.MeterIds.ToList();
 
-      var raw = meterIds.Count != 0
-        ? meterIds.Select(id => $"0:{id}").ToList()
-        : await client.GetMetersForLocation(
-          arguments.LocationId,
-          cancellationToken);
+      var raw =
+        meterIds.Count != 0
+          ? meterIds.Select(id => $"0:{id}").ToList()
+          : await client.GetMetersForLocation(
+            arguments.LocationId,
+            cancellationToken
+          );
 
       ids.AddRange(raw.Select(MeasurementLocationMeterId.FromString));
     }

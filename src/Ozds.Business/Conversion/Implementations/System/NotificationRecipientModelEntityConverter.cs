@@ -8,15 +8,18 @@ namespace Ozds.Business.Conversion.Implementations.Administration;
 
 public class NotificationRecipientEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  NotificationRecipientModel,
-  JoinModel,
-  NotificationRecipientEntity,
-  JoinEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    NotificationRecipientModel,
+    JoinModel,
+    NotificationRecipientEntity,
+    JoinEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     NotificationRecipientModel model,
-    NotificationRecipientEntity entity)
+    NotificationRecipientEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.NotificationId = model.NotificationId;
@@ -26,7 +29,8 @@ public class NotificationRecipientEntityConverter(
 
   public override void InitializeModel(
     NotificationRecipientEntity entity,
-    NotificationRecipientModel model)
+    NotificationRecipientModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.NotificationId = entity.NotificationId;

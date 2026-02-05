@@ -20,9 +20,7 @@ public abstract class ReactiveEnergyTotalRampedT0CalculationItemEntity
 }
 
 public class UsageReactiveEnergyTotalRampedT0CalculationItemEntity
-  : ReactiveEnergyTotalRampedT0CalculationItemEntity
-{
-}
+  : ReactiveEnergyTotalRampedT0CalculationItemEntity { }
 
 public static class ReactiveEnergyTotalRampedT0CalculationItemEntityExtensions
 {
@@ -34,72 +32,80 @@ public static class ReactiveEnergyTotalRampedT0CalculationItemEntityExtensions
 
     builder
       .Property(
-        nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
-          .ReactiveImportMin_kVARh))
-      .HasColumnName(
-        "jen_reactive_import_min_kvarh");
+        nameof(
+          ReactiveEnergyTotalRampedT0CalculationItemEntity.ReactiveImportMin_kVARh
+        )
+      )
+      .HasColumnName("jen_reactive_import_min_kvarh");
 
     builder
       .Property(
-        nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
-          .ReactiveImportMax_kVARh))
-      .HasColumnName(
-        "jen_reactive_import_max_kvarh");
+        nameof(
+          ReactiveEnergyTotalRampedT0CalculationItemEntity.ReactiveImportMax_kVARh
+        )
+      )
+      .HasColumnName("jen_reactive_import_max_kvarh");
 
     builder
       .Property(
-        nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
-          .ReactiveImportAmount_kVARh))
-      .HasColumnName(
-        "jen_reactive_import_amount_kvarh");
+        nameof(
+          ReactiveEnergyTotalRampedT0CalculationItemEntity.ReactiveImportAmount_kVARh
+        )
+      )
+      .HasColumnName("jen_reactive_import_amount_kvarh");
 
     builder
       .Property(
-        nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
-          .ReactiveExportMin_kVARh))
-      .HasColumnName(
-        "jen_reactive_export_min_kvarh");
+        nameof(
+          ReactiveEnergyTotalRampedT0CalculationItemEntity.ReactiveExportMin_kVARh
+        )
+      )
+      .HasColumnName("jen_reactive_export_min_kvarh");
 
     builder
       .Property(
-        nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
-          .ReactiveExportMax_kVARh))
-      .HasColumnName(
-        "jen_reactive_export_max_kvarh");
+        nameof(
+          ReactiveEnergyTotalRampedT0CalculationItemEntity.ReactiveExportMax_kVARh
+        )
+      )
+      .HasColumnName("jen_reactive_export_max_kvarh");
 
     builder
       .Property(
-        nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
-          .ReactiveExportAmount_kVARh))
-      .HasColumnName(
-        "jen_reactive_export_amount_kvarh");
+        nameof(
+          ReactiveEnergyTotalRampedT0CalculationItemEntity.ReactiveExportAmount_kVARh
+        )
+      )
+      .HasColumnName("jen_reactive_export_amount_kvarh");
 
     builder
       .Property(
-        nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
-          .ActiveImportMin_kWh))
-      .HasColumnName(
-        "jen_active_import_min_kwh");
+        nameof(
+          ReactiveEnergyTotalRampedT0CalculationItemEntity.ActiveImportMin_kWh
+        )
+      )
+      .HasColumnName("jen_active_import_min_kwh");
 
     builder
       .Property(
-        nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
-          .ActiveImportMax_kWh))
-      .HasColumnName(
-        "jen_active_import_max_kwh");
+        nameof(
+          ReactiveEnergyTotalRampedT0CalculationItemEntity.ActiveImportMax_kWh
+        )
+      )
+      .HasColumnName("jen_active_import_max_kwh");
 
     builder
       .Property(
-        nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
-          .ActiveImportAmount_kWh))
-      .HasColumnName(
-        "jen_active_import_amount_kwh");
+        nameof(
+          ReactiveEnergyTotalRampedT0CalculationItemEntity.ActiveImportAmount_kWh
+        )
+      )
+      .HasColumnName("jen_active_import_amount_kwh");
 
     builder
       .Property(
-        nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity
-          .Amount_kVARh))
-      .HasColumnName(
-        "jen_ramped_amount_kvarh");
+        nameof(ReactiveEnergyTotalRampedT0CalculationItemEntity.Amount_kVARh)
+      )
+      .HasColumnName("jen_ramped_amount_kvarh");
   }
 }

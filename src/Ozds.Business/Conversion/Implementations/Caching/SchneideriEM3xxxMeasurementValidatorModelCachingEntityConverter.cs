@@ -8,11 +8,13 @@ namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class SchneideriEM3xxxMeasurementValidatorModelCachingEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelCachingEntityConverter<
-  SchneideriEM3xxxMeasurementValidatorModel,
-  MeasurementValidatorModel,
-  SchneideriEM3xxxMeasurementValidatorEntity,
-  MeasurementValidatorEntity>(serviceProvider)
+)
+  : InheritingModelCachingEntityConverter<
+    SchneideriEM3xxxMeasurementValidatorModel,
+    MeasurementValidatorModel,
+    SchneideriEM3xxxMeasurementValidatorEntity,
+    MeasurementValidatorEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     SchneideriEM3xxxMeasurementValidatorModel model,

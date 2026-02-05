@@ -16,32 +16,32 @@ public class LifecycleReactor(
 {
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
-    var lifetime = serviceProvider
-      .GetRequiredService<IHostApplicationLifetime>();
+    var lifetime =
+      serviceProvider.GetRequiredService<IHostApplicationLifetime>();
     if (!await lifetime.WaitForAppStartup(stoppingToken))
     {
       return;
     }
 
-    var factory = serviceProvider
-      .GetRequiredService<IServiceScopeFactory>();
+    var factory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
 
     {
       await using var scope = factory.CreateAsyncScope();
       try
       {
-        var mutations = scope.ServiceProvider
-          .GetRequiredService<ModelMutations>();
-        var activator = scope.ServiceProvider
-          .GetRequiredService<ModelActivator>();
+        var mutations =
+          scope.ServiceProvider.GetRequiredService<ModelMutations>();
+        var activator =
+          scope.ServiceProvider.GetRequiredService<ModelActivator>();
         var content = new StartupEventContent();
         var @event = CreateEvent(content, activator);
         await mutations.Create(@event, stoppingToken);
       }
       catch (Exception ex)
       {
-        var logger = scope.ServiceProvider
-          .GetRequiredService<ILogger<LifecycleReactor>>();
+        var logger = scope.ServiceProvider.GetRequiredService<
+          ILogger<LifecycleReactor>
+        >();
         logger.LogError(ex, "Failed to create startup event");
       }
     }
@@ -52,18 +52,19 @@ public class LifecycleReactor(
       await using var scope = factory.CreateAsyncScope();
       try
       {
-        var mutations = scope.ServiceProvider
-          .GetRequiredService<ModelMutations>();
-        var activator = scope.ServiceProvider
-          .GetRequiredService<ModelActivator>();
+        var mutations =
+          scope.ServiceProvider.GetRequiredService<ModelMutations>();
+        var activator =
+          scope.ServiceProvider.GetRequiredService<ModelActivator>();
         var content = new ShutdownEventContent();
         var @event = CreateEvent(content, activator);
         await mutations.Create(@event, stoppingToken);
       }
       catch (Exception ex)
       {
-        var logger = scope.ServiceProvider
-          .GetRequiredService<ILogger<LifecycleReactor>>();
+        var logger = scope.ServiceProvider.GetRequiredService<
+          ILogger<LifecycleReactor>
+        >();
         logger.LogError(ex, "Failed to create shutdown event");
       }
     }
@@ -71,7 +72,8 @@ public class LifecycleReactor(
 
   private SystemEventModel CreateEvent(
     LifecycleEventContent content,
-    ModelActivator activator)
+    ModelActivator activator
+  )
   {
     var now = clock.Timestamp();
 
@@ -83,7 +85,7 @@ public class LifecycleReactor(
     @event.Categories = new List<CategoryModel>
     {
       CategoryModel.All,
-      CategoryModel.Lifecycle
+      CategoryModel.Lifecycle,
     };
     return @event;
   }

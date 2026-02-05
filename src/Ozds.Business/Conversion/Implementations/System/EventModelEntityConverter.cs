@@ -11,33 +11,32 @@ public class EventModelEntityConverter(IServiceProvider serviceProvider)
     EventModel,
     IdentifiableModel,
     EventEntity,
-    IdentifiableEntity>(serviceProvider)
+    IdentifiableEntity
+  >(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();
 
-  public override void InitializeEntity(
-    EventModel model,
-    EventEntity entity)
+  public override void InitializeEntity(EventModel model, EventEntity entity)
   {
     base.InitializeEntity(model, entity);
-    entity.Categories = model.Categories
-      .Select(category => modelEntityConverter
-        .ToEntity<CategoryEntity>(category))
+    entity.Categories = model
+      .Categories.Select(category =>
+        modelEntityConverter.ToEntity<CategoryEntity>(category)
+      )
       .ToList();
     entity.Timestamp = model.Timestamp;
     entity.Level = modelEntityConverter.ToEntity<LevelEntity>(model.Level);
     entity.Content = model.Content;
   }
 
-  public override void InitializeModel(
-    EventEntity entity,
-    EventModel model)
+  public override void InitializeModel(EventEntity entity, EventModel model)
   {
     base.InitializeModel(entity, model);
-    model.Categories = entity.Categories
-      .Select(category => modelEntityConverter
-        .ToModel<CategoryModel>(category))
+    model.Categories = entity
+      .Categories.Select(category =>
+        modelEntityConverter.ToModel<CategoryModel>(category)
+      )
       .ToList();
     model.Timestamp = entity.Timestamp;
     model.Level = modelEntityConverter.ToModel<LevelModel>(entity.Level);

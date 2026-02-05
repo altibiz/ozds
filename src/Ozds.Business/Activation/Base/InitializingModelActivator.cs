@@ -17,7 +17,5 @@ public abstract class InitializingModelActivator : IModelActivator
 
   public abstract object Box();
 
-  public virtual void Initialize(object model)
-  {
-  }
+  public virtual void Initialize(object model) { }
 }

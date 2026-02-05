@@ -5,37 +5,39 @@ using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Data.Entities;
 
-public class
-  BlueLowNetworkUserCalculationEntity : MeteredNetworkUserCalculationEntity<
-  BlueLowNetworkUserCatalogueEntity>
+public class BlueLowNetworkUserCalculationEntity
+  : MeteredNetworkUserCalculationEntity<BlueLowNetworkUserCatalogueEntity>
 {
 #pragma warning disable CA1707
-  public UsageActiveEnergyTotalImportT0CalculationItemEntity
-    UsageActiveEnergyTotalImportT0 { get; set; } = default!;
+  public UsageActiveEnergyTotalImportT0CalculationItemEntity UsageActiveEnergyTotalImportT0 { get; set; } =
+    default!;
 
-  public UsageReactiveEnergyTotalRampedT0CalculationItemEntity
-    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
+  public UsageReactiveEnergyTotalRampedT0CalculationItemEntity UsageReactiveEnergyTotalRampedT0 { get; set; } =
+    default!;
 #pragma warning restore CA1707
 }
 
-public class
-  BlueLowNetworkUserCalculationEntityTypeConfiguration : EntityTypeConfiguration
-<
-  BlueLowNetworkUserCalculationEntity>
+public class BlueLowNetworkUserCalculationEntityTypeConfiguration
+  : EntityTypeConfiguration<BlueLowNetworkUserCalculationEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<BlueLowNetworkUserCalculationEntity> builder)
+    EntityTypeBuilder<BlueLowNetworkUserCalculationEntity> builder
+  )
   {
     builder
       .ComplexProperty(
-        nameof(BlueLowNetworkUserCalculationEntity
-          .UsageActiveEnergyTotalImportT0))
+        nameof(
+          BlueLowNetworkUserCalculationEntity.UsageActiveEnergyTotalImportT0
+        )
+      )
       .UsageActiveEnergyTotalImportT0CalculationItem();
 
     builder
       .ComplexProperty(
-        nameof(BlueLowNetworkUserCalculationEntity
-          .UsageReactiveEnergyTotalRampedT0))
+        nameof(
+          BlueLowNetworkUserCalculationEntity.UsageReactiveEnergyTotalRampedT0
+        )
+      )
       .UsageReactiveEnergyTotalRampedT0CalculationItem();
   }
 }

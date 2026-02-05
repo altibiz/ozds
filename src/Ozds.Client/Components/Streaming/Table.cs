@@ -13,9 +13,7 @@ using Ozds.Client.State;
 namespace Ozds.Client.Components.Streaming;
 
 public class Table<T> : MappedTable<T, T>
-  where T : notnull
-{
-}
+  where T : notnull { }
 
 public partial class MappedTable<T, TMapped> : OzdsComponentBase
   where T : notnull
@@ -122,20 +120,16 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
   public Func<T, ActionModel, RenderFragment>? OnSuccessMessage { get; set; }
 
   [Parameter]
-  public Func<T, ActionModel, Exception, RenderFragment>? OnFailureMessage
-  {
-    get;
-    set;
-  }
+  public Func<
+    T,
+    ActionModel,
+    Exception,
+    RenderFragment
+  >? OnFailureMessage { get; set; }
 
   private IEnumerable<T>? FilteredValue
   {
-    get
-    {
-      return Value is { } value
-        ? value.Where(FilterFetched)
-        : null;
-    }
+    get { return Value is { } value ? value.Where(FilterFetched) : null; }
   }
 
   public async Task Fetch()
@@ -175,7 +169,7 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
     return new GridData<T>
     {
       Items = result.Items,
-      TotalItems = result.TotalCount
+      TotalItems = result.TotalCount,
     };
   }
 
@@ -191,9 +185,7 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
 
   private async Task OnDelete(T model)
   {
-    object? toDelete = Map is null
-      ? model
-      : Map(model);
+    object? toDelete = Map is null ? model : Map(model);
 
     var toDeleteTitle = toDelete is IIdentifiable toDeleteIdentifiable
       ? $" {toDeleteIdentifiable.Title}"
@@ -211,20 +203,19 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
       }
       else if (toDelete is ITrackable trackable)
       {
-        var mutations = ScopedServices
-          .GetRequiredService<TrackableMutations>();
+        var mutations = ScopedServices.GetRequiredService<TrackableMutations>();
         await mutations.Delete(trackable, CancellationToken);
       }
       else if (toDelete is IAuditable auditable)
       {
-        var mutations = ScopedServices
-          .GetRequiredService<AuditableMutations>();
+        var mutations = ScopedServices.GetRequiredService<AuditableMutations>();
         await mutations.Delete(auditable, CancellationToken);
       }
       else
       {
         throw new InvalidOperationException(
-          $"No delete strategy found for {typeof(T)}");
+          $"No delete strategy found for {typeof(T)}"
+        );
       }
     }
     catch (Exception ex)
@@ -242,14 +233,17 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
             Fragment.Combine(
               Fragment.String(
                 Translate("Failed deleting")
-                + " "
-                + Translate(typeof(TMapped))
-                + toDeleteTitle
-                + ". "),
-              failureMessage)
-          }
+                  + " "
+                  + Translate(typeof(TMapped))
+                  + toDeleteTitle
+                  + ". "
+              ),
+              failureMessage
+            )
+          },
         },
-        new DialogOptions { CloseOnEscapeKey = true });
+        new DialogOptions { CloseOnEscapeKey = true }
+      );
       return;
     }
 
@@ -266,29 +260,30 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
           Fragment.Combine(
             Fragment.String(
               Translate("Successfully deleted")
-              + " "
-              + Translate(typeof(TMapped))
-              + toDeleteTitle
-              + ". "),
-            successMessage)
+                + " "
+                + Translate(typeof(TMapped))
+                + toDeleteTitle
+                + ". "
+            ),
+            successMessage
+          )
         },
         {
           nameof(MutatingResult.Exit),
-          (IMudDialogInstance _) => { AnalysisState.Reset(); }
+          (IMudDialogInstance _) =>
+          {
+            AnalysisState.Reset();
+          }
         },
-        {
-          nameof(MutatingResult.NavigationBehavior),
-          null
-        }
+        { nameof(MutatingResult.NavigationBehavior), null },
       },
-      new DialogOptions { CloseOnEscapeKey = true });
+      new DialogOptions { CloseOnEscapeKey = true }
+    );
   }
 
   private async Task OnRestore(T model)
   {
-    object? toRestore = Map is null
-      ? model
-      : Map(model);
+    object? toRestore = Map is null ? model : Map(model);
 
     var toRestoreTitle = toRestore is IIdentifiable toRestoreIdentifiable
       ? $" {toRestoreIdentifiable.Title}"
@@ -312,7 +307,8 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
       else
       {
         throw new InvalidOperationException(
-          $"No restore strategy found for {typeof(T)}");
+          $"No restore strategy found for {typeof(T)}"
+        );
       }
     }
     catch (Exception ex)
@@ -330,14 +326,17 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
             Fragment.Combine(
               Fragment.String(
                 Translate("Failed restoring")
-                + " "
-                + Translate(typeof(TMapped))
-                + toRestoreTitle
-                + ". "),
-              failureMessage)
-          }
+                  + " "
+                  + Translate(typeof(TMapped))
+                  + toRestoreTitle
+                  + ". "
+              ),
+              failureMessage
+            )
+          },
         },
-        new DialogOptions { CloseOnEscapeKey = true });
+        new DialogOptions { CloseOnEscapeKey = true }
+      );
       return;
     }
 
@@ -354,29 +353,30 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
           Fragment.Combine(
             Fragment.String(
               Translate("Successfully restored")
-              + " "
-              + Translate(typeof(TMapped))
-              + toRestoreTitle
-              + ". "),
-            successMessage)
+                + " "
+                + Translate(typeof(TMapped))
+                + toRestoreTitle
+                + ". "
+            ),
+            successMessage
+          )
         },
         {
           nameof(MutatingResult.Exit),
-          (IMudDialogInstance _) => { AnalysisState.Reset(); }
+          (IMudDialogInstance _) =>
+          {
+            AnalysisState.Reset();
+          }
         },
-        {
-          nameof(MutatingResult.NavigationBehavior),
-          null
-        }
+        { nameof(MutatingResult.NavigationBehavior), null },
       },
-      new DialogOptions { CloseOnEscapeKey = true });
+      new DialogOptions { CloseOnEscapeKey = true }
+    );
   }
 
   private async Task OnForget(T model)
   {
-    object? toForget = Map is null
-      ? model
-      : Map(model);
+    object? toForget = Map is null ? model : Map(model);
 
     var toForgetTitle = toForget is IIdentifiable toForgetIdentifiable
       ? $" {toForgetIdentifiable.Title}"
@@ -400,7 +400,8 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
       else
       {
         throw new InvalidOperationException(
-          $"No forget strategy found for {typeof(T)}");
+          $"No forget strategy found for {typeof(T)}"
+        );
       }
     }
     catch (Exception ex)
@@ -418,14 +419,17 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
             Fragment.Combine(
               Fragment.String(
                 Translate("Failed forgetting")
-                + " "
-                + Translate(typeof(TMapped))
-                + toForgetTitle
-                + ". "),
-              failureMessage)
-          }
+                  + " "
+                  + Translate(typeof(TMapped))
+                  + toForgetTitle
+                  + ". "
+              ),
+              failureMessage
+            )
+          },
         },
-        new DialogOptions { CloseOnEscapeKey = true });
+        new DialogOptions { CloseOnEscapeKey = true }
+      );
       return;
     }
 
@@ -442,22 +446,25 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
           Fragment.Combine(
             Fragment.String(
               Translate("Successfully forgotten")
-              + " "
-              + Translate(typeof(TMapped))
-              + toForgetTitle
-              + ". "),
-            successMessage)
+                + " "
+                + Translate(typeof(TMapped))
+                + toForgetTitle
+                + ". "
+            ),
+            successMessage
+          )
         },
         {
           nameof(MutatingResult.Exit),
-          (IMudDialogInstance _) => { AnalysisState.Reset(); }
+          (IMudDialogInstance _) =>
+          {
+            AnalysisState.Reset();
+          }
         },
-        {
-          nameof(MutatingResult.NavigationBehavior),
-          null
-        }
+        { nameof(MutatingResult.NavigationBehavior), null },
       },
-      new DialogOptions { CloseOnEscapeKey = true });
+      new DialogOptions { CloseOnEscapeKey = true }
+    );
   }
 
   private async Task FetchPaging()
@@ -489,10 +496,7 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
 
     if (Page is { } page)
     {
-      var result = page(
-        searchString ?? string.Empty,
-        pageNumber,
-        pageCount);
+      var result = page(searchString ?? string.Empty, pageNumber, pageCount);
       return result;
     }
 
@@ -501,92 +505,90 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
       var result = await pageAsync(
         searchString ?? string.Empty,
         pageNumber,
-        pageCount);
+        pageCount
+      );
       return result;
     }
 
     if (typeof(T).IsAssignableTo(typeof(ITrackableIdentifiable)))
     {
-      var queries = ScopedServices
-        .GetRequiredService<TrackableQueries>();
+      var queries = ScopedServices.GetRequiredService<TrackableQueries>();
 
       if (string.IsNullOrWhiteSpace(searchString))
       {
-        var result = await queries
-          .Read(
-            typeof(T),
-            pageNumber,
-            CancellationToken,
-            pageCount,
-            checkedDeleted);
+        var result = await queries.Read(
+          typeof(T),
+          pageNumber,
+          CancellationToken,
+          pageCount,
+          checkedDeleted
+        );
         return result.Items.OfType<T>().ToPaginatedList(result.TotalCount);
       }
       else
       {
-        var result = await queries
-          .ReadByTitle(
-            typeof(T),
-            searchString,
-            pageNumber,
-            CancellationToken,
-            pageCount,
-            checkedDeleted);
+        var result = await queries.ReadByTitle(
+          typeof(T),
+          searchString,
+          pageNumber,
+          CancellationToken,
+          pageCount,
+          checkedDeleted
+        );
         return result.Items.OfType<T>().ToPaginatedList(result.TotalCount);
       }
     }
 
     if (typeof(T).IsAssignableTo(typeof(IAuditableIdentifiable)))
     {
-      var queries = ScopedServices
-        .GetRequiredService<AuditableQueries>();
+      var queries = ScopedServices.GetRequiredService<AuditableQueries>();
 
       if (string.IsNullOrWhiteSpace(searchString))
       {
-        var result = await queries
-          .Read(
-            typeof(T),
-            pageNumber,
-            CancellationToken,
-            pageCount);
+        var result = await queries.Read(
+          typeof(T),
+          pageNumber,
+          CancellationToken,
+          pageCount
+        );
         return result.Items.OfType<T>().ToPaginatedList(result.TotalCount);
       }
       else
       {
-        var result = await queries
-          .ReadByTitle(
-            typeof(T),
-            searchString,
-            pageNumber,
-            CancellationToken,
-            pageCount);
+        var result = await queries.ReadByTitle(
+          typeof(T),
+          searchString,
+          pageNumber,
+          CancellationToken,
+          pageCount
+        );
         return result.Items.OfType<T>().ToPaginatedList(result.TotalCount);
       }
     }
 
     if (typeof(T).IsAssignableTo(typeof(IIdentifiable)))
     {
-      var queries = ScopedServices
-        .GetRequiredService<IdentifiableQueries>();
+      var queries = ScopedServices.GetRequiredService<IdentifiableQueries>();
 
       if (string.IsNullOrWhiteSpace(searchString))
       {
-        var result = await queries
-          .Read(
-            typeof(T),
-            pageNumber,
-            CancellationToken,
-            pageCount);
+        var result = await queries.Read(
+          typeof(T),
+          pageNumber,
+          CancellationToken,
+          pageCount
+        );
         return result.Items.OfType<T>().ToPaginatedList(result.TotalCount);
       }
       else
       {
-        var result = await queries
-          .ReadByTitle(
-            typeof(T),
-            searchString,
-            pageNumber,
-            CancellationToken,
-            pageCount);
+        var result = await queries.ReadByTitle(
+          typeof(T),
+          searchString,
+          pageNumber,
+          CancellationToken,
+          pageCount
+        );
         return result.Items.OfType<T>().ToPaginatedList(result.TotalCount);
       }
     }
@@ -595,11 +597,7 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
     {
       var result = await ScopedServices
         .GetRequiredService<ModelQueries>()
-        .Read(
-          typeof(T),
-          pageNumber,
-          CancellationToken,
-          pageCount);
+        .Read(typeof(T), pageNumber, CancellationToken, pageCount);
       return result.Items.OfType<T>().ToPaginatedList(result.TotalCount);
     }
 
@@ -631,23 +629,22 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
       return false;
     }
 
-    object? toFilter = Map is null
-      ? model
-      : Map(model);
+    object? toFilter = Map is null ? model : Map(model);
 
     if (toFilter is null)
     {
       return false;
     }
 
-    if (model is ITrackable trackable
-      && trackable.IsDeleted != checkedDeleted)
+    if (model is ITrackable trackable && trackable.IsDeleted != checkedDeleted)
     {
       return false;
     }
 
-    if (model is IIdentifiable { Title: { } title }
-      && title.Contains(searchString))
+    if (
+      model is IIdentifiable { Title: { } title }
+      && title.Contains(searchString)
+    )
     {
       return true;
     }

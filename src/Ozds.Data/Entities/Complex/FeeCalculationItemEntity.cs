@@ -4,15 +4,12 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities.Complex;
 
-public abstract class FeeCalculationItemEntity
-  : CalculationItemEntity
+public abstract class FeeCalculationItemEntity : CalculationItemEntity
 {
   public decimal Amount_N { get; set; }
 }
 
-public class UsageMeterFeeCalculationItemEntity : FeeCalculationItemEntity
-{
-}
+public class UsageMeterFeeCalculationItemEntity : FeeCalculationItemEntity { }
 
 public static class FeeCalculationItemEntityExtensions
 {

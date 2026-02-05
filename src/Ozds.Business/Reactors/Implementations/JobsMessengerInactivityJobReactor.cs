@@ -14,14 +14,12 @@ namespace Ozds.Business.Reactors.Implementations;
 
 // TODO: remove db context references
 
-public class JobsMessengerInactivityJobReactor(
-  IServiceProvider serviceProvider
-) : Reactor<
-  JobsMessengerJobEventArgs,
-  IJobsMessengerJobSubscriber,
-  JobsMessengerInactivityJobHandler>(serviceProvider)
-{
-}
+public class JobsMessengerInactivityJobReactor(IServiceProvider serviceProvider)
+  : Reactor<
+    JobsMessengerJobEventArgs,
+    IJobsMessengerJobSubscriber,
+    JobsMessengerInactivityJobHandler
+  >(serviceProvider) { }
 
 public class JobsMessengerInactivityJobHandler(
   EventQueries eventQueries,
@@ -31,19 +29,18 @@ public class JobsMessengerInactivityJobHandler(
   ModelActivator activator
 ) : Handler<JobsMessengerJobEventArgs>
 {
-  private static readonly JsonSerializerOptions
-    EventContentSerializationOptions = new()
-    {
-      WriteIndented = true
-    };
+  private static readonly JsonSerializerOptions EventContentSerializationOptions =
+    new() { WriteIndented = true };
 
   public override async Task Handle(
     JobsMessengerJobEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var messenger = await trackable.ReadById<IMessenger>(
       eventArgs.Id,
-      cancellationToken);
+      cancellationToken
+    );
     if (messenger is null)
     {
       return;
@@ -51,7 +48,8 @@ public class JobsMessengerInactivityJobHandler(
 
     var lastPushEvent = await eventQueries.ReadLastByMessengerId(
       messenger.Id,
-      cancellationToken);
+      cancellationToken
+    );
 
     var notification = activator.Activate<MessengerNotificationModel>();
     notification.MessengerId = messenger.Id;
@@ -59,7 +57,7 @@ public class JobsMessengerInactivityJobHandler(
     [
       TopicModel.All,
       TopicModel.Messenger,
-      TopicModel.MessengerInactivity
+      TopicModel.MessengerInactivity,
     ];
     notification.Title = "Messenger is inactive";
     notification.Summary = $"Messenger \"{messenger.Title}\" is inactive";

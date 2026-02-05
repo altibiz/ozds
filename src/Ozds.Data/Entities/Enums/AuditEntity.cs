@@ -11,7 +11,7 @@ public enum AuditEntity
   Modification,
   Deletion,
   Restoration,
-  Forgetting
+  Forgetting,
 }
 
 public class AuditEntityTypeConfiguration : IModelConfiguration
@@ -22,8 +22,8 @@ public class AuditEntityTypeConfiguration : IModelConfiguration
   }
 }
 
-public class
-  AuditEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class AuditEntityNpgsqlDataSourceConfiguration
+  : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

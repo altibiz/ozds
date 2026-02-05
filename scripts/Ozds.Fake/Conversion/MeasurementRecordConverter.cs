@@ -5,18 +5,17 @@ using Ozds.Fake.Records.Abstractions;
 
 namespace Ozds.Fake.Conversion;
 
-public class MeasurementRecordConverter(
-  IServiceProvider serviceProvider)
+public class MeasurementRecordConverter(IServiceProvider serviceProvider)
 {
-  public IMeasurement ConvertToModel(
-    IMeasurementRecord record)
+  public IMeasurement ConvertToModel(IMeasurementRecord record)
   {
     var converter = GetModelConverter(record);
     return converter.ConvertToModel(record);
   }
 
   public IEnumerable<IMeasurement> ConvertToModels(
-    IEnumerable<IMeasurementRecord> records)
+    IEnumerable<IMeasurementRecord> records
+  )
   {
     var enumerator = records.GetEnumerator();
     if (!enumerator.MoveNext())
@@ -72,7 +71,8 @@ public class MeasurementRecordConverter(
   }
 
   private IMeasurementRecordModelConverter GetModelConverter(
-    IMeasurementRecord record)
+    IMeasurementRecord record
+  )
   {
     var converter = serviceProvider
       .GetServices<IMeasurementRecordModelConverter>()
@@ -80,6 +80,7 @@ public class MeasurementRecordConverter(
 
     return converter
       ?? throw new InvalidOperationException(
-        $"No converter found for {record.GetType()}");
+        $"No converter found for {record.GetType()}"
+      );
   }
 }

@@ -4,11 +4,12 @@ using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance.Complex;
 
-public class UsageMeterFeeCalculationItemCalculator :
-  CalculationItemCalculator<UsageMeterFeeCalculationItemModel>
+public class UsageMeterFeeCalculationItemCalculator
+  : CalculationItemCalculator<UsageMeterFeeCalculationItemModel>
 {
   protected override UsageMeterFeeCalculationItemModel CalculateConcrete(
-    CalculationItemBasisModel calculationBasis)
+    CalculationItemBasisModel calculationBasis
+  )
   {
     var amount = System.Math.Round(1M, 0);
 
@@ -20,7 +21,7 @@ public class UsageMeterFeeCalculationItemCalculator :
     {
       Amount_N = amount,
       Price_EUR = price,
-      Total_EUR = total
+      Total_EUR = total,
     };
   }
 }

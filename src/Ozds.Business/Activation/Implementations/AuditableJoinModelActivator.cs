@@ -7,8 +7,7 @@ namespace Ozds.Business.Activation.Implementations;
 public class AuditableJoinModelActivator(
   IServiceProvider serviceProvider,
   ClockQueries clock
-)
-  : InheritingModelActivator<AuditableJoinModel, JoinModel>(serviceProvider)
+) : InheritingModelActivator<AuditableJoinModel, JoinModel>(serviceProvider)
 {
   public override void Initialize(AuditableJoinModel model)
   {

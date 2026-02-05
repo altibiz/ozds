@@ -37,9 +37,11 @@ public partial class UserPage
   {
     base.OnInitialized();
 
-    if (Id is not null
-      && RepresentativeState.Representative.Role is
-        RoleModel.OperatorRepresentative)
+    if (
+      Id is not null
+      && RepresentativeState.Representative.Role
+        is RoleModel.OperatorRepresentative
+    )
     {
       var activator = ScopedServices.GetRequiredService<ModelActivator>();
       password = activator.Activate<PasswordModel>();
@@ -67,7 +69,7 @@ public partial class UserPage
       return new MaybeRepresentingUserModel
       {
         User = UserState.User,
-        Representative = RepresentativeState.Representative
+        Representative = RepresentativeState.Representative,
       };
     }
 
@@ -88,13 +90,14 @@ public partial class UserPage
       return;
     }
 
-    var representativeMutations = ScopedServices
-      .GetRequiredService<TrackableMutations>();
-    var userMutations = ScopedServices
-      .GetRequiredService<UserMutations>();
+    var representativeMutations =
+      ScopedServices.GetRequiredService<TrackableMutations>();
+    var userMutations = ScopedServices.GetRequiredService<UserMutations>();
 
     await representativeMutations.Update(
-      model.Representative, CancellationToken);
+      model.Representative,
+      CancellationToken
+    );
     await userMutations.Update(model.User, CancellationToken);
   }
 
@@ -105,15 +108,15 @@ public partial class UserPage
       return;
     }
 
-    var representativeMutations = ScopedServices
-      .GetRequiredService<TrackableMutations>();
-    var userMutations = ScopedServices
-      .GetRequiredService<UserMutations>();
+    var representativeMutations =
+      ScopedServices.GetRequiredService<TrackableMutations>();
+    var userMutations = ScopedServices.GetRequiredService<UserMutations>();
 
-    await representativeMutations
-      .Delete(model.Representative, CancellationToken);
-    await userMutations
-      .Delete(model.User.Id, CancellationToken);
+    await representativeMutations.Delete(
+      model.Representative,
+      CancellationToken
+    );
+    await userMutations.Delete(model.User.Id, CancellationToken);
   }
 
   private async Task OnPasswordUpdateAsync()
@@ -123,15 +126,15 @@ public partial class UserPage
       return;
     }
 
-    var passwordMutations = ScopedServices
-      .GetRequiredService<PasswordMutations>();
+    var passwordMutations =
+      ScopedServices.GetRequiredService<PasswordMutations>();
 
     await passwordMutations.Update(password, CancellationToken);
 
     var message = HostEnvironment.IsDevelopment()
       ? Translate("Successfully updated password to")
-      + " "
-      + password.NewPassword
+        + " "
+        + password.NewPassword
       : Translate("Successfully updated password");
 
     if (Id == UserState.User.Id)
@@ -142,15 +145,17 @@ public partial class UserPage
         {
           {
             nameof(MutatingResult.Body),
-            message + "\n"
-            + Translate("You will be logged out when this dialog is closed.")
+            message
+              + "\n"
+              + Translate("You will be logged out when this dialog is closed.")
           },
           {
             nameof(MutatingResult.NavigationBehavior),
             MutatingResultNavigationBehavior.Logout
-          }
+          },
         },
-        new DialogOptions { CloseOnEscapeKey = true });
+        new DialogOptions { CloseOnEscapeKey = true }
+      );
     }
     else
     {
@@ -158,16 +163,11 @@ public partial class UserPage
         Translate("Success"),
         new DialogParameters
         {
-          {
-            nameof(MutatingResult.Body),
-            message
-          },
-          {
-            nameof(MutatingResult.NavigationBehavior),
-            null
-          }
+          { nameof(MutatingResult.Body), message },
+          { nameof(MutatingResult.NavigationBehavior), null },
         },
-        new DialogOptions { CloseOnEscapeKey = true });
+        new DialogOptions { CloseOnEscapeKey = true }
+      );
     }
   }
 

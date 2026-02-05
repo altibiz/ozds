@@ -6,9 +6,7 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class LocationModelDocumentEntityConverter(
   IServiceProvider serviceProvider
-) : ConcreteModelDocumentEntityConverter<
-  LocationModel,
-  LocationEntity>
+) : ConcreteModelDocumentEntityConverter<LocationModel, LocationEntity>
 {
   private readonly ModelDocumentEntityConverter modelDocumentEntityConverter =
     serviceProvider.GetRequiredService<ModelDocumentEntityConverter>();
@@ -21,8 +19,10 @@ public class LocationModelDocumentEntityConverter(
     base.InitializeEntity(model, entity);
     entity.Title = model.Title;
     entity.Id = model.Id;
-    entity.LegalPerson = modelDocumentEntityConverter
-      .ToEntity<LegalPersonEntity>(model.LegalPerson);
+    entity.LegalPerson =
+      modelDocumentEntityConverter.ToEntity<LegalPersonEntity>(
+        model.LegalPerson
+      );
     entity.AltiBizSubProjectCode = model.AltiBizSubProjectCode;
   }
 }

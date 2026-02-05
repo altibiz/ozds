@@ -8,9 +8,7 @@ using Ozds.Client.Components.Base;
 namespace Ozds.Client.Components.Streaming;
 
 public class Paging<T> : MappedPaging<T, T>
-  where T : notnull
-{
-}
+  where T : notnull { }
 
 public partial class MappedPaging<T, TMapped> : OzdsComponentBase
   where T : notnull
@@ -71,12 +69,7 @@ public partial class MappedPaging<T, TMapped> : OzdsComponentBase
 
   private PaginatedList<T>? LoadingValue
   {
-    get
-    {
-      return Value is { } value
-        ? PageFetched(value)
-        : null;
-    }
+    get { return Value is { } value ? PageFetched(value) : null; }
   }
 
   private Func<PaginatedList<T>, PaginatedList<TMapped>>? LoadingMap
@@ -114,67 +107,62 @@ public partial class MappedPaging<T, TMapped> : OzdsComponentBase
 
       if (typeof(T).IsAssignableTo(typeof(ITrackable)))
       {
-        return () => ScopedServices
-          .GetRequiredService<TrackableQueries>()
-          .Read(
-            typeof(T),
-            pageNumber,
-            CancellationToken,
-            PageCount,
-            Deleted)
-          .ContinueWith(x => x.IsCanceled
-            ? new PaginatedList<T>(new List<T>(), 0)
-            : x.Result.Items
-              .OfType<T>()
-              .ToPaginatedList(x.Result.TotalCount));
+        return () =>
+          ScopedServices
+            .GetRequiredService<TrackableQueries>()
+            .Read(typeof(T), pageNumber, CancellationToken, PageCount, Deleted)
+            .ContinueWith(x =>
+              x.IsCanceled
+                ? new PaginatedList<T>(new List<T>(), 0)
+                : x
+                  .Result.Items.OfType<T>()
+                  .ToPaginatedList(x.Result.TotalCount)
+            );
       }
 
       if (typeof(T).IsAssignableTo(typeof(IAuditable)))
       {
-        return () => ScopedServices
-          .GetRequiredService<AuditableQueries>()
-          .Read(
-            typeof(T),
-            pageNumber,
-            CancellationToken,
-            PageCount)
-          .ContinueWith(x => x.IsCanceled
-            ? new PaginatedList<T>(new List<T>(), 0)
-            : x.Result.Items
-              .OfType<T>()
-              .ToPaginatedList(x.Result.TotalCount));
+        return () =>
+          ScopedServices
+            .GetRequiredService<AuditableQueries>()
+            .Read(typeof(T), pageNumber, CancellationToken, PageCount)
+            .ContinueWith(x =>
+              x.IsCanceled
+                ? new PaginatedList<T>(new List<T>(), 0)
+                : x
+                  .Result.Items.OfType<T>()
+                  .ToPaginatedList(x.Result.TotalCount)
+            );
       }
 
       if (typeof(T).IsAssignableTo(typeof(IIdentifiable)))
       {
-        return () => ScopedServices
-          .GetRequiredService<IdentifiableQueries>()
-          .Read(
-            typeof(T),
-            pageNumber,
-            CancellationToken,
-            PageCount)
-          .ContinueWith(x => x.IsCanceled
-            ? new PaginatedList<T>(new List<T>(), 0)
-            : x.Result.Items
-              .OfType<T>()
-              .ToPaginatedList(x.Result.TotalCount));
+        return () =>
+          ScopedServices
+            .GetRequiredService<IdentifiableQueries>()
+            .Read(typeof(T), pageNumber, CancellationToken, PageCount)
+            .ContinueWith(x =>
+              x.IsCanceled
+                ? new PaginatedList<T>(new List<T>(), 0)
+                : x
+                  .Result.Items.OfType<T>()
+                  .ToPaginatedList(x.Result.TotalCount)
+            );
       }
 
       if (typeof(T).IsAssignableTo(typeof(IModel)))
       {
-        return () => ScopedServices
-          .GetRequiredService<ModelQueries>()
-          .Read(
-            typeof(T),
-            pageNumber,
-            CancellationToken,
-            PageCount)
-          .ContinueWith(x => x.IsCanceled
-            ? new PaginatedList<T>(new List<T>(), 0)
-            : x.Result.Items
-              .OfType<T>()
-              .ToPaginatedList(x.Result.TotalCount));
+        return () =>
+          ScopedServices
+            .GetRequiredService<ModelQueries>()
+            .Read(typeof(T), pageNumber, CancellationToken, PageCount)
+            .ContinueWith(x =>
+              x.IsCanceled
+                ? new PaginatedList<T>(new List<T>(), 0)
+                : x
+                  .Result.Items.OfType<T>()
+                  .ToPaginatedList(x.Result.TotalCount)
+            );
       }
 
       return null;
@@ -187,10 +175,7 @@ public partial class MappedPaging<T, TMapped> : OzdsComponentBase
   }
 
   [JSInvokable]
-  public async Task OnScrollInView(
-    string elementId,
-    bool isInView
-  )
+  public async Task OnScrollInView(string elementId, bool isInView)
   {
     if (elementId != infiniteScrollId.ToString())
     {
@@ -229,9 +214,7 @@ public partial class MappedPaging<T, TMapped> : OzdsComponentBase
     await loading.Fetch();
   }
 
-  private PaginatedList<T>? PageFetched(
-    IEnumerable<T> value
-  )
+  private PaginatedList<T>? PageFetched(IEnumerable<T> value)
   {
     return value
       .Skip(pageNumber * PageCount)

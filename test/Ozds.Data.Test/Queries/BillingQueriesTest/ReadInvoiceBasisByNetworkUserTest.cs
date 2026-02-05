@@ -30,7 +30,7 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
         {
           { Oct1, true },
           { Nov1, true },
-          { Dec1, true }
+          { Dec1, true },
         },
         Nov1,
         Nov1,
@@ -43,7 +43,7 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
         {
           { Oct1, false },
           { Nov1, true },
-          { Dec1, true }
+          { Dec1, true },
         },
         Nov1,
         Nov1,
@@ -56,7 +56,7 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
         {
           { Oct1, false },
           { Nov1, false },
-          { Dec1, true }
+          { Dec1, true },
         },
         Nov1,
         Nov1,
@@ -69,7 +69,7 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
         {
           { Oct1, true },
           { Nov1, false },
-          { Dec1, true }
+          { Dec1, true },
         },
         Nov1,
         Oct1,
@@ -82,7 +82,7 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
         {
           { Oct1, true },
           { Nov1, false },
-          { Dec1, false }
+          { Dec1, false },
         },
         Nov1,
         Oct1,
@@ -95,7 +95,7 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
         {
           { Oct1, true },
           { Nov1, true },
-          { Dec1, false }
+          { Dec1, false },
         },
         Nov1,
         Nov1,
@@ -109,7 +109,7 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
           { Oct1, true },
           { Nov1, false },
           { Dec1, true },
-          { Jan1, true }
+          { Jan1, true },
         },
         Nov1,
         Oct1,
@@ -123,13 +123,13 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
           { Oct1, true },
           { Nov1, true },
           { Dec1, false },
-          { Jan1, true }
+          { Jan1, true },
         },
         Dec1,
         Nov1,
         Jan1,
         2
-      )
+      ),
     };
   }
 
@@ -149,9 +149,10 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
 
     var infrastructure = await Infrastructure.Create(
       cancellationToken,
-      x => x
-        .WithMeterType(typeof(AbbB2xMeterEntity))
-        .WithNetworkUserCatalogueId(x => x.RedLowNetworkUserCatalogueId));
+      x =>
+        x.WithMeterType(typeof(AbbB2xMeterEntity))
+          .WithNetworkUserCatalogueId(x => x.RedLowNetworkUserCatalogueId)
+    );
 
     var allMeasurements = new List<IMeasurementEntity>();
 
@@ -167,11 +168,11 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
       var monthData = await Measurements.Create(
         infrastructure,
         cancellationToken,
-        x => x
-          .WithInterval(IntervalEntity.QuarterHour)
-          .WithFromDate(monthStart)
-          .WithToDate(monthStart.AddMonths(1))
-          .WithCount(10)
+        x =>
+          x.WithInterval(IntervalEntity.QuarterHour)
+            .WithFromDate(monthStart)
+            .WithToDate(monthStart.AddMonths(1))
+            .WithCount(10)
       );
 
       allMeasurements.AddRange(monthData);
@@ -195,18 +196,20 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
 
     var basis = result.NetworkUserCalculationBases.First();
 
-    basis.BilledFromDate.Should().Be(
-      expectedStart,
-      $"Scenario '{scenario.Name}': Billing Start mismatch");
+    basis
+      .BilledFromDate.Should()
+      .Be(expectedStart, $"Scenario '{scenario.Name}': Billing Start mismatch");
 
-    basis.BilledToDate.Should().Be(
-      expectedEnd,
-      $"Scenario '{scenario.Name}': Billing End mismatch");
+    basis
+      .BilledToDate.Should()
+      .Be(expectedEnd, $"Scenario '{scenario.Name}': Billing End mismatch");
 
     if (expectedStart < expectedEnd)
     {
       basis.Aggregates.Should().NotBeEmpty();
-      basis.Aggregates.First().Timestamp.Should()
+      basis
+        .Aggregates.First()
+        .Timestamp.Should()
         .BeOnOrAfter(basis.MeasuredFromDate);
     }
 
@@ -237,21 +240,21 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
           Meter = infrastructure.Meter,
           Aggregates = allMeasurements
             .OfType<AggregateEntity>()
-            .Where(x =>
-              x.Timestamp >= fromDate
-              && x.Timestamp <= toDate)
+            .Where(x => x.Timestamp >= fromDate && x.Timestamp <= toDate)
             .Concat(
               allMeasurements
                 .OfType<AggregateEntity>()
-                .Where(x => x.Timestamp == expectedStart))
+                .Where(x => x.Timestamp == expectedStart)
+            )
             .Concat(
               allMeasurements
                 .OfType<AggregateEntity>()
-                .Where(x => x.Timestamp == expectedEnd))
+                .Where(x => x.Timestamp == expectedEnd)
+            )
             .DistinctBy(x => x.Timestamp)
-            .ToList()
-        }
-      ]
+            .ToList(),
+        },
+      ],
     };
 
     await using var context = await ServiceProvider
@@ -265,11 +268,13 @@ public class ReadInvoiceBasisByNetworkUserTest : OzdsDataTestBase
   {
     return new DateTimeOffset(
       DateTime.SpecifyKind(
-        DateTimeOffset.Parse(
-          isoString,
-          CultureInfo.InvariantCulture).UtcDateTime,
-        DateTimeKind.Utc),
-      TimeSpan.Zero);
+        DateTimeOffset
+          .Parse(isoString, CultureInfo.InvariantCulture)
+          .UtcDateTime,
+        DateTimeKind.Utc
+      ),
+      TimeSpan.Zero
+    );
   }
 
   public record BillingScenario(

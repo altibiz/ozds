@@ -17,23 +17,22 @@ public class InsertService(
   private readonly List<MeasurementLocationMeterId> ids = new();
   private readonly IServiceProvider services = services;
 
-  public override async Task StartAsync(
-    CancellationToken cancellationToken
-  )
+  public override async Task StartAsync(CancellationToken cancellationToken)
   {
     {
       await using var scope = services.CreateAsyncScope();
 
-      var client = scope.ServiceProvider
-        .GetRequiredService<InsertClient>();
+      var client = scope.ServiceProvider.GetRequiredService<InsertClient>();
 
       var meters = arguments.Meters.ToList();
 
-      var raw = meters.Count != 0
-        ? meters
-        : await client.GetMetersForLocation(
-          arguments.LocationId,
-          cancellationToken);
+      var raw =
+        meters.Count != 0
+          ? meters
+          : await client.GetMetersForLocation(
+            arguments.LocationId,
+            cancellationToken
+          );
 
       ids.AddRange(raw.Select(MeasurementLocationMeterId.FromString));
     }
@@ -49,8 +48,9 @@ public class InsertService(
     var interval = arguments.Interval.ToTimeSpan();
     var dateTo = clock.Timestamp();
     var dateFrom = dateTo.Subtract(interval);
-    foreach (var date in enumerable
-      .Split(dateFrom, dateTo, Environment.ProcessorCount))
+    foreach (
+      var date in enumerable.Split(dateFrom, dateTo, Environment.ProcessorCount)
+    )
     {
       yield return new InsertWorkerItem(
         date.DateFrom,

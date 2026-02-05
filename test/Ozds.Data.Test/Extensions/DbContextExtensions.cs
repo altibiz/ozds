@@ -6,87 +6,91 @@ namespace Ozds.Data.Test.Extensions;
 
 public static class DbContextExtensions
 {
-  public static HashSet<MemberInfo> GetNavigations(
-    this DbContext dbContext
-  )
+  public static HashSet<MemberInfo> GetNavigations(this DbContext dbContext)
   {
-    var entity = dbContext.Model
-      .GetEntityTypes()
-      .SelectMany(e => e.GetDeclaredNavigations()
-        .OfType<INavigationBase>()
-        .Concat(e.GetDeclaredSkipNavigations()))
+    var entity = dbContext
+      .Model.GetEntityTypes()
+      .SelectMany(e =>
+        e.GetDeclaredNavigations()
+          .OfType<INavigationBase>()
+          .Concat(e.GetDeclaredSkipNavigations())
+      )
       .Select(n => (MemberInfo?)n.PropertyInfo ?? n.FieldInfo)
       .OfType<MemberInfo>()
       .ToHashSet();
 
-    var clr = dbContext.Model
-      .GetEntityTypes()
-      .SelectMany(e => e.ClrType
-        .GetProperties(
-          BindingFlags.Instance
-          | BindingFlags.Public
-          | BindingFlags.NonPublic)
-        .OfType<MemberInfo>()
-        .Concat(
-          e.ClrType
-            .GetFields(
+    var clr = dbContext
+      .Model.GetEntityTypes()
+      .SelectMany(e =>
+        e.ClrType.GetProperties(
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+          )
+          .OfType<MemberInfo>()
+          .Concat(
+            e.ClrType.GetFields(
               BindingFlags.Instance
-              | BindingFlags.Public
-              | BindingFlags.NonPublic))
-        .OfType<MemberInfo>())
+                | BindingFlags.Public
+                | BindingFlags.NonPublic
+            )
+          )
+          .OfType<MemberInfo>()
+      )
       .ToList();
 
-    var navigations = clr
-      .Where(member =>
+    var navigations = clr.Where(member =>
         member switch
         {
           PropertyInfo property => entity
             .OfType<PropertyInfo>()
-            .Any(entity => entity.Name == property.Name
-              && entity.DeclaringType == property.DeclaringType),
+            .Any(entity =>
+              entity.Name == property.Name
+              && entity.DeclaringType == property.DeclaringType
+            ),
           FieldInfo field => entity
             .OfType<FieldInfo>()
-            .Any(entity => entity.Name == field.Name
-              && entity.DeclaringType == field.DeclaringType),
-          _ => false
-        })
+            .Any(entity =>
+              entity.Name == field.Name
+              && entity.DeclaringType == field.DeclaringType
+            ),
+          _ => false,
+        }
+      )
       .ToHashSet();
 
     return navigations;
   }
 
-  public static HashSet<MemberInfo> GetForeignKeys(
-    this DbContext dbContext
-  )
+  public static HashSet<MemberInfo> GetForeignKeys(this DbContext dbContext)
   {
-    var entity = dbContext.Model
-      .GetEntityTypes()
+    var entity = dbContext
+      .Model.GetEntityTypes()
       .SelectMany(e => e.GetDeclaredForeignKeys())
       .OfType<IForeignKey>()
-      .SelectMany(n => n.Properties
-        .Select(p => (MemberInfo?)p.PropertyInfo ?? p.FieldInfo))
+      .SelectMany(n =>
+        n.Properties.Select(p => (MemberInfo?)p.PropertyInfo ?? p.FieldInfo)
+      )
       .OfType<MemberInfo>()
       .ToList();
 
-    var clr = dbContext.Model
-      .GetEntityTypes()
-      .SelectMany(e => e.ClrType
-        .GetProperties(
-          BindingFlags.Instance
-          | BindingFlags.Public
-          | BindingFlags.NonPublic)
-        .OfType<MemberInfo>()
-        .Concat(
-          e.ClrType
-            .GetFields(
+    var clr = dbContext
+      .Model.GetEntityTypes()
+      .SelectMany(e =>
+        e.ClrType.GetProperties(
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+          )
+          .OfType<MemberInfo>()
+          .Concat(
+            e.ClrType.GetFields(
               BindingFlags.Instance
-              | BindingFlags.Public
-              | BindingFlags.NonPublic))
-        .OfType<MemberInfo>())
+                | BindingFlags.Public
+                | BindingFlags.NonPublic
+            )
+          )
+          .OfType<MemberInfo>()
+      )
       .ToList();
 
-    var foreignKeys = clr
-      .Where(i =>
+    var foreignKeys = clr.Where(i =>
         i switch
         {
           PropertyInfo p => entity
@@ -95,8 +99,9 @@ public static class DbContextExtensions
           FieldInfo f => entity
             .OfType<FieldInfo>()
             .Any(e => e.Name == f.Name && e.DeclaringType == f.DeclaringType),
-          _ => false
-        })
+          _ => false,
+        }
+      )
       .ToHashSet();
 
     return foreignKeys;
@@ -107,108 +112,125 @@ public static class DbContextExtensions
   )
   {
     // NOTE: need to not reintroduce archived properties
-    var clrTypes = dbContext.Model
-      .GetEntityTypes()
+    var clrTypes = dbContext
+      .Model.GetEntityTypes()
       .Select(x => x.ClrType)
       .ToHashSet();
 
-    var entity = dbContext.Model
-      .GetEntityTypes()
-      .SelectMany(e => e
-        .GetDeclaredProperties()
-        .OfType<IPropertyBase>()
-        .Concat(
-          e
-            .GetDeclaredComplexProperties()
-            .Where(c => !clrTypes.Contains(c.ClrType)))
-        .Concat(
-          e
-            .GetDeclaredComplexProperties()
-            .Where(c => !clrTypes.Contains(c.ClrType))
-            .SelectMany(p => p.ComplexType.GetProperties()))
-        .Concat(e.GetDeclaredSkipNavigations())
-        .Concat(e.GetDeclaredNavigations())
-        .Concat(e.GetDeclaredKeys().SelectMany(p => p.Properties))
-        .Select(p => (MemberInfo?)p.PropertyInfo ?? p.FieldInfo))
+    var entity = dbContext
+      .Model.GetEntityTypes()
+      .SelectMany(e =>
+        e.GetDeclaredProperties()
+          .OfType<IPropertyBase>()
+          .Concat(
+            e.GetDeclaredComplexProperties()
+              .Where(c => !clrTypes.Contains(c.ClrType))
+          )
+          .Concat(
+            e.GetDeclaredComplexProperties()
+              .Where(c => !clrTypes.Contains(c.ClrType))
+              .SelectMany(p => p.ComplexType.GetProperties())
+          )
+          .Concat(e.GetDeclaredSkipNavigations())
+          .Concat(e.GetDeclaredNavigations())
+          .Concat(e.GetDeclaredKeys().SelectMany(p => p.Properties))
+          .Select(p => (MemberInfo?)p.PropertyInfo ?? p.FieldInfo)
+      )
       .OfType<MemberInfo>()
       .Distinct()
       .ToList();
 
-    var clr = dbContext.Model
-      .GetEntityTypes()
-      .SelectMany(e => e.ClrType
-        .GetProperties(
-          BindingFlags.Instance
-          | BindingFlags.Public
-          | BindingFlags.NonPublic))
+    var clr = dbContext
+      .Model.GetEntityTypes()
+      .SelectMany(e =>
+        e.ClrType.GetProperties(
+          BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+        )
+      )
       .OfType<MemberInfo>()
       .Concat(
-        dbContext.Model.GetEntityTypes()
-          .SelectMany(e => e.GetComplexProperties()
-            .SelectMany(p => p.ComplexType.ClrType
-              .GetProperties(
-                BindingFlags.Instance
-                | BindingFlags.Public
-                | BindingFlags.NonPublic))))
+        dbContext
+          .Model.GetEntityTypes()
+          .SelectMany(e =>
+            e.GetComplexProperties()
+              .SelectMany(p =>
+                p.ComplexType.ClrType.GetProperties(
+                  BindingFlags.Instance
+                    | BindingFlags.Public
+                    | BindingFlags.NonPublic
+                )
+              )
+          )
+      )
       .Concat(
-        dbContext.Model
-          .GetEntityTypes()
-          .SelectMany(e => e.ClrType
-            .GetFields(
+        dbContext
+          .Model.GetEntityTypes()
+          .SelectMany(e =>
+            e.ClrType.GetFields(
               BindingFlags.Instance
-              | BindingFlags.Public
-              | BindingFlags.NonPublic)))
-      .Concat(
-        dbContext.Model.GetEntityTypes()
-          .SelectMany(e => e.GetComplexProperties()
-            .SelectMany(p => p.ComplexType.ClrType
-              .GetFields(
-                BindingFlags.Instance
                 | BindingFlags.Public
-                | BindingFlags.NonPublic))))
+                | BindingFlags.NonPublic
+            )
+          )
+      )
+      .Concat(
+        dbContext
+          .Model.GetEntityTypes()
+          .SelectMany(e =>
+            e.GetComplexProperties()
+              .SelectMany(p =>
+                p.ComplexType.ClrType.GetFields(
+                  BindingFlags.Instance
+                    | BindingFlags.Public
+                    | BindingFlags.NonPublic
+                )
+              )
+          )
+      )
       .Distinct()
       .ToList();
 
-    var ignoredProperties = clr
-      .Where(x => !entity
-        .Exists(e => e.DeclaringType == x.DeclaringType && e.Name == x.Name))
+    var ignoredProperties = clr.Where(x =>
+        !entity.Exists(e =>
+          e.DeclaringType == x.DeclaringType && e.Name == x.Name
+        )
+      )
       .ToHashSet();
 
     return ignoredProperties;
   }
 
-  public static HashSet<MemberInfo> GetKeys(
-    this DbContext dbContext
-  )
+  public static HashSet<MemberInfo> GetKeys(this DbContext dbContext)
   {
-    var entity = dbContext.Model
-      .GetEntityTypes()
+    var entity = dbContext
+      .Model.GetEntityTypes()
       .Select(e => e.GetKeys())
       .OfType<IKey>()
-      .SelectMany(n => n.Properties
-        .Select(p => (MemberInfo?)p.PropertyInfo ?? p.FieldInfo))
+      .SelectMany(n =>
+        n.Properties.Select(p => (MemberInfo?)p.PropertyInfo ?? p.FieldInfo)
+      )
       .OfType<MemberInfo>()
       .ToHashSet();
 
-    var clr = dbContext.Model
-      .GetEntityTypes()
-      .SelectMany(e => e.ClrType
-        .GetProperties(
-          BindingFlags.Instance
-          | BindingFlags.Public
-          | BindingFlags.NonPublic)
-        .OfType<MemberInfo>()
-        .Concat(
-          e.ClrType
-            .GetFields(
+    var clr = dbContext
+      .Model.GetEntityTypes()
+      .SelectMany(e =>
+        e.ClrType.GetProperties(
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+          )
+          .OfType<MemberInfo>()
+          .Concat(
+            e.ClrType.GetFields(
               BindingFlags.Instance
-              | BindingFlags.Public
-              | BindingFlags.NonPublic))
-        .OfType<MemberInfo>())
+                | BindingFlags.Public
+                | BindingFlags.NonPublic
+            )
+          )
+          .OfType<MemberInfo>()
+      )
       .ToList();
 
-    var keys = clr
-      .Where(i =>
+    var keys = clr.Where(i =>
         i switch
         {
           PropertyInfo p => entity
@@ -217,8 +239,9 @@ public static class DbContextExtensions
           FieldInfo f => entity
             .OfType<FieldInfo>()
             .Any(e => e.Name == f.Name && e.DeclaringType == f.DeclaringType),
-          _ => false
-        })
+          _ => false,
+        }
+      )
       .ToHashSet();
 
     return keys;
@@ -228,32 +251,32 @@ public static class DbContextExtensions
     this DbContext dbContext
   )
   {
-    var entity = dbContext.Model
-      .GetEntityTypes()
+    var entity = dbContext
+      .Model.GetEntityTypes()
       .Select(e => e.FindDiscriminatorProperty())
       .Select(p => (MemberInfo?)p?.PropertyInfo ?? p?.FieldInfo)
       .OfType<MemberInfo>()
       .ToHashSet();
 
-    var clr = dbContext.Model
-      .GetEntityTypes()
-      .SelectMany(e => e.ClrType
-        .GetProperties(
-          BindingFlags.Instance
-          | BindingFlags.Public
-          | BindingFlags.NonPublic)
-        .OfType<MemberInfo>()
-        .Concat(
-          e.ClrType
-            .GetFields(
+    var clr = dbContext
+      .Model.GetEntityTypes()
+      .SelectMany(e =>
+        e.ClrType.GetProperties(
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+          )
+          .OfType<MemberInfo>()
+          .Concat(
+            e.ClrType.GetFields(
               BindingFlags.Instance
-              | BindingFlags.Public
-              | BindingFlags.NonPublic))
-        .OfType<MemberInfo>())
+                | BindingFlags.Public
+                | BindingFlags.NonPublic
+            )
+          )
+          .OfType<MemberInfo>()
+      )
       .ToList();
 
-    var keys = clr
-      .Where(i =>
+    var keys = clr.Where(i =>
         i switch
         {
           PropertyInfo p => entity
@@ -262,8 +285,9 @@ public static class DbContextExtensions
           FieldInfo f => entity
             .OfType<FieldInfo>()
             .Any(e => e.Name == f.Name && e.DeclaringType == f.DeclaringType),
-          _ => false
-        })
+          _ => false,
+        }
+      )
       .ToHashSet();
 
     return keys;

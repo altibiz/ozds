@@ -18,8 +18,7 @@ public class RepresentativeModelActivator(IServiceProvider serviceProvider)
   {
     base.Initialize(model);
     model.Role = RoleModel.NetworkUserRepresentative;
-    model.PhysicalPerson = modelActivator
-      .Activate<PhysicalPersonModel>();
+    model.PhysicalPerson = modelActivator.Activate<PhysicalPersonModel>();
     model.Topics = RoleModel.NetworkUserRepresentative.ToTopics();
   }
 }

@@ -1,22 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="../../src/Ozds.Data/Ozds.Data.csproj" />
-	  <ProjectReference Include="../../src/Ozds.Messaging/Ozds.Messaging.csproj" />
-	  <ProjectReference Include="../../src/Ozds.Jobs/Ozds.Jobs.csproj" />
-	  <ProjectReference Include="../../src/Ozds.Users/Ozds.Users.csproj" />
-	  <ProjectReference Include="../../src/Ozds.Email/Ozds.Email.csproj" />
-	  <ProjectReference Include="../../src/Ozds.Iot/Ozds.Iot.csproj" />
-	  <ProjectReference Include="../../src/Ozds.Document/Ozds.Document.csproj" />
-	  <ProjectReference Include="../../src/Ozds.Assets/Ozds.Assets.csproj" />
-	  <ProjectReference Include="../../src/Ozds.Report/Ozds.Report.csproj" />
-	  <ProjectReference Include="../../src/Ozds.Time/Ozds.Time.csproj" />
-	  <ProjectReference Include="../../src/Ozds.Caching/Ozds.Caching.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Ozds.Data/Ozds.Data.csproj" />
+    <ProjectReference Include="../../src/Ozds.Messaging/Ozds.Messaging.csproj" />
+    <ProjectReference Include="../../src/Ozds.Jobs/Ozds.Jobs.csproj" />
+    <ProjectReference Include="../../src/Ozds.Users/Ozds.Users.csproj" />
+    <ProjectReference Include="../../src/Ozds.Email/Ozds.Email.csproj" />
+    <ProjectReference Include="../../src/Ozds.Iot/Ozds.Iot.csproj" />
+    <ProjectReference Include="../../src/Ozds.Document/Ozds.Document.csproj" />
+    <ProjectReference Include="../../src/Ozds.Assets/Ozds.Assets.csproj" />
+    <ProjectReference Include="../../src/Ozds.Report/Ozds.Report.csproj" />
+    <ProjectReference Include="../../src/Ozds.Time/Ozds.Time.csproj" />
+    <ProjectReference Include="../../src/Ozds.Caching/Ozds.Caching.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
@@ -24,5 +23,4 @@
     <PackageReference Include="HtmlSanitizer" />
     <PackageReference Include="System.Linq.Async" />
   </ItemGroup>
-
 </Project>

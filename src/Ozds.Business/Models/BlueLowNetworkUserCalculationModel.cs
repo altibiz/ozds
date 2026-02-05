@@ -10,12 +10,12 @@ public class BlueLowNetworkUserCalculationModel
   : MeteredNetworkUserCalculationModel<BlueLowNetworkUserCatalogueModel>
 {
   [Required]
-  public required UsageActiveEnergyTotalImportT0CalculationItemModel
-    UsageActiveEnergyTotalImportT0 { get; set; } = default!;
+  public required UsageActiveEnergyTotalImportT0CalculationItemModel UsageActiveEnergyTotalImportT0 { get; set; } =
+    default!;
 
   [Required]
-  public required UsageReactiveEnergyTotalRampedT0CalculationItemModel
-    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
+  public required UsageReactiveEnergyTotalRampedT0CalculationItemModel UsageReactiveEnergyTotalRampedT0 { get; set; } =
+    default!;
 
   protected override IEnumerable<ICalculationItem> AdditionalUsageItems
   {
@@ -24,7 +24,7 @@ public class BlueLowNetworkUserCalculationModel
       return new ICalculationItem[]
       {
         UsageActiveEnergyTotalImportT0,
-        UsageReactiveEnergyTotalRampedT0
+        UsageReactiveEnergyTotalRampedT0,
       };
     }
   }
@@ -37,16 +37,16 @@ public class BlueLowNetworkUserCalculationModel
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicSumMeasure<decimal>(
-              UsageActiveEnergyTotalImportT0
-                .Min_kWh),
+              UsageActiveEnergyTotalImportT0.Min_kWh
+            ),
             new NullPhasicMeasure<decimal>()
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicSumMeasure<decimal>(
-              UsageActiveEnergyTotalImportT0
-                .Max_kWh),
+              UsageActiveEnergyTotalImportT0.Max_kWh
+            ),
             new NullPhasicMeasure<decimal>()
           )
         )
@@ -58,31 +58,30 @@ public class BlueLowNetworkUserCalculationModel
   {
     get
     {
-      return
-        new DualExpenditureMeasure<decimal>(
-          new UnaryTariffMeasure<decimal>(
-            new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicSumMeasure<decimal>(
-                UsageActiveEnergyTotalImportT0
-                  .Price_EUR),
-              new NullPhasicMeasure<decimal>()
-            )
-          ),
-          new BinaryTariffMeasure<decimal>(
-            new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicSumMeasure<decimal>(
-                SupplyActiveEnergyTotalImportT1
-                  .Price_EUR),
-              new NullPhasicMeasure<decimal>()
+      return new DualExpenditureMeasure<decimal>(
+        new UnaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
+              UsageActiveEnergyTotalImportT0.Price_EUR
             ),
-            new ImportExportDuplexMeasure<decimal>(
-              new SinglePhasicSumMeasure<decimal>(
-                SupplyActiveEnergyTotalImportT2
-                  .Price_EUR),
-              new NullPhasicMeasure<decimal>()
-            )
+            new NullPhasicMeasure<decimal>()
           )
-        );
+        ),
+        new BinaryTariffMeasure<decimal>(
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
+              SupplyActiveEnergyTotalImportT1.Price_EUR
+            ),
+            new NullPhasicMeasure<decimal>()
+          ),
+          new ImportExportDuplexMeasure<decimal>(
+            new SinglePhasicSumMeasure<decimal>(
+              SupplyActiveEnergyTotalImportT2.Price_EUR
+            ),
+            new NullPhasicMeasure<decimal>()
+          )
+        )
+      );
     }
   }
 
@@ -94,17 +93,21 @@ public class BlueLowNetworkUserCalculationModel
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicSumMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ReactiveImportMin_kVARh),
+              UsageReactiveEnergyTotalRampedT0.ReactiveImportMin_kVARh
+            ),
             new SinglePhasicSumMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ReactiveImportMax_kVARh)
+              UsageReactiveEnergyTotalRampedT0.ReactiveImportMax_kVARh
+            )
           )
         ),
         new UnaryTariffMeasure<decimal>(
           new ImportExportDuplexMeasure<decimal>(
             new SinglePhasicSumMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ReactiveImportMax_kVARh),
+              UsageReactiveEnergyTotalRampedT0.ReactiveImportMax_kVARh
+            ),
             new SinglePhasicSumMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.ReactiveExportMax_kVARh)
+              UsageReactiveEnergyTotalRampedT0.ReactiveExportMax_kVARh
+            )
           )
         )
       );
@@ -119,7 +122,8 @@ public class BlueLowNetworkUserCalculationModel
         new UnaryTariffMeasure<decimal>(
           new AnyDuplexMeasure<decimal>(
             new SinglePhasicSumMeasure<decimal>(
-              UsageReactiveEnergyTotalRampedT0.Price_EUR)
+              UsageReactiveEnergyTotalRampedT0.Price_EUR
+            )
           )
         )
       );

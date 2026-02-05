@@ -9,16 +9,13 @@ public static class DbContextFixtureExtensions
   {
     var fixture = new Fixture();
 
-    fixture.Customizations
-      .Add(new IgnoreNavigationsSpecimenBuilder(context));
-    fixture.Customizations
-      .Add(new IgnoreKeysSpecimenBuilder(context));
-    fixture.Customizations
-      .Add(new IgnoreForeignKeysSpecimenBuilder(context));
-    fixture.Customizations
-      .Add(new IgnoreIgnoredPropertiesSpecimenBuilder(context));
-    fixture.Customizations
-      .Add(new DiscriminatorColumnSpecimenBuilder(context));
+    fixture.Customizations.Add(new IgnoreNavigationsSpecimenBuilder(context));
+    fixture.Customizations.Add(new IgnoreKeysSpecimenBuilder(context));
+    fixture.Customizations.Add(new IgnoreForeignKeysSpecimenBuilder(context));
+    fixture.Customizations.Add(
+      new IgnoreIgnoredPropertiesSpecimenBuilder(context)
+    );
+    fixture.Customizations.Add(new DiscriminatorColumnSpecimenBuilder(context));
 
     return fixture;
   }

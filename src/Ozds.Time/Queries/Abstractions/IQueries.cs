@@ -1,5 +1,3 @@
 namespace Ozds.Time.Queries.Abstractions;
 
-public interface IQueries
-{
-}
+public interface IQueries { }

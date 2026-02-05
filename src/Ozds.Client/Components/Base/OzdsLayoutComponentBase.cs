@@ -10,7 +10,8 @@ public class OzdsLayoutComponentBase : OzdsComponentBase
 
   [DynamicDependency(
     DynamicallyAccessedMemberTypes.All,
-    typeof(OzdsLayoutComponentBase))]
+    typeof(OzdsLayoutComponentBase)
+  )]
   public override Task SetParametersAsync(ParameterView parameters)
   {
     return base.SetParametersAsync(parameters);

@@ -6,9 +6,11 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 
 public class WhiteLowNetworkUserCatalogueModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  WhiteLowNetworkUserCatalogueModel,
-  NetworkUserCatalogueModel>(serviceProvider)
+)
+  : InheritingModelActivator<
+    WhiteLowNetworkUserCatalogueModel,
+    NetworkUserCatalogueModel
+  >(serviceProvider)
 {
   public override void Initialize(WhiteLowNetworkUserCatalogueModel model)
   {

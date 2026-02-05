@@ -7,9 +7,7 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class ScopeQueries(
-  IDbContextFactory<DataDbContext> factory
-) : IQueries
+public class ScopeQueries(IDbContextFactory<DataDbContext> factory) : IQueries
 {
   public async Task<PaginatedList<ScopeEntity>> ReadByApiKeyId(
     string apiKeyId,
@@ -20,14 +18,17 @@ public class ScopeQueries(
     string? title = null
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var filtered = context.ApiKeyScopes
-      .Where(
+    var filtered = context
+      .ApiKeyScopes.Where(
         context.ForeignKeyEquals<ApiKeyScopeEntity>(
           nameof(ApiKeyScopeEntity.ApiKey),
-          apiKeyId))
+          apiKeyId
+        )
+      )
       .Include(x => x.Scope)
       .Select(x => x.Scope);
 

@@ -1,5 +1,3 @@
 namespace Ozds.Report.Entities.Abstractions;
 
-public interface IMeasurementEntity : IEntity
-{
-}
+public interface IMeasurementEntity : IEntity { }

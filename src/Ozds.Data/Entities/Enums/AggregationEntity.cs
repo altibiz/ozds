@@ -8,7 +8,7 @@ public enum AggregationEntity
 {
   Min,
   Max,
-  Avg
+  Avg,
 }
 
 public class AggregationEntityTypeConfiguration : IModelConfiguration
@@ -19,9 +19,8 @@ public class AggregationEntityTypeConfiguration : IModelConfiguration
   }
 }
 
-public class
-  AggregationEntityNpgsqlDataSourceConfiguration :
-  INpgsqlDataSourceConfiguration
+public class AggregationEntityNpgsqlDataSourceConfiguration
+  : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

@@ -27,7 +27,8 @@ public partial class UsersPage : OzdsComponentBase
       CancellationToken,
       pageCount,
       deleted,
-      search);
+      search
+    );
 
     return users;
   }

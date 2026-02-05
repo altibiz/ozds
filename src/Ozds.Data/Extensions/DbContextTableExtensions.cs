@@ -24,15 +24,12 @@ public static class DbContextTableExtensions
     {
       if (propertyNames.Length == 0)
       {
-        throw new ArgumentException(
-          "Property name is required.");
+        throw new ArgumentException("Property name is required.");
       }
 
       if (propertyNames.Length == 1)
       {
-        return type
-          ?.FindProperty(propertyNames[0])
-          ?.GetColumnName();
+        return type?.FindProperty(propertyNames[0])?.GetColumnName();
       }
 
       var complexType = type.GetComplexProperties()
@@ -41,7 +38,8 @@ public static class DbContextTableExtensions
       {
         throw new InvalidOperationException(
           $"No property {propertyNames[0]} on type {type.Name} "
-          + $"while resolving {string.Join(".", propertyNames)}.");
+            + $"while resolving {string.Join(".", propertyNames)}."
+        );
       }
 
       return Recursive(
@@ -54,21 +52,24 @@ public static class DbContextTableExtensions
     var entityType = context.Model.FindEntityType(type);
     if (entityType is null)
     {
-      throw new InvalidOperationException(
-        $"Entity type {type.Name} not found");
+      throw new InvalidOperationException($"Entity type {type.Name} not found");
     }
 
-    var storeObjectIdentifier = StoreObjectIdentifier
-      .Create(entityType, StoreObjectType.Table);
+    var storeObjectIdentifier = StoreObjectIdentifier.Create(
+      entityType,
+      StoreObjectType.Table
+    );
     if (storeObjectIdentifier is null)
     {
       throw new InvalidOperationException(
-        $"Store object identifier for entity type {type.Name} not found");
+        $"Store object identifier for entity type {type.Name} not found"
+      );
     }
 
     return Recursive(
       entityType,
       storeObjectIdentifier.Value,
-      propertyNames.ToArray());
+      propertyNames.ToArray()
+    );
   }
 }

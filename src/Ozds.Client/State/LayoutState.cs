@@ -15,11 +15,6 @@ public record LayoutState(
 {
   public Anchor DrawerAnchor
   {
-    get
-    {
-      return Breakpoint <= Breakpoint.Sm
-        ? Anchor.Bottom
-        : Anchor.Top;
-    }
+    get { return Breakpoint <= Breakpoint.Sm ? Anchor.Bottom : Anchor.Top; }
   }
 }

@@ -3,9 +3,8 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models;
 
-public class
-  AbbB2xMeasurementValidatorModel : MeasurementValidatorModel<
-  AbbB2xMeasurementModel>
+public class AbbB2xMeasurementValidatorModel
+  : MeasurementValidatorModel<AbbB2xMeasurementModel>
 {
   [Required]
   public required decimal MinVoltage_V { get; set; }
@@ -37,9 +36,9 @@ public class
   )
   {
     if (
-      memberName is null or nameof(AbbB2xMeasurementModel.Voltage_V) &&
-      measurement.Voltage_V.TariffUnary().DuplexAny().PhaseTrough()
-      < MinVoltage_V
+      memberName is null or nameof(AbbB2xMeasurementModel.Voltage_V)
+      && measurement.Voltage_V.TariffUnary().DuplexAny().PhaseTrough()
+        < MinVoltage_V
     )
     {
       yield return new ValidationResult(
@@ -49,8 +48,9 @@ public class
     }
 
     if (
-      memberName is null or nameof(AbbB2xMeasurementModel.Voltage_V) &&
-      measurement.Voltage_V.TariffUnary().DuplexAny().PhasePeak() > MaxVoltage_V
+      memberName is null or nameof(AbbB2xMeasurementModel.Voltage_V)
+      && measurement.Voltage_V.TariffUnary().DuplexAny().PhasePeak()
+        > MaxVoltage_V
     )
     {
       yield return new ValidationResult(
@@ -60,9 +60,9 @@ public class
     }
 
     if (
-      memberName is null or nameof(AbbB2xMeasurementModel.Current_A) &&
-      measurement.Current_A.TariffUnary().DuplexAny().PhaseTrough()
-      < MinCurrent_A
+      memberName is null or nameof(AbbB2xMeasurementModel.Current_A)
+      && measurement.Current_A.TariffUnary().DuplexAny().PhaseTrough()
+        < MinCurrent_A
     )
     {
       yield return new ValidationResult(
@@ -72,8 +72,9 @@ public class
     }
 
     if (
-      memberName is null or nameof(AbbB2xMeasurementModel.Current_A) &&
-      measurement.Current_A.TariffUnary().DuplexAny().PhasePeak() > MaxCurrent_A
+      memberName is null or nameof(AbbB2xMeasurementModel.Current_A)
+      && measurement.Current_A.TariffUnary().DuplexAny().PhasePeak()
+        > MaxCurrent_A
     )
     {
       yield return new ValidationResult(
@@ -83,9 +84,9 @@ public class
     }
 
     if (
-      memberName is null or nameof(AbbB2xMeasurementModel.ActivePower_W) &&
-      measurement.ActivePower_W.TariffUnary().DuplexAny().PhaseTrough()
-      < MinActivePower_W
+      memberName is null or nameof(AbbB2xMeasurementModel.ActivePower_W)
+      && measurement.ActivePower_W.TariffUnary().DuplexAny().PhaseTrough()
+        < MinActivePower_W
     )
     {
       yield return new ValidationResult(
@@ -95,9 +96,9 @@ public class
     }
 
     if (
-      memberName is null or nameof(AbbB2xMeasurementModel.ActivePower_W) &&
-      measurement.ActivePower_W.TariffUnary().DuplexAny().PhasePeak()
-      > MaxActivePower_W
+      memberName is null or nameof(AbbB2xMeasurementModel.ActivePower_W)
+      && measurement.ActivePower_W.TariffUnary().DuplexAny().PhasePeak()
+        > MaxActivePower_W
     )
     {
       yield return new ValidationResult(
@@ -107,9 +108,9 @@ public class
     }
 
     if (
-      memberName is null or nameof(AbbB2xMeasurementModel.ReactivePower_VAR) &&
-      measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhaseTrough()
-      < MinReactivePower_VAR
+      memberName is null or nameof(AbbB2xMeasurementModel.ReactivePower_VAR)
+      && measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhaseTrough()
+        < MinReactivePower_VAR
     )
     {
       yield return new ValidationResult(
@@ -121,9 +122,9 @@ public class
     }
 
     if (
-      memberName is null or nameof(AbbB2xMeasurementModel.ReactivePower_VAR) &&
-      measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhasePeak()
-      > MaxReactivePower_VAR
+      memberName is null or nameof(AbbB2xMeasurementModel.ReactivePower_VAR)
+      && measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhasePeak()
+        > MaxReactivePower_VAR
     )
     {
       yield return new ValidationResult(

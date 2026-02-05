@@ -15,8 +15,9 @@ public class UserQueries(
   IOptions<OzdsUsersOptions> options
 ) : IQueries
 {
-  private readonly OzdsUsersParsedOidcConnectionString connectionString =
-    new(options.Value.Oidc.ConnectionString);
+  private readonly OzdsUsersParsedOidcConnectionString connectionString = new(
+    options.Value.Oidc.ConnectionString
+  );
 
   public string LoginHref
   {
@@ -40,11 +41,12 @@ public class UserQueries(
 
   public async Task<UserEntity?> ReadUserById(
     string id,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     using var scope = serviceProvider.CreateAsyncScope();
-    var ldapConnection = scope.ServiceProvider
-      .GetRequiredService<LdapConnection>();
+    var ldapConnection =
+      scope.ServiceProvider.GetRequiredService<LdapConnection>();
 
     try
     {
@@ -56,17 +58,20 @@ public class UserQueries(
       {
         options.Value.Ldap.UserIdAttribute,
         options.Value.Ldap.UserNameAttribute,
-        options.Value.Ldap.UserEmailAttribute
+        options.Value.Ldap.UserEmailAttribute,
       };
 
       var searchResults = await Task.Run(
-        () => ldapConnection.Search(
-          options.Value.Ldap.BaseDn,
-          LdapConnection.ScopeSub,
-          filter,
-          attributes,
-          false
-        ), cancellationToken);
+        () =>
+          ldapConnection.Search(
+            options.Value.Ldap.BaseDn,
+            LdapConnection.ScopeSub,
+            filter,
+            attributes,
+            false
+          ),
+        cancellationToken
+      );
 
       if (!searchResults.HasMore())
       {
@@ -91,8 +96,8 @@ public class UserQueries(
   )
   {
     using var scope = serviceProvider.CreateAsyncScope();
-    var ldapConnection = scope.ServiceProvider
-      .GetRequiredService<LdapConnection>();
+    var ldapConnection =
+      scope.ServiceProvider.GetRequiredService<LdapConnection>();
 
     try
     {
@@ -108,21 +113,25 @@ public class UserQueries(
       {
         options.Value.Ldap.UserIdAttribute,
         options.Value.Ldap.UserNameAttribute,
-        options.Value.Ldap.UserEmailAttribute
+        options.Value.Ldap.UserEmailAttribute,
       };
 
       var searchResults = await Task.Run(
-        () => ldapConnection.Search(
-          options.Value.Ldap.BaseDn,
-          LdapConnection.ScopeSub,
-          filter,
-          attributes,
-          false
-        ), cancellationToken);
+        () =>
+          ldapConnection.Search(
+            options.Value.Ldap.BaseDn,
+            LdapConnection.ScopeSub,
+            filter,
+            attributes,
+            false
+          ),
+        cancellationToken
+      );
 
       var allEntries = new List<LdapEntry>();
-      while (searchResults.HasMore()
-        && !cancellationToken.IsCancellationRequested)
+      while (
+        searchResults.HasMore() && !cancellationToken.IsCancellationRequested
+      )
       {
         allEntries.Add(searchResults.Next());
       }
@@ -130,14 +139,9 @@ public class UserQueries(
       var totalCount = allEntries.Count;
 
       var startIndex = pageNumber * pageSize;
-      var pagedEntries = allEntries
-        .Skip(startIndex)
-        .Take(pageSize)
-        .ToList();
+      var pagedEntries = allEntries.Skip(startIndex).Take(pageSize).ToList();
 
-      var users = pagedEntries
-        .Select(CreateUserEntityFromLdapEntry)
-        .ToList();
+      var users = pagedEntries.Select(CreateUserEntityFromLdapEntry).ToList();
 
       return (users, totalCount);
     }
@@ -148,24 +152,22 @@ public class UserQueries(
     }
   }
 
-  public async Task<string?> ReadAuthenticatedUserId(
-    CancellationToken _
-  )
+  public async Task<string?> ReadAuthenticatedUserId(CancellationToken _)
   {
-    var httpContextAccessor = serviceProvider
-      .GetService<IHttpContextAccessor>();
+    var httpContextAccessor =
+      serviceProvider.GetService<IHttpContextAccessor>();
     var user = httpContextAccessor?.HttpContext?.User;
 
     if (user is null)
     {
       try
       {
-        var authenticationStateProvider = serviceProvider
-          .GetService<AuthenticationStateProvider>();
+        var authenticationStateProvider =
+          serviceProvider.GetService<AuthenticationStateProvider>();
         if (authenticationStateProvider is not null)
         {
-          var authenticationState = await authenticationStateProvider
-            .GetAuthenticationStateAsync();
+          var authenticationState =
+            await authenticationStateProvider.GetAuthenticationStateAsync();
           user = authenticationState.User;
         }
       }
@@ -175,9 +177,13 @@ public class UserQueries(
       }
     }
 
-    if (user is not null && user.Claims
-        .FirstOrDefault(x => x.Type == options.Value.Oidc.UserIdClaim)?.Value
-      is { } id)
+    if (
+      user is not null
+      && user
+        .Claims.FirstOrDefault(x => x.Type == options.Value.Oidc.UserIdClaim)
+        ?.Value
+        is { } id
+    )
     {
       return id;
     }
@@ -185,38 +191,39 @@ public class UserQueries(
     return null;
   }
 
-  private UserEntity CreateUserEntityFromClaims(
-    IEnumerable<Claim> claims
-  )
+  private UserEntity CreateUserEntityFromClaims(IEnumerable<Claim> claims)
   {
     var id = claims
       .FirstOrDefault(claim => claim.Type == options.Value.Oidc.UserIdClaim)
       ?.Value;
     var email = claims
-      .FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
+      .FirstOrDefault(claim => claim.Type == ClaimTypes.Email)
+      ?.Value;
     var name = claims
-      .FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
+      .FirstOrDefault(claim => claim.Type == ClaimTypes.Name)
+      ?.Value;
 
     return new UserEntity
     {
       Id = id ?? string.Empty,
       Email = email ?? string.Empty,
-      Name = name ?? email ?? id ?? string.Empty
+      Name = name ?? email ?? id ?? string.Empty,
     };
   }
 
-  private UserEntity CreateUserEntityFromLdapEntry(
-    LdapEntry entry
-  )
+  private UserEntity CreateUserEntityFromLdapEntry(LdapEntry entry)
   {
     return new UserEntity
     {
-      Id = GetAttributeValue(entry, options.Value.Ldap.UserIdAttribute)
+      Id =
+        GetAttributeValue(entry, options.Value.Ldap.UserIdAttribute)
         ?? string.Empty,
-      Email = GetAttributeValue(entry, options.Value.Ldap.UserEmailAttribute)
+      Email =
+        GetAttributeValue(entry, options.Value.Ldap.UserEmailAttribute)
         ?? string.Empty,
-      Name = GetAttributeValue(entry, options.Value.Ldap.UserNameAttribute)
-        ?? string.Empty
+      Name =
+        GetAttributeValue(entry, options.Value.Ldap.UserNameAttribute)
+        ?? string.Empty,
     };
   }
 

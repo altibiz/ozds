@@ -22,7 +22,7 @@ public class BlueLowNetworkUserCatalogueModel : NetworkUserCatalogueModel
       [
         ObisModel.ActiveEnergyTotalImportT0_kWh,
         ObisModel.ReactiveEnergyTotalImportT0_kVARh,
-        ObisModel.ReactiveEnergyTotalExportT0_kVARh
+        ObisModel.ReactiveEnergyTotalExportT0_kVARh,
       ];
     }
   }

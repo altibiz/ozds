@@ -4,5 +4,5 @@ public enum IntervalEntity
 {
   QuarterHour,
   Day,
-  Month
+  Month,
 }

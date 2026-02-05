@@ -28,7 +28,8 @@ public static class BusinessAssertionExtensions
         return options;
       },
       because,
-      becauseArgs);
+      becauseArgs
+    );
   }
 
   public static AndConstraint<TAssertions> NotBeBusinesswiseEquivalentTo<
@@ -53,7 +54,8 @@ public static class BusinessAssertionExtensions
         return options;
       },
       because,
-      becauseArgs);
+      becauseArgs
+    );
   }
 
   public static AndConstraint<TAssertions> BeBusinesswiseEquivalentTo<
@@ -61,14 +63,20 @@ public static class BusinessAssertionExtensions
     TAssertions,
     TCollection
   >(
-    this GenericCollectionAssertions<TCollection, TSubject, TAssertions>
-      assertions,
+    this GenericCollectionAssertions<
+      TCollection,
+      TSubject,
+      TAssertions
+    > assertions,
     TCollection expectation,
     string because = "",
     params object[] becauseArgs
   )
-    where TAssertions : GenericCollectionAssertions<TCollection, TSubject,
-      TAssertions>
+    where TAssertions : GenericCollectionAssertions<
+        TCollection,
+        TSubject,
+        TAssertions
+      >
     where TCollection : IEnumerable<TSubject>
   {
     var dateTimeOffsetOptions = new DateTimeOffsetOptions();
@@ -81,7 +89,8 @@ public static class BusinessAssertionExtensions
         return options;
       },
       because,
-      becauseArgs);
+      becauseArgs
+    );
   }
 
   public static AndConstraint<TAssertions> NotBeBusinesswiseEquivalentTo<
@@ -89,14 +98,20 @@ public static class BusinessAssertionExtensions
     TAssertions,
     TCollection
   >(
-    this GenericCollectionAssertions<TCollection, TSubject, TAssertions>
-      assertions,
+    this GenericCollectionAssertions<
+      TCollection,
+      TSubject,
+      TAssertions
+    > assertions,
     TCollection expectation,
     string because = "",
     params object[] becauseArgs
   )
-    where TAssertions : GenericCollectionAssertions<TCollection, TSubject,
-      TAssertions>
+    where TAssertions : GenericCollectionAssertions<
+        TCollection,
+        TSubject,
+        TAssertions
+      >
     where TCollection : IEnumerable<TSubject>
   {
     var dateTimeOffsetOptions = new DateTimeOffsetOptions();
@@ -109,6 +124,7 @@ public static class BusinessAssertionExtensions
         return options;
       },
       because,
-      becauseArgs);
+      becauseArgs
+    );
   }
 }

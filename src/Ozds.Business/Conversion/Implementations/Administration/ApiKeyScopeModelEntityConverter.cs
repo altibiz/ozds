@@ -6,17 +6,18 @@ using Ozds.Data.Entities.Joins;
 
 namespace Ozds.Business.Conversion.Implementations.Administration;
 
-public class ApiKeyScopeModelEntityConverter(
-  IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  ApiKeyScopeModel,
-  AuditableJoinModel,
-  ApiKeyScopeEntity,
-  AuditableJoinEntity>(serviceProvider)
+public class ApiKeyScopeModelEntityConverter(IServiceProvider serviceProvider)
+  : InheritingModelEntityConverter<
+    ApiKeyScopeModel,
+    AuditableJoinModel,
+    ApiKeyScopeEntity,
+    AuditableJoinEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     ApiKeyScopeModel model,
-    ApiKeyScopeEntity entity)
+    ApiKeyScopeEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.ApiKeyId = model.ApiKeyId;
@@ -25,7 +26,8 @@ public class ApiKeyScopeModelEntityConverter(
 
   public override void InitializeModel(
     ApiKeyScopeEntity entity,
-    ApiKeyScopeModel model)
+    ApiKeyScopeModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.ApiKeyId = entity.ApiKeyId;

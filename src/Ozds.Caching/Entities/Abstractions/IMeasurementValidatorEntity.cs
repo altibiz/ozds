@@ -1,5 +1,3 @@
 namespace Ozds.Caching.Entities.Abstractions;
 
-public interface IMeasurementValidatorEntity : ITrackableIdentifiableEntity
-{
-}
+public interface IMeasurementValidatorEntity : ITrackableIdentifiableEntity { }

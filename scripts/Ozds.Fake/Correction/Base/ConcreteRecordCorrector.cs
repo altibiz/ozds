@@ -4,9 +4,10 @@ using Ozds.Fake.Records.Abstractions;
 
 namespace Ozds.Fake.Correction.Base;
 
-public abstract class
-  ConcreteRecordCorrector<TMeasurementRecord,
-    TMeasurementValidator> : IRecordCorrector
+public abstract class ConcreteRecordCorrector<
+  TMeasurementRecord,
+  TMeasurementValidator
+> : IRecordCorrector
   where TMeasurementRecord : class, IMeasurementRecord
   where TMeasurementValidator : class, IMeasurementValidator
 {
@@ -25,10 +26,7 @@ public abstract class
     string meterId
   )
   {
-    return CorrectMeterId(
-      CastRecord(measurementRecord),
-      meterId
-    );
+    return CorrectMeterId(CastRecord(measurementRecord), meterId);
   }
 
   public IMeasurementRecord CorrectMeasurementLocationId(
@@ -47,10 +45,7 @@ public abstract class
     DateTimeOffset timestamp
   )
   {
-    return CorrectTimestamp(
-      CastRecord(measurementRecord),
-      timestamp
-    );
+    return CorrectTimestamp(CastRecord(measurementRecord), timestamp);
   }
 
   public IMeasurementRecord CorrectCumulatives(
@@ -111,48 +106,48 @@ public abstract class
     DateTimeOffset lastTimestamp
   )
   {
-    var multiplier = (timestamp - firstTimestamp).Ticks /
-      (lastTimestamp - firstTimestamp).Ticks;
+    var multiplier =
+      (timestamp - firstTimestamp).Ticks
+      / (lastTimestamp - firstTimestamp).Ticks;
     return multiplier;
   }
 
-  protected static decimal Clamp(
-    decimal value,
-    decimal min,
-    decimal max
-  )
+  protected static decimal Clamp(decimal value, decimal min, decimal max)
   {
-    var ceiledMin = Math.Ceiling(min * BaseCorrectorConstants.EpsilonMultiplier)
+    var ceiledMin =
+      Math.Ceiling(min * BaseCorrectorConstants.EpsilonMultiplier)
       / BaseCorrectorConstants.EpsilonMultiplier;
-    var flooredMax = Math.Floor(max * BaseCorrectorConstants.EpsilonMultiplier)
+    var flooredMax =
+      Math.Floor(max * BaseCorrectorConstants.EpsilonMultiplier)
       / BaseCorrectorConstants.EpsilonMultiplier;
     var clamped = Math.Clamp(
       value,
       ceiledMin + BaseCorrectorConstants.EpsilonValue,
-      flooredMax - BaseCorrectorConstants.EpsilonValue);
+      flooredMax - BaseCorrectorConstants.EpsilonValue
+    );
     return clamped;
   }
 
   private static TMeasurementRecord CastRecord(
-    IMeasurementRecord measurementRecord)
+    IMeasurementRecord measurementRecord
+  )
   {
-    return measurementRecord
-        as TMeasurementRecord
+    return measurementRecord as TMeasurementRecord
       ?? throw new ArgumentException(
         $"Expected {typeof(TMeasurementRecord).Name}"
-        + $", but got {measurementRecord.GetType().Name}",
+          + $", but got {measurementRecord.GetType().Name}",
         nameof(measurementRecord)
       );
   }
 
   private static TMeasurementValidator CastValidator(
-    IMeasurementValidator validator)
+    IMeasurementValidator validator
+  )
   {
-    return validator
-        as TMeasurementValidator
+    return validator as TMeasurementValidator
       ?? throw new ArgumentException(
         $"Expected {typeof(TMeasurementValidator).Name}"
-        + $", but got {validator.GetType().Name}",
+          + $", but got {validator.GetType().Name}",
         nameof(validator)
       );
   }

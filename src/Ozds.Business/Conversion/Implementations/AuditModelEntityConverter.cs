@@ -17,7 +17,7 @@ public class AuditModelEntityConverter
       AuditModel.Deletion => AuditEntity.Deletion,
       AuditModel.Restoration => AuditEntity.Restoration,
       AuditModel.Forgetting => AuditEntity.Forgetting,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 
@@ -31,7 +31,7 @@ public class AuditModelEntityConverter
       AuditEntity.Deletion => AuditModel.Deletion,
       AuditEntity.Restoration => AuditModel.Restoration,
       AuditEntity.Forgetting => AuditModel.Forgetting,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 }

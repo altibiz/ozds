@@ -13,41 +13,25 @@ public abstract class ActiveEnergyTotalImportCalculationItemEntity
 }
 
 public class UsageActiveEnergyTotalImportT0CalculationItemEntity
-  : ActiveEnergyTotalImportCalculationItemEntity
-{
-}
+  : ActiveEnergyTotalImportCalculationItemEntity { }
 
 public class UsageActiveEnergyTotalImportT1CalculationItemEntity
-  : ActiveEnergyTotalImportCalculationItemEntity
-{
-}
+  : ActiveEnergyTotalImportCalculationItemEntity { }
 
 public class UsageActiveEnergyTotalImportT2CalculationItemEntity
-  : ActiveEnergyTotalImportCalculationItemEntity
-{
-}
+  : ActiveEnergyTotalImportCalculationItemEntity { }
 
 public class SupplyActiveEnergyTotalImportT1CalculationItemEntity
-  : ActiveEnergyTotalImportCalculationItemEntity
-{
-}
+  : ActiveEnergyTotalImportCalculationItemEntity { }
 
 public class SupplyActiveEnergyTotalImportT2CalculationItemEntity
-  : ActiveEnergyTotalImportCalculationItemEntity
-{
-}
+  : ActiveEnergyTotalImportCalculationItemEntity { }
 
-public class
-  SupplyBusinessUsageCalculationItemEntity :
-  ActiveEnergyTotalImportCalculationItemEntity
-{
-}
+public class SupplyBusinessUsageCalculationItemEntity
+  : ActiveEnergyTotalImportCalculationItemEntity { }
 
-public class
-  SupplyRenewableEnergyCalculationItemEntity :
-  ActiveEnergyTotalImportCalculationItemEntity
-{
-}
+public class SupplyRenewableEnergyCalculationItemEntity
+  : ActiveEnergyTotalImportCalculationItemEntity { }
 
 public static class ActiveEnergyImportCalculationItemEntityExtensions
 {
@@ -109,17 +93,14 @@ public static class ActiveEnergyImportCalculationItemEntityExtensions
 
     builder
       .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Min_kWh))
-      .HasColumnName(
-        $"{prefix}_min_kwh");
+      .HasColumnName($"{prefix}_min_kwh");
 
     builder
       .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Max_kWh))
-      .HasColumnName(
-        $"{prefix}_max_kwh");
+      .HasColumnName($"{prefix}_max_kwh");
 
     builder
       .Property(nameof(ActiveEnergyTotalImportCalculationItemEntity.Amount_kWh))
-      .HasColumnName(
-        $"{prefix}_amount_kwh");
+      .HasColumnName($"{prefix}_amount_kwh");
   }
 }

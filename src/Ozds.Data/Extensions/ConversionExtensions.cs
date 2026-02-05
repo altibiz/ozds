@@ -2,10 +2,7 @@ namespace Ozds.Data.Extensions;
 
 public static class ConversionExtensions
 {
-  public static object? ChangeKeyType(
-    string id,
-    Type keyType
-  )
+  public static object? ChangeKeyType(string id, Type keyType)
   {
     if (keyType == typeof(string))
     {

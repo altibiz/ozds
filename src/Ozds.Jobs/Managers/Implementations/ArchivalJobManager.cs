@@ -17,11 +17,11 @@ public class ArchivalJobManager(
   IClockQueries clock,
   ITimeQueries time,
   IOptions<OzdsJobsOptions> options
-)
-  : JobManagerBase<ArchivalJobContext>(serviceProvider), IArchivalJobManager
+) : JobManagerBase<ArchivalJobContext>(serviceProvider), IArchivalJobManager
 {
   public Task EnsureDailyMeasurementDeletionJob(
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Ensure(new ArchivalJobContext(), cancellationToken);
   }
@@ -48,19 +48,23 @@ public class ArchivalJobManager(
     [
       new TriggerKey(
         nameof(DailyMeasurementDeletionJob),
-        nameof(DailyMeasurementDeletionJob))
+        nameof(DailyMeasurementDeletionJob)
+      ),
     ];
   }
 
   protected override IJobDetail CreateJob(ArchivalJobContext context)
   {
-    return JobBuilder.Create<DailyMeasurementDeletionJob>()
+    return JobBuilder
+      .Create<DailyMeasurementDeletionJob>()
       .WithIdentity(
         nameof(DailyMeasurementDeletionJob),
-        nameof(DailyMeasurementDeletionJob))
+        nameof(DailyMeasurementDeletionJob)
+      )
       .UsingJobData(
         nameof(DailyMeasurementDeletionJob.ScheduledAt),
-        clock.Now().ToString("o", CultureInfo.InvariantCulture))
+        clock.Now().ToString("o", CultureInfo.InvariantCulture)
+      )
       .Build();
   }
 
@@ -72,9 +76,10 @@ public class ArchivalJobManager(
     return builder
       .WithCronSchedule(
         options.Value.Archival.DailyMeasurementDeletionCron,
-        x => x
-          .WithMisfireHandlingInstructionFireAndProceed()
-          .InTimeZone(time.CroatianTimeZone))
+        x =>
+          x.WithMisfireHandlingInstructionFireAndProceed()
+            .InTimeZone(time.CroatianTimeZone)
+      )
       .Build();
   }
 }

@@ -17,19 +17,16 @@ public class OzdsJobsOptions
 
 public class OzdsJobsArchivalOptions
 {
-  public string DailyMeasurementDeletionCron { get; set; } =
-    "0 0 0 * * ?"; // NOTE: on the first second of every day
+  public string DailyMeasurementDeletionCron { get; set; } = "0 0 0 * * ?"; // NOTE: on the first second of every day
 }
 
 public class OzdsJobsBillingOptions
 {
-  public string MonthlyBillingCron { get; set; } =
-    "0 0 12 15 * ?"; // NOTE: on the 15th of every month at noon
+  public string MonthlyBillingCron { get; set; } = "0 0 12 15 * ?"; // NOTE: on the 15th of every month at noon
 }
 
-public class ConfigureOzdsJobsOptions(
-  IConfiguration configuration
-) : IConfigureOptions<OzdsJobsOptions>
+public class ConfigureOzdsJobsOptions(IConfiguration configuration)
+  : IConfigureOptions<OzdsJobsOptions>
 {
   public void Configure(OzdsJobsOptions options)
   {

@@ -53,18 +53,22 @@ public class AspNetCoreComponentsComponentToHtmlRenderer(
   )
 #pragma warning restore S1172 // Unused method parameters should be removed
   {
-    await using var htmlRenderer =
-      new HtmlRenderer(serviceProvider, loggerFactory);
+    await using var htmlRenderer = new HtmlRenderer(
+      serviceProvider,
+      loggerFactory
+    );
     var indexParameters = new Dictionary<string, object?>
     {
       { typeParameterName, type },
-      { parametersParameterName, parameters }
+      { parametersParameterName, parameters },
     };
     var parameterView = ParameterView.FromDictionary(indexParameters);
     var html = await htmlRenderer.Dispatcher.InvokeAsync(async () =>
     {
-      var output = await htmlRenderer
-        .RenderComponentAsync(rootType, parameterView);
+      var output = await htmlRenderer.RenderComponentAsync(
+        rootType,
+        parameterView
+      );
       return output.ToHtmlString();
     });
     return html;

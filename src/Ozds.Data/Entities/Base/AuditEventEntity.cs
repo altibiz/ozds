@@ -16,8 +16,8 @@ public class AuditEventEntity : EventEntity, IAuditEventEntity
   public AuditEntity Audit { get; set; } = default!;
 }
 
-public class AuditEventEntityTypeHierarchyConfiguration :
-  EntityTypeHierarchyConfiguration<AuditEventEntity>
+public class AuditEventEntityTypeHierarchyConfiguration
+  : EntityTypeHierarchyConfiguration<AuditEventEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
@@ -28,7 +28,7 @@ public class AuditEventEntityTypeHierarchyConfiguration :
       {
         nameof(AuditEventEntity.Audit),
         nameof(AuditEventEntity.AuditableEntityType),
-        nameof(AuditEventEntity.AuditableEntityId)
+        nameof(AuditEventEntity.AuditableEntityId),
       },
       "ix_events_auditable_entity_type_auditable_entity_id"
     );
@@ -38,7 +38,7 @@ public class AuditEventEntityTypeHierarchyConfiguration :
       {
         nameof(AuditEventEntity.Audit),
         nameof(AuditEventEntity.AuditableEntityTable),
-        nameof(AuditEventEntity.AuditableEntityId)
+        nameof(AuditEventEntity.AuditableEntityId),
       },
       "ix_events_auditable_entity_table_auditable_entity_id"
     );

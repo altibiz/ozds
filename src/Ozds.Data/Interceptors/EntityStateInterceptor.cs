@@ -9,7 +9,7 @@ public enum EntityState
 {
   Added,
   Modified,
-  Deleted
+  Deleted,
 }
 
 public record EntityStateEntry(
@@ -27,7 +27,8 @@ public abstract class EntityStateInterceptor(IServiceProvider serviceProvider)
   : StatefulInterceptor<EntityStateInterceptorState>(serviceProvider)
 {
   protected override EntityStateInterceptorState ProcessSavingChanges(
-    DbContext context)
+    DbContext context
+  )
   {
     var clockQueries = serviceProvider.GetRequiredService<IClockQueries>();
 
@@ -42,9 +43,12 @@ public abstract class EntityStateInterceptor(IServiceProvider serviceProvider)
         continue;
       }
 
-      if (entry.State is not Microsoft.EntityFrameworkCore.EntityState.Added
-        and not Microsoft.EntityFrameworkCore.EntityState.Modified
-        and not Microsoft.EntityFrameworkCore.EntityState.Deleted)
+      if (
+        entry.State
+        is not Microsoft.EntityFrameworkCore.EntityState.Added
+          and not Microsoft.EntityFrameworkCore.EntityState.Modified
+          and not Microsoft.EntityFrameworkCore.EntityState.Deleted
+      )
       {
         continue;
       }
@@ -55,14 +59,16 @@ public abstract class EntityStateInterceptor(IServiceProvider serviceProvider)
           {
             Microsoft.EntityFrameworkCore.EntityState.Added =>
               EntityState.Added,
-            Microsoft.EntityFrameworkCore.EntityState.Modified => EntityState
-              .Modified,
-            Microsoft.EntityFrameworkCore.EntityState.Deleted => EntityState
-              .Deleted,
-            _ => throw new NotImplementedException()
+            Microsoft.EntityFrameworkCore.EntityState.Modified =>
+              EntityState.Modified,
+            Microsoft.EntityFrameworkCore.EntityState.Deleted =>
+              EntityState.Deleted,
+            _ => throw new NotImplementedException(),
           },
           entity,
-          entry));
+          entry
+        )
+      );
     }
 
     return new EntityStateInterceptorState(entries, timestamp);

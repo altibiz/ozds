@@ -14,7 +14,7 @@ public class AggregationModelEntityConverter
       AggregationModel.Min => AggregationEntity.Min,
       AggregationModel.Max => AggregationEntity.Max,
       AggregationModel.Avg => AggregationEntity.Avg,
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -25,7 +25,7 @@ public class AggregationModelEntityConverter
       AggregationEntity.Min => AggregationModel.Min,
       AggregationEntity.Max => AggregationModel.Max,
       AggregationEntity.Avg => AggregationModel.Avg,
-      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null),
     };
   }
 }

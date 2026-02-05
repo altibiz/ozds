@@ -1,5 +1,3 @@
 namespace Ozds.Data.Entities.Abstractions;
 
-public interface IInvoiceEntity : IFinancialEntity
-{
-}
+public interface IInvoiceEntity : IFinancialEntity { }

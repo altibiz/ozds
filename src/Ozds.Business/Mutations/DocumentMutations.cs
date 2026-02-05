@@ -19,10 +19,10 @@ public class DocumentMutations(
   {
     var entity = new CalculatedNetworkUserInvoiceEntity
     {
-      Calculations = model.Calculations
-        .Select(converter.ToEntity<NetworkUserCalculationEntity>)
+      Calculations = model
+        .Calculations.Select(converter.ToEntity<NetworkUserCalculationEntity>)
         .ToList(),
-      Invoice = converter.ToEntity<NetworkUserInvoiceEntity>(model.Invoice)
+      Invoice = converter.ToEntity<NetworkUserInvoiceEntity>(model.Invoice),
     };
 
     var html = await documentQueries.ReadHtmlForNetworkUserInvoice(
@@ -41,10 +41,10 @@ public class DocumentMutations(
   {
     var entity = new CalculatedNetworkUserInvoiceEntity
     {
-      Calculations = model.Calculations
-        .Select(converter.ToEntity<NetworkUserCalculationEntity>)
+      Calculations = model
+        .Calculations.Select(converter.ToEntity<NetworkUserCalculationEntity>)
         .ToList(),
-      Invoice = converter.ToEntity<NetworkUserInvoiceEntity>(model.Invoice)
+      Invoice = converter.ToEntity<NetworkUserInvoiceEntity>(model.Invoice),
     };
 
     var pdf = await documentQueries.ReadPdfForNetworkUserInvoice(

@@ -8,7 +8,7 @@ public enum TariffEntity
 {
   T0,
   T1,
-  T2
+  T2,
 }
 
 public class TariffEntityTypeConfiguration : IModelConfiguration
@@ -19,8 +19,8 @@ public class TariffEntityTypeConfiguration : IModelConfiguration
   }
 }
 
-public class
-  TariffEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class TariffEntityNpgsqlDataSourceConfiguration
+  : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

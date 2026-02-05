@@ -8,7 +8,8 @@ namespace Ozds.Data.Interceptors;
 public sealed record EntityProperty(
   string Name,
   string? OldValue,
-  string? NewValue);
+  string? NewValue
+);
 
 public record EntityChangesEntry(
   EntityState State,
@@ -26,7 +27,8 @@ public abstract class EntityChangesInterceptor(IServiceProvider serviceProvider)
   : StatefulInterceptor<EntityChangesInterceptorState>(serviceProvider)
 {
   protected override EntityChangesInterceptorState ProcessSavingChanges(
-    DbContext context)
+    DbContext context
+  )
   {
     var clockQueries = serviceProvider.GetRequiredService<IClockQueries>();
 
@@ -41,17 +43,21 @@ public abstract class EntityChangesInterceptor(IServiceProvider serviceProvider)
         continue;
       }
 
-      if (entry.State is not Microsoft.EntityFrameworkCore.EntityState.Added
-        and not Microsoft.EntityFrameworkCore.EntityState.Modified
-        and not Microsoft.EntityFrameworkCore.EntityState.Deleted)
+      if (
+        entry.State
+        is not Microsoft.EntityFrameworkCore.EntityState.Added
+          and not Microsoft.EntityFrameworkCore.EntityState.Modified
+          and not Microsoft.EntityFrameworkCore.EntityState.Deleted
+      )
       {
         continue;
       }
 
-      var properties = entry.Properties
-        .Where(property =>
+      var properties = entry
+        .Properties.Where(property =>
           property.OriginalValue?.ToString()
-          != property.CurrentValue?.ToString())
+          != property.CurrentValue?.ToString()
+        )
         .Select(property => new EntityProperty(
           property.Metadata.Name,
           property.OriginalValue?.ToString(),
@@ -69,11 +75,13 @@ public abstract class EntityChangesInterceptor(IServiceProvider serviceProvider)
               EntityState.Modified,
             Microsoft.EntityFrameworkCore.EntityState.Deleted =>
               EntityState.Deleted,
-            _ => throw new NotImplementedException()
+            _ => throw new NotImplementedException(),
           },
           properties,
           entity,
-          entry));
+          entry
+        )
+      );
     }
 
     return new EntityChangesInterceptorState(entries, timestamp);

@@ -11,11 +11,11 @@ public abstract class Profiler<T> : IProfiler<T>
   }
 
   protected abstract CacheConfigurationBuilder Configure(
-    CacheConfigurationBuilder builder);
+    CacheConfigurationBuilder builder
+  );
 
-  private sealed class ProfilerProfile(
-    CacheConfiguration configuration
-  ) : IProfile<T>
+  private sealed class ProfilerProfile(CacheConfiguration configuration)
+    : IProfile<T>
   {
     public CacheConfiguration Configuration
     {

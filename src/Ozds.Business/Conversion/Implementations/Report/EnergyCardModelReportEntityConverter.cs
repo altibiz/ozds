@@ -4,10 +4,8 @@ using Ozds.Report.Entities;
 
 namespace Ozds.Business.Conversion.Implementations.Report;
 
-public class EnergyCardModelReportEntityConverter :
-  ConcreteModelReportEntityConverter<
-    EnergyCardReportModel,
-    EnergyCardEntity>
+public class EnergyCardModelReportEntityConverter
+  : ConcreteModelReportEntityConverter<EnergyCardReportModel, EnergyCardEntity>
 {
   public override void InitializeEntity(
     EnergyCardReportModel model,
@@ -34,13 +32,13 @@ public class EnergyCardModelReportEntityConverter :
       model.ReactiveEnergyTotalImportT0_kVARh;
     entity.ReactiveEnergyTotalExportT0_kVARh =
       model.ReactiveEnergyTotalExportT0_kVARh;
-    entity.ActivePowerTotalImportT1_kW =
-      model.ActivePowerTotalImportT1_kW;
+    entity.ActivePowerTotalImportT1_kW = model.ActivePowerTotalImportT1_kW;
   }
 
   public override void InitializeModel(
     EnergyCardEntity entity,
-    EnergyCardReportModel model)
+    EnergyCardReportModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.SocialSecurityNumber = entity.SocialSecurityNumber;
@@ -61,7 +59,6 @@ public class EnergyCardModelReportEntityConverter :
       entity.ReactiveEnergyTotalImportT0_kVARh;
     model.ReactiveEnergyTotalExportT0_kVARh =
       entity.ReactiveEnergyTotalExportT0_kVARh;
-    model.ActivePowerTotalImportT1_kW =
-      entity.ActivePowerTotalImportT1_kW;
+    model.ActivePowerTotalImportT1_kW = entity.ActivePowerTotalImportT1_kW;
   }
 }

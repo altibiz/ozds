@@ -28,9 +28,7 @@ public static class HostExtensions
     return builder;
   }
 
-  public static WebApplication UseOzdsServer(
-    this WebApplication app
-  )
+  public static WebApplication UseOzdsServer(this WebApplication app)
   {
     if (app.Environment.IsDevelopment())
     {
@@ -65,8 +63,8 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    builder.Services
-      .AddApiVersioning(options =>
+    builder
+      .Services.AddApiVersioning(options =>
       {
         options.DefaultApiVersion = new ApiVersion(1);
         options.ReportApiVersions = true;
@@ -89,23 +87,24 @@ public static class HostExtensions
     builder.Services.AddSwaggerGen(options =>
     {
       options.SwaggerDoc(
-        "v1", new OpenApiInfo
+        "v1",
+        new OpenApiInfo { Title = "OZDS API", Version = "v1" }
+      );
+      options.DocInclusionPredicate(
+        (docName, apiDesc) =>
         {
-          Title = "OZDS API",
-          Version = "v1"
-        });
-      options.DocInclusionPredicate((docName, apiDesc) =>
-      {
-        var routeTemplate = apiDesc.RelativePath;
-        return routeTemplate?.StartsWith("api/") ?? false;
-      });
+          var routeTemplate = apiDesc.RelativePath;
+          return routeTemplate?.StartsWith("api/") ?? false;
+        }
+      );
       options.TagActionsBy(api =>
       {
         var controllerName = api.ActionDescriptor.RouteValues["controller"];
         return new[] { controllerName?.Replace("ApiV1", "") ?? "Unknown" };
       });
       options.AddSecurityDefinition(
-        "Bearer", new OpenApiSecurityScheme
+        "Bearer",
+        new OpenApiSecurityScheme
         {
           Description =
             "API Key Authorization header using the Bearer scheme."
@@ -113,8 +112,9 @@ public static class HostExtensions
           Name = "Authorization",
           In = ParameterLocation.Header,
           Type = SecuritySchemeType.Http,
-          Scheme = "Bearer"
-        });
+          Scheme = "Bearer",
+        }
+      );
       options.AddSecurityRequirement(
         new OpenApiSecurityRequirement
         {
@@ -124,20 +124,19 @@ public static class HostExtensions
               Reference = new OpenApiReference
               {
                 Type = ReferenceType.SecurityScheme,
-                Id = "Bearer"
-              }
+                Id = "Bearer",
+              },
             },
             Array.Empty<string>()
-          }
-        });
+          },
+        }
+      );
     });
 
     return builder;
   }
 
-  private static WebApplication UseOpenApi(
-    this WebApplication app
-  )
+  private static WebApplication UseOpenApi(this WebApplication app)
   {
     if (!app.Environment.IsDevelopment())
     {

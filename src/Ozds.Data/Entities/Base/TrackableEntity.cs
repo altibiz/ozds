@@ -6,7 +6,8 @@ using Ozds.Data.Entities.Abstractions;
 namespace Ozds.Data.Entities.Base;
 
 public abstract class TrackableEntity
-  : IdentifiableEntity, ITrackableIdentifiableEntity
+  : IdentifiableEntity,
+    ITrackableIdentifiableEntity
 {
   public virtual RepresentativeEntity? DeletedBy { get; set; }
 
@@ -47,9 +48,8 @@ public abstract class TrackableEntity
   public string? AuditingRepresentativeId { get; set; }
 }
 
-public class
-  TrackableEntityConfiguration : EntityTypeHierarchyConfiguration<
-  TrackableEntity>
+public class TrackableEntityConfiguration
+  : EntityTypeHierarchyConfiguration<TrackableEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {

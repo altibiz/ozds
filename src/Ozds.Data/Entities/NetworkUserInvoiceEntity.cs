@@ -25,8 +25,8 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
 
   public LocationEntity ArchivedLocation { get; set; } = default!;
 
-  public virtual ICollection<NetworkUserInvoiceNotificationEntity>
-    Notifications { get; set; } = default!;
+  public virtual ICollection<NetworkUserInvoiceNotificationEntity> Notifications { get; set; } =
+    default!;
 
   public RegulatoryCatalogueEntity ArchivedRegulatoryCatalogue { get; set; } =
     default!;
@@ -55,17 +55,16 @@ public class NetworkUserInvoiceEntity : InvoiceEntity
 
   public decimal SupplyFeeTotal_EUR { get; set; }
 
-  public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations { get; set; } =
+  public virtual ICollection<NetworkUserCalculationEntity> NetworkUserCalculations { get; set; } =
     default!;
 }
 
-public class
-  NetworkUserInvoiceEntityTypeConfiguration : EntityTypeConfiguration<
-  NetworkUserInvoiceEntity>
+public class NetworkUserInvoiceEntityTypeConfiguration
+  : EntityTypeConfiguration<NetworkUserInvoiceEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<NetworkUserInvoiceEntity> builder)
+    EntityTypeBuilder<NetworkUserInvoiceEntity> builder
+  )
   {
     builder
       .HasOne(nameof(NetworkUserInvoiceEntity.NetworkUser))
@@ -76,101 +75,81 @@ public class
       .HasIndex(
         "_networkUserId",
         nameof(NetworkUserInvoiceEntity.FromDate),
-        nameof(NetworkUserInvoiceEntity.ToDate))
+        nameof(NetworkUserInvoiceEntity.ToDate)
+      )
       .IsUnique();
 
     builder.Ignore(nameof(NetworkUserInvoiceEntity.NetworkUserId));
-    builder
-      .Property("_networkUserId")
-      .HasColumnName("network_user_id");
+    builder.Property("_networkUserId").HasColumnName("network_user_id");
 
-    builder
-      .ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedNetworkUser));
+    builder.ArchivedProperty(
+      nameof(NetworkUserInvoiceEntity.ArchivedNetworkUser)
+    );
 
-    builder
-      .ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedLocation));
+    builder.ArchivedProperty(nameof(NetworkUserInvoiceEntity.ArchivedLocation));
 
-    builder
-      .ArchivedProperty(
-        nameof(NetworkUserInvoiceEntity
-          .ArchivedRegulatoryCatalogue));
+    builder.ArchivedProperty(
+      nameof(NetworkUserInvoiceEntity.ArchivedRegulatoryCatalogue)
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserInvoiceEntity.UsageActiveEnergyTotalImportT0Fee_EUR),
-        "usage_active_energy_total_import_t0_fee_eur"
-      );
+    builder.MonetaryValue(
+      nameof(NetworkUserInvoiceEntity.UsageActiveEnergyTotalImportT0Fee_EUR),
+      "usage_active_energy_total_import_t0_fee_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserInvoiceEntity
-          .UsageActiveEnergyTotalImportT1Fee_EUR),
-        "usage_active_energy_total_import_t1_fee_eur"
-      );
+    builder.MonetaryValue(
+      nameof(NetworkUserInvoiceEntity.UsageActiveEnergyTotalImportT1Fee_EUR),
+      "usage_active_energy_total_import_t1_fee_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserInvoiceEntity
-          .UsageActiveEnergyTotalImportT2Fee_EUR),
-        "usage_active_energy_total_import_t2_fee_eur"
-      );
+    builder.MonetaryValue(
+      nameof(NetworkUserInvoiceEntity.UsageActiveEnergyTotalImportT2Fee_EUR),
+      "usage_active_energy_total_import_t2_fee_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserInvoiceEntity
-          .UsageActivePowerTotalImportT1PeakFee_EUR),
-        "usage_active_power_total_import_t1_peak_fee_eur"
-      );
+    builder.MonetaryValue(
+      nameof(NetworkUserInvoiceEntity.UsageActivePowerTotalImportT1PeakFee_EUR),
+      "usage_active_power_total_import_t1_peak_fee_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserInvoiceEntity
-          .UsageReactiveEnergyTotalRampedT0Fee_EUR),
-        "usage_reactive_energy_total_ramped_t0_fee_eur"
-      );
+    builder.MonetaryValue(
+      nameof(NetworkUserInvoiceEntity.UsageReactiveEnergyTotalRampedT0Fee_EUR),
+      "usage_reactive_energy_total_ramped_t0_fee_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserInvoiceEntity.UsageMeterFee_EUR),
-        "usage_meter_fee_eur"
-      );
+    builder.MonetaryValue(
+      nameof(NetworkUserInvoiceEntity.UsageMeterFee_EUR),
+      "usage_meter_fee_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserInvoiceEntity.UsageFeeTotal_EUR),
-        "usage_fee_total_eur"
-      );
+    builder.MonetaryValue(
+      nameof(NetworkUserInvoiceEntity.UsageFeeTotal_EUR),
+      "usage_fee_total_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserInvoiceEntity
-          .SupplyActiveEnergyTotalImportT1Fee_EUR),
-        "supply_active_energy_total_import_t1_fee_eur"
-      );
+    builder.MonetaryValue(
+      nameof(NetworkUserInvoiceEntity.SupplyActiveEnergyTotalImportT1Fee_EUR),
+      "supply_active_energy_total_import_t1_fee_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserInvoiceEntity
-          .SupplyActiveEnergyTotalImportT2Fee_EUR),
-        "supply_active_energy_total_import_t2_fee_eur"
-      );
+    builder.MonetaryValue(
+      nameof(NetworkUserInvoiceEntity.SupplyActiveEnergyTotalImportT2Fee_EUR),
+      "supply_active_energy_total_import_t2_fee_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserInvoiceEntity.SupplyBusinessUsageFee_EUR),
-        "supply_business_usage_fee_eur"
-      );
+    builder.MonetaryValue(
+      nameof(NetworkUserInvoiceEntity.SupplyBusinessUsageFee_EUR),
+      "supply_business_usage_fee_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserInvoiceEntity.SupplyRenewableEnergyFee_EUR),
-        "supply_renewable_energy_fee_eur"
-      );
+    builder.MonetaryValue(
+      nameof(NetworkUserInvoiceEntity.SupplyRenewableEnergyFee_EUR),
+      "supply_renewable_energy_fee_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserInvoiceEntity.SupplyFeeTotal_EUR),
-        "supply_fee_total_eur"
-      );
+    builder.MonetaryValue(
+      nameof(NetworkUserInvoiceEntity.SupplyFeeTotal_EUR),
+      "supply_fee_total_eur"
+    );
   }
 }

@@ -4,9 +4,7 @@ using Ozds.Data.Observers.EventArgs;
 
 namespace Ozds.Data.Observers.Implementations;
 
-public class EntitiesChangingObserver :
-  Observer<EntitiesChangingEventArgs>,
-  IEntitiesChangingPublisher,
-  IEntitiesChangingSubscriber
-{
-}
+public class EntitiesChangingObserver
+  : Observer<EntitiesChangingEventArgs>,
+    IEntitiesChangingPublisher,
+    IEntitiesChangingSubscriber { }

@@ -8,7 +8,8 @@ public abstract class Model : IModel
   public bool Created { get; set; } = false;
 
   public virtual IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
+    ValidationContext validationContext
+  )
   {
     return Enumerable.Empty<ValidationResult>();
   }

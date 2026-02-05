@@ -21,7 +21,7 @@ public class OrderOfMagnitudeModelEntityConverter
       OrderOfMagnitudeModel.Milli => OrderOfMagnitudeEntity.Milli,
       OrderOfMagnitudeModel.Micro => OrderOfMagnitudeEntity.Micro,
       OrderOfMagnitudeModel.Nano => OrderOfMagnitudeEntity.Nano,
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -39,7 +39,7 @@ public class OrderOfMagnitudeModelEntityConverter
       OrderOfMagnitudeEntity.Milli => OrderOfMagnitudeModel.Milli,
       OrderOfMagnitudeEntity.Micro => OrderOfMagnitudeModel.Micro,
       OrderOfMagnitudeEntity.Nano => OrderOfMagnitudeModel.Nano,
-      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null),
     };
   }
 }

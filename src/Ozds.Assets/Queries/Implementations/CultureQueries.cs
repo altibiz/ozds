@@ -31,8 +31,10 @@ public class CultureQueries : ICultureQueries
       var cultureInfo = CultureInfo.CreateSpecificCulture(culture);
 
       // NOTE: any nonsensical culture that passes parsing gets set to invariant
-      if (cultureInfo.TwoLetterISOLanguageName
-        == CultureInfo.InvariantCulture.TwoLetterISOLanguageName)
+      if (
+        cultureInfo.TwoLetterISOLanguageName
+        == CultureInfo.InvariantCulture.TwoLetterISOLanguageName
+      )
       {
         return null;
       }

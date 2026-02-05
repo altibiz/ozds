@@ -3,8 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ozds.Data.Context;
 
-public partial class DataDbContext(
-  DbContextOptions<DataDbContext> options)
+public partial class DataDbContext(DbContextOptions<DataDbContext> options)
   : DbContext(options)
 {
   protected override void OnModelCreating(ModelBuilder modelBuilder)

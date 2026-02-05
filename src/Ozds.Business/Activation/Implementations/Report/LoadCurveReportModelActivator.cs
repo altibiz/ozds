@@ -8,8 +8,7 @@ namespace Ozds.Business.Activation.Implementations.Report;
 public class LoadCurveReportModelActivator(
   IServiceProvider serviceProvider,
   ClockQueries clock
-)
-  : InheritingModelActivator<LoadCurveReportModel, ReportModel>(serviceProvider)
+) : InheritingModelActivator<LoadCurveReportModel, ReportModel>(serviceProvider)
 {
   public override void Initialize(LoadCurveReportModel model)
   {

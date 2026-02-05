@@ -4,11 +4,10 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation.Implementations.System;
 
-public class MeterNotificationModelActivator(
-  IServiceProvider serviceProvider)
-  : InheritingModelActivator<
-    MeterNotificationModel,
-    NotificationModel>(serviceProvider)
+public class MeterNotificationModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<MeterNotificationModel, NotificationModel>(
+    serviceProvider
+  )
 {
   public override void Initialize(MeterNotificationModel model)
   {

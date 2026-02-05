@@ -6,9 +6,7 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class NetworkUserModelDocumentEntityConverter(
   IServiceProvider serviceProvider
-) : ConcreteModelDocumentEntityConverter<
-  NetworkUserModel,
-  NetworkUserEntity>
+) : ConcreteModelDocumentEntityConverter<NetworkUserModel, NetworkUserEntity>
 {
   private readonly ModelDocumentEntityConverter modelDocumentEntityConverter =
     serviceProvider.GetRequiredService<ModelDocumentEntityConverter>();
@@ -21,7 +19,9 @@ public class NetworkUserModelDocumentEntityConverter(
     base.InitializeEntity(model, entity);
     entity.Title = model.Title;
     entity.Id = model.Id;
-    entity.LegalPerson = modelDocumentEntityConverter
-      .ToEntity<LegalPersonEntity>(model.LegalPerson);
+    entity.LegalPerson =
+      modelDocumentEntityConverter.ToEntity<LegalPersonEntity>(
+        model.LegalPerson
+      );
   }
 }

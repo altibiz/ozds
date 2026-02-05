@@ -8,5 +8,5 @@ public enum ActionEntity
   Update,
   Delete,
   Restore,
-  Forget
+  Forget,
 }

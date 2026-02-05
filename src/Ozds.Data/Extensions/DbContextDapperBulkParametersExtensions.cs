@@ -4,10 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Ozds.Data.Extensions;
 
-public record RowWithIndex(
-  object Row,
-  int Index
-);
+public record RowWithIndex(object Row, int Index);
 
 public static class DbContextDapperBulkParametersExtensions
 {
@@ -19,16 +16,23 @@ public static class DbContextDapperBulkParametersExtensions
     var parameters = new Dictionary<string, object>();
     foreach (var (row, index) in rowsWithIndices)
     {
-      var entityType = context.Model.FindEntityType(row.GetType())
+      var entityType =
+        context.Model.FindEntityType(row.GetType())
         ?? throw new InvalidOperationException(
-          $"No entity type found for {row.GetType()}.");
-      var storeObjectIdentifier = StoreObjectIdentifier
-          .Create(entityType, StoreObjectType.Table)
+          $"No entity type found for {row.GetType()}."
+        );
+      var storeObjectIdentifier =
+        StoreObjectIdentifier.Create(entityType, StoreObjectType.Table)
         ?? throw new InvalidOperationException(
-          $"No store object identifier found for {row.GetType()}.");
+          $"No store object identifier found for {row.GetType()}."
+        );
 
-      foreach (var (property, columnName, value) in entityType
-        .GetPropertyValues(storeObjectIdentifier, row))
+      foreach (
+        var (property, columnName, value) in entityType.GetPropertyValues(
+          storeObjectIdentifier,
+          row
+        )
+      )
       {
         var parameterName = $"@p{index}_{columnName}";
         if (columnName is null)
@@ -64,16 +68,21 @@ public static class DbContextDapperBulkParametersExtensions
     var arguments = new Dictionary<int, Dictionary<string, string>>();
     foreach (var (row, index) in rowsWithIndices)
     {
-      var entityType = context.Model.FindEntityType(row.GetType())
+      var entityType =
+        context.Model.FindEntityType(row.GetType())
         ?? throw new InvalidOperationException(
-          $"No entity type found for {row.GetType()}.");
-      var storeObjectIdentifier = StoreObjectIdentifier
-          .Create(entityType, StoreObjectType.Table)
+          $"No entity type found for {row.GetType()}."
+        );
+      var storeObjectIdentifier =
+        StoreObjectIdentifier.Create(entityType, StoreObjectType.Table)
         ?? throw new InvalidOperationException(
-          $"No store object identifier found for {row.GetType()}.");
+          $"No store object identifier found for {row.GetType()}."
+        );
 
-      var propertyValues = entityType
-        .GetPropertyValues(storeObjectIdentifier, row);
+      var propertyValues = entityType.GetPropertyValues(
+        storeObjectIdentifier,
+        row
+      );
 
       foreach (var (property, columnName, value) in propertyValues)
       {
@@ -128,18 +137,25 @@ public static class DbContextDapperBulkParametersExtensions
     object row
   )
   {
-    var entityType = context.Model.FindEntityType(row.GetType())
+    var entityType =
+      context.Model.FindEntityType(row.GetType())
       ?? throw new InvalidOperationException(
-        $"No entity type found for {row.GetType()}.");
+        $"No entity type found for {row.GetType()}."
+      );
 
-    var storeObjectIdentifier = StoreObjectIdentifier
-        .Create(entityType, StoreObjectType.Table)
+    var storeObjectIdentifier =
+      StoreObjectIdentifier.Create(entityType, StoreObjectType.Table)
       ?? throw new InvalidOperationException(
-        $"No store object identifier found for {row.GetType()}.");
+        $"No store object identifier found for {row.GetType()}."
+      );
 
     var rowParameters = new Dictionary<string, object?>();
-    foreach (var (_, columnName, value) in entityType
-      .GetPropertyValues(storeObjectIdentifier, row))
+    foreach (
+      var (_, columnName, value) in entityType.GetPropertyValues(
+        storeObjectIdentifier,
+        row
+      )
+    )
     {
       if (columnName is null)
       {
@@ -171,29 +187,34 @@ public static class DbContextDapperBulkParametersExtensions
       object? row
     )
     {
-      foreach (var property in type
-        .GetProperties()
-        .OrderBy(x => x.GetIndex()))
+      foreach (var property in type.GetProperties().OrderBy(x => x.GetIndex()))
       {
         yield return new PropertyValue(
           property,
           property.GetColumnName(storeObjectIdentifier)
-          ?? throw new InvalidOperationException(
-            $"No column name found for {property.Name} in {type.Name}."),
+            ?? throw new InvalidOperationException(
+              $"No column name found for {property.Name} in {type.Name}."
+            ),
           property.PropertyInfo?.GetValue(row)
-          ?? property.FieldInfo?.GetValue(row));
+            ?? property.FieldInfo?.GetValue(row)
+        );
       }
 
-      foreach (var complexProperty in type
-        .GetComplexProperties()
-        .OrderBy(x => x.GetIndex()))
+      foreach (
+        var complexProperty in type.GetComplexProperties()
+          .OrderBy(x => x.GetIndex())
+      )
       {
-        var complexRow = complexProperty.PropertyInfo?.GetValue(row)
+        var complexRow =
+          complexProperty.PropertyInfo?.GetValue(row)
           ?? complexProperty.FieldInfo?.GetValue(row);
-        foreach (var property in Recursive(
-          complexProperty.ComplexType,
-          storeObjectIdentifier,
-          complexRow))
+        foreach (
+          var property in Recursive(
+            complexProperty.ComplexType,
+            storeObjectIdentifier,
+            complexRow
+          )
+        )
         {
           yield return property;
         }

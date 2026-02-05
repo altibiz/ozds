@@ -14,9 +14,7 @@ public record LocationWithCataloguesAndMessenger(
   LocationModel Location
 );
 
-public class TestLocationFixture(
-  ServiceComposition composition
-)
+public class TestLocationFixture(ServiceComposition composition)
 {
   public async Task<LocationWithCataloguesAndMessenger> Create(
     CancellationToken cancellationToken,
@@ -31,51 +29,53 @@ public class TestLocationFixture(
 
     var trackableFixture = new TestTrackableFixture(composition);
 
-    var redLowNetworkUserCatalogue = await trackableFixture
-      .Create(
-        cancellationToken,
-        configurator.ConfigureRedLowNetworkUserCatalogue);
+    var redLowNetworkUserCatalogue = await trackableFixture.Create(
+      cancellationToken,
+      configurator.ConfigureRedLowNetworkUserCatalogue
+    );
 
-    var blueLowNetworkUserCatalogue = await trackableFixture
-      .Create(
-        cancellationToken,
-        configurator.ConfigureBlueLowNetworkUserCatalogue);
+    var blueLowNetworkUserCatalogue = await trackableFixture.Create(
+      cancellationToken,
+      configurator.ConfigureBlueLowNetworkUserCatalogue
+    );
 
-    var whiteLowNetworkUserCatalogue = await trackableFixture
-      .Create(
-        cancellationToken,
-        configurator.ConfigureWhiteLowNetworkUserCatalogue);
+    var whiteLowNetworkUserCatalogue = await trackableFixture.Create(
+      cancellationToken,
+      configurator.ConfigureWhiteLowNetworkUserCatalogue
+    );
 
-    var whiteMediumNetworkUserCatalogue = await trackableFixture
-      .Create(
-        cancellationToken,
-        configurator.ConfigureWhiteMediumNetworkUserCatalogue);
+    var whiteMediumNetworkUserCatalogue = await trackableFixture.Create(
+      cancellationToken,
+      configurator.ConfigureWhiteMediumNetworkUserCatalogue
+    );
 
-    var regulatoryCatalogue = await trackableFixture
-      .Create(
-        cancellationToken,
-        configurator.ConfigureRegulatoryCatalogue);
+    var regulatoryCatalogue = await trackableFixture.Create(
+      cancellationToken,
+      configurator.ConfigureRegulatoryCatalogue
+    );
 
-    var location = await trackableFixture
-      .Create<LocationModel>(
-        cancellationToken, l =>
-        {
-          l.RedLowNetworkUserCatalogueId = redLowNetworkUserCatalogue.Id;
-          l.BlueLowNetworkUserCatalogueId = blueLowNetworkUserCatalogue.Id;
-          l.WhiteLowNetworkUserCatalogueId = whiteLowNetworkUserCatalogue.Id;
-          l.WhiteMediumNetworkUserCatalogueId =
-            whiteMediumNetworkUserCatalogue.Id;
-          l.RegulatoryCatalogueId = regulatoryCatalogue.Id;
-          configurator.ConfigureLocation(l);
-        });
+    var location = await trackableFixture.Create<LocationModel>(
+      cancellationToken,
+      l =>
+      {
+        l.RedLowNetworkUserCatalogueId = redLowNetworkUserCatalogue.Id;
+        l.BlueLowNetworkUserCatalogueId = blueLowNetworkUserCatalogue.Id;
+        l.WhiteLowNetworkUserCatalogueId = whiteLowNetworkUserCatalogue.Id;
+        l.WhiteMediumNetworkUserCatalogueId =
+          whiteMediumNetworkUserCatalogue.Id;
+        l.RegulatoryCatalogueId = regulatoryCatalogue.Id;
+        configurator.ConfigureLocation(l);
+      }
+    );
 
-    var messenger = await trackableFixture
-      .Create<MessengerModel>(
-        cancellationToken, m =>
-        {
-          m.LocationId = location.Id;
-          configurator.ConfigureMessenger(m);
-        });
+    var messenger = await trackableFixture.Create<MessengerModel>(
+      cancellationToken,
+      m =>
+      {
+        m.LocationId = location.Id;
+        configurator.ConfigureMessenger(m);
+      }
+    );
 
     return new LocationWithCataloguesAndMessenger(
       regulatoryCatalogue,
@@ -88,26 +88,36 @@ public class TestLocationFixture(
     );
   }
 
-  public async Task PickFirstLocationOnLocationPicker(
-    CancellationToken _
-  )
+  public async Task PickFirstLocationOnLocationPicker(CancellationToken _)
   {
     await composition.Playwright.Page.ClickAsync("button[type=button]");
   }
 
   public class Configurator
   {
-    public Action<RedLowNetworkUserCatalogueModel>
-      ConfigureRedLowNetworkUserCatalogue { get; private set; } = _ => { };
+    public Action<RedLowNetworkUserCatalogueModel> ConfigureRedLowNetworkUserCatalogue
+    {
+      get;
+      private set;
+    } = _ => { };
 
-    public Action<BlueLowNetworkUserCatalogueModel>
-      ConfigureBlueLowNetworkUserCatalogue { get; private set; } = _ => { };
+    public Action<BlueLowNetworkUserCatalogueModel> ConfigureBlueLowNetworkUserCatalogue
+    {
+      get;
+      private set;
+    } = _ => { };
 
-    public Action<WhiteLowNetworkUserCatalogueModel>
-      ConfigureWhiteLowNetworkUserCatalogue { get; private set; } = _ => { };
+    public Action<WhiteLowNetworkUserCatalogueModel> ConfigureWhiteLowNetworkUserCatalogue
+    {
+      get;
+      private set;
+    } = _ => { };
 
-    public Action<WhiteMediumNetworkUserCatalogueModel>
-      ConfigureWhiteMediumNetworkUserCatalogue { get; private set; } = _ => { };
+    public Action<WhiteMediumNetworkUserCatalogueModel> ConfigureWhiteMediumNetworkUserCatalogue
+    {
+      get;
+      private set;
+    } = _ => { };
 
     public Action<RegulatoryCatalogueModel> ConfigureRegulatoryCatalogue
     {
@@ -125,7 +135,8 @@ public class TestLocationFixture(
       _ => { };
 
     public Configurator WithRedLowNetworkUserCatalogue(
-      Action<RedLowNetworkUserCatalogueModel> configure)
+      Action<RedLowNetworkUserCatalogueModel> configure
+    )
     {
       var prior = ConfigureRedLowNetworkUserCatalogue;
       ConfigureRedLowNetworkUserCatalogue = x =>
@@ -137,7 +148,8 @@ public class TestLocationFixture(
     }
 
     public Configurator WithBlueLowNetworkUserCatalogue(
-      Action<BlueLowNetworkUserCatalogueModel> configure)
+      Action<BlueLowNetworkUserCatalogueModel> configure
+    )
     {
       var prior = ConfigureBlueLowNetworkUserCatalogue;
       ConfigureBlueLowNetworkUserCatalogue = x =>
@@ -149,7 +161,8 @@ public class TestLocationFixture(
     }
 
     public Configurator WithWhiteLowNetworkUserCatalogue(
-      Action<WhiteLowNetworkUserCatalogueModel> configure)
+      Action<WhiteLowNetworkUserCatalogueModel> configure
+    )
     {
       var prior = ConfigureWhiteLowNetworkUserCatalogue;
       ConfigureWhiteLowNetworkUserCatalogue = x =>
@@ -161,7 +174,8 @@ public class TestLocationFixture(
     }
 
     public Configurator WithWhiteMediumNetworkUserCatalogue(
-      Action<WhiteMediumNetworkUserCatalogueModel> configure)
+      Action<WhiteMediumNetworkUserCatalogueModel> configure
+    )
     {
       var prior = ConfigureWhiteMediumNetworkUserCatalogue;
       ConfigureWhiteMediumNetworkUserCatalogue = x =>
@@ -173,7 +187,8 @@ public class TestLocationFixture(
     }
 
     public Configurator WithRegulatoryCatalogue(
-      Action<RegulatoryCatalogueModel> configure)
+      Action<RegulatoryCatalogueModel> configure
+    )
     {
       var prior = ConfigureRegulatoryCatalogue;
       ConfigureRegulatoryCatalogue = x =>
@@ -184,15 +199,13 @@ public class TestLocationFixture(
       return this;
     }
 
-    public Configurator WithMessengerType(
-      Type messengerType)
+    public Configurator WithMessengerType(Type messengerType)
     {
       MessengerType = messengerType;
       return this;
     }
 
-    public Configurator WithMessenger(
-      Action<MessengerModel> configure)
+    public Configurator WithMessenger(Action<MessengerModel> configure)
     {
       var prior = ConfigureMessenger;
       ConfigureMessenger = x =>
@@ -203,8 +216,7 @@ public class TestLocationFixture(
       return this;
     }
 
-    public Configurator WithLocation(
-      Action<LocationModel> configure)
+    public Configurator WithLocation(Action<LocationModel> configure)
     {
       var prior = ConfigureLocation;
       ConfigureLocation = x =>

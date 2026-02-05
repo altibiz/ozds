@@ -7,6 +7,4 @@ namespace Ozds.Business.Activation.Implementations.Measurements;
 public class PidgeonMessengerModelActivator(IServiceProvider serviceProvider)
   : InheritingModelActivator<PidgeonMessengerModel, MessengerModel>(
     serviceProvider
-  )
-{
-}
+  ) { }

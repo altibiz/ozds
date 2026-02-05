@@ -7,8 +7,7 @@ public class MeterMeasurementLocationModel : ICachedComposite
 {
   public MeterModel Meter { get; set; } = default!;
 
-  public MeasurementLocationModel MeasurementLocation { get; set; } =
-    default!;
+  public MeasurementLocationModel MeasurementLocation { get; set; } = default!;
 
   public string CacheId
   {

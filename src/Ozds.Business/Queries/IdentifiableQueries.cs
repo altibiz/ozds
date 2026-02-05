@@ -2,10 +2,8 @@ using Ozds.Business.Conversion;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Caching.Entities.Abstractions;
-using CachingIdentifiableMutations =
-  Ozds.Caching.Mutations.IdentifiableEntityMutations;
-using CachingIdentifiableQueries =
-  Ozds.Caching.Queries.IdentifiableEntityQueries;
+using CachingIdentifiableMutations = Ozds.Caching.Mutations.IdentifiableEntityMutations;
+using CachingIdentifiableQueries = Ozds.Caching.Queries.IdentifiableEntityQueries;
 using DataIdentifiableQueries = Ozds.Data.Queries.IdentifiableQueries;
 
 namespace Ozds.Business.Queries;
@@ -37,13 +35,13 @@ public class IdentifiableQueries(
     if (!modelType.IsAssignableTo(typeof(IModel)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IModel)}");
+        $"Type {modelType} is not assignable to {typeof(IModel)}"
+      );
     }
 
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
-      var cachedEntityType = modelCachingEntityConverter
-        .EntityType(modelType);
+      var cachedEntityType = modelCachingEntityConverter.EntityType(modelType);
 
       var cachedEntity = await cachingQueries.Read(
         cachedEntityType,
@@ -62,8 +60,7 @@ public class IdentifiableQueries(
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
-    var entity = await queries.ReadById(
-      entityType, id, cancellationToken);
+    var entity = await queries.ReadById(entityType, id, cancellationToken);
     if (entity is null)
     {
       return default;
@@ -73,8 +70,8 @@ public class IdentifiableQueries(
 
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
-      var cachingEntity = modelCachingEntityConverter
-        .ToEntity<IIdentifiableEntity>(model);
+      var cachingEntity =
+        modelCachingEntityConverter.ToEntity<IIdentifiableEntity>(model);
       await cachingMutations.Create(cachingEntity, cancellationToken);
     }
 
@@ -100,7 +97,8 @@ public class IdentifiableQueries(
     if (!modelType.IsAssignableTo(typeof(IModel)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IModel)}");
+        $"Type {modelType} is not assignable to {typeof(IModel)}"
+      );
     }
 
     var toFetch = ids.ToList();
@@ -108,8 +106,7 @@ public class IdentifiableQueries(
 
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
-      var cachedEntityType = modelCachingEntityConverter
-        .EntityType(modelType);
+      var cachedEntityType = modelCachingEntityConverter.EntityType(modelType);
 
       var fromCache = toFetch.ToList();
       foreach (var id in fromCache)
@@ -142,15 +139,13 @@ public class IdentifiableQueries(
       cancellationToken
     );
 
-    var models = entities
-      .Select(modelEntityConverter.ToModel)
-      .ToList();
+    var models = entities.Select(modelEntityConverter.ToModel).ToList();
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
       foreach (var model in models)
       {
-        var cachedEntity = modelCachingEntityConverter
-          .ToEntity<IIdentifiableEntity>(model);
+        var cachedEntity =
+          modelCachingEntityConverter.ToEntity<IIdentifiableEntity>(model);
         await cachingMutations.Create(cachedEntity, cancellationToken);
       }
     }
@@ -166,11 +161,7 @@ public class IdentifiableQueries(
   )
     where T : class, IIdentifiable
   {
-    var models = await ReadByIdsOrdered(
-      typeof(T),
-      ids,
-      cancellationToken
-    );
+    var models = await ReadByIdsOrdered(typeof(T), ids, cancellationToken);
     return models.Cast<T?>().ToList();
   }
 
@@ -183,7 +174,8 @@ public class IdentifiableQueries(
     if (!modelType.IsAssignableTo(typeof(IIdentifiable)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IIdentifiable)}");
+        $"Type {modelType} is not assignable to {typeof(IIdentifiable)}"
+      );
     }
 
     var toFetch = ids.ToList();
@@ -191,8 +183,7 @@ public class IdentifiableQueries(
 
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
-      var cachedEntityType = modelCachingEntityConverter
-        .EntityType(modelType);
+      var cachedEntityType = modelCachingEntityConverter.EntityType(modelType);
 
       var fromCache = toFetch.ToList();
       for (var i = 0; i < fromCache.Count; i++)
@@ -224,9 +215,9 @@ public class IdentifiableQueries(
     );
 
     var models = entities
-      .Select(entity => entity is null
-        ? null
-        : modelEntityConverter.ToModel(entity))
+      .Select(entity =>
+        entity is null ? null : modelEntityConverter.ToModel(entity)
+      )
       .ToList();
     if (modelType.IsAssignableTo(typeof(ICachedIdentifiable)))
     {
@@ -237,8 +228,8 @@ public class IdentifiableQueries(
           continue;
         }
 
-        var cachedEntity = modelCachingEntityConverter
-          .ToEntity<IIdentifiableEntity>(model);
+        var cachedEntity =
+          modelCachingEntityConverter.ToEntity<IIdentifiableEntity>(model);
         await cachingMutations.Create(cachedEntity, cancellationToken);
       }
     }
@@ -275,7 +266,8 @@ public class IdentifiableQueries(
       title,
       pageNumber,
       cancellationToken,
-      pageCount);
+      pageCount
+    );
 
     return models.Items.OfType<T>().ToPaginatedList(models.TotalCount);
   }
@@ -298,12 +290,9 @@ public class IdentifiableQueries(
       pageCount
     );
 
-    var models = page.Items
-      .Select(modelEntityConverter.ToModel)
-      .ToList();
+    var models = page.Items.Select(modelEntityConverter.ToModel).ToList();
 
-    return models
-      .ToPaginatedList(page.TotalCount);
+    return models.ToPaginatedList(page.TotalCount);
   }
 
   public async Task<PaginatedList<T>> Read<T>(
@@ -317,7 +306,8 @@ public class IdentifiableQueries(
       typeof(T),
       pageNumber,
       cancellationToken,
-      pageCount);
+      pageCount
+    );
 
     return models.Items.OfType<T>().ToPaginatedList(models.TotalCount);
   }
@@ -338,11 +328,8 @@ public class IdentifiableQueries(
       pageCount
     );
 
-    var models = page.Items
-      .Select(modelEntityConverter.ToModel)
-      .ToList();
+    var models = page.Items.Select(modelEntityConverter.ToModel).ToList();
 
-    return models
-      .ToPaginatedList(page.TotalCount);
+    return models.ToPaginatedList(page.TotalCount);
   }
 }

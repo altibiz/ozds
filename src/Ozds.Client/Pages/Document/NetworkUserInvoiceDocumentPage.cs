@@ -32,7 +32,7 @@ public partial class NetworkUserInvoiceDocumentPage : OzdsComponentBase
     return new CalculatedNetworkUserInvoiceModelWithHtml
     {
       Invoice = invoice,
-      Html = html
+      Html = html,
     };
   }
 

@@ -17,7 +17,8 @@ public abstract class MessengerModel : TrackableModel, IMessenger
   public required PeriodModel PushDelayPeriod { get; set; }
 
   public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
+    ValidationContext validationContext
+  )
   {
     foreach (var validationResult in base.Validate(validationContext))
     {
@@ -30,12 +31,13 @@ public abstract class MessengerModel : TrackableModel, IMessenger
       {
         yield return new ValidationResult(
           "ID must be set",
-          new[] { nameof(Id) });
+          new[] { nameof(Id) }
+        );
       }
       else
       {
-        var convention = validationContext
-          .GetRequiredService<MessengerNamingConvention>();
+        var convention =
+          validationContext.GetRequiredService<MessengerNamingConvention>();
 
         ValidationResult? validationResult = null;
         try
@@ -46,14 +48,16 @@ public abstract class MessengerModel : TrackableModel, IMessenger
           {
             validationResult = new ValidationResult(
               $"Unconventional messenger ID {Id} for {actualType}",
-              new[] { nameof(Id) });
+              new[] { nameof(Id) }
+            );
           }
         }
         catch (Exception)
         {
           validationResult = new ValidationResult(
             $"Unconventional messenger ID {Id}",
-            new[] { nameof(Id) });
+            new[] { nameof(Id) }
+          );
         }
 
         if (validationResult is not null)

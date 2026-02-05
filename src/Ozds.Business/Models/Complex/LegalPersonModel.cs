@@ -29,7 +29,8 @@ public class LegalPersonModel : Model
   public required string PhoneNumber { get; set; } = default!;
 
   public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
+    ValidationContext validationContext
+  )
   {
     foreach (var validationResult in base.Validate(validationContext))
     {
@@ -37,8 +38,8 @@ public class LegalPersonModel : Model
     }
 
     if (
-      validationContext.MemberName is null or nameof(SocialSecurityNumber) &&
-      !SocialSecurityNumber.All(char.IsDigit)
+      validationContext.MemberName is null or nameof(SocialSecurityNumber)
+      && !SocialSecurityNumber.All(char.IsDigit)
     )
     {
       yield return new ValidationResult(
@@ -48,8 +49,8 @@ public class LegalPersonModel : Model
     }
 
     if (
-      validationContext.MemberName is null or nameof(SocialSecurityNumber) &&
-      SocialSecurityNumber.Length != 11
+      validationContext.MemberName is null or nameof(SocialSecurityNumber)
+      && SocialSecurityNumber.Length != 11
     )
     {
       yield return new ValidationResult(
@@ -59,8 +60,8 @@ public class LegalPersonModel : Model
     }
 
     if (
-      validationContext.MemberName is null or nameof(PostalCode) &&
-      !PostalCode.All(char.IsDigit)
+      validationContext.MemberName is null or nameof(PostalCode)
+      && !PostalCode.All(char.IsDigit)
     )
     {
       yield return new ValidationResult(
@@ -70,8 +71,8 @@ public class LegalPersonModel : Model
     }
 
     if (
-      validationContext.MemberName is null or nameof(PostalCode) &&
-      PostalCode.Length != 5
+      validationContext.MemberName is null or nameof(PostalCode)
+      && PostalCode.Length != 5
     )
     {
       yield return new ValidationResult(

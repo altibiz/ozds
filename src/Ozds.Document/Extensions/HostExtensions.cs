@@ -21,10 +21,12 @@ public static class HostExtensions
   {
     builder.Services.AddSingleton<
       IHtmlToPdfRenderer,
-      PlaywrightHtmlToPdfRenderer>();
+      PlaywrightHtmlToPdfRenderer
+    >();
     builder.Services.AddScoped<
       IComponentToHtmlRenderer,
-      AspNetCoreComponentsComponentToHtmlRenderer>();
+      AspNetCoreComponentsComponentToHtmlRenderer
+    >();
     builder.Services.AddScoped<DocumentRenderer>();
 
     return builder;

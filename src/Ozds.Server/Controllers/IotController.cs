@@ -13,22 +13,21 @@ public class IotController(IPushPublisher publisher) : Controller
   public static readonly JsonSerializerOptions Options = new()
   {
     PropertyNameCaseInsensitive = true,
-    NumberHandling = JsonNumberHandling.AllowReadingFromString
+    NumberHandling = JsonNumberHandling.AllowReadingFromString,
   };
 
   [HttpPost]
   [Route("push/{id}")]
   public async Task<IActionResult> Push(
     string id,
-    [FromHeader(Name = "X-Buffer-Behavior")]
-    string? bufferBehavior = "buffer"
+    [FromHeader(Name = "X-Buffer-Behavior")] string? bufferBehavior = "buffer"
   )
   {
     IMessengerPushRequestEntity? request;
     try
     {
-      request = await JsonSerializer
-        .DeserializeAsync<IMessengerPushRequestEntity>(
+      request =
+        await JsonSerializer.DeserializeAsync<IMessengerPushRequestEntity>(
           Request.Body,
           Options
         );
@@ -56,9 +55,9 @@ public class IotController(IPushPublisher publisher) : Controller
         "realtime" => PushEventBufferBehavior.Realtime,
         "buffer" => PushEventBufferBehavior.Buffer,
         "aggregate" => PushEventBufferBehavior.Aggregate,
-        _ => throw new ArgumentOutOfRangeException(nameof(bufferBehavior))
+        _ => throw new ArgumentOutOfRangeException(nameof(bufferBehavior)),
       },
-      Request = request
+      Request = request,
     };
 
     publisher.Publish(eventArgs);

@@ -68,9 +68,7 @@ public static class HostExtensions
     public Func<HttpClient, HttpClient> ConfigureClient { get; private set; } =
       httpClient => httpClient;
 
-    public Configurator WithClient(
-      Func<HttpClient, HttpClient> configureClient
-    )
+    public Configurator WithClient(Func<HttpClient, HttpClient> configureClient)
     {
       var prior = ConfigureClient;
       ConfigureClient = httpClient =>

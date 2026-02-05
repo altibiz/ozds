@@ -14,16 +14,14 @@ public class TrackableMutations(
   ModelEntityConverter modelEntityConverter,
   ModelValidator validator,
   RepresentativeQueries representativeQueries
-)
-  : IMutations
+) : IMutations
 {
   public async Task Create(
     ITrackable model,
     CancellationToken cancellationToken
   )
   {
-    var validationResults = await validator
-      .Validate(model, cancellationToken);
+    var validationResults = await validator.Validate(model, cancellationToken);
     if (validationResults.Count > 0)
     {
       var result = string.Join(Environment.NewLine, validationResults);
@@ -32,8 +30,10 @@ public class TrackableMutations(
       );
     }
 
-    var representativeId = await representativeQueries
-      .ReadAuthenticatedRepresentativeId(cancellationToken);
+    var representativeId =
+      await representativeQueries.ReadAuthenticatedRepresentativeId(
+        cancellationToken
+      );
 
     var entity = modelEntityConverter.ToEntity<ITrackableEntity>(model);
     entity.AuditingRepresentativeId = representativeId;
@@ -51,8 +51,7 @@ public class TrackableMutations(
     CancellationToken cancellationToken
   )
   {
-    var validationResults = await validator
-      .Validate(model, cancellationToken);
+    var validationResults = await validator.Validate(model, cancellationToken);
     if (validationResults.Count > 0)
     {
       var result = string.Join(Environment.NewLine, validationResults);
@@ -61,8 +60,10 @@ public class TrackableMutations(
       );
     }
 
-    var representativeId = await representativeQueries
-      .ReadAuthenticatedRepresentativeId(cancellationToken);
+    var representativeId =
+      await representativeQueries.ReadAuthenticatedRepresentativeId(
+        cancellationToken
+      );
 
     var entity = modelEntityConverter.ToEntity<ITrackableEntity>(model);
     entity.AuditingRepresentativeId = representativeId;
@@ -75,8 +76,7 @@ public class TrackableMutations(
     CancellationToken cancellationToken
   )
   {
-    var validationResults = await validator
-      .Validate(model, cancellationToken);
+    var validationResults = await validator.Validate(model, cancellationToken);
     if (validationResults.Count > 0)
     {
       var result = string.Join(Environment.NewLine, validationResults);
@@ -85,8 +85,10 @@ public class TrackableMutations(
       );
     }
 
-    var representativeId = await representativeQueries
-      .ReadAuthenticatedRepresentativeId(cancellationToken);
+    var representativeId =
+      await representativeQueries.ReadAuthenticatedRepresentativeId(
+        cancellationToken
+      );
 
     var entity = modelEntityConverter.ToEntity<ITrackableEntity>(model);
     entity.AuditingRepresentativeId = representativeId;
@@ -99,8 +101,7 @@ public class TrackableMutations(
     CancellationToken cancellationToken
   )
   {
-    var validationResults = await validator
-      .Validate(model, cancellationToken);
+    var validationResults = await validator.Validate(model, cancellationToken);
     if (validationResults.Count > 0)
     {
       var result = string.Join(Environment.NewLine, validationResults);
@@ -109,8 +110,10 @@ public class TrackableMutations(
       );
     }
 
-    var representativeId = await representativeQueries
-      .ReadAuthenticatedRepresentativeId(cancellationToken);
+    var representativeId =
+      await representativeQueries.ReadAuthenticatedRepresentativeId(
+        cancellationToken
+      );
 
     var entity = modelEntityConverter.ToEntity<ITrackableEntity>(model);
     entity.AuditingRepresentativeId = representativeId;
@@ -124,8 +127,10 @@ public class TrackableMutations(
     CancellationToken cancellationToken
   )
   {
-    var representativeId = await representativeQueries
-      .ReadAuthenticatedRepresentativeId(cancellationToken);
+    var representativeId =
+      await representativeQueries.ReadAuthenticatedRepresentativeId(
+        cancellationToken
+      );
 
     var entity = modelEntityConverter.ToEntity<ITrackableEntity>(model);
     entity.Forget = true;

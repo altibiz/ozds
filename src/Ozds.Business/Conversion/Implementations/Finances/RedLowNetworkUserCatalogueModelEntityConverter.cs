@@ -8,11 +8,13 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 
 public class RedLowNetworkUserCatalogueModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  RedLowNetworkUserCatalogueModel,
-  NetworkUserCatalogueModel,
-  RedLowNetworkUserCatalogueEntity,
-  NetworkUserCatalogueEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    RedLowNetworkUserCatalogueModel,
+    NetworkUserCatalogueModel,
+    RedLowNetworkUserCatalogueEntity,
+    NetworkUserCatalogueEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     RedLowNetworkUserCatalogueModel model,

@@ -8,7 +8,7 @@ public enum RoleModel
 
   LocationRepresentative,
 
-  NetworkUserRepresentative
+  NetworkUserRepresentative,
 }
 
 public static class RoleModelExtensions
@@ -19,9 +19,9 @@ public static class RoleModelExtensions
     {
       RoleEntity.OperatorRepresentative => RoleModel.OperatorRepresentative,
       RoleEntity.LocationRepresentative => RoleModel.LocationRepresentative,
-      RoleEntity.NetworkUserRepresentative => RoleModel
-        .NetworkUserRepresentative,
-      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
+      RoleEntity.NetworkUserRepresentative =>
+        RoleModel.NetworkUserRepresentative,
+      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null),
     };
   }
 
@@ -31,9 +31,9 @@ public static class RoleModelExtensions
     {
       RoleModel.OperatorRepresentative => RoleEntity.OperatorRepresentative,
       RoleModel.LocationRepresentative => RoleEntity.LocationRepresentative,
-      RoleModel.NetworkUserRepresentative => RoleEntity
-        .NetworkUserRepresentative,
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      RoleModel.NetworkUserRepresentative =>
+        RoleEntity.NetworkUserRepresentative,
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -45,11 +45,11 @@ public static class RoleModelExtensions
       {
         TopicModel.All,
         TopicModel.Messenger,
-        TopicModel.MessengerInactivity
+        TopicModel.MessengerInactivity,
       },
       RoleModel.LocationRepresentative => new List<TopicModel>(),
       RoleModel.NetworkUserRepresentative => new List<TopicModel>(),
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -60,7 +60,7 @@ public static class RoleModelExtensions
       RoleModel.OperatorRepresentative => "Operator representative",
       RoleModel.LocationRepresentative => "Location representative",
       RoleModel.NetworkUserRepresentative => "Network user representative",
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 }

@@ -1,5 +1,3 @@
 namespace Ozds.Business.Reactors.Abstractions;
 
-public interface IReactor : IHostedService
-{
-}
+public interface IReactor : IHostedService { }

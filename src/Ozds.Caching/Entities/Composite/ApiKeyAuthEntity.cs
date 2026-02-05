@@ -8,8 +8,7 @@ public class ApiKeyAuthEntity : ICompositeEntity
 
   public List<ScopeEntity> Scopes { get; set; } = default!;
 
-  public List<RegisterEntity> Registers { get; set; } =
-    default!;
+  public List<RegisterEntity> Registers { get; set; } = default!;
 
   public string Id
   {

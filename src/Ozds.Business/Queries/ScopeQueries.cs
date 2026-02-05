@@ -30,8 +30,7 @@ public class ScopeQueries(
     );
 
     var models = entities
-      .Items
-      .Select(modelEntityConverter.ToModel<ScopeModel>)
+      .Items.Select(modelEntityConverter.ToModel<ScopeModel>)
       .ToPaginatedList(entities.TotalCount);
 
     return models;

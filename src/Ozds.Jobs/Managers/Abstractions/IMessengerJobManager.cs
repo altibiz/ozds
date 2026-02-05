@@ -9,25 +9,31 @@ public interface IMessengerJobManager : IJobManager
 {
   public Task EnsureInactivityMonitorJob(
     MessengerInactivityMonitorDetails details,
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 
   public Task EnsureInactivityMonitorJobs(
     IEnumerable<MessengerInactivityMonitorDetails> details,
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 
   public Task RescheduleInactivityMonitorJob(
     MessengerInactivityMonitorDetails details,
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 
   public Task RescheduleInactivityMonitorJobs(
     IEnumerable<MessengerInactivityMonitorDetails> details,
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 
   public Task UnscheduleInactivityMonitorJob(
     string id,
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 
   public Task UnscheduleInactivityMonitorJobs(
     IEnumerable<string> ids,
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 }

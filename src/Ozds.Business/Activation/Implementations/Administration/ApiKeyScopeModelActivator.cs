@@ -4,11 +4,10 @@ using Ozds.Business.Models.Joins;
 
 namespace Ozds.Business.Activation.Implementations.Administration;
 
-public class ApiKeyScopeModelActivator(
-  IServiceProvider serviceProvider
-) : InheritingModelActivator<ApiKeyScopeModel, AuditableJoinModel>(
-  serviceProvider
-)
+public class ApiKeyScopeModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<ApiKeyScopeModel, AuditableJoinModel>(
+    serviceProvider
+  )
 {
   public override void Initialize(ApiKeyScopeModel model)
   {

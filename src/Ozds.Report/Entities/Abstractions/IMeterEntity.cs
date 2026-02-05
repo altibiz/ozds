@@ -1,5 +1,3 @@
 namespace Ozds.Report.Entities.Abstractions;
 
-public interface IMeterEntity : IEntity
-{
-}
+public interface IMeterEntity : IEntity { }

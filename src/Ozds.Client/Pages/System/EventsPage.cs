@@ -22,16 +22,20 @@ public partial class EventsPage : OzdsComponentBase
   {
     get
     {
-      return Enum.GetValues<LevelModel>().Where(l => Environment.IsDevelopment()
-        ? l >= LevelModel.Trace
-        : l >= LevelModel.Information);
+      return Enum.GetValues<LevelModel>()
+        .Where(l =>
+          Environment.IsDevelopment()
+            ? l >= LevelModel.Trace
+            : l >= LevelModel.Information
+        );
     }
   }
 
   private async Task<PaginatedList<IEvent>> OnPageAsync(
     string search,
     int page,
-    int pageCount)
+    int pageCount
+  )
   {
     return await ScopedServices
       .GetRequiredService<EventQueries>()

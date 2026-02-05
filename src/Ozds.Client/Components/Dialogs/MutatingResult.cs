@@ -9,7 +9,7 @@ public enum MutatingResultNavigationBehavior
 {
   Reload,
   GoBack,
-  Logout
+  Logout,
 }
 
 public partial class MutatingResult : OzdsComponentBase

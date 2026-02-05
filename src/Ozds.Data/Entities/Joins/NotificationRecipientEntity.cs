@@ -38,8 +38,8 @@ public class NotificationRecipientEntity : JoinEntity
   public DateTimeOffset? SeenOn { get; set; } = default!;
 }
 
-public class
-  NotificationRepresentativeEntityModelConfiguration : IModelConfiguration
+public class NotificationRepresentativeEntityModelConfiguration
+  : IModelConfiguration
 {
   public void Configure(ModelBuilder modelBuilder)
   {
@@ -50,21 +50,21 @@ public class
       .WithMany(nameof(RepresentativeEntity.Notifications))
       .UsingEntity(
         typeof(NotificationRecipientEntity),
-        configureLeft: l => l
-          .HasOne(nameof(NotificationRecipientEntity.Notification))
-          .WithMany(nameof(NotificationEntity.NotificationRepresentatives))
-          .HasForeignKey("_notificationId"),
-        configureRight: r => r
-          .HasOne(nameof(NotificationRecipientEntity.Representative))
-          .WithMany(nameof(RepresentativeEntity.NotificationRecipients))
-          .HasForeignKey(nameof(NotificationRecipientEntity.RepresentativeId)),
+        configureLeft: l =>
+          l.HasOne(nameof(NotificationRecipientEntity.Notification))
+            .WithMany(nameof(NotificationEntity.NotificationRepresentatives))
+            .HasForeignKey("_notificationId"),
+        configureRight: r =>
+          r.HasOne(nameof(NotificationRecipientEntity.Representative))
+            .WithMany(nameof(RepresentativeEntity.NotificationRecipients))
+            .HasForeignKey(
+              nameof(NotificationRecipientEntity.RepresentativeId)
+            ),
         configureJoinEntityType: entity =>
         {
           entity.ToTable("notification_recipients");
           entity.Ignore(nameof(NotificationRecipientEntity.NotificationId));
-          entity
-            .Property("_notificationId")
-            .HasColumnName("notification_id");
+          entity.Property("_notificationId").HasColumnName("notification_id");
         }
       );
   }

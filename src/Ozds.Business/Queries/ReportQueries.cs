@@ -30,7 +30,8 @@ public class ReportQueries(
       measurementLocationIds,
       fromDate,
       toDate,
-      cancellationToken);
+      cancellationToken
+    );
     if (entities is null)
     {
       return null;
@@ -41,21 +42,21 @@ public class ReportQueries(
       .ToList();
   }
 
-  public async Task<List<EnergyCardReportModel>?>
-    ReadEnergyCardReportsByNetworkUser(
-      CultureInfo culture,
-      string networkUserId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<List<EnergyCardReportModel>?> ReadEnergyCardReportsByNetworkUser(
+    CultureInfo culture,
+    string networkUserId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
-    var entities = await dataReportQueries
-      .ReadEnergyCardReportBasisByNetworkUser(
+    var entities =
+      await dataReportQueries.ReadEnergyCardReportBasisByNetworkUser(
         networkUserId,
         fromDate,
         toDate,
-        cancellationToken);
+        cancellationToken
+      );
     if (entities is null)
     {
       return null;
@@ -66,20 +67,20 @@ public class ReportQueries(
       .ToList();
   }
 
-  public async Task<List<EnergyCardReportModel>?>
-    ReadEnergyCardReportsByLocation(
-      CultureInfo culture,
-      string locationId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<List<EnergyCardReportModel>?> ReadEnergyCardReportsByLocation(
+    CultureInfo culture,
+    string locationId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
     var entities = await dataReportQueries.ReadEnergyCardReportBasisByLocation(
       locationId,
       fromDate,
       toDate,
-      cancellationToken);
+      cancellationToken
+    );
     if (entities is null)
     {
       return null;
@@ -90,20 +91,20 @@ public class ReportQueries(
       .ToList();
   }
 
-  public async Task<List<AccountingPeriodReportModel>?>
-    ReadAccountingPeriodReports(
-      CultureInfo culture,
-      string measurementLocationId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<List<AccountingPeriodReportModel>?> ReadAccountingPeriodReports(
+    CultureInfo culture,
+    string measurementLocationId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
     var entity = await dataReportQueries.ReadAccountingPeriodReportBasis(
       measurementLocationId,
       fromDate,
       toDate,
-      cancellationToken);
+      cancellationToken
+    );
     if (entity is null)
     {
       return null;
@@ -112,14 +113,13 @@ public class ReportQueries(
     return MakeAccountingPeriodReports(entity);
   }
 
-  public async Task<List<AccountingPeriodReportModel>?>
-    ReadAccountingPeriodReportsByMeter(
-      CultureInfo culture,
-      string meterId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<List<AccountingPeriodReportModel>?> ReadAccountingPeriodReportsByMeter(
+    CultureInfo culture,
+    string meterId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
     var modelType = meterNamingConvention.AggregateTypeForMeterId(meterId);
     var entityType = modelEntityConverter.EntityType(modelType);
@@ -129,7 +129,8 @@ public class ReportQueries(
       meterId,
       fromDate,
       toDate,
-      cancellationToken);
+      cancellationToken
+    );
     if (entity is null)
     {
       return null;
@@ -151,7 +152,8 @@ public class ReportQueries(
       measurementLocationId,
       fromDate,
       toDate,
-      cancellationToken);
+      cancellationToken
+    );
     if (entity is null)
     {
       return null;
@@ -177,7 +179,8 @@ public class ReportQueries(
       meterId,
       fromDate,
       toDate,
-      cancellationToken);
+      cancellationToken
+    );
     if (entity is null)
     {
       return null;
@@ -193,21 +196,24 @@ public class ReportQueries(
   {
     var model = new EnergyCardReportBasisModel
     {
-      Location = modelEntityConverter
-        .ToModel<LocationModel>(entity.Location),
-      NetworkUser = modelEntityConverter
-        .ToModel<NetworkUserModel>(entity.NetworkUser),
-      Catalogue = modelEntityConverter
-        .ToModel<NetworkUserCatalogueModel>(entity.Catalogue),
-      MeasurementLocation = modelEntityConverter
-        .ToModel<NetworkUserMeasurementLocationModel>(
-          entity.MeasurementLocation),
-      Meter = modelEntityConverter
-        .ToModel<MeterModel>(entity.Meter),
-      MinAggregate = modelEntityConverter
-        .ToModel<AggregateModel>(entity.MinAggregate),
-      MaxAggregate = modelEntityConverter
-        .ToModel<AggregateModel>(entity.MaxAggregate)
+      Location = modelEntityConverter.ToModel<LocationModel>(entity.Location),
+      NetworkUser = modelEntityConverter.ToModel<NetworkUserModel>(
+        entity.NetworkUser
+      ),
+      Catalogue = modelEntityConverter.ToModel<NetworkUserCatalogueModel>(
+        entity.Catalogue
+      ),
+      MeasurementLocation =
+        modelEntityConverter.ToModel<NetworkUserMeasurementLocationModel>(
+          entity.MeasurementLocation
+        ),
+      Meter = modelEntityConverter.ToModel<MeterModel>(entity.Meter),
+      MinAggregate = modelEntityConverter.ToModel<AggregateModel>(
+        entity.MinAggregate
+      ),
+      MaxAggregate = modelEntityConverter.ToModel<AggregateModel>(
+        entity.MaxAggregate
+      ),
     };
 
     var obis = model.Catalogue.Obis.ToList();
@@ -217,8 +223,10 @@ public class ReportQueries(
       SocialSecurityNumber = model.NetworkUser.LegalPerson.SocialSecurityNumber,
       NetworkUserTitle = model.NetworkUser.Title,
       MeasurementLocationCode = GetMeasurementLocationCode(model),
-      TariffModel = localizationQueries
-        .Translate(culture, model.Catalogue.GetType()),
+      TariffModel = localizationQueries.Translate(
+        culture,
+        model.Catalogue.GetType()
+      ),
       ConnectionPower_W = model.Meter.ConnectionPower_W,
       MeasurementLocationTitle = model.MeasurementLocation.Title,
       LocationTitle = model.Location.Title,
@@ -226,44 +234,57 @@ public class ReportQueries(
       LocationCity = model.Location.LegalPerson.City,
       LocationPostalCode = model.Location.LegalPerson.PostalCode,
       Year = model.MaxAggregate.Timestamp.Year.ToString(),
-      BillingPeriod =
-        model.MaxAggregate.Timestamp.Month.ToString().PadLeft(2, '0'),
-      ActiveEnergyTotalImportT0_kWh =
-        obis.Contains(ObisModel.ActiveEnergyTotalImportT0_kWh)
-          ? ObisModel.ActiveEnergyTotalImportT0_kWh.GetValue(
-            model.MinAggregate,
-            model.MaxAggregate)
-          : null,
-      ActiveEnergyTotalImportT1_kWh =
-        obis.Contains(ObisModel.ActiveEnergyTotalImportT1_kWh)
-          ? ObisModel.ActiveEnergyTotalImportT1_kWh.GetValue(
-            model.MinAggregate,
-            model.MaxAggregate)
-          : null,
-      ActiveEnergyTotalImportT2_kWh =
-        obis.Contains(ObisModel.ActiveEnergyTotalImportT2_kWh)
-          ? ObisModel.ActiveEnergyTotalImportT2_kWh.GetValue(
-            model.MinAggregate,
-            model.MaxAggregate)
-          : null,
-      ReactiveEnergyTotalImportT0_kVARh =
-        obis.Contains(ObisModel.ReactiveEnergyTotalImportT0_kVARh)
-          ? ObisModel.ReactiveEnergyTotalImportT0_kVARh.GetValue(
-            model.MinAggregate,
-            model.MaxAggregate)
-          : null,
-      ReactiveEnergyTotalExportT0_kVARh =
-        obis.Contains(ObisModel.ReactiveEnergyTotalExportT0_kVARh)
-          ? ObisModel.ReactiveEnergyTotalExportT0_kVARh.GetValue(
-            model.MinAggregate,
-            model.MaxAggregate)
-          : null,
-      ActivePowerTotalImportT1_kW =
-        obis.Contains(ObisModel.ActivePowerTotalImportT1_kW)
-          ? ObisModel.ActivePowerTotalImportT1_kW.GetValue(
-            model.MinAggregate,
-            model.MaxAggregate)
-          : null
+      BillingPeriod = model
+        .MaxAggregate.Timestamp.Month.ToString()
+        .PadLeft(2, '0'),
+      ActiveEnergyTotalImportT0_kWh = obis.Contains(
+        ObisModel.ActiveEnergyTotalImportT0_kWh
+      )
+        ? ObisModel.ActiveEnergyTotalImportT0_kWh.GetValue(
+          model.MinAggregate,
+          model.MaxAggregate
+        )
+        : null,
+      ActiveEnergyTotalImportT1_kWh = obis.Contains(
+        ObisModel.ActiveEnergyTotalImportT1_kWh
+      )
+        ? ObisModel.ActiveEnergyTotalImportT1_kWh.GetValue(
+          model.MinAggregate,
+          model.MaxAggregate
+        )
+        : null,
+      ActiveEnergyTotalImportT2_kWh = obis.Contains(
+        ObisModel.ActiveEnergyTotalImportT2_kWh
+      )
+        ? ObisModel.ActiveEnergyTotalImportT2_kWh.GetValue(
+          model.MinAggregate,
+          model.MaxAggregate
+        )
+        : null,
+      ReactiveEnergyTotalImportT0_kVARh = obis.Contains(
+        ObisModel.ReactiveEnergyTotalImportT0_kVARh
+      )
+        ? ObisModel.ReactiveEnergyTotalImportT0_kVARh.GetValue(
+          model.MinAggregate,
+          model.MaxAggregate
+        )
+        : null,
+      ReactiveEnergyTotalExportT0_kVARh = obis.Contains(
+        ObisModel.ReactiveEnergyTotalExportT0_kVARh
+      )
+        ? ObisModel.ReactiveEnergyTotalExportT0_kVARh.GetValue(
+          model.MinAggregate,
+          model.MaxAggregate
+        )
+        : null,
+      ActivePowerTotalImportT1_kW = obis.Contains(
+        ObisModel.ActivePowerTotalImportT1_kW
+      )
+        ? ObisModel.ActivePowerTotalImportT1_kW.GetValue(
+          model.MinAggregate,
+          model.MaxAggregate
+        )
+        : null,
     };
 
     return report;
@@ -275,20 +296,24 @@ public class ReportQueries(
   {
     var model = new AccountingPeriodReportBasisModel
     {
-      Location = modelEntityConverter
-        .ToModel<LocationModel>(entity.Location),
-      NetworkUser = modelEntityConverter
-        .ToModel<NetworkUserModel>(entity.NetworkUser),
-      Catalogue = modelEntityConverter
-        .ToModel<NetworkUserCatalogueModel>(entity.Catalogue),
-      MeasurementLocation = modelEntityConverter
-        .ToModel<NetworkUserMeasurementLocationModel>(
-          entity.MeasurementLocation),
+      Location = modelEntityConverter.ToModel<LocationModel>(entity.Location),
+      NetworkUser = modelEntityConverter.ToModel<NetworkUserModel>(
+        entity.NetworkUser
+      ),
+      Catalogue = modelEntityConverter.ToModel<NetworkUserCatalogueModel>(
+        entity.Catalogue
+      ),
+      MeasurementLocation =
+        modelEntityConverter.ToModel<NetworkUserMeasurementLocationModel>(
+          entity.MeasurementLocation
+        ),
       Meter = modelEntityConverter.ToModel<MeterModel>(entity.Meter),
-      MinAggregate = modelEntityConverter
-        .ToModel<AggregateModel>(entity.MinAggregate),
-      MaxAggregate = modelEntityConverter
-        .ToModel<AggregateModel>(entity.MaxAggregate)
+      MinAggregate = modelEntityConverter.ToModel<AggregateModel>(
+        entity.MinAggregate
+      ),
+      MaxAggregate = modelEntityConverter.ToModel<AggregateModel>(
+        entity.MaxAggregate
+      ),
     };
 
     var obis = new List<ObisModel>
@@ -297,28 +322,27 @@ public class ReportQueries(
       ObisModel.ActiveEnergyTotalImportT2_kWh,
       ObisModel.ReactiveEnergyTotalImportT0_kVARh,
       ObisModel.ReactiveEnergyTotalExportT0_kVARh,
-      ObisModel.ActivePowerTotalImportT1_kW
+      ObisModel.ActivePowerTotalImportT1_kW,
     };
 
-    return obis
-      .Select(obis => new AccountingPeriodReportModel
+    return obis.Select(obis => new AccountingPeriodReportModel
       {
         MeasurementLocationCode = GetMeasurementLocationCode(model),
         Timestamp = model.MinAggregate.Timestamp,
         ObisCode = obis.ToCode(),
         Unit = obis.ToUnit(),
-        Value = obis.GetValue(model.MinAggregate)
+        Value = obis.GetValue(model.MinAggregate),
       })
       .Concat(
-        obis
-          .Select(obis => new AccountingPeriodReportModel
-          {
-            MeasurementLocationCode = GetMeasurementLocationCode(model),
-            Timestamp = model.MaxAggregate.Timestamp,
-            ObisCode = obis.ToCode(),
-            Unit = obis.ToUnit(),
-            Value = obis.GetValue(model.MaxAggregate)
-          }))
+        obis.Select(obis => new AccountingPeriodReportModel
+        {
+          MeasurementLocationCode = GetMeasurementLocationCode(model),
+          Timestamp = model.MaxAggregate.Timestamp,
+          ObisCode = obis.ToCode(),
+          Unit = obis.ToUnit(),
+          Value = obis.GetValue(model.MaxAggregate),
+        })
+      )
       .ToList();
   }
 
@@ -329,41 +353,39 @@ public class ReportQueries(
   {
     var model = new LoadCurveReportBasisModel
     {
-      Location = modelEntityConverter
-        .ToModel<LocationModel>(entity.Location),
-      NetworkUser = modelEntityConverter
-        .ToModel<NetworkUserModel>(entity.NetworkUser),
-      Catalogue = modelEntityConverter
-        .ToModel<NetworkUserCatalogueModel>(entity.Catalogue),
-      MeasurementLocation = modelEntityConverter
-        .ToModel<NetworkUserMeasurementLocationModel>(
-          entity.MeasurementLocation),
-      Meter = modelEntityConverter
-        .ToModel<MeterModel>(entity.Meter),
-      Aggregates = entity.Aggregates
-        .Select(modelEntityConverter.ToModel<AggregateModel>)
-        .ToList()
+      Location = modelEntityConverter.ToModel<LocationModel>(entity.Location),
+      NetworkUser = modelEntityConverter.ToModel<NetworkUserModel>(
+        entity.NetworkUser
+      ),
+      Catalogue = modelEntityConverter.ToModel<NetworkUserCatalogueModel>(
+        entity.Catalogue
+      ),
+      MeasurementLocation =
+        modelEntityConverter.ToModel<NetworkUserMeasurementLocationModel>(
+          entity.MeasurementLocation
+        ),
+      Meter = modelEntityConverter.ToModel<MeterModel>(entity.Meter),
+      Aggregates = entity
+        .Aggregates.Select(modelEntityConverter.ToModel<AggregateModel>)
+        .ToList(),
     };
 
-    return model.Aggregates
-      .Select(aggregate => new LoadCurveReportModel
+    return model
+      .Aggregates.Select(aggregate => new LoadCurveReportModel
       {
         MeasurementLocationCode = GetMeasurementLocationCode(model),
         Timestamp = aggregate.Timestamp,
         ObisCode = obis.ToCode(),
         MeterId = model.Meter.Id,
         Energy_kx = obis.GetValue(aggregate),
-        Power_kx = obis.GetDerivedValue(aggregate)
+        Power_kx = obis.GetDerivedValue(aggregate),
       })
       .ToList();
   }
 
-  private static string GetMeasurementLocationCode(
-    ReportBasisModel basis
-  )
+  private static string GetMeasurementLocationCode(ReportBasisModel basis)
   {
-    return
-      basis.Location.Id.PadLeft(3, '0')
+    return basis.Location.Id.PadLeft(3, '0')
       + basis.MeasurementLocation.Id.PadLeft(9, '0');
   }
 }

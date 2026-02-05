@@ -5,9 +5,7 @@ using Ozds.Data.Entities.Complex;
 namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class AggregateMeasureModelEntityConverter
-  : ConcreteModelEntityConverter<
-    AggregateMeasureModel,
-    AggregateMeasureEntity>
+  : ConcreteModelEntityConverter<AggregateMeasureModel, AggregateMeasureEntity>
 {
 #pragma warning disable S1185 // Overriding members should do more than simply call the same member in the base class
   public override void InitializeEntity(

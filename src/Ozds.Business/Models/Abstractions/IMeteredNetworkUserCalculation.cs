@@ -7,17 +7,13 @@ public interface IMeteredNetworkUserCalculation : INetworkUserCalculation
 {
   public UsageMeterFeeCalculationItemModel UsageMeterFee { get; }
 
-  public SupplyActiveEnergyTotalImportT1CalculationItemModel
-    SupplyActiveEnergyTotalImportT1 { get; }
+  public SupplyActiveEnergyTotalImportT1CalculationItemModel SupplyActiveEnergyTotalImportT1 { get; }
 
-  public SupplyActiveEnergyTotalImportT2CalculationItemModel
-    SupplyActiveEnergyTotalImportT2 { get; }
+  public SupplyActiveEnergyTotalImportT2CalculationItemModel SupplyActiveEnergyTotalImportT2 { get; }
 
-  public SupplyBusinessUsageCalculationItemModel
-    SupplyBusinessUsageFee { get; }
+  public SupplyBusinessUsageCalculationItemModel SupplyBusinessUsageFee { get; }
 
-  public SupplyRenewableEnergyCalculationItemModel
-    SupplyRenewableEnergyFee { get; }
+  public SupplyRenewableEnergyCalculationItemModel SupplyRenewableEnergyFee { get; }
 
   public decimal UsageFeeTotal_EUR { get; }
   public decimal SupplyFeeTotal_EUR { get; }

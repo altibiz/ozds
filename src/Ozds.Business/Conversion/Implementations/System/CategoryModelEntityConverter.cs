@@ -17,7 +17,7 @@ public class CategoryModelEntityConverter
       CategoryModel.Audit => CategoryEntity.Audit,
       CategoryModel.Error => CategoryEntity.Error,
       CategoryModel.Lifecycle => CategoryEntity.Lifecycle,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 
@@ -31,7 +31,7 @@ public class CategoryModelEntityConverter
       CategoryEntity.Audit => CategoryModel.Audit,
       CategoryEntity.Error => CategoryModel.Error,
       CategoryEntity.Lifecycle => CategoryModel.Lifecycle,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 }

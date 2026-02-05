@@ -36,7 +36,7 @@ public enum LevelEntity
   ///   Use for things that make the system unusable on the server level like
   ///   migration failures.
   /// </summary>
-  Critical
+  Critical,
 }
 
 public class LevelEntityTypeConfiguration : IModelConfiguration
@@ -47,8 +47,8 @@ public class LevelEntityTypeConfiguration : IModelConfiguration
   }
 }
 
-public class
-  LevelEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class LevelEntityNpgsqlDataSourceConfiguration
+  : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

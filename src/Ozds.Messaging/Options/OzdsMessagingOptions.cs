@@ -29,23 +29,20 @@ public class OzdsMessagingSagaOptions
   public string NetworkUserInvoiceState { get; set; } = default!;
 }
 
-public interface IOzdsMessagingParsedConnectionString
-{
-}
+public interface IOzdsMessagingParsedConnectionString { }
 
 public class OzdsMessagingParsedRabbitMqConnectionString
   : IOzdsMessagingParsedConnectionString
 {
-  public OzdsMessagingParsedRabbitMqConnectionString(
-    string connectionString
-  )
+  public OzdsMessagingParsedRabbitMqConnectionString(string connectionString)
   {
     var dictionary = connectionString
       .Replace("amqp://", "")
       .Split(';')
       .ToDictionary(
         x => x.Split('=')[0],
-        x => string.Join('=', x.Split('=')[1..]));
+        x => string.Join('=', x.Split('=')[1..])
+      );
 
     Host = dictionary["Host"];
     VirtualHost = dictionary["VirtualHost"];
@@ -78,9 +75,8 @@ public class OzdsMessagingParsedAzureServiceBusConnectionString
   public string ConnectionString { get; set; }
 }
 
-public class ConfigureOzdsMessagingOptions(
-  IConfiguration configuration
-) : IConfigureOptions<OzdsMessagingOptions>
+public class ConfigureOzdsMessagingOptions(IConfiguration configuration)
+  : IConfigureOptions<OzdsMessagingOptions>
 {
   public void Configure(OzdsMessagingOptions options)
   {
@@ -101,8 +97,8 @@ public class ConfigureOzdsMessagingOptions(
     IConfiguration configuration
   )
   {
-    var connectionString = configuration
-        .GetValue<string?>("Ozds:Messaging:ConnectionString")
+    var connectionString =
+      configuration.GetValue<string?>("Ozds:Messaging:ConnectionString")
       ?? string.Empty;
 
     if (connectionString.StartsWith("amqp://"))
@@ -111,6 +107,7 @@ public class ConfigureOzdsMessagingOptions(
     }
 
     return new OzdsMessagingParsedAzureServiceBusConnectionString(
-      connectionString);
+      connectionString
+    );
   }
 }

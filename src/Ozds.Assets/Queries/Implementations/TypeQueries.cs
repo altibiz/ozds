@@ -5,10 +5,7 @@ namespace Ozds.Assets.Queries.Implementations;
 
 public class TypeQueries : ITypeQueries
 {
-  public string ResolveHumanFriendlyTypeName(
-    Type type,
-    bool trim = false
-  )
+  public string ResolveHumanFriendlyTypeName(Type type, bool trim = false)
   {
     return ResolveHumanFriendlyTypeName(type, type.Name, trim);
   }
@@ -28,14 +25,14 @@ public class TypeQueries : ITypeQueries
     var candidates = assembly
       .GetTypes()
       .Where(type =>
-        type.Namespace != null
-        && type.Namespace.StartsWith(@namespace))
+        type.Namespace != null && type.Namespace.StartsWith(@namespace)
+      )
       .ToList();
 
-    return candidates
-      .FirstOrDefault(type =>
-        ResolveHumanFriendlyTypeName(type, type.Name, true)
-        == ResolveHumanFriendlyTypeName(type, name, true));
+    return candidates.FirstOrDefault(type =>
+      ResolveHumanFriendlyTypeName(type, type.Name, true)
+      == ResolveHumanFriendlyTypeName(type, name, true)
+    );
   }
 
   public IEnumerable<Type> ResolveSubtypes(
@@ -49,20 +46,23 @@ public class TypeQueries : ITypeQueries
       : [assembly];
 
     return @namespace is null
-      ? assemblies
-        .SelectMany(assembly => assembly
+      ? assemblies.SelectMany(assembly =>
+        assembly
           .GetTypes()
           .Where(assemblyType =>
-            assemblyType.IsAssignableTo(type)
-            && !assemblyType.IsAbstract))
-      : assemblies
-        .SelectMany(assembly => assembly
+            assemblyType.IsAssignableTo(type) && !assemblyType.IsAbstract
+          )
+      )
+      : assemblies.SelectMany(assembly =>
+        assembly
           .GetTypes()
           .Where(assemblyType =>
             assemblyType.Namespace is not null
             && assemblyType.Namespace.StartsWith(@namespace)
             && assemblyType.IsAssignableTo(type)
-            && !assemblyType.IsAbstract));
+            && !assemblyType.IsAbstract
+          )
+      );
   }
 
   private static string ResolveHumanFriendlyTypeName(
@@ -108,7 +108,8 @@ public class TypeQueries : ITypeQueries
 
     var genericArgs = string.Join(
       ", ",
-      type.GetGenericArguments().Select(x => x.Name));
+      type.GetGenericArguments().Select(x => x.Name)
+    );
     return $"{baseName}<{genericArgs}>";
   }
 }

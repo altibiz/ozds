@@ -8,14 +8,12 @@ using Ozds.Jobs.Manager.Abstractions;
 
 namespace Ozds.Business.Reactors.Implementations;
 
-public class DataMeterChangeReactor(
-  IServiceProvider serviceProvider
-) : Reactor<
-  DataModelsChangedEventArgs,
-  IDataModelsChangedSubscriber,
-  DataMeterChangeHandler>(serviceProvider)
-{
-}
+public class DataMeterChangeReactor(IServiceProvider serviceProvider)
+  : Reactor<
+    DataModelsChangedEventArgs,
+    IDataModelsChangedSubscriber,
+    DataMeterChangeHandler
+  >(serviceProvider) { }
 
 public class DataMeterChangeHandler(
   IMeterJobManager manager,
@@ -24,34 +22,36 @@ public class DataMeterChangeHandler(
 ) : Handler<DataModelsChangedEventArgs>
 {
   public override async Task AfterStartAsync(
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var page = 0;
-    var result = await trackableQueries
-      .Read<IMeter>(page, cancellationToken);
+    var result = await trackableQueries.Read<IMeter>(page, cancellationToken);
     while (result.Items.Count > 0)
     {
       await manager.EnsureInactivityMonitorJobs(
         result.Items.Select(x => new MeterInactivityMonitorDetails(
           x.Id,
-          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
+          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod)
+        )),
         cancellationToken
       );
 
-      result = await trackableQueries
-        .Read<IMeter>(
-          ++page,
-          cancellationToken,
-          QueryConstants.DefaultReactorPageCount);
+      result = await trackableQueries.Read<IMeter>(
+        ++page,
+        cancellationToken,
+        QueryConstants.DefaultReactorPageCount
+      );
     }
   }
 
   public override async Task Handle(
     DataModelsChangedEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
-    var added = eventArgs.Models
-      .Where(x => x.State == DataModelChangedState.Added)
+    var added = eventArgs
+      .Models.Where(x => x.State == DataModelChangedState.Added)
       .Select(x => x.Model)
       .OfType<IMeter>()
       .ToList();
@@ -60,13 +60,14 @@ public class DataMeterChangeHandler(
       await manager.EnsureInactivityMonitorJobs(
         added.Select(x => new MeterInactivityMonitorDetails(
           x.Id,
-          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
+          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod)
+        )),
         cancellationToken
       );
     }
 
-    var modified = eventArgs.Models
-      .Where(x => x.State == DataModelChangedState.Modified)
+    var modified = eventArgs
+      .Models.Where(x => x.State == DataModelChangedState.Modified)
       .Select(x => x.Model)
       .OfType<IMeter>()
       .ToList();
@@ -75,13 +76,14 @@ public class DataMeterChangeHandler(
       await manager.RescheduleInactivityMonitorJobs(
         modified.Select(x => new MeterInactivityMonitorDetails(
           x.Id,
-          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod))),
+          timeQueries.PeriodTimeSpan(x.MaxInactivityPeriod)
+        )),
         cancellationToken
       );
     }
 
-    var removed = eventArgs.Models
-      .Where(x => x.State == DataModelChangedState.Removed)
+    var removed = eventArgs
+      .Models.Where(x => x.State == DataModelChangedState.Removed)
       .Select(x => x.Model)
       .OfType<IMeter>()
       .ToList();

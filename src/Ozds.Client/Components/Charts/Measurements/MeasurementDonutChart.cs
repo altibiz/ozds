@@ -17,8 +17,7 @@ public partial class MeasurementDonutChart : OzdsComponentBase
   private ApexChart<IMeasurement>? _chart;
 
   private ApexChartOptions<IMeasurement> _options =
-    new ApexChartOptions<IMeasurement>()
-      .WithFixedScriptPath();
+    new ApexChartOptions<IMeasurement>().WithFixedScriptPath();
 
   [CascadingParameter]
   public Breakpoint Breakpoint { get; set; }
@@ -69,13 +68,17 @@ public partial class MeasurementDonutChart : OzdsComponentBase
     var options = _options;
     options.Chart.Id = _id;
 
-    var maxPower = Parameters.Measurements.Items
-      .Select(x => x.ActivePower_W.TariffUnary().DuplexImport().PhaseSum())
+    var maxPower = Parameters
+      .Measurements.Items.Select(x =>
+        x.ActivePower_W.TariffUnary().DuplexImport().PhaseSum()
+      )
       .OrderByDescending(x => x)
       .Cast<decimal?>()
       .FirstOrDefault();
-    if (Parameters.Measure == MeasureModel.ActivePower
-      && Parameters.Meters.Count == 1)
+    if (
+      Parameters.Measure == MeasureModel.ActivePower
+      && Parameters.Meters.Count == 1
+    )
     {
       options = _options.WithActivePower(
         $"{Parameters.Meters.First().Id} {Translate("CONNECTION POWER")}",
@@ -87,15 +90,17 @@ public partial class MeasurementDonutChart : OzdsComponentBase
     var measure =
       $"{Translate(Parameters.Measure.ToTitle())}"
       + $" ({Parameters.Measure.ToUnit()})";
-    options = Breakpoint <= Breakpoint.Sm
-      ? options.WithSmAndDown(measure)
-      : options.WithMdAndUp(measure);
+    options =
+      Breakpoint <= Breakpoint.Sm
+        ? options.WithSmAndDown(measure)
+        : options.WithMdAndUp(measure);
 
     var now = ClockQueries.Now();
     var timeSpan = TimeQueries.ResolutionTimeSpan(
       Parameters.Resolution,
       now,
-      Parameters.Multiplier);
+      Parameters.Multiplier
+    );
     if (timeSpan.TotalDays > 1)
     {
       options = options.WithShortDate();

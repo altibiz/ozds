@@ -60,12 +60,11 @@ public static class TypeExtensions
 
   public static IEnumerable GetNullableEnumValues(this Type type)
   {
-    var isNullable = type.IsGenericType
+    var isNullable =
+      type.IsGenericType
       && type.GetGenericTypeDefinition() == typeof(Nullable<>);
 
-    var enumType = isNullable
-      ? type.GetGenericArguments().First()
-      : type;
+    var enumType = isNullable ? type.GetGenericArguments().First() : type;
 
     foreach (var item in Enum.GetValues(enumType))
     {

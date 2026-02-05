@@ -33,7 +33,8 @@ public class MeterModel : TrackableModel, IMeter
   }
 
   public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
+    ValidationContext validationContext
+  )
   {
     foreach (var validationResult in base.Validate(validationContext))
     {
@@ -46,12 +47,13 @@ public class MeterModel : TrackableModel, IMeter
       {
         yield return new ValidationResult(
           "ID must be set",
-          new[] { nameof(Id) });
+          new[] { nameof(Id) }
+        );
       }
       else
       {
-        var convention = validationContext
-          .GetRequiredService<MeterNamingConvention>();
+        var convention =
+          validationContext.GetRequiredService<MeterNamingConvention>();
 
         ValidationResult? validationResult = null;
         try
@@ -62,14 +64,16 @@ public class MeterModel : TrackableModel, IMeter
           {
             validationResult = new ValidationResult(
               $"Unconventional meter ID {Id} for {actualType}",
-              new[] { nameof(Id) });
+              new[] { nameof(Id) }
+            );
           }
         }
         catch (Exception)
         {
           validationResult = new ValidationResult(
             $"Unconventional meter ID {Id}",
-            new[] { nameof(Id) });
+            new[] { nameof(Id) }
+          );
         }
 
         if (validationResult is not null)
@@ -80,41 +84,47 @@ public class MeterModel : TrackableModel, IMeter
     }
 
     if (
-      validationContext.MemberName is null or nameof(ConnectionPower_W) &&
-      ConnectionPower_W <= 0)
+      validationContext.MemberName is null or nameof(ConnectionPower_W)
+      && ConnectionPower_W <= 0
+    )
     {
       yield return new ValidationResult(
         "Connection power must be greater than 0",
-        new[] { nameof(ConnectionPower_W) });
+        new[] { nameof(ConnectionPower_W) }
+      );
     }
 
     if (
-      validationContext.MemberName is null or nameof(Phases) &&
-      Phases.Count == 0)
+      validationContext.MemberName is null or nameof(Phases)
+      && Phases.Count == 0
+    )
     {
       yield return new ValidationResult(
         "At least one phase must be set",
-        new[] { nameof(Phases) });
+        new[] { nameof(Phases) }
+      );
     }
 
     if (
-      validationContext.MemberName is null or nameof(Phases) &&
-      Phases.Count > 3
+      validationContext.MemberName is null or nameof(Phases)
+      && Phases.Count > 3
     )
     {
       yield return new ValidationResult(
         "Maximum of three phases can be set",
-        new[] { nameof(Phases) });
+        new[] { nameof(Phases) }
+      );
     }
 
     if (
-      validationContext.MemberName is null or nameof(Phases) &&
-      Phases.Count != Phases.Distinct().Count()
+      validationContext.MemberName is null or nameof(Phases)
+      && Phases.Count != Phases.Distinct().Count()
     )
     {
       yield return new ValidationResult(
         "Phases must be unique",
-        new[] { nameof(Phases) });
+        new[] { nameof(Phases) }
+      );
     }
   }
 }

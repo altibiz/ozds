@@ -7,7 +7,7 @@ public enum IntervalModel
 {
   QuarterHour,
   Day,
-  Month
+  Month,
 }
 
 public static class IntervalModelExtensions
@@ -19,7 +19,7 @@ public static class IntervalModelExtensions
       DataIntervalEntity.QuarterHour => IntervalModel.QuarterHour,
       DataIntervalEntity.Day => IntervalModel.Day,
       DataIntervalEntity.Month => IntervalModel.Month,
-      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null),
     };
   }
 
@@ -30,7 +30,7 @@ public static class IntervalModelExtensions
       IntervalModel.QuarterHour => DataIntervalEntity.QuarterHour,
       IntervalModel.Day => DataIntervalEntity.Day,
       IntervalModel.Month => DataIntervalEntity.Month,
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -41,7 +41,7 @@ public static class IntervalModelExtensions
       TimeIntervalEntity.QuarterHour => IntervalModel.QuarterHour,
       TimeIntervalEntity.Day => IntervalModel.Day,
       TimeIntervalEntity.Month => IntervalModel.Month,
-      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null),
     };
   }
 
@@ -52,7 +52,7 @@ public static class IntervalModelExtensions
       IntervalModel.QuarterHour => TimeIntervalEntity.QuarterHour,
       IntervalModel.Day => TimeIntervalEntity.Day,
       IntervalModel.Month => TimeIntervalEntity.Month,
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 }

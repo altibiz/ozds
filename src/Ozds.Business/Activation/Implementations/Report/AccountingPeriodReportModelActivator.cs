@@ -10,7 +10,8 @@ public class AccountingPeriodReportModelActivator(
   IServiceProvider serviceProvider
 )
   : InheritingModelActivator<AccountingPeriodReportModel, ReportModel>(
-    serviceProvider)
+    serviceProvider
+  )
 {
   public override void Initialize(AccountingPeriodReportModel model)
   {

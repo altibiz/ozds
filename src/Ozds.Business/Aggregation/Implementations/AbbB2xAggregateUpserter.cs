@@ -9,7 +9,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
 {
   protected override AbbB2xAggregateModel UpsertConcreteModel(
     AbbB2xAggregateModel lhs,
-    AbbB2xAggregateModel rhs)
+    AbbB2xAggregateModel rhs
+  )
   {
     return new AbbB2xAggregateModel
     {
@@ -84,8 +85,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyL1ImportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerL1ImportT0_W = lhs.DerivedActivePowerL1ImportT0_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerL1ImportT0_W =
+        lhs.DerivedActivePowerL1ImportT0_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL1ImportT0_W,
           rhs.QuarterHourCount,
@@ -100,8 +101,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyL2ImportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerL2ImportT0_W = lhs.DerivedActivePowerL2ImportT0_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerL2ImportT0_W =
+        lhs.DerivedActivePowerL2ImportT0_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL2ImportT0_W,
           rhs.QuarterHourCount,
@@ -116,8 +117,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyL3ImportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerL3ImportT0_W = lhs.DerivedActivePowerL3ImportT0_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerL3ImportT0_W =
+        lhs.DerivedActivePowerL3ImportT0_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL3ImportT0_W,
           rhs.QuarterHourCount,
@@ -132,8 +133,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyL1ExportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerL1ExportT0_W = lhs.DerivedActivePowerL1ExportT0_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerL1ExportT0_W =
+        lhs.DerivedActivePowerL1ExportT0_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL1ExportT0_W,
           rhs.QuarterHourCount,
@@ -148,8 +149,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyL2ExportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerL2ExportT0_W = lhs.DerivedActivePowerL2ExportT0_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerL2ExportT0_W =
+        lhs.DerivedActivePowerL2ExportT0_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL2ExportT0_W,
           rhs.QuarterHourCount,
@@ -164,8 +165,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyL3ExportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerL3ExportT0_W = lhs.DerivedActivePowerL3ExportT0_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerL3ExportT0_W =
+        lhs.DerivedActivePowerL3ExportT0_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL3ExportT0_W,
           rhs.QuarterHourCount,
@@ -180,9 +181,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ReactiveEnergyL1ImportT0_VARh,
         rhs.Count
       ),
-      DerivedReactivePowerL1ImportT0_VAR = lhs
-        .DerivedReactivePowerL1ImportT0_VAR
-        .UpsertDerivedPowerFromEnergy(
+      DerivedReactivePowerL1ImportT0_VAR =
+        lhs.DerivedReactivePowerL1ImportT0_VAR.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL1ImportT0_VAR,
           rhs.QuarterHourCount,
@@ -197,9 +197,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ReactiveEnergyL2ImportT0_VARh,
         rhs.Count
       ),
-      DerivedReactivePowerL2ImportT0_VAR = lhs
-        .DerivedReactivePowerL2ImportT0_VAR
-        .UpsertDerivedPowerFromEnergy(
+      DerivedReactivePowerL2ImportT0_VAR =
+        lhs.DerivedReactivePowerL2ImportT0_VAR.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL2ImportT0_VAR,
           rhs.QuarterHourCount,
@@ -214,9 +213,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ReactiveEnergyL3ImportT0_VARh,
         rhs.Count
       ),
-      DerivedReactivePowerL3ImportT0_VAR = lhs
-        .DerivedReactivePowerL3ImportT0_VAR
-        .UpsertDerivedPowerFromEnergy(
+      DerivedReactivePowerL3ImportT0_VAR =
+        lhs.DerivedReactivePowerL3ImportT0_VAR.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL3ImportT0_VAR,
           rhs.QuarterHourCount,
@@ -231,9 +229,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ReactiveEnergyL1ExportT0_VARh,
         rhs.Count
       ),
-      DerivedReactivePowerL1ExportT0_VAR = lhs
-        .DerivedReactivePowerL1ExportT0_VAR
-        .UpsertDerivedPowerFromEnergy(
+      DerivedReactivePowerL1ExportT0_VAR =
+        lhs.DerivedReactivePowerL1ExportT0_VAR.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL1ExportT0_VAR,
           rhs.QuarterHourCount,
@@ -248,9 +245,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ReactiveEnergyL2ExportT0_VARh,
         rhs.Count
       ),
-      DerivedReactivePowerL2ExportT0_VAR = lhs
-        .DerivedReactivePowerL2ExportT0_VAR
-        .UpsertDerivedPowerFromEnergy(
+      DerivedReactivePowerL2ExportT0_VAR =
+        lhs.DerivedReactivePowerL2ExportT0_VAR.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL2ExportT0_VAR,
           rhs.QuarterHourCount,
@@ -265,9 +261,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ReactiveEnergyL3ExportT0_VARh,
         rhs.Count
       ),
-      DerivedReactivePowerL3ExportT0_VAR = lhs
-        .DerivedReactivePowerL3ExportT0_VAR
-        .UpsertDerivedPowerFromEnergy(
+      DerivedReactivePowerL3ExportT0_VAR =
+        lhs.DerivedReactivePowerL3ExportT0_VAR.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerL3ExportT0_VAR,
           rhs.QuarterHourCount,
@@ -282,8 +277,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyTotalImportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerTotalImportT0_W = lhs.DerivedActivePowerTotalImportT0_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerTotalImportT0_W =
+        lhs.DerivedActivePowerTotalImportT0_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalImportT0_W,
           rhs.QuarterHourCount,
@@ -298,8 +293,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyTotalExportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerTotalExportT0_W = lhs.DerivedActivePowerTotalExportT0_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerTotalExportT0_W =
+        lhs.DerivedActivePowerTotalExportT0_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalExportT0_W,
           rhs.QuarterHourCount,
@@ -315,9 +310,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
           rhs.ReactiveEnergyTotalImportT0_VARh,
           rhs.Count
         ),
-      DerivedReactivePowerTotalImportT0_VAR = lhs
-        .DerivedReactivePowerTotalImportT0_VAR
-        .UpsertDerivedPowerFromEnergy(
+      DerivedReactivePowerTotalImportT0_VAR =
+        lhs.DerivedReactivePowerTotalImportT0_VAR.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerTotalImportT0_VAR,
           rhs.QuarterHourCount,
@@ -333,9 +327,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
           rhs.ReactiveEnergyTotalExportT0_VARh,
           rhs.Count
         ),
-      DerivedReactivePowerTotalExportT0_VAR = lhs
-        .DerivedReactivePowerTotalExportT0_VAR
-        .UpsertDerivedPowerFromEnergy(
+      DerivedReactivePowerTotalExportT0_VAR =
+        lhs.DerivedReactivePowerTotalExportT0_VAR.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerTotalExportT0_VAR,
           rhs.QuarterHourCount,
@@ -350,8 +343,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyTotalImportT1_Wh,
         rhs.Count
       ),
-      DerivedActivePowerTotalImportT1_W = lhs.DerivedActivePowerTotalImportT1_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerTotalImportT1_W =
+        lhs.DerivedActivePowerTotalImportT1_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalImportT1_W,
           rhs.QuarterHourCount,
@@ -366,8 +359,8 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyTotalImportT2_Wh,
         rhs.Count
       ),
-      DerivedActivePowerTotalImportT2_W = lhs.DerivedActivePowerTotalImportT2_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerTotalImportT2_W =
+        lhs.DerivedActivePowerTotalImportT2_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalImportT2_W,
           rhs.QuarterHourCount,
@@ -376,7 +369,7 @@ public class AbbB2xAggregateUpserter(TimeQueries time)
           lhs.Timestamp,
           lhs.Interval,
           time
-        )
+        ),
     };
   }
 }

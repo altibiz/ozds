@@ -21,7 +21,8 @@ public class AggregateModelEntityConverter(IServiceProvider serviceProvider)
     entity.Count = model.Count;
     entity.QuarterHourCount = model.QuarterHourCount;
     entity.Interval = modelEntityConverter.ToEntity<IntervalEntity>(
-      model.Interval);
+      model.Interval
+    );
     entity.Timestamp = model.Timestamp;
     entity.MeterId = model.MeterId;
     entity.MeasurementLocationId = model.MeasurementLocationId;
@@ -36,7 +37,8 @@ public class AggregateModelEntityConverter(IServiceProvider serviceProvider)
     model.Count = entity.Count;
     model.QuarterHourCount = entity.QuarterHourCount;
     model.Interval = modelEntityConverter.ToModel<IntervalModel>(
-      entity.Interval);
+      entity.Interval
+    );
     model.Timestamp = entity.Timestamp;
     model.MeterId = entity.MeterId;
     model.MeasurementLocationId = entity.MeasurementLocationId;

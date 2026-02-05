@@ -14,7 +14,7 @@ public static class IntervalExtensions
       DataIntervalEntity.QuarterHour => TimeIntervalEntity.QuarterHour,
       DataIntervalEntity.Day => TimeIntervalEntity.Day,
       DataIntervalEntity.Month => TimeIntervalEntity.Month,
-      _ => throw new ArgumentOutOfRangeException(nameof(interval))
+      _ => throw new ArgumentOutOfRangeException(nameof(interval)),
     };
   }
 }

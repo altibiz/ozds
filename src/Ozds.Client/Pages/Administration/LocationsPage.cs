@@ -17,7 +17,8 @@ public partial class LocationsPage : OzdsComponentBase
   private async Task<PaginatedList<LocationModel>> OnPageAsync(
     string search,
     int page,
-    int pageCount)
+    int pageCount
+  )
   {
     var queries = ScopedServices.GetRequiredService<LocationQueries>();
 

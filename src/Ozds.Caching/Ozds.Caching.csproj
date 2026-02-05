@@ -1,18 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="../../src/Ozds.Assets/Ozds.Assets.csproj" />
-	  <ProjectReference Include="../../src/Ozds.Time/Ozds.Time.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Ozds.Assets/Ozds.Assets.csproj" />
+    <ProjectReference Include="../../src/Ozds.Time/Ozds.Time.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
     <PackageReference Include="System.Runtime.Caching" />
     <PackageReference Include="System.Linq.Async" />
   </ItemGroup>
-
 </Project>

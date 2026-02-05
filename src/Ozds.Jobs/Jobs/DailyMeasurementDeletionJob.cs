@@ -12,7 +12,7 @@ public class DailyMeasurementDeletionJob(
 {
   private static readonly JsonSerializerOptions JsonSerializerOptions = new()
   {
-    WriteIndented = true
+    WriteIndented = true,
   };
 
   public DateTimeOffset ScheduledAt { get; set; } = default!;
@@ -25,12 +25,13 @@ public class DailyMeasurementDeletionJob(
       StartedAt = context.Trigger.StartTimeUtc,
       ScheduledFireAt = context.ScheduledFireTimeUtc ?? default,
       FiredAt = context.FireTimeUtc,
-      RefireCount = context.RefireCount
+      RefireCount = context.RefireCount,
     };
 
     logger.LogDebug(
       "Executing job for with {EventArgs}",
-      JsonSerializer.Serialize(eventArgs, JsonSerializerOptions));
+      JsonSerializer.Serialize(eventArgs, JsonSerializerOptions)
+    );
 
     publisher.Publish(eventArgs);
 

@@ -7,7 +7,7 @@ public enum PushClientBufferBehavior
 {
   Realtime,
   Buffer,
-  Aggregate
+  Aggregate,
 }
 
 public static class PushClientBufferBehaviorExtensions
@@ -20,7 +20,8 @@ public static class PushClientBufferBehaviorExtensions
       PushClientBufferBehavior.Buffer => "buffer",
       PushClientBufferBehavior.Aggregate => "aggregate",
       _ => throw new InvalidOperationException(
-        $"Unknown buffer behavior {bufferBehavior}")
+        $"Unknown buffer behavior {bufferBehavior}"
+      ),
     };
   }
 }
@@ -42,9 +43,13 @@ public class PushClient(
   {
     var client = httpClientFactory.CreateClient(Name);
     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-      "Bearer", messengerApiKey);
+      "Bearer",
+      messengerApiKey
+    );
     client.DefaultRequestHeaders.Add(
-      "X-Buffer-Behavior", bufferBehavior.ToValue());
+      "X-Buffer-Behavior",
+      bufferBehavior.ToValue()
+    );
 
     logger.LogInformation(
       "Pushing {Count} measurements for messenger {MessengerId}",
@@ -62,12 +67,11 @@ public class PushClient(
       retries++;
       try
       {
-        var response =
-          await client.PostAsync(
-            $"iot/push/{messengerId}",
-            content,
-            cancellationToken
-          );
+        var response = await client.PostAsync(
+          $"iot/push/{messengerId}",
+          content,
+          cancellationToken
+        );
         success = response.IsSuccessStatusCode;
         if (!success)
         {

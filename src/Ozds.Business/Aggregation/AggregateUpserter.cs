@@ -8,9 +8,10 @@ namespace Ozds.Business.Aggregation;
 
 public class AggregateUpserter(IServiceProvider serviceProvider)
 {
-  private readonly ConcurrentDictionary<(Type, Type), IAggregateUpserter>
-    cache =
-      new();
+  private readonly ConcurrentDictionary<
+    (Type, Type),
+    IAggregateUpserter
+  > cache = new();
 
   public TModel UpsertAggregate<TModel>(TModel lhs, TModel rhs)
     where TModel : IAggregate
@@ -36,7 +37,8 @@ public class AggregateUpserter(IServiceProvider serviceProvider)
     currents.AddRange(
       Enumerable
         .Range(0, Enum.GetValues<IntervalModel>().Select(x => (int)x).Max() + 1)
-        .Select(_ => (TModel?)default));
+        .Select(_ => (TModel?)default)
+    );
     currents[(int)current.Interval] = current;
 
     while (enumerator.MoveNext())
@@ -51,12 +53,14 @@ public class AggregateUpserter(IServiceProvider serviceProvider)
 
       if (next.GetType() == nonNullCurrent.GetType())
       {
-        if (next.Timestamp == nonNullCurrent.Timestamp
+        if (
+          next.Timestamp == nonNullCurrent.Timestamp
           && next.MeterId == nonNullCurrent.MeterId
-          && next.MeasurementLocationId == nonNullCurrent.MeasurementLocationId)
+          && next.MeasurementLocationId == nonNullCurrent.MeasurementLocationId
+        )
         {
-          currents[(int)next.Interval] = (TModel)upserter
-            .Upsert(nonNullCurrent, next);
+          currents[(int)next.Interval] = (TModel)
+            upserter.Upsert(nonNullCurrent, next);
         }
         else
         {
@@ -101,7 +105,8 @@ public class AggregateUpserter(IServiceProvider serviceProvider)
     currents.AddRange(
       Enumerable
         .Range(0, Enum.GetValues<IntervalModel>().Select(x => (int)x).Max() + 1)
-        .Select(_ => (TModel?)default));
+        .Select(_ => (TModel?)default)
+    );
     currents[(int)current.Interval] = current;
 
     while (await enumerator.MoveNextAsync())
@@ -116,12 +121,14 @@ public class AggregateUpserter(IServiceProvider serviceProvider)
 
       if (next.GetType() == nonNullCurrent.GetType())
       {
-        if (next.Timestamp == nonNullCurrent.Timestamp
+        if (
+          next.Timestamp == nonNullCurrent.Timestamp
           && next.MeterId == nonNullCurrent.MeterId
-          && next.MeasurementLocationId == nonNullCurrent.MeasurementLocationId)
+          && next.MeasurementLocationId == nonNullCurrent.MeasurementLocationId
+        )
         {
-          currents[(int)next.Interval] = (TModel)upserter
-            .Upsert(nonNullCurrent, next);
+          currents[(int)next.Interval] = (TModel)
+            upserter.Upsert(nonNullCurrent, next);
         }
         else
         {
@@ -182,7 +189,8 @@ public class AggregateUpserter(IServiceProvider serviceProvider)
     currents.AddRange(
       Enumerable
         .Range(0, Enum.GetValues<IntervalModel>().Select(x => (int)x).Max() + 1)
-        .Select(_ => (IAggregate?)default));
+        .Select(_ => (IAggregate?)default)
+    );
     currents[(int)current.Interval] = current;
 
     while (enumerator.MoveNext())
@@ -204,12 +212,13 @@ public class AggregateUpserter(IServiceProvider serviceProvider)
 
       if (next.GetType() == nonNullCurrent.GetType())
       {
-        if (next.Timestamp == nonNullCurrent.Timestamp
+        if (
+          next.Timestamp == nonNullCurrent.Timestamp
           && next.MeterId == nonNullCurrent.MeterId
-          && next.MeasurementLocationId == nonNullCurrent.MeasurementLocationId)
+          && next.MeasurementLocationId == nonNullCurrent.MeasurementLocationId
+        )
         {
-          currents[(int)next.Interval] = upserter
-            .Upsert(nonNullCurrent, next);
+          currents[(int)next.Interval] = upserter.Upsert(nonNullCurrent, next);
         }
         else
         {
@@ -271,7 +280,8 @@ public class AggregateUpserter(IServiceProvider serviceProvider)
     currents.AddRange(
       Enumerable
         .Range(0, Enum.GetValues<IntervalModel>().Select(x => (int)x).Max() + 1)
-        .Select(_ => (IAggregate?)default));
+        .Select(_ => (IAggregate?)default)
+    );
     currents[(int)current.Interval] = current;
 
     while (await enumerator.MoveNextAsync())
@@ -293,12 +303,13 @@ public class AggregateUpserter(IServiceProvider serviceProvider)
 
       if (next.GetType() == nonNullCurrent.GetType())
       {
-        if (next.Timestamp == nonNullCurrent.Timestamp
+        if (
+          next.Timestamp == nonNullCurrent.Timestamp
           && next.MeterId == nonNullCurrent.MeterId
-          && next.MeasurementLocationId == nonNullCurrent.MeasurementLocationId)
+          && next.MeasurementLocationId == nonNullCurrent.MeasurementLocationId
+        )
         {
-          currents[(int)next.Interval] = upserter
-            .Upsert(nonNullCurrent, next);
+          currents[(int)next.Interval] = upserter.Upsert(nonNullCurrent, next);
         }
         else
         {
@@ -332,13 +343,15 @@ public class AggregateUpserter(IServiceProvider serviceProvider)
       return upserter;
     }
 
-    upserter = serviceProvider
+    upserter =
+      serviceProvider
         .GetServices<IAggregateUpserter>()
         .FirstOrDefault(upserter =>
-          upserter.CanUpsert(lhsType)
-          && upserter.CanUpsert(rhsType))
+          upserter.CanUpsert(lhsType) && upserter.CanUpsert(rhsType)
+        )
       ?? throw new InvalidOperationException(
-        $"No upserter found for models {lhsType} and {rhsType}.");
+        $"No upserter found for models {lhsType} and {rhsType}."
+      );
 
     cache.TryAdd((lhsType, rhsType), upserter);
 

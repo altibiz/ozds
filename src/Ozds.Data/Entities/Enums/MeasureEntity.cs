@@ -13,7 +13,7 @@ public enum MeasureEntity
   ApparentPower,
   ActiveEnergy,
   ReactiveEnergy,
-  ApparentEnergy
+  ApparentEnergy,
 }
 
 public class MeasureEntityTypeConfiguration : IModelConfiguration
@@ -24,8 +24,8 @@ public class MeasureEntityTypeConfiguration : IModelConfiguration
   }
 }
 
-public class
-  MeasureEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class MeasureEntityNpgsqlDataSourceConfiguration
+  : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

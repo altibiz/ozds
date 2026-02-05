@@ -18,7 +18,8 @@ namespace Ozds.Data.Migrations
                 defaultValue: 0m,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
         }
 
         /// <inheritdoc />
@@ -30,7 +31,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: true,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
         }
     }
 }

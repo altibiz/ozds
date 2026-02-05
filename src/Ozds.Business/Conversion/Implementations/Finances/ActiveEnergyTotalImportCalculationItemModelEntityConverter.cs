@@ -8,11 +8,13 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 
 public class ActiveEnergyTotalImportCalculationItemModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  ActiveEnergyTotalImportCalculationItemModel,
-  CalculationItemModel,
-  ActiveEnergyTotalImportCalculationItemEntity,
-  CalculationItemEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    ActiveEnergyTotalImportCalculationItemModel,
+    CalculationItemModel,
+    ActiveEnergyTotalImportCalculationItemEntity,
+    CalculationItemEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     ActiveEnergyTotalImportCalculationItemModel model,
@@ -39,70 +41,70 @@ public class ActiveEnergyTotalImportCalculationItemModelEntityConverter(
 
 public class UsageActiveEnergyTotalImportT0CalculationItemModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  UsageActiveEnergyTotalImportT0CalculationItemModel,
-  ActiveEnergyTotalImportCalculationItemModel,
-  UsageActiveEnergyTotalImportT0CalculationItemEntity,
-  ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
-{
-}
+)
+  : InheritingModelEntityConverter<
+    UsageActiveEnergyTotalImportT0CalculationItemModel,
+    ActiveEnergyTotalImportCalculationItemModel,
+    UsageActiveEnergyTotalImportT0CalculationItemEntity,
+    ActiveEnergyTotalImportCalculationItemEntity
+  >(serviceProvider) { }
 
 public class UsageActiveEnergyTotalImportT1CalculationItemModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  UsageActiveEnergyTotalImportT1CalculationItemModel,
-  ActiveEnergyTotalImportCalculationItemModel,
-  UsageActiveEnergyTotalImportT1CalculationItemEntity,
-  ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
-{
-}
+)
+  : InheritingModelEntityConverter<
+    UsageActiveEnergyTotalImportT1CalculationItemModel,
+    ActiveEnergyTotalImportCalculationItemModel,
+    UsageActiveEnergyTotalImportT1CalculationItemEntity,
+    ActiveEnergyTotalImportCalculationItemEntity
+  >(serviceProvider) { }
 
 public class UsageActiveEnergyTotalImportT2CalculationItemModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  UsageActiveEnergyTotalImportT2CalculationItemModel,
-  ActiveEnergyTotalImportCalculationItemModel,
-  UsageActiveEnergyTotalImportT2CalculationItemEntity,
-  ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
-{
-}
+)
+  : InheritingModelEntityConverter<
+    UsageActiveEnergyTotalImportT2CalculationItemModel,
+    ActiveEnergyTotalImportCalculationItemModel,
+    UsageActiveEnergyTotalImportT2CalculationItemEntity,
+    ActiveEnergyTotalImportCalculationItemEntity
+  >(serviceProvider) { }
 
 public class SupplyActiveEnergyTotalImportT1CalculationItemModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  SupplyActiveEnergyTotalImportT1CalculationItemModel,
-  ActiveEnergyTotalImportCalculationItemModel,
-  SupplyActiveEnergyTotalImportT1CalculationItemEntity,
-  ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
-{
-}
+)
+  : InheritingModelEntityConverter<
+    SupplyActiveEnergyTotalImportT1CalculationItemModel,
+    ActiveEnergyTotalImportCalculationItemModel,
+    SupplyActiveEnergyTotalImportT1CalculationItemEntity,
+    ActiveEnergyTotalImportCalculationItemEntity
+  >(serviceProvider) { }
 
 public class SupplyActiveEnergyTotalImportT2CalculationItemModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  SupplyActiveEnergyTotalImportT2CalculationItemModel,
-  ActiveEnergyTotalImportCalculationItemModel,
-  SupplyActiveEnergyTotalImportT2CalculationItemEntity,
-  ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
-{
-}
+)
+  : InheritingModelEntityConverter<
+    SupplyActiveEnergyTotalImportT2CalculationItemModel,
+    ActiveEnergyTotalImportCalculationItemModel,
+    SupplyActiveEnergyTotalImportT2CalculationItemEntity,
+    ActiveEnergyTotalImportCalculationItemEntity
+  >(serviceProvider) { }
 
 public class SupplyBusinessUsageCalculationItemModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  SupplyBusinessUsageCalculationItemModel,
-  ActiveEnergyTotalImportCalculationItemModel,
-  SupplyBusinessUsageCalculationItemEntity,
-  ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
-{
-}
+)
+  : InheritingModelEntityConverter<
+    SupplyBusinessUsageCalculationItemModel,
+    ActiveEnergyTotalImportCalculationItemModel,
+    SupplyBusinessUsageCalculationItemEntity,
+    ActiveEnergyTotalImportCalculationItemEntity
+  >(serviceProvider) { }
 
 public class SupplyRenewableEnergyCalculationItemModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  SupplyRenewableEnergyCalculationItemModel,
-  ActiveEnergyTotalImportCalculationItemModel,
-  SupplyRenewableEnergyCalculationItemEntity,
-  ActiveEnergyTotalImportCalculationItemEntity>(serviceProvider)
-{
-}
+)
+  : InheritingModelEntityConverter<
+    SupplyRenewableEnergyCalculationItemModel,
+    ActiveEnergyTotalImportCalculationItemModel,
+    SupplyRenewableEnergyCalculationItemEntity,
+    ActiveEnergyTotalImportCalculationItemEntity
+  >(serviceProvider) { }

@@ -1,5 +1,3 @@
 namespace Ozds.Messaging.Mutations.Abstractions;
 
-public interface IMutations
-{
-}
+public interface IMutations { }

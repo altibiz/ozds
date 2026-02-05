@@ -8,15 +8,18 @@ namespace Ozds.Business.Conversion.Implementations.System;
 
 public class MeterNotificationModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  MeterNotificationModel,
-  ResolvableNotificationModel,
-  MeterNotificationEntity,
-  ResolvableNotificationEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    MeterNotificationModel,
+    ResolvableNotificationModel,
+    MeterNotificationEntity,
+    ResolvableNotificationEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     MeterNotificationModel model,
-    MeterNotificationEntity entity)
+    MeterNotificationEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.MeterId = model.MeterId;
@@ -24,7 +27,8 @@ public class MeterNotificationModelEntityConverter(
 
   public override void InitializeModel(
     MeterNotificationEntity entity,
-    MeterNotificationModel model)
+    MeterNotificationModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.MeterId = entity.MeterId;

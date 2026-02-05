@@ -34,16 +34,18 @@ public class ApiKeyTypeConfiguration : EntityTypeConfiguration<ApiKeyEntity>
       new[]
       {
         nameof(ApiKeyEntity.PrincipalEntityType),
-        nameof(ApiKeyEntity.PrincipalEntityId)
+        nameof(ApiKeyEntity.PrincipalEntityId),
       },
-      "ix_api_keys_principal_entity_type_principal_entity_id");
+      "ix_api_keys_principal_entity_type_principal_entity_id"
+    );
 
     builder.HasIndex(
       new[]
       {
         nameof(ApiKeyEntity.PrincipalEntityTable),
-        nameof(ApiKeyEntity.PrincipalEntityId)
+        nameof(ApiKeyEntity.PrincipalEntityId),
       },
-      "ix_api_keys_principal_entity_table_principal_entity_id");
+      "ix_api_keys_principal_entity_table_principal_entity_id"
+    );
   }
 }

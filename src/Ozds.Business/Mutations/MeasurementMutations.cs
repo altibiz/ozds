@@ -18,10 +18,7 @@ public class MeasurementMutations(
     CancellationToken cancellationToken
   )
   {
-    await mutations.DeleteOlderThan(
-      threshold,
-      cancellationToken
-    );
+    await mutations.DeleteOlderThan(threshold, cancellationToken);
   }
 
   public async Task<List<IMeasurement>> Create(
@@ -30,8 +27,9 @@ public class MeasurementMutations(
     bool triggerEvents = true
   )
   {
-    var entities = modelEntityConverter
-      .ToEntities<IMeasurementEntity>(measurements);
+    var entities = modelEntityConverter.ToEntities<IMeasurementEntity>(
+      measurements
+    );
 
     var stopwatch = Stopwatch.StartNew();
     var result = await mutations.Create(
@@ -43,11 +41,10 @@ public class MeasurementMutations(
     logger.LogDebug(
       "Upserted {Count} measurements in {Elapsed}",
       result.Count,
-      stopwatch.Elapsed);
+      stopwatch.Elapsed
+    );
 
-    var models = modelEntityConverter
-      .ToModels<IMeasurement>(result)
-      .ToList();
+    var models = modelEntityConverter.ToModels<IMeasurement>(result).ToList();
 
     return models;
   }
@@ -58,10 +55,10 @@ public class MeasurementMutations(
     bool triggerEvents = true
   )
   {
-    var entities = modelEntityConverter
-      .ToEntities<IMeasurementEntity>(
-        measurements,
-        cancellationToken);
+    var entities = modelEntityConverter.ToEntities<IMeasurementEntity>(
+      measurements,
+      cancellationToken
+    );
 
     var stopwatch = Stopwatch.StartNew();
     var result = await mutations.Create(
@@ -73,11 +70,10 @@ public class MeasurementMutations(
     logger.LogDebug(
       "Upserted {Count} measurements in {Elapsed}",
       result.Count,
-      stopwatch.Elapsed);
+      stopwatch.Elapsed
+    );
 
-    var models = modelEntityConverter
-      .ToModels<IMeasurement>(result)
-      .ToList();
+    var models = modelEntityConverter.ToModels<IMeasurement>(result).ToList();
 
     return models;
   }

@@ -15,7 +15,7 @@ public enum OrderOfMagnitudeEntity
   Centi = -2,
   Milli = -3,
   Micro = -6,
-  Nano = -9
+  Nano = -9,
 }
 
 public class OrderOfMagnitudeEntityTypeConfiguration : IModelConfiguration
@@ -26,9 +26,8 @@ public class OrderOfMagnitudeEntityTypeConfiguration : IModelConfiguration
   }
 }
 
-public class
-  OrderOfMagnitudeEntityNpgsqlDataSourceConfiguration :
-  INpgsqlDataSourceConfiguration
+public class OrderOfMagnitudeEntityNpgsqlDataSourceConfiguration
+  : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

@@ -11,6 +11,5 @@ public class AbbB2xMeterModelEntityConverter(IServiceProvider serviceProvider)
     AbbB2xMeterModel,
     MeterModel,
     AbbB2xMeterEntity,
-    MeterEntity>(serviceProvider)
-{
-}
+    MeterEntity
+  >(serviceProvider) { }

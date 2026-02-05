@@ -12,7 +12,7 @@ public class MeterInactivityMonitorJob(
 {
   private static readonly JsonSerializerOptions JsonSerializerOptions = new()
   {
-    WriteIndented = true
+    WriteIndented = true,
   };
 
   public string Id { get; set; } = default!;
@@ -28,13 +28,14 @@ public class MeterInactivityMonitorJob(
       StartedAt = context.Trigger.StartTimeUtc,
       ScheduledFireAt = context.ScheduledFireTimeUtc ?? default,
       FiredAt = context.FireTimeUtc,
-      RefireCount = context.RefireCount
+      RefireCount = context.RefireCount,
     };
 
     logger.LogDebug(
       "Executing job for {Id} with {EventArgs}",
       Id,
-      JsonSerializer.Serialize(eventArgs, JsonSerializerOptions));
+      JsonSerializer.Serialize(eventArgs, JsonSerializerOptions)
+    );
 
     messengerJobPublisher.Publish(eventArgs);
 

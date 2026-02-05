@@ -6,15 +6,14 @@ namespace Ozds.Assets.Queries.Implementations;
 
 public class AssetQueries : IAssetQueries
 {
-  private readonly ConcurrentDictionary<string, string> fontCache =
-    new();
+  private readonly ConcurrentDictionary<string, string> fontCache = new();
 
-  private readonly ConcurrentDictionary<string, string> svgCache =
-    new();
+  private readonly ConcurrentDictionary<string, string> svgCache = new();
 
-  private readonly
-    ConcurrentDictionary<string, Dictionary<string, string>>
-    translationCache = new();
+  private readonly ConcurrentDictionary<
+    string,
+    Dictionary<string, string>
+  > translationCache = new();
 
   public Dictionary<string, string> LoadTranslations(string culture)
   {
@@ -31,9 +30,7 @@ public class AssetQueries : IAssetQueries
     return fontCache.GetOrAdd(name, LoadTtfBase64Uncached);
   }
 
-  private Dictionary<string, string> LoadTranslationsUncached(
-    string culture
-  )
+  private Dictionary<string, string> LoadTranslationsUncached(string culture)
   {
     var fileName = $"Translations.{culture}.xml";
     var stream = Load(fileName);
@@ -65,12 +62,16 @@ public class AssetQueries : IAssetQueries
     var assembly = typeof(AssetQueries).Assembly;
     var fullName = $"{assembly.GetName().Name}.Assets.{name}";
 
-    var stream = assembly.GetManifestResourceStream(fullName) ??
-      throw new InvalidOperationException(
+    var stream =
+      assembly.GetManifestResourceStream(fullName)
+      ?? throw new InvalidOperationException(
         $"Resource {fullName} does not exist."
-        + $" Here are the available resources for the given assembly"
-        + $" '{assembly.GetName().Name}':{Environment.NewLine}"
-        + string.Join(Environment.NewLine, assembly.GetManifestResourceNames())
+          + $" Here are the available resources for the given assembly"
+          + $" '{assembly.GetName().Name}':{Environment.NewLine}"
+          + string.Join(
+            Environment.NewLine,
+            assembly.GetManifestResourceNames()
+          )
       );
     return stream;
   }

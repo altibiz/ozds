@@ -9,7 +9,7 @@ public enum ObisModel
   ActiveEnergyTotalImportT2_kWh,
   ReactiveEnergyTotalImportT0_kVARh,
   ReactiveEnergyTotalExportT0_kVARh,
-  ActivePowerTotalImportT1_kW
+  ActivePowerTotalImportT1_kW,
 }
 
 public static class ObisModelExtensions
@@ -24,7 +24,7 @@ public static class ObisModelExtensions
       "R1_T0" => ObisModel.ReactiveEnergyTotalImportT0_kVARh,
       "R4_T0" => ObisModel.ReactiveEnergyTotalExportT0_kVARh,
       "P+_T1" => ObisModel.ActivePowerTotalImportT1_kW,
-      _ => throw new ArgumentOutOfRangeException(nameof(code), code, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(code), code, null),
     };
   }
 
@@ -38,7 +38,7 @@ public static class ObisModelExtensions
       ObisModel.ReactiveEnergyTotalImportT0_kVARh => "R1_T0",
       ObisModel.ReactiveEnergyTotalExportT0_kVARh => "R4_T0",
       ObisModel.ActivePowerTotalImportT1_kW => "P+_T1",
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -52,24 +52,25 @@ public static class ObisModelExtensions
       ObisModel.ReactiveEnergyTotalImportT0_kVARh => "kVARh",
       ObisModel.ReactiveEnergyTotalExportT0_kVARh => "kVARh",
       ObisModel.ActivePowerTotalImportT1_kW => "kW",
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
   public static decimal GetValue(
     this ObisModel model,
     IAggregate min,
-    IAggregate max)
+    IAggregate max
+  )
   {
     if (model is ObisModel.ActiveEnergyTotalImportT0_kWh)
     {
-      var maxEnergy = max.ActiveEnergy_Wh
-        .TariffUnary()
+      var maxEnergy = max
+        .ActiveEnergy_Wh.TariffUnary()
         .DuplexImport()
         .AggregateMin()
         .PhaseSum();
-      var minEnergy = min.ActiveEnergy_Wh
-        .TariffUnary()
+      var minEnergy = min
+        .ActiveEnergy_Wh.TariffUnary()
         .DuplexImport()
         .AggregateMin()
         .PhaseSum();
@@ -78,14 +79,14 @@ public static class ObisModelExtensions
 
     if (model is ObisModel.ActiveEnergyTotalImportT1_kWh)
     {
-      var maxEnergy = max.ActiveEnergy_Wh
-        .TariffBinary().T1
-        .DuplexImport()
+      var maxEnergy = max
+        .ActiveEnergy_Wh.TariffBinary()
+        .T1.DuplexImport()
         .AggregateMin()
         .PhaseSum();
-      var minEnergy = min.ActiveEnergy_Wh
-        .TariffBinary().T1
-        .DuplexImport()
+      var minEnergy = min
+        .ActiveEnergy_Wh.TariffBinary()
+        .T1.DuplexImport()
         .AggregateMin()
         .PhaseSum();
       return (maxEnergy - minEnergy) / 1000;
@@ -93,14 +94,14 @@ public static class ObisModelExtensions
 
     if (model is ObisModel.ActiveEnergyTotalImportT2_kWh)
     {
-      var maxEnergy = max.ActiveEnergy_Wh
-        .TariffBinary().T2
-        .DuplexImport()
+      var maxEnergy = max
+        .ActiveEnergy_Wh.TariffBinary()
+        .T2.DuplexImport()
         .AggregateMin()
         .PhaseSum();
-      var minEnergy = min.ActiveEnergy_Wh
-        .TariffBinary().T2
-        .DuplexImport()
+      var minEnergy = min
+        .ActiveEnergy_Wh.TariffBinary()
+        .T2.DuplexImport()
         .AggregateMin()
         .PhaseSum();
       return (maxEnergy - minEnergy) / 1000;
@@ -108,13 +109,13 @@ public static class ObisModelExtensions
 
     if (model is ObisModel.ReactiveEnergyTotalImportT0_kVARh)
     {
-      var maxEnergy = max.ReactiveEnergy_VARh
-        .TariffUnary()
+      var maxEnergy = max
+        .ReactiveEnergy_VARh.TariffUnary()
         .DuplexImport()
         .AggregateMin()
         .PhaseSum();
-      var minEnergy = min.ReactiveEnergy_VARh
-        .TariffUnary()
+      var minEnergy = min
+        .ReactiveEnergy_VARh.TariffUnary()
         .DuplexImport()
         .AggregateMin()
         .PhaseSum();
@@ -123,13 +124,13 @@ public static class ObisModelExtensions
 
     if (model is ObisModel.ReactiveEnergyTotalExportT0_kVARh)
     {
-      var maxEnergy = max.ReactiveEnergy_VARh
-        .TariffUnary()
+      var maxEnergy = max
+        .ReactiveEnergy_VARh.TariffUnary()
         .DuplexExport()
         .AggregateMax()
         .PhaseSum();
-      var minEnergy = min.ReactiveEnergy_VARh
-        .TariffUnary()
+      var minEnergy = min
+        .ReactiveEnergy_VARh.TariffUnary()
         .DuplexExport()
         .AggregateMax()
         .PhaseSum();
@@ -138,12 +139,10 @@ public static class ObisModelExtensions
 
     if (model is ObisModel.ActivePowerTotalImportT1_kW)
     {
-      return min.DerivedActivePower_W
-          .TariffBinary().T1
-          .DuplexExport()
+      return min.DerivedActivePower_W.TariffBinary()
+          .T1.DuplexExport()
           .AggregateMax()
-          .PhaseSum()
-        / 1000;
+          .PhaseSum() / 1000;
     }
 
     throw new ArgumentOutOfRangeException(nameof(model), model, null);
@@ -156,49 +155,37 @@ public static class ObisModelExtensions
   {
     return model switch
     {
-      ObisModel.ActiveEnergyTotalImportT0_kWh =>
-        aggregate.DerivedActivePower_W
-          .TariffUnary()
-          .DuplexImport()
-          .AggregateMax()
-          .PhaseSum()
-        / 1000,
-      ObisModel.ActiveEnergyTotalImportT1_kWh =>
-        aggregate.DerivedActivePower_W
-          .TariffBinary().T1
-          .DuplexImport()
-          .AggregateMax()
-          .PhaseSum()
-        / 1000,
-      ObisModel.ActiveEnergyTotalImportT2_kWh =>
-        aggregate.DerivedActivePower_W
-          .TariffBinary().T2
-          .DuplexImport()
-          .AggregateMax()
-          .PhaseSum()
-        / 1000,
-      ObisModel.ReactiveEnergyTotalImportT0_kVARh =>
-        aggregate.DerivedReactivePower_VAR
-          .TariffUnary()
-          .DuplexImport()
-          .AggregateMax()
-          .PhaseSum()
-        / 1000,
-      ObisModel.ReactiveEnergyTotalExportT0_kVARh =>
-        aggregate.DerivedReactivePower_VAR
-          .TariffUnary()
-          .DuplexExport()
-          .AggregateMax()
-          .PhaseSum()
-        / 1000,
-      ObisModel.ActivePowerTotalImportT1_kW =>
-        aggregate.DerivedActivePower_W
-          .TariffBinary().T1
-          .DuplexExport()
-          .AggregateMax()
-          .PhaseSum()
-        / 1000,
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      ObisModel.ActiveEnergyTotalImportT0_kWh => aggregate
+        .DerivedActivePower_W.TariffUnary()
+        .DuplexImport()
+        .AggregateMax()
+        .PhaseSum() / 1000,
+      ObisModel.ActiveEnergyTotalImportT1_kWh => aggregate
+        .DerivedActivePower_W.TariffBinary()
+        .T1.DuplexImport()
+        .AggregateMax()
+        .PhaseSum() / 1000,
+      ObisModel.ActiveEnergyTotalImportT2_kWh => aggregate
+        .DerivedActivePower_W.TariffBinary()
+        .T2.DuplexImport()
+        .AggregateMax()
+        .PhaseSum() / 1000,
+      ObisModel.ReactiveEnergyTotalImportT0_kVARh => aggregate
+        .DerivedReactivePower_VAR.TariffUnary()
+        .DuplexImport()
+        .AggregateMax()
+        .PhaseSum() / 1000,
+      ObisModel.ReactiveEnergyTotalExportT0_kVARh => aggregate
+        .DerivedReactivePower_VAR.TariffUnary()
+        .DuplexExport()
+        .AggregateMax()
+        .PhaseSum() / 1000,
+      ObisModel.ActivePowerTotalImportT1_kW => aggregate
+        .DerivedActivePower_W.TariffBinary()
+        .T1.DuplexExport()
+        .AggregateMax()
+        .PhaseSum() / 1000,
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -206,14 +193,14 @@ public static class ObisModelExtensions
   {
     if (model is ObisModel.ActiveEnergyTotalImportT0_kWh)
     {
-      var maxEnergy = aggregate.ActiveEnergy_Wh
-        .TariffUnary()
+      var maxEnergy = aggregate
+        .ActiveEnergy_Wh.TariffUnary()
         .DuplexImport()
         .AggregateMax()
         .PhaseSum();
 
-      var minEnergy = aggregate.ActiveEnergy_Wh
-        .TariffUnary()
+      var minEnergy = aggregate
+        .ActiveEnergy_Wh.TariffUnary()
         .DuplexImport()
         .AggregateMin()
         .PhaseSum();
@@ -223,15 +210,15 @@ public static class ObisModelExtensions
 
     if (model is ObisModel.ActiveEnergyTotalImportT1_kWh)
     {
-      var maxEnergy = aggregate.ActiveEnergy_Wh
-        .TariffBinary().T1
-        .DuplexImport()
+      var maxEnergy = aggregate
+        .ActiveEnergy_Wh.TariffBinary()
+        .T1.DuplexImport()
         .AggregateMax()
         .PhaseSum();
 
-      var minEnergy = aggregate.ActiveEnergy_Wh
-        .TariffBinary().T1
-        .DuplexImport()
+      var minEnergy = aggregate
+        .ActiveEnergy_Wh.TariffBinary()
+        .T1.DuplexImport()
         .AggregateMin()
         .PhaseSum();
 
@@ -240,15 +227,15 @@ public static class ObisModelExtensions
 
     if (model is ObisModel.ActiveEnergyTotalImportT2_kWh)
     {
-      var maxEnergy = aggregate.ActiveEnergy_Wh
-        .TariffBinary().T2
-        .DuplexImport()
+      var maxEnergy = aggregate
+        .ActiveEnergy_Wh.TariffBinary()
+        .T2.DuplexImport()
         .AggregateMax()
         .PhaseSum();
 
-      var minEnergy = aggregate.ActiveEnergy_Wh
-        .TariffBinary().T2
-        .DuplexImport()
+      var minEnergy = aggregate
+        .ActiveEnergy_Wh.TariffBinary()
+        .T2.DuplexImport()
         .AggregateMin()
         .PhaseSum();
 
@@ -257,14 +244,14 @@ public static class ObisModelExtensions
 
     if (model is ObisModel.ReactiveEnergyTotalImportT0_kVARh)
     {
-      var maxEnergy = aggregate.ReactiveEnergy_VARh
-        .TariffUnary()
+      var maxEnergy = aggregate
+        .ReactiveEnergy_VARh.TariffUnary()
         .DuplexImport()
         .AggregateMax()
         .PhaseSum();
 
-      var minEnergy = aggregate.ReactiveEnergy_VARh
-        .TariffUnary()
+      var minEnergy = aggregate
+        .ReactiveEnergy_VARh.TariffUnary()
         .DuplexImport()
         .AggregateMin()
         .PhaseSum();
@@ -274,14 +261,14 @@ public static class ObisModelExtensions
 
     if (model is ObisModel.ReactiveEnergyTotalExportT0_kVARh)
     {
-      var maxEnergy = aggregate.ReactiveEnergy_VARh
-        .TariffUnary()
+      var maxEnergy = aggregate
+        .ReactiveEnergy_VARh.TariffUnary()
         .DuplexExport()
         .AggregateMax()
         .PhaseSum();
 
-      var minEnergy = aggregate.ReactiveEnergy_VARh
-        .TariffUnary()
+      var minEnergy = aggregate
+        .ReactiveEnergy_VARh.TariffUnary()
         .DuplexExport()
         .AggregateMin()
         .PhaseSum();
@@ -291,9 +278,9 @@ public static class ObisModelExtensions
 
     if (model is ObisModel.ActivePowerTotalImportT1_kW)
     {
-      var power = aggregate.DerivedActivePower_W
-        .TariffBinary().T1
-        .DuplexImport()
+      var power = aggregate
+        .DerivedActivePower_W.TariffBinary()
+        .T1.DuplexImport()
         .AggregateMax()
         .PhaseSum();
 

@@ -1,5 +1,3 @@
 namespace Ozds.Caching.Entities.Abstractions;
 
-public interface IDependencyEntity : IEntity
-{
-}
+public interface IDependencyEntity : IEntity { }

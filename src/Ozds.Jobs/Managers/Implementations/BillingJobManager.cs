@@ -15,16 +15,14 @@ public class BillingJobManager(
   IClockQueries clock,
   ITimeQueries time,
   IOptions<OzdsJobsOptions> options
-) : JobManagerBase<BillingJobContext>(serviceProvider),
-  IBillingJobManager
+) : JobManagerBase<BillingJobContext>(serviceProvider), IBillingJobManager
 {
   public Task EnsureMonthlyBillingJob(
     string networkUserId,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
-    return Ensure(
-      new BillingJobContext(networkUserId),
-      cancellationToken);
+    return Ensure(new BillingJobContext(networkUserId), cancellationToken);
   }
 
   public Task EnsureMonthlyBillingJobs(
@@ -34,7 +32,8 @@ public class BillingJobManager(
   {
     return Ensure(
       networkUserIds.Select(x => new BillingJobContext(x)),
-      cancellationToken);
+      cancellationToken
+    );
   }
 
   public Task RescheduleMonthlyBillingJob(
@@ -42,18 +41,18 @@ public class BillingJobManager(
     CancellationToken cancellationToken
   )
   {
-    return Reschedule(
-      new BillingJobContext(networkUserId),
-      cancellationToken);
+    return Reschedule(new BillingJobContext(networkUserId), cancellationToken);
   }
 
   public Task RescheduleMonthlyBillingJobs(
     IEnumerable<string> networkUserIds,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Reschedule(
       networkUserIds.Select(x => new BillingJobContext(x)),
-      cancellationToken);
+      cancellationToken
+    );
   }
 
   public Task UnscheduleMonthlyBillingJob(
@@ -61,9 +60,7 @@ public class BillingJobManager(
     CancellationToken cancellationToken
   )
   {
-    return Unschedule(
-      new BillingJobContext(networkUserId),
-      cancellationToken);
+    return Unschedule(new BillingJobContext(networkUserId), cancellationToken);
   }
 
   public Task UnscheduleMonthlyBillingJobs(
@@ -73,23 +70,25 @@ public class BillingJobManager(
   {
     return Unschedule(
       networkUserIds.Select(x => new BillingJobContext(x)),
-      cancellationToken);
+      cancellationToken
+    );
   }
 
   protected override IJobDetail CreateJob(BillingJobContext context)
   {
     var now = clock.Now();
 
-    return JobBuilder.Create<MonthlyNetworkUserBillingJob>()
-      .WithIdentity(
-        context.NetworkUserId,
-        nameof(MonthlyNetworkUserBillingJob))
+    return JobBuilder
+      .Create<MonthlyNetworkUserBillingJob>()
+      .WithIdentity(context.NetworkUserId, nameof(MonthlyNetworkUserBillingJob))
       .UsingJobData(
         nameof(MonthlyNetworkUserBillingJob.NetworkUserId),
-        context.NetworkUserId)
+        context.NetworkUserId
+      )
       .UsingJobData(
         nameof(MonthlyNetworkUserBillingJob.ScheduledAt),
-        now.ToString("o", CultureInfo.InvariantCulture))
+        now.ToString("o", CultureInfo.InvariantCulture)
+      )
       .Build();
   }
 
@@ -102,7 +101,7 @@ public class BillingJobManager(
       new TriggerKey(
         context.NetworkUserId,
         nameof(MonthlyNetworkUserBillingJob)
-      )
+      ),
     ];
   }
 
@@ -114,9 +113,10 @@ public class BillingJobManager(
     return builder
       .WithCronSchedule(
         options.Value.Billing.MonthlyBillingCron,
-        x => x
-          .WithMisfireHandlingInstructionFireAndProceed()
-          .InTimeZone(time.CroatianTimeZone))
+        x =>
+          x.WithMisfireHandlingInstructionFireAndProceed()
+            .InTimeZone(time.CroatianTimeZone)
+      )
       .Build();
   }
 }

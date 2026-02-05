@@ -74,38 +74,14 @@ public sealed class ServiceComposition : IAsyncDisposable
     await network.Configure(null!, cancellationToken);
     await network.Start(cancellationToken);
 
-    var postgres = await PostgresContainer.Create(
-      network,
-      cancellationToken
-    );
-    var rabbitMq = await RabbitMqContainer.Create(
-      network,
-      cancellationToken
-    );
-    var mailpit = await MailpitContainer.Create(
-      network,
-      cancellationToken
-    );
-    var lldap = await LldapContainer.Create(
-      network,
-      cancellationToken
-    );
-    var authelia = await AutheliaContainer.Create(
-      network,
-      cancellationToken
-    );
-    var altibiz = await AltibizFake.Create(
-      network,
-      cancellationToken
-    );
-    var ozds = await OzdsServer.Create(
-      network,
-      cancellationToken
-    );
-    var playwright = await PlaywrightBrowser.Create(
-      network,
-      cancellationToken
-    );
+    var postgres = await PostgresContainer.Create(network, cancellationToken);
+    var rabbitMq = await RabbitMqContainer.Create(network, cancellationToken);
+    var mailpit = await MailpitContainer.Create(network, cancellationToken);
+    var lldap = await LldapContainer.Create(network, cancellationToken);
+    var authelia = await AutheliaContainer.Create(network, cancellationToken);
+    var altibiz = await AltibizFake.Create(network, cancellationToken);
+    var ozds = await OzdsServer.Create(network, cancellationToken);
+    var playwright = await PlaywrightBrowser.Create(network, cancellationToken);
 
     var composition = new ServiceComposition(
       network,

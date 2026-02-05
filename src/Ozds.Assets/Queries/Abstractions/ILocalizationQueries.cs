@@ -21,8 +21,7 @@ public interface ILocalizationQueries : IQueries
 
   public string DateTimeString(DateTimeOffset? dateTimeOffset);
 
-  public DateTimeOffset DateTimeApplyOffset(
-    DateTimeOffset dateTimeOffset);
+  public DateTimeOffset DateTimeApplyOffset(DateTimeOffset dateTimeOffset);
 
   public string DocumentDate(DateTimeOffset date);
 

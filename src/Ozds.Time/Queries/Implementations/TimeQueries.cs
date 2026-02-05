@@ -13,14 +13,11 @@ public class TimeQueries : ITimeQueries
   private static readonly TimeZoneInfo UtcTimeZoneValue =
     TimeZoneInfo.FindSystemTimeZoneById("Etc/UTC");
 
-  public TimeZoneInfo DefaultTimeZone { get; } =
-    UtcTimeZoneValue;
+  public TimeZoneInfo DefaultTimeZone { get; } = UtcTimeZoneValue;
 
-  public TimeZoneInfo CroatianTimeZone { get; } =
-    CroatianTimeZoneValue;
+  public TimeZoneInfo CroatianTimeZone { get; } = CroatianTimeZoneValue;
 
-  public TimeZoneInfo UtcTimeZone { get; } =
-    UtcTimeZoneValue;
+  public TimeZoneInfo UtcTimeZone { get; } = UtcTimeZoneValue;
 
   public TimeZoneInfo? IdToTimeZone(string timeZone)
   {
@@ -64,20 +61,26 @@ public class TimeQueries : ITimeQueries
     );
 
     var localStartOfMonth = new DateTime(
-      localDateTime.Year, localDateTime.Month, 1, 0, 0, 0,
-      DateTimeKind.Unspecified);
+      localDateTime.Year,
+      localDateTime.Month,
+      1,
+      0,
+      0,
+      0,
+      DateTimeKind.Unspecified
+    );
 
-    var utcStartOfMonth =
-      TimeZoneInfo.ConvertTimeToUtc(
-        localStartOfMonth,
-        CroatianTimeZone);
+    var utcStartOfMonth = TimeZoneInfo.ConvertTimeToUtc(
+      localStartOfMonth,
+      CroatianTimeZone
+    );
 
     var localStartOfNextMonth = localStartOfMonth.AddMonths(1);
 
-    var utcStartOfNextMonth =
-      TimeZoneInfo.ConvertTimeToUtc(
-        localStartOfNextMonth,
-        CroatianTimeZone);
+    var utcStartOfNextMonth = TimeZoneInfo.ConvertTimeToUtc(
+      localStartOfNextMonth,
+      CroatianTimeZone
+    );
 
     return (
       new DateTimeOffset(utcStartOfMonth, TimeSpan.Zero),
@@ -85,10 +88,7 @@ public class TimeQueries : ITimeQueries
     );
   }
 
-  public (DateTimeOffset, DateTimeOffset) GetMonthRange(
-    int year,
-    int month
-  )
+  public (DateTimeOffset, DateTimeOffset) GetMonthRange(int year, int month)
   {
     var startOfMonth = new DateTimeOffset(
       year,
@@ -113,20 +113,26 @@ public class TimeQueries : ITimeQueries
     );
 
     var localStartOfYear = new DateTime(
-      localDateTime.Year, 1, 1, 0, 0, 0,
-      DateTimeKind.Unspecified);
+      localDateTime.Year,
+      1,
+      1,
+      0,
+      0,
+      0,
+      DateTimeKind.Unspecified
+    );
 
-    var utcStartOfYear =
-      TimeZoneInfo.ConvertTimeToUtc(
-        localStartOfYear,
-        CroatianTimeZone);
+    var utcStartOfYear = TimeZoneInfo.ConvertTimeToUtc(
+      localStartOfYear,
+      CroatianTimeZone
+    );
 
     var localStartOfNextYear = localStartOfYear.AddYears(1);
 
-    var utcStartOfNextYear =
-      TimeZoneInfo.ConvertTimeToUtc(
-        localStartOfNextYear,
-        CroatianTimeZone);
+    var utcStartOfNextYear = TimeZoneInfo.ConvertTimeToUtc(
+      localStartOfNextYear,
+      CroatianTimeZone
+    );
 
     return (
       new DateTimeOffset(utcStartOfYear, TimeSpan.Zero),
@@ -134,9 +140,7 @@ public class TimeQueries : ITimeQueries
     );
   }
 
-  public (DateTimeOffset, DateTimeOffset) GetYearRange(
-    int year
-  )
+  public (DateTimeOffset, DateTimeOffset) GetYearRange(int year)
   {
     var startOfMonth = new DateTimeOffset(
       year,
@@ -153,9 +157,7 @@ public class TimeQueries : ITimeQueries
 
   // NOTE: one in UTC because clock rewind on 27.10. makes
   // conversion back to UTC from Croatian ambiguous
-  public DateTimeOffset GetStartOfQuarterHour(
-    DateTimeOffset dateTimeOffset
-  )
+  public DateTimeOffset GetStartOfQuarterHour(DateTimeOffset dateTimeOffset)
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
@@ -171,17 +173,18 @@ public class TimeQueries : ITimeQueries
       localDateTime.Hour,
       quarterHour,
       0,
-      DateTimeKind.Unspecified);
+      DateTimeKind.Unspecified
+    );
 
     var utcStartOfQuarterHour = TimeZoneInfo.ConvertTimeToUtc(
-      localStartOfQuarterHour, TimeZoneInfo.Utc);
+      localStartOfQuarterHour,
+      TimeZoneInfo.Utc
+    );
 
     return new DateTimeOffset(utcStartOfQuarterHour, TimeSpan.Zero);
   }
 
-  public DateTimeOffset GetStartOfMonth(
-    DateTimeOffset dateTimeOffset
-  )
+  public DateTimeOffset GetStartOfMonth(DateTimeOffset dateTimeOffset)
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
@@ -189,20 +192,24 @@ public class TimeQueries : ITimeQueries
     );
 
     var localStartOfMonth = new DateTime(
-      localDateTime.Year, localDateTime.Month, 1, 0, 0, 0,
-      DateTimeKind.Unspecified);
+      localDateTime.Year,
+      localDateTime.Month,
+      1,
+      0,
+      0,
+      0,
+      DateTimeKind.Unspecified
+    );
 
-    var utcStartOfMonth =
-      TimeZoneInfo.ConvertTimeToUtc(
-        localStartOfMonth,
-        CroatianTimeZone);
+    var utcStartOfMonth = TimeZoneInfo.ConvertTimeToUtc(
+      localStartOfMonth,
+      CroatianTimeZone
+    );
 
     return new DateTimeOffset(utcStartOfMonth, TimeSpan.Zero);
   }
 
-  public DateTimeOffset GetStartOfLastMonth(
-    DateTimeOffset dateTimeOffset
-  )
+  public DateTimeOffset GetStartOfLastMonth(DateTimeOffset dateTimeOffset)
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
@@ -212,20 +219,24 @@ public class TimeQueries : ITimeQueries
     var lastMonthLocalDateTime = localDateTime.AddMonths(-1);
 
     var localStartOfLastMonth = new DateTime(
-      lastMonthLocalDateTime.Year, lastMonthLocalDateTime.Month, 1, 0, 0, 0,
-      DateTimeKind.Unspecified);
+      lastMonthLocalDateTime.Year,
+      lastMonthLocalDateTime.Month,
+      1,
+      0,
+      0,
+      0,
+      DateTimeKind.Unspecified
+    );
 
-    var utcStartOfLastMonth =
-      TimeZoneInfo.ConvertTimeToUtc(
-        localStartOfLastMonth,
-        CroatianTimeZone);
+    var utcStartOfLastMonth = TimeZoneInfo.ConvertTimeToUtc(
+      localStartOfLastMonth,
+      CroatianTimeZone
+    );
 
     return new DateTimeOffset(utcStartOfLastMonth, TimeSpan.Zero);
   }
 
-  public DateTimeOffset GetStartOfNextMonth(
-    DateTimeOffset dateTimeOffset
-  )
+  public DateTimeOffset GetStartOfNextMonth(DateTimeOffset dateTimeOffset)
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
@@ -235,20 +246,24 @@ public class TimeQueries : ITimeQueries
     var nextMonthLocalDateTime = localDateTime.AddMonths(1);
 
     var localStartOfNextMonth = new DateTime(
-      nextMonthLocalDateTime.Year, nextMonthLocalDateTime.Month, 1, 0, 0, 0,
-      DateTimeKind.Unspecified);
+      nextMonthLocalDateTime.Year,
+      nextMonthLocalDateTime.Month,
+      1,
+      0,
+      0,
+      0,
+      DateTimeKind.Unspecified
+    );
 
-    var utcStartOfNextMonth =
-      TimeZoneInfo.ConvertTimeToUtc(
-        localStartOfNextMonth,
-        CroatianTimeZone);
+    var utcStartOfNextMonth = TimeZoneInfo.ConvertTimeToUtc(
+      localStartOfNextMonth,
+      CroatianTimeZone
+    );
 
     return new DateTimeOffset(utcStartOfNextMonth, TimeSpan.Zero);
   }
 
-  public DateTimeOffset GetStartOfDay(
-    DateTimeOffset dateTimeOffset
-  )
+  public DateTimeOffset GetStartOfDay(DateTimeOffset dateTimeOffset)
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
@@ -256,20 +271,24 @@ public class TimeQueries : ITimeQueries
     );
 
     var localStartOfDay = new DateTime(
-      localDateTime.Year, localDateTime.Month, localDateTime.Day, 0, 0, 0,
-      DateTimeKind.Unspecified);
+      localDateTime.Year,
+      localDateTime.Month,
+      localDateTime.Day,
+      0,
+      0,
+      0,
+      DateTimeKind.Unspecified
+    );
 
-    var utcStartOfDay =
-      TimeZoneInfo.ConvertTimeToUtc(
-        localStartOfDay,
-        CroatianTimeZone);
+    var utcStartOfDay = TimeZoneInfo.ConvertTimeToUtc(
+      localStartOfDay,
+      CroatianTimeZone
+    );
 
     return new DateTimeOffset(utcStartOfDay, TimeSpan.Zero);
   }
 
-  public DateTimeOffset GetStartOfYear(
-    DateTimeOffset dateTimeOffset
-  )
+  public DateTimeOffset GetStartOfYear(DateTimeOffset dateTimeOffset)
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
@@ -277,17 +296,25 @@ public class TimeQueries : ITimeQueries
     );
 
     var localStartOfYear = new DateTime(
-      localDateTime.Year, 1, 1, 0, 0, 0, DateTimeKind.Unspecified);
+      localDateTime.Year,
+      1,
+      1,
+      0,
+      0,
+      0,
+      DateTimeKind.Unspecified
+    );
 
-    var utcStartOfYear =
-      TimeZoneInfo.ConvertTimeToUtc(
-        localStartOfYear,
-        CroatianTimeZone);
+    var utcStartOfYear = TimeZoneInfo.ConvertTimeToUtc(
+      localStartOfYear,
+      CroatianTimeZone
+    );
     return new DateTimeOffset(utcStartOfYear, TimeSpan.Zero);
   }
 
   public IEnumerable<DateTimeOffset> GetThisYearMonthStarts(
-    DateTimeOffset dateTimeOffset)
+    DateTimeOffset dateTimeOffset
+  )
   {
     var localDateTime = TimeZoneInfo.ConvertTime(
       dateTimeOffset,
@@ -296,23 +323,30 @@ public class TimeQueries : ITimeQueries
 
     var year = localDateTime.Year;
 
-    return Enumerable.Range(1, 12).Select(month =>
-    {
-      var localStartOfMonth = new DateTime(
-        year, month, 1, 0, 0, 0, DateTimeKind.Unspecified);
+    return Enumerable
+      .Range(1, 12)
+      .Select(month =>
+      {
+        var localStartOfMonth = new DateTime(
+          year,
+          month,
+          1,
+          0,
+          0,
+          0,
+          DateTimeKind.Unspecified
+        );
 
-      var utcStartOfMonth =
-        TimeZoneInfo.ConvertTimeToUtc(
+        var utcStartOfMonth = TimeZoneInfo.ConvertTimeToUtc(
           localStartOfMonth,
-          CroatianTimeZone);
+          CroatianTimeZone
+        );
 
-      return new DateTimeOffset(utcStartOfMonth, TimeSpan.Zero);
-    });
+        return new DateTimeOffset(utcStartOfMonth, TimeSpan.Zero);
+      });
   }
 
-  public DateTimeOffset GetStartOfMonthLastYear(
-    DateTimeOffset dateTimeOffset
-  )
+  public DateTimeOffset GetStartOfMonthLastYear(DateTimeOffset dateTimeOffset)
   {
     return GetStartOfMonth(dateTimeOffset.AddYears(-1));
   }
@@ -331,16 +365,19 @@ public class TimeQueries : ITimeQueries
       ResolutionEntity.Week => TimeSpan.FromDays(7) * multiplier,
       ResolutionEntity.Month => GetMonthRange(timestamp) switch
       {
-        (DateTimeOffset start, DateTimeOffset end) => (end - start) * multiplier
+        (DateTimeOffset start, DateTimeOffset end) => (end - start)
+          * multiplier,
       },
       ResolutionEntity.Year => GetYearRange(timestamp) switch
       {
-        (DateTimeOffset start, DateTimeOffset end) => (end - start) * multiplier
+        (DateTimeOffset start, DateTimeOffset end) => (end - start)
+          * multiplier,
       },
       _ => throw new ArgumentOutOfRangeException(
         nameof(resolution),
         resolution,
-        null)
+        null
+      ),
     };
   }
 
@@ -355,9 +392,9 @@ public class TimeQueries : ITimeQueries
       IntervalEntity.Day => TimeSpan.FromDays(1),
       IntervalEntity.Month => GetMonthRange(timestamp) switch
       {
-        (DateTimeOffset start, DateTimeOffset end) => end - start
+        (DateTimeOffset start, DateTimeOffset end) => end - start,
       },
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -373,7 +410,7 @@ public class TimeQueries : ITimeQueries
       IntervalEntity.QuarterHour => TimeSpan.FromSeconds(1),
       IntervalEntity.Day => TimeSpan.FromMinutes(15),
       IntervalEntity.Month => TimeSpan.FromDays(1),
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -384,8 +421,10 @@ public class TimeQueries : ITimeQueries
     int pageCount
   )
   {
-    var higherResolutionTimeSpan =
-      HigherResolutionIntervalTimeSpan(interval, timestamp);
+    var higherResolutionTimeSpan = HigherResolutionIntervalTimeSpan(
+      interval,
+      timestamp
+    );
     return pageCount * higherResolutionTimeSpan / sourceCount;
   }
 
@@ -400,7 +439,8 @@ public class TimeQueries : ITimeQueries
       IntervalEntity.QuarterHour,
       timestamp,
       sourceCount,
-      pageCount);
+      pageCount
+    );
     if (timeSpan < quarterHourThreshold)
     {
       return null;
@@ -410,7 +450,8 @@ public class TimeQueries : ITimeQueries
       IntervalEntity.Day,
       timestamp,
       sourceCount,
-      pageCount);
+      pageCount
+    );
     if (timeSpan < dayThreshold)
     {
       return IntervalEntity.QuarterHour;
@@ -420,7 +461,8 @@ public class TimeQueries : ITimeQueries
       IntervalEntity.Month,
       timestamp,
       sourceCount,
-      pageCount);
+      pageCount
+    );
     if (timeSpan < monthThreshold)
     {
       return IntervalEntity.Day;
@@ -444,23 +486,17 @@ public class TimeQueries : ITimeQueries
       DurationEntity.Week => TimeSpan.FromDays(7 * multiplier),
       DurationEntity.Month => GetMonthRange(timestamp) switch
       {
-        (DateTimeOffset start, DateTimeOffset end) => end - start
+        (DateTimeOffset start, DateTimeOffset end) => end - start,
       },
       DurationEntity.Year => GetYearRange(timestamp) switch
       {
-        (DateTimeOffset start, DateTimeOffset end) => end - start
+        (DateTimeOffset start, DateTimeOffset end) => end - start,
       },
-      _ => throw new ArgumentOutOfRangeException(
-        nameof(model),
-        model,
-        null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
-  public TimeSpan DurationTimeSpan(
-    DurationEntity model,
-    uint multiplier = 1
-  )
+  public TimeSpan DurationTimeSpan(DurationEntity model, uint multiplier = 1)
   {
     return model switch
     {
@@ -471,10 +507,7 @@ public class TimeQueries : ITimeQueries
       DurationEntity.Week => TimeSpan.FromDays(7 * multiplier),
       DurationEntity.Month => TimeSpan.FromDays(30 * multiplier),
       DurationEntity.Year => TimeSpan.FromDays(365 * multiplier),
-      _ => throw new ArgumentOutOfRangeException(
-        nameof(model),
-        model,
-        null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 }

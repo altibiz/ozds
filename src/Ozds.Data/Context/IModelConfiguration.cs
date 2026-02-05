@@ -20,29 +20,30 @@ public abstract class EntityTypeConfiguration<TEntity> : IModelConfiguration
   public abstract void Configure(EntityTypeBuilder<TEntity> builder);
 }
 
-public abstract class
-  EntityTypeHierarchyConfiguration<TBase> : IModelConfiguration
+public abstract class EntityTypeHierarchyConfiguration<TBase>
+  : IModelConfiguration
   where TBase : class
 {
   public void Configure(ModelBuilder modelBuilder)
   {
-    var configure = GetType()
-        .GetMethods()
-        .FirstOrDefault(m => m.Name == nameof(Configure))
+    var configure =
+      GetType().GetMethods().FirstOrDefault(m => m.Name == nameof(Configure))
       ?? throw new InvalidOperationException("Method not found");
-    _ = typeof(TBase).Assembly
-      .GetTypes()
+    _ = typeof(TBase)
+      .Assembly.GetTypes()
       .Where(type =>
-        !type.IsAbstract &&
-        !type.IsGenericType &&
-        typeof(TBase).IsAssignableFrom(type))
+        !type.IsAbstract
+        && !type.IsGenericType
+        && typeof(TBase).IsAssignableFrom(type)
+      )
       .OrderBy(type =>
       {
         var level = 0;
         for (
           var currentType = type.BaseType;
           currentType != null;
-          currentType = currentType.BaseType)
+          currentType = currentType.BaseType
+        )
         {
           level++;
         }
@@ -50,23 +51,16 @@ public abstract class
         return level;
       })
       .Aggregate(
-        modelBuilder, (modelBuilder, type) =>
+        modelBuilder,
+        (modelBuilder, type) =>
         {
-          configure
-            .Invoke(
-              this,
-              new object[]
-              {
-                modelBuilder,
-                type
-              });
+          configure.Invoke(this, new object[] { modelBuilder, type });
           return modelBuilder;
-        });
+        }
+      );
   }
 
-  public virtual void Configure(ModelBuilder modelBuilder, Type entity)
-  {
-  }
+  public virtual void Configure(ModelBuilder modelBuilder, Type entity) { }
 }
 
 public static class ModelBuilderExtensions
@@ -79,8 +73,8 @@ public static class ModelBuilderExtensions
     return assembly
       .GetTypes()
       .Where(type =>
-        !type.IsAbstract &&
-        typeof(IModelConfiguration).IsAssignableFrom(type))
+        !type.IsAbstract && typeof(IModelConfiguration).IsAssignableFrom(type)
+      )
       .Aggregate(
         modelBuilder,
         (modelBuilder, type) =>

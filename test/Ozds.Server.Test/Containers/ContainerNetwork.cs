@@ -22,11 +22,7 @@ public sealed class ContainerNetwork : IComposableService<ContainerNetwork>
 
   private readonly ConcurrentDictionary<string, int> ports = new();
 
-  private ContainerNetwork(
-    INetwork network,
-    string name,
-    string bridgeName
-  )
+  private ContainerNetwork(INetwork network, string name, string bridgeName)
   {
     this.network = network;
     Name = name;
@@ -50,7 +46,8 @@ public sealed class ContainerNetwork : IComposableService<ContainerNetwork>
       .Build();
 
     return Task.FromResult(
-      new ContainerNetwork(actualNetwork, name, bridgeName));
+      new ContainerNetwork(actualNetwork, name, bridgeName)
+    );
   }
 
   public Task Configure(
@@ -78,38 +75,29 @@ public sealed class ContainerNetwork : IComposableService<ContainerNetwork>
 
   public string Host<T>()
   {
-    var typeName = typeof(T).FullName
-      ?? throw new InvalidOperationException(
-        "Type must have a FullName");
+    var typeName =
+      typeof(T).FullName
+      ?? throw new InvalidOperationException("Type must have a FullName");
 
-    return hosts.GetOrAdd(
-      typeName,
-      typeName => MakeHostName(typeof(T))
-    );
+    return hosts.GetOrAdd(typeName, typeName => MakeHostName(typeof(T)));
   }
 
   public int Port<T>()
   {
-    var typeName = typeof(T).FullName
-      ?? throw new InvalidOperationException(
-        "Type must have a FullName");
+    var typeName =
+      typeof(T).FullName
+      ?? throw new InvalidOperationException("Type must have a FullName");
 
-    return ports.GetOrAdd(
-      typeName,
-      _ => FindFreePort()
-    );
+    return ports.GetOrAdd(typeName, _ => FindFreePort());
   }
 
   public int Port<T>(string name)
   {
-    var typeName = typeof(T).FullName
-      ?? throw new InvalidOperationException(
-        "Type must have a FullName");
+    var typeName =
+      typeof(T).FullName
+      ?? throw new InvalidOperationException("Type must have a FullName");
 
-    return ports.GetOrAdd(
-      $"{typeName}-{name}",
-      _ => FindFreePort()
-    );
+    return ports.GetOrAdd($"{typeName}-{name}", _ => FindFreePort());
   }
 
   private static string MakeHostName(Type type)
@@ -134,9 +122,11 @@ public sealed class ContainerNetwork : IComposableService<ContainerNetwork>
       {
         var localEP = new IPEndPoint(IPAddress.Any, 0);
         socket.Bind(localEP);
-        localEP = socket.LocalEndPoint as IPEndPoint
+        localEP =
+          socket.LocalEndPoint as IPEndPoint
           ?? throw new InvalidOperationException(
-            "Could not bind to local endpoint");
+            "Could not bind to local endpoint"
+          );
         port = localEP.Port;
       }
       finally

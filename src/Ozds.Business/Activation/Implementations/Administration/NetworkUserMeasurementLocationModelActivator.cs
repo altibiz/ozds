@@ -6,9 +6,11 @@ namespace Ozds.Business.Activation.Implementations.Administration;
 
 public class NetworkUserMeasurementLocationModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  NetworkUserMeasurementLocationModel,
-  MeasurementLocationModel>(serviceProvider)
+)
+  : InheritingModelActivator<
+    NetworkUserMeasurementLocationModel,
+    MeasurementLocationModel
+  >(serviceProvider)
 {
   public override void Initialize(NetworkUserMeasurementLocationModel model)
   {

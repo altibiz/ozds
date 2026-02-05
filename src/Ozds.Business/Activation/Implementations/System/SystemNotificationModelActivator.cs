@@ -5,11 +5,10 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Activation.Implementations.System;
 
-public class SystemNotificationModelActivator(
-  IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  SystemNotificationModel,
-  NotificationModel>(serviceProvider)
+public class SystemNotificationModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<SystemNotificationModel, NotificationModel>(
+    serviceProvider
+  )
 {
   public override void Initialize(SystemNotificationModel model)
   {

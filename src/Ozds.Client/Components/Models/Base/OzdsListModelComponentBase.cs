@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Components;
 
 namespace Ozds.Client.Components.Models.Base;
 
-public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
-  OzdsPrefixedModelComponentBase<TPrefix, TModel>
+public abstract class OzdsListModelComponentBase<TPrefix, TModel>
+  : OzdsPrefixedModelComponentBase<TPrefix, TModel>
 {
   private Func<TPrefix, TModel?>? raw;
 
@@ -15,9 +15,7 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
     get { return raw ??= CreateRaw(); }
   }
 
-  protected Func<TPrefix, T?> Get<T>(
-    Func<TModel, T?> next
-  )
+  protected Func<TPrefix, T?> Get<T>(Func<TModel, T?> next)
   {
     var first = Raw;
     return x => first(x) is { } y ? next(y) : default;
@@ -44,7 +42,7 @@ public abstract class OzdsListModelComponentBase<TPrefix, TModel> :
     return new Dictionary<string, object>
     {
       { nameof(Models), Models! },
-      { nameof(Prefix), Prefix! }
+      { nameof(Prefix), Prefix! },
     };
   }
 

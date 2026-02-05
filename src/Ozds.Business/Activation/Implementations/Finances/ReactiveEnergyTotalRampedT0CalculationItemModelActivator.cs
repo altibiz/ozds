@@ -6,9 +6,11 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 
 public class ReactiveEnergyTotalRampedT0CalculationItemModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  ReactiveEnergyTotalRampedT0CalculationItemModel,
-  CalculationItemModel>(serviceProvider)
+)
+  : InheritingModelActivator<
+    ReactiveEnergyTotalRampedT0CalculationItemModel,
+    CalculationItemModel
+  >(serviceProvider)
 {
   public override void Initialize(
     ReactiveEnergyTotalRampedT0CalculationItemModel model
@@ -30,8 +32,8 @@ public class ReactiveEnergyTotalRampedT0CalculationItemModelActivator(
 
 public class UsageReactiveEnergyTotalRampedT0CalculationItemModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  UsageReactiveEnergyTotalRampedT0CalculationItemModel,
-  ReactiveEnergyTotalRampedT0CalculationItemModel>(serviceProvider)
-{
-}
+)
+  : InheritingModelActivator<
+    UsageReactiveEnergyTotalRampedT0CalculationItemModel,
+    ReactiveEnergyTotalRampedT0CalculationItemModel
+  >(serviceProvider) { }

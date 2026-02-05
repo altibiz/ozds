@@ -25,44 +25,41 @@ public class TestMeasurementFixture(
     var configurator = new Configurator();
     configure?.Invoke(configurator);
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var fixture = context.ContextualFixture();
 
     var type = reflector.ResolveMeterMeasurementType(
       infrastructure.Meter.GetType(),
-      configurator.Interval is not null);
+      configurator.Interval is not null
+    );
 
     // NOTE: trick to get start of an interval not before from
-    var fromDate = configurator.Interval is null
-      ? configurator.FromDate
+    var fromDate =
+      configurator.Interval is null ? configurator.FromDate
       : configurator.Interval is IntervalEntity.QuarterHour
         ? time.GetStartOfQuarterHour(
-          configurator.FromDate
-            .AddMinutes(15).AddTicks(-1))
-        : configurator.Interval is IntervalEntity.Day
-          ? time.GetStartOfDay(
-            configurator.FromDate
-              .AddDays(1).AddTicks(-1))
-          : time.GetStartOfMonth(
-            configurator.FromDate
-              .AddMonths(1).AddTicks(-1));
+          configurator.FromDate.AddMinutes(15).AddTicks(-1)
+        )
+      : configurator.Interval is IntervalEntity.Day
+        ? time.GetStartOfDay(configurator.FromDate.AddDays(1).AddTicks(-1))
+      : time.GetStartOfMonth(configurator.FromDate.AddMonths(1).AddTicks(-1));
 
-    var toDate = configurator.Interval is null
-      ? configurator.ToDate
+    var toDate =
+      configurator.Interval is null ? configurator.ToDate
       : configurator.Interval is IntervalEntity.QuarterHour
         ? time.GetStartOfQuarterHour(configurator.ToDate)
-        : configurator.Interval is IntervalEntity.Day
-          ? time.GetStartOfDay(configurator.ToDate)
-          : time.GetStartOfMonth(configurator.ToDate);
+      : configurator.Interval is IntervalEntity.Day
+        ? time.GetStartOfDay(configurator.ToDate)
+      : time.GetStartOfMonth(configurator.ToDate);
 
-    var timeInterval = configurator.Interval is null
-      ? (TimeIntervalEntity?)null
+    var timeInterval =
+      configurator.Interval is null ? (TimeIntervalEntity?)null
       : configurator.Interval is IntervalEntity.QuarterHour
         ? TimeIntervalEntity.QuarterHour
-        : configurator.Interval is IntervalEntity.Day
-          ? TimeIntervalEntity.Day
-          : TimeIntervalEntity.Month;
+      : configurator.Interval is IntervalEntity.Day ? TimeIntervalEntity.Day
+      : TimeIntervalEntity.Month;
 
     var timeSpan = timeInterval is not null
       ? time.IntervalTimeSpan(timeInterval.Value, fromDate)
@@ -72,7 +69,8 @@ public class TestMeasurementFixture(
       ? configurator.Count
       : Math.Min(
         configurator.Count,
-        (int)Math.Floor((toDate - fromDate) / timeSpan.Value));
+        (int)Math.Floor((toDate - fromDate) / timeSpan.Value)
+      );
 
     var measurements = fixture
       .CreateMany<IMeasurementEntity>(type, count)
@@ -83,19 +81,19 @@ public class TestMeasurementFixture(
       if (item is MeasurementEntity measurement)
       {
         measurement.MeterId = infrastructure.Meter.Id;
-        measurement.MeasurementLocationId =
-          infrastructure.MeasurementLocation.Id;
+        measurement.MeasurementLocationId = infrastructure
+          .MeasurementLocation
+          .Id;
         measurement.Timestamp = fromDate + (toDate - fromDate) * index / count;
       }
 
       if (item is AggregateEntity aggregate && timeSpan is not null)
       {
         aggregate.MeterId = infrastructure.Meter.Id;
-        aggregate.MeasurementLocationId =
-          infrastructure.MeasurementLocation.Id;
+        aggregate.MeasurementLocationId = infrastructure.MeasurementLocation.Id;
         aggregate.Timestamp = fromDate + timeSpan.Value * index;
-        aggregate.Interval = configurator.Interval
-          ?? IntervalEntity.QuarterHour;
+        aggregate.Interval =
+          configurator.Interval ?? IntervalEntity.QuarterHour;
 
         // NOTE: matches app behavior and ensures correct upsert
         if (aggregate.Interval is IntervalEntity.QuarterHour)
@@ -121,8 +119,7 @@ public class TestMeasurementFixture(
     public DateTimeOffset FromDate { get; private set; } =
       Constants.NowStartOfMonth;
 
-    public DateTimeOffset ToDate { get; private set; } =
-      Constants.Now;
+    public DateTimeOffset ToDate { get; private set; } = Constants.Now;
 
     public int Count { get; private set; } = 1;
 

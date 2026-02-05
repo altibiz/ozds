@@ -14,12 +14,13 @@ public class InMemoryCache<TValue>(
     CacheEntryConfiguration entryConfiguration,
     string key,
     string value,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var entry = new MemoryCacheEntryOptions
     {
       AbsoluteExpirationRelativeToNow = entryConfiguration.HardTtl,
-      SlidingExpiration = entryConfiguration.SoftTtl
+      SlidingExpiration = entryConfiguration.SoftTtl,
     };
     cache.Set(key, value, entry);
     return Task.CompletedTask;
@@ -27,14 +28,16 @@ public class InMemoryCache<TValue>(
 
   protected override Task<string?> Read(
     string key,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Task.FromResult(cache.Get<string>(key));
   }
 
   protected override Task<string?> Delete(
     string key,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var deleted = cache.Get<string>(key);
     cache.Remove(key);

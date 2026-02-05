@@ -5,16 +5,19 @@ using Ozds.Caching.Entities.Base;
 namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class TrackableModelCachingEntityConverter(
-  IServiceProvider serviceProvider)
+  IServiceProvider serviceProvider
+)
   : InheritingModelCachingEntityConverter<
     TrackableModel,
     IdentifiableModel,
     TrackableEntity,
-    IdentifiableEntity>(serviceProvider)
+    IdentifiableEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     TrackableModel model,
-    TrackableEntity entity)
+    TrackableEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.CreatedOn = model.CreatedOn;
@@ -28,7 +31,8 @@ public class TrackableModelCachingEntityConverter(
 
   public override void InitializeModel(
     TrackableEntity entity,
-    TrackableModel model)
+    TrackableModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.CreatedOn = entity.CreatedOn;

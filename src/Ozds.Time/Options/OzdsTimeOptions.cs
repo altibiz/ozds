@@ -9,9 +9,8 @@ public class OzdsTimeOptions
   public string RewindTimeStart { get; set; } = default!;
 }
 
-public class ConfigureOzdsTimeOptions(
-  IConfiguration configuration
-) : IConfigureOptions<OzdsTimeOptions>
+public class ConfigureOzdsTimeOptions(IConfiguration configuration)
+  : IConfigureOptions<OzdsTimeOptions>
 {
   public void Configure(OzdsTimeOptions options)
   {

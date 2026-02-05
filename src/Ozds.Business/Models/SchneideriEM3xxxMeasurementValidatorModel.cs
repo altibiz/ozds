@@ -3,9 +3,8 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models;
 
-public class
-  SchneideriEM3xxxMeasurementValidatorModel : MeasurementValidatorModel<
-  SchneideriEM3xxxMeasurementModel>
+public class SchneideriEM3xxxMeasurementValidatorModel
+  : MeasurementValidatorModel<SchneideriEM3xxxMeasurementModel>
 {
   [Required]
   public required decimal MinVoltage_V { get; set; }
@@ -44,138 +43,142 @@ public class
   {
     if (
       memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Voltage_V)
-      &&
-      measurement.Voltage_V.TariffUnary().DuplexAny().PhaseTrough()
-      < MinVoltage_V
+      && measurement.Voltage_V.TariffUnary().DuplexAny().PhaseTrough()
+        < MinVoltage_V
     )
     {
       yield return new ValidationResult(
         $"Voltage must be greater than or equal to {MinVoltage_V}."
-        + $"\nwas {measurement.Voltage_V.TariffUnary().DuplexAny().PhaseTrough()} V.",
+          + $"\nwas {measurement.Voltage_V.TariffUnary().DuplexAny().PhaseTrough()} V.",
         new[] { nameof(SchneideriEM3xxxMeasurementModel.Voltage_V) }
       );
     }
 
     if (
       memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Voltage_V)
-      &&
-      measurement.Voltage_V.TariffUnary().DuplexAny().PhasePeak() > MaxVoltage_V
+      && measurement.Voltage_V.TariffUnary().DuplexAny().PhasePeak()
+        > MaxVoltage_V
     )
     {
       yield return new ValidationResult(
         $"Voltage must be less than or equal to {MaxVoltage_V}."
-        + $"\nwas {measurement.Voltage_V.TariffUnary().DuplexAny().PhasePeak()} V.",
+          + $"\nwas {measurement.Voltage_V.TariffUnary().DuplexAny().PhasePeak()} V.",
         new[] { nameof(SchneideriEM3xxxMeasurementModel.Voltage_V) }
       );
     }
 
     if (
       memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Current_A)
-      &&
-      measurement.Current_A.TariffUnary().DuplexAny().PhaseTrough()
-      < MinCurrent_A
+      && measurement.Current_A.TariffUnary().DuplexAny().PhaseTrough()
+        < MinCurrent_A
     )
     {
       yield return new ValidationResult(
         $"Current must be greater than or equal to {MinCurrent_A}."
-        + $"\nWas {measurement.Current_A.TariffUnary().DuplexAny().PhaseTrough()} A.",
+          + $"\nWas {measurement.Current_A.TariffUnary().DuplexAny().PhaseTrough()} A.",
         new[] { nameof(SchneideriEM3xxxMeasurementModel.Current_A) }
       );
     }
 
     if (
       memberName is null or nameof(SchneideriEM3xxxMeasurementModel.Current_A)
-      &&
-      measurement.Current_A.TariffUnary().DuplexAny().PhasePeak() > MaxCurrent_A
+      && measurement.Current_A.TariffUnary().DuplexAny().PhasePeak()
+        > MaxCurrent_A
     )
     {
       yield return new ValidationResult(
         $"Current must be less than or equal to {MaxCurrent_A}."
-        + $"\nWas {measurement.Current_A.TariffUnary().DuplexAny().PhasePeak()} A.",
+          + $"\nWas {measurement.Current_A.TariffUnary().DuplexAny().PhasePeak()} A.",
         new[] { nameof(SchneideriEM3xxxMeasurementModel.Current_A) }
       );
     }
 
     if (
-      memberName is null
-        or nameof(SchneideriEM3xxxMeasurementModel.ActivePower_W) &&
-      measurement.ActivePower_W.TariffUnary().DuplexAny().PhaseTrough()
-      < MinActivePower_W
+      memberName
+        is null
+          or nameof(SchneideriEM3xxxMeasurementModel.ActivePower_W)
+      && measurement.ActivePower_W.TariffUnary().DuplexAny().PhaseTrough()
+        < MinActivePower_W
     )
     {
       yield return new ValidationResult(
         $"ActivePower must be greater than or equal to {MinActivePower_W}."
-        + $"\nWas {measurement.ActivePower_W.TariffUnary().DuplexAny().PhaseTrough()} W.",
+          + $"\nWas {measurement.ActivePower_W.TariffUnary().DuplexAny().PhaseTrough()} W.",
         new[] { nameof(SchneideriEM3xxxMeasurementModel.ActivePower_W) }
       );
     }
 
     if (
-      memberName is null
-        or nameof(SchneideriEM3xxxMeasurementModel.ActivePower_W) &&
-      measurement.ActivePower_W.TariffUnary().DuplexAny().PhasePeak()
-      > MaxActivePower_W
+      memberName
+        is null
+          or nameof(SchneideriEM3xxxMeasurementModel.ActivePower_W)
+      && measurement.ActivePower_W.TariffUnary().DuplexAny().PhasePeak()
+        > MaxActivePower_W
     )
     {
       yield return new ValidationResult(
         $"ActivePower must be less than or equal to {MaxActivePower_W}."
-        + $"\nWas {measurement.ActivePower_W.TariffUnary().DuplexAny().PhasePeak()} W.",
+          + $"\nWas {measurement.ActivePower_W.TariffUnary().DuplexAny().PhasePeak()} W.",
         new[] { nameof(SchneideriEM3xxxMeasurementModel.ActivePower_W) }
       );
     }
 
     if (
-      memberName is null
-        or nameof(SchneideriEM3xxxMeasurementModel.ReactivePower_VAR) &&
-      measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhaseTrough()
-      < MinReactivePower_VAR
+      memberName
+        is null
+          or nameof(SchneideriEM3xxxMeasurementModel.ReactivePower_VAR)
+      && measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhaseTrough()
+        < MinReactivePower_VAR
     )
     {
       yield return new ValidationResult(
         $"ReactivePower must be greater than or equal to {MinReactivePower_VAR}."
-        + $"\nWas {measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhaseTrough()} VAR.",
+          + $"\nWas {measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhaseTrough()} VAR.",
         new[] { nameof(SchneideriEM3xxxMeasurementModel.ReactivePower_VAR) }
       );
     }
 
     if (
-      memberName is null
-        or nameof(SchneideriEM3xxxMeasurementModel.ReactivePower_VAR) &&
-      measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhasePeak()
-      > MaxReactivePower_VAR
+      memberName
+        is null
+          or nameof(SchneideriEM3xxxMeasurementModel.ReactivePower_VAR)
+      && measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhasePeak()
+        > MaxReactivePower_VAR
     )
     {
       yield return new ValidationResult(
         $"ReactivePower must be less than or equal to {MaxReactivePower_VAR}."
-        + $"\nWas {measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhasePeak()} VAR.",
+          + $"\nWas {measurement.ReactivePower_VAR.TariffUnary().DuplexAny().PhasePeak()} VAR.",
         new[] { nameof(SchneideriEM3xxxMeasurementModel.ReactivePower_VAR) }
       );
     }
 
     if (
-      memberName is null
-        or nameof(SchneideriEM3xxxMeasurementModel.ApparentPower_VA) &&
-      measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhaseTrough()
-      < MinApparentPower_VA
+      memberName
+        is null
+          or nameof(SchneideriEM3xxxMeasurementModel.ApparentPower_VA)
+      && measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhaseTrough()
+        < MinApparentPower_VA
     )
     {
       yield return new ValidationResult(
         $"ApparentPower must be greater than or equal to {MinApparentPower_VA}."
-        + $"\nWas {measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhaseTrough()} VA.",
+          + $"\nWas {measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhaseTrough()} VA.",
         new[] { nameof(SchneideriEM3xxxMeasurementModel.ApparentPower_VA) }
       );
     }
 
     if (
-      memberName is null
-        or nameof(SchneideriEM3xxxMeasurementModel.ApparentPower_VA) &&
-      measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhasePeak()
-      > MaxApparentPower_VA
+      memberName
+        is null
+          or nameof(SchneideriEM3xxxMeasurementModel.ApparentPower_VA)
+      && measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhasePeak()
+        > MaxApparentPower_VA
     )
     {
       yield return new ValidationResult(
         $"ApparentPower must be less than or equal to {MaxApparentPower_VA}."
-        + $"\nWas {measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhasePeak()} VA.",
+          + $"\nWas {measurement.ApparentPower_VA.TariffUnary().DuplexAny().PhasePeak()} VA.",
         new[] { nameof(SchneideriEM3xxxMeasurementModel.ApparentPower_VA) }
       );
     }

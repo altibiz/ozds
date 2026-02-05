@@ -11,9 +11,11 @@ public class EntityFactory
     var abstractEntities = EntitiesLike(entity => entity.IsAbstract);
     var concreteEntities = abstractEntities.ToDictionary(
       type => type,
-      type => EntitiesLike(entity =>
-        !entity.IsAbstract
-        && entity.IsAssignableTo(type)));
+      type =>
+        EntitiesLike(entity =>
+          !entity.IsAbstract && entity.IsAssignableTo(type)
+        )
+    );
     var created = new Fixture();
     foreach (var (type, concrete) in concreteEntities)
     {
@@ -35,8 +37,9 @@ public class EntityFactory
         && method.IsGenericMethod
         && method.GetGenericArguments().Length == 1
         && method.GetParameters().Length == 1
-        && method.GetParameters()[0].ParameterType
-        == typeof(ISpecimenBuilder)));
+        && method.GetParameters()[0].ParameterType == typeof(ISpecimenBuilder)
+      )
+  );
 
   private Fixture Fixture
   {
@@ -64,22 +67,22 @@ public class EntityFactory
   public IEnumerable<Type> CompositeEntities()
   {
     return EntitiesLike(type =>
-      !type.IsAbstract
-      && type.IsAssignableTo(typeof(ICompositeEntity)));
+      !type.IsAbstract && type.IsAssignableTo(typeof(ICompositeEntity))
+    );
   }
 
   public IEnumerable<Type> IdentifiableEntities()
   {
     return EntitiesLike(type =>
-      !type.IsAbstract
-      && type.IsAssignableTo(typeof(IIdentifiableEntity)));
+      !type.IsAbstract && type.IsAssignableTo(typeof(IIdentifiableEntity))
+    );
   }
 
   public IEnumerable<Type> JoinEntities()
   {
     return EntitiesLike(type =>
-      !type.IsAbstract
-      && type.IsAssignableTo(typeof(IJoinEntity)));
+      !type.IsAbstract && type.IsAssignableTo(typeof(IJoinEntity))
+    );
   }
 
   public IEnumerable<Type> Entities()
@@ -89,16 +92,19 @@ public class EntityFactory
       && type.IsAssignableTo(typeof(IEntity))
       && !type.IsAssignableTo(typeof(IJoinEntity))
       && !type.IsAssignableTo(typeof(IIdentifiableEntity))
-      && !type.IsAssignableTo(typeof(ICompositeEntity)));
+      && !type.IsAssignableTo(typeof(ICompositeEntity))
+    );
   }
 
   public static IEnumerable<Type> EntitiesLike(Func<Type, bool> predicate)
   {
-    return typeof(IEntity).Assembly.GetTypes()
+    return typeof(IEntity)
+      .Assembly.GetTypes()
       .Where(type =>
         type.Namespace is not null
         && type.Namespace.StartsWith("Ozds.Caching.Entities")
         && type.IsAssignableTo(typeof(IEntity))
-        && predicate(type));
+        && predicate(type)
+      );
   }
 }

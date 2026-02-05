@@ -12,12 +12,12 @@ public class RepresentativeEventEntity : EventEntity
   public virtual RepresentativeEntity Representative { get; set; } = default!;
 }
 
-public class
-  RepresentativeEventEntityConfiguration : EntityTypeConfiguration<
-  RepresentativeEventEntity>
+public class RepresentativeEventEntityConfiguration
+  : EntityTypeConfiguration<RepresentativeEventEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<RepresentativeEventEntity> builder)
+    EntityTypeBuilder<RepresentativeEventEntity> builder
+  )
   {
     builder
       .HasOne(nameof(RepresentativeEventEntity.Representative))

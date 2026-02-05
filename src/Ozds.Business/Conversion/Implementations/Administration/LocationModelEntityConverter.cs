@@ -13,51 +13,47 @@ public class LocationModelEntityConverter(IServiceProvider serviceProvider)
     LocationModel,
     TrackableModel,
     LocationEntity,
-    TrackableEntity>(serviceProvider)
+    TrackableEntity
+  >(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();
 
   public override void InitializeEntity(
     LocationModel model,
-    LocationEntity entity)
+    LocationEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.WhiteMediumNetworkUserCatalogueId =
       model.WhiteMediumNetworkUserCatalogueId;
-    entity.BlueLowNetworkUserCatalogueId =
-      model.BlueLowNetworkUserCatalogueId;
+    entity.BlueLowNetworkUserCatalogueId = model.BlueLowNetworkUserCatalogueId;
     entity.WhiteLowNetworkUserCatalogueId =
       model.WhiteLowNetworkUserCatalogueId;
-    entity.RedLowNetworkUserCatalogueId =
-      model.RedLowNetworkUserCatalogueId;
+    entity.RedLowNetworkUserCatalogueId = model.RedLowNetworkUserCatalogueId;
     entity.RegulatoryCatalogueId = model.RegulatoryCatalogueId;
-    entity.LegalPerson =
-      model.LegalPerson is null
-        ? null!
-        : modelEntityConverter
-          .ToEntity<LegalPersonEntity>(model.LegalPerson);
+    entity.LegalPerson = model.LegalPerson is null
+      ? null!
+      : modelEntityConverter.ToEntity<LegalPersonEntity>(model.LegalPerson);
     entity.AltiBizSubProjectCode = model.AltiBizSubProjectCode;
   }
 
   public override void InitializeModel(
     LocationEntity entity,
-    LocationModel model)
+    LocationModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.WhiteMediumNetworkUserCatalogueId =
       entity.WhiteMediumNetworkUserCatalogueId;
-    model.BlueLowNetworkUserCatalogueId =
-      entity.BlueLowNetworkUserCatalogueId;
+    model.BlueLowNetworkUserCatalogueId = entity.BlueLowNetworkUserCatalogueId;
     model.WhiteLowNetworkUserCatalogueId =
       entity.WhiteLowNetworkUserCatalogueId;
-    model.RedLowNetworkUserCatalogueId =
-      entity.RedLowNetworkUserCatalogueId;
+    model.RedLowNetworkUserCatalogueId = entity.RedLowNetworkUserCatalogueId;
     model.RegulatoryCatalogueId = entity.RegulatoryCatalogueId;
     model.LegalPerson = entity.LegalPerson is null
       ? null!
-      : modelEntityConverter
-        .ToModel<LegalPersonModel>(entity.LegalPerson);
+      : modelEntityConverter.ToModel<LegalPersonModel>(entity.LegalPerson);
     model.AltiBizSubProjectCode = entity.AltiBizSubProjectCode;
   }
 }

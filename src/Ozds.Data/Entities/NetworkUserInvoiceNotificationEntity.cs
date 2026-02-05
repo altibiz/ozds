@@ -23,11 +23,12 @@ public class NetworkUserInvoiceNotificationEntity : NotificationEntity
   public virtual NetworkUserInvoiceEntity Invoice { get; set; } = default!;
 }
 
-public class NetworkUserInvoiceNotificationEntityConfiguration :
-  EntityTypeConfiguration<NetworkUserInvoiceNotificationEntity>
+public class NetworkUserInvoiceNotificationEntityConfiguration
+  : EntityTypeConfiguration<NetworkUserInvoiceNotificationEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<NetworkUserInvoiceNotificationEntity> builder)
+    EntityTypeBuilder<NetworkUserInvoiceNotificationEntity> builder
+  )
   {
     builder
       .HasOne(nameof(NetworkUserInvoiceNotificationEntity.Invoice))
@@ -35,8 +36,6 @@ public class NetworkUserInvoiceNotificationEntityConfiguration :
       .HasForeignKey("_invoiceId");
 
     builder.Ignore(nameof(NetworkUserInvoiceNotificationEntity.InvoiceId));
-    builder
-      .Property("_invoiceId")
-      .HasColumnName("invoice_id");
+    builder.Property("_invoiceId").HasColumnName("invoice_id");
   }
 }

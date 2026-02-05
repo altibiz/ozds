@@ -10,10 +10,7 @@ public class CompositeEntityQueries(
   EntityReflector entityReflector
 ) : IQueries
 {
-  public async Task<T?> Read<T>(
-    string id,
-    CancellationToken cancellationToken
-  )
+  public async Task<T?> Read<T>(string id, CancellationToken cancellationToken)
     where T : notnull, ICompositeEntity
   {
     foreach (var subtype in entityReflector.ResolveSubtypes<T>())
@@ -38,7 +35,8 @@ public class CompositeEntityQueries(
     if (!entityType.IsAssignableTo(typeof(ICompositeEntity)))
     {
       throw new InvalidOperationException(
-        "Entity type must implement ICompositeEntity");
+        "Entity type must implement ICompositeEntity"
+      );
     }
 
     foreach (var subtype in entityReflector.ResolveSubtypes(entityType))

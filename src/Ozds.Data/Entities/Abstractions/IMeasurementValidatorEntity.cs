@@ -1,6 +1,5 @@
 namespace Ozds.Data.Entities.Abstractions;
 
-public interface IMeasurementValidatorEntity : ITrackableEntity,
-  IIdentifiableEntity
-{
-}
+public interface IMeasurementValidatorEntity
+  : ITrackableEntity,
+    IIdentifiableEntity { }

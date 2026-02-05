@@ -5,59 +5,61 @@ namespace Ozds.Business.Test.Math.PhasicMeasureTest;
 
 public class ConvertPrimitiveToTest
 {
-  public static IEnumerable<(PhasicMeasure<decimal>, PhasicMeasure<float>)>
-    DecimalToFloatConversion()
+  public static IEnumerable<(
+    PhasicMeasure<decimal>,
+    PhasicMeasure<float>
+  )> DecimalToFloatConversion()
   {
     return new List<(PhasicMeasure<decimal>, PhasicMeasure<float>)>
     {
-      (new SinglePhasicSumMeasure<decimal>(5.4m),
+      (
+        new SinglePhasicSumMeasure<decimal>(5.4m),
         new SinglePhasicSumMeasure<float>(5.4f)
       ),
-      (new TriPhasicMeasure<decimal>(3.3m, 2.2m, 1.1m),
+      (
+        new TriPhasicMeasure<decimal>(3.3m, 2.2m, 1.1m),
         new TriPhasicMeasure<float>(3.3f, 2.2f, 1.1f)
       ),
-      (new CompositePhasicMeasure<decimal>(
-        [
+      (
+        new CompositePhasicMeasure<decimal>([
           new SinglePhasicSumMeasure<decimal>(4.4m),
-          new SinglePhasicSumMeasure<decimal>(5.5m)
+          new SinglePhasicSumMeasure<decimal>(5.5m),
         ]),
-        new CompositePhasicMeasure<float>(
-        [
+        new CompositePhasicMeasure<float>([
           new SinglePhasicSumMeasure<float>(4.4f),
-          new SinglePhasicSumMeasure<float>(5.5f)
+          new SinglePhasicSumMeasure<float>(5.5f),
         ])
       ),
-      (new NullPhasicMeasure<decimal>(),
-        new NullPhasicMeasure<float>()
-      )
+      (new NullPhasicMeasure<decimal>(), new NullPhasicMeasure<float>()),
     };
   }
 
-  public static IEnumerable<(PhasicMeasure<float>, PhasicMeasure<decimal>)>
-    FloatToDecimalConversion()
+  public static IEnumerable<(
+    PhasicMeasure<float>,
+    PhasicMeasure<decimal>
+  )> FloatToDecimalConversion()
   {
     return new List<(PhasicMeasure<float>, PhasicMeasure<decimal>)>
     {
-      (new SinglePhasicSumMeasure<float>(5.4f),
+      (
+        new SinglePhasicSumMeasure<float>(5.4f),
         new SinglePhasicSumMeasure<decimal>(5.4m)
       ),
-      (new TriPhasicMeasure<float>(3.3f, 2.2f, 1.1f),
+      (
+        new TriPhasicMeasure<float>(3.3f, 2.2f, 1.1f),
         new TriPhasicMeasure<decimal>(3.3m, 2.2m, 1.1m)
       ),
-      (new CompositePhasicMeasure<float>(
-        [
+      (
+        new CompositePhasicMeasure<float>([
           new SinglePhasicSumMeasure<float>(4.4f),
-          new SinglePhasicSumMeasure<float>(5.5f)
+          new SinglePhasicSumMeasure<float>(5.5f),
         ]),
-        new CompositePhasicMeasure<decimal>(
-        [
+        new CompositePhasicMeasure<decimal>([
           new SinglePhasicSumMeasure<decimal>(4.4m),
-          new SinglePhasicSumMeasure<decimal>(5.5m)
+          new SinglePhasicSumMeasure<decimal>(5.5m),
         ])
       ),
-      (new NullPhasicMeasure<float>(),
-        new NullPhasicMeasure<decimal>()
-      )
+      (new NullPhasicMeasure<float>(), new NullPhasicMeasure<decimal>()),
     };
   }
 
@@ -65,7 +67,8 @@ public class ConvertPrimitiveToTest
   [MethodDataSource(nameof(DecimalToFloatConversion))]
   public void ConvertsDecimalToFloatCorrectly(
     PhasicMeasure<decimal> input,
-    PhasicMeasure<float> expected)
+    PhasicMeasure<float> expected
+  )
   {
     var result = input.ConvertPrimitiveTo<float>();
     AssertPhasicMeasureEqual(expected, result);
@@ -75,7 +78,8 @@ public class ConvertPrimitiveToTest
   [MethodDataSource(nameof(FloatToDecimalConversion))]
   public void ConvertsFloatToDecimalCorrectly(
     PhasicMeasure<float> input,
-    PhasicMeasure<decimal> expected)
+    PhasicMeasure<decimal> expected
+  )
   {
     var result = input.ConvertPrimitiveTo<decimal>();
     AssertPhasicMeasureEqual(expected, result);
@@ -83,18 +87,21 @@ public class ConvertPrimitiveToTest
 
   private void AssertPhasicMeasureEqual<T>(
     PhasicMeasure<T> expected,
-    PhasicMeasure<T> actual)
+    PhasicMeasure<T> actual
+  )
     where T : struct,
-    IComparisonOperators<T, T, bool>,
-    IAdditionOperators<T, T, T>,
-    ISubtractionOperators<T, T, T>,
-    IMultiplyOperators<T, T, T>,
-    IDivisionOperators<T, T, T>
+      IComparisonOperators<T, T, bool>,
+      IAdditionOperators<T, T, T>,
+      ISubtractionOperators<T, T, T>,
+      IMultiplyOperators<T, T, T>,
+      IDivisionOperators<T, T, T>
   {
     switch (expected, actual)
     {
-      case (SinglePhasicSumMeasure<T> expSingle, SinglePhasicSumMeasure<T>
-        actSingle):
+      case (
+        SinglePhasicSumMeasure<T> expSingle,
+        SinglePhasicSumMeasure<T> actSingle
+      ):
         actSingle.Value.Should().BeEquivalentTo(expSingle.Value);
         break;
       case (TriPhasicMeasure<T> expTri, TriPhasicMeasure<T> actTri):
@@ -102,8 +109,10 @@ public class ConvertPrimitiveToTest
         actTri.ValueL2.Should().BeEquivalentTo(expTri.ValueL2);
         actTri.ValueL3.Should().BeEquivalentTo(expTri.ValueL3);
         break;
-      case (CompositePhasicMeasure<T> expComp, CompositePhasicMeasure<T> actComp
-        ):
+      case (
+        CompositePhasicMeasure<T> expComp,
+        CompositePhasicMeasure<T> actComp
+      ):
         actComp.Measures.Count.Should().Be(expComp.Measures.Count);
         for (var i = 0; i < expComp.Measures.Count; i++)
         {
@@ -115,7 +124,8 @@ public class ConvertPrimitiveToTest
         break;
       default:
         Assert.Fail(
-          "PhasicMeasure types do not match or are not supported in test.");
+          "PhasicMeasure types do not match or are not supported in test."
+        );
         break;
     }
   }

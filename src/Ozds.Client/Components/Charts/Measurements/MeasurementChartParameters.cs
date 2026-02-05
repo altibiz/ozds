@@ -29,9 +29,7 @@ public class MeasurementChartParameters
 
   public DateTimeOffset FromDate { get; set; } =
     // NOTE: just so something is there
-    DateTimeOffset.Parse(
-      "2000-01-01T00:00:00Z",
-      CultureInfo.InvariantCulture);
+    DateTimeOffset.Parse("2000-01-01T00:00:00Z", CultureInfo.InvariantCulture);
 
   public OperatorModel Operator { get; set; } = OperatorModel.Last;
 }

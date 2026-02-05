@@ -15,10 +15,9 @@ public class MeasurementLocationEntityProfiler
     CacheConfigurationBuilder builder
   )
   {
-    return builder
-      .WithIndirectReverseDependencyEvictionPolicy(
-        x => x is IMeasurementLocationEntity entity ? entity.MeterId : null,
-        typeof(IMeterEntity)
-      );
+    return builder.WithIndirectReverseDependencyEvictionPolicy(
+      x => x is IMeasurementLocationEntity entity ? entity.MeterId : null,
+      typeof(IMeterEntity)
+    );
   }
 }

@@ -9,11 +9,13 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class AbbB2xMeasurementModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  AbbB2xMeasurementModel,
-  MeasurementModel,
-  AbbB2xMeasurementEntity,
-  MeasurementEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    AbbB2xMeasurementModel,
+    MeasurementModel,
+    AbbB2xMeasurementEntity,
+    MeasurementEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     AbbB2xMeasurementModel model,
@@ -33,18 +35,12 @@ public class AbbB2xMeasurementModelEntityConverter(
     entity.ReactivePowerL1NetT0_VAR = model.ReactivePowerL1NetT0_VAR.ToFloat();
     entity.ReactivePowerL2NetT0_VAR = model.ReactivePowerL2NetT0_VAR.ToFloat();
     entity.ReactivePowerL3NetT0_VAR = model.ReactivePowerL3NetT0_VAR.ToFloat();
-    entity.ActiveEnergyL1ImportT0_Wh =
-      model.ActiveEnergyL1ImportT0_Wh.ToLong();
-    entity.ActiveEnergyL2ImportT0_Wh =
-      model.ActiveEnergyL2ImportT0_Wh.ToLong();
-    entity.ActiveEnergyL3ImportT0_Wh =
-      model.ActiveEnergyL3ImportT0_Wh.ToLong();
-    entity.ActiveEnergyL1ExportT0_Wh =
-      model.ActiveEnergyL1ExportT0_Wh.ToLong();
-    entity.ActiveEnergyL2ExportT0_Wh =
-      model.ActiveEnergyL2ExportT0_Wh.ToLong();
-    entity.ActiveEnergyL3ExportT0_Wh =
-      model.ActiveEnergyL3ExportT0_Wh.ToLong();
+    entity.ActiveEnergyL1ImportT0_Wh = model.ActiveEnergyL1ImportT0_Wh.ToLong();
+    entity.ActiveEnergyL2ImportT0_Wh = model.ActiveEnergyL2ImportT0_Wh.ToLong();
+    entity.ActiveEnergyL3ImportT0_Wh = model.ActiveEnergyL3ImportT0_Wh.ToLong();
+    entity.ActiveEnergyL1ExportT0_Wh = model.ActiveEnergyL1ExportT0_Wh.ToLong();
+    entity.ActiveEnergyL2ExportT0_Wh = model.ActiveEnergyL2ExportT0_Wh.ToLong();
+    entity.ActiveEnergyL3ExportT0_Wh = model.ActiveEnergyL3ExportT0_Wh.ToLong();
     entity.ReactiveEnergyL1ImportT0_VARh =
       model.ReactiveEnergyL1ImportT0_VARh.ToLong();
     entity.ReactiveEnergyL2ImportT0_VARh =

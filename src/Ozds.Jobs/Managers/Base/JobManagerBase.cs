@@ -5,19 +5,18 @@ using Quartz;
 
 namespace Ozds.Jobs.Managers.Base;
 
-public abstract class JobManagerBase<TContext>
-  : IJobManager
+public abstract class JobManagerBase<TContext> : IJobManager
 {
-  protected JobManagerBase(
-    IServiceProvider serviceProvider
-  )
+  protected JobManagerBase(IServiceProvider serviceProvider)
   {
-    SchedulerFactory = serviceProvider
-      .GetRequiredService<OzdsSchedulerFactory>();
+    SchedulerFactory =
+      serviceProvider.GetRequiredService<OzdsSchedulerFactory>();
 
-    Logger = (serviceProvider
-        .GetRequiredService(typeof(ILogger<>).MakeGenericType(GetType()))
-      as ILogger)!;
+    Logger = (
+      serviceProvider.GetRequiredService(
+        typeof(ILogger<>).MakeGenericType(GetType())
+      ) as ILogger
+    )!;
   }
 
   protected OzdsSchedulerFactory SchedulerFactory { get; init; }
@@ -26,7 +25,8 @@ public abstract class JobManagerBase<TContext>
 
   protected async Task Ensure(
     TContext context,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var triggerKeys = CreateTriggerKeys(context);
 
@@ -37,21 +37,13 @@ public abstract class JobManagerBase<TContext>
     {
       var scheduler = await SchedulerFactory.GetScheduler(cancellationToken);
 
-      await scheduler.ScheduleJob(
-        job,
-        triggers,
-        false,
-        cancellationToken
-      );
+      await scheduler.ScheduleJob(job, triggers, false, cancellationToken);
 
       if (Logger.IsEnabled(LogLevel.Debug))
       {
         var json = ToJson(triggerKeys, triggers);
 
-        Logger.LogDebug(
-          "Ensured job for {TriggerKeys}",
-          json
-        );
+        Logger.LogDebug("Ensured job for {TriggerKeys}", json);
       }
     }
     catch (ObjectAlreadyExistsException ex)
@@ -59,11 +51,7 @@ public abstract class JobManagerBase<TContext>
       if (Logger.IsEnabled(LogLevel.Debug))
       {
         var json = ToJson(triggerKeys, triggers);
-        Logger.LogDebug(
-          ex,
-          "Job already exists for {TriggerKeys}",
-          json
-        );
+        Logger.LogDebug(ex, "Job already exists for {TriggerKeys}", json);
       }
     }
     catch (JobPersistenceException ex)
@@ -71,18 +59,15 @@ public abstract class JobManagerBase<TContext>
       if (Logger.IsEnabled(LogLevel.Debug))
       {
         var json = ToJson(triggerKeys, triggers);
-        Logger.LogDebug(
-          ex,
-          "Job already exists for {TriggerKeys}",
-          json
-        );
+        Logger.LogDebug(ex, "Job already exists for {TriggerKeys}", json);
       }
     }
   }
 
   protected async Task Ensure(
     IEnumerable<TContext> contexts,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var triggerKeys = contexts.Select(CreateTriggerKeys).ToList();
 
@@ -94,7 +79,7 @@ public abstract class JobManagerBase<TContext>
         return new
         {
           Job = CreateJob(context),
-          Triggers = CreateTriggers(context, triggerKeys)
+          Triggers = CreateTriggers(context, triggerKeys),
         };
       })
       .ToDictionary(x => x.Job, x => x.Triggers)
@@ -104,19 +89,12 @@ public abstract class JobManagerBase<TContext>
     {
       var scheduler = await SchedulerFactory.GetScheduler(cancellationToken);
 
-      await scheduler.ScheduleJobs(
-        jobsWithTriggers,
-        false,
-        cancellationToken
-      );
+      await scheduler.ScheduleJobs(jobsWithTriggers, false, cancellationToken);
 
       if (Logger.IsEnabled(LogLevel.Debug))
       {
         var json = ToJson(triggerKeys, jobsWithTriggers);
-        Logger.LogDebug(
-          "Ensured jobs for {TriggerKeys}",
-          json
-        );
+        Logger.LogDebug("Ensured jobs for {TriggerKeys}", json);
       }
     }
     catch (ObjectAlreadyExistsException ex)
@@ -124,11 +102,7 @@ public abstract class JobManagerBase<TContext>
       if (Logger.IsEnabled(LogLevel.Debug))
       {
         var json = ToJson(triggerKeys, jobsWithTriggers);
-        Logger.LogDebug(
-          ex,
-          "Jobs already exist for {TriggerKeys}",
-          json
-        );
+        Logger.LogDebug(ex, "Jobs already exist for {TriggerKeys}", json);
       }
     }
     catch (JobPersistenceException ex)
@@ -136,18 +110,15 @@ public abstract class JobManagerBase<TContext>
       if (Logger.IsEnabled(LogLevel.Debug))
       {
         var json = ToJson(triggerKeys, jobsWithTriggers);
-        Logger.LogDebug(
-          ex,
-          "Jobs already exists for {TriggerKeys}",
-          json
-        );
+        Logger.LogDebug(ex, "Jobs already exists for {TriggerKeys}", json);
       }
     }
   }
 
   public async Task Reschedule(
     TContext context,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var triggerKeys = CreateTriggerKeys(context);
 
@@ -156,26 +127,19 @@ public abstract class JobManagerBase<TContext>
 
     var scheduler = await SchedulerFactory.GetScheduler(cancellationToken);
 
-    await scheduler.ScheduleJob(
-      job,
-      triggers,
-      true,
-      cancellationToken
-    );
+    await scheduler.ScheduleJob(job, triggers, true, cancellationToken);
 
     if (Logger.IsEnabled(LogLevel.Debug))
     {
       var json = ToJson(triggerKeys, triggers);
-      Logger.LogDebug(
-        "Rescheduled job for {TriggerKeys}",
-        json
-      );
+      Logger.LogDebug("Rescheduled job for {TriggerKeys}", json);
     }
   }
 
   protected async Task Reschedule(
     IEnumerable<TContext> contexts,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var triggerKeys = contexts.Select(CreateTriggerKeys).ToList();
 
@@ -187,7 +151,7 @@ public abstract class JobManagerBase<TContext>
         return new
         {
           Job = CreateJob(context),
-          Triggers = CreateTriggers(context, triggerKeys)
+          Triggers = CreateTriggers(context, triggerKeys),
         };
       })
       .ToDictionary(x => x.Job, x => x.Triggers)
@@ -195,25 +159,19 @@ public abstract class JobManagerBase<TContext>
 
     var scheduler = await SchedulerFactory.GetScheduler(cancellationToken);
 
-    await scheduler.ScheduleJobs(
-      jobsWithTriggers,
-      true,
-      cancellationToken
-    );
+    await scheduler.ScheduleJobs(jobsWithTriggers, true, cancellationToken);
 
     if (Logger.IsEnabled(LogLevel.Debug))
     {
       var json = ToJson(triggerKeys, jobsWithTriggers);
-      Logger.LogDebug(
-        "Rescheduled jobs for {TriggerKeys}",
-        json
-      );
+      Logger.LogDebug("Rescheduled jobs for {TriggerKeys}", json);
     }
   }
 
   public async Task Unschedule(
     TContext context,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var triggerKeys = CreateTriggerKeys(context);
 
@@ -222,35 +180,25 @@ public abstract class JobManagerBase<TContext>
 
     var scheduler = await SchedulerFactory.GetScheduler(cancellationToken);
 
-    await scheduler.ScheduleJob(
-      job,
-      triggers,
-      true,
-      cancellationToken
-    );
+    await scheduler.ScheduleJob(job, triggers, true, cancellationToken);
 
     if (Logger.IsEnabled(LogLevel.Debug))
     {
       var json = ToJson(triggerKeys, triggers);
-      Logger.LogDebug(
-        "Unscheduled job for {TriggerKeys}",
-        json
-      );
+      Logger.LogDebug("Unscheduled job for {TriggerKeys}", json);
     }
   }
 
   protected async Task Unschedule(
     IEnumerable<TContext> contexts,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var triggerKeys = contexts.SelectMany(CreateTriggerKeys).ToList();
 
     var scheduler = await SchedulerFactory.GetScheduler(cancellationToken);
 
-    await scheduler.UnscheduleJobs(
-      triggerKeys,
-      cancellationToken
-    );
+    await scheduler.UnscheduleJobs(triggerKeys, cancellationToken);
 
     if (Logger.IsEnabled(LogLevel.Debug))
     {
@@ -259,10 +207,7 @@ public abstract class JobManagerBase<TContext>
         JobManagerBaseExtensions.JsonOptions
       );
 
-      Logger.LogDebug(
-        "Unscheduled jobs for {TriggerKeys}",
-        json
-      );
+      Logger.LogDebug("Unscheduled jobs for {TriggerKeys}", json);
     }
   }
 
@@ -273,14 +218,15 @@ public abstract class JobManagerBase<TContext>
   {
     triggerKeys ??= CreateTriggerKeys(context);
     return triggerKeys
-      .Select(key => CreateTrigger(
-        TriggerBuilder.Create().WithIdentity(key),
-        context))
+      .Select(key =>
+        CreateTrigger(TriggerBuilder.Create().WithIdentity(key), context)
+      )
       .ToList();
   }
 
   protected abstract IReadOnlyCollection<TriggerKey> CreateTriggerKeys(
-    TContext context);
+    TContext context
+  );
 
   protected abstract IJobDetail CreateJob(TContext context);
 
@@ -291,8 +237,9 @@ public abstract class JobManagerBase<TContext>
 
   private static string ToJson(
     List<IReadOnlyCollection<TriggerKey>> triggerKeys,
-    IReadOnlyCollection<KeyValuePair<IJobDetail, IReadOnlyCollection<ITrigger>>>
-      jobsWithTriggers
+    IReadOnlyCollection<
+      KeyValuePair<IJobDetail, IReadOnlyCollection<ITrigger>>
+    > jobsWithTriggers
   )
   {
     var json = JsonSerializer.Serialize(
@@ -309,7 +256,7 @@ public abstract class JobManagerBase<TContext>
           {
             firstTriggerKey.Group,
             firstTriggerKey.Name,
-            Fire = firstTrigger.GetNextFireTimeUtc()
+            Fire = firstTrigger.GetNextFireTimeUtc(),
           };
         }),
       JobManagerBaseExtensions.JsonOptions
@@ -330,7 +277,7 @@ public abstract class JobManagerBase<TContext>
       {
         firstTriggerKey.Group,
         firstTriggerKey.Name,
-        Fire = firstTrigger.GetNextFireTimeUtc()
+        Fire = firstTrigger.GetNextFireTimeUtc(),
       },
       JobManagerBaseExtensions.JsonOptions
     );
@@ -343,6 +290,6 @@ public static class JobManagerBaseExtensions
 {
   public static readonly JsonSerializerOptions JsonOptions = new()
   {
-    WriteIndented = true
+    WriteIndented = true,
   };
 }

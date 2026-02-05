@@ -22,11 +22,11 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
         builder.Configuration.AddInMemoryCollection(
           new Dictionary<string, string?>
           {
-            ["Ozds:Jobs:Archival:DailyMeasurementDeletionCron"] =
-              "0 * * * * ?", // NOTE: on the first second of every minute
+            ["Ozds:Jobs:Archival:DailyMeasurementDeletionCron"] = "0 * * * * ?", // NOTE: on the first second of every minute
             ["Ozds:Business:Reactor:MeasurementDeletionJobIntervalSeconds"] =
-              Interval.TotalSeconds.ToString()
-          });
+              Interval.TotalSeconds.ToString(),
+          }
+        );
       });
     });
   }
@@ -52,12 +52,14 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
           new MeasurementLocationMeterIdWithValidator(
             x.MeasurementLocation.Id,
             x.Meter.Id,
-            x.MeasurementValidator)
+            x.MeasurementValidator
+          ),
         ],
         dateFrom,
         dateTo,
         cancellationToken,
-        false)
+        false
+      )
       .Where(x => x is not IAggregate)
       .ToListAsync(cancellationToken);
 
@@ -89,7 +91,8 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
 
     await Task.Delay(TimeSpan.FromMinutes(1), cancellationToken);
 
-    var itemsAfter = await Services.GetRequiredService<MeasurementQueries>()
+    var itemsAfter = await Services
+      .GetRequiredService<MeasurementQueries>()
       .ReadByMeasurementLocationIds(
         [x.MeasurementLocation.Id],
         null,

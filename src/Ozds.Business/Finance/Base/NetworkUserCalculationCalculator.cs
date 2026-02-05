@@ -4,28 +4,31 @@ using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance.Base;
 
-public abstract class NetworkUserCalculationCalculator<T> :
-  INetworkUserCalculationCalculator
+public abstract class NetworkUserCalculationCalculator<T>
+  : INetworkUserCalculationCalculator
   where T : NetworkUserCatalogueModel
 {
-  public bool CanCalculate(
-    NetworkUserCalculationBasisModel calculationBasis)
+  public bool CanCalculate(NetworkUserCalculationBasisModel calculationBasis)
   {
-    return calculationBasis.UsageNetworkUserCatalogue.GetType()
+    return calculationBasis
+      .UsageNetworkUserCatalogue.GetType()
       .IsAssignableTo(typeof(T));
   }
 
   public NetworkUserCalculationModel Calculate(
-    NetworkUserCalculationBasisModel calculationBasis)
+    NetworkUserCalculationBasisModel calculationBasis
+  )
   {
     var usageCalculation = CalculateForNetworkUser(
       (T)calculationBasis.UsageNetworkUserCatalogue,
-      calculationBasis);
+      calculationBasis
+    );
 
     return usageCalculation;
   }
 
   protected abstract MeteredNetworkUserCalculationModel CalculateForNetworkUser(
     T catalogue,
-    NetworkUserCalculationBasisModel calculationBasis);
+    NetworkUserCalculationBasisModel calculationBasis
+  );
 }
