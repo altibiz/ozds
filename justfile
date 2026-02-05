@@ -162,22 +162,21 @@ format:
 
     nixpkgs-fmt '{{ root }}'
 
+    @just format-prettier
+
+    # yapf --recursive --in-place --parallel '{{ root }}'
+
+    @just format-jb
+
+format-prettier:
     prettier --write \
       --ignore-path '{{ gitignore }}' \
       --ignore-path '{{ prettierignore }}' \
       --cache --cache-strategy metadata \
       '{{ root }}'
 
-    # yapf --recursive --in-place --parallel '{{ root }}'
-
-    @just format-jb
-
-format-jb:
-    dotnet jb cleanupcode '{{ sln }}' \
-      --verbosity=WARN \
-      --caches-home='{{ jbcache }}' \
-      -o='{{ jbinspectlog }}' \
-      --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*;**/*.xml'
+format-csharp:
+    dotnet csharpier format '{{ sln }}'
 
 deps:
     exec \
