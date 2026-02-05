@@ -9,6 +9,10 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased - 2025-01-22
 
+### Added
+
+- audit event index by id
+
 ### Changed
 
 - fixed unintended reset of the selected measurement points or meters on each

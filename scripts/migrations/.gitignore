@@ -214,3 +214,5 @@
 /20251204143643-Ozds.Data-BlackoutNetworkUserInvoiceCalculation.sql
 /20251205020328-Ozds.Data-ReverseMeasurementAggregateIndices-hypertables.sql
 /20251205020328-Ozds.Data-ReverseMeasurementAggregateIndices.sql
+/20260205090933-Ozds.Data-AddCorrectIndexForAuditEvent-hypertables.sql
+/20260205090933-Ozds.Data-AddCorrectIndexForAuditEvent.sql
