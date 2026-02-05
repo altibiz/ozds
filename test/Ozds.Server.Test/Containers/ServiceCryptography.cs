@@ -71,7 +71,7 @@ public static class ServiceCryptography
     }
 
     // https://learn.microsoft.com/en-us/dotnet/fundamentals/syslib-diagnostics/syslib0060 - replaced by
-    byte[] passwordHash = Rfc2898DeriveBytes.Pbkdf2(
+    var passwordHash = Rfc2898DeriveBytes.Pbkdf2(
       password,
       salt,
       iterations,

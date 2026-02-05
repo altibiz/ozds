@@ -23,12 +23,10 @@ Here is a list of failures that can occur in the push process divided into
 areas:
 
 - **Raspberry PI -> Server**:
-
   - Raspberry PI is not sending data
   - Raspberry PI is sending incorrect data
 
 - **Server**:
-
   - Server is not connected to the network
   - Server throws an exception (software bug)
 
