@@ -12,6 +12,7 @@ namespace Ozds.Server.Test.Controllers.Api.V1;
 public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
 {
   private const string DateTo = "2025-10-16T11:43:02.931923222+02:00";
+  private const int NumberOfMeasurementLocations = 10;
 
   [Test]
   public async Task
@@ -92,6 +93,135 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
       fetchedMeasurement.Timestamp.Should().BeBefore(dateTo);
 
       var insertedMeasurement = inserted
+        .FirstOrDefault(
+          insertedMeasurement =>
+            insertedMeasurement.Timestamp == fetchedMeasurement.Timestamp
+            && insertedMeasurement.MeasurementLocationId
+            == fetchedMeasurement.MeasurementLocationId
+            && insertedMeasurement.MeterId == fetchedMeasurement.MeterId)!;
+      insertedMeasurement.Should().NotBeNull();
+
+      foreach (var register in registers)
+      {
+        var insertedValue = insertedMeasurement.RegisterValue(register);
+
+        var fetchedValue = fetchedMeasurement.Registers
+          .FirstOrDefault(
+            fetchedRegister =>
+              fetchedRegister.Key == register.Name)!;
+        fetchedValue.Should().NotBeNull();
+
+        fetchedValue.Value.Should().Be(insertedValue.ToString());
+      }
+    }
+  }
+
+  [Test]
+  public async Task
+    MeasurementsController_GetsQuarterHourlyAggregatesByLocationLast(
+      CancellationToken cancellationToken
+    )
+  {
+    DateTimeOffset? dateFrom = null;
+    DateTimeOffset? dateTo = null;
+    var testRegisters = TestRegister.SchneideriEM3xxxSet;
+
+    Action<TestMeasurementLocationFixture.Configurator>
+      measurementLocationMeterConfigurator =
+        x => x
+          .WithMeter(
+            x => x
+              .WithMeterType(typeof(SchneideriEM3xxxMeterModel)));
+
+    var measurementLocation = await MeasurementLocation.Create(
+      cancellationToken,
+      measurementLocationMeterConfigurator
+    );
+
+    var measurementLocations = (await Task.WhenAll(
+      Enumerable
+        .Range(0, NumberOfMeasurementLocations - 1)
+        .Select(
+          _ => MeasurementLocation.Create(
+            measurementLocation,
+            cancellationToken,
+            measurementLocationMeterConfigurator
+          )))).ToList();
+
+    measurementLocations.Add(measurementLocation);
+
+    var scope = await Scope.CreateMeasurementForLocationWithRegisters(
+      measurementLocation.Location,
+      testRegisters,
+      cancellationToken
+    );
+
+    var apiKey = await ApiKey.CreateForUserAndScope(
+      TestUser.Operator,
+      scope.MeasurementScope,
+      cancellationToken);
+
+    var insertionDateTo = DateTimeOffset.Parse(
+      DateTo, CultureInfo.InvariantCulture);
+    var insertionDateFrom = insertionDateTo.AddDays(-1);
+
+    var inserted = await measurementLocations.Select(
+        m => Measurement.Insert(
+            [
+              new MeasurementLocationMeterId(
+                m.MeasurementLocation.Id,
+                m.Meter.Id
+              )
+            ],
+            insertionDateFrom,
+            insertionDateTo,
+            cancellationToken
+          )
+          .OfType<IAggregate>()
+          .Where(
+            aggregate =>
+              aggregate.Interval == IntervalModel.QuarterHour
+          )
+      )
+      .ToAsyncEnumerable()
+      .SelectMany(x => x)
+      .ToListAsync(cancellationToken);
+
+    var client = Services.GetRequiredService<IOzdsApiV1Client>();
+    var apiKeyManager = Services.GetRequiredService<ApiKeyManager>();
+
+    client.ApiKey = apiKeyManager.Tokenize(apiKey.ApiKey);
+
+    var fetched = await client.QuarterHourlyAggregatesByLocationAsync(
+      measurementLocation.Location.Id,
+      dateFrom,
+      dateTo,
+      0,
+      cancellationToken
+    );
+
+    var insertedLatestMeasurements = inserted
+      .GroupBy(
+        m => (m.MeterId, m.MeasurementLocationId)
+      )
+      .Select(
+        mg =>
+          mg.MaxBy(m => m.Timestamp)!
+      );
+
+    fetched.LocationId.Should().Be(measurementLocation.Location.Id);
+    fetched.Page.Should().Be(0);
+    fetched.PageSize.Should().BeGreaterThan(inserted.Count);
+    fetched.TotalCount.Should().Be(fetched.Measurements.Count);
+    fetched.TotalCount.Should().Be(insertedLatestMeasurements!.Count());
+
+    var registers = testRegisters
+      .Select(testRegister => Scope.TestRegisterToRegisterModel(testRegister))
+      .ToList();
+
+    foreach (var fetchedMeasurement in fetched.Measurements)
+    {
+      var insertedMeasurement = insertedLatestMeasurements
         .FirstOrDefault(
           insertedMeasurement =>
             insertedMeasurement.Timestamp == fetchedMeasurement.Timestamp

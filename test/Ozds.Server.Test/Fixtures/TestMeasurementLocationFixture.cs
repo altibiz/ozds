@@ -24,6 +24,59 @@ public class TestMeasurementLocationFixture(
 {
   public async Task<MeasurementLocationWithNetworkUserAndMeter>
     Create(
+      MeasurementLocationWithNetworkUserAndMeter basis,
+      CancellationToken cancellationToken,
+      Action<Configurator>? configure = null
+    )
+  {
+    var configurator = new Configurator();
+    if (configure is not null)
+    {
+      configure(configurator);
+    }
+
+    var meterFixture = new TestMeterFixture(composition);
+
+    var meter = await meterFixture.Create(
+      cancellationToken,
+      x =>
+      {
+        x.WithMeter(y => y.MessengerId = basis.Messenger.Id);
+        configurator.ConfigureMeter(x);
+      });
+
+    var trackableFixture = new TestTrackableFixture(composition);
+
+    var measurementLocation =
+      await trackableFixture.Create<NetworkUserMeasurementLocationModel>(
+        cancellationToken,
+        m =>
+        {
+          m.NetworkUserId = basis.NetworkUser.Id;
+          m.MeterId = meter.Meter.Id;
+          m.NetworkUserCatalogueId = configurator
+            .GetNetworkUserCatalogueId(basis.Location);
+          configurator.ConfigureMeasurementLocation(m);
+        }
+      );
+
+    return new MeasurementLocationWithNetworkUserAndMeter(
+      basis.RegulatoryCatalogue,
+      basis.RedLowNetworkUserCatalogue,
+      basis.BlueLowNetworkUserCatalogue,
+      basis.WhiteLowNetworkUserCatalogue,
+      basis.WhiteMediumNetworkUserCatalogue,
+      basis.Messenger,
+      basis.Location,
+      basis.NetworkUser,
+      meter.MeasurementValidator,
+      meter.Meter,
+      measurementLocation
+    );
+  }
+
+  public async Task<MeasurementLocationWithNetworkUserAndMeter>
+    Create(
       CancellationToken cancellationToken,
       Action<Configurator>? configure = null
     )
