@@ -63,6 +63,8 @@ public class PushRequestMeasurementConverter(
     var current = enumerator.Current;
     var converter = GetMeasurementConverter(current.GetType());
 
+    yield return converter.ToPushRequest(current);
+
     while (enumerator.MoveNext())
     {
       var next = enumerator.Current;
@@ -89,6 +91,8 @@ public class PushRequestMeasurementConverter(
 
     var current = enumerator.Current;
     var converter = GetMeasurementConverter(current.GetType());
+
+    yield return converter.ToPushRequest(current);
 
     while (await enumerator.MoveNextAsync(cancellationToken))
     {
@@ -150,6 +154,10 @@ public class PushRequestMeasurementConverter(
     var current = enumerator.Current;
     var converter = GetPushRequestConverter(current.GetType());
 
+    yield return converter.ToMeasurement(
+      current.MeterPushRequest,
+      current.MeasurementLocationId);
+
     while (enumerator.MoveNext())
     {
       var next = enumerator.Current;
@@ -178,6 +186,10 @@ public class PushRequestMeasurementConverter(
 
     var current = enumerator.Current;
     var converter = GetPushRequestConverter(current.GetType());
+
+    yield return converter.ToMeasurement(
+      current.MeterPushRequest,
+      current.MeasurementLocationId);
 
     while (await enumerator.MoveNextAsync(cancellationToken))
     {
