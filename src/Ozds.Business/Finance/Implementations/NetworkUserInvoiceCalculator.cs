@@ -12,117 +12,140 @@ public class NetworkUserInvoiceCalculator(
   ClockQueries clock
 ) : INetworkUserInvoiceCalculator
 {
-  private readonly NetworkUserCalculationCalculator
-    _calculationCalculator = calculationCalculator;
+  private readonly NetworkUserCalculationCalculator _calculationCalculator =
+    calculationCalculator;
 
   public CalculatedNetworkUserInvoiceModel Calculate(
     NetworkUserInvoiceBasisModel basis
   )
   {
-    var calculations = basis.NetworkUserCalculationBases
-      .Select(_calculationCalculator.Calculate)
+    var calculations = basis
+      .NetworkUserCalculationBases.Select(_calculationCalculator.Calculate)
       .ToList();
 
     var usageActiveEnergyTotalImportT0Fee = System.Math.Round(
       calculations
         .OfType<IMeteredNetworkUserCalculation>()
-        .SelectMany(calculation => calculation.UsageItems
-          .OfType<UsageActiveEnergyTotalImportT0CalculationItemModel>())
+        .SelectMany(calculation =>
+          calculation.UsageItems.OfType<UsageActiveEnergyTotalImportT0CalculationItemModel>()
+        )
         .Sum(item => item.Total),
-      2);
+      2
+    );
 
     var usageActiveEnergyTotalImportT1Fee = System.Math.Round(
       calculations
         .OfType<IMeteredNetworkUserCalculation>()
-        .SelectMany(calculation => calculation.UsageItems
-          .OfType<UsageActiveEnergyTotalImportT1CalculationItemModel>())
+        .SelectMany(calculation =>
+          calculation.UsageItems.OfType<UsageActiveEnergyTotalImportT1CalculationItemModel>()
+        )
         .Sum(item => item.Total),
-      2);
+      2
+    );
 
     var usageActiveEnergyTotalImportT2Fee = System.Math.Round(
       calculations
         .OfType<IMeteredNetworkUserCalculation>()
-        .SelectMany(calculation => calculation.UsageItems
-          .OfType<UsageActiveEnergyTotalImportT2CalculationItemModel>())
+        .SelectMany(calculation =>
+          calculation.UsageItems.OfType<UsageActiveEnergyTotalImportT2CalculationItemModel>()
+        )
         .Sum(item => item.Total),
-      2);
+      2
+    );
 
     var usageActivePowerTotalImportT1PeakFee = System.Math.Round(
       calculations
         .OfType<IMeteredNetworkUserCalculation>()
-        .SelectMany(calculation => calculation.UsageItems
-          .OfType<UsageActivePowerTotalImportT1PeakCalculationItemModel>())
+        .SelectMany(calculation =>
+          calculation.UsageItems.OfType<UsageActivePowerTotalImportT1PeakCalculationItemModel>()
+        )
         .Sum(item => item.Total),
-      2);
+      2
+    );
 
     var usageReactiveEnergyTotalRampedT0Fee = System.Math.Round(
       calculations
         .OfType<IMeteredNetworkUserCalculation>()
-        .SelectMany(calculation => calculation.UsageItems
-          .OfType<UsageReactiveEnergyTotalRampedT0CalculationItemModel>())
+        .SelectMany(calculation =>
+          calculation.UsageItems.OfType<UsageReactiveEnergyTotalRampedT0CalculationItemModel>()
+        )
         .Sum(item => item.Total),
-      2);
+      2
+    );
 
     var usageMeterFee = System.Math.Round(
       calculations
         .OfType<IMeteredNetworkUserCalculation>()
-        .SelectMany(calculation => calculation.UsageItems
-          .OfType<UsageMeterFeeCalculationItemModel>())
+        .SelectMany(calculation =>
+          calculation.UsageItems.OfType<UsageMeterFeeCalculationItemModel>()
+        )
         .Sum(item => item.Total),
-      2);
+      2
+    );
 
     var usageFeeTotal = System.Math.Round(
       usageActiveEnergyTotalImportT0Fee
-      + usageActiveEnergyTotalImportT1Fee
-      + usageActiveEnergyTotalImportT2Fee
-      + usageActivePowerTotalImportT1PeakFee
-      + usageReactiveEnergyTotalRampedT0Fee
-      + usageMeterFee,
-      2);
+        + usageActiveEnergyTotalImportT1Fee
+        + usageActiveEnergyTotalImportT2Fee
+        + usageActivePowerTotalImportT1PeakFee
+        + usageReactiveEnergyTotalRampedT0Fee
+        + usageMeterFee,
+      2
+    );
 
     var supplyActiveEnergyTotalImportT1Fee = System.Math.Round(
       calculations
         .OfType<IMeteredNetworkUserCalculation>()
-        .SelectMany(calculation => calculation.SupplyItems
-          .OfType<SupplyActiveEnergyTotalImportT1CalculationItemModel>())
+        .SelectMany(calculation =>
+          calculation.SupplyItems.OfType<SupplyActiveEnergyTotalImportT1CalculationItemModel>()
+        )
         .Sum(item => item.Total),
-      2);
+      2
+    );
 
     var supplyActiveEnergyTotalImportT2Fee = System.Math.Round(
       calculations
         .OfType<IMeteredNetworkUserCalculation>()
-        .SelectMany(calculation => calculation.SupplyItems
-          .OfType<SupplyActiveEnergyTotalImportT2CalculationItemModel>())
+        .SelectMany(calculation =>
+          calculation.SupplyItems.OfType<SupplyActiveEnergyTotalImportT2CalculationItemModel>()
+        )
         .Sum(item => item.Total),
-      2);
+      2
+    );
 
     var supplyBusinessUsageFee = System.Math.Round(
       calculations
         .OfType<IMeteredNetworkUserCalculation>()
-        .SelectMany(calculation => calculation.SupplyItems
-          .OfType<SupplyBusinessUsageCalculationItemModel>())
+        .SelectMany(calculation =>
+          calculation.SupplyItems.OfType<SupplyBusinessUsageCalculationItemModel>()
+        )
         .Sum(item => item.Total),
-      2);
+      2
+    );
 
     var supplyRenewableEnergyFee = System.Math.Round(
       calculations
         .OfType<IMeteredNetworkUserCalculation>()
-        .SelectMany(calculation => calculation.SupplyItems
-          .OfType<SupplyRenewableEnergyCalculationItemModel>())
+        .SelectMany(calculation =>
+          calculation.SupplyItems.OfType<SupplyRenewableEnergyCalculationItemModel>()
+        )
         .Sum(item => item.Total),
-      2);
+      2
+    );
 
     var supplyFeeTotal = System.Math.Round(
       supplyActiveEnergyTotalImportT1Fee
-      + supplyActiveEnergyTotalImportT2Fee
-      + supplyBusinessUsageFee
-      + supplyRenewableEnergyFee,
-      2);
+        + supplyActiveEnergyTotalImportT2Fee
+        + supplyBusinessUsageFee
+        + supplyRenewableEnergyFee,
+      2
+    );
 
     var total = System.Math.Round(usageFeeTotal + supplyFeeTotal, 2);
     var taxRate = System.Math.Round(
       basis.RegulatoryCatalogue.TaxRate_Percent,
-      2);
+      2
+    );
     var tax = System.Math.Round(total * taxRate / 100M, 2);
     var totalWithTax = System.Math.Round(total + tax, 2);
 
@@ -161,13 +184,13 @@ public class NetworkUserInvoiceCalculator(
       Total_EUR = total,
       InvoiceTaxRate_Percent = taxRate,
       InvoiceTax_EUR = tax,
-      InvoiceTotalWithTax_EUR = totalWithTax
+      InvoiceTotalWithTax_EUR = totalWithTax,
     };
 
     return new CalculatedNetworkUserInvoiceModel
     {
       Invoice = invoice,
-      Calculations = calculations
+      Calculations = calculations,
     };
   }
 }

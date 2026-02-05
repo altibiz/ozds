@@ -4,7 +4,7 @@ public enum OperatorModel
 {
   Sum,
   Average,
-  Last
+  Last,
 }
 
 public static class OperatorModelExtensions
@@ -19,7 +19,8 @@ public static class OperatorModelExtensions
       _ => throw new ArgumentOutOfRangeException(
         nameof(operatorModel),
         operatorModel,
-        null)
+        null
+      ),
     };
   }
 
@@ -36,7 +37,8 @@ public static class OperatorModelExtensions
       _ => throw new ArgumentOutOfRangeException(
         nameof(operatorModel),
         operatorModel,
-        null)
+        null
+      ),
     };
   }
 }

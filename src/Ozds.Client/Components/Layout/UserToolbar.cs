@@ -46,7 +46,8 @@ public partial class UserToolbar : OzdsComponentBase
   private void ToggleLocalizationDrawer()
   {
     LayoutState.SetLocalizationDrawerOpen(
-      !LayoutState.IsLocalizationDrawerOpen);
+      !LayoutState.IsLocalizationDrawerOpen
+    );
   }
 
   private void ToggleUserDrawer()

@@ -18,81 +18,95 @@ public class NetworkUserInvoiceStateMachine
       () => AcknowledgeNetworkUserInvoice,
       x =>
       {
-        x.CorrelateBy((state, context) =>
-          state.NetworkUserInvoiceId
-          == context.Message.NetworkUserInvoiceId);
+        x.CorrelateBy(
+          (state, context) =>
+            state.NetworkUserInvoiceId == context.Message.NetworkUserInvoiceId
+        );
         x.SelectId(x => NewId.NextGuid());
 
         x.InsertOnInitial = true;
 
-        x.SetSagaFactory(context =>
-          new NetworkUserInvoiceStateEntity
-          {
-            CorrelationId = context.CorrelationId ?? NewId.NextGuid(),
-            NetworkUserInvoiceId = context.Message.NetworkUserInvoiceId
-          });
-      });
+        x.SetSagaFactory(context => new NetworkUserInvoiceStateEntity
+        {
+          CorrelationId = context.CorrelationId ?? NewId.NextGuid(),
+          NetworkUserInvoiceId = context.Message.NetworkUserInvoiceId,
+        });
+      }
+    );
 
     Initially(
       When(AcknowledgeNetworkUserInvoice)
         .Then(context =>
         {
-          context.Saga.NetworkUserInvoiceId
-            = context.Message.NetworkUserInvoiceId;
-          context.Saga.Approved
-            = context.Message.AutomaticallyApprove;
+          context.Saga.NetworkUserInvoiceId = context
+            .Message
+            .NetworkUserInvoiceId;
+          context.Saga.Approved = context.Message.AutomaticallyApprove;
         })
         .Send(
-          new Uri(
-            options.Value.Messaging.Endpoints.InitiateNetworkUserInvoice),
-          context =>
-            new InitiateNetworkUserInvoice(
-              context.Saga.NetworkUserInvoiceId))
-        .TransitionTo(Initiated));
+          new Uri(options.Value.Messaging.Endpoints.InitiateNetworkUserInvoice),
+          context => new InitiateNetworkUserInvoice(
+            context.Saga.NetworkUserInvoiceId
+          )
+        )
+        .TransitionTo(Initiated)
+    );
 
     WhenEnter(
       Initiated,
-      x => x
-        .Activity(activity => activity
-          .OfType<NetworkUserInvoiceRegistrationActivity>())
-        .IfElse(
-          context => context.Saga.BillId is not null,
-          x => x
-            .Send(
-              new Uri(
-                options.Value.Messaging.Endpoints.RegisterNetworkUserInvoice),
-              context =>
-                new RegisterNetworkUserInvoice(
-                  context.Saga.NetworkUserInvoiceId,
-                  context.Saga.BillId!))
-            .TransitionTo(Registered),
-          x => x
-            .Then(context => context.Saga.Approved = false)
-            .Send(
-              new Uri(
-                options.Value.Messaging.Endpoints.AbortNetworkUserInvoice),
-              context =>
-                new AbortNetworkUserInvoice(
-                  context.Saga.NetworkUserInvoiceId,
-                  context.Saga.AbortReason!))
-            .TransitionTo(Aborted)));
+      x =>
+        x.Activity(activity =>
+            activity.OfType<NetworkUserInvoiceRegistrationActivity>()
+          )
+          .IfElse(
+            context => context.Saga.BillId is not null,
+            x =>
+              x.Send(
+                  new Uri(
+                    options.Value.Messaging.Endpoints.RegisterNetworkUserInvoice
+                  ),
+                  context => new RegisterNetworkUserInvoice(
+                    context.Saga.NetworkUserInvoiceId,
+                    context.Saga.BillId!
+                  )
+                )
+                .TransitionTo(Registered),
+            x =>
+              x.Then(context => context.Saga.Approved = false)
+                .Send(
+                  new Uri(
+                    options.Value.Messaging.Endpoints.AbortNetworkUserInvoice
+                  ),
+                  context => new AbortNetworkUserInvoice(
+                    context.Saga.NetworkUserInvoiceId,
+                    context.Saga.AbortReason!
+                  )
+                )
+                .TransitionTo(Aborted)
+          )
+    );
 
     WhenEnter(
       Registered,
-      x => x
-        .Activity(activity => activity
-          .OfType<NetworkUserInvoiceApprovalActivity>())
-        .Send(
-          new Uri(
-            options.Value.Messaging.Endpoints.ApproveNetworkUserInvoice),
-          context =>
-            new ApproveNetworkUserInvoice(
+      x =>
+        x.Activity(activity =>
+            activity.OfType<NetworkUserInvoiceApprovalActivity>()
+          )
+          .Send(
+            new Uri(
+              options.Value.Messaging.Endpoints.ApproveNetworkUserInvoice
+            ),
+            context => new ApproveNetworkUserInvoice(
               context.Saga.NetworkUserInvoiceId,
-              context.Saga.Approved))
-        .IfElse(
-          context => context.Saga.Approved,
-          x => x.TransitionTo(Approved),
-          x => x.TransitionTo(Disapproved)));
+              context.Saga.Approved
+            )
+          )
+          .IfElse(
+            context => context.Saga.Approved,
+            x => x.TransitionTo(Approved),
+            x => x.TransitionTo(Disapproved)
+          )
+    );
   }
 
   public State Initiated { get; } = default!;
@@ -105,8 +119,6 @@ public class NetworkUserInvoiceStateMachine
 
   public State Aborted { get; } = default!;
 
-  public Event<IAcknowledgeNetworkUserInvoice> AcknowledgeNetworkUserInvoice
-  {
-    get;
-  } = default!;
+  public Event<IAcknowledgeNetworkUserInvoice> AcknowledgeNetworkUserInvoice { get; } =
+    default!;
 }

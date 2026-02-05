@@ -2,9 +2,7 @@ using CommandLine;
 
 namespace Ozds.Migration.Arguments;
 
-public interface IOzdsMigrationArguments
-{
-}
+public interface IOzdsMigrationArguments { }
 
 [Verb("migrate", HelpText = "Migrate the database.")]
 public class OzdsMigrationMigrateArguments : IOzdsMigrationArguments
@@ -40,7 +38,8 @@ public static class OzdsMigrationArguments
         with.HelpWriter = Console.Out;
       }).ParseArguments<
         OzdsMigrationMigrateArguments,
-        OzdsMigrationGenerateArguments>(args);
+        OzdsMigrationGenerateArguments
+      >(args);
 
       if (result.Tag == ParserResultType.NotParsed)
       {

@@ -1,5 +1,3 @@
 namespace Ozds.Data.Entities.Abstractions;
 
-public interface IGuidIdentifiableEntity : IIdentifiableEntity
-{
-}
+public interface IGuidIdentifiableEntity : IIdentifiableEntity { }

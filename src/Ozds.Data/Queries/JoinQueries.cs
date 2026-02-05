@@ -7,17 +7,16 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class JoinQueries(
-  IDbContextFactory<DataDbContext> factory
-) : IQueries
+public class JoinQueries(IDbContextFactory<DataDbContext> factory) : IQueries
 {
-  public Task<PaginatedList<LocationRepresentativeEntity>>
-    ReadRepresentativesForLocation(
-      string locationId,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      int pageCount = QueryConstants.DefaultPageCount
-    )
+  public Task<
+    PaginatedList<LocationRepresentativeEntity>
+  > ReadRepresentativesForLocation(
+    string locationId,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
   {
     return ReadAuditable<LocationRepresentativeEntity>(
       nameof(LocationRepresentativeEntity.Location),
@@ -28,13 +27,14 @@ public class JoinQueries(
     );
   }
 
-  public Task<PaginatedList<LocationRepresentativeEntity>>
-    ReadLocationsForRepresentative(
-      string representativeId,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      int pageCount = QueryConstants.DefaultPageCount
-    )
+  public Task<
+    PaginatedList<LocationRepresentativeEntity>
+  > ReadLocationsForRepresentative(
+    string representativeId,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
   {
     return ReadAuditable<LocationRepresentativeEntity>(
       nameof(LocationRepresentativeEntity.Representative),
@@ -45,13 +45,14 @@ public class JoinQueries(
     );
   }
 
-  public Task<PaginatedList<NetworkUserRepresentativeEntity>>
-    ReadRepresentativesForNetworkUser(
-      string networkUserId,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      int pageCount = QueryConstants.DefaultPageCount
-    )
+  public Task<
+    PaginatedList<NetworkUserRepresentativeEntity>
+  > ReadRepresentativesForNetworkUser(
+    string networkUserId,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
   {
     return ReadAuditable<NetworkUserRepresentativeEntity>(
       nameof(NetworkUserRepresentativeEntity.NetworkUser),
@@ -62,13 +63,14 @@ public class JoinQueries(
     );
   }
 
-  public Task<PaginatedList<NetworkUserRepresentativeEntity>>
-    ReadNetworkUsersForRepresentative(
-      string representativeId,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      int pageCount = QueryConstants.DefaultPageCount
-    )
+  public Task<
+    PaginatedList<NetworkUserRepresentativeEntity>
+  > ReadNetworkUsersForRepresentative(
+    string representativeId,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
   {
     return ReadAuditable<NetworkUserRepresentativeEntity>(
       nameof(NetworkUserRepresentativeEntity.Representative),
@@ -79,13 +81,12 @@ public class JoinQueries(
     );
   }
 
-  public Task<PaginatedList<ApiKeyScopeEntity>>
-    ReadScopesForApiKey(
-      string apiKeyId,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      int pageCount = QueryConstants.DefaultPageCount
-    )
+  public Task<PaginatedList<ApiKeyScopeEntity>> ReadScopesForApiKey(
+    string apiKeyId,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
   {
     return ReadAuditable<ApiKeyScopeEntity>(
       nameof(ApiKeyScopeEntity.ApiKey),
@@ -96,13 +97,12 @@ public class JoinQueries(
     );
   }
 
-  public Task<PaginatedList<ApiKeyScopeEntity>>
-    ReadApiKeysForScope(
-      string scopeId,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      int pageCount = QueryConstants.DefaultPageCount
-    )
+  public Task<PaginatedList<ApiKeyScopeEntity>> ReadApiKeysForScope(
+    string scopeId,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
   {
     return ReadAuditable<ApiKeyScopeEntity>(
       nameof(ApiKeyScopeEntity.Scope),
@@ -122,12 +122,12 @@ public class JoinQueries(
   )
     where T : class, IAuditableEntity
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var queryable = context.GetQueryable<T>();
 
-    var filtered = queryable
-      .Where(context.ForeignKeyEquals<T>(property, id));
+    var filtered = queryable.Where(context.ForeignKeyEquals<T>(property, id));
 
     var ordered = filtered.OrderByDescending(x => x.CreatedOn);
 

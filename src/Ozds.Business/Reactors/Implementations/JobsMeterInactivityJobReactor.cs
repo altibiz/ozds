@@ -14,14 +14,12 @@ namespace Ozds.Business.Reactors.Implementations;
 
 // TODO: remove db context references
 
-public class JobsMeterInactivityJobReactor(
-  IServiceProvider serviceProvider
-) : Reactor<
-  JobsMeterJobEventArgs,
-  IJobsMeterJobSubscriber,
-  JobsMeterInactivityJobHandler>(serviceProvider)
-{
-}
+public class JobsMeterInactivityJobReactor(IServiceProvider serviceProvider)
+  : Reactor<
+    JobsMeterJobEventArgs,
+    IJobsMeterJobSubscriber,
+    JobsMeterInactivityJobHandler
+  >(serviceProvider) { }
 
 public class JobsMeterInactivityJobHandler(
   EventQueries eventQueries,
@@ -31,19 +29,18 @@ public class JobsMeterInactivityJobHandler(
   TrackableQueries trackableQueries
 ) : Handler<JobsMeterJobEventArgs>
 {
-  private static readonly JsonSerializerOptions
-    EventContentSerializationOptions = new()
-    {
-      WriteIndented = true
-    };
+  private static readonly JsonSerializerOptions EventContentSerializationOptions =
+    new() { WriteIndented = true };
 
   public override async Task Handle(
     JobsMeterJobEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var meter = await trackableQueries.ReadById<IMeter>(
       eventArgs.Id,
-      cancellationToken);
+      cancellationToken
+    );
     if (meter is null or { MessengerId: null })
     {
       return;
@@ -51,7 +48,8 @@ public class JobsMeterInactivityJobHandler(
 
     var messenger = await trackableQueries.ReadById<IMessenger>(
       meter.MessengerId,
-      cancellationToken);
+      cancellationToken
+    );
     if (messenger is null)
     {
       return;
@@ -59,7 +57,8 @@ public class JobsMeterInactivityJobHandler(
 
     var lastPushEvent = await eventQueries.ReadLastByMessengerId(
       messenger.Id,
-      cancellationToken);
+      cancellationToken
+    );
 
     var notification = activator.Activate<MeterNotificationModel>();
     notification.MeterId = meter.Id;
@@ -67,7 +66,7 @@ public class JobsMeterInactivityJobHandler(
     [
       TopicModel.All,
       TopicModel.Meter,
-      TopicModel.MeterInactivity
+      TopicModel.MeterInactivity,
     ];
     notification.Title = "Meter is inactive";
     notification.Summary = $"Meter \"{meter.Title}\" is inactive";

@@ -8,11 +8,13 @@ namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class MeasurementScopeModelCachingEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelCachingEntityConverter<
-  MeasurementScopeModel,
-  ScopeModel,
-  MeasurementScopeEntity,
-  ScopeEntity>(serviceProvider)
+)
+  : InheritingModelCachingEntityConverter<
+    MeasurementScopeModel,
+    ScopeModel,
+    MeasurementScopeEntity,
+    ScopeEntity
+  >(serviceProvider)
 {
   private readonly ModelCachingEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelCachingEntityConverter>();
@@ -24,8 +26,9 @@ public class MeasurementScopeModelCachingEntityConverter(
   {
     base.InitializeEntity(model, entity);
 
-    entity.Interval =
-      modelEntityConverter.ToEntity<IntervalEntity>(model.Interval);
+    entity.Interval = modelEntityConverter.ToEntity<IntervalEntity>(
+      model.Interval
+    );
   }
 
   public override void InitializeModel(
@@ -35,7 +38,8 @@ public class MeasurementScopeModelCachingEntityConverter(
   {
     base.InitializeModel(entity, model);
 
-    model.Interval =
-      modelEntityConverter.ToModel<IntervalModel>(entity.Interval);
+    model.Interval = modelEntityConverter.ToModel<IntervalModel>(
+      entity.Interval
+    );
   }
 }

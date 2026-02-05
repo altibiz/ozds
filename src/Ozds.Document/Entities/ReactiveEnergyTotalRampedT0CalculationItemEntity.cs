@@ -1,7 +1,7 @@
 namespace Ozds.Document.Entities;
 
-public abstract class
-  ReactiveEnergyTotalRampedT0CalculationItemEntity : CalculationItemEntity
+public abstract class ReactiveEnergyTotalRampedT0CalculationItemEntity
+  : CalculationItemEntity
 {
   public decimal ReactiveImportMin_kVARh { get; set; }
 
@@ -30,6 +30,4 @@ public abstract class
 }
 
 public class UsageReactiveEnergyTotalRampedT0CalculationItemEntity
-  : ReactiveEnergyTotalRampedT0CalculationItemEntity
-{
-}
+  : ReactiveEnergyTotalRampedT0CalculationItemEntity { }

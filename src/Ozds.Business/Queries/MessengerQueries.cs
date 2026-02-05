@@ -28,8 +28,8 @@ public class MessengerQueries(
       title
     );
 
-    var models = entities.Items
-      .Select(modelEntityConverter.ToModel<IMessenger>)
+    var models = entities
+      .Items.Select(modelEntityConverter.ToModel<IMessenger>)
       .ToPaginatedList(entities.TotalCount);
 
     return models;
@@ -40,10 +40,7 @@ public class MessengerQueries(
     CancellationToken cancellationToken
   )
   {
-    var entity = await queries.ReadByMeterId(
-      meterId,
-      cancellationToken
-    );
+    var entity = await queries.ReadByMeterId(meterId, cancellationToken);
 
     var model = entity is null
       ? null
@@ -63,9 +60,9 @@ public class MessengerQueries(
     );
 
     var models = entities
-      .Select(entity => entity is null
-        ? null
-        : modelEntityConverter.ToModel<IMessenger>(entity))
+      .Select(entity =>
+        entity is null ? null : modelEntityConverter.ToModel<IMessenger>(entity)
+      )
       .ToList();
 
     return models;

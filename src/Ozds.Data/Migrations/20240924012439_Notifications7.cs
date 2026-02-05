@@ -18,7 +18,8 @@ namespace Ozds.Data.Migrations
                 defaultValue: 0L,
                 oldClrType: typeof(long),
                 oldType: "bigint",
-                oldNullable: true);
+                oldNullable: true
+            );
         }
 
         /// <inheritdoc />
@@ -30,7 +31,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: true,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
         }
     }
 }

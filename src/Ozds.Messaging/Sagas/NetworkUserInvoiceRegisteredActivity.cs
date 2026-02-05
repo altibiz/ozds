@@ -17,16 +17,14 @@ public class NetworkUserInvoiceRegisteredActivity(
   public async Task Execute(
     BehaviorContext<
       NetworkUserInvoiceStateEntity,
-      IRegisterNetworkUserInvoice> context,
-    IBehavior<
-      NetworkUserInvoiceStateEntity,
-      IRegisterNetworkUserInvoice> next)
+      IRegisterNetworkUserInvoice
+    > context,
+    IBehavior<NetworkUserInvoiceStateEntity, IRegisterNetworkUserInvoice> next
+  )
   {
     publisher.Publish(
-      new NetworkUserInvoiceStateEventArgs
-      {
-        State = context.Saga
-      });
+      new NetworkUserInvoiceStateEventArgs { State = context.Saga }
+    );
 
     await next.Execute(context);
   }
@@ -35,10 +33,9 @@ public class NetworkUserInvoiceRegisteredActivity(
     BehaviorExceptionContext<
       NetworkUserInvoiceStateEntity,
       IRegisterNetworkUserInvoice,
-      TException> context,
-    IBehavior<
-      NetworkUserInvoiceStateEntity,
-      IRegisterNetworkUserInvoice> next
+      TException
+    > context,
+    IBehavior<NetworkUserInvoiceStateEntity, IRegisterNetworkUserInvoice> next
   )
     where TException : Exception
   {

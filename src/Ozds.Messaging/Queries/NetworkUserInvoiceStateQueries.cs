@@ -14,11 +14,14 @@ public class NetworkUserInvoiceStateQueries(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    return await context.NetworkUserInvoiceStates
-      .Where(x => x.NetworkUserInvoiceId == networkUserInvoiceId)
+    return await context
+      .NetworkUserInvoiceStates.Where(x =>
+        x.NetworkUserInvoiceId == networkUserInvoiceId
+      )
       .FirstOrDefaultAsync(cancellationToken);
   }
 }

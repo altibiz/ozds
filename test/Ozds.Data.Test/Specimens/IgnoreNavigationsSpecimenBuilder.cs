@@ -4,17 +4,19 @@ using Ozds.Data.Test.Extensions;
 
 namespace Ozds.Data.Test.Specimens;
 
-public class IgnoreNavigationsSpecimenBuilder(
-  DbContext dbContext
-) : ISpecimenBuilder
+public class IgnoreNavigationsSpecimenBuilder(DbContext dbContext)
+  : ISpecimenBuilder
 {
-  private readonly Lazy<HashSet<MemberInfo>> navigations =
-    new(dbContext.GetNavigations);
+  private readonly Lazy<HashSet<MemberInfo>> navigations = new(
+    dbContext.GetNavigations
+  );
 
   public object Create(object request, ISpecimenContext context)
   {
-    if (request is PropertyInfo or FieldInfo
-      && navigations.Value.Contains(request))
+    if (
+      request is PropertyInfo or FieldInfo
+      && navigations.Value.Contains(request)
+    )
     {
       return new OmitSpecimen();
     }

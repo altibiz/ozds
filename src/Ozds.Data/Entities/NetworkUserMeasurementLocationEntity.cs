@@ -27,19 +27,18 @@ public class NetworkUserMeasurementLocationEntity : MeasurementLocationEntity
   public virtual NetworkUserCatalogueEntity NetworkUserCatalogue { get; set; } =
     default!;
 
-  public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations { get; set; } =
+  public virtual ICollection<NetworkUserCalculationEntity> NetworkUserCalculations { get; set; } =
     default!;
 
   public string CalculationRemark { get; set; } = string.Empty;
 }
 
-public class
-  NetworkUserMeasurementLocationEntityTypeConfiguration :
-  EntityTypeConfiguration<NetworkUserMeasurementLocationEntity>
+public class NetworkUserMeasurementLocationEntityTypeConfiguration
+  : EntityTypeConfiguration<NetworkUserMeasurementLocationEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<NetworkUserMeasurementLocationEntity> builder)
+    EntityTypeBuilder<NetworkUserMeasurementLocationEntity> builder
+  )
   {
     builder
       .HasOne(nameof(NetworkUserMeasurementLocationEntity.NetworkUser))
@@ -49,18 +48,16 @@ public class
     builder
       .HasOne(nameof(NetworkUserMeasurementLocationEntity.NetworkUserCatalogue))
       .WithMany(
-        nameof(NetworkUserCatalogueEntity
-          .NetworkUserMeasurementLocations))
+        nameof(NetworkUserCatalogueEntity.NetworkUserMeasurementLocations)
+      )
       .HasForeignKey("_networkUserCatalogueId");
 
     builder.Ignore(nameof(NetworkUserMeasurementLocationEntity.NetworkUserId));
-    builder
-      .Property("_networkUserId")
-      .HasColumnName("network_user_id");
+    builder.Property("_networkUserId").HasColumnName("network_user_id");
 
     builder.Ignore(
-      nameof(NetworkUserMeasurementLocationEntity
-        .NetworkUserCatalogueId));
+      nameof(NetworkUserMeasurementLocationEntity.NetworkUserCatalogueId)
+    );
     builder
       .Property("_networkUserCatalogueId")
       .HasColumnName("network_user_catalogue_id");

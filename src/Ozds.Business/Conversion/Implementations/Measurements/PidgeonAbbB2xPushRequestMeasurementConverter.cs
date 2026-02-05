@@ -7,7 +7,8 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 public class PidgeonAbbB2xPushRequestMeasurementConverter
   : ConcretePushRequestMeasurementConverter<
     PidgeonAbbB2xMeterPushRequestEntity,
-    AbbB2xMeasurementModel>
+    AbbB2xMeasurementModel
+  >
 {
   public override string MeterIdPrefix
   {
@@ -87,47 +88,68 @@ public class PidgeonAbbB2xPushRequestMeasurementConverter
     measurement.ActivePowerL1NetT0_W = pushRequest.Data.ActivePowerL1NetT0_W;
     measurement.ActivePowerL2NetT0_W = pushRequest.Data.ActivePowerL2NetT0_W;
     measurement.ActivePowerL3NetT0_W = pushRequest.Data.ActivePowerL3NetT0_W;
-    measurement.ReactivePowerL1NetT0_VAR =
-      pushRequest.Data.ReactivePowerL1NetT0_VAR;
-    measurement.ReactivePowerL2NetT0_VAR =
-      pushRequest.Data.ReactivePowerL2NetT0_VAR;
-    measurement.ReactivePowerL3NetT0_VAR =
-      pushRequest.Data.ReactivePowerL3NetT0_VAR;
-    measurement.ActiveEnergyL1ImportT0_Wh =
-      pushRequest.Data.ActiveEnergyL1ImportT0_Wh;
-    measurement.ActiveEnergyL2ImportT0_Wh =
-      pushRequest.Data.ActiveEnergyL2ImportT0_Wh;
-    measurement.ActiveEnergyL3ImportT0_Wh =
-      pushRequest.Data.ActiveEnergyL3ImportT0_Wh;
-    measurement.ActiveEnergyL1ExportT0_Wh =
-      pushRequest.Data.ActiveEnergyL1ExportT0_Wh;
-    measurement.ActiveEnergyL2ExportT0_Wh =
-      pushRequest.Data.ActiveEnergyL2ExportT0_Wh;
-    measurement.ActiveEnergyL3ExportT0_Wh =
-      pushRequest.Data.ActiveEnergyL3ExportT0_Wh;
-    measurement.ReactiveEnergyL1ImportT0_VARh =
-      pushRequest.Data.ReactiveEnergyL1ImportT0_VARh;
-    measurement.ReactiveEnergyL2ImportT0_VARh =
-      pushRequest.Data.ReactiveEnergyL2ImportT0_VARh;
-    measurement.ReactiveEnergyL3ImportT0_VARh =
-      pushRequest.Data.ReactiveEnergyL3ImportT0_VARh;
-    measurement.ReactiveEnergyL1ExportT0_VARh =
-      pushRequest.Data.ReactiveEnergyL1ExportT0_VARh;
-    measurement.ReactiveEnergyL2ExportT0_VARh =
-      pushRequest.Data.ReactiveEnergyL2ExportT0_VARh;
-    measurement.ReactiveEnergyL3ExportT0_VARh =
-      pushRequest.Data.ReactiveEnergyL3ExportT0_VARh;
-    measurement.ActiveEnergyTotalImportT0_Wh =
-      pushRequest.Data.ActiveEnergyTotalImportT0_Wh;
-    measurement.ActiveEnergyTotalExportT0_Wh =
-      pushRequest.Data.ActiveEnergyTotalExportT0_Wh;
-    measurement.ReactiveEnergyTotalImportT0_VARh =
-      pushRequest.Data.ReactiveEnergyTotalImportT0_VARh;
-    measurement.ReactiveEnergyTotalExportT0_VARh =
-      pushRequest.Data.ReactiveEnergyTotalExportT0_VARh;
-    measurement.ActiveEnergyTotalImportT1_Wh =
-      pushRequest.Data.ActiveEnergyTotalImportT1_Wh;
-    measurement.ActiveEnergyTotalImportT2_Wh =
-      pushRequest.Data.ActiveEnergyTotalImportT2_Wh;
+    measurement.ReactivePowerL1NetT0_VAR = pushRequest
+      .Data
+      .ReactivePowerL1NetT0_VAR;
+    measurement.ReactivePowerL2NetT0_VAR = pushRequest
+      .Data
+      .ReactivePowerL2NetT0_VAR;
+    measurement.ReactivePowerL3NetT0_VAR = pushRequest
+      .Data
+      .ReactivePowerL3NetT0_VAR;
+    measurement.ActiveEnergyL1ImportT0_Wh = pushRequest
+      .Data
+      .ActiveEnergyL1ImportT0_Wh;
+    measurement.ActiveEnergyL2ImportT0_Wh = pushRequest
+      .Data
+      .ActiveEnergyL2ImportT0_Wh;
+    measurement.ActiveEnergyL3ImportT0_Wh = pushRequest
+      .Data
+      .ActiveEnergyL3ImportT0_Wh;
+    measurement.ActiveEnergyL1ExportT0_Wh = pushRequest
+      .Data
+      .ActiveEnergyL1ExportT0_Wh;
+    measurement.ActiveEnergyL2ExportT0_Wh = pushRequest
+      .Data
+      .ActiveEnergyL2ExportT0_Wh;
+    measurement.ActiveEnergyL3ExportT0_Wh = pushRequest
+      .Data
+      .ActiveEnergyL3ExportT0_Wh;
+    measurement.ReactiveEnergyL1ImportT0_VARh = pushRequest
+      .Data
+      .ReactiveEnergyL1ImportT0_VARh;
+    measurement.ReactiveEnergyL2ImportT0_VARh = pushRequest
+      .Data
+      .ReactiveEnergyL2ImportT0_VARh;
+    measurement.ReactiveEnergyL3ImportT0_VARh = pushRequest
+      .Data
+      .ReactiveEnergyL3ImportT0_VARh;
+    measurement.ReactiveEnergyL1ExportT0_VARh = pushRequest
+      .Data
+      .ReactiveEnergyL1ExportT0_VARh;
+    measurement.ReactiveEnergyL2ExportT0_VARh = pushRequest
+      .Data
+      .ReactiveEnergyL2ExportT0_VARh;
+    measurement.ReactiveEnergyL3ExportT0_VARh = pushRequest
+      .Data
+      .ReactiveEnergyL3ExportT0_VARh;
+    measurement.ActiveEnergyTotalImportT0_Wh = pushRequest
+      .Data
+      .ActiveEnergyTotalImportT0_Wh;
+    measurement.ActiveEnergyTotalExportT0_Wh = pushRequest
+      .Data
+      .ActiveEnergyTotalExportT0_Wh;
+    measurement.ReactiveEnergyTotalImportT0_VARh = pushRequest
+      .Data
+      .ReactiveEnergyTotalImportT0_VARh;
+    measurement.ReactiveEnergyTotalExportT0_VARh = pushRequest
+      .Data
+      .ReactiveEnergyTotalExportT0_VARh;
+    measurement.ActiveEnergyTotalImportT1_Wh = pushRequest
+      .Data
+      .ActiveEnergyTotalImportT1_Wh;
+    measurement.ActiveEnergyTotalImportT2_Wh = pushRequest
+      .Data
+      .ActiveEnergyTotalImportT2_Wh;
   }
 }

@@ -11,21 +11,24 @@ namespace Ozds.Business.Observers.Implementations;
 public class MessagingNetworkUserInvoiceStateRelay(
   IServiceProvider serviceProvider,
   INetworkUserInvoiceStateSubscriber subscriber
-) : Relay<
-  NetworkUserInvoiceStateEventArgs,
-  MessagingNetworkUserInvoiceStateEventArgs,
-  MessagingNetworkUserInvoiceStatePipe>(
-  serviceProvider
-), IMessagingNetworkUserInvoiceStateSubscriber
+)
+  : Relay<
+    NetworkUserInvoiceStateEventArgs,
+    MessagingNetworkUserInvoiceStateEventArgs,
+    MessagingNetworkUserInvoiceStatePipe
+  >(serviceProvider),
+    IMessagingNetworkUserInvoiceStateSubscriber
 {
   protected override void SubscribeIn(
-    EventHandler<NetworkUserInvoiceStateEventArgs> eventHandler)
+    EventHandler<NetworkUserInvoiceStateEventArgs> eventHandler
+  )
   {
     subscriber.Subscribe(eventHandler);
   }
 
   protected override void UnsubscribeIn(
-    EventHandler<NetworkUserInvoiceStateEventArgs> eventHandler)
+    EventHandler<NetworkUserInvoiceStateEventArgs> eventHandler
+  )
   {
     subscriber.Unsubscribe(eventHandler);
   }
@@ -36,16 +39,19 @@ public class MessagingNetworkUserInvoiceStatePipe(
 )
   : IPipe<
     NetworkUserInvoiceStateEventArgs,
-    MessagingNetworkUserInvoiceStateEventArgs>
+    MessagingNetworkUserInvoiceStateEventArgs
+  >
 {
   public Task<MessagingNetworkUserInvoiceStateEventArgs> Transform(
     NetworkUserInvoiceStateEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var modelEventArgs = new MessagingNetworkUserInvoiceStateEventArgs
     {
-      State = modelEntityConverter
-        .ToModel<NetworkUserInvoiceStateModel>(eventArgs.State)
+      State = modelEntityConverter.ToModel<NetworkUserInvoiceStateModel>(
+        eventArgs.State
+      ),
     };
     return Task.FromResult(modelEventArgs);
   }

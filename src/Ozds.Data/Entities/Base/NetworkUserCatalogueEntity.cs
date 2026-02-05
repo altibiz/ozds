@@ -6,11 +6,12 @@ using Ozds.Data.Extensions;
 
 namespace Ozds.Data.Entities.Base;
 
-public class NetworkUserCatalogueEntity : CatalogueEntity,
-  INetworkUserCatalogueEntity
+public class NetworkUserCatalogueEntity
+  : CatalogueEntity,
+    INetworkUserCatalogueEntity
 {
-  public virtual ICollection<MeasurementLocationEntity>
-    NetworkUserMeasurementLocations { get; set; } = default!;
+  public virtual ICollection<MeasurementLocationEntity> NetworkUserMeasurementLocations { get; set; } =
+    default!;
 
   public virtual ICollection<LocationEntity> Locations { get; set; } = default!;
 
@@ -23,27 +24,25 @@ public class NetworkUserCatalogueEntity<TNetworkUserCalculation>
   : NetworkUserCatalogueEntity
   where TNetworkUserCalculation : NetworkUserCalculationEntity
 {
-  public virtual ICollection<TNetworkUserCalculation>
-    NetworkUserCalculations { get; set; } =
+  public virtual ICollection<TNetworkUserCalculation> NetworkUserCalculations { get; set; } =
     default!;
 }
 
-public class
-  NetworkUserCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
-  NetworkUserCatalogueEntity>
+public class NetworkUserCatalogueEntityTypeConfiguration
+  : EntityTypeConfiguration<NetworkUserCatalogueEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<NetworkUserCatalogueEntity> builder)
+    EntityTypeBuilder<NetworkUserCatalogueEntity> builder
+  )
   {
     builder
       .UseTphMappingStrategy()
       .ToTable("network_user_catalogues")
       .HasDiscriminator<string>(nameof(NetworkUserCatalogueEntity.Kind));
 
-    builder
-      .MonetaryValue(
-        nameof(NetworkUserCatalogueEntity.MeterFeePrice_EUR),
-        "meter_fee_price_eur"
-      );
+    builder.MonetaryValue(
+      nameof(NetworkUserCatalogueEntity.MeterFeePrice_EUR),
+      "meter_fee_price_eur"
+    );
   }
 }

@@ -6,8 +6,9 @@ using Ozds.Data.Procedures.Builders;
 
 namespace Ozds.Data.Entities.Complex;
 
-public class CumulativeAggregateMeasureEntity : AggregateMeasureEntity,
-  ICumulativeMeasureEntity
+public class CumulativeAggregateMeasureEntity
+  : AggregateMeasureEntity,
+    ICumulativeMeasureEntity
 {
   public long Min { get; set; } = default!;
 
@@ -24,17 +25,15 @@ public static class CumulativeAggregateMeasureEntityExtensions
   {
     builder.AggregateMeasure(name, unit);
 
-    builder
-      .CumulativeMeasurementMeasure(
-        nameof(InstantaneousAggregateMeasureEntity.Min),
-        $"{name}_min_{unit}"
-      );
+    builder.CumulativeMeasurementMeasure(
+      nameof(InstantaneousAggregateMeasureEntity.Min),
+      $"{name}_min_{unit}"
+    );
 
-    builder
-      .CumulativeMeasurementMeasure(
-        nameof(InstantaneousAggregateMeasureEntity.Max),
-        $"{name}_max_{unit}"
-      );
+    builder.CumulativeMeasurementMeasure(
+      nameof(InstantaneousAggregateMeasureEntity.Max),
+      $"{name}_max_{unit}"
+    );
   }
 
   public static MeasurementProcedureBuilder<T> CumulativeAggregateMeasure<T>(

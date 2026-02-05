@@ -9,11 +9,13 @@ public class AuditableJoinModelEntityConverter(IServiceProvider serviceProvider)
     AuditableJoinModel,
     JoinModel,
     AuditableJoinEntity,
-    JoinEntity>(serviceProvider)
+    JoinEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     AuditableJoinModel model,
-    AuditableJoinEntity entity)
+    AuditableJoinEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.CreatedOn = model.CreatedOn;
@@ -22,7 +24,8 @@ public class AuditableJoinModelEntityConverter(IServiceProvider serviceProvider)
 
   public override void InitializeModel(
     AuditableJoinEntity entity,
-    AuditableJoinModel model)
+    AuditableJoinModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.CreatedOn = entity.CreatedOn;

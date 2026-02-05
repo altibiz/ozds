@@ -8,6 +8,5 @@ public class PidgeonMessengerNamingConvention
 {
   public override string IdPrefix { get; } = "pidgeon";
 
-  public override Type MessengerType { get; } =
-    typeof(PidgeonMessengerModel);
+  public override Type MessengerType { get; } = typeof(PidgeonMessengerModel);
 }

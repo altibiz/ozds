@@ -5,16 +5,16 @@ namespace Ozds.Business.Models.Base;
 
 // TODO: clearer property naming scheme
 
-public abstract class MeasurementValidatorModel : TrackableModel,
-  IMeasurementValidator
-{
-}
+public abstract class MeasurementValidatorModel
+  : TrackableModel,
+    IMeasurementValidator { }
 
 public abstract class MeasurementValidatorModel<T> : MeasurementValidatorModel
   where T : IMeasurement
 {
   public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
+    ValidationContext validationContext
+  )
   {
     foreach (var result in base.Validate(validationContext))
     {
@@ -23,9 +23,12 @@ public abstract class MeasurementValidatorModel<T> : MeasurementValidatorModel
 
     if (validationContext.ObjectInstance is T measurement)
     {
-      foreach (var result in ValidateMeasurement(
-        measurement,
-        validationContext.MemberName))
+      foreach (
+        var result in ValidateMeasurement(
+          measurement,
+          validationContext.MemberName
+        )
+      )
       {
         yield return result;
       }

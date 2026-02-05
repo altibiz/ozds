@@ -9,8 +9,7 @@ namespace Ozds.Business.Activation.Implementations.System;
 public class EventModelActivator(
   IServiceProvider serviceProvider,
   ClockQueries clock
-)
-  : InheritingModelActivator<EventModel, IdentifiableModel>(serviceProvider)
+) : InheritingModelActivator<EventModel, IdentifiableModel>(serviceProvider)
 {
   public override void Initialize(EventModel model)
   {
@@ -19,9 +18,6 @@ public class EventModelActivator(
     model.Timestamp = clock.Timestamp();
     model.Content = JsonSerializer.SerializeToDocument(string.Empty);
     model.Level = LevelModel.Information;
-    model.Categories = new List<CategoryModel>
-    {
-      CategoryModel.All
-    };
+    model.Categories = new List<CategoryModel> { CategoryModel.All };
   }
 }

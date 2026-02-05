@@ -8,15 +8,18 @@ namespace Ozds.Business.Conversion.Implementations.System;
 
 public class RepresentativeEventEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  RepresentativeEventModel,
-  EventModel,
-  RepresentativeEventEntity,
-  EventEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    RepresentativeEventModel,
+    EventModel,
+    RepresentativeEventEntity,
+    EventEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     RepresentativeEventModel model,
-    RepresentativeEventEntity entity)
+    RepresentativeEventEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.RepresentativeId = model.RepresentativeId;
@@ -24,7 +27,8 @@ public class RepresentativeEventEntityConverter(
 
   public override void InitializeModel(
     RepresentativeEventEntity entity,
-    RepresentativeEventModel model)
+    RepresentativeEventModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.RepresentativeId = entity.RepresentativeId;

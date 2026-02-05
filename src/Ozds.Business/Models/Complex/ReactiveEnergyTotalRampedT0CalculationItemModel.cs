@@ -4,8 +4,8 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Complex;
 
-public abstract class
-  ReactiveEnergyTotalRampedT0CalculationItemModel : CalculationItemModel
+public abstract class ReactiveEnergyTotalRampedT0CalculationItemModel
+  : CalculationItemModel
 {
   [Required]
   public required decimal ReactiveImportMin_kVARh { get; set; }

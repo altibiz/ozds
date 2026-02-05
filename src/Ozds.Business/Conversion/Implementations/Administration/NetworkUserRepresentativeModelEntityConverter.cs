@@ -8,15 +8,18 @@ namespace Ozds.Business.Conversion.Implementations.Administration;
 
 public class NetworkUserRepresentativeEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  NetworkUserRepresentativeModel,
-  AuditableJoinModel,
-  NetworkUserRepresentativeEntity,
-  AuditableJoinEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    NetworkUserRepresentativeModel,
+    AuditableJoinModel,
+    NetworkUserRepresentativeEntity,
+    AuditableJoinEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     NetworkUserRepresentativeModel model,
-    NetworkUserRepresentativeEntity entity)
+    NetworkUserRepresentativeEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.NetworkUserId = model.NetworkUserId;
@@ -25,7 +28,8 @@ public class NetworkUserRepresentativeEntityConverter(
 
   public override void InitializeModel(
     NetworkUserRepresentativeEntity entity,
-    NetworkUserRepresentativeModel model)
+    NetworkUserRepresentativeModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.NetworkUserId = entity.NetworkUserId;

@@ -19,11 +19,11 @@ public class LocationEntity : TrackableEntity
 
   private long _whiteMediumNetworkUserCatalogueId;
 
-  public virtual ICollection<RepresentativeEntity>
-    Representatives { get; set; } = default!;
+  public virtual ICollection<RepresentativeEntity> Representatives { get; set; } =
+    default!;
 
-  public virtual ICollection<LocationRepresentativeEntity>
-    LocationRepresentatives { get; set; } = default!;
+  public virtual ICollection<LocationRepresentativeEntity> LocationRepresentatives { get; set; } =
+    default!;
 
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } =
     default!;
@@ -37,8 +37,7 @@ public class LocationEntity : TrackableEntity
     set { _whiteMediumNetworkUserCatalogueId = long.Parse(value); }
   }
 
-  public virtual WhiteMediumNetworkUserCatalogueEntity
-    WhiteMediumNetworkUserCatalogue { get; set; } =
+  public virtual WhiteMediumNetworkUserCatalogueEntity WhiteMediumNetworkUserCatalogue { get; set; } =
     default!;
 
   public string BlueLowNetworkUserCatalogueId
@@ -47,11 +46,7 @@ public class LocationEntity : TrackableEntity
     set { _blueLowNetworkUserCatalogueId = long.Parse(value); }
   }
 
-  public virtual BlueLowNetworkUserCatalogueEntity BlueLowNetworkUserCatalogue
-  {
-    get;
-    set;
-  } =
+  public virtual BlueLowNetworkUserCatalogueEntity BlueLowNetworkUserCatalogue { get; set; } =
     default!;
 
   public string WhiteLowNetworkUserCatalogueId
@@ -60,11 +55,7 @@ public class LocationEntity : TrackableEntity
     set { _whiteLowNetworkUserCatalogueId = long.Parse(value); }
   }
 
-  public virtual WhiteLowNetworkUserCatalogueEntity WhiteLowNetworkUserCatalogue
-  {
-    get;
-    set;
-  } =
+  public virtual WhiteLowNetworkUserCatalogueEntity WhiteLowNetworkUserCatalogue { get; set; } =
     default!;
 
   public string RedLowNetworkUserCatalogueId
@@ -73,11 +64,8 @@ public class LocationEntity : TrackableEntity
     set { _redLowNetworkUserCatalogueId = long.Parse(value); }
   }
 
-  public virtual RedLowNetworkUserCatalogueEntity RedLowNetworkUserCatalogue
-  {
-    get;
-    set;
-  } = default!;
+  public virtual RedLowNetworkUserCatalogueEntity RedLowNetworkUserCatalogue { get; set; } =
+    default!;
 
   public string RegulatoryCatalogueId
   {
@@ -93,8 +81,8 @@ public class LocationEntity : TrackableEntity
   public string AltiBizSubProjectCode { get; set; } = default!;
 }
 
-public class
-  LocationEntityTypeConfiguration : EntityTypeConfiguration<LocationEntity>
+public class LocationEntityTypeConfiguration
+  : EntityTypeConfiguration<LocationEntity>
 {
   public override void Configure(EntityTypeBuilder<LocationEntity> builder)
   {

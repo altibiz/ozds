@@ -10,8 +10,8 @@ public class ReportBasisEntity
 
   public NetworkUserCatalogueEntity Catalogue { get; set; } = default!;
 
-  public NetworkUserMeasurementLocationEntity
-    MeasurementLocation { get; set; } = default!;
+  public NetworkUserMeasurementLocationEntity MeasurementLocation { get; set; } =
+    default!;
 
   public MeterEntity Meter { get; set; } = default!;
 }

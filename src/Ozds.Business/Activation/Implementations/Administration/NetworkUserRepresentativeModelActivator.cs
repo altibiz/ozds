@@ -6,10 +6,11 @@ namespace Ozds.Business.Activation.Implementations.Administration;
 
 public class NetworkUserRepresentativeModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<NetworkUserRepresentativeModel,
-  AuditableJoinModel>(
-  serviceProvider
 )
+  : InheritingModelActivator<
+    NetworkUserRepresentativeModel,
+    AuditableJoinModel
+  >(serviceProvider)
 {
   public override void Initialize(NetworkUserRepresentativeModel model)
   {

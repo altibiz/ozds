@@ -15,7 +15,7 @@ public static class LevelModelExtensions
       LevelModel.Information => Color.Info,
       LevelModel.Debug => Color.Secondary,
       LevelModel.Trace => Color.Tertiary,
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 }

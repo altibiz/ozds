@@ -32,8 +32,9 @@ public partial class MeasurementsPage : OzdsComponentBase
 
     return queries.ReadByLocationId(
       LocationState.Location?.Id
-      ?? throw new InvalidOperationException(
-        $"Location is null for {nameof(MeasurementsPage)}"),
+        ?? throw new InvalidOperationException(
+          $"Location is null for {nameof(MeasurementsPage)}"
+        ),
       pageNumber,
       CancellationToken,
       pageCount,

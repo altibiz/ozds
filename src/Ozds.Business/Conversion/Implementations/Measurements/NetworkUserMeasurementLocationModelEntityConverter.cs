@@ -8,11 +8,13 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class NetworkUserMeasurementLocationModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  NetworkUserMeasurementLocationModel,
-  MeasurementLocationModel,
-  NetworkUserMeasurementLocationEntity,
-  MeasurementLocationEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    NetworkUserMeasurementLocationModel,
+    MeasurementLocationModel,
+    NetworkUserMeasurementLocationEntity,
+    MeasurementLocationEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     NetworkUserMeasurementLocationModel model,

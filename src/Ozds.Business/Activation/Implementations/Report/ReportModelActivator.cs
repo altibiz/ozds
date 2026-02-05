@@ -3,6 +3,4 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation.Implementations.Report;
 
-public class ReportModelActivator : ConcreteModelActivator<ReportModel>
-{
-}
+public class ReportModelActivator : ConcreteModelActivator<ReportModel> { }

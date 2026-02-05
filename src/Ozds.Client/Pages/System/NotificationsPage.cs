@@ -26,15 +26,15 @@ public partial class NotificationsPage : OzdsComponentBase
     int pageCount
   )
   {
-    var queries = ScopedServices
-      .GetRequiredService<NotificationQueries>();
+    var queries = ScopedServices.GetRequiredService<NotificationQueries>();
     return queries.ReadForRecipient<INotification>(
       RepresentativeState.Representative.Id,
       page,
       CancellationToken,
       true,
       search,
-      pageCount);
+      pageCount
+    );
   }
 
   private async Task OnSeenChanged()

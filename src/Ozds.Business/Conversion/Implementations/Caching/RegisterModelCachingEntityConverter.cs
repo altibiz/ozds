@@ -10,11 +10,13 @@ namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class RegisterModelCachingEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelCachingEntityConverter<
-  RegisterModel,
-  TrackableModel,
-  RegisterEntity,
-  TrackableEntity>(serviceProvider)
+)
+  : InheritingModelCachingEntityConverter<
+    RegisterModel,
+    TrackableModel,
+    RegisterEntity,
+    TrackableEntity
+  >(serviceProvider)
 {
   private readonly ModelCachingEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelCachingEntityConverter>();
@@ -28,12 +30,14 @@ public class RegisterModelCachingEntityConverter(
 
     entity.ScopeId = model.ScopeId;
     entity.Name = model.Name;
-    entity.Measure =
-      modelEntityConverter.ToEntity<MeasureEntity>(model.Measure);
+    entity.Measure = modelEntityConverter.ToEntity<MeasureEntity>(
+      model.Measure
+    );
     entity.OrderOfMagnitude = model.OrderOfMagnitude is null
       ? null
       : modelEntityConverter.ToEntity<OrderOfMagnitudeEntity>(
-        model.OrderOfMagnitude);
+        model.OrderOfMagnitude
+      );
     entity.Tariff = model.Tariff is null
       ? null
       : modelEntityConverter.ToEntity<TariffEntity>(model.Tariff);
@@ -61,7 +65,8 @@ public class RegisterModelCachingEntityConverter(
     model.OrderOfMagnitude = entity.OrderOfMagnitude is null
       ? null
       : modelEntityConverter.ToModel<OrderOfMagnitudeModel>(
-        entity.OrderOfMagnitude);
+        entity.OrderOfMagnitude
+      );
     model.Tariff = entity.Tariff is null
       ? null
       : modelEntityConverter.ToModel<TariffModel>(entity.Tariff);

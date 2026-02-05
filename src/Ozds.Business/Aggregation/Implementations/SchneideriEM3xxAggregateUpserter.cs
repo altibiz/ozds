@@ -9,7 +9,8 @@ public class SchneideriEM3xxxAggregateUpserter(TimeQueries time)
 {
   protected override SchneideriEM3xxxAggregateModel UpsertConcreteModel(
     SchneideriEM3xxxAggregateModel lhs,
-    SchneideriEM3xxxAggregateModel rhs)
+    SchneideriEM3xxxAggregateModel rhs
+  )
   {
     return new SchneideriEM3xxxAggregateModel
     {
@@ -79,8 +80,8 @@ public class SchneideriEM3xxxAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyL1ImportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerL1ImportT0_W = lhs.DerivedActivePowerL1ImportT0_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerL1ImportT0_W =
+        lhs.DerivedActivePowerL1ImportT0_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL1ImportT0_W,
           rhs.QuarterHourCount,
@@ -95,8 +96,8 @@ public class SchneideriEM3xxxAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyL2ImportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerL2ImportT0_W = lhs.DerivedActivePowerL2ImportT0_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerL2ImportT0_W =
+        lhs.DerivedActivePowerL2ImportT0_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL2ImportT0_W,
           rhs.QuarterHourCount,
@@ -111,8 +112,8 @@ public class SchneideriEM3xxxAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyL3ImportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerL3ImportT0_W = lhs.DerivedActivePowerL3ImportT0_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerL3ImportT0_W =
+        lhs.DerivedActivePowerL3ImportT0_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerL3ImportT0_W,
           rhs.QuarterHourCount,
@@ -127,8 +128,8 @@ public class SchneideriEM3xxxAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyTotalImportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerTotalImportT0_W = lhs.DerivedActivePowerTotalImportT0_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerTotalImportT0_W =
+        lhs.DerivedActivePowerTotalImportT0_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalImportT0_W,
           rhs.QuarterHourCount,
@@ -143,8 +144,8 @@ public class SchneideriEM3xxxAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyTotalExportT0_Wh,
         rhs.Count
       ),
-      DerivedActivePowerTotalExportT0_W = lhs.DerivedActivePowerTotalExportT0_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerTotalExportT0_W =
+        lhs.DerivedActivePowerTotalExportT0_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalExportT0_W,
           rhs.QuarterHourCount,
@@ -160,9 +161,8 @@ public class SchneideriEM3xxxAggregateUpserter(TimeQueries time)
           rhs.ReactiveEnergyTotalImportT0_VARh,
           rhs.Count
         ),
-      DerivedReactivePowerTotalImportT0_VAR = lhs
-        .DerivedReactivePowerTotalImportT0_VAR
-        .UpsertDerivedPowerFromEnergy(
+      DerivedReactivePowerTotalImportT0_VAR =
+        lhs.DerivedReactivePowerTotalImportT0_VAR.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerTotalImportT0_VAR,
           rhs.QuarterHourCount,
@@ -178,9 +178,8 @@ public class SchneideriEM3xxxAggregateUpserter(TimeQueries time)
           rhs.ReactiveEnergyTotalExportT0_VARh,
           rhs.Count
         ),
-      DerivedReactivePowerTotalExportT0_VAR = lhs
-        .DerivedReactivePowerTotalExportT0_VAR
-        .UpsertDerivedPowerFromEnergy(
+      DerivedReactivePowerTotalExportT0_VAR =
+        lhs.DerivedReactivePowerTotalExportT0_VAR.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedReactivePowerTotalExportT0_VAR,
           rhs.QuarterHourCount,
@@ -195,8 +194,8 @@ public class SchneideriEM3xxxAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyTotalImportT1_Wh,
         rhs.Count
       ),
-      DerivedActivePowerTotalImportT1_W = lhs.DerivedActivePowerTotalImportT1_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerTotalImportT1_W =
+        lhs.DerivedActivePowerTotalImportT1_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalImportT1_W,
           rhs.QuarterHourCount,
@@ -211,8 +210,8 @@ public class SchneideriEM3xxxAggregateUpserter(TimeQueries time)
         rhs.ActiveEnergyTotalImportT2_Wh,
         rhs.Count
       ),
-      DerivedActivePowerTotalImportT2_W = lhs.DerivedActivePowerTotalImportT2_W
-        .UpsertDerivedPowerFromEnergy(
+      DerivedActivePowerTotalImportT2_W =
+        lhs.DerivedActivePowerTotalImportT2_W.UpsertDerivedPowerFromEnergy(
           lhs.QuarterHourCount,
           rhs.DerivedActivePowerTotalImportT2_W,
           rhs.QuarterHourCount,
@@ -221,7 +220,7 @@ public class SchneideriEM3xxxAggregateUpserter(TimeQueries time)
           lhs.Timestamp,
           lhs.Interval,
           time
-        )
+        ),
     };
   }
 }

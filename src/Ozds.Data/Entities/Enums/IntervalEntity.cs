@@ -8,7 +8,7 @@ public enum IntervalEntity
 {
   QuarterHour,
   Day,
-  Month
+  Month,
 }
 
 public class IntervalEntityTypeConfiguration : IModelConfiguration
@@ -19,8 +19,8 @@ public class IntervalEntityTypeConfiguration : IModelConfiguration
   }
 }
 
-public class
-  IntervalEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class IntervalEntityNpgsqlDataSourceConfiguration
+  : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

@@ -13,38 +13,37 @@ public class MeterModelCachingEntityConverter(IServiceProvider serviceProvider)
     MeterModel,
     TrackableModel,
     MeterEntity,
-    TrackableEntity>(serviceProvider)
+    TrackableEntity
+  >(serviceProvider)
 {
   private readonly ModelCachingEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelCachingEntityConverter>();
 
-  public override void InitializeEntity(
-    MeterModel model,
-    MeterEntity entity)
+  public override void InitializeEntity(MeterModel model, MeterEntity entity)
   {
     base.InitializeEntity(model, entity);
     entity.ConnectionPower_W = model.ConnectionPower_W;
     entity.MessengerId = model.MessengerId;
-    entity.Phases = model.Phases
-      .Select(phase => modelEntityConverter.ToEntity<PhaseEntity>(phase))
+    entity.Phases = model
+      .Phases.Select(phase => modelEntityConverter.ToEntity<PhaseEntity>(phase))
       .ToHashSet();
     entity.MeasurementValidatorId = model.MeasurementValidatorId;
     entity.MaxInactivityPeriod = modelEntityConverter.ToEntity<PeriodEntity>(
-      model.MaxInactivityPeriod);
+      model.MaxInactivityPeriod
+    );
   }
 
-  public override void InitializeModel(
-    MeterEntity entity,
-    MeterModel model)
+  public override void InitializeModel(MeterEntity entity, MeterModel model)
   {
     base.InitializeModel(entity, model);
     model.ConnectionPower_W = entity.ConnectionPower_W;
     model.MessengerId = entity.MessengerId;
-    model.Phases = entity.Phases
-      .Select(phase => modelEntityConverter.ToModel<PhaseModel>(phase))
+    model.Phases = entity
+      .Phases.Select(phase => modelEntityConverter.ToModel<PhaseModel>(phase))
       .ToHashSet();
     model.MeasurementValidatorId = entity.MeasurementValidatorId;
     model.MaxInactivityPeriod = modelEntityConverter.ToModel<PeriodModel>(
-      entity.MaxInactivityPeriod);
+      entity.MaxInactivityPeriod
+    );
   }
 }

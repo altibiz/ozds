@@ -1,5 +1,3 @@
 namespace Ozds.Client.State;
 
-public record TimeState(
-  TimeZoneInfo TimeZoneInfo
-);
+public record TimeState(TimeZoneInfo TimeZoneInfo);

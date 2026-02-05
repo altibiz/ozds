@@ -20,15 +20,12 @@ public class TimescaleMigrationSqlGenerator(
     bool terminate = true
   )
   {
-    base.Generate(
-      operation,
-      model,
-      builder,
-      terminate
-    );
+    base.Generate(operation, model, builder, terminate);
 
-    if (operation.FindAnnotation("TimescaleHypertable")?.Value is string
-      columnsString)
+    if (
+      operation.FindAnnotation("TimescaleHypertable")?.Value
+      is string columnsString
+    )
     {
       var columns = columnsString.Split(",");
       var timeColumn = columns.FirstOrDefault();
@@ -48,12 +45,12 @@ public class TimescaleMigrationSqlGenerator(
       {
         builder.AppendLine(
           $"""
-           SELECT add_dimension(
-             '"{operation.Name}"',
-             '{spaceColumn}',
-             {spacePartitioning}
-           );
-           """
+          SELECT add_dimension(
+            '"{operation.Name}"',
+            '{spaceColumn}',
+            {spacePartitioning}
+          );
+          """
         );
       }
 

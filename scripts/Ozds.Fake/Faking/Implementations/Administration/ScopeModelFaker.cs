@@ -4,10 +4,5 @@ using Ozds.Fake.Faking.Base;
 
 namespace Ozds.Fake.Implementations.Administration;
 
-public class ScopeModelFaker(
-  IServiceProvider serviceProvider
-) : InheritingModelFaker<ScopeModel, TrackableModel>(
-  serviceProvider
-)
-{
-}
+public class ScopeModelFaker(IServiceProvider serviceProvider)
+  : InheritingModelFaker<ScopeModel, TrackableModel>(serviceProvider) { }

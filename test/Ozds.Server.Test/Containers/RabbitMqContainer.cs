@@ -17,8 +17,7 @@ public sealed class RabbitMqContainer : IComposableService<RabbitMqContainer>
 
   private const string RabbitMqPassword = "ozds";
 
-  private const string RabbitMqReady =
-    ".*Time to start RabbitMQ.*";
+  private const string RabbitMqReady = ".*Time to start RabbitMQ.*";
 
   private readonly IContainer container;
 
@@ -87,12 +86,8 @@ public sealed class RabbitMqContainer : IComposableService<RabbitMqContainer>
   {
     var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     var wait = isWindows
-      ? Wait
-        .ForWindowsContainer()
-        .UntilMessageIsLogged(RabbitMqReady)
-      : Wait
-        .ForUnixContainer()
-        .UntilMessageIsLogged(RabbitMqReady);
+      ? Wait.ForWindowsContainer().UntilMessageIsLogged(RabbitMqReady)
+      : Wait.ForUnixContainer().UntilMessageIsLogged(RabbitMqReady);
 
     var host = network.Host<RabbitMqContainer>();
     var hostAmqpPort = network.Port<RabbitMqContainer>();
@@ -109,7 +104,8 @@ public sealed class RabbitMqContainer : IComposableService<RabbitMqContainer>
       .Build();
 
     return Task.FromResult(
-      new RabbitMqContainer(container, host, hostAmqpPort, hostHttpPort));
+      new RabbitMqContainer(container, host, hostAmqpPort, hostHttpPort)
+    );
   }
 
   public Task Configure(

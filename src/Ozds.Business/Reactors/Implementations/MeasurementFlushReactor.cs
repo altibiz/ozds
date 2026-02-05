@@ -8,14 +8,12 @@ namespace Ozds.Business.Reactors.Implementations;
 
 // FIXME: BeforeStopAsync always fails
 
-public class MeasurementFlushReactor(
-  IServiceProvider serviceProvider
-) : Reactor<
-  MeasurementFlushEventArgs,
-  IMeasurementFlushSubscriber,
-  MeasurementFlushHandler>(serviceProvider)
-{
-}
+public class MeasurementFlushReactor(IServiceProvider serviceProvider)
+  : Reactor<
+    MeasurementFlushEventArgs,
+    IMeasurementFlushSubscriber,
+    MeasurementFlushHandler
+  >(serviceProvider) { }
 
 public class MeasurementFlushHandler(
   MeasurementMutations mutations,
@@ -24,7 +22,8 @@ public class MeasurementFlushHandler(
 {
   public override async Task Handle(
     MeasurementFlushEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var measurements = eventArgs.Measurements;
     await mutations.Create(measurements, cancellationToken);

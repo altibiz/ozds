@@ -14,207 +14,221 @@ namespace Ozds.Data.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "fk_abb_b2x_aggregates_measurement_locations_measurement_locati",
-                table: "abb_b2x_aggregates");
+                table: "abb_b2x_aggregates"
+            );
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_abb_b2x_aggregates_meters_meter_id",
-                table: "abb_b2x_aggregates");
+            migrationBuilder.DropForeignKey(name: "fk_abb_b2x_aggregates_meters_meter_id", table: "abb_b2x_aggregates");
 
             migrationBuilder.DropForeignKey(
                 name: "fk_abb_b2x_measurements_measurement_locations_measurement_loca",
-                table: "abb_b2x_measurements");
+                table: "abb_b2x_measurements"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_abb_b2x_measurements_meters_meter_id",
-                table: "abb_b2x_measurements");
+                table: "abb_b2x_measurements"
+            );
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_events_messengers_messenger_id",
-                table: "events");
+            migrationBuilder.DropForeignKey(name: "fk_events_messengers_messenger_id", table: "events");
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_events_representatives_representative_id",
-                table: "events");
+            migrationBuilder.DropForeignKey(name: "fk_events_representatives_representative_id", table: "events");
 
             migrationBuilder.DropForeignKey(
                 name: "fk_location_representatives_locations_location_id",
-                table: "location_representatives");
+                table: "location_representatives"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_location_representatives_representatives_representative_id",
-                table: "location_representatives");
+                table: "location_representatives"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_measurement_locations_locations_location_id",
-                table: "measurement_locations");
+                table: "measurement_locations"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_measurement_locations_representatives_created_by_id",
-                table: "measurement_locations");
+                table: "measurement_locations"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_measurement_locations_representatives_deleted_by_id",
-                table: "measurement_locations");
+                table: "measurement_locations"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_measurement_locations_representatives_last_updated_by_id",
-                table: "measurement_locations");
+                table: "measurement_locations"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_measurement_validators_representatives_created_by_id",
-                table: "measurement_validators");
+                table: "measurement_validators"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_measurement_validators_representatives_deleted_by_id",
-                table: "measurement_validators");
+                table: "measurement_validators"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_measurement_validators_representatives_last_updated_by_id",
-                table: "measurement_validators");
+                table: "measurement_validators"
+            );
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_messengers_representatives_created_by_id",
-                table: "messengers");
+            migrationBuilder.DropForeignKey(name: "fk_messengers_representatives_created_by_id", table: "messengers");
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_messengers_representatives_deleted_by_id",
-                table: "messengers");
+            migrationBuilder.DropForeignKey(name: "fk_messengers_representatives_deleted_by_id", table: "messengers");
 
             migrationBuilder.DropForeignKey(
                 name: "fk_messengers_representatives_last_updated_by_id",
-                table: "messengers");
+                table: "messengers"
+            );
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_meters_messengers_messenger_id",
-                table: "meters");
+            migrationBuilder.DropForeignKey(name: "fk_meters_messengers_messenger_id", table: "meters");
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_meters_representatives_created_by_id",
-                table: "meters");
+            migrationBuilder.DropForeignKey(name: "fk_meters_representatives_created_by_id", table: "meters");
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_meters_representatives_deleted_by_id",
-                table: "meters");
+            migrationBuilder.DropForeignKey(name: "fk_meters_representatives_deleted_by_id", table: "meters");
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_meters_representatives_last_updated_by_id",
-                table: "meters");
+            migrationBuilder.DropForeignKey(name: "fk_meters_representatives_last_updated_by_id", table: "meters");
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_calculations_network_user_invoices__network_us",
-                table: "network_user_calculations");
+                table: "network_user_calculations"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_calculations_representatives_issued_by_id",
-                table: "network_user_calculations");
+                table: "network_user_calculations"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_catalogues_representatives_created_by_id",
-                table: "network_user_catalogues");
+                table: "network_user_catalogues"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_catalogues_representatives_deleted_by_id",
-                table: "network_user_catalogues");
+                table: "network_user_catalogues"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_catalogues_representatives_last_updated_by_id",
-                table: "network_user_catalogues");
+                table: "network_user_catalogues"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_invoices_representatives_issued_by_id",
-                table: "network_user_invoices");
+                table: "network_user_invoices"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_representatives_network_users_network_user_id",
-                table: "network_user_representatives");
+                table: "network_user_representatives"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_representatives_representatives_representative",
-                table: "network_user_representatives");
+                table: "network_user_representatives"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_notification_recipients_notifications_notification_id",
-                table: "notification_recipients");
+                table: "notification_recipients"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_notification_recipients_representatives_representative_id",
-                table: "notification_recipients");
+                table: "notification_recipients"
+            );
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_notifications_events__event_id",
-                table: "notifications");
+            migrationBuilder.DropForeignKey(name: "fk_notifications_events__event_id", table: "notifications");
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_notifications_messengers_messenger_id",
-                table: "notifications");
+            migrationBuilder.DropForeignKey(name: "fk_notifications_messengers_messenger_id", table: "notifications");
 
             migrationBuilder.DropForeignKey(
                 name: "fk_notifications_network_user_invoices_invoice_id",
-                table: "notifications");
+                table: "notifications"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_regulatory_catalogues_representatives_created_by_id",
-                table: "regulatory_catalogues");
+                table: "regulatory_catalogues"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_regulatory_catalogues_representatives_deleted_by_id",
-                table: "regulatory_catalogues");
+                table: "regulatory_catalogues"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_regulatory_catalogues_representatives_last_updated_by_id",
-                table: "regulatory_catalogues");
+                table: "regulatory_catalogues"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_schneider_iem3xxx_aggregates_measurement_locations_measurem",
-                table: "schneider_iem3xxx_aggregates");
+                table: "schneider_iem3xxx_aggregates"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_schneider_iem3xxx_aggregates_meters_meter_id",
-                table: "schneider_iem3xxx_aggregates");
+                table: "schneider_iem3xxx_aggregates"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_schneider_iem3xxx_measurements_measurement_locations_measur",
-                table: "schneider_iem3xxx_measurements");
+                table: "schneider_iem3xxx_measurements"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_schneider_iem3xxx_measurements_meters_meter_id",
-                table: "schneider_iem3xxx_measurements");
+                table: "schneider_iem3xxx_measurements"
+            );
 
-            migrationBuilder.DropTable(
-                name: "location_invoices");
+            migrationBuilder.DropTable(name: "location_invoices");
 
-            migrationBuilder.DropIndex(
-                name: "ix_measurement_locations_location_id",
-                table: "measurement_locations");
+            migrationBuilder.DropIndex(name: "ix_measurement_locations_location_id", table: "measurement_locations");
 
-            migrationBuilder.DropColumn(
-                name: "location_id",
-                table: "measurement_locations");
+            migrationBuilder.DropColumn(name: "location_id", table: "measurement_locations");
 
             migrationBuilder.RenameColumn(
                 name: "usage_meter_total_eur",
                 table: "network_user_calculations",
-                newName: "usage_meter_fee_total_eur");
+                newName: "usage_meter_fee_total_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "jen_ramped_total_eur",
                 table: "network_user_calculations",
-                newName: "jen_total_eur");
+                newName: "jen_total_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "jen_ramped_price_eur",
                 table: "network_user_calculations",
-                newName: "jen_price_eur");
+                newName: "jen_price_eur"
+            );
 
-            migrationBuilder.AlterDatabase()
+            migrationBuilder
+                .AlterDatabase()
                 .Annotation("Npgsql:Enum:audit_entity", "query,creation,modification,deletion,restoration,forgetting")
                 .Annotation("Npgsql:Enum:category_entity", "all,messenger,messenger_push,audit,error,lifecycle")
                 .Annotation("Npgsql:Enum:duration_entity", "second,minute,hour,day,week,month,year")
                 .Annotation("Npgsql:Enum:interval_entity", "quarter_hour,day,month")
                 .Annotation("Npgsql:Enum:level_entity", "trace,debug,info,warning,error,critical")
                 .Annotation("Npgsql:Enum:phase_entity", "l1,l2,l3")
-                .Annotation("Npgsql:Enum:role_entity", "operator_representative,location_representative,network_user_representative")
-                .Annotation("Npgsql:Enum:topic_entity", "all,messenger,messenger_inactivity,invalid_push,error,network_user_invoice_state")
+                .Annotation(
+                    "Npgsql:Enum:role_entity",
+                    "operator_representative,location_representative,network_user_representative"
+                )
+                .Annotation(
+                    "Npgsql:Enum:topic_entity",
+                    "all,messenger,messenger_inactivity,invalid_push,error,network_user_invoice_state"
+                )
                 .Annotation("Npgsql:PostgresExtension:timescaledb", ",,")
                 .OldAnnotation("Npgsql:Enum:audit_entity", "query,creation,modification,deletion")
                 .OldAnnotation("Npgsql:Enum:category_entity", "all,messenger,messenger_push,audit,error,lifecycle")
@@ -222,8 +236,14 @@ namespace Ozds.Data.Migrations
                 .OldAnnotation("Npgsql:Enum:interval_entity", "quarter_hour,day,month")
                 .OldAnnotation("Npgsql:Enum:level_entity", "trace,debug,info,warning,error,critical")
                 .OldAnnotation("Npgsql:Enum:phase_entity", "l1,l2,l3")
-                .OldAnnotation("Npgsql:Enum:role_entity", "operator_representative,location_representative,network_user_representative")
-                .OldAnnotation("Npgsql:Enum:topic_entity", "all,messenger,messenger_inactivity,invalid_push,error,network_user_invoice_state")
+                .OldAnnotation(
+                    "Npgsql:Enum:role_entity",
+                    "operator_representative,location_representative,network_user_representative"
+                )
+                .OldAnnotation(
+                    "Npgsql:Enum:topic_entity",
+                    "all,messenger,messenger_inactivity,invalid_push,error,network_user_invoice_state"
+                )
                 .OldAnnotation("Npgsql:PostgresExtension:timescaledb", ",,");
 
             migrationBuilder.AddForeignKey(
@@ -232,7 +252,8 @@ namespace Ozds.Data.Migrations
                 column: "measurement_location_id",
                 principalTable: "measurement_locations",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_abb_b2x_aggregates_meters_meter_id",
@@ -240,7 +261,8 @@ namespace Ozds.Data.Migrations
                 column: "meter_id",
                 principalTable: "meters",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_abb_b2x_measurements_measurement_locations_measurement_loca",
@@ -248,7 +270,8 @@ namespace Ozds.Data.Migrations
                 column: "measurement_location_id",
                 principalTable: "measurement_locations",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_abb_b2x_measurements_meters_meter_id",
@@ -256,7 +279,8 @@ namespace Ozds.Data.Migrations
                 column: "meter_id",
                 principalTable: "meters",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_events_messengers_messenger_id",
@@ -264,7 +288,8 @@ namespace Ozds.Data.Migrations
                 column: "messenger_id",
                 principalTable: "messengers",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_events_representatives_representative_id",
@@ -272,7 +297,8 @@ namespace Ozds.Data.Migrations
                 column: "representative_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_location_representatives_locations_location_id",
@@ -280,7 +306,8 @@ namespace Ozds.Data.Migrations
                 column: "location_id",
                 principalTable: "locations",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_location_representatives_representatives_representative_id",
@@ -288,7 +315,8 @@ namespace Ozds.Data.Migrations
                 column: "representative_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_measurement_locations_representatives_created_by_id",
@@ -296,7 +324,8 @@ namespace Ozds.Data.Migrations
                 column: "created_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_measurement_locations_representatives_deleted_by_id",
@@ -304,7 +333,8 @@ namespace Ozds.Data.Migrations
                 column: "deleted_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_measurement_locations_representatives_last_updated_by_id",
@@ -312,7 +342,8 @@ namespace Ozds.Data.Migrations
                 column: "last_updated_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_measurement_validators_representatives_created_by_id",
@@ -320,7 +351,8 @@ namespace Ozds.Data.Migrations
                 column: "created_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_measurement_validators_representatives_deleted_by_id",
@@ -328,7 +360,8 @@ namespace Ozds.Data.Migrations
                 column: "deleted_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_measurement_validators_representatives_last_updated_by_id",
@@ -336,7 +369,8 @@ namespace Ozds.Data.Migrations
                 column: "last_updated_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_messengers_representatives_created_by_id",
@@ -344,7 +378,8 @@ namespace Ozds.Data.Migrations
                 column: "created_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_messengers_representatives_deleted_by_id",
@@ -352,7 +387,8 @@ namespace Ozds.Data.Migrations
                 column: "deleted_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_messengers_representatives_last_updated_by_id",
@@ -360,7 +396,8 @@ namespace Ozds.Data.Migrations
                 column: "last_updated_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_meters_messengers_messenger_id",
@@ -368,7 +405,8 @@ namespace Ozds.Data.Migrations
                 column: "messenger_id",
                 principalTable: "messengers",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_meters_representatives_created_by_id",
@@ -376,7 +414,8 @@ namespace Ozds.Data.Migrations
                 column: "created_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_meters_representatives_deleted_by_id",
@@ -384,7 +423,8 @@ namespace Ozds.Data.Migrations
                 column: "deleted_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_meters_representatives_last_updated_by_id",
@@ -392,7 +432,8 @@ namespace Ozds.Data.Migrations
                 column: "last_updated_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_calculations_network_user_invoices__network_us",
@@ -400,7 +441,8 @@ namespace Ozds.Data.Migrations
                 column: "network_user_invoice_id",
                 principalTable: "network_user_invoices",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_calculations_representatives_issued_by_id",
@@ -408,7 +450,8 @@ namespace Ozds.Data.Migrations
                 column: "issued_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_catalogues_representatives_created_by_id",
@@ -416,7 +459,8 @@ namespace Ozds.Data.Migrations
                 column: "created_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_catalogues_representatives_deleted_by_id",
@@ -424,7 +468,8 @@ namespace Ozds.Data.Migrations
                 column: "deleted_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_catalogues_representatives_last_updated_by_id",
@@ -432,7 +477,8 @@ namespace Ozds.Data.Migrations
                 column: "last_updated_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_invoices_representatives_issued_by_id",
@@ -440,7 +486,8 @@ namespace Ozds.Data.Migrations
                 column: "issued_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_representatives_network_users_network_user_id",
@@ -448,7 +495,8 @@ namespace Ozds.Data.Migrations
                 column: "network_user_id",
                 principalTable: "network_users",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_representatives_representatives_representative",
@@ -456,7 +504,8 @@ namespace Ozds.Data.Migrations
                 column: "representative_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_notification_recipients_notifications_notification_id",
@@ -464,7 +513,8 @@ namespace Ozds.Data.Migrations
                 column: "notification_id",
                 principalTable: "notifications",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_notification_recipients_representatives_representative_id",
@@ -472,7 +522,8 @@ namespace Ozds.Data.Migrations
                 column: "representative_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_notifications_events__event_id",
@@ -480,7 +531,8 @@ namespace Ozds.Data.Migrations
                 column: "event_id",
                 principalTable: "events",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_notifications_messengers_messenger_id",
@@ -488,7 +540,8 @@ namespace Ozds.Data.Migrations
                 column: "messenger_id",
                 principalTable: "messengers",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_notifications_network_user_invoices_invoice_id",
@@ -496,7 +549,8 @@ namespace Ozds.Data.Migrations
                 column: "invoice_id",
                 principalTable: "network_user_invoices",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_regulatory_catalogues_representatives_created_by_id",
@@ -504,7 +558,8 @@ namespace Ozds.Data.Migrations
                 column: "created_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_regulatory_catalogues_representatives_deleted_by_id",
@@ -512,7 +567,8 @@ namespace Ozds.Data.Migrations
                 column: "deleted_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_regulatory_catalogues_representatives_last_updated_by_id",
@@ -520,7 +576,8 @@ namespace Ozds.Data.Migrations
                 column: "last_updated_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.SetNull
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_schneider_iem3xxx_aggregates_measurement_locations_measurem",
@@ -528,7 +585,8 @@ namespace Ozds.Data.Migrations
                 column: "measurement_location_id",
                 principalTable: "measurement_locations",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_schneider_iem3xxx_aggregates_meters_meter_id",
@@ -536,7 +594,8 @@ namespace Ozds.Data.Migrations
                 column: "meter_id",
                 principalTable: "meters",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_schneider_iem3xxx_measurements_measurement_locations_measur",
@@ -544,7 +603,8 @@ namespace Ozds.Data.Migrations
                 column: "measurement_location_id",
                 principalTable: "measurement_locations",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_schneider_iem3xxx_measurements_meters_meter_id",
@@ -552,7 +612,8 @@ namespace Ozds.Data.Migrations
                 column: "meter_id",
                 principalTable: "meters",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
         }
 
         /// <inheritdoc />
@@ -560,215 +621,247 @@ namespace Ozds.Data.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "fk_abb_b2x_aggregates_measurement_locations_measurement_locati",
-                table: "abb_b2x_aggregates");
+                table: "abb_b2x_aggregates"
+            );
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_abb_b2x_aggregates_meters_meter_id",
-                table: "abb_b2x_aggregates");
+            migrationBuilder.DropForeignKey(name: "fk_abb_b2x_aggregates_meters_meter_id", table: "abb_b2x_aggregates");
 
             migrationBuilder.DropForeignKey(
                 name: "fk_abb_b2x_measurements_measurement_locations_measurement_loca",
-                table: "abb_b2x_measurements");
+                table: "abb_b2x_measurements"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_abb_b2x_measurements_meters_meter_id",
-                table: "abb_b2x_measurements");
+                table: "abb_b2x_measurements"
+            );
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_events_messengers_messenger_id",
-                table: "events");
+            migrationBuilder.DropForeignKey(name: "fk_events_messengers_messenger_id", table: "events");
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_events_representatives_representative_id",
-                table: "events");
+            migrationBuilder.DropForeignKey(name: "fk_events_representatives_representative_id", table: "events");
 
             migrationBuilder.DropForeignKey(
                 name: "fk_location_representatives_locations_location_id",
-                table: "location_representatives");
+                table: "location_representatives"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_location_representatives_representatives_representative_id",
-                table: "location_representatives");
+                table: "location_representatives"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_measurement_locations_representatives_created_by_id",
-                table: "measurement_locations");
+                table: "measurement_locations"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_measurement_locations_representatives_deleted_by_id",
-                table: "measurement_locations");
+                table: "measurement_locations"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_measurement_locations_representatives_last_updated_by_id",
-                table: "measurement_locations");
+                table: "measurement_locations"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_measurement_validators_representatives_created_by_id",
-                table: "measurement_validators");
+                table: "measurement_validators"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_measurement_validators_representatives_deleted_by_id",
-                table: "measurement_validators");
+                table: "measurement_validators"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_measurement_validators_representatives_last_updated_by_id",
-                table: "measurement_validators");
+                table: "measurement_validators"
+            );
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_messengers_representatives_created_by_id",
-                table: "messengers");
+            migrationBuilder.DropForeignKey(name: "fk_messengers_representatives_created_by_id", table: "messengers");
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_messengers_representatives_deleted_by_id",
-                table: "messengers");
+            migrationBuilder.DropForeignKey(name: "fk_messengers_representatives_deleted_by_id", table: "messengers");
 
             migrationBuilder.DropForeignKey(
                 name: "fk_messengers_representatives_last_updated_by_id",
-                table: "messengers");
+                table: "messengers"
+            );
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_meters_messengers_messenger_id",
-                table: "meters");
+            migrationBuilder.DropForeignKey(name: "fk_meters_messengers_messenger_id", table: "meters");
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_meters_representatives_created_by_id",
-                table: "meters");
+            migrationBuilder.DropForeignKey(name: "fk_meters_representatives_created_by_id", table: "meters");
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_meters_representatives_deleted_by_id",
-                table: "meters");
+            migrationBuilder.DropForeignKey(name: "fk_meters_representatives_deleted_by_id", table: "meters");
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_meters_representatives_last_updated_by_id",
-                table: "meters");
+            migrationBuilder.DropForeignKey(name: "fk_meters_representatives_last_updated_by_id", table: "meters");
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_calculations_network_user_invoices__network_us",
-                table: "network_user_calculations");
+                table: "network_user_calculations"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_calculations_representatives_issued_by_id",
-                table: "network_user_calculations");
+                table: "network_user_calculations"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_catalogues_representatives_created_by_id",
-                table: "network_user_catalogues");
+                table: "network_user_catalogues"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_catalogues_representatives_deleted_by_id",
-                table: "network_user_catalogues");
+                table: "network_user_catalogues"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_catalogues_representatives_last_updated_by_id",
-                table: "network_user_catalogues");
+                table: "network_user_catalogues"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_invoices_representatives_issued_by_id",
-                table: "network_user_invoices");
+                table: "network_user_invoices"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_representatives_network_users_network_user_id",
-                table: "network_user_representatives");
+                table: "network_user_representatives"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_network_user_representatives_representatives_representative",
-                table: "network_user_representatives");
+                table: "network_user_representatives"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_notification_recipients_notifications_notification_id",
-                table: "notification_recipients");
+                table: "notification_recipients"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_notification_recipients_representatives_representative_id",
-                table: "notification_recipients");
+                table: "notification_recipients"
+            );
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_notifications_events__event_id",
-                table: "notifications");
+            migrationBuilder.DropForeignKey(name: "fk_notifications_events__event_id", table: "notifications");
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_notifications_messengers_messenger_id",
-                table: "notifications");
+            migrationBuilder.DropForeignKey(name: "fk_notifications_messengers_messenger_id", table: "notifications");
 
             migrationBuilder.DropForeignKey(
                 name: "fk_notifications_network_user_invoices_invoice_id",
-                table: "notifications");
+                table: "notifications"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_regulatory_catalogues_representatives_created_by_id",
-                table: "regulatory_catalogues");
+                table: "regulatory_catalogues"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_regulatory_catalogues_representatives_deleted_by_id",
-                table: "regulatory_catalogues");
+                table: "regulatory_catalogues"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_regulatory_catalogues_representatives_last_updated_by_id",
-                table: "regulatory_catalogues");
+                table: "regulatory_catalogues"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_schneider_iem3xxx_aggregates_measurement_locations_measurem",
-                table: "schneider_iem3xxx_aggregates");
+                table: "schneider_iem3xxx_aggregates"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_schneider_iem3xxx_aggregates_meters_meter_id",
-                table: "schneider_iem3xxx_aggregates");
+                table: "schneider_iem3xxx_aggregates"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_schneider_iem3xxx_measurements_measurement_locations_measur",
-                table: "schneider_iem3xxx_measurements");
+                table: "schneider_iem3xxx_measurements"
+            );
 
             migrationBuilder.DropForeignKey(
                 name: "fk_schneider_iem3xxx_measurements_meters_meter_id",
-                table: "schneider_iem3xxx_measurements");
+                table: "schneider_iem3xxx_measurements"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "usage_meter_fee_total_eur",
                 table: "network_user_calculations",
-                newName: "usage_meter_total_eur");
+                newName: "usage_meter_total_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "jen_total_eur",
                 table: "network_user_calculations",
-                newName: "jen_ramped_total_eur");
+                newName: "jen_ramped_total_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "jen_price_eur",
                 table: "network_user_calculations",
-                newName: "jen_ramped_price_eur");
+                newName: "jen_ramped_price_eur"
+            );
 
-            migrationBuilder.AlterDatabase()
+            migrationBuilder
+                .AlterDatabase()
                 .Annotation("Npgsql:Enum:audit_entity", "query,creation,modification,deletion")
                 .Annotation("Npgsql:Enum:category_entity", "all,messenger,messenger_push,audit,error,lifecycle")
                 .Annotation("Npgsql:Enum:duration_entity", "second,minute,hour,day,week,month,year")
                 .Annotation("Npgsql:Enum:interval_entity", "quarter_hour,day,month")
                 .Annotation("Npgsql:Enum:level_entity", "trace,debug,info,warning,error,critical")
                 .Annotation("Npgsql:Enum:phase_entity", "l1,l2,l3")
-                .Annotation("Npgsql:Enum:role_entity", "operator_representative,location_representative,network_user_representative")
-                .Annotation("Npgsql:Enum:topic_entity", "all,messenger,messenger_inactivity,invalid_push,error,network_user_invoice_state")
+                .Annotation(
+                    "Npgsql:Enum:role_entity",
+                    "operator_representative,location_representative,network_user_representative"
+                )
+                .Annotation(
+                    "Npgsql:Enum:topic_entity",
+                    "all,messenger,messenger_inactivity,invalid_push,error,network_user_invoice_state"
+                )
                 .Annotation("Npgsql:PostgresExtension:timescaledb", ",,")
-                .OldAnnotation("Npgsql:Enum:audit_entity", "query,creation,modification,deletion,restoration,forgetting")
+                .OldAnnotation(
+                    "Npgsql:Enum:audit_entity",
+                    "query,creation,modification,deletion,restoration,forgetting"
+                )
                 .OldAnnotation("Npgsql:Enum:category_entity", "all,messenger,messenger_push,audit,error,lifecycle")
                 .OldAnnotation("Npgsql:Enum:duration_entity", "second,minute,hour,day,week,month,year")
                 .OldAnnotation("Npgsql:Enum:interval_entity", "quarter_hour,day,month")
                 .OldAnnotation("Npgsql:Enum:level_entity", "trace,debug,info,warning,error,critical")
                 .OldAnnotation("Npgsql:Enum:phase_entity", "l1,l2,l3")
-                .OldAnnotation("Npgsql:Enum:role_entity", "operator_representative,location_representative,network_user_representative")
-                .OldAnnotation("Npgsql:Enum:topic_entity", "all,messenger,messenger_inactivity,invalid_push,error,network_user_invoice_state")
+                .OldAnnotation(
+                    "Npgsql:Enum:role_entity",
+                    "operator_representative,location_representative,network_user_representative"
+                )
+                .OldAnnotation(
+                    "Npgsql:Enum:topic_entity",
+                    "all,messenger,messenger_inactivity,invalid_push,error,network_user_invoice_state"
+                )
                 .OldAnnotation("Npgsql:PostgresExtension:timescaledb", ",,");
 
             migrationBuilder.AddColumn<long>(
                 name: "location_id",
                 table: "measurement_locations",
                 type: "bigint",
-                nullable: true);
+                nullable: true
+            );
 
             migrationBuilder.CreateTable(
                 name: "location_invoices",
                 columns: table => new
                 {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
+                    id = table
+                        .Column<long>(type: "bigint", nullable: false)
+                        .Annotation(
+                            "Npgsql:ValueGenerationStrategy",
+                            NpgsqlValueGenerationStrategy.IdentityAlwaysColumn
+                        ),
                     location_id = table.Column<long>(type: "bigint", nullable: false),
                     issued_by_id = table.Column<string>(type: "text", nullable: true),
                     from_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
@@ -799,7 +892,7 @@ namespace Ozds.Data.Migrations
                     al_lp_name = table.Column<string>(type: "text", nullable: false),
                     al_lp_phone_number = table.Column<string>(type: "text", nullable: false),
                     al_lp_postal_code = table.Column<string>(type: "text", nullable: false),
-                    al_lp_social_security_number = table.Column<string>(type: "text", nullable: false)
+                    al_lp_social_security_number = table.Column<string>(type: "text", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -809,29 +902,35 @@ namespace Ozds.Data.Migrations
                         column: x => x.location_id,
                         principalTable: "locations",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Cascade
+                    );
                     table.ForeignKey(
                         name: "fk_location_invoices_representatives_issued_by_id",
                         column: x => x.issued_by_id,
                         principalTable: "representatives",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                        onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_measurement_locations_location_id",
                 table: "measurement_locations",
-                column: "location_id");
+                column: "location_id"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_location_invoices__location_id",
                 table: "location_invoices",
-                column: "location_id");
+                column: "location_id"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_location_invoices_issued_by_id",
                 table: "location_invoices",
-                column: "issued_by_id");
+                column: "issued_by_id"
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_abb_b2x_aggregates_measurement_locations_measurement_locati",
@@ -839,7 +938,8 @@ namespace Ozds.Data.Migrations
                 column: "measurement_location_id",
                 principalTable: "measurement_locations",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_abb_b2x_aggregates_meters_meter_id",
@@ -847,7 +947,8 @@ namespace Ozds.Data.Migrations
                 column: "meter_id",
                 principalTable: "meters",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_abb_b2x_measurements_measurement_locations_measurement_loca",
@@ -855,7 +956,8 @@ namespace Ozds.Data.Migrations
                 column: "measurement_location_id",
                 principalTable: "measurement_locations",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_abb_b2x_measurements_meters_meter_id",
@@ -863,7 +965,8 @@ namespace Ozds.Data.Migrations
                 column: "meter_id",
                 principalTable: "meters",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_events_messengers_messenger_id",
@@ -871,7 +974,8 @@ namespace Ozds.Data.Migrations
                 column: "messenger_id",
                 principalTable: "messengers",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_events_representatives_representative_id",
@@ -879,7 +983,8 @@ namespace Ozds.Data.Migrations
                 column: "representative_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_location_representatives_locations_location_id",
@@ -887,7 +992,8 @@ namespace Ozds.Data.Migrations
                 column: "location_id",
                 principalTable: "locations",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_location_representatives_representatives_representative_id",
@@ -895,7 +1001,8 @@ namespace Ozds.Data.Migrations
                 column: "representative_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_measurement_locations_locations_location_id",
@@ -903,7 +1010,8 @@ namespace Ozds.Data.Migrations
                 column: "location_id",
                 principalTable: "locations",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_measurement_locations_representatives_created_by_id",
@@ -911,7 +1019,8 @@ namespace Ozds.Data.Migrations
                 column: "created_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_measurement_locations_representatives_deleted_by_id",
@@ -919,7 +1028,8 @@ namespace Ozds.Data.Migrations
                 column: "deleted_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_measurement_locations_representatives_last_updated_by_id",
@@ -927,7 +1037,8 @@ namespace Ozds.Data.Migrations
                 column: "last_updated_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_measurement_validators_representatives_created_by_id",
@@ -935,7 +1046,8 @@ namespace Ozds.Data.Migrations
                 column: "created_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_measurement_validators_representatives_deleted_by_id",
@@ -943,7 +1055,8 @@ namespace Ozds.Data.Migrations
                 column: "deleted_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_measurement_validators_representatives_last_updated_by_id",
@@ -951,7 +1064,8 @@ namespace Ozds.Data.Migrations
                 column: "last_updated_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_messengers_representatives_created_by_id",
@@ -959,7 +1073,8 @@ namespace Ozds.Data.Migrations
                 column: "created_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_messengers_representatives_deleted_by_id",
@@ -967,7 +1082,8 @@ namespace Ozds.Data.Migrations
                 column: "deleted_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_messengers_representatives_last_updated_by_id",
@@ -975,7 +1091,8 @@ namespace Ozds.Data.Migrations
                 column: "last_updated_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_meters_messengers_messenger_id",
@@ -983,7 +1100,8 @@ namespace Ozds.Data.Migrations
                 column: "messenger_id",
                 principalTable: "messengers",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_meters_representatives_created_by_id",
@@ -991,7 +1109,8 @@ namespace Ozds.Data.Migrations
                 column: "created_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_meters_representatives_deleted_by_id",
@@ -999,7 +1118,8 @@ namespace Ozds.Data.Migrations
                 column: "deleted_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_meters_representatives_last_updated_by_id",
@@ -1007,7 +1127,8 @@ namespace Ozds.Data.Migrations
                 column: "last_updated_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_calculations_network_user_invoices__network_us",
@@ -1015,7 +1136,8 @@ namespace Ozds.Data.Migrations
                 column: "network_user_invoice_id",
                 principalTable: "network_user_invoices",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_calculations_representatives_issued_by_id",
@@ -1023,7 +1145,8 @@ namespace Ozds.Data.Migrations
                 column: "issued_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_catalogues_representatives_created_by_id",
@@ -1031,7 +1154,8 @@ namespace Ozds.Data.Migrations
                 column: "created_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_catalogues_representatives_deleted_by_id",
@@ -1039,7 +1163,8 @@ namespace Ozds.Data.Migrations
                 column: "deleted_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_catalogues_representatives_last_updated_by_id",
@@ -1047,7 +1172,8 @@ namespace Ozds.Data.Migrations
                 column: "last_updated_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_invoices_representatives_issued_by_id",
@@ -1055,7 +1181,8 @@ namespace Ozds.Data.Migrations
                 column: "issued_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_representatives_network_users_network_user_id",
@@ -1063,7 +1190,8 @@ namespace Ozds.Data.Migrations
                 column: "network_user_id",
                 principalTable: "network_users",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_network_user_representatives_representatives_representative",
@@ -1071,7 +1199,8 @@ namespace Ozds.Data.Migrations
                 column: "representative_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_notification_recipients_notifications_notification_id",
@@ -1079,7 +1208,8 @@ namespace Ozds.Data.Migrations
                 column: "notification_id",
                 principalTable: "notifications",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_notification_recipients_representatives_representative_id",
@@ -1087,7 +1217,8 @@ namespace Ozds.Data.Migrations
                 column: "representative_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_notifications_events__event_id",
@@ -1095,7 +1226,8 @@ namespace Ozds.Data.Migrations
                 column: "event_id",
                 principalTable: "events",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_notifications_messengers_messenger_id",
@@ -1103,7 +1235,8 @@ namespace Ozds.Data.Migrations
                 column: "messenger_id",
                 principalTable: "messengers",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_notifications_network_user_invoices_invoice_id",
@@ -1111,7 +1244,8 @@ namespace Ozds.Data.Migrations
                 column: "invoice_id",
                 principalTable: "network_user_invoices",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_regulatory_catalogues_representatives_created_by_id",
@@ -1119,7 +1253,8 @@ namespace Ozds.Data.Migrations
                 column: "created_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_regulatory_catalogues_representatives_deleted_by_id",
@@ -1127,7 +1262,8 @@ namespace Ozds.Data.Migrations
                 column: "deleted_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_regulatory_catalogues_representatives_last_updated_by_id",
@@ -1135,7 +1271,8 @@ namespace Ozds.Data.Migrations
                 column: "last_updated_by_id",
                 principalTable: "representatives",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_schneider_iem3xxx_aggregates_measurement_locations_measurem",
@@ -1143,7 +1280,8 @@ namespace Ozds.Data.Migrations
                 column: "measurement_location_id",
                 principalTable: "measurement_locations",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_schneider_iem3xxx_aggregates_meters_meter_id",
@@ -1151,7 +1289,8 @@ namespace Ozds.Data.Migrations
                 column: "meter_id",
                 principalTable: "meters",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_schneider_iem3xxx_measurements_measurement_locations_measur",
@@ -1159,7 +1298,8 @@ namespace Ozds.Data.Migrations
                 column: "measurement_location_id",
                 principalTable: "measurement_locations",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_schneider_iem3xxx_measurements_meters_meter_id",
@@ -1167,7 +1307,8 @@ namespace Ozds.Data.Migrations
                 column: "meter_id",
                 principalTable: "meters",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.Restrict
+            );
         }
     }
 }

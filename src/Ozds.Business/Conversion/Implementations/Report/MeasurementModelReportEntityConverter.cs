@@ -20,7 +20,8 @@ public class MeasurementModelReportEntityConverter
 
   public override void InitializeModel(
     MeasurementEntity entity,
-    MeasurementModel model)
+    MeasurementModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.MeterId = entity.MeterId;

@@ -7,6 +7,4 @@ namespace Ozds.Business.Observers.Implementations;
 public class MeasurementsBufferedObservers
   : Observer<MeasurementsBufferedEventArgs>,
     IMeasurementsBufferedPublisher,
-    IMeasurementsBufferedSubscriber
-{
-}
+    IMeasurementsBufferedSubscriber { }

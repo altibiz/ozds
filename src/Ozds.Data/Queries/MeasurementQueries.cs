@@ -32,8 +32,9 @@ public class MeasurementQueries(
     int pageCount = QueryConstants.DefaultMeasurementPageCount
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     List<IMeasurementEntity> items = new();
     var count = 0;
@@ -53,44 +54,52 @@ public class MeasurementQueries(
 
       if (entityType.IsAssignableTo(typeof(IAggregateEntity)))
       {
-        var intervalParameter = Expression
-          .Parameter(typeof(IMeasurementEntity), "entity");
-        var intervalExpression = Expression
-          .Lambda<Func<IMeasurementEntity, bool>>(
-            Expression.Equal(
-              Expression.Property(
-                Expression.Convert(
-                  intervalParameter,
-                  typeof(IAggregateEntity)),
-                nameof(AggregateEntity<MeterEntity>.Interval)),
-              Expression.Constant(
-                interval
+        var intervalParameter = Expression.Parameter(
+          typeof(IMeasurementEntity),
+          "entity"
+        );
+        var intervalExpression = Expression.Lambda<
+          Func<IMeasurementEntity, bool>
+        >(
+          Expression.Equal(
+            Expression.Property(
+              Expression.Convert(intervalParameter, typeof(IAggregateEntity)),
+              nameof(AggregateEntity<MeterEntity>.Interval)
+            ),
+            Expression.Constant(
+              interval
                 ?? throw new InvalidOperationException("Interval is null"),
-                typeof(IntervalEntity))),
-            intervalParameter);
+              typeof(IntervalEntity)
+            )
+          ),
+          intervalParameter
+        );
 
         filtered = filtered.Where(intervalExpression);
       }
 
-      var foreignKeyParameter = Expression
-        .Parameter(typeof(IMeasurementEntity), "entity");
-      var foreignKeyExpression = Expression
-        .Lambda<Func<IMeasurementEntity, bool>>(
-          Expression.Invoke(
-            context.ForeignKeyIn(
-              entityType,
-              nameof(MeasurementEntity<MeterEntity>.Meter),
-              meterIds),
-            Expression.Convert(foreignKeyParameter, typeof(object))),
-          foreignKeyParameter);
+      var foreignKeyParameter = Expression.Parameter(
+        typeof(IMeasurementEntity),
+        "entity"
+      );
+      var foreignKeyExpression = Expression.Lambda<
+        Func<IMeasurementEntity, bool>
+      >(
+        Expression.Invoke(
+          context.ForeignKeyIn(
+            entityType,
+            nameof(MeasurementEntity<MeterEntity>.Meter),
+            meterIds
+          ),
+          Expression.Convert(foreignKeyParameter, typeof(object))
+        ),
+        foreignKeyParameter
+      );
       filtered = filtered.Where(foreignKeyExpression);
 
-      var ordered = filtered
-        .OrderBy(measurement => measurement.Timestamp);
+      var ordered = filtered.OrderBy(measurement => measurement.Timestamp);
 
-      var paged = ordered
-        .Skip(pageNumber * pageCount)
-        .Take(pageCount);
+      var paged = ordered.Skip(pageNumber * pageCount).Take(pageCount);
 
       futureCounts.Add(filtered.DeferredCount());
       futureItems.Add(paged.Future());
@@ -106,10 +115,7 @@ public class MeasurementQueries(
       items.AddRange(await futureItem.ToListAsync(cancellationToken));
     }
 
-    return new PaginatedList<IMeasurementEntity>(
-      items,
-      count
-    );
+    return new PaginatedList<IMeasurementEntity>(items, count);
   }
 
   public async Task<List<IMeasurementEntity>> ReadLastByMeterIds(
@@ -119,8 +125,9 @@ public class MeasurementQueries(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     List<IMeasurementEntity> items = new();
 
@@ -132,45 +139,58 @@ public class MeasurementQueries(
       var meterIds = group;
       var queryable = context.GetQueryable<IMeasurementEntity>(entityType);
 
-      var filtered = queryable
-        .Where(measurement => measurement.Timestamp <= toDate);
+      var filtered = queryable.Where(measurement =>
+        measurement.Timestamp <= toDate
+      );
 
       if (entityType.IsAssignableTo(typeof(IAggregateEntity)))
       {
-        var intervalParameter = Expression
-          .Parameter(typeof(IMeasurementEntity), "entity");
-        var intervalExpression = Expression
-          .Lambda<Func<IMeasurementEntity, bool>>(
-            Expression.Equal(
-              Expression.Property(
-                Expression.Convert(
-                  intervalParameter,
-                  typeof(IAggregateEntity)),
-                nameof(AggregateEntity<MeterEntity>.Interval)),
-              Expression.Constant(
-                interval
+        var intervalParameter = Expression.Parameter(
+          typeof(IMeasurementEntity),
+          "entity"
+        );
+        var intervalExpression = Expression.Lambda<
+          Func<IMeasurementEntity, bool>
+        >(
+          Expression.Equal(
+            Expression.Property(
+              Expression.Convert(intervalParameter, typeof(IAggregateEntity)),
+              nameof(AggregateEntity<MeterEntity>.Interval)
+            ),
+            Expression.Constant(
+              interval
                 ?? throw new InvalidOperationException("Interval is null"),
-                typeof(IntervalEntity))),
-            intervalParameter);
+              typeof(IntervalEntity)
+            )
+          ),
+          intervalParameter
+        );
 
         filtered = filtered.Where(intervalExpression);
       }
 
-      var foreignKeyParameter = Expression
-        .Parameter(typeof(IMeasurementEntity), "entity");
-      var foreignKeyExpression = Expression
-        .Lambda<Func<IMeasurementEntity, bool>>(
-          Expression.Invoke(
-            context.ForeignKeyIn(
-              entityType,
-              nameof(MeasurementEntity<MeterEntity>.Meter),
-              meterIds),
-            Expression.Convert(foreignKeyParameter, typeof(object))),
-          foreignKeyParameter);
+      var foreignKeyParameter = Expression.Parameter(
+        typeof(IMeasurementEntity),
+        "entity"
+      );
+      var foreignKeyExpression = Expression.Lambda<
+        Func<IMeasurementEntity, bool>
+      >(
+        Expression.Invoke(
+          context.ForeignKeyIn(
+            entityType,
+            nameof(MeasurementEntity<MeterEntity>.Meter),
+            meterIds
+          ),
+          Expression.Convert(foreignKeyParameter, typeof(object))
+        ),
+        foreignKeyParameter
+      );
       filtered = filtered.Where(foreignKeyExpression);
 
-      var ordered = filtered
-        .OrderByDescending(measurement => measurement.Timestamp);
+      var ordered = filtered.OrderByDescending(measurement =>
+        measurement.Timestamp
+      );
 
       futureItems.Add(ordered.DeferredLastOrDefault());
     }
@@ -183,19 +203,21 @@ public class MeasurementQueries(
     return items;
   }
 
-  public async Task<PaginatedList<IMeasurementEntity>>
-    ReadByMeasurementLocationIds(
-      IEnumerable<string> measurementLocationIds,
-      IntervalEntity? interval,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      int pageCount = QueryConstants.DefaultMeasurementPageCount
-    )
+  public async Task<
+    PaginatedList<IMeasurementEntity>
+  > ReadByMeasurementLocationIds(
+    IEnumerable<string> measurementLocationIds,
+    IntervalEntity? interval,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultMeasurementPageCount
+  )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     List<IMeasurementEntity> items = new();
     var count = 0;
@@ -217,44 +239,52 @@ public class MeasurementQueries(
 
       if (entityType.IsAssignableTo(typeof(IAggregateEntity)))
       {
-        var intervalParameter = Expression
-          .Parameter(typeof(IMeasurementEntity), "entity");
-        var intervalExpression = Expression
-          .Lambda<Func<IMeasurementEntity, bool>>(
-            Expression.Equal(
-              Expression.Property(
-                Expression.Convert(
-                  intervalParameter,
-                  typeof(IAggregateEntity)),
-                nameof(AggregateEntity<MeterEntity>.Interval)),
-              Expression.Constant(
-                interval
+        var intervalParameter = Expression.Parameter(
+          typeof(IMeasurementEntity),
+          "entity"
+        );
+        var intervalExpression = Expression.Lambda<
+          Func<IMeasurementEntity, bool>
+        >(
+          Expression.Equal(
+            Expression.Property(
+              Expression.Convert(intervalParameter, typeof(IAggregateEntity)),
+              nameof(AggregateEntity<MeterEntity>.Interval)
+            ),
+            Expression.Constant(
+              interval
                 ?? throw new InvalidOperationException("Interval is null"),
-                typeof(IntervalEntity))),
-            intervalParameter);
+              typeof(IntervalEntity)
+            )
+          ),
+          intervalParameter
+        );
 
         filtered = filtered.Where(intervalExpression);
       }
 
-      var foreignKeyParameter = Expression
-        .Parameter(typeof(IMeasurementEntity), "entity");
-      var foreignKeyExpression = Expression
-        .Lambda<Func<IMeasurementEntity, bool>>(
-          Expression.Invoke(
-            context.ForeignKeyIn(
-              entityType,
-              nameof(MeasurementEntity<MeterEntity>.MeasurementLocation),
-              measurementLocationIds),
-            Expression.Convert(foreignKeyParameter, typeof(object))),
-          foreignKeyParameter);
+      var foreignKeyParameter = Expression.Parameter(
+        typeof(IMeasurementEntity),
+        "entity"
+      );
+      var foreignKeyExpression = Expression.Lambda<
+        Func<IMeasurementEntity, bool>
+      >(
+        Expression.Invoke(
+          context.ForeignKeyIn(
+            entityType,
+            nameof(MeasurementEntity<MeterEntity>.MeasurementLocation),
+            measurementLocationIds
+          ),
+          Expression.Convert(foreignKeyParameter, typeof(object))
+        ),
+        foreignKeyParameter
+      );
       filtered = filtered.Where(foreignKeyExpression);
 
-      var ordered = filtered
-        .OrderBy(measurement => measurement.Timestamp);
+      var ordered = filtered.OrderBy(measurement => measurement.Timestamp);
 
-      var paged = ordered
-        .Skip(pageNumber * pageCount)
-        .Take(pageCount);
+      var paged = ordered.Skip(pageNumber * pageCount).Take(pageCount);
 
       futureCounts.Add(filtered.DeferredCount());
       futureItems.Add(paged.Future());
@@ -270,10 +300,7 @@ public class MeasurementQueries(
       items.AddRange(await futureItem.ToListAsync(cancellationToken));
     }
 
-    return new PaginatedList<IMeasurementEntity>(
-      items,
-      count
-    );
+    return new PaginatedList<IMeasurementEntity>(items, count);
   }
 
   public async Task<List<IMeasurementEntity>> ReadLastByMeasurementLocationIds(
@@ -283,8 +310,9 @@ public class MeasurementQueries(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     List<IMeasurementEntity> items = new();
 
@@ -298,52 +326,62 @@ public class MeasurementQueries(
     {
       var queryable = context.GetQueryable<IMeasurementEntity>(entityType);
 
-      var filtered = queryable
-        .Where(measurement => measurement.Timestamp <= toDate);
+      var filtered = queryable.Where(measurement =>
+        measurement.Timestamp <= toDate
+      );
 
       if (entityType.IsAssignableTo(typeof(IAggregateEntity)))
       {
-        var intervalParameter = Expression
-          .Parameter(typeof(IMeasurementEntity), "entity");
-        var intervalExpression = Expression
-          .Lambda<Func<IMeasurementEntity, bool>>(
-            Expression.Equal(
-              Expression.Property(
-                Expression.Convert(
-                  intervalParameter,
-                  typeof(IAggregateEntity)),
-                nameof(AggregateEntity<MeterEntity>.Interval)),
-              Expression.Constant(
-                interval
+        var intervalParameter = Expression.Parameter(
+          typeof(IMeasurementEntity),
+          "entity"
+        );
+        var intervalExpression = Expression.Lambda<
+          Func<IMeasurementEntity, bool>
+        >(
+          Expression.Equal(
+            Expression.Property(
+              Expression.Convert(intervalParameter, typeof(IAggregateEntity)),
+              nameof(AggregateEntity<MeterEntity>.Interval)
+            ),
+            Expression.Constant(
+              interval
                 ?? throw new InvalidOperationException("Interval is null"),
-                typeof(IntervalEntity))),
-            intervalParameter);
+              typeof(IntervalEntity)
+            )
+          ),
+          intervalParameter
+        );
 
         filtered = filtered.Where(intervalExpression);
       }
 
-      var foreignKeyParameter = Expression
-        .Parameter(typeof(IMeasurementEntity), "entity");
-      var foreignKeyExpression = Expression
-        .Lambda<Func<IMeasurementEntity, bool>>(
-          Expression.Invoke(
-            context.ForeignKeyIn(
-              entityType,
-              nameof(MeasurementEntity<MeterEntity>.MeasurementLocation),
-              measurementLocationIds),
-            Expression.Convert(foreignKeyParameter, typeof(object))),
-          foreignKeyParameter);
+      var foreignKeyParameter = Expression.Parameter(
+        typeof(IMeasurementEntity),
+        "entity"
+      );
+      var foreignKeyExpression = Expression.Lambda<
+        Func<IMeasurementEntity, bool>
+      >(
+        Expression.Invoke(
+          context.ForeignKeyIn(
+            entityType,
+            nameof(MeasurementEntity<MeterEntity>.MeasurementLocation),
+            measurementLocationIds
+          ),
+          Expression.Convert(foreignKeyParameter, typeof(object))
+        ),
+        foreignKeyParameter
+      );
       filtered = filtered.Where(foreignKeyExpression);
 
-      var lastTimestampByMeter = filtered.GroupBy(
-        m => m.MeterId
-      ).Select(
-        g => new
+      var lastTimestampByMeter = filtered
+        .GroupBy(m => m.MeterId)
+        .Select(g => new
         {
           MeterId = g.Key,
-          Timestamp = g.Max(x => x.Timestamp)
-        }
-      );
+          Timestamp = g.Max(x => x.Timestamp),
+        });
 
       var lastByEveryMeter = filtered.Join(
         lastTimestampByMeter,

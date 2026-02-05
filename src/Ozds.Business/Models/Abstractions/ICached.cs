@@ -15,9 +15,7 @@ public interface ICachedIdentifiable : ICached, IIdentifiable
   }
 }
 
-public interface ICachedComposite : ICached, IComposite
-{
-}
+public interface ICachedComposite : ICached, IComposite { }
 
 public interface ICachedJoin : ICached, IJoin
 {

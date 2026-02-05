@@ -6,12 +6,15 @@ namespace Ozds.Business.Conversion;
 
 public class ModelCachingEntityConverter(IServiceProvider serviceProvider)
 {
-  private readonly
-    ConcurrentDictionary<Type, IModelCachingEntityConverter>
-    entityCache = new();
+  private readonly ConcurrentDictionary<
+    Type,
+    IModelCachingEntityConverter
+  > entityCache = new();
 
-  private readonly
-    ConcurrentDictionary<Type, IModelCachingEntityConverter> modelCache = new();
+  private readonly ConcurrentDictionary<
+    Type,
+    IModelCachingEntityConverter
+  > modelCache = new();
 
   public TEntity ToEntity<TEntity>(object model)
   {
@@ -184,7 +187,8 @@ public class ModelCachingEntityConverter(IServiceProvider serviceProvider)
     if (!converter.CanConvertToEntity(type))
     {
       throw new InvalidOperationException(
-        $"No entity converter found for model {type}.");
+        $"No entity converter found for model {type}."
+      );
     }
 
     return converter;
@@ -197,44 +201,45 @@ public class ModelCachingEntityConverter(IServiceProvider serviceProvider)
       return converter;
     }
 
-    converter = serviceProvider
+    converter =
+      serviceProvider
         .GetServices<IModelCachingEntityConverter>()
         .Where(converter => type.IsAssignableTo(converter.ModelType))
         .DefaultIfEmpty(null)
-        .Aggregate((acc, next) =>
-          acc is null
-            ? null
-            : next!.ModelType.IsAssignableTo(acc.ModelType)
-              ? next
-              : acc)
+        .Aggregate(
+          (acc, next) =>
+            acc is null ? null
+            : next!.ModelType.IsAssignableTo(acc.ModelType) ? next
+            : acc
+        )
       ?? serviceProvider
         .GetServices<IModelCachingEntityConverter>()
         .Where(converter => converter.ModelType.IsAssignableTo(type))
         .DefaultIfEmpty(null)
-        .Aggregate((acc, next) =>
-          acc is null
-            ? null
-            : next!.ModelType.IsAssignableTo(acc.ModelType)
-              ? acc
-              : next)
+        .Aggregate(
+          (acc, next) =>
+            acc is null ? null
+            : next!.ModelType.IsAssignableTo(acc.ModelType) ? acc
+            : next
+        )
       ?? throw new InvalidOperationException(
-        $"No converter found for model {type}.");
+        $"No converter found for model {type}."
+      );
 
     modelCache.TryAdd(type, converter);
 
     return converter;
   }
 
-  private IModelCachingEntityConverter GetModelConverterForConversion(
-    Type type
-  )
+  private IModelCachingEntityConverter GetModelConverterForConversion(Type type)
   {
     var converter = GetModelConverter(type);
 
     if (!converter.CanConvertToModel(type))
     {
       throw new InvalidOperationException(
-        $"No model converter found for entity {type}.");
+        $"No model converter found for entity {type}."
+      );
     }
 
     return converter;
@@ -247,28 +252,30 @@ public class ModelCachingEntityConverter(IServiceProvider serviceProvider)
       return converter;
     }
 
-    converter = serviceProvider
+    converter =
+      serviceProvider
         .GetServices<IModelCachingEntityConverter>()
         .Where(converter => type.IsAssignableTo(converter.EntityType))
         .DefaultIfEmpty(null)
-        .Aggregate((acc, next) =>
-          acc is null
-            ? null
-            : next!.EntityType.IsAssignableTo(acc.EntityType)
-              ? next
-              : acc)
+        .Aggregate(
+          (acc, next) =>
+            acc is null ? null
+            : next!.EntityType.IsAssignableTo(acc.EntityType) ? next
+            : acc
+        )
       ?? serviceProvider
         .GetServices<IModelCachingEntityConverter>()
         .Where(converter => converter.EntityType.IsAssignableTo(type))
         .DefaultIfEmpty(null)
-        .Aggregate((acc, next) =>
-          acc is null
-            ? null
-            : next!.EntityType.IsAssignableTo(acc.EntityType)
-              ? acc
-              : next)
+        .Aggregate(
+          (acc, next) =>
+            acc is null ? null
+            : next!.EntityType.IsAssignableTo(acc.EntityType) ? acc
+            : next
+        )
       ?? throw new InvalidOperationException(
-        $"No converter found for entity {type}.");
+        $"No converter found for entity {type}."
+      );
 
     entityCache.TryAdd(type, converter);
 

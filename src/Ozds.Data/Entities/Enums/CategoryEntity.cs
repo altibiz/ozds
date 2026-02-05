@@ -11,7 +11,7 @@ public enum CategoryEntity
   MessengerPush,
   Audit,
   Error,
-  Lifecycle
+  Lifecycle,
 }
 
 public class CategoryEntityModelConfiguration : IModelConfiguration
@@ -22,8 +22,8 @@ public class CategoryEntityModelConfiguration : IModelConfiguration
   }
 }
 
-public class
-  CategoryEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class CategoryEntityNpgsqlDataSourceConfiguration
+  : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

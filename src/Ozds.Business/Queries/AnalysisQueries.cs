@@ -13,28 +13,25 @@ public class AnalysisQueries(
   ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
-  public async Task<List<AnalysisBasisModel>>
-    ReadByLocationIdAndRepresentative(
-      string? locationId,
-      RepresentativeModel? representative,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<List<AnalysisBasisModel>> ReadByLocationIdAndRepresentative(
+    string? locationId,
+    RepresentativeModel? representative,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
     var representativeEntity = representative is null
       ? null
-      : modelEntityConverter
-        .ToEntity<RepresentativeEntity>(representative);
+      : modelEntityConverter.ToEntity<RepresentativeEntity>(representative);
 
-    var entities = await queries
-      .ReadByLocationIdAndRepresentative(
-        locationId,
-        representativeEntity,
-        fromDate,
-        toDate,
-        cancellationToken
-      );
+    var entities = await queries.ReadByLocationIdAndRepresentative(
+      locationId,
+      representativeEntity,
+      fromDate,
+      toDate,
+      cancellationToken
+    );
 
     return entities
       .Select(entity => new AnalysisBasisModel
@@ -42,17 +39,19 @@ public class AnalysisQueries(
         Representative = representative,
         FromDate = fromDate,
         ToDate = toDate,
-        Location = modelEntityConverter
-          .ToModel<LocationModel>(entity.Location),
-        NetworkUser = modelEntityConverter
-          .ToModel<NetworkUserModel>(entity.NetworkUser),
-        MeasurementLocation = modelEntityConverter
-          .ToModel<MeasurementLocationModel>(entity.MeasurementLocation),
+        Location = modelEntityConverter.ToModel<LocationModel>(entity.Location),
+        NetworkUser = modelEntityConverter.ToModel<NetworkUserModel>(
+          entity.NetworkUser
+        ),
+        MeasurementLocation =
+          modelEntityConverter.ToModel<MeasurementLocationModel>(
+            entity.MeasurementLocation
+          ),
         Meter = modelEntityConverter.ToModel<MeterModel>(entity.Meter),
         Calculations = [],
         Invoices = [],
         LastMeasurement = null,
-        MonthlyAggregates = []
+        MonthlyAggregates = [],
       })
       .ToList();
   }

@@ -23,10 +23,7 @@ public static class RenderFragmentExtensions
 
     var toBase = Expression.Convert(parameter, typeof(TValue));
 
-    var invoke = Expression.Invoke(
-      Expression.Constant(baseFragment),
-      toBase
-    );
+    var invoke = Expression.Invoke(Expression.Constant(baseFragment), toBase);
 
     var lambdaType = typeof(RenderFragment<>).MakeGenericType(concrete);
     var lambda = Expression.Lambda(lambdaType, invoke, parameter);

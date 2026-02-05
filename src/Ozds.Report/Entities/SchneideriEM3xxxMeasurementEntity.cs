@@ -2,8 +2,9 @@ using Ozds.Report.Entities.Abstractions;
 
 namespace Ozds.Report.Entities;
 
-public class SchneideriEM3xxxMeasurementEntity : MeasurementEntity,
-  IMeasurementEntity
+public class SchneideriEM3xxxMeasurementEntity
+  : MeasurementEntity,
+    IMeasurementEntity
 {
   public decimal VoltageL1AnyT0_V { get; set; } = default!;
 

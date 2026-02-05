@@ -5,11 +5,8 @@ using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Activation.Implementations.Administration;
 
-public class LocationModelActivator(
-  IServiceProvider serviceProvider
-) : InheritingModelActivator<LocationModel, TrackableModel>(
-  serviceProvider
-)
+public class LocationModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<LocationModel, TrackableModel>(serviceProvider)
 {
   private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();
@@ -23,8 +20,7 @@ public class LocationModelActivator(
     model.WhiteLowNetworkUserCatalogueId = "0";
     model.RedLowNetworkUserCatalogueId = "0";
     model.RegulatoryCatalogueId = "0";
-    model.LegalPerson = modelActivator
-      .Activate<LegalPersonModel>();
+    model.LegalPerson = modelActivator.Activate<LegalPersonModel>();
     model.AltiBizSubProjectCode = string.Empty;
   }
 }

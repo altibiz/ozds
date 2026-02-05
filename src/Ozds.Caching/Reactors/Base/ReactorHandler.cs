@@ -12,7 +12,8 @@ public abstract class ReactorHandler<TEventArgs> : IReactorHandler<TEventArgs>
 
   public abstract Task Handle(
     TEventArgs eventArgs,
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 
   public virtual Task BeforeStopAsync(CancellationToken cancellationToken)
   {

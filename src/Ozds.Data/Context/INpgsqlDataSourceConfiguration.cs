@@ -20,7 +20,8 @@ public static class INpgsqlDataSourceConfigurationExtensions
       .Where(type =>
         !type.IsAbstract
         && !type.IsGenericType
-        && typeof(INpgsqlDataSourceConfiguration).IsAssignableFrom(type))
+        && typeof(INpgsqlDataSourceConfiguration).IsAssignableFrom(type)
+      )
       .Aggregate(
         builder,
         (builder, type) =>

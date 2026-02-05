@@ -8,8 +8,7 @@ public abstract class MeasurementProcedureParts<TEntity>
   : IMeasurementProcedureParts
 {
   private readonly MeasurementProcedureBuilder<TEntity> builder =
-    new MeasurementProcedureBuilder<TEntity>()
-      .AggregateType(typeof(TEntity));
+    new MeasurementProcedureBuilder<TEntity>().AggregateType(typeof(TEntity));
 
   private bool configured;
 
@@ -18,26 +17,22 @@ public abstract class MeasurementProcedureParts<TEntity>
     get { return Build().AggregateType; }
   }
 
-  public IEnumerable<IUpsertMeasurementProcedurePart>
-    UpsertMeasurementProcedureParts
+  public IEnumerable<IUpsertMeasurementProcedurePart> UpsertMeasurementProcedureParts
   {
     get { return Build().UpsertMeasurementProcedureParts; }
   }
 
-  public IEnumerable<IDerivativeMeasurementProcedurePart>
-    DerivativeMeasurementProcedureParts
+  public IEnumerable<IDerivativeMeasurementProcedurePart> DerivativeMeasurementProcedureParts
   {
     get { return Build().DerivativeMeasurementProcedureParts; }
   }
 
-  public IEnumerable<IDeriveMeasurementProcedurePart>
-    DeriveMeasurementProcedureParts
+  public IEnumerable<IDeriveMeasurementProcedurePart> DeriveMeasurementProcedureParts
   {
     get { return Build().DeriveMeasurementProcedureParts; }
   }
 
-  public IEnumerable<IDeltaMeasurementProcedurePart>
-    DeltaMeasurementProcedureParts
+  public IEnumerable<IDeltaMeasurementProcedurePart> DeltaMeasurementProcedureParts
   {
     get { return Build().DeltaMeasurementProcedureParts; }
   }
@@ -62,9 +57,7 @@ public class MeasurementProcedureBuilder<TEntity>
 {
   private readonly MeasurementsProcedurePartsImpl impl = new();
 
-  public MeasurementProcedureBuilder<TEntity> AggregateType(
-    Type aggregateType
-  )
+  public MeasurementProcedureBuilder<TEntity> AggregateType(Type aggregateType)
   {
     impl.AggregateType = aggregateType;
     return this;
@@ -77,8 +70,9 @@ public class MeasurementProcedureBuilder<TEntity>
     impl.MeasurementProcedureParts.Add(
       new UpsertAverageMeasurementProcedurePartImpl
       {
-        Value = value.ToMemberExpression()
-      });
+        Value = value.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -89,8 +83,9 @@ public class MeasurementProcedureBuilder<TEntity>
     impl.MeasurementProcedureParts.Add(
       new UpsertMinMeasurementProcedurePartImpl
       {
-        Value = value.ToMemberExpression()
-      });
+        Value = value.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -103,8 +98,9 @@ public class MeasurementProcedureBuilder<TEntity>
       new UpsertMinTimestampMeasurementProcedurePartImpl
       {
         Value = value.ToMemberExpression(),
-        Timestamp = timestamp.ToMemberExpression()
-      });
+        Timestamp = timestamp.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -115,8 +111,9 @@ public class MeasurementProcedureBuilder<TEntity>
     impl.MeasurementProcedureParts.Add(
       new UpsertMaxMeasurementProcedurePartImpl
       {
-        Value = value.ToMemberExpression()
-      });
+        Value = value.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -129,8 +126,9 @@ public class MeasurementProcedureBuilder<TEntity>
       new UpsertMaxTimestampMeasurementProcedurePartImpl
       {
         Value = value.ToMemberExpression(),
-        Timestamp = timestamp.ToMemberExpression()
-      });
+        Timestamp = timestamp.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -141,8 +139,9 @@ public class MeasurementProcedureBuilder<TEntity>
     impl.MeasurementProcedureParts.Add(
       new DeltaAverageMeasurementProcedurePartImpl
       {
-        Value = value.ToMemberExpression()
-      });
+        Value = value.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -153,8 +152,9 @@ public class MeasurementProcedureBuilder<TEntity>
     impl.MeasurementProcedureParts.Add(
       new DeltaMinMeasurementProcedurePartImpl
       {
-        Value = value.ToMemberExpression()
-      });
+        Value = value.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -167,8 +167,9 @@ public class MeasurementProcedureBuilder<TEntity>
       new DeltaMinTimestampMeasurementProcedurePartImpl
       {
         Value = value.ToMemberExpression(),
-        Timestamp = timestamp.ToMemberExpression()
-      });
+        Timestamp = timestamp.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -179,8 +180,9 @@ public class MeasurementProcedureBuilder<TEntity>
     impl.MeasurementProcedureParts.Add(
       new DeltaMaxMeasurementProcedurePartImpl
       {
-        Value = value.ToMemberExpression()
-      });
+        Value = value.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -193,8 +195,9 @@ public class MeasurementProcedureBuilder<TEntity>
       new DeltaMaxTimestampMeasurementProcedurePartImpl
       {
         Value = value.ToMemberExpression(),
-        Timestamp = timestamp.ToMemberExpression()
-      });
+        Timestamp = timestamp.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -209,8 +212,9 @@ public class MeasurementProcedureBuilder<TEntity>
       {
         Value = value.ToMemberExpression(),
         MinEnergy = minEnergy.ToMemberExpression(),
-        MaxEnergy = maxEnergy.ToMemberExpression()
-      });
+        MaxEnergy = maxEnergy.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -223,8 +227,9 @@ public class MeasurementProcedureBuilder<TEntity>
       new DerivativePowerTimestampMeasurementProcedurePartImpl
       {
         Value = value.ToMemberExpression(),
-        Timestamp = timestamp.ToMemberExpression()
-      });
+        Timestamp = timestamp.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -235,8 +240,9 @@ public class MeasurementProcedureBuilder<TEntity>
     impl.MeasurementProcedureParts.Add(
       new DeriveAverageMeasurementProcedurePartImpl
       {
-        Value = value.ToMemberExpression()
-      });
+        Value = value.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -247,8 +253,9 @@ public class MeasurementProcedureBuilder<TEntity>
     impl.MeasurementProcedureParts.Add(
       new DeriveMinMeasurementProcedurePartImpl
       {
-        Value = value.ToMemberExpression()
-      });
+        Value = value.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -261,8 +268,9 @@ public class MeasurementProcedureBuilder<TEntity>
       new DeriveMinTimestampMeasurementProcedurePartImpl
       {
         Value = value.ToMemberExpression(),
-        Timestamp = timestamp.ToMemberExpression()
-      });
+        Timestamp = timestamp.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -273,8 +281,9 @@ public class MeasurementProcedureBuilder<TEntity>
     impl.MeasurementProcedureParts.Add(
       new DeriveMaxMeasurementProcedurePartImpl
       {
-        Value = value.ToMemberExpression()
-      });
+        Value = value.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -287,8 +296,9 @@ public class MeasurementProcedureBuilder<TEntity>
       new DeriveMaxTimestampMeasurementProcedurePartImpl
       {
         Value = value.ToMemberExpression(),
-        Timestamp = timestamp.ToMemberExpression()
-      });
+        Timestamp = timestamp.ToMemberExpression(),
+      }
+    );
     return this;
   }
 
@@ -305,8 +315,8 @@ public class MeasurementProcedureBuilder<TEntity>
   private sealed class MeasurementsProcedurePartsImpl
     : IMeasurementProcedureParts
   {
-    public List<IMeasurementProcedurePart>
-      MeasurementProcedureParts { get; } = new();
+    public List<IMeasurementProcedurePart> MeasurementProcedureParts { get; } =
+      new();
 
     public Type? AggregateType { get; set; }
 
@@ -319,43 +329,35 @@ public class MeasurementProcedureBuilder<TEntity>
       }
     }
 
-    IEnumerable<IUpsertMeasurementProcedurePart>
-      IMeasurementProcedureParts.UpsertMeasurementProcedureParts
+    IEnumerable<IUpsertMeasurementProcedurePart> IMeasurementProcedureParts.UpsertMeasurementProcedureParts
     {
       get
       {
-        return MeasurementProcedureParts
-          .OfType<IUpsertMeasurementProcedurePart>();
+        return MeasurementProcedureParts.OfType<IUpsertMeasurementProcedurePart>();
       }
     }
 
-    IEnumerable<IDerivativeMeasurementProcedurePart>
-      IMeasurementProcedureParts.DerivativeMeasurementProcedureParts
+    IEnumerable<IDerivativeMeasurementProcedurePart> IMeasurementProcedureParts.DerivativeMeasurementProcedureParts
     {
       get
       {
-        return MeasurementProcedureParts
-          .OfType<IDerivativeMeasurementProcedurePart>();
+        return MeasurementProcedureParts.OfType<IDerivativeMeasurementProcedurePart>();
       }
     }
 
-    IEnumerable<IDeltaMeasurementProcedurePart>
-      IMeasurementProcedureParts.DeltaMeasurementProcedureParts
+    IEnumerable<IDeltaMeasurementProcedurePart> IMeasurementProcedureParts.DeltaMeasurementProcedureParts
     {
       get
       {
-        return MeasurementProcedureParts
-          .OfType<IDeltaMeasurementProcedurePart>();
+        return MeasurementProcedureParts.OfType<IDeltaMeasurementProcedurePart>();
       }
     }
 
-    IEnumerable<IDeriveMeasurementProcedurePart>
-      IMeasurementProcedureParts.DeriveMeasurementProcedureParts
+    IEnumerable<IDeriveMeasurementProcedurePart> IMeasurementProcedureParts.DeriveMeasurementProcedureParts
     {
       get
       {
-        return MeasurementProcedureParts
-          .OfType<IDeriveMeasurementProcedurePart>();
+        return MeasurementProcedureParts.OfType<IDeriveMeasurementProcedurePart>();
       }
     }
   }
@@ -367,20 +369,16 @@ public class MeasurementProcedureBuilder<TEntity>
   }
 
   private abstract class UpsertMeasurementProcedurePartImpl
-    : MeasurementProcedurePartImpl, IUpsertMeasurementProcedurePart
-  {
-  }
+    : MeasurementProcedurePartImpl,
+      IUpsertMeasurementProcedurePart { }
 
   private sealed class UpsertAverageMeasurementProcedurePartImpl
     : UpsertMeasurementProcedurePartImpl,
-      IUpsertAverageMeasurementProcedurePart
-  {
-  }
+      IUpsertAverageMeasurementProcedurePart { }
 
   private sealed class UpsertMinMeasurementProcedurePartImpl
-    : UpsertMeasurementProcedurePartImpl, IUpsertMinMeasurementProcedurePart
-  {
-  }
+    : UpsertMeasurementProcedurePartImpl,
+      IUpsertMinMeasurementProcedurePart { }
 
   private sealed class UpsertMinTimestampMeasurementProcedurePartImpl
     : UpsertMeasurementProcedurePartImpl,
@@ -391,9 +389,7 @@ public class MeasurementProcedureBuilder<TEntity>
 
   private sealed class UpsertMaxMeasurementProcedurePartImpl
     : UpsertMeasurementProcedurePartImpl,
-      IUpsertMaxMeasurementProcedurePart
-  {
-  }
+      IUpsertMaxMeasurementProcedurePart { }
 
   private sealed class UpsertMaxTimestampMeasurementProcedurePartImpl
     : UpsertMeasurementProcedurePartImpl,
@@ -403,9 +399,8 @@ public class MeasurementProcedureBuilder<TEntity>
   }
 
   private abstract class DerivativeMeasurementProcedurePartImpl
-    : MeasurementProcedurePartImpl, IDerivativeMeasurementProcedurePart
-  {
-  }
+    : MeasurementProcedurePartImpl,
+      IDerivativeMeasurementProcedurePart { }
 
   private sealed class DerivativePowerMeasurementProcedurePartImpl
     : DerivativeMeasurementProcedurePartImpl,
@@ -424,20 +419,16 @@ public class MeasurementProcedureBuilder<TEntity>
   }
 
   private abstract class DeriveMeasurementProcedurePartImpl
-    : MeasurementProcedurePartImpl, IDeriveMeasurementProcedurePart
-  {
-  }
+    : MeasurementProcedurePartImpl,
+      IDeriveMeasurementProcedurePart { }
 
   private sealed class DeriveAverageMeasurementProcedurePartImpl
     : DeriveMeasurementProcedurePartImpl,
-      IDeriveAverageMeasurementProcedurePart
-  {
-  }
+      IDeriveAverageMeasurementProcedurePart { }
 
   private sealed class DeriveMinMeasurementProcedurePartImpl
-    : DeriveMeasurementProcedurePartImpl, IDeriveMinMeasurementProcedurePart
-  {
-  }
+    : DeriveMeasurementProcedurePartImpl,
+      IDeriveMinMeasurementProcedurePart { }
 
   private sealed class DeriveMinTimestampMeasurementProcedurePartImpl
     : DeriveMeasurementProcedurePartImpl,
@@ -447,9 +438,8 @@ public class MeasurementProcedureBuilder<TEntity>
   }
 
   private sealed class DeriveMaxMeasurementProcedurePartImpl
-    : DeriveMeasurementProcedurePartImpl, IDeriveMaxMeasurementProcedurePart
-  {
-  }
+    : DeriveMeasurementProcedurePartImpl,
+      IDeriveMaxMeasurementProcedurePart { }
 
   private sealed class DeriveMaxTimestampMeasurementProcedurePartImpl
     : DeriveMeasurementProcedurePartImpl,
@@ -459,20 +449,16 @@ public class MeasurementProcedureBuilder<TEntity>
   }
 
   private abstract class DeltaMeasurementProcedurePartImpl
-    : MeasurementProcedurePartImpl, IDeltaMeasurementProcedurePart
-  {
-  }
+    : MeasurementProcedurePartImpl,
+      IDeltaMeasurementProcedurePart { }
 
   private sealed class DeltaAverageMeasurementProcedurePartImpl
     : DeltaMeasurementProcedurePartImpl,
-      IDeltaAverageMeasurementProcedurePart
-  {
-  }
+      IDeltaAverageMeasurementProcedurePart { }
 
   private sealed class DeltaMinMeasurementProcedurePartImpl
-    : DeltaMeasurementProcedurePartImpl, IDeltaMinMeasurementProcedurePart
-  {
-  }
+    : DeltaMeasurementProcedurePartImpl,
+      IDeltaMinMeasurementProcedurePart { }
 
   private sealed class DeltaMinTimestampMeasurementProcedurePartImpl
     : DeltaMeasurementProcedurePartImpl,
@@ -482,9 +468,8 @@ public class MeasurementProcedureBuilder<TEntity>
   }
 
   private sealed class DeltaMaxMeasurementProcedurePartImpl
-    : DeltaMeasurementProcedurePartImpl, IDeltaMaxMeasurementProcedurePart
-  {
-  }
+    : DeltaMeasurementProcedurePartImpl,
+      IDeltaMaxMeasurementProcedurePart { }
 
   private sealed class DeltaMaxTimestampMeasurementProcedurePartImpl
     : DeltaMeasurementProcedurePartImpl,

@@ -23,15 +23,14 @@ public class OzdsEmailOptions
 
 public class OzdsEmailParsedSmtpConnectionString
 {
-  public OzdsEmailParsedSmtpConnectionString(
-    string connectionString
-  )
+  public OzdsEmailParsedSmtpConnectionString(string connectionString)
   {
     var dictionary = connectionString
       .Split(';')
       .ToDictionary(
         x => x.Split('=')[0],
-        x => string.Join('=', x.Split('=')[1..]));
+        x => string.Join('=', x.Split('=')[1..])
+      );
 
     Host = dictionary["Host"];
     Port = int.Parse(dictionary["Port"]);
@@ -51,9 +50,8 @@ public class OzdsEmailParsedSmtpConnectionString
   public bool Ssl { get; set; }
 }
 
-public class ConfigureOzdsEmailOptions(
-  IConfiguration configuration
-) : IConfigureOptions<OzdsEmailOptions>
+public class ConfigureOzdsEmailOptions(IConfiguration configuration)
+  : IConfigureOptions<OzdsEmailOptions>
 {
   public void Configure(OzdsEmailOptions options)
   {

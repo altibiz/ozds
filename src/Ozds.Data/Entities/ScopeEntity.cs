@@ -41,16 +41,18 @@ public class ScopeTypeConfiguration
       new[]
       {
         nameof(ScopeEntity.ScopeEntityType),
-        nameof(ScopeEntity.ScopeEntityId)
+        nameof(ScopeEntity.ScopeEntityId),
       },
-      "ix_scopes_scope_entity_type_scope_entity_id");
+      "ix_scopes_scope_entity_type_scope_entity_id"
+    );
 
     builder.HasIndex(
       new[]
       {
         nameof(ScopeEntity.ScopeEntityTable),
-        nameof(ScopeEntity.ScopeEntityId)
+        nameof(ScopeEntity.ScopeEntityId),
       },
-      "ix_scopes_scope_entity_table_scope_entity_id");
+      "ix_scopes_scope_entity_table_scope_entity_id"
+    );
   }
 }

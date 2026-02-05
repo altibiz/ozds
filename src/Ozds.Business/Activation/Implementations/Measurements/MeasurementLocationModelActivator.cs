@@ -3,11 +3,10 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation.Implementations.Measurements;
 
-public class MeasurementLocationModelActivator(
-  IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  MeasurementLocationModel,
-  TrackableModel>(serviceProvider)
+public class MeasurementLocationModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<MeasurementLocationModel, TrackableModel>(
+    serviceProvider
+  )
 {
   public override void Initialize(MeasurementLocationModel model)
   {

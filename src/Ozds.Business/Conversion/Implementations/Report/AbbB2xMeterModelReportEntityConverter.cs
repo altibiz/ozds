@@ -7,7 +7,8 @@ using Ozds.Report.Entities;
 namespace Ozds.Business.Conversion.Implementations.Report;
 
 public class AbbB2xMeterModelReportEntityConverter(
-  IServiceProvider serviceProvider)
+  IServiceProvider serviceProvider
+)
   : InheritingModelReportEntityConverter<
     AbbB2xMeterModel,
     IdentifiableModel,

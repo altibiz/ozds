@@ -14,7 +14,7 @@ public static class ApexChartOptionsExtensions
   {
     options.Blazor = new ApexChartsBlazorOptions
     {
-      JavascriptPath = "/_content/Blazor-ApexCharts/js/blazor-apexcharts.js"
+      JavascriptPath = "/_content/Blazor-ApexCharts/js/blazor-apexcharts.js",
     };
     return options;
   }
@@ -46,7 +46,7 @@ public static class ApexChartOptionsExtensions
   {
     options.Tooltip = new Tooltip
     {
-      X = new TooltipX { Format = @"dd.MM. HH:mm" }
+      X = new TooltipX { Format = @"dd.MM. HH:mm" },
     };
     return options;
   }
@@ -58,7 +58,7 @@ public static class ApexChartOptionsExtensions
   {
     options.Tooltip = new Tooltip
     {
-      X = new TooltipX { Format = @"dd.MM. HH:mm:ss" }
+      X = new TooltipX { Format = @"dd.MM. HH:mm:ss" },
     };
     return options;
   }
@@ -72,24 +72,14 @@ public static class ApexChartOptionsExtensions
     options.Chart = new Chart
     {
       Height = 130,
-      Brush = new Brush
-      {
-        Target = target,
-        Enabled = true
-      },
-      Selection = new Selection
-      {
-        Enabled = true
-      }
+      Brush = new Brush { Target = target, Enabled = true },
+      Selection = new Selection { Enabled = true },
     };
     options.Xaxis = new XAxis
     {
       Type = XAxisType.Datetime,
       Labels = new XAxisLabels { Format = @"dd.MM." },
-      Tooltip = new XAxisTooltip
-      {
-        Enabled = false
-      }
+      Tooltip = new XAxisTooltip { Enabled = false },
     };
     options.Yaxis = new List<YAxis>();
     options.Yaxis.Add(
@@ -97,9 +87,10 @@ public static class ApexChartOptionsExtensions
       {
         Labels = new YAxisLabels
         {
-          Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }"
-        }
-      });
+          Formatter = "function(val, index) { return (val ?? 0).toFixed(0); }",
+        },
+      }
+    );
     return options;
   }
 
@@ -110,11 +101,7 @@ public static class ApexChartOptionsExtensions
   {
     options.PlotOptions = new PlotOptions
     {
-      RadialBar = new PlotOptionsRadialBar
-      {
-        StartAngle = -90,
-        EndAngle = 90
-      }
+      RadialBar = new PlotOptionsRadialBar { StartAngle = -90, EndAngle = 90 },
     };
     return options;
   }
@@ -135,8 +122,8 @@ public static class ApexChartOptionsExtensions
         Download = false,
         Pan = false,
         Selection = false,
-        Reset = false
-      }
+        Reset = false,
+      },
     };
 
     options.Grid = new Grid
@@ -145,8 +132,8 @@ public static class ApexChartOptionsExtensions
       Row = new GridRow
       {
         Colors = new List<string> { "#ddeeff", "transparent" },
-        Opacity = 0.5d
-      }
+        Opacity = 0.5d,
+      },
     };
 
     options.Tooltip = new Tooltip
@@ -156,9 +143,9 @@ public static class ApexChartOptionsExtensions
       {
         Title = new TooltipYTitle
         {
-          Formatter = $"function(name) {{ return '{measure} ' + name; }}"
-        }
-      }
+          Formatter = $"function(name) {{ return '{measure} ' + name; }}",
+        },
+      },
     };
 
     options.Yaxis =
@@ -167,15 +154,12 @@ public static class ApexChartOptionsExtensions
       {
         Labels = new YAxisLabels
         {
-          Formatter = "function(val, index) { return (val ?? 0).toFixed(2); }"
-        }
-      }
+          Formatter = "function(val, index) { return (val ?? 0).toFixed(2); }",
+        },
+      },
     ];
 
-    options.Xaxis = new XAxis
-    {
-      Labels = new XAxisLabels { Show = false }
-    };
+    options.Xaxis = new XAxis { Labels = new XAxisLabels { Show = false } };
 
     return options;
   }
@@ -196,8 +180,8 @@ public static class ApexChartOptionsExtensions
         Download = false,
         Pan = false,
         Selection = false,
-        Reset = false
-      }
+        Reset = false,
+      },
     };
 
     options.Grid = new Grid
@@ -206,8 +190,8 @@ public static class ApexChartOptionsExtensions
       Row = new GridRow
       {
         Colors = new List<string> { "#ddeeff", "transparent" },
-        Opacity = 0.5d
-      }
+        Opacity = 0.5d,
+      },
     };
 
     options.Tooltip = new Tooltip
@@ -217,9 +201,9 @@ public static class ApexChartOptionsExtensions
       {
         Title = new TooltipYTitle
         {
-          Formatter = $"function(name) {{ return '{measure} ' + name; }}"
-        }
-      }
+          Formatter = $"function(name) {{ return '{measure} ' + name; }}",
+        },
+      },
     };
 
     options.Yaxis =
@@ -228,15 +212,15 @@ public static class ApexChartOptionsExtensions
       {
         Labels = new YAxisLabels
         {
-          Formatter = "function(val, index) { return (val ?? 0).toFixed(2); }"
-        }
-      }
+          Formatter = "function(val, index) { return (val ?? 0).toFixed(2); }",
+        },
+      },
     ];
 
     options.Xaxis = new XAxis
     {
       Type = XAxisType.Datetime,
-      AxisTicks = new AxisTicks()
+      AxisTicks = new AxisTicks(),
     };
 
     return options;
@@ -254,8 +238,9 @@ public static class ApexChartOptionsExtensions
         Title = new AxisTitle { Text = "kWh" },
         SeriesName = "Active Power",
         DecimalsInFloat = 0,
-        Opposite = true
-      });
+        Opposite = true,
+      }
+    );
     return options;
   }
 
@@ -277,9 +262,9 @@ public static class ApexChartOptionsExtensions
           Labels = new YAxisLabels
           {
             Formatter =
-              "function(val, index) { return (val ?? 0).toFixed(0); }"
-          }
-        }
+              "function(val, index) { return (val ?? 0).toFixed(0); }",
+          },
+        },
       ];
 
       options.Annotations = new Annotations
@@ -295,14 +280,14 @@ public static class ApexChartOptionsExtensions
               {
                 Background = "red",
                 Color = "white",
-                FontSize = "12px"
-              }
+                FontSize = "12px",
+              },
             },
             Y = connectionPower * 3,
             BorderColor = "red",
-            StrokeDashArray = 0
-          }
-        ]
+            StrokeDashArray = 0,
+          },
+        ],
       };
     }
     else
@@ -316,9 +301,9 @@ public static class ApexChartOptionsExtensions
           Labels = new YAxisLabels
           {
             Formatter =
-              "function(val, index) { return (val ?? 0).toFixed(0); }"
-          }
-        }
+              "function(val, index) { return (val ?? 0).toFixed(0); }",
+          },
+        },
       ];
     }
 

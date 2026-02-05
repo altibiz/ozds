@@ -8,10 +8,10 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class PidgeonMessengerModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  PidgeonMessengerModel,
-  MessengerModel,
-  PidgeonMessengerEntity,
-  MessengerEntity>(serviceProvider)
-{
-}
+)
+  : InheritingModelEntityConverter<
+    PidgeonMessengerModel,
+    MessengerModel,
+    PidgeonMessengerEntity,
+    MessengerEntity
+  >(serviceProvider) { }

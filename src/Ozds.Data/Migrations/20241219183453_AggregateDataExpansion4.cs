@@ -10,7 +10,8 @@ namespace Ozds.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(@"update abb_b2x_aggregates
+            migrationBuilder.Sql(
+                @"update abb_b2x_aggregates
 set
   quarter_hour_count = 1
 where
@@ -148,12 +149,11 @@ where
     schneider_iem3xxx_aggregates.timestamp at time zone 'Europe/Zagreb'
   )
   and quarter_hour_count.meter_id = schneider_iem3xxx_aggregates.meter_id
-  and quarter_hour_count.measurement_location_id = schneider_iem3xxx_aggregates.measurement_location_id;");
+  and quarter_hour_count.measurement_location_id = schneider_iem3xxx_aggregates.measurement_location_id;"
+            );
         }
 
         /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-        }
+        protected override void Down(MigrationBuilder migrationBuilder) { }
     }
 }

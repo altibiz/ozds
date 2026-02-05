@@ -11,15 +11,20 @@ public class CalculatedNetworkUserInvoiceEntityFactory
     fixture.Customizations.Add(
       new TypeRelay(
         typeof(NetworkUserCalculationEntity),
-        typeof(BlueLowNetworkUserCalculationEntity)));
+        typeof(BlueLowNetworkUserCalculationEntity)
+      )
+    );
     fixture.Customizations.Add(
       new TypeRelay(
         typeof(NetworkUserCatalogueEntity),
-        typeof(BlueLowNetworkUserCatalogueEntity)));
+        typeof(BlueLowNetworkUserCatalogueEntity)
+      )
+    );
 
     return fixture
       .CreateMany<CalculatedNetworkUserInvoiceEntity>(
-        Constants.DefaultFuzzCount)
+        Constants.DefaultFuzzCount
+      )
       .ToList();
   }
 }

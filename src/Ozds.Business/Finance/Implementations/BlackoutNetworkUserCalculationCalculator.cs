@@ -9,17 +9,14 @@ namespace Ozds.Business.Finance.Implementations;
 public class BlackoutNetworkUserCalculationCalculator(
   ClockQueries clock,
   TimeQueries time
-)
-  : INetworkUserCalculationCalculator
+) : INetworkUserCalculationCalculator
 {
-  public bool CanCalculate(
-    NetworkUserCalculationBasisModel calculationBasis
-  )
+  public bool CanCalculate(NetworkUserCalculationBasisModel calculationBasis)
   {
-    return calculationBasis.Aggregates
-      .Select(x => time.GetStartOfMonth(x.Timestamp))
-      .Distinct()
-      .Count() < 2;
+    return calculationBasis
+        .Aggregates.Select(x => time.GetStartOfMonth(x.Timestamp))
+        .Distinct()
+        .Count() < 2;
   }
 
   public NetworkUserCalculationModel Calculate(
@@ -48,10 +45,12 @@ public class BlackoutNetworkUserCalculationCalculator(
       MeteredToDate = calculationBasis.MeasuredToDate,
       NetworkUserInvoiceId = "0",
       UsageNetworkUserCatalogueId = usageCatalogue.Id,
-      SupplyRegulatoryCatalogueId =
-        calculationBasis.SupplyRegulatoryCatalogue.Id,
-      NetworkUserMeasurementLocationId =
-        calculationBasis.MeasurementLocation.Id,
+      SupplyRegulatoryCatalogueId = calculationBasis
+        .SupplyRegulatoryCatalogue
+        .Id,
+      NetworkUserMeasurementLocationId = calculationBasis
+        .MeasurementLocation
+        .Id,
       Remark = calculationBasis.MeasurementLocation.CalculationRemark,
       IssuedOn = now,
       IssuedById = default!,
@@ -61,7 +60,7 @@ public class BlackoutNetworkUserCalculationCalculator(
       ConcreteArchivedUsageNetworkUserCatalogue = usageCatalogue,
       ArchivedSupplyRegulatoryCatalogue =
         calculationBasis.SupplyRegulatoryCatalogue,
-      Total_EUR = total
+      Total_EUR = total,
     };
 
     return initial;

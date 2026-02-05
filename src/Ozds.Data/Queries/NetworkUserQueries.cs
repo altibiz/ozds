@@ -8,28 +8,29 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class NetworkUserQueries(
-  IDbContextFactory<DataDbContext> factory
-) : IQueries
+public class NetworkUserQueries(IDbContextFactory<DataDbContext> factory)
+  : IQueries
 {
-  public async Task<PaginatedList<NetworkUserEntity>>
-    ReadByRepresentativeId(
-      string representativeId,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      int pageSize = QueryConstants.DefaultPageCount,
-      bool deleted = false,
-      string? title = null
-    )
+  public async Task<PaginatedList<NetworkUserEntity>> ReadByRepresentativeId(
+    string representativeId,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageSize = QueryConstants.DefaultPageCount,
+    bool deleted = false,
+    string? title = null
+  )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var filtered = context.NetworkUserRepresentatives
-      .Where(
+    var filtered = context
+      .NetworkUserRepresentatives.Where(
         context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
           nameof(NetworkUserRepresentativeEntity.Representative),
-          representativeId))
+          representativeId
+        )
+      )
       .Include(x => x.NetworkUser)
       .Select(x => x.NetworkUser);
 
@@ -56,52 +57,54 @@ public class NetworkUserQueries(
     return items.ToPaginatedList(count);
   }
 
-  public async Task<NetworkUserEntity?>
-    ReadIndirectByRepresentativeIdAndId(
-      string representativeId,
-      RoleEntity role,
-      string networkUserId,
-      CancellationToken cancellationToken,
-      bool deleted = false
-    )
+  public async Task<NetworkUserEntity?> ReadIndirectByRepresentativeIdAndId(
+    string representativeId,
+    RoleEntity role,
+    string networkUserId,
+    CancellationToken cancellationToken,
+    bool deleted = false
+  )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     var filtered = role switch
     {
-      RoleEntity.NetworkUserRepresentative =>
-        context.NetworkUserRepresentatives
-          .Where(
-            context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
-              nameof(NetworkUserRepresentativeEntity.Representative),
-              representativeId
-            ))
-          .Include(x => x.NetworkUser)
-          .Select(x => x.NetworkUser),
-      RoleEntity.LocationRepresentative =>
-        context.Representatives
-          .Where(
-            context.PrimaryKeyEquals<RepresentativeEntity>(representativeId))
-          .Include(x => x.Locations)
+      RoleEntity.NetworkUserRepresentative => context
+        .NetworkUserRepresentatives.Where(
+          context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
+            nameof(NetworkUserRepresentativeEntity.Representative),
+            representativeId
+          )
+        )
+        .Include(x => x.NetworkUser)
+        .Select(x => x.NetworkUser),
+      RoleEntity.LocationRepresentative => context
+        .Representatives.Where(
+          context.PrimaryKeyEquals<RepresentativeEntity>(representativeId)
+        )
+        .Include(x => x.Locations)
           .ThenInclude(x => x.NetworkUsers)
-          .SelectMany(x => x.Locations.SelectMany(x => x.NetworkUsers))
-          .Concat(
-            context.NetworkUserRepresentatives
-              .Where(
-                context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
-                  nameof(NetworkUserRepresentativeEntity.Representative),
-                  representativeId
-                ))
-              .Include(x => x.NetworkUser)
-              .Select(x => x.NetworkUser)),
+        .SelectMany(x => x.Locations.SelectMany(x => x.NetworkUsers))
+        .Concat(
+          context
+            .NetworkUserRepresentatives.Where(
+              context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
+                nameof(NetworkUserRepresentativeEntity.Representative),
+                representativeId
+              )
+            )
+            .Include(x => x.NetworkUser)
+            .Select(x => x.NetworkUser)
+        ),
       RoleEntity.OperatorRepresentative => context.NetworkUsers,
-      _ => throw new ArgumentOutOfRangeException(nameof(role))
+      _ => throw new ArgumentOutOfRangeException(nameof(role)),
     };
 
     filtered = filtered.Where(
-      context
-        .PrimaryKeyEquals<NetworkUserEntity>(networkUserId));
+      context.PrimaryKeyEquals<NetworkUserEntity>(networkUserId)
+    );
 
     if (!deleted)
     {
@@ -112,55 +115,58 @@ public class NetworkUserQueries(
       filtered = filtered.Where(x => x.DeletedOn != null);
     }
 
-    var item = await filtered
-      .FirstOrDefaultAsync(cancellationToken);
+    var item = await filtered.FirstOrDefaultAsync(cancellationToken);
 
     return item;
   }
 
-  public async Task<PaginatedList<NetworkUserEntity>>
-    ReadIndirectByRepresentativeId(
-      string representativeId,
-      RoleEntity role,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      int pageCount = QueryConstants.DefaultPageCount,
-      bool deleted = false,
-      string? title = null
-    )
+  public async Task<
+    PaginatedList<NetworkUserEntity>
+  > ReadIndirectByRepresentativeId(
+    string representativeId,
+    RoleEntity role,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount,
+    bool deleted = false,
+    string? title = null
+  )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     var filtered = role switch
     {
-      RoleEntity.NetworkUserRepresentative =>
-        context.NetworkUserRepresentatives
-          .Where(
-            context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
-              nameof(NetworkUserRepresentativeEntity.Representative),
-              representativeId
-            ))
-          .Include(x => x.NetworkUser)
-          .Select(x => x.NetworkUser),
-      RoleEntity.LocationRepresentative =>
-        context.Representatives
-          .Where(
-            context.PrimaryKeyEquals<RepresentativeEntity>(representativeId))
-          .Include(x => x.Locations)
+      RoleEntity.NetworkUserRepresentative => context
+        .NetworkUserRepresentatives.Where(
+          context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
+            nameof(NetworkUserRepresentativeEntity.Representative),
+            representativeId
+          )
+        )
+        .Include(x => x.NetworkUser)
+        .Select(x => x.NetworkUser),
+      RoleEntity.LocationRepresentative => context
+        .Representatives.Where(
+          context.PrimaryKeyEquals<RepresentativeEntity>(representativeId)
+        )
+        .Include(x => x.Locations)
           .ThenInclude(x => x.NetworkUsers)
-          .SelectMany(x => x.Locations.SelectMany(x => x.NetworkUsers))
-          .Concat(
-            context.NetworkUserRepresentatives
-              .Where(
-                context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
-                  nameof(NetworkUserRepresentativeEntity.Representative),
-                  representativeId
-                ))
-              .Include(x => x.NetworkUser)
-              .Select(x => x.NetworkUser)),
+        .SelectMany(x => x.Locations.SelectMany(x => x.NetworkUsers))
+        .Concat(
+          context
+            .NetworkUserRepresentatives.Where(
+              context.ForeignKeyEquals<NetworkUserRepresentativeEntity>(
+                nameof(NetworkUserRepresentativeEntity.Representative),
+                representativeId
+              )
+            )
+            .Include(x => x.NetworkUser)
+            .Select(x => x.NetworkUser)
+        ),
       RoleEntity.OperatorRepresentative => context.NetworkUsers,
-      _ => throw new ArgumentOutOfRangeException(nameof(role))
+      _ => throw new ArgumentOutOfRangeException(nameof(role)),
     };
 
     if (!deleted)

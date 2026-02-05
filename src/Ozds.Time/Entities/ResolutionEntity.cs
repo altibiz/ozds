@@ -7,5 +7,5 @@ public enum ResolutionEntity
   Day,
   Week,
   Month,
-  Year
+  Year,
 }

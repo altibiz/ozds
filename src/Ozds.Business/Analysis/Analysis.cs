@@ -20,10 +20,8 @@ public record Analysis(
   Expenses LastMonthExpenses
 ) : IAnalysis;
 
-public record LocationAnalysis(
-  LocationModel Location,
-  Analysis Analysis
-) : IAnalysis;
+public record LocationAnalysis(LocationModel Location, Analysis Analysis)
+  : IAnalysis;
 
 public record NetworkUserAnalysis(
   LocationModel Location,
@@ -74,10 +72,7 @@ public record Consumption(
   );
 }
 
-public record Expenses(
-  DateTimeOffset Timestamp,
-  decimal Total_EUR
-);
+public record Expenses(DateTimeOffset Timestamp, decimal Total_EUR);
 
 public record Load(
   DateTimeOffset Timestamp,

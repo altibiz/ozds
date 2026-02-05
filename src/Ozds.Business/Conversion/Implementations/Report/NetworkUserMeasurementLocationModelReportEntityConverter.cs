@@ -6,7 +6,8 @@ using Ozds.Report.Entities;
 namespace Ozds.Business.Conversion.Implementations.Report;
 
 public class NetworkUserMeasurementLocationModelReportEntityConverter(
-  IServiceProvider serviceProvider)
+  IServiceProvider serviceProvider
+)
   : InheritingModelReportEntityConverter<
     NetworkUserMeasurementLocationModel,
     IdentifiableModel,

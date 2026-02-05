@@ -19,8 +19,11 @@ public partial class AdministrationPage : OzdsComponentBase
   [Inject]
   private Analyzer Analyzer { get; set; } = default!;
 
-  private async Task<PaginatedList<MaybeRepresentingUserModel>>
-    OnUserPageAsync(string search, int page, int pageCount)
+  private async Task<PaginatedList<MaybeRepresentingUserModel>> OnUserPageAsync(
+    string search,
+    int page,
+    int pageCount
+  )
   {
     var queries = ScopedServices.GetRequiredService<RepresentativeQueries>();
 

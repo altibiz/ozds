@@ -11,15 +11,12 @@ public class TimescaleAnnotationProvider : NpgsqlAnnotationProvider
   public TimescaleAnnotationProvider(
     RelationalAnnotationProviderDependencies dependencies
 #pragma warning disable EF1001
-  ) : base(dependencies)
-#pragma warning restore EF1001
-  {
-  }
-
-  public override IEnumerable<IAnnotation> For(
-    ITable table,
-    bool designTime
   )
+    : base(dependencies)
+#pragma warning restore EF1001
+  { }
+
+  public override IEnumerable<IAnnotation> For(ITable table, bool designTime)
   {
     if (!designTime)
     {
@@ -29,18 +26,21 @@ public class TimescaleAnnotationProvider : NpgsqlAnnotationProvider
     var annotations = base.For(table, designTime);
 #pragma warning restore EF1001
 
-    var annotation = table.EntityTypeMappings
-      .Select(mapping => new
+    var annotation = table
+      .EntityTypeMappings.Select(mapping => new
       {
         Mapping = mapping,
         // NOTE: this is the exact way that annotations get added in
         // NOTE: do not change this
-        Value = (mapping.TypeBase
-          .GetAnnotations()
-          .FirstOrDefault(annotation =>
-            annotation.Name == "TimescaleHypertable" &&
-            annotation.Value is string)
-          ?.Value as string)!
+        Value = (
+          mapping
+            .TypeBase.GetAnnotations()
+            .FirstOrDefault(annotation =>
+              annotation.Name == "TimescaleHypertable"
+              && annotation.Value is string
+            )
+            ?.Value as string
+        )!,
       })
       .FirstOrDefault(x => x.Value is not null);
 
@@ -60,17 +60,21 @@ public class TimescaleAnnotationProvider : NpgsqlAnnotationProvider
     var clrSpaceColumn = space?.FirstOrDefault();
     var spacePartitioning = space?.Skip(1).FirstOrDefault();
 
-    var timeColumn = annotation.Mapping.ColumnMappings
-      .FirstOrDefault(column => column.Property.Name == clrTimeColumn)?
-      .Column.Name;
+    var timeColumn = annotation
+      .Mapping.ColumnMappings.FirstOrDefault(column =>
+        column.Property.Name == clrTimeColumn
+      )
+      ?.Column.Name;
     if (timeColumn is null)
     {
       return annotations;
     }
 
-    var spaceColumn = annotation.Mapping.ColumnMappings
-      .FirstOrDefault(column => column.Property.Name == clrSpaceColumn)?
-      .Column.Name;
+    var spaceColumn = annotation
+      .Mapping.ColumnMappings.FirstOrDefault(column =>
+        column.Property.Name == clrSpaceColumn
+      )
+      ?.Column.Name;
 
     if (spaceColumn is not null && spacePartitioning is not null)
     {
@@ -84,10 +88,7 @@ public class TimescaleAnnotationProvider : NpgsqlAnnotationProvider
     else
     {
       annotations = annotations.Append(
-        new Annotation(
-          "TimescaleHypertable",
-          timeColumn
-        )
+        new Annotation("TimescaleHypertable", timeColumn)
       );
     }
 

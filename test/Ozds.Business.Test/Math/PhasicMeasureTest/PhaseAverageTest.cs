@@ -9,7 +9,7 @@ public class PhaseAverageTest
     return new List<PhasicMeasure<decimal>>
     {
       new TriPhasicMeasure<decimal>(12, 0, 6),
-      new TriPhasicMeasure<decimal>(24, -12, 6)
+      new TriPhasicMeasure<decimal>(24, -12, 6),
     };
   }
 
@@ -19,7 +19,7 @@ public class PhaseAverageTest
     {
       new SinglePhasicSumMeasure<decimal>(0),
       new TriPhasicMeasure<decimal>(0, 0, 0),
-      new NullPhasicMeasure<decimal>()
+      new NullPhasicMeasure<decimal>(),
     };
   }
 

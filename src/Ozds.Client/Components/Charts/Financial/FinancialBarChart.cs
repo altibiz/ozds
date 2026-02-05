@@ -16,8 +16,7 @@ public partial class FinancialBarChart : OzdsComponentBase
   private ApexChart<IFinancial>? _chart;
 
   private ApexChartOptions<IFinancial> _options =
-    new ApexChartOptions<IFinancial>()
-      .WithFixedScriptPath();
+    new ApexChartOptions<IFinancial>().WithFixedScriptPath();
 
   [Parameter]
   public FinancialChartParameters Parameters { get; set; } = default!;
@@ -60,14 +59,18 @@ public partial class FinancialBarChart : OzdsComponentBase
     var options = _options;
     options.Chart.Id = _id;
 
-    options = Breakpoint <= Breakpoint.Sm
-      ? options.WithSmAndDown(Translate("finance"))
-      : options.WithMdAndUp(Translate("finance"));
+    options =
+      Breakpoint <= Breakpoint.Sm
+        ? options.WithSmAndDown(Translate("finance"))
+        : options.WithMdAndUp(Translate("finance"));
 
     var now = ClockQueries.Now();
 
-    var timeSpan = TimeQueries
-      .ResolutionTimeSpan(Parameters.Resolution, now, Parameters.Multiplier);
+    var timeSpan = TimeQueries.ResolutionTimeSpan(
+      Parameters.Resolution,
+      now,
+      Parameters.Multiplier
+    );
     if (timeSpan.TotalDays > 1)
     {
       options = options.WithShortDate();

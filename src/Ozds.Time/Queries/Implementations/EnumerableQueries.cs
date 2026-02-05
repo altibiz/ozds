@@ -24,7 +24,7 @@ public class EnumerableQueries : IEnumerableQueries
       yield return new DateTimeOffsetRangeEntity
       {
         DateFrom = dateFrom,
-        DateTo = date
+        DateTo = date,
       };
 
       if (date < dateTo)
@@ -55,9 +55,7 @@ public class EnumerableQueries : IEnumerableQueries
       do
       {
         yield return enumerator.Current;
-      } while (
-        ++count < size
-        && await enumerator.MoveNextAsync());
+      } while (++count < size && await enumerator.MoveNextAsync());
     }
 
     while (await enumerator.MoveNextAsync())
@@ -73,8 +71,7 @@ public class EnumerableQueries : IEnumerableQueries
   {
     foreach (var enumerable in enumerables)
     {
-      await foreach (var item in enumerable
-        .WithCancellation(cancellationToken))
+      await foreach (var item in enumerable.WithCancellation(cancellationToken))
       {
         yield return item;
       }

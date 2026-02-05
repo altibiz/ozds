@@ -11,6 +11,4 @@ public interface IAuditable : IModel
   public string? CreatedById { get; }
 }
 
-public interface IAuditableIdentifiable : IAuditable, IIdentifiable
-{
-}
+public interface IAuditableIdentifiable : IAuditable, IIdentifiable { }

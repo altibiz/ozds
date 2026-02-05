@@ -14,17 +14,17 @@ public class ReportQueries(
   MeasurementQueries measurementQueries
 ) : IQueries
 {
-  public async Task<List<EnergyCardReportBasisEntity>?>
-    ReadEnergyCardReportBasis(
-      IEnumerable<string> measurementLocationIds,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<List<EnergyCardReportBasisEntity>?> ReadEnergyCardReportBasis(
+    IEnumerable<string> measurementLocationIds,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
     var initial = await ReadReportBases(
       measurementLocationIds,
-      cancellationToken);
+      cancellationToken
+    );
     if (initial is null)
     {
       return null;
@@ -32,29 +32,32 @@ public class ReportQueries(
 
     measurementLocationIds = initial.Select(x => x.MeasurementLocation.Id);
 
-    var aggregates = await measurementQueries
-      .ReadByMeasurementLocationIds(
-        measurementLocationIds,
-        IntervalEntity.Month,
-        fromDate,
-        toDate,
-        0,
-        cancellationToken);
+    var aggregates = await measurementQueries.ReadByMeasurementLocationIds(
+      measurementLocationIds,
+      IntervalEntity.Month,
+      fromDate,
+      toDate,
+      0,
+      cancellationToken
+    );
 
     return initial
       .Select(basis =>
       {
-        var basisAggregates = aggregates.Items
-          .Where(x => x.MeasurementLocationId == basis.MeasurementLocation.Id);
+        var basisAggregates = aggregates.Items.Where(x =>
+          x.MeasurementLocationId == basis.MeasurementLocation.Id
+        );
         var minAggregate = basisAggregates
           .OfType<AggregateEntity>()
           .FirstOrDefault();
         var maxAggregate = basisAggregates
           .OfType<AggregateEntity>()
           .LastOrDefault();
-        if (minAggregate is null
+        if (
+          minAggregate is null
           || maxAggregate is null
-          || minAggregate == maxAggregate)
+          || minAggregate == maxAggregate
+        )
         {
           return null;
         }
@@ -67,24 +70,24 @@ public class ReportQueries(
           MeasurementLocation = basis.MeasurementLocation,
           Meter = basis.Meter,
           MinAggregate = minAggregate,
-          MaxAggregate = maxAggregate
+          MaxAggregate = maxAggregate,
         };
       })
       .OfType<EnergyCardReportBasisEntity>()
       .ToList();
   }
 
-  public async Task<List<EnergyCardReportBasisEntity>?>
-    ReadEnergyCardReportBasisByNetworkUser(
-      string networkUserId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<List<EnergyCardReportBasisEntity>?> ReadEnergyCardReportBasisByNetworkUser(
+    string networkUserId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
     var initial = await ReadReportBasesByNetworkUser(
       networkUserId,
-      cancellationToken);
+      cancellationToken
+    );
     if (initial is null)
     {
       return null;
@@ -92,20 +95,21 @@ public class ReportQueries(
 
     var measurementLocationIds = initial.Select(x => x.MeasurementLocation.Id);
 
-    var aggregates = await measurementQueries
-      .ReadByMeasurementLocationIds(
-        measurementLocationIds,
-        IntervalEntity.Month,
-        fromDate,
-        toDate,
-        0,
-        cancellationToken);
+    var aggregates = await measurementQueries.ReadByMeasurementLocationIds(
+      measurementLocationIds,
+      IntervalEntity.Month,
+      fromDate,
+      toDate,
+      0,
+      cancellationToken
+    );
 
     return initial
       .Select(basis =>
       {
-        var basisAggregates = aggregates.Items
-          .Where(x => x.MeasurementLocationId == basis.MeasurementLocation.Id);
+        var basisAggregates = aggregates.Items.Where(x =>
+          x.MeasurementLocationId == basis.MeasurementLocation.Id
+        );
         var minAggregate = basisAggregates
           .OfType<AggregateEntity>()
           .FirstOrDefault();
@@ -125,24 +129,24 @@ public class ReportQueries(
           MeasurementLocation = basis.MeasurementLocation,
           Meter = basis.Meter,
           MinAggregate = minAggregate,
-          MaxAggregate = maxAggregate
+          MaxAggregate = maxAggregate,
         };
       })
       .OfType<EnergyCardReportBasisEntity>()
       .ToList();
   }
 
-  public async Task<List<EnergyCardReportBasisEntity>?>
-    ReadEnergyCardReportBasisByLocation(
-      string locationId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<List<EnergyCardReportBasisEntity>?> ReadEnergyCardReportBasisByLocation(
+    string locationId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
     var initial = await ReadReportBasesByLocation(
       locationId,
-      cancellationToken);
+      cancellationToken
+    );
     if (initial is null)
     {
       return null;
@@ -150,20 +154,21 @@ public class ReportQueries(
 
     var measurementLocationIds = initial.Select(x => x.MeasurementLocation.Id);
 
-    var aggregates = await measurementQueries
-      .ReadByMeasurementLocationIds(
-        measurementLocationIds,
-        IntervalEntity.Month,
-        fromDate,
-        toDate,
-        0,
-        cancellationToken);
+    var aggregates = await measurementQueries.ReadByMeasurementLocationIds(
+      measurementLocationIds,
+      IntervalEntity.Month,
+      fromDate,
+      toDate,
+      0,
+      cancellationToken
+    );
 
     return initial
       .Select(basis =>
       {
-        var basisAggregates = aggregates.Items
-          .Where(x => x.MeasurementLocationId == basis.MeasurementLocation.Id);
+        var basisAggregates = aggregates.Items.Where(x =>
+          x.MeasurementLocationId == basis.MeasurementLocation.Id
+        );
         var minAggregate = basisAggregates
           .OfType<AggregateEntity>()
           .FirstOrDefault();
@@ -183,43 +188,43 @@ public class ReportQueries(
           MeasurementLocation = basis.MeasurementLocation,
           Meter = basis.Meter,
           MinAggregate = minAggregate,
-          MaxAggregate = maxAggregate
+          MaxAggregate = maxAggregate,
         };
       })
       .OfType<EnergyCardReportBasisEntity>()
       .ToList();
   }
 
-  public async Task<AccountingPeriodReportBasisEntity?>
-    ReadAccountingPeriodReportBasis(
-      string measurementLocationId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<AccountingPeriodReportBasisEntity?> ReadAccountingPeriodReportBasis(
+    string measurementLocationId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
     var initial = await ReadReportBasis(
       measurementLocationId,
-      cancellationToken);
+      cancellationToken
+    );
     if (initial is null)
     {
       return null;
     }
 
-    var aggregates = await measurementQueries
-      .ReadByMeasurementLocationIds(
-        [measurementLocationId],
-        IntervalEntity.Month,
-        fromDate,
-        toDate,
-        0,
-        cancellationToken);
+    var aggregates = await measurementQueries.ReadByMeasurementLocationIds(
+      [measurementLocationId],
+      IntervalEntity.Month,
+      fromDate,
+      toDate,
+      0,
+      cancellationToken
+    );
 
-    var minAggregate = aggregates.Items
-      .OfType<AggregateEntity>()
+    var minAggregate = aggregates
+      .Items.OfType<AggregateEntity>()
       .FirstOrDefault();
-    var maxAggregate = aggregates.Items
-      .OfType<AggregateEntity>()
+    var maxAggregate = aggregates
+      .Items.OfType<AggregateEntity>()
       .LastOrDefault();
     if (minAggregate is null || maxAggregate is null)
     {
@@ -234,44 +239,43 @@ public class ReportQueries(
       MeasurementLocation = initial.MeasurementLocation,
       Meter = initial.Meter,
       MinAggregate = minAggregate,
-      MaxAggregate = maxAggregate
+      MaxAggregate = maxAggregate,
     };
   }
 
-  public async Task<AccountingPeriodReportBasisEntity?>
-    ReadAccountingPeriodReportBasisByMeter(
-      Type aggregateEntityType,
-      string meterId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<AccountingPeriodReportBasisEntity?> ReadAccountingPeriodReportBasisByMeter(
+    Type aggregateEntityType,
+    string meterId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
-    var initial = await ReadReportBasisByMeter(
-      meterId,
-      cancellationToken);
+    var initial = await ReadReportBasisByMeter(meterId, cancellationToken);
     if (initial is null)
     {
       return null;
     }
 
-    var aggregates = await measurementQueries
-      .ReadByMeterIds(
-        [
-          new KeyValuePair<Type, IEnumerable<string>>(
-            aggregateEntityType, [meterId])
-        ],
-        IntervalEntity.Month,
-        fromDate,
-        toDate,
-        0,
-        cancellationToken);
+    var aggregates = await measurementQueries.ReadByMeterIds(
+      [
+        new KeyValuePair<Type, IEnumerable<string>>(
+          aggregateEntityType,
+          [meterId]
+        ),
+      ],
+      IntervalEntity.Month,
+      fromDate,
+      toDate,
+      0,
+      cancellationToken
+    );
 
-    var minAggregate = aggregates.Items
-      .OfType<AggregateEntity>()
+    var minAggregate = aggregates
+      .Items.OfType<AggregateEntity>()
       .FirstOrDefault();
-    var maxAggregate = aggregates.Items
-      .OfType<AggregateEntity>()
+    var maxAggregate = aggregates
+      .Items.OfType<AggregateEntity>()
       .LastOrDefault();
     if (minAggregate is null || maxAggregate is null)
     {
@@ -286,34 +290,34 @@ public class ReportQueries(
       MeasurementLocation = initial.MeasurementLocation,
       Meter = initial.Meter,
       MinAggregate = minAggregate,
-      MaxAggregate = maxAggregate
+      MaxAggregate = maxAggregate,
     };
   }
 
-  public async Task<LoadCurveReportBasisEntity?>
-    ReadLoadCurveReportBasis(
-      string measurementLocationId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<LoadCurveReportBasisEntity?> ReadLoadCurveReportBasis(
+    string measurementLocationId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
     var initial = await ReadReportBasis(
       measurementLocationId,
-      cancellationToken);
+      cancellationToken
+    );
     if (initial is null)
     {
       return null;
     }
 
-    var aggregates = await measurementQueries
-      .ReadByMeasurementLocationIds(
-        [measurementLocationId],
-        IntervalEntity.QuarterHour,
-        fromDate,
-        toDate,
-        0,
-        cancellationToken);
+    var aggregates = await measurementQueries.ReadByMeasurementLocationIds(
+      [measurementLocationId],
+      IntervalEntity.QuarterHour,
+      fromDate,
+      toDate,
+      0,
+      cancellationToken
+    );
 
     return new LoadCurveReportBasisEntity
     {
@@ -322,38 +326,37 @@ public class ReportQueries(
       Catalogue = initial.Catalogue,
       MeasurementLocation = initial.MeasurementLocation,
       Meter = initial.Meter,
-      Aggregates = aggregates.Items.OfType<AggregateEntity>().ToList()
+      Aggregates = aggregates.Items.OfType<AggregateEntity>().ToList(),
     };
   }
 
-  public async Task<LoadCurveReportBasisEntity?>
-    ReadLoadCurveReportBasisByMeter(
-      Type aggregateEntityType,
-      string meterId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<LoadCurveReportBasisEntity?> ReadLoadCurveReportBasisByMeter(
+    Type aggregateEntityType,
+    string meterId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
-    var initial = await ReadReportBasisByMeter(
-      meterId,
-      cancellationToken);
+    var initial = await ReadReportBasisByMeter(meterId, cancellationToken);
     if (initial is null)
     {
       return null;
     }
 
-    var aggregates = await measurementQueries
-      .ReadByMeterIds(
-        [
-          new KeyValuePair<Type, IEnumerable<string>>(
-            aggregateEntityType, [meterId])
-        ],
-        IntervalEntity.QuarterHour,
-        fromDate,
-        toDate,
-        0,
-        cancellationToken);
+    var aggregates = await measurementQueries.ReadByMeterIds(
+      [
+        new KeyValuePair<Type, IEnumerable<string>>(
+          aggregateEntityType,
+          [meterId]
+        ),
+      ],
+      IntervalEntity.QuarterHour,
+      fromDate,
+      toDate,
+      0,
+      cancellationToken
+    );
 
     return new LoadCurveReportBasisEntity
     {
@@ -362,7 +365,7 @@ public class ReportQueries(
       Catalogue = initial.Catalogue,
       MeasurementLocation = initial.MeasurementLocation,
       Meter = initial.Meter,
-      Aggregates = aggregates.Items.OfType<AggregateEntity>().ToList()
+      Aggregates = aggregates.Items.OfType<AggregateEntity>().ToList(),
     };
   }
 
@@ -371,17 +374,20 @@ public class ReportQueries(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-    var entities = await context.MeasurementLocations
-      .OfType<NetworkUserMeasurementLocationEntity>()
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
+    var entities = await context
+      .MeasurementLocations.OfType<NetworkUserMeasurementLocationEntity>()
       .Where(
         context.PrimaryKeyIn<NetworkUserMeasurementLocationEntity>(
-          measurementLocationIds))
+          measurementLocationIds
+        )
+      )
       .Include(x => x.Meter)
       .Include(x => x.NetworkUserCatalogue)
       .Include(x => x.NetworkUser)
-      .ThenInclude(x => x.Location)
+        .ThenInclude(x => x.Location)
       .ToListAsync(cancellationToken);
     if (entities is null)
     {
@@ -395,7 +401,7 @@ public class ReportQueries(
         NetworkUser = entity.NetworkUser,
         Catalogue = entity.NetworkUserCatalogue,
         MeasurementLocation = entity,
-        Meter = entity.Meter
+        Meter = entity.Meter,
       })
       .ToList();
   }
@@ -405,30 +411,34 @@ public class ReportQueries(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     // TODO: optimize
 
-    var networkUserMeasurementLocations = (await context
-        .Locations
-        .Where(context.PrimaryKeyEquals<LocationEntity>(locationId))
+    var networkUserMeasurementLocations = (
+      await context
+        .Locations.Where(context.PrimaryKeyEquals<LocationEntity>(locationId))
         .Include(x => x.NetworkUsers)
-        .ThenInclude(x => x.NetworkUserMeasurementLocations)
+          .ThenInclude(x => x.NetworkUserMeasurementLocations)
         .AsSplitQuery()
-        .ToListAsync(cancellationToken))
-      .SelectMany(x => x.NetworkUsers
-        .SelectMany(x => x.NetworkUserMeasurementLocations));
+        .ToListAsync(cancellationToken)
+    ).SelectMany(x =>
+      x.NetworkUsers.SelectMany(x => x.NetworkUserMeasurementLocations)
+    );
 
-    var entities = await context.MeasurementLocations
-      .OfType<NetworkUserMeasurementLocationEntity>()
+    var entities = await context
+      .MeasurementLocations.OfType<NetworkUserMeasurementLocationEntity>()
       .Where(
         context.PrimaryKeyIn<NetworkUserMeasurementLocationEntity>(
-          networkUserMeasurementLocations.Select(x => x.Id)))
+          networkUserMeasurementLocations.Select(x => x.Id)
+        )
+      )
       .Include(x => x.Meter)
       .Include(x => x.NetworkUserCatalogue)
       .Include(x => x.NetworkUser)
-      .ThenInclude(x => x.Location)
+        .ThenInclude(x => x.Location)
       .ToListAsync(cancellationToken);
     if (entities is null)
     {
@@ -442,7 +452,7 @@ public class ReportQueries(
         NetworkUser = entity.NetworkUser,
         Catalogue = entity.NetworkUserCatalogue,
         MeasurementLocation = entity,
-        Meter = entity.Meter
+        Meter = entity.Meter,
       })
       .ToList();
   }
@@ -452,18 +462,21 @@ public class ReportQueries(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-    var entities = await context.MeasurementLocations
-      .OfType<NetworkUserMeasurementLocationEntity>()
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
+    var entities = await context
+      .MeasurementLocations.OfType<NetworkUserMeasurementLocationEntity>()
       .Where(
         context.ForeignKeyEquals<NetworkUserMeasurementLocationEntity>(
           nameof(NetworkUserMeasurementLocationEntity.NetworkUser),
-          networkUserId))
+          networkUserId
+        )
+      )
       .Include(x => x.Meter)
       .Include(x => x.NetworkUserCatalogue)
       .Include(x => x.NetworkUser)
-      .ThenInclude(x => x.Location)
+        .ThenInclude(x => x.Location)
       .ToListAsync(cancellationToken);
     if (entities is null)
     {
@@ -477,7 +490,7 @@ public class ReportQueries(
         NetworkUser = entity.NetworkUser,
         Catalogue = entity.NetworkUserCatalogue,
         MeasurementLocation = entity,
-        Meter = entity.Meter
+        Meter = entity.Meter,
       })
       .ToList();
   }
@@ -487,17 +500,20 @@ public class ReportQueries(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-    var entity = await context.MeasurementLocations
-      .OfType<NetworkUserMeasurementLocationEntity>()
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
+    var entity = await context
+      .MeasurementLocations.OfType<NetworkUserMeasurementLocationEntity>()
       .Where(
         context.PrimaryKeyEquals<NetworkUserMeasurementLocationEntity>(
-          measurementLocationId))
+          measurementLocationId
+        )
+      )
       .Include(x => x.Meter)
       .Include(x => x.NetworkUserCatalogue)
       .Include(x => x.NetworkUser)
-      .ThenInclude(x => x.Location)
+        .ThenInclude(x => x.Location)
       .FirstOrDefaultAsync(cancellationToken);
     if (entity is null)
     {
@@ -510,7 +526,7 @@ public class ReportQueries(
       NetworkUser = entity.NetworkUser,
       Catalogue = entity.NetworkUserCatalogue,
       Meter = entity.Meter,
-      MeasurementLocation = entity
+      MeasurementLocation = entity,
     };
   }
 
@@ -519,42 +535,36 @@ public class ReportQueries(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-    var entity = await context.Meters
-      .Where(
-        context.PrimaryKeyEquals<MeterEntity>(
-          meterId))
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
+    var entity = await context
+      .Meters.Where(context.PrimaryKeyEquals<MeterEntity>(meterId))
       .GroupJoin(
-        context.MeasurementLocations
-          .OfType<NetworkUserMeasurementLocationEntity>()
+        context
+          .MeasurementLocations.OfType<NetworkUserMeasurementLocationEntity>()
           .Include(x => x.NetworkUserCatalogue)
           .Include(x => x.NetworkUser)
-          .ThenInclude(x => x.Location),
+            .ThenInclude(x => x.Location),
         context.PrimaryKeyOf<MeterEntity>(),
         context.ForeignKeyOf<NetworkUserMeasurementLocationEntity>(
-          nameof(NetworkUserMeasurementLocationEntity.Meter)),
-        (meter, measurementLocations) => new
-        {
-          meter,
-          measurementLocations
-        }
+          nameof(NetworkUserMeasurementLocationEntity.Meter)
+        ),
+        (meter, measurementLocations) => new { meter, measurementLocations }
       )
       .SelectMany(
         joined => joined.measurementLocations.DefaultIfEmpty(),
-        (meter, measurementLocation) => measurementLocation == null
-          ? new ReportBasisEntity
-          {
-            Meter = meter.meter
-          }
-          : new ReportBasisEntity
-          {
-            Location = measurementLocation.NetworkUser.Location,
-            NetworkUser = measurementLocation.NetworkUser,
-            Catalogue = measurementLocation.NetworkUserCatalogue,
-            Meter = meter.meter,
-            MeasurementLocation = measurementLocation
-          }
+        (meter, measurementLocation) =>
+          measurementLocation == null
+            ? new ReportBasisEntity { Meter = meter.meter }
+            : new ReportBasisEntity
+            {
+              Location = measurementLocation.NetworkUser.Location,
+              NetworkUser = measurementLocation.NetworkUser,
+              Catalogue = measurementLocation.NetworkUserCatalogue,
+              Meter = meter.meter,
+              MeasurementLocation = measurementLocation,
+            }
       )
       .FirstOrDefaultAsync(cancellationToken);
     if (entity is null || entity.MeasurementLocation is null)

@@ -3,10 +3,9 @@ using Ozds.Caching.Profiles;
 
 namespace Ozds.Caching.Cache.Implementations;
 
-public class CacheFactory(
-  ProfileRegistry registry,
-  IServiceProvider services
-) : ICacheFactory, IPolicyCacheFactory
+public class CacheFactory(ProfileRegistry registry, IServiceProvider services)
+  : ICacheFactory,
+    IPolicyCacheFactory
 {
   ICache<TValue> ICacheFactory.Create<TValue>()
   {
@@ -19,12 +18,13 @@ public class CacheFactory(
   ICache ICacheFactory.Create(Type type)
   {
     var configuration = registry.GetConfiguration(type);
-    var cache = services
-          .GetRequiredService(
-            typeof(IConfigurableCache<>).MakeGenericType(type))
-        as IConfigurableCache
+    var cache =
+      services.GetRequiredService(
+        typeof(IConfigurableCache<>).MakeGenericType(type)
+      ) as IConfigurableCache
       ?? throw new InvalidOperationException(
-        $"{typeof(IConfigurableCache<>).MakeGenericType(type)} not found");
+        $"{typeof(IConfigurableCache<>).MakeGenericType(type)} not found"
+      );
     cache.Configure(configuration);
     return cache;
   }

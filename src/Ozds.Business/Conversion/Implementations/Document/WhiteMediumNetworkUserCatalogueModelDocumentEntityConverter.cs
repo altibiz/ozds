@@ -7,11 +7,13 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class WhiteMediumNetworkUserCatalogueModelDocumentEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
-  WhiteMediumNetworkUserCatalogueModel,
-  NetworkUserCatalogueModel,
-  WhiteMediumNetworkUserCatalogueEntity,
-  NetworkUserCatalogueEntity>(serviceProvider)
+)
+  : InheritingModelDocumentEntityConverter<
+    WhiteMediumNetworkUserCatalogueModel,
+    NetworkUserCatalogueModel,
+    WhiteMediumNetworkUserCatalogueEntity,
+    NetworkUserCatalogueEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     WhiteMediumNetworkUserCatalogueModel model,

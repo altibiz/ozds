@@ -33,8 +33,8 @@ public class NotificationQueries(
       pageCount
     );
 
-    return entities.Items
-      .Select(modelEntityConverter.ToModel<T>)
+    return entities
+      .Items.Select(modelEntityConverter.ToModel<T>)
       .ToPaginatedList(entities.TotalCount);
   }
 
@@ -55,9 +55,7 @@ public class NotificationQueries(
       title
     );
 
-    return entities
-      .Select(modelEntityConverter.ToModel<T>)
-      .ToList();
+    return entities.Select(modelEntityConverter.ToModel<T>).ToList();
   }
 
   public async Task<PaginatedList<INotification>> ReadForRecipient(
@@ -88,8 +86,8 @@ public class NotificationQueries(
       pageCount
     );
 
-    return entities.Items
-      .Select(modelEntityConverter.ToModel<INotification>)
+    return entities
+      .Items.Select(modelEntityConverter.ToModel<INotification>)
       .ToPaginatedList(entities.TotalCount);
   }
 
@@ -123,10 +121,12 @@ public class NotificationQueries(
   }
 
   public async Task<List<NotificationRecipientModel>> Recipients(
-    INotification notification)
+    INotification notification
+  )
   {
     var recipients = await queries.Recipients(
-      modelEntityConverter.ToEntity<INotificationEntity>(notification));
+      modelEntityConverter.ToEntity<INotificationEntity>(notification)
+    );
 
     return recipients
       .Select(modelEntityConverter.ToModel<NotificationRecipientModel>)
@@ -134,10 +134,12 @@ public class NotificationQueries(
   }
 
   public async Task<List<NotificationRecipientModel>> Recipients(
-    IEnumerable<INotification> notifications)
+    IEnumerable<INotification> notifications
+  )
   {
-    var entities = notifications
-      .Select(modelEntityConverter.ToEntity<INotificationEntity>);
+    var entities = notifications.Select(
+      modelEntityConverter.ToEntity<INotificationEntity>
+    );
     var recipients = await queries.Recipients(entities);
 
     return recipients

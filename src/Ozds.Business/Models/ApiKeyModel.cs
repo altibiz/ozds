@@ -21,7 +21,8 @@ public class ApiKeyModel : TrackableModel
   public DateTimeOffset? ExpiresOn { get; set; } = default!;
 
   public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
+    ValidationContext validationContext
+  )
   {
     foreach (var validationResult in base.Validate(validationContext))
     {
@@ -37,7 +38,8 @@ public class ApiKeyModel : TrackableModel
       {
         yield return new ValidationResult(
           "Expires on must be in the future",
-          new[] { nameof(ExpiresOn) });
+          new[] { nameof(ExpiresOn) }
+        );
       }
     }
   }

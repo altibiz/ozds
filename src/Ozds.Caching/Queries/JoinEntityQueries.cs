@@ -10,10 +10,7 @@ public class JoinEntityQueries(
   EntityReflector entityReflector
 ) : IQueries
 {
-  public async Task<T?> Read<T>(
-    string id,
-    CancellationToken cancellationToken
-  )
+  public async Task<T?> Read<T>(string id, CancellationToken cancellationToken)
     where T : notnull, IJoinEntity
   {
     foreach (var subtype in entityReflector.ResolveSubtypes<T>())
@@ -38,7 +35,8 @@ public class JoinEntityQueries(
     if (!entityType.IsAssignableTo(typeof(IJoinEntity)))
     {
       throw new InvalidOperationException(
-        "Entity type must implement IJoinEntity");
+        "Entity type must implement IJoinEntity"
+      );
     }
 
     foreach (var subtype in entityReflector.ResolveSubtypes(entityType))

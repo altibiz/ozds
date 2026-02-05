@@ -4,11 +4,12 @@ using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance.Complex;
 
-public class UsageActiveEnergyTotalImportT0CalculationItemCalculator :
-  CalculationItemCalculator<UsageActiveEnergyTotalImportT0CalculationItemModel>
+public class UsageActiveEnergyTotalImportT0CalculationItemCalculator
+  : CalculationItemCalculator<UsageActiveEnergyTotalImportT0CalculationItemModel>
 {
-  protected override UsageActiveEnergyTotalImportT0CalculationItemModel
-    CalculateConcrete(CalculationItemBasisModel calculationBasis)
+  protected override UsageActiveEnergyTotalImportT0CalculationItemModel CalculateConcrete(
+    CalculationItemBasisModel calculationBasis
+  )
   {
     if (calculationBasis.Aggregates.Count == 0)
     {
@@ -18,17 +19,17 @@ public class UsageActiveEnergyTotalImportT0CalculationItemCalculator :
         Max_kWh = 0,
         Amount_kWh = 0,
         Price_EUR = calculationBasis.Price_EUR,
-        Total_EUR = 0
+        Total_EUR = 0,
       };
     }
 
-    var aggregates = calculationBasis.Aggregates
-      .OrderBy(a => a.Timestamp)
+    var aggregates = calculationBasis
+      .Aggregates.OrderBy(a => a.Timestamp)
       .ToList();
 
     var min = aggregates
-      .First().ActiveEnergy_Wh
-      .TariffUnary()
+      .First()
+      .ActiveEnergy_Wh.TariffUnary()
       .DuplexImport()
       .AggregateMin()
       .PhaseSum();
@@ -36,8 +37,8 @@ public class UsageActiveEnergyTotalImportT0CalculationItemCalculator :
     var minKilo = System.Math.Round(min / 1000M, 2);
 
     var max = aggregates
-      .Last().ActiveEnergy_Wh
-      .TariffUnary()
+      .Last()
+      .ActiveEnergy_Wh.TariffUnary()
       .DuplexImport()
       .AggregateMin()
       .PhaseSum();
@@ -56,7 +57,7 @@ public class UsageActiveEnergyTotalImportT0CalculationItemCalculator :
       Max_kWh = maxKilo,
       Amount_kWh = amountKilo,
       Price_EUR = price,
-      Total_EUR = total
+      Total_EUR = total,
     };
   }
 }

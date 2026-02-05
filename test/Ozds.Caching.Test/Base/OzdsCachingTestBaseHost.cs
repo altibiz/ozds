@@ -12,9 +12,7 @@ public partial class OzdsCachingTestBase
   {
     if (host is null)
     {
-      throw new InvalidOperationException(
-        "Host not initialized"
-      );
+      throw new InvalidOperationException("Host not initialized");
     }
 
     await host.StartAsync(cancellationToken);
@@ -24,9 +22,7 @@ public partial class OzdsCachingTestBase
   {
     if (host is null)
     {
-      throw new InvalidOperationException(
-        "Host not initialized"
-      );
+      throw new InvalidOperationException("Host not initialized");
     }
 
     await host.StopAsync(cancellationToken);
@@ -39,11 +35,9 @@ public partial class OzdsCachingTestBase
     builder.Configuration.AddInMemoryCollection(
       new Dictionary<string, string?>
       {
-        {
-          "Ozds:Caching:ConnectionString",
-          "memory://"
-        }
-      });
+        { "Ozds:Caching:ConnectionString", "memory://" },
+      }
+    );
     builder.AddOzdsCaching();
     builder.AddOzdsAssets();
     builder.AddOzdsTime();

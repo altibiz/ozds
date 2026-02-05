@@ -18,7 +18,7 @@ public class DurationModelEntityConverter
       DurationModel.Week => DurationEntity.Week,
       DurationModel.Month => DurationEntity.Month,
       DurationModel.Year => DurationEntity.Year,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 
@@ -33,7 +33,7 @@ public class DurationModelEntityConverter
       DurationEntity.Week => DurationModel.Week,
       DurationEntity.Month => DurationModel.Month,
       DurationEntity.Year => DurationModel.Year,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 }

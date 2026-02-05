@@ -6,7 +6,7 @@ public enum LoadingStage
   Error,
   Unfound,
   Found,
-  Created
+  Created,
 }
 
 public record LoadingState(
@@ -25,11 +25,7 @@ public record LoadingState<T>(
   public LoadingState<TMapped> Map<TMapped>(Func<T, TMapped> map)
   {
     var mapped = Value is null ? default : map(Value);
-    return new LoadingState<TMapped>(
-      Stage,
-      Error,
-      mapped
-    );
+    return new LoadingState<TMapped>(Stage, Error, mapped);
   }
 
   public LoadingState<T> WithError(string? error)
@@ -38,7 +34,7 @@ public record LoadingState<T>(
     {
       Stage = LoadingStage.Error,
       Value = default,
-      Error = error
+      Error = error,
     };
   }
 
@@ -49,13 +45,13 @@ public record LoadingState<T>(
       {
         Stage = LoadingStage.Unfound,
         Value = default,
-        Error = default
+        Error = default,
       }
       : this with
       {
         Stage = LoadingStage.Found,
         Value = value,
-        Error = default
+        Error = default,
       };
   }
 
@@ -65,7 +61,7 @@ public record LoadingState<T>(
     {
       Stage = LoadingStage.Created,
       Value = value,
-      Error = default
+      Error = default,
     };
   }
 
@@ -75,7 +71,7 @@ public record LoadingState<T>(
     {
       Stage = LoadingStage.Loading,
       Value = default,
-      Error = default
+      Error = default,
     };
   }
 
@@ -85,7 +81,7 @@ public record LoadingState<T>(
     {
       Stage = LoadingStage.Unfound,
       Value = default,
-      Error = default
+      Error = default,
     };
   }
 }

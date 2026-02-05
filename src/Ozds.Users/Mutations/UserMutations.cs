@@ -18,8 +18,8 @@ public class UserMutations(
   )
   {
     using var scope = serviceProvider.CreateAsyncScope();
-    var ldapConnection = scope.ServiceProvider
-      .GetRequiredService<LdapConnection>();
+    var ldapConnection =
+      scope.ServiceProvider.GetRequiredService<LdapConnection>();
 
     try
     {
@@ -31,22 +31,26 @@ public class UserMutations(
       {
         options.Value.Ldap.UserIdAttribute,
         options.Value.Ldap.UserNameAttribute,
-        options.Value.Ldap.UserEmailAttribute
+        options.Value.Ldap.UserEmailAttribute,
       };
 
       var searchResults = await Task.Run(
-        () => ldapConnection.Search(
-          options.Value.Ldap.BaseDn,
-          LdapConnection.ScopeSub,
-          filter,
-          attributes,
-          false
-        ), cancellationToken);
+        () =>
+          ldapConnection.Search(
+            options.Value.Ldap.BaseDn,
+            LdapConnection.ScopeSub,
+            filter,
+            attributes,
+            false
+          ),
+        cancellationToken
+      );
 
       if (searchResults.HasMore())
       {
         throw new InvalidOperationException(
-          $"User with id '{entity.Id}' already exists");
+          $"User with id '{entity.Id}' already exists"
+        );
       }
 
       var userDn =
@@ -63,15 +67,16 @@ public class UserMutations(
       entry.Add(objectClassAttr);
 
       entry.Add(
-        new LdapAttribute(options.Value.Ldap.UserIdAttribute, entity.Id));
+        new LdapAttribute(options.Value.Ldap.UserIdAttribute, entity.Id)
+      );
 
       entry.Add(
-        new LdapAttribute(
-          options.Value.Ldap.UserNameAttribute, entity.Name));
+        new LdapAttribute(options.Value.Ldap.UserNameAttribute, entity.Name)
+      );
 
       entry.Add(
-        new LdapAttribute(
-          options.Value.Ldap.UserEmailAttribute, entity.Email));
+        new LdapAttribute(options.Value.Ldap.UserEmailAttribute, entity.Email)
+      );
 
       var newEntry = new LdapEntry(userDn, entry);
       await Task.Run(() => ldapConnection.Add(newEntry), cancellationToken);
@@ -88,8 +93,8 @@ public class UserMutations(
   )
   {
     using var scope = serviceProvider.CreateAsyncScope();
-    var ldapConnection = scope.ServiceProvider
-      .GetRequiredService<LdapConnection>();
+    var ldapConnection =
+      scope.ServiceProvider.GetRequiredService<LdapConnection>();
 
     try
     {
@@ -101,22 +106,26 @@ public class UserMutations(
       {
         options.Value.Ldap.UserIdAttribute,
         options.Value.Ldap.UserNameAttribute,
-        options.Value.Ldap.UserEmailAttribute
+        options.Value.Ldap.UserEmailAttribute,
       };
 
       var searchResults = await Task.Run(
-        () => ldapConnection.Search(
-          options.Value.Ldap.BaseDn,
-          LdapConnection.ScopeSub,
-          filter,
-          attributes,
-          false
-        ), cancellationToken);
+        () =>
+          ldapConnection.Search(
+            options.Value.Ldap.BaseDn,
+            LdapConnection.ScopeSub,
+            filter,
+            attributes,
+            false
+          ),
+        cancellationToken
+      );
 
       if (!searchResults.HasMore())
       {
         throw new InvalidOperationException(
-          $"User with id '{entity.Id}' not found");
+          $"User with id '{entity.Id}' not found"
+        );
       }
 
       var entry = searchResults.Next();
@@ -145,9 +154,9 @@ public class UserMutations(
       modifications.Add(nameModification);
 
       await Task.Run(
-        () =>
-          ldapConnection.Modify(userDn, modifications.ToArray()),
-        cancellationToken);
+        () => ldapConnection.Modify(userDn, modifications.ToArray()),
+        cancellationToken
+      );
     }
     catch (Exception ex)
     {
@@ -158,8 +167,8 @@ public class UserMutations(
   public async Task Delete(string id, CancellationToken cancellationToken)
   {
     using var scope = serviceProvider.CreateAsyncScope();
-    var ldapConnection = scope.ServiceProvider
-      .GetRequiredService<LdapConnection>();
+    var ldapConnection =
+      scope.ServiceProvider.GetRequiredService<LdapConnection>();
 
     try
     {
@@ -170,18 +179,20 @@ public class UserMutations(
       string[] attributes = { options.Value.Ldap.UserIdAttribute };
 
       var searchResults = await Task.Run(
-        () => ldapConnection.Search(
-          options.Value.Ldap.BaseDn,
-          LdapConnection.ScopeSub,
-          filter,
-          attributes,
-          false
-        ), cancellationToken);
+        () =>
+          ldapConnection.Search(
+            options.Value.Ldap.BaseDn,
+            LdapConnection.ScopeSub,
+            filter,
+            attributes,
+            false
+          ),
+        cancellationToken
+      );
 
       if (!searchResults.HasMore())
       {
-        throw new InvalidOperationException(
-          $"User with id '{id}' not found");
+        throw new InvalidOperationException($"User with id '{id}' not found");
       }
 
       var entry = searchResults.Next();

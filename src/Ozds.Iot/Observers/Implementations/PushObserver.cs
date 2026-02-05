@@ -4,9 +4,7 @@ using Ozds.Iot.Observers.EventArgs;
 
 namespace Ozds.Iot.Observers.Implementations;
 
-public class PushObserver :
-  Observer<PushEventArgs>,
-  IPushPublisher,
-  IPushSubscriber
-{
-}
+public class PushObserver
+  : Observer<PushEventArgs>,
+    IPushPublisher,
+    IPushSubscriber { }

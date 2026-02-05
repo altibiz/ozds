@@ -3,8 +3,8 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Aggregation.Base;
 
-public abstract class ConcreteAggregateMeasureUpserter<TModel> :
-  IAggregateMeasureUpserter
+public abstract class ConcreteAggregateMeasureUpserter<TModel>
+  : IAggregateMeasureUpserter
   where TModel : class, IAggregateMeasure
 {
   public Type ModelType { get; } = typeof(TModel);
@@ -22,11 +22,15 @@ public abstract class ConcreteAggregateMeasureUpserter<TModel> :
   )
   {
     return UpsertConcreteModel(
-      lhs as TModel ?? throw new InvalidOperationException(
-        $"Model is not of type {typeof(TModel).Name}."),
+      lhs as TModel
+        ?? throw new InvalidOperationException(
+          $"Model is not of type {typeof(TModel).Name}."
+        ),
       lhsCount,
-      rhs as TModel ?? throw new InvalidOperationException(
-        $"Model is not of type {typeof(TModel).Name}."),
+      rhs as TModel
+        ?? throw new InvalidOperationException(
+          $"Model is not of type {typeof(TModel).Name}."
+        ),
       rhsCount
     );
   }

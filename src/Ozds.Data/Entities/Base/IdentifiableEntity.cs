@@ -14,11 +14,10 @@ public abstract class IdentifiableEntity : IIdentifiableEntity
   public virtual string Id
   {
 #pragma warning disable S3060 // "is" should not be used with "this"
-    get => this is ICustomIdentifiableEntity
-      ? _stringId
-      : this is IGuidIdentifiableEntity
-        ? _guidId.ToString()
-        : _id.ToString();
+    get =>
+      this is ICustomIdentifiableEntity ? _stringId
+      : this is IGuidIdentifiableEntity ? _guidId.ToString()
+      : _id.ToString();
 #pragma warning restore S3060 // "is" should not be used with "this"
     set
     {

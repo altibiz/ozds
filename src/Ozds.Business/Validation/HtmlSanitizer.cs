@@ -20,14 +20,16 @@ public class HtmlSanitizer
       {
         return new ValidationResult(
           $"HTML contains invalid HTML:{Environment.NewLine}{html}{Environment.NewLine}{sanitizedHtml}",
-          new[] { nameof(html) });
+          new[] { nameof(html) }
+        );
       }
     }
     catch (Exception ex)
     {
       return new ValidationResult(
         $"HTML contains invalid HTML:{Environment.NewLine}{ex.Message}",
-        new[] { nameof(html) });
+        new[] { nameof(html) }
+      );
     }
 
     return default;

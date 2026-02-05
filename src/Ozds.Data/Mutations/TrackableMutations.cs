@@ -5,17 +5,17 @@ using Ozds.Data.Mutations.Abstractions;
 
 namespace Ozds.Data.Mutations;
 
-public class TrackableMutations(
-  IDbContextFactory<DataDbContext> factory
-) : IMutations
+public class TrackableMutations(IDbContextFactory<DataDbContext> factory)
+  : IMutations
 {
   public async Task Create(
     ITrackableEntity entity,
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     context.Add(entity);
     await context.SaveChangesAsync(cancellationToken);
   }
@@ -25,8 +25,9 @@ public class TrackableMutations(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     context.AddRange(entity);
     await context.SaveChangesAsync(cancellationToken);
   }
@@ -36,8 +37,9 @@ public class TrackableMutations(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     context.Update(entity);
     await context.SaveChangesAsync(cancellationToken);
   }
@@ -47,8 +49,9 @@ public class TrackableMutations(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     context.Remove(entity);
     await context.SaveChangesAsync(cancellationToken);
   }

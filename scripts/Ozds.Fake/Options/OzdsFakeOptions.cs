@@ -34,9 +34,8 @@ public class OzdsFakeMessagingSagasOptions
   public string NetworkUserInvoiceState { get; set; } = default!;
 }
 
-public class ConfigureOzdsFakeOptions(
-  IConfiguration configuration
-) : IConfigureOptions<OzdsFakeOptions>
+public class ConfigureOzdsFakeOptions(IConfiguration configuration)
+  : IConfigureOptions<OzdsFakeOptions>
 {
   public void Configure(OzdsFakeOptions options)
   {
@@ -47,8 +46,8 @@ public class ConfigureOzdsFakeOptions(
     IConfiguration configuration
   )
   {
-    var connectionString = configuration
-        .GetValue<string?>("Ozds:Fake:Messaging:ConnectionString")
+    var connectionString =
+      configuration.GetValue<string?>("Ozds:Fake:Messaging:ConnectionString")
       ?? string.Empty;
 
     if (connectionString.StartsWith("amqp://"))
@@ -56,7 +55,6 @@ public class ConfigureOzdsFakeOptions(
       return new OzdsMessagingParsedRabbitMqConnectionString(connectionString);
     }
 
-    throw new InvalidOperationException(
-      "Only RabbitMQ is supported");
+    throw new InvalidOperationException("Only RabbitMQ is supported");
   }
 }

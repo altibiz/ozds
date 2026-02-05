@@ -4,10 +4,7 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation.Implementations.System;
 
-public class SystemAuditEventModelActivator(
-  IServiceProvider serviceProvider
-) : InheritingModelActivator<SystemAuditEventModel, AuditEventModel>(
-  serviceProvider
-)
-{
-}
+public class SystemAuditEventModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<SystemAuditEventModel, AuditEventModel>(
+    serviceProvider
+  ) { }

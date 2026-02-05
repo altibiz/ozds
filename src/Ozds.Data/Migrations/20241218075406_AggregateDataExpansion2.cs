@@ -10,64 +10,60 @@ namespace Ozds.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            foreach (var (columnPrefix, unit) in new[]
-            {
-                ("voltage_l1_any_t0", "v"),
-                ("voltage_l2_any_t0", "v"),
-                ("voltage_l3_any_t0", "v"),
-                ("current_l1_any_t0", "a"),
-                ("current_l2_any_t0", "a"),
-                ("current_l3_any_t0", "a"),
-                ("active_power_l1_net_t0", "w"),
-                ("active_power_l2_net_t0", "w"),
-                ("active_power_l3_net_t0", "w"),
-                ("reactive_power_l1_net_t0", "var"),
-                ("reactive_power_l2_net_t0", "var"),
-                ("reactive_power_l3_net_t0", "var"),
-            })
+            foreach (
+                var (columnPrefix, unit) in new[]
+                {
+                    ("voltage_l1_any_t0", "v"),
+                    ("voltage_l2_any_t0", "v"),
+                    ("voltage_l3_any_t0", "v"),
+                    ("current_l1_any_t0", "a"),
+                    ("current_l2_any_t0", "a"),
+                    ("current_l3_any_t0", "a"),
+                    ("active_power_l1_net_t0", "w"),
+                    ("active_power_l2_net_t0", "w"),
+                    ("active_power_l3_net_t0", "w"),
+                    ("reactive_power_l1_net_t0", "var"),
+                    ("reactive_power_l2_net_t0", "var"),
+                    ("reactive_power_l3_net_t0", "var"),
+                }
+            )
             {
                 var tablePrefix = "abb_b2x";
-                CalculateMinMaxAvg(
-                    migrationBuilder,
-                    tablePrefix,
-                    columnPrefix,
-                    unit
-                );
+                CalculateMinMaxAvg(migrationBuilder, tablePrefix, columnPrefix, unit);
             }
 
-            foreach (var (columnPrefix, unit) in new[]
-            {
-                ("voltage_l1_any_t0", "v"),
-                ("voltage_l2_any_t0", "v"),
-                ("voltage_l3_any_t0", "v"),
-                ("current_l1_any_t0", "a"),
-                ("current_l2_any_t0", "a"),
-                ("current_l3_any_t0", "a"),
-                ("active_power_l1_net_t0", "w"),
-                ("active_power_l2_net_t0", "w"),
-                ("active_power_l3_net_t0", "w"),
-                ("reactive_power_total_net_t0", "var"),
-                ("apparent_power_total_net_t0", "va"),
-            })
+            foreach (
+                var (columnPrefix, unit) in new[]
+                {
+                    ("voltage_l1_any_t0", "v"),
+                    ("voltage_l2_any_t0", "v"),
+                    ("voltage_l3_any_t0", "v"),
+                    ("current_l1_any_t0", "a"),
+                    ("current_l2_any_t0", "a"),
+                    ("current_l3_any_t0", "a"),
+                    ("active_power_l1_net_t0", "w"),
+                    ("active_power_l2_net_t0", "w"),
+                    ("active_power_l3_net_t0", "w"),
+                    ("reactive_power_total_net_t0", "var"),
+                    ("apparent_power_total_net_t0", "va"),
+                }
+            )
             {
                 var tablePrefix = "schneider_iem3xxx";
-                CalculateMinMaxAvg(
-                    migrationBuilder,
-                    tablePrefix,
-                    columnPrefix,
-                    unit
-                );
+                CalculateMinMaxAvg(migrationBuilder, tablePrefix, columnPrefix, unit);
             }
 
-            foreach (var (columnPrefix, unit, derivedColumnPrefix, derivedUnit) in new[]
-            {
-                ("active_energy_total_import_t0", "wh", "derived_active_power_total_import_t0", "w"),
-                ("active_energy_total_export_t0", "wh", "derived_active_power_total_export_t0", "w"),
-                ("reactive_energy_total_import_t0", "varh", "derived_reactive_power_total_import_t0", "var"),
-                ("reactive_energy_total_export_t0", "varh", "derived_reactive_power_total_export_t0", "var"),
-                ("active_energy_total_import_t1", "wh", "derived_active_power_total_import_t1", "w"),
-                ("active_energy_total_import_t2", "wh", "derived_active_power_total_import_t2", "w"),
-            })
+            foreach (
+                var (columnPrefix, unit, derivedColumnPrefix, derivedUnit) in new[]
+                {
+                    ("active_energy_total_import_t0", "wh", "derived_active_power_total_import_t0", "w"),
+                    ("active_energy_total_export_t0", "wh", "derived_active_power_total_export_t0", "w"),
+                    ("reactive_energy_total_import_t0", "varh", "derived_reactive_power_total_import_t0", "var"),
+                    ("reactive_energy_total_export_t0", "varh", "derived_reactive_power_total_export_t0", "var"),
+                    ("active_energy_total_import_t1", "wh", "derived_active_power_total_import_t1", "w"),
+                    ("active_energy_total_import_t2", "wh", "derived_active_power_total_import_t2", "w"),
+                }
+            )
             {
                 var tablePrefix = "abb_b2x";
                 CalculateDerivedValues(
@@ -80,15 +76,17 @@ namespace Ozds.Data.Migrations
                 );
             }
 
-            foreach (var (columnPrefix, unit, derivedColumnPrefix, derivedUnit) in new[]
-            {
-                ("active_energy_total_import_t0", "wh", "derived_active_power_total_import_t0", "w"),
-                ("active_energy_total_export_t0", "wh", "derived_active_power_total_export_t0", "w"),
-                ("reactive_energy_total_import_t0", "varh", "derived_reactive_power_total_import_t0", "var"),
-                ("reactive_energy_total_export_t0", "varh", "derived_reactive_power_total_export_t0", "var"),
-                ("active_energy_total_import_t1", "wh", "derived_active_power_total_import_t1", "w"),
-                ("active_energy_total_import_t2", "wh", "derived_active_power_total_import_t2", "w"),
-            })
+            foreach (
+                var (columnPrefix, unit, derivedColumnPrefix, derivedUnit) in new[]
+                {
+                    ("active_energy_total_import_t0", "wh", "derived_active_power_total_import_t0", "w"),
+                    ("active_energy_total_export_t0", "wh", "derived_active_power_total_export_t0", "w"),
+                    ("reactive_energy_total_import_t0", "varh", "derived_reactive_power_total_import_t0", "var"),
+                    ("reactive_energy_total_export_t0", "varh", "derived_reactive_power_total_export_t0", "var"),
+                    ("active_energy_total_import_t1", "wh", "derived_active_power_total_import_t1", "w"),
+                    ("active_energy_total_import_t2", "wh", "derived_active_power_total_import_t2", "w"),
+                }
+            )
             {
                 var tablePrefix = "schneider_iem3xxx";
                 CalculateDerivedValues(
@@ -103,9 +101,7 @@ namespace Ozds.Data.Migrations
         }
 
         /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-        }
+        protected override void Down(MigrationBuilder migrationBuilder) { }
 
         private static void CalculateMinMaxAvg(
             MigrationBuilder migrationBuilder,
@@ -114,7 +110,8 @@ namespace Ozds.Data.Migrations
             string unit
         )
         {
-            migrationBuilder.Sql($@"
+            migrationBuilder.Sql(
+                $@"
                 update {tablePrefix}_aggregates aggregates
                 set
                     {columnPrefix}_min_{unit} = measurements.min_value,
@@ -210,7 +207,8 @@ namespace Ozds.Data.Migrations
                 where
                     measurements.meter_id = aggregates.meter_id
                     and measurements.measurement_location_id = aggregates.measurement_location_id;
-            ");
+            "
+            );
         }
 
         private static void CalculateDerivedValues(
@@ -222,7 +220,8 @@ namespace Ozds.Data.Migrations
             string derivedUnit
         )
         {
-            migrationBuilder.Sql($@"
+            migrationBuilder.Sql(
+                $@"
                 update {tablePrefix}_aggregates aggregates
                 set
                     {derivedColumnPrefix}_min_{derivedUnit} = quarter_hours.min_value,
@@ -348,7 +347,8 @@ namespace Ozds.Data.Migrations
                     quarter_hours.meter_id = aggregates.meter_id
                     and quarter_hours.measurement_location_id = aggregates.measurement_location_id
                     and quarter_hours.{derivedColumnPrefix}_{derivedUnit} = aggregates.{derivedColumnPrefix}_max_{derivedUnit};
-            ");
+            "
+            );
         }
     }
 }

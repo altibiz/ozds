@@ -41,23 +41,28 @@ public static class DataDbContextDapperConnectionExtensions
             {
               var property = GetMappedProperty(context, type, columnName);
 
-              var info = (MemberInfo?)property?.PropertyInfo
-                ?? property?.FieldInfo;
+              var info =
+                (MemberInfo?)property?.PropertyInfo ?? property?.FieldInfo;
 
               return info;
-            }));
+            }
+          )
+        );
       }
 
       var listOfEnumTypes = new HashSet<Type>();
       foreach (var type in context.Model.GetEntityTypes())
       {
-        foreach (var propertyType in type
-          .GetScalarPropertiesRecursive()
-          .Select(x => x.ClrType))
+        foreach (
+          var propertyType in type.GetScalarPropertiesRecursive()
+            .Select(x => x.ClrType)
+        )
         {
-          if (propertyType.IsGenericType &&
-            propertyType.GetGenericTypeDefinition() == typeof(List<>)
-            && propertyType.GetGenericArguments()[0].IsEnum)
+          if (
+            propertyType.IsGenericType
+            && propertyType.GetGenericTypeDefinition() == typeof(List<>)
+            && propertyType.GetGenericArguments()[0].IsEnum
+          )
           {
             listOfEnumTypes.Add(propertyType.GetGenericArguments()[0]);
           }
@@ -67,13 +72,14 @@ public static class DataDbContextDapperConnectionExtensions
       foreach (var type in listOfEnumTypes)
       {
         var listType = typeof(List<>).MakeGenericType(type);
-        var handler = typeof(GenericListTypeHandler<>)
-              .MakeGenericType(type)
-              .GetConstructor(Array.Empty<Type>())
-              ?.Invoke(Array.Empty<object>())
-            as ITypeHandler
+        var handler =
+          typeof(GenericListTypeHandler<>)
+            .MakeGenericType(type)
+            .GetConstructor(Array.Empty<Type>())
+            ?.Invoke(Array.Empty<object>()) as ITypeHandler
           ?? throw new InvalidOperationException(
-            $"Handler construction failed for {listType}.");
+            $"Handler construction failed for {listType}."
+          );
         AddTypeHandler(listType, handler);
       }
 
@@ -90,9 +96,11 @@ public static class DataDbContextDapperConnectionExtensions
     var entityTypeModel = context.Model.FindEntityType(entityType);
     var property = entityTypeModel
       ?.GetProperties()
-      .FirstOrDefault(property => property
-        .GetColumnName()
-        .Equals(columnName, StringComparison.OrdinalIgnoreCase));
+      .FirstOrDefault(property =>
+        property
+          .GetColumnName()
+          .Equals(columnName, StringComparison.OrdinalIgnoreCase)
+      );
     return property;
   }
 
@@ -111,7 +119,8 @@ public static class DataDbContextDapperConnectionExtensions
 
   private sealed class CustomPropertyOrFieldTypeMap(
     Type type,
-    Func<Type, string, MemberInfo?> selector) : ITypeMap
+    Func<Type, string, MemberInfo?> selector
+  ) : ITypeMap
   {
     public ConstructorInfo? FindConstructor(string[] names, Type[] types)
     {
@@ -125,7 +134,8 @@ public static class DataDbContextDapperConnectionExtensions
 
     public IMemberMap GetConstructorParameter(
       ConstructorInfo constructor,
-      string columnName)
+      string columnName
+    )
     {
       throw new NotSupportedException();
     }
@@ -135,10 +145,12 @@ public static class DataDbContextDapperConnectionExtensions
       var info = selector(type, columnName);
       return info switch
       {
-        PropertyInfo propertyInfo =>
-          new SimpleMemberMap(columnName, propertyInfo),
+        PropertyInfo propertyInfo => new SimpleMemberMap(
+          columnName,
+          propertyInfo
+        ),
         FieldInfo fieldInfo => new SimpleMemberMap(columnName, fieldInfo),
-        _ => null
+        _ => null,
       };
     }
   }
@@ -147,15 +159,15 @@ public static class DataDbContextDapperConnectionExtensions
   {
     public SimpleMemberMap(string columnName, PropertyInfo property)
     {
-      ColumnName = columnName
-        ?? throw new ArgumentNullException(nameof(columnName));
+      ColumnName =
+        columnName ?? throw new ArgumentNullException(nameof(columnName));
       Property = property ?? throw new ArgumentNullException(nameof(property));
     }
 
     public SimpleMemberMap(string columnName, FieldInfo field)
     {
-      ColumnName = columnName
-        ?? throw new ArgumentNullException(nameof(columnName));
+      ColumnName =
+        columnName ?? throw new ArgumentNullException(nameof(columnName));
       Field = field ?? throw new ArgumentNullException(nameof(field));
     }
 

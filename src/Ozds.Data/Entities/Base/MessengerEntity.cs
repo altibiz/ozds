@@ -22,8 +22,8 @@ public class MessengerEntity : TrackableEntity, ICustomIdentifiableEntity
   public virtual ICollection<MessengerEventEntity> Events { get; set; } =
     default!;
 
-  public virtual ICollection<MessengerNotificationEntity>
-    InactivityNotifications { get; set; } = default!;
+  public virtual ICollection<MessengerNotificationEntity> InactivityNotifications { get; set; } =
+    default!;
 
   public PeriodEntity MaxInactivityPeriod { get; set; } = default!;
 
@@ -32,9 +32,8 @@ public class MessengerEntity : TrackableEntity, ICustomIdentifiableEntity
   public string Kind { get; set; } = default!;
 }
 
-public class
-  MessengerEntityTypeConfiguration : EntityTypeHierarchyConfiguration<
-  MessengerEntity>
+public class MessengerEntityTypeConfiguration
+  : EntityTypeHierarchyConfiguration<MessengerEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
@@ -63,9 +62,7 @@ public class
       .WithOne(nameof(MessengerNotificationEntity.Messenger));
 
     builder.Ignore(nameof(MessengerEntity.LocationId));
-    builder
-      .Property("_locationId")
-      .HasColumnName("location_id");
+    builder.Property("_locationId").HasColumnName("location_id");
 
     builder.ComplexProperty(nameof(MessengerEntity.MaxInactivityPeriod));
     builder.ComplexProperty(nameof(MessengerEntity.PushDelayPeriod));

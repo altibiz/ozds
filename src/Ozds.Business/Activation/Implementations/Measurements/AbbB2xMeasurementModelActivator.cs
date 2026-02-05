@@ -4,11 +4,10 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation.Implementations.Measurements;
 
-public class AbbB2xMeasurementModelActivator(
-  IServiceProvider serviceProvider
-) : InheritingModelActivator<AbbB2xMeasurementModel, MeasurementModel>(
-  serviceProvider
-)
+public class AbbB2xMeasurementModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<AbbB2xMeasurementModel, MeasurementModel>(
+    serviceProvider
+  )
 {
   public override void Initialize(AbbB2xMeasurementModel model)
   {

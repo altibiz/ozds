@@ -7,10 +7,12 @@ namespace Ozds.Fake.Conversion.Implementations;
 public class AbbB2xMeasurementModelConverter
   : MeasurementRecordModelConverter<
     AbbB2xMeasurementRecord,
-    AbbB2xMeasurementModel>
+    AbbB2xMeasurementModel
+  >
 {
   protected override AbbB2xMeasurementModel ConvertToModel(
-    AbbB2xMeasurementRecord record)
+    AbbB2xMeasurementRecord record
+  )
   {
     return new AbbB2xMeasurementModel
     {
@@ -48,7 +50,7 @@ public class AbbB2xMeasurementModelConverter
       ReactiveEnergyTotalExportT0_VARh =
         record.ReactiveEnergyTotalExportT0_VARh,
       ActiveEnergyTotalImportT1_Wh = record.ActiveEnergyTotalImportT1_Wh,
-      ActiveEnergyTotalImportT2_Wh = record.ActiveEnergyTotalImportT2_Wh
+      ActiveEnergyTotalImportT2_Wh = record.ActiveEnergyTotalImportT2_Wh,
     };
   }
 
@@ -87,12 +89,10 @@ public class AbbB2xMeasurementModelConverter
       ReactiveEnergyL3ExportT0_VARh = model.ReactiveEnergyL3ExportT0_VARh,
       ActiveEnergyTotalImportT0_Wh = model.ActiveEnergyTotalImportT0_Wh,
       ActiveEnergyTotalExportT0_Wh = model.ActiveEnergyTotalExportT0_Wh,
-      ReactiveEnergyTotalImportT0_VARh =
-        model.ReactiveEnergyTotalImportT0_VARh,
-      ReactiveEnergyTotalExportT0_VARh =
-        model.ReactiveEnergyTotalExportT0_VARh,
+      ReactiveEnergyTotalImportT0_VARh = model.ReactiveEnergyTotalImportT0_VARh,
+      ReactiveEnergyTotalExportT0_VARh = model.ReactiveEnergyTotalExportT0_VARh,
       ActiveEnergyTotalImportT1_Wh = model.ActiveEnergyTotalImportT1_Wh,
-      ActiveEnergyTotalImportT2_Wh = model.ActiveEnergyTotalImportT2_Wh
+      ActiveEnergyTotalImportT2_Wh = model.ActiveEnergyTotalImportT2_Wh,
     };
   }
 }

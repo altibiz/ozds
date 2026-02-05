@@ -7,11 +7,13 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class InstantaneousAggregateMeasureEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  InstantaneousAggregateMeasureModel,
-  AggregateMeasureModel,
-  InstantaneousAggregateMeasureEntity,
-  AggregateMeasureEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    InstantaneousAggregateMeasureModel,
+    AggregateMeasureModel,
+    InstantaneousAggregateMeasureEntity,
+    AggregateMeasureEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     InstantaneousAggregateMeasureModel model,

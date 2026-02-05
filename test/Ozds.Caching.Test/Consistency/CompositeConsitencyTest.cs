@@ -39,10 +39,10 @@ public class CompositeConsistencyTest : OzdsCachingTestBase
     CancellationToken cancellationToken
   )
   {
-    var composite = EntityFactory
-      .Create<ICompositeEntity>(entity.Composite);
-    var dependency = EntityFactory
-      .Create<IIdentifiableEntity>(entity.Dependency);
+    var composite = EntityFactory.Create<ICompositeEntity>(entity.Composite);
+    var dependency = EntityFactory.Create<IIdentifiableEntity>(
+      entity.Dependency
+    );
     entity.SetId(composite, dependency);
 
     await CompositeMutations.Create(composite, cancellationToken);
@@ -91,7 +91,8 @@ public class CompositeConsistencyTest : OzdsCachingTestBase
       Null,
       entity.Composite,
       composite.Id,
-      cancellationToken);
+      cancellationToken
+    );
     compositeResult.Should().BeNull();
 
     var dependencyResult = await WaitFor<IIdentifiableEntity>(

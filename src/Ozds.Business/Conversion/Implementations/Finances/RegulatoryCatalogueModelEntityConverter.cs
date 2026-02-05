@@ -8,11 +8,13 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 
 public class RegulatoryCatalogueModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  RegulatoryCatalogueModel,
-  TrackableModel,
-  RegulatoryCatalogueEntity,
-  TrackableEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    RegulatoryCatalogueModel,
+    TrackableModel,
+    RegulatoryCatalogueEntity,
+    TrackableEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     RegulatoryCatalogueModel model,
@@ -24,10 +26,8 @@ public class RegulatoryCatalogueModelEntityConverter(
       model.ActiveEnergyTotalImportT1Price_EUR;
     entity.ActiveEnergyTotalImportT2Price_EUR =
       model.ActiveEnergyTotalImportT2Price_EUR;
-    entity.RenewableEnergyFeePrice_EUR =
-      model.RenewableEnergyFeePrice_EUR;
-    entity.BusinessUsageFeePrice_EUR =
-      model.BusinessUsageFeePrice_EUR;
+    entity.RenewableEnergyFeePrice_EUR = model.RenewableEnergyFeePrice_EUR;
+    entity.BusinessUsageFeePrice_EUR = model.BusinessUsageFeePrice_EUR;
     entity.TaxRate_Percent = model.TaxRate_Percent;
   }
 
@@ -41,10 +41,8 @@ public class RegulatoryCatalogueModelEntityConverter(
       entity.ActiveEnergyTotalImportT1Price_EUR;
     model.ActiveEnergyTotalImportT2Price_EUR =
       entity.ActiveEnergyTotalImportT2Price_EUR;
-    model.RenewableEnergyFeePrice_EUR =
-      entity.RenewableEnergyFeePrice_EUR;
-    model.BusinessUsageFeePrice_EUR =
-      entity.BusinessUsageFeePrice_EUR;
+    model.RenewableEnergyFeePrice_EUR = entity.RenewableEnergyFeePrice_EUR;
+    model.BusinessUsageFeePrice_EUR = entity.BusinessUsageFeePrice_EUR;
     model.TaxRate_Percent = entity.TaxRate_Percent;
   }
 }

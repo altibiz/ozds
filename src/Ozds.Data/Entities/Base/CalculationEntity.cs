@@ -30,11 +30,8 @@ public abstract class CalculationEntity : FinancialEntity, ICalculationEntity
   }
 }
 
-public class
-  CalculationEntityTypeHierarchyConfiguration :
-  EntityTypeHierarchyConfiguration
-  <
-    CalculationEntity>
+public class CalculationEntityTypeHierarchyConfiguration
+  : EntityTypeHierarchyConfiguration<CalculationEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {

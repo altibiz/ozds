@@ -31,7 +31,7 @@ public partial class LayoutStateProvider : ComponentBase
         {
           _state = _state! with
           {
-            IsLocalizationDrawerOpen = isLocalizationDrawerOpen
+            IsLocalizationDrawerOpen = isLocalizationDrawerOpen,
           };
           StateHasChanged();
         });
@@ -42,7 +42,7 @@ public partial class LayoutStateProvider : ComponentBase
         {
           _state = _state! with
           {
-            IsNavigationDrawerOpen = isNavigationDrawerOpen
+            IsNavigationDrawerOpen = isNavigationDrawerOpen,
           };
           StateHasChanged();
         });

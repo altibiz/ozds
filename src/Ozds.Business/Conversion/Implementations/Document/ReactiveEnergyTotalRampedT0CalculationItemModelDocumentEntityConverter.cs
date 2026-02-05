@@ -5,14 +5,15 @@ using Ozds.Document.Entities;
 
 namespace Ozds.Business.Conversion.Implementations.Document;
 
-public class
-  ReactiveEnergyTotalRampedT0CalculationItemModelDocumentEntityConverter(
-    IServiceProvider serviceProvider
-  ) : InheritingModelDocumentEntityConverter<
-  ReactiveEnergyTotalRampedT0CalculationItemModel,
-  CalculationItemModel,
-  ReactiveEnergyTotalRampedT0CalculationItemEntity,
-  CalculationItemEntity>(serviceProvider)
+public class ReactiveEnergyTotalRampedT0CalculationItemModelDocumentEntityConverter(
+  IServiceProvider serviceProvider
+)
+  : InheritingModelDocumentEntityConverter<
+    ReactiveEnergyTotalRampedT0CalculationItemModel,
+    CalculationItemModel,
+    ReactiveEnergyTotalRampedT0CalculationItemEntity,
+    CalculationItemEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     ReactiveEnergyTotalRampedT0CalculationItemModel model,
@@ -33,13 +34,12 @@ public class
   }
 }
 
-public class
-  UsageReactiveEnergyTotalRampedT0CalculationItemModelDocumentEntityConverter(
-    IServiceProvider serviceProvider
-  ) : InheritingModelDocumentEntityConverter<
-  UsageReactiveEnergyTotalRampedT0CalculationItemModel,
-  ReactiveEnergyTotalRampedT0CalculationItemModel,
-  UsageReactiveEnergyTotalRampedT0CalculationItemEntity,
-  ReactiveEnergyTotalRampedT0CalculationItemEntity>(serviceProvider)
-{
-}
+public class UsageReactiveEnergyTotalRampedT0CalculationItemModelDocumentEntityConverter(
+  IServiceProvider serviceProvider
+)
+  : InheritingModelDocumentEntityConverter<
+    UsageReactiveEnergyTotalRampedT0CalculationItemModel,
+    ReactiveEnergyTotalRampedT0CalculationItemModel,
+    UsageReactiveEnergyTotalRampedT0CalculationItemEntity,
+    ReactiveEnergyTotalRampedT0CalculationItemEntity
+  >(serviceProvider) { }

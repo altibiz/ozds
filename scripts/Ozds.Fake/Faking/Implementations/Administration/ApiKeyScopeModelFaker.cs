@@ -4,10 +4,7 @@ using Ozds.Fake.Faking.Base;
 
 namespace Ozds.Fake.Implementations.Administration;
 
-public class ApiKeyScopeModelFaker(
-  IServiceProvider serviceProvider
-) : InheritingModelFaker<ApiKeyScopeModel, AuditableJoinModel>(
-  serviceProvider
-)
-{
-}
+public class ApiKeyScopeModelFaker(IServiceProvider serviceProvider)
+  : InheritingModelFaker<ApiKeyScopeModel, AuditableJoinModel>(
+    serviceProvider
+  ) { }

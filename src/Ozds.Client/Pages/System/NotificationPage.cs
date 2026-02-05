@@ -28,7 +28,8 @@ public partial class NotificationPage
       .MarkNotificationAsSeen(
         model.Id,
         RepresentativeState.Representative.Id,
-        CancellationToken);
+        CancellationToken
+      );
 
     NavigateToPage<NotificationsPage>();
   }
@@ -37,9 +38,7 @@ public partial class NotificationPage
   {
     await ScopedServices
       .GetRequiredService<NotificationMutations>()
-      .MarkNotificationAsResolved(
-        model,
-        CancellationToken);
+      .MarkNotificationAsResolved(model, CancellationToken);
   }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously

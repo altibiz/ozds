@@ -26,7 +26,7 @@ public partial class OzdsErrorBoundary : DisposableComponentBase
     var eventArgs = new ErrorEventArgs
     {
       Message = "UI Error",
-      Exception = exception
+      Exception = exception,
     };
     ErrorPublisher.Publish(eventArgs);
   }

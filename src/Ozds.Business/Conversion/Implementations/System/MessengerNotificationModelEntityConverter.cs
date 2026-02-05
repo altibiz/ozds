@@ -8,15 +8,18 @@ namespace Ozds.Business.Conversion.Implementations.System;
 
 public class MessengerNotificationModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  MessengerNotificationModel,
-  ResolvableNotificationModel,
-  MessengerNotificationEntity,
-  ResolvableNotificationEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    MessengerNotificationModel,
+    ResolvableNotificationModel,
+    MessengerNotificationEntity,
+    ResolvableNotificationEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     MessengerNotificationModel model,
-    MessengerNotificationEntity entity)
+    MessengerNotificationEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.MessengerId = model.MessengerId;
@@ -24,7 +27,8 @@ public class MessengerNotificationModelEntityConverter(
 
   public override void InitializeModel(
     MessengerNotificationEntity entity,
-    MessengerNotificationModel model)
+    MessengerNotificationModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.MessengerId = entity.MessengerId;

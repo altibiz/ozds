@@ -4,9 +4,7 @@ using Ozds.Caching.Observers.EventArgs;
 
 namespace Ozds.Iot.Observers.Implementations;
 
-public class CacheObserver :
-  Observer<CacheEventArgs>,
-  ICachePublisher,
-  ICacheSubscriber
-{
-}
+public class CacheObserver
+  : Observer<CacheEventArgs>,
+    ICachePublisher,
+    ICacheSubscriber { }

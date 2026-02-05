@@ -8,11 +8,13 @@ namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class AbbB2xMeasurementValidatorModelCachingEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelCachingEntityConverter<
-  AbbB2xMeasurementValidatorModel,
-  TrackableModel,
-  AbbB2xMeasurementValidatorEntity,
-  TrackableEntity>(serviceProvider)
+)
+  : InheritingModelCachingEntityConverter<
+    AbbB2xMeasurementValidatorModel,
+    TrackableModel,
+    AbbB2xMeasurementValidatorEntity,
+    TrackableEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     AbbB2xMeasurementValidatorModel model,

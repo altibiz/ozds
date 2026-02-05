@@ -6,12 +6,10 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Business.Conversion.Implementations.System;
 
-public class SystemEventEntityConverter(
-  IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  SystemEventModel,
-  EventModel,
-  SystemEventEntity,
-  EventEntity>(serviceProvider)
-{
-}
+public class SystemEventEntityConverter(IServiceProvider serviceProvider)
+  : InheritingModelEntityConverter<
+    SystemEventModel,
+    EventModel,
+    SystemEventEntity,
+    EventEntity
+  >(serviceProvider) { }

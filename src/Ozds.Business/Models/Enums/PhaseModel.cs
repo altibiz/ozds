@@ -7,7 +7,7 @@ public enum PhaseModel
 {
   L1,
   L2,
-  L3
+  L3,
 }
 
 public static class PhaseModelExtensions
@@ -19,7 +19,7 @@ public static class PhaseModelExtensions
       PhaseModel.L1 => "L1",
       PhaseModel.L2 => "L2",
       PhaseModel.L3 => "L3",
-      _ => throw new ArgumentOutOfRangeException(nameof(phase), phase, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(phase), phase, null),
     };
   }
 
@@ -30,7 +30,7 @@ public static class PhaseModelExtensions
       PhaseModel.L1 => index.ToPhaseColors()[0],
       PhaseModel.L2 => index.ToPhaseColors()[1],
       PhaseModel.L3 => index.ToPhaseColors()[2],
-      _ => throw new ArgumentOutOfRangeException(nameof(phase), phase, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(phase), phase, null),
     };
   }
 
@@ -48,15 +48,15 @@ public static class PhaseModelExtensions
       _ => measure switch
       {
         MeasureModel.Voltage
-          or MeasureModel.Current
-          or MeasureModel.ActivePower
-          or MeasureModel.ReactivePower
-          or MeasureModel.ApparentPower => phasic.PhaseAverage(),
+        or MeasureModel.Current
+        or MeasureModel.ActivePower
+        or MeasureModel.ReactivePower
+        or MeasureModel.ApparentPower => phasic.PhaseAverage(),
         MeasureModel.ActiveEnergy
-          or MeasureModel.ReactiveEnergy
-          or MeasureModel.ApparentEnergy => phasic.PhaseSum(),
-        _ => phasic.PhaseSum()
-      }
+        or MeasureModel.ReactiveEnergy
+        or MeasureModel.ApparentEnergy => phasic.PhaseSum(),
+        _ => phasic.PhaseSum(),
+      },
     };
   }
 }

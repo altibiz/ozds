@@ -53,14 +53,16 @@ public partial class ThemeStateProvider : OzdsComponentBase
     await LocalStorageService.SetItemAsync(
       DarkModeKey,
       isDarkMode,
-      CancellationToken);
+      CancellationToken
+    );
   }
 
   private async Task<bool?> GetDarkModeFromLocalStorage()
   {
     return await LocalStorageService.GetItemAsync<bool>(
       DarkModeKey,
-      CancellationToken);
+      CancellationToken
+    );
   }
 
   private async Task<bool> GetDarkModeFromSystem()

@@ -23,11 +23,10 @@ public class RepresentativeQueries(
     get { return userUserQueries.LoginHref; }
   }
 
-  public async Task<MaybeRepresentingUserModel?>
-    ReadMaybeRepresentingUserByUserId(
-      string id,
-      CancellationToken cancellationToken
-    )
+  public async Task<MaybeRepresentingUserModel?> ReadMaybeRepresentingUserByUserId(
+    string id,
+    CancellationToken cancellationToken
+  )
   {
     var user = await userUserQueries.ReadUserById(id, cancellationToken);
     if (user is null)
@@ -35,33 +34,38 @@ public class RepresentativeQueries(
       return null;
     }
 
-    var representative = await dataTrackableQueries
-      .ReadById<RepresentativeEntity>(user.Id, cancellationToken);
+    var representative =
+      await dataTrackableQueries.ReadById<RepresentativeEntity>(
+        user.Id,
+        cancellationToken
+      );
     if (representative is null)
     {
       return new MaybeRepresentingUserModel
       {
         User = modelUserEntityConverter.ToModel<UserModel>(user),
-        Representative = null
+        Representative = null,
       };
     }
 
     return new RepresentingUserModel
     {
       User = modelUserEntityConverter.ToModel<UserModel>(user),
-      Representative = modelEntityConverter
-        .ToModel<RepresentativeModel>(representative)
+      Representative = modelEntityConverter.ToModel<RepresentativeModel>(
+        representative
+      ),
     };
   }
 
-  public async Task<PaginatedList<MaybeRepresentingUserModel>>
-    ReadMaybeRepresentingUsers(
-      int pageNumber,
-      CancellationToken cancellationToken,
-      int pageCount = QueryConstants.DefaultPageCount,
-      bool deleted = false,
-      string? search = null
-    )
+  public async Task<
+    PaginatedList<MaybeRepresentingUserModel>
+  > ReadMaybeRepresentingUsers(
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultPageCount,
+    bool deleted = false,
+    string? search = null
+  )
   {
     var users = await userUserQueries.ReadUsers(
       pageNumber,
@@ -69,9 +73,7 @@ public class RepresentativeQueries(
       cancellationToken,
       search
     );
-    var userIds = users.Items
-      .Select(user => user.Id)
-      .ToList();
+    var userIds = users.Items.Select(user => user.Id).ToList();
 
     var representatives = await dataRepresentativeQueries.ReadByUserIds(
       userIds,
@@ -79,38 +81,42 @@ public class RepresentativeQueries(
       deleted
     );
 
-    return users.Items
-      .Select(user => new MaybeRepresentingUserModel
+    return users
+      .Items.Select(user => new MaybeRepresentingUserModel
       {
         User = modelUserEntityConverter.ToModel<UserModel>(user),
-        Representative = representatives
-            .FirstOrDefault(x => x.Id == user.Id)
+        Representative = representatives.FirstOrDefault(x => x.Id == user.Id)
           is { } representative
           ? modelEntityConverter.ToModel<RepresentativeModel>(representative)
-          : null
+          : null,
       })
       .ToPaginatedList(users.TotalCount);
   }
 
-  public async Task<MaybeRepresentingUserModel?>
-    ReadMaybeRepresentingUserByClaimsPrincipal(
-      ClaimsPrincipal claimsPrincipal,
-      CancellationToken cancellationToken)
+  public async Task<MaybeRepresentingUserModel?> ReadMaybeRepresentingUserByClaimsPrincipal(
+    ClaimsPrincipal claimsPrincipal,
+    CancellationToken cancellationToken
+  )
   {
-    var user = await userUserQueries
-      .ReadUserByClaimsPrincipal(claimsPrincipal, cancellationToken);
+    var user = await userUserQueries.ReadUserByClaimsPrincipal(
+      claimsPrincipal,
+      cancellationToken
+    );
     if (user is null)
     {
       return null;
     }
 
-    var representative = await dataTrackableQueries
-      .ReadById<RepresentativeEntity>(user.Id, cancellationToken);
+    var representative =
+      await dataTrackableQueries.ReadById<RepresentativeEntity>(
+        user.Id,
+        cancellationToken
+      );
     if (representative is null)
     {
       return new MaybeRepresentingUserModel
       {
-        User = modelUserEntityConverter.ToModel<UserModel>(user)
+        User = modelUserEntityConverter.ToModel<UserModel>(user),
       };
     }
 
@@ -119,7 +125,7 @@ public class RepresentativeQueries(
       User = modelUserEntityConverter.ToModel<UserModel>(user),
       Representative = modelEntityConverter.ToEntity<RepresentativeModel>(
         representative
-      )
+      ),
     };
   }
 
@@ -134,8 +140,7 @@ public class RepresentativeQueries(
     );
     return user is null
       ? null
-      : modelUserEntityConverter
-        .ToModel<UserModel>(user);
+      : modelUserEntityConverter.ToModel<UserModel>(user);
   }
 
   public async Task<UserModel?> ReadUserByUserId(
@@ -143,10 +148,7 @@ public class RepresentativeQueries(
     CancellationToken cancellationToken
   )
   {
-    var user = await userUserQueries.ReadUserById(
-      id,
-      cancellationToken
-    );
+    var user = await userUserQueries.ReadUserById(id, cancellationToken);
     return user is null
       ? null
       : modelUserEntityConverter.ToModel<UserModel>(user);
@@ -157,8 +159,11 @@ public class RepresentativeQueries(
     CancellationToken cancellationToken
   )
   {
-    var representative = await dataTrackableQueries
-      .ReadById<RepresentativeEntity>(id, cancellationToken);
+    var representative =
+      await dataTrackableQueries.ReadById<RepresentativeEntity>(
+        id,
+        cancellationToken
+      );
 
     return representative is null
       ? null

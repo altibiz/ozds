@@ -57,8 +57,8 @@ public class FinancialQueries(
       pageCount
     );
 
-    return entities.Items
-      .Select(modelEntityConverter.ToModel<IFinancial>)
+    return entities
+      .Items.Select(modelEntityConverter.ToModel<IFinancial>)
       .ToPaginatedList(entities.TotalCount);
   }
 
@@ -106,8 +106,8 @@ public class FinancialQueries(
       pageCount
     );
 
-    return entities.Items
-      .Select(modelEntityConverter.ToModel<IFinancial>)
+    return entities
+      .Items.Select(modelEntityConverter.ToModel<IFinancial>)
       .ToPaginatedList(entities.TotalCount);
   }
 }

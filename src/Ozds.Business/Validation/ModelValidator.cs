@@ -5,9 +5,7 @@ using Ozds.Business.Validation.Abstractions;
 
 namespace Ozds.Business.Validation;
 
-public class ModelValidator(
-  IServiceProvider serviceProvider
-)
+public class ModelValidator(IServiceProvider serviceProvider)
 {
   private readonly ConcurrentDictionary<Type, IValidator?> validatorCache =
     new();
@@ -26,7 +24,8 @@ public class ModelValidator(
     if (validator is not null)
     {
       validationResults.AddRange(
-        await validator.ValidateAsync(model, cancellationToken));
+        await validator.ValidateAsync(model, cancellationToken)
+      );
     }
 
     return validationResults;
@@ -60,8 +59,8 @@ public class ModelValidator(
       if (validator is not null)
       {
         validationResults.AddRange(
-          await validator
-            .ValidateAsync(next, cancellationToken));
+          await validator.ValidateAsync(next, cancellationToken)
+        );
       }
     }
 

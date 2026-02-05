@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace Ozds.Client.Components.Streaming;
 
-public class InnerErrorBoundary
-  : ErrorBoundary
+public class InnerErrorBoundary : ErrorBoundary
 {
   [Parameter]
   public OzdsErrorBoundary This { get; set; } = default!;

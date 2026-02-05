@@ -8,8 +8,7 @@ public class OzdsBusinessOptions
 
   public OzdsBusinessReactorOptions Reactor { get; set; } = new();
 
-  public OzdsBusinessAuthorizationOptions Authorization { get; set; } =
-    new();
+  public OzdsBusinessAuthorizationOptions Authorization { get; set; } = new();
 }
 
 public class OzdsBusinessReactorOptions
@@ -24,9 +23,8 @@ public class OzdsBusinessAuthorizationOptions
   public string HmacSecret { get; set; } = default!;
 }
 
-public class ConfigureOzdsBusinessOptions(
-  IConfiguration configuration
-) : IConfigureOptions<OzdsBusinessOptions>
+public class ConfigureOzdsBusinessOptions(IConfiguration configuration)
+  : IConfigureOptions<OzdsBusinessOptions>
 {
   public void Configure(OzdsBusinessOptions options)
   {
@@ -35,7 +33,6 @@ public class ConfigureOzdsBusinessOptions(
 
   public static bool WithReactors(IConfiguration configuration)
   {
-    return configuration.GetValue<bool?>("Ozds:Business:WithReactors")
-      ?? true;
+    return configuration.GetValue<bool?>("Ozds:Business:WithReactors") ?? true;
   }
 }

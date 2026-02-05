@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <OutputType>Library</OutputType>
   </PropertyGroup>
@@ -14,8 +13,7 @@
     <PackageReference Include="Tizzani.MudBlazor.HtmlEditor" />
   </ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="../../src/Ozds.Business/Ozds.Business.csproj" />
-	</ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="../../src/Ozds.Business/Ozds.Business.csproj" />
+  </ItemGroup>
 </Project>

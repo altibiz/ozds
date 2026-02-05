@@ -83,24 +83,30 @@ public static class HostExtensions
   )
   {
     builder.Services.AddTransientAssignableTo(
-      typeof(IMeasurementAggregateConverter));
+      typeof(IMeasurementAggregateConverter)
+    );
     builder.Services.AddSingleton(typeof(MeasurementAggregateConverter));
     builder.Services.AddTransientAssignableTo(
-      typeof(IPushRequestMeasurementConverter));
+      typeof(IPushRequestMeasurementConverter)
+    );
     builder.Services.AddSingleton(typeof(PushRequestMeasurementConverter));
     builder.Services.AddTransientAssignableTo(typeof(IModelEntityConverter));
     builder.Services.AddSingleton(typeof(ModelEntityConverter));
     builder.Services.AddTransientAssignableTo(
-      typeof(IModelDocumentEntityConverter));
+      typeof(IModelDocumentEntityConverter)
+    );
     builder.Services.AddSingleton(typeof(ModelDocumentEntityConverter));
     builder.Services.AddTransientAssignableTo(
-      typeof(IModelReportEntityConverter));
+      typeof(IModelReportEntityConverter)
+    );
     builder.Services.AddSingleton(typeof(ModelReportEntityConverter));
     builder.Services.AddTransientAssignableTo(
-      typeof(IModelUserEntityConverter));
+      typeof(IModelUserEntityConverter)
+    );
     builder.Services.AddSingleton(typeof(ModelUserEntityConverter));
     builder.Services.AddTransientAssignableTo(
-      typeof(IModelCachingEntityConverter));
+      typeof(IModelCachingEntityConverter)
+    );
     builder.Services.AddSingleton(typeof(ModelCachingEntityConverter));
     return builder;
   }
@@ -119,14 +125,17 @@ public static class HostExtensions
   )
   {
     builder.Services.AddTransientAssignableTo(
-      typeof(INetworkUserCalculationCalculator));
+      typeof(INetworkUserCalculationCalculator)
+    );
     builder.Services.AddSingleton(typeof(NetworkUserCalculationCalculator));
     builder.Services.AddTransientAssignableTo(
-      typeof(ICalculationItemCalculator));
+      typeof(ICalculationItemCalculator)
+    );
     builder.Services.AddSingleton(typeof(CalculationItemCalculator));
     builder.Services.AddTransient(
       typeof(INetworkUserInvoiceCalculator),
-      typeof(NetworkUserInvoiceCalculator));
+      typeof(NetworkUserInvoiceCalculator)
+    );
     return builder;
   }
 
@@ -145,7 +154,8 @@ public static class HostExtensions
     builder.Services.AddTransientAssignableTo(typeof(IMeterNamingConvention));
     builder.Services.AddSingleton(typeof(MeterNamingConvention));
     builder.Services.AddTransientAssignableTo(
-      typeof(IMessengerNamingConvention));
+      typeof(IMessengerNamingConvention)
+    );
     builder.Services.AddSingleton(typeof(MessengerNamingConvention));
     return builder;
   }

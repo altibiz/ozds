@@ -10,8 +10,8 @@ public abstract class AggregateEntity : IAggregateEntity
 {
   protected long _measurementLocationId;
 
-  public virtual MeasurementLocationEntity MeasurementLocation { get; set; }
-    = default!;
+  public virtual MeasurementLocationEntity MeasurementLocation { get; set; } =
+    default!;
 
   public DateTimeOffset Timestamp { get; set; }
 
@@ -36,9 +36,8 @@ public class AggregateEntity<T> : AggregateEntity
   public virtual T Meter { get; set; } = default!;
 }
 
-public class
-  AggregateEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration<
-  AggregateEntity>
+public class AggregateEntityTypeHierarchyConfiguration
+  : EntityTypeHierarchyConfiguration<AggregateEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
@@ -101,9 +100,6 @@ public class
 
     builder
       .Property<DateTimeOffset>(nameof(AggregateEntity.Timestamp))
-      .HasConversion(
-        x => x.ToUniversalTime(),
-        x => x.ToUniversalTime()
-      );
+      .HasConversion(x => x.ToUniversalTime(), x => x.ToUniversalTime());
   }
 }

@@ -14,7 +14,7 @@ public class TariffModelCachingEntityConverter
       TariffModel.T0 => TariffEntity.T0,
       TariffModel.T1 => TariffEntity.T1,
       TariffModel.T2 => TariffEntity.T2,
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -25,7 +25,7 @@ public class TariffModelCachingEntityConverter
       TariffEntity.T0 => TariffModel.T0,
       TariffEntity.T1 => TariffModel.T1,
       TariffEntity.T2 => TariffModel.T2,
-      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null),
     };
   }
 }

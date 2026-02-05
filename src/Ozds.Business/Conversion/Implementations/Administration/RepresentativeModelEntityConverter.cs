@@ -12,11 +12,13 @@ namespace Ozds.Business.Conversion.Implementations.Administration;
 
 public class RepresentativeModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  RepresentativeModel,
-  TrackableModel,
-  RepresentativeEntity,
-  TrackableEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    RepresentativeModel,
+    TrackableModel,
+    RepresentativeEntity,
+    TrackableEntity
+  >(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();
@@ -31,9 +33,10 @@ public class RepresentativeModelEntityConverter(
     entity.PhysicalPerson = model.PhysicalPerson is null
       ? null!
       : modelEntityConverter.ToEntity<PhysicalPersonEntity>(
-        model.PhysicalPerson);
-    entity.Topics = model.Topics
-      .Select(topic => modelEntityConverter.ToEntity<TopicEntity>(topic))
+        model.PhysicalPerson
+      );
+    entity.Topics = model
+      .Topics.Select(topic => modelEntityConverter.ToEntity<TopicEntity>(topic))
       .ToList();
   }
 
@@ -47,9 +50,10 @@ public class RepresentativeModelEntityConverter(
     model.PhysicalPerson = entity.PhysicalPerson is null
       ? null!
       : modelEntityConverter.ToModel<PhysicalPersonModel>(
-        entity.PhysicalPerson);
-    model.Topics = entity.Topics
-      .Select(topic => modelEntityConverter.ToModel<TopicModel>(topic))
+        entity.PhysicalPerson
+      );
+    model.Topics = entity
+      .Topics.Select(topic => modelEntityConverter.ToModel<TopicModel>(topic))
       .ToList();
   }
 }

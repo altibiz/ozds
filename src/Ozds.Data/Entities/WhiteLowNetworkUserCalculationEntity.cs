@@ -5,46 +5,50 @@ using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Data.Entities;
 
-public class
-  WhiteLowNetworkUserCalculationEntity : MeteredNetworkUserCalculationEntity<
-  WhiteLowNetworkUserCatalogueEntity>
+public class WhiteLowNetworkUserCalculationEntity
+  : MeteredNetworkUserCalculationEntity<WhiteLowNetworkUserCatalogueEntity>
 {
 #pragma warning disable CA1707
-  public UsageActiveEnergyTotalImportT1CalculationItemEntity
-    UsageActiveEnergyTotalImportT1 { get; set; } = default!;
+  public UsageActiveEnergyTotalImportT1CalculationItemEntity UsageActiveEnergyTotalImportT1 { get; set; } =
+    default!;
 
-  public UsageActiveEnergyTotalImportT2CalculationItemEntity
-    UsageActiveEnergyTotalImportT2 { get; set; } = default!;
+  public UsageActiveEnergyTotalImportT2CalculationItemEntity UsageActiveEnergyTotalImportT2 { get; set; } =
+    default!;
 
-  public UsageReactiveEnergyTotalRampedT0CalculationItemEntity
-    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
+  public UsageReactiveEnergyTotalRampedT0CalculationItemEntity UsageReactiveEnergyTotalRampedT0 { get; set; } =
+    default!;
 #pragma warning restore CA1707
 }
 
-public class
-  WhiteLowNetworkUserCalculationEntityTypeConfiguration :
-  EntityTypeConfiguration<
-    WhiteLowNetworkUserCalculationEntity>
+public class WhiteLowNetworkUserCalculationEntityTypeConfiguration
+  : EntityTypeConfiguration<WhiteLowNetworkUserCalculationEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<WhiteLowNetworkUserCalculationEntity> builder)
+    EntityTypeBuilder<WhiteLowNetworkUserCalculationEntity> builder
+  )
   {
     builder
       .ComplexProperty(
-        nameof(WhiteLowNetworkUserCalculationEntity
-          .UsageActiveEnergyTotalImportT1))
+        nameof(
+          WhiteLowNetworkUserCalculationEntity.UsageActiveEnergyTotalImportT1
+        )
+      )
       .UsageActiveEnergyTotalImportT1CalculationItem();
 
     builder
       .ComplexProperty(
-        nameof(WhiteLowNetworkUserCalculationEntity
-          .UsageActiveEnergyTotalImportT2))
+        nameof(
+          WhiteLowNetworkUserCalculationEntity.UsageActiveEnergyTotalImportT2
+        )
+      )
       .UsageActiveEnergyTotalImportT2CalculationItem();
 
     builder
       .ComplexProperty(
-        nameof(WhiteLowNetworkUserCalculationEntity
-          .UsageReactiveEnergyTotalRampedT0))
+        nameof(
+          WhiteLowNetworkUserCalculationEntity.UsageReactiveEnergyTotalRampedT0
+        )
+      )
       .UsageReactiveEnergyTotalRampedT0CalculationItem();
   }
 }

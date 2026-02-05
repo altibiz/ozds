@@ -8,15 +8,18 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 
 public class BlueLowNetworkUserCatalogueModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  BlueLowNetworkUserCatalogueModel,
-  NetworkUserCatalogueModel,
-  BlueLowNetworkUserCatalogueEntity,
-  NetworkUserCatalogueEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    BlueLowNetworkUserCatalogueModel,
+    NetworkUserCatalogueModel,
+    BlueLowNetworkUserCatalogueEntity,
+    NetworkUserCatalogueEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     BlueLowNetworkUserCatalogueModel model,
-    BlueLowNetworkUserCatalogueEntity entity)
+    BlueLowNetworkUserCatalogueEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.ActiveEnergyTotalImportT0Price_EUR =
@@ -27,7 +30,8 @@ public class BlueLowNetworkUserCatalogueModelEntityConverter(
 
   public override void InitializeModel(
     BlueLowNetworkUserCatalogueEntity entity,
-    BlueLowNetworkUserCatalogueModel model)
+    BlueLowNetworkUserCatalogueModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.ActiveEnergyTotalImportT0Price_EUR =

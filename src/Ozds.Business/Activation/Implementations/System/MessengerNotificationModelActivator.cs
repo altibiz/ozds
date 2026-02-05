@@ -5,10 +5,11 @@ using Ozds.Business.Models.Base;
 namespace Ozds.Business.Activation.Implementations.System;
 
 public class MessengerNotificationModelActivator(
-  IServiceProvider serviceProvider)
-  : InheritingModelActivator<
-    MessengerNotificationModel,
-    NotificationModel>(serviceProvider)
+  IServiceProvider serviceProvider
+)
+  : InheritingModelActivator<MessengerNotificationModel, NotificationModel>(
+    serviceProvider
+  )
 {
   public override void Initialize(MessengerNotificationModel model)
   {

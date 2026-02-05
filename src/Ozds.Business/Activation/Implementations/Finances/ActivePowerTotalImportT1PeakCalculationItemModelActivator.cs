@@ -6,9 +6,11 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 
 public class ActivePowerTotalImportT1PeakCalculationItemModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  ActivePowerTotalImportT1PeakCalculationItemModel,
-  CalculationItemModel>(serviceProvider)
+)
+  : InheritingModelActivator<
+    ActivePowerTotalImportT1PeakCalculationItemModel,
+    CalculationItemModel
+  >(serviceProvider)
 {
   public override void Initialize(
     ActivePowerTotalImportT1PeakCalculationItemModel model
@@ -23,8 +25,8 @@ public class ActivePowerTotalImportT1PeakCalculationItemModelActivator(
 
 public class UsageActivePowerTotalImportT1PeakCalculationItemModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  UsageActivePowerTotalImportT1PeakCalculationItemModel,
-  ActivePowerTotalImportT1PeakCalculationItemModel>(serviceProvider)
-{
-}
+)
+  : InheritingModelActivator<
+    UsageActivePowerTotalImportT1PeakCalculationItemModel,
+    ActivePowerTotalImportT1PeakCalculationItemModel
+  >(serviceProvider) { }

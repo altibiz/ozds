@@ -16,6 +16,5 @@ public interface IAuditableEntity : IEntity
 }
 
 public interface IAuditableIdentifiableEntity
-  : IAuditableEntity, IIdentifiableEntity
-{
-}
+  : IAuditableEntity,
+    IIdentifiableEntity { }

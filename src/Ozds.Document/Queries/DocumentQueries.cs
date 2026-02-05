@@ -3,9 +3,7 @@ using Ozds.Document.Renderers.Implementations;
 
 namespace Ozds.Document.Queries;
 
-public class DocumentQueries(
-  DocumentRenderer Renderer
-)
+public class DocumentQueries(DocumentRenderer Renderer)
 {
   public async Task<string?> ReadHtmlForNetworkUserInvoice(
     CalculatedNetworkUserInvoiceEntity entity,

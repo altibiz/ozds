@@ -13,16 +13,17 @@ public class InvoiceQueries(
   ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
-  public async Task<PaginatedList<NetworkUserInvoiceModel>>
-    ReadByRepresentativeIdAndRole(
-      string representativeId,
-      RoleModel role,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      DateTimeOffset? fromDate = null,
-      DateTimeOffset? toDate = null,
-      int pageCount = QueryConstants.DefaultPageCount
-    )
+  public async Task<
+    PaginatedList<NetworkUserInvoiceModel>
+  > ReadByRepresentativeIdAndRole(
+    string representativeId,
+    RoleModel role,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    DateTimeOffset? fromDate = null,
+    DateTimeOffset? toDate = null,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
   {
     var entities = await queries.ReadInvoicesByRepresentative(
       representativeId,
@@ -31,18 +32,18 @@ public class InvoiceQueries(
       cancellationToken,
       fromDate,
       toDate,
-      pageCount);
+      pageCount
+    );
 
-    return entities.Items
-      .Select(modelEntityConverter.ToModel<NetworkUserInvoiceModel>)
+    return entities
+      .Items.Select(modelEntityConverter.ToModel<NetworkUserInvoiceModel>)
       .ToPaginatedList(entities.TotalCount);
   }
 
-  public async Task<CalculatedNetworkUserInvoiceModel?>
-    ReadCalculatedById(
-      string id,
-      CancellationToken cancellationToken
-    )
+  public async Task<CalculatedNetworkUserInvoiceModel?> ReadCalculatedById(
+    string id,
+    CancellationToken cancellationToken
+  )
   {
     var entity = await queries.ReadCalculatedNetworkUserInvoice(
       id,
@@ -53,12 +54,14 @@ public class InvoiceQueries(
       ? default
       : new CalculatedNetworkUserInvoiceModel
       {
-        Calculations = entity.Calculations
-          .Select(modelEntityConverter.ToModel<NetworkUserCalculationModel>)
+        Calculations = entity
+          .Calculations.Select(
+            modelEntityConverter.ToModel<NetworkUserCalculationModel>
+          )
           .ToList(),
         Invoice = modelEntityConverter.ToModel<NetworkUserInvoiceModel>(
           entity.Invoice
-        )
+        ),
       };
   }
 }

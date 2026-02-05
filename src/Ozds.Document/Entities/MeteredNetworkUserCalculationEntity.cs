@@ -1,22 +1,22 @@
 namespace Ozds.Document.Entities;
 
-public abstract class
-  MeteredNetworkUserCalculationEntity : NetworkUserCalculationEntity
+public abstract class MeteredNetworkUserCalculationEntity
+  : NetworkUserCalculationEntity
 {
-  public UsageMeterFeeCalculationItemEntity
-    UsageMeterFee { get; set; } = default!;
+  public UsageMeterFeeCalculationItemEntity UsageMeterFee { get; set; } =
+    default!;
 
-  public SupplyActiveEnergyTotalImportT1CalculationItemEntity
-    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
+  public SupplyActiveEnergyTotalImportT1CalculationItemEntity SupplyActiveEnergyTotalImportT1 { get; set; } =
+    default!;
 
-  public SupplyActiveEnergyTotalImportT2CalculationItemEntity
-    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
+  public SupplyActiveEnergyTotalImportT2CalculationItemEntity SupplyActiveEnergyTotalImportT2 { get; set; } =
+    default!;
 
-  public SupplyBusinessUsageCalculationItemEntity
-    SupplyBusinessUsageFee { get; set; } = default!;
+  public SupplyBusinessUsageCalculationItemEntity SupplyBusinessUsageFee { get; set; } =
+    default!;
 
-  public SupplyRenewableEnergyCalculationItemEntity
-    SupplyRenewableEnergyFee { get; set; } = default!;
+  public SupplyRenewableEnergyCalculationItemEntity SupplyRenewableEnergyFee { get; set; } =
+    default!;
 
   public decimal UsageFeeTotal_EUR { get; set; }
 
@@ -28,11 +28,7 @@ public abstract class
     {
       return AdditionalUsageItems
         .AsEnumerable()
-        .Concat(
-          new CalculationItemEntity[]
-          {
-            UsageMeterFee
-          });
+        .Concat(new CalculationItemEntity[] { UsageMeterFee });
     }
   }
 
@@ -45,7 +41,7 @@ public abstract class
         SupplyActiveEnergyTotalImportT1,
         SupplyActiveEnergyTotalImportT2,
         SupplyBusinessUsageFee,
-        SupplyRenewableEnergyFee
+        SupplyRenewableEnergyFee,
       };
     }
   }
@@ -60,8 +56,8 @@ public abstract class MeteredNetworkUserCalculationEntity<TNetworkUserCatalogue>
   : MeteredNetworkUserCalculationEntity
   where TNetworkUserCatalogue : NetworkUserCatalogueEntity
 {
-  public TNetworkUserCatalogue
-    ConcreteUsageNetworkUserCatalogue { get; set; } = default!;
+  public TNetworkUserCatalogue ConcreteUsageNetworkUserCatalogue { get; set; } =
+    default!;
 
   public override NetworkUserCatalogueEntity UsageNetworkUserCatalogue
   {

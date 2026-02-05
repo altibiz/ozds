@@ -35,8 +35,8 @@ public class EventQueries(
       title
     );
 
-    return models.Items
-      .Select(modelEntityConverter.ToModel<T>)
+    return models
+      .Items.Select(modelEntityConverter.ToModel<T>)
       .ToPaginatedList(models.TotalCount);
   }
 
@@ -52,7 +52,8 @@ public class EventQueries(
     if (!modelType.IsAssignableTo(typeof(IEvent)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IEvent)}");
+        $"Type {modelType} is not assignable to {typeof(IEvent)}"
+      );
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
@@ -65,10 +66,11 @@ public class EventQueries(
       pageNumber,
       cancellationToken,
       pageCount,
-      title);
+      title
+    );
 
-    return entities.Items
-      .Select(modelEntityConverter.ToModel<object>)
+    return entities
+      .Items.Select(modelEntityConverter.ToModel<object>)
       .ToPaginatedList(entities.TotalCount);
   }
 
@@ -90,9 +92,7 @@ public class EventQueries(
       search
     );
 
-    return entities.Items
-      .OfType<T>()
-      .ToPaginatedList(entities.TotalCount);
+    return entities.Items.OfType<T>().ToPaginatedList(entities.TotalCount);
   }
 
   public async Task<PaginatedList<IAuditEvent>> ReadAuditEvents(
@@ -107,13 +107,15 @@ public class EventQueries(
     if (!modelType.IsAssignableTo(typeof(IAuditEvent)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IAuditEvent)}");
+        $"Type {modelType} is not assignable to {typeof(IAuditEvent)}"
+      );
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
 
-    var auditableEntity = modelEntityConverter
-      .ToEntity<IAuditableEntity>(auditable);
+    var auditableEntity = modelEntityConverter.ToEntity<IAuditableEntity>(
+      auditable
+    );
 
     var entities = await queries.ReadAuditEvents(
       entityType,
@@ -124,8 +126,8 @@ public class EventQueries(
       search
     );
 
-    return entities.Items
-      .Select(modelEntityConverter.ToModel<IAuditEvent>)
+    return entities
+      .Items.Select(modelEntityConverter.ToModel<IAuditEvent>)
       .ToPaginatedList(entities.TotalCount);
   }
 

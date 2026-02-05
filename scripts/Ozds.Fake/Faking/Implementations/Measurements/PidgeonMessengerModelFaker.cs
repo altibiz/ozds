@@ -4,8 +4,7 @@ using Ozds.Fake.Faking.Base;
 
 namespace Ozds.Fake.Faking.Implementations.Measurements;
 
-public class PidgeonMessengerModelFaker(
-  IServiceProvider serviceProvider
-) : InheritingModelFaker<PidgeonMessengerModel, MessengerModel>(serviceProvider)
-{
-}
+public class PidgeonMessengerModelFaker(IServiceProvider serviceProvider)
+  : InheritingModelFaker<PidgeonMessengerModel, MessengerModel>(
+    serviceProvider
+  ) { }

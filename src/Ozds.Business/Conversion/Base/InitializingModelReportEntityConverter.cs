@@ -2,8 +2,8 @@ using Ozds.Business.Conversion.Abstractions;
 
 namespace Ozds.Business.Conversion.Base;
 
-public abstract class
-  InitializingModelReportEntityConverter : IModelReportEntityConverter
+public abstract class InitializingModelReportEntityConverter
+  : IModelReportEntityConverter
 {
   public abstract Type EntityType { get; }
 
@@ -31,11 +31,7 @@ public abstract class
 
   public abstract object BoxModel();
 
-  public virtual void InitializeEntity(object model, object entity)
-  {
-  }
+  public virtual void InitializeEntity(object model, object entity) { }
 
-  public virtual void InitializeModel(object entity, object model)
-  {
-  }
+  public virtual void InitializeModel(object entity, object model) { }
 }

@@ -10,13 +10,13 @@ using Ozds.Data.Reflection;
 
 namespace Ozds.Business.Conversion.Implementations.Administration;
 
-public class ScopeModelEntityConverter(
-  IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  ScopeModel,
-  TrackableModel,
-  ScopeEntity,
-  TrackableEntity>(serviceProvider)
+public class ScopeModelEntityConverter(IServiceProvider serviceProvider)
+  : InheritingModelEntityConverter<
+    ScopeModel,
+    TrackableModel,
+    ScopeEntity,
+    TrackableEntity
+  >(serviceProvider)
 {
   private readonly EntityReflector entityReflector =
     serviceProvider.GetRequiredService<EntityReflector>();
@@ -27,10 +27,7 @@ public class ScopeModelEntityConverter(
   private readonly ModelReflector modelReflector =
     serviceProvider.GetRequiredService<ModelReflector>();
 
-  public override void InitializeEntity(
-    ScopeModel model,
-    ScopeEntity entity
-  )
+  public override void InitializeEntity(ScopeModel model, ScopeEntity entity)
   {
     base.InitializeEntity(model, entity);
 
@@ -53,21 +50,18 @@ public class ScopeModelEntityConverter(
     entity.ScopeEntityId = model.ScopeModelId;
     entity.ScopeEntityType = scopeEntityTypeName;
     entity.ScopeEntityTable = scopeEntityTable;
-    entity.ScopeAction = modelEntityConverter
-      .ToEntity<ActionEntity>(model.ScopeAction);
+    entity.ScopeAction = modelEntityConverter.ToEntity<ActionEntity>(
+      model.ScopeAction
+    );
   }
 
-  public override void InitializeModel(
-    ScopeEntity entity,
-    ScopeModel model
-  )
+  public override void InitializeModel(ScopeEntity entity, ScopeModel model)
   {
     base.InitializeModel(entity, model);
 
     var scopeEntityType = entity.ScopeEntityType is null
       ? null
-      : entityReflector
-        .ResolveEntityTypeFromName(entity.ScopeEntityType);
+      : entityReflector.ResolveEntityTypeFromName(entity.ScopeEntityType);
 
     var scopeModelType = scopeEntityType is null
       ? null
@@ -79,7 +73,8 @@ public class ScopeModelEntityConverter(
 
     model.ScopeModelId = entity.ScopeEntityId;
     model.ScopeModelType = scopeModelTypeName;
-    model.ScopeAction = modelEntityConverter
-      .ToModel<ActionModel>(entity.ScopeAction);
+    model.ScopeAction = modelEntityConverter.ToModel<ActionModel>(
+      entity.ScopeAction
+    );
   }
 }

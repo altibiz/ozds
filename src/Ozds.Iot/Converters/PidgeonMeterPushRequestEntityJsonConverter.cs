@@ -5,8 +5,7 @@ using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Iot.Converters;
 
-public class PidgeonMeterPushRequestEntityJsonConverter<T>
-  : JsonConverter<T>
+public class PidgeonMeterPushRequestEntityJsonConverter<T> : JsonConverter<T>
   where T : IPidgeonMeterPushRequestEntity
 {
   public override T? Read(
@@ -19,22 +18,29 @@ public class PidgeonMeterPushRequestEntityJsonConverter<T>
 
     var jsonObject = jsonDocument.RootElement;
 
-    if (jsonObject.TryGetProperty("MeterId", out var meterIdProp) ||
-      jsonObject.TryGetProperty("meterId", out meterIdProp))
+    if (
+      jsonObject.TryGetProperty("MeterId", out var meterIdProp)
+      || jsonObject.TryGetProperty("meterId", out meterIdProp)
+    )
     {
-      var meterId = meterIdProp.GetString()
+      var meterId =
+        meterIdProp.GetString()
         ?? throw new JsonException(
-          "Invalid JSON: MeterId not found or unrecognized prefix.");
+          "Invalid JSON: MeterId not found or unrecognized prefix."
+        );
 
-      var type = GetTypeForMeterId(meterId)
+      var type =
+        GetTypeForMeterId(meterId)
         ?? throw new JsonException(
-          "Invalid JSON: MeterId not found or unrecognized prefix.");
+          "Invalid JSON: MeterId not found or unrecognized prefix."
+        );
 
       return (T?)jsonObject.Deserialize(type, options);
     }
 
     throw new JsonException(
-      "Invalid JSON: MeterId not found or unrecognized prefix.");
+      "Invalid JSON: MeterId not found or unrecognized prefix."
+    );
   }
 
   public override void Write(
@@ -56,8 +62,12 @@ public class PidgeonMeterPushRequestEntityJsonConverter<T>
   private static Type? GetTypeForMeterId(string meterId)
   {
     var prefix = string.Join('-', meterId.Split('-').SkipLast(1));
-    if (MeterIdPrefixAttribute.TypesByMeterIdPrefix
-      .TryGetValue(prefix, out var existingType))
+    if (
+      MeterIdPrefixAttribute.TypesByMeterIdPrefix.TryGetValue(
+        prefix,
+        out var existingType
+      )
+    )
     {
       return existingType;
     }

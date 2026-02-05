@@ -17,11 +17,12 @@ public abstract class InheritingModelFaker<TModel, TSuperModel>(
     {
       _baseModelFaker ??=
         serviceProvider
-            .GetServices<IModelFaker>()
-            .FirstOrDefault(x => x.ModelType == typeof(TSuperModel))
+          .GetServices<IModelFaker>()
+          .FirstOrDefault(x => x.ModelType == typeof(TSuperModel))
           as InitializingModelFaker
         ?? throw new InvalidOperationException(
-          $"No model activator found for type {typeof(TSuperModel)}");
+          $"No model activator found for type {typeof(TSuperModel)}"
+        );
 
       return _baseModelFaker;
     }

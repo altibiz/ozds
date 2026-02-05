@@ -4,8 +4,8 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation.Implementations.System;
 
-public class MessengerEventModelActivator(IServiceProvider serviceProvider) :
-  InheritingModelActivator<MessengerEventModel, EventModel>(serviceProvider)
+public class MessengerEventModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<MessengerEventModel, EventModel>(serviceProvider)
 {
   public override void Initialize(MessengerEventModel model)
   {

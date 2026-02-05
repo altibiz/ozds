@@ -6,7 +6,8 @@ public static class ExpressionExtensions
 {
   public static Expression<Func<TIn, TOut>> Prefix<TIn, TMid, TOut>(
     this Expression<Func<TMid, TOut>> outer,
-    Expression<Func<TIn, TMid>> inner)
+    Expression<Func<TIn, TMid>> inner
+  )
   {
     var parameter = Expression.Parameter(typeof(TIn));
     var innerBody = ParameterReplacer.Replace(
@@ -24,7 +25,8 @@ public static class ExpressionExtensions
 
   public static Expression<Func<TIn, TOut>> Suffix<TIn, TMid, TOut>(
     this Expression<Func<TIn, TMid>> inner,
-    Expression<Func<TMid, TOut>> outer)
+    Expression<Func<TMid, TOut>> outer
+  )
   {
     return outer.Prefix(inner);
   }
@@ -51,8 +53,10 @@ public static class ExpressionExtensions
   )
   {
     var expression = expr.Body;
-    if (expression is UnaryExpression unaryExpression
-      && unaryExpression.NodeType == ExpressionType.Convert)
+    if (
+      expression is UnaryExpression unaryExpression
+      && unaryExpression.NodeType == ExpressionType.Convert
+    )
     {
       expression = unaryExpression.Operand;
     }
@@ -60,7 +64,8 @@ public static class ExpressionExtensions
     if (expression is not MemberExpression memberExpression)
     {
       throw new InvalidOperationException(
-        $"Expression {expression} is not a member expression.");
+        $"Expression {expression} is not a member expression."
+      );
     }
 
     return memberExpression;
@@ -80,7 +85,8 @@ internal sealed class ParameterReplacer(
   public static Expression Replace(
     Expression body,
     ParameterExpression oldParam,
-    Expression newExpression)
+    Expression newExpression
+  )
   {
     return new ParameterReplacer(oldParam, newExpression).Visit(body);
   }

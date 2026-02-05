@@ -13,37 +13,44 @@ namespace Ozds.Data.Migrations
             migrationBuilder.RenameColumn(
                 name: "usage_reactive_energy_total_ramped_t0fee_eur",
                 table: "network_user_invoices",
-                newName: "usage_reactive_energy_total_ramped_t0_fee_eur");
+                newName: "usage_reactive_energy_total_ramped_t0_fee_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "usage_active_power_total_import_t1peak_fee_eur",
                 table: "network_user_invoices",
-                newName: "usage_active_power_total_import_t1_peak_fee_eur");
+                newName: "usage_active_power_total_import_t1_peak_fee_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "usage_active_energy_total_import_t2fee_eur",
                 table: "network_user_invoices",
-                newName: "usage_active_energy_total_import_t2_fee_eur");
+                newName: "usage_active_energy_total_import_t2_fee_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "usage_active_energy_total_import_t1fee_eur",
                 table: "network_user_invoices",
-                newName: "usage_active_energy_total_import_t1_fee_eur");
+                newName: "usage_active_energy_total_import_t1_fee_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "usage_active_energy_total_import_t0fee_eur",
                 table: "network_user_invoices",
-                newName: "usage_active_energy_total_import_t0_fee_eur");
+                newName: "usage_active_energy_total_import_t0_fee_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "supply_active_energy_total_import_t2fee_eur",
                 table: "network_user_invoices",
-                newName: "supply_active_energy_total_import_t2_fee_eur");
+                newName: "supply_active_energy_total_import_t2_fee_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "supply_active_energy_total_import_t1fee_eur",
                 table: "network_user_invoices",
-                newName: "supply_active_energy_total_import_t1_fee_eur");
+                newName: "supply_active_energy_total_import_t1_fee_eur"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_total_import_t0_varh",
@@ -51,7 +58,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_total_export_t0_varh",
@@ -59,7 +67,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t2_wh",
@@ -67,7 +76,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t1_wh",
@@ -75,7 +85,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t0_wh",
@@ -83,7 +94,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_export_t0_wh",
@@ -91,7 +103,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l3_import_t0_wh",
@@ -99,7 +112,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l2_import_t0_wh",
@@ -107,7 +121,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l1_import_t0_wh",
@@ -115,7 +130,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_total_import_t0_min_varh",
@@ -123,7 +139,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_total_import_t0_max_varh",
@@ -131,7 +148,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_total_export_t0_min_varh",
@@ -139,7 +157,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_total_export_t0_max_varh",
@@ -147,7 +166,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_total_import_t0_min_var",
@@ -155,7 +175,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_total_import_t0_max_var",
@@ -163,7 +184,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_reactive_power_total_import_t0_avg_var",
@@ -171,7 +193,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_total_export_t0_min_var",
@@ -179,7 +202,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_total_export_t0_max_var",
@@ -187,7 +211,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_reactive_power_total_export_t0_avg_var",
@@ -195,7 +220,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_import_t2_min_w",
@@ -203,7 +229,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_import_t2_max_w",
@@ -211,7 +238,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_total_import_t2_avg_w",
@@ -219,7 +247,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_import_t1_min_w",
@@ -227,7 +256,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_import_t1_max_w",
@@ -235,7 +265,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_total_import_t1_avg_w",
@@ -243,7 +274,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_import_t0_min_w",
@@ -251,7 +283,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_import_t0_max_w",
@@ -259,7 +292,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_total_import_t0_avg_w",
@@ -267,7 +301,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_export_t0_min_w",
@@ -275,7 +310,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_export_t0_max_w",
@@ -283,7 +319,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_total_export_t0_avg_w",
@@ -291,7 +328,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l3_import_t0_min_w",
@@ -299,7 +337,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l3_import_t0_max_w",
@@ -307,7 +346,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_l3_import_t0_avg_w",
@@ -315,7 +355,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l2_import_t0_min_w",
@@ -323,7 +364,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l2_import_t0_max_w",
@@ -331,7 +373,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_l2_import_t0_avg_w",
@@ -339,7 +382,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l1_import_t0_min_w",
@@ -347,7 +391,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l1_import_t0_max_w",
@@ -355,7 +400,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_l1_import_t0_avg_w",
@@ -363,7 +409,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t2_min_wh",
@@ -371,7 +418,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t2_max_wh",
@@ -379,7 +427,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t1_min_wh",
@@ -387,7 +436,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t1_max_wh",
@@ -395,7 +445,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t0_min_wh",
@@ -403,7 +454,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t0_max_wh",
@@ -411,7 +463,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_export_t0_min_wh",
@@ -419,7 +472,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_export_t0_max_wh",
@@ -427,7 +481,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l3_import_t0_min_wh",
@@ -435,7 +490,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l3_import_t0_max_wh",
@@ -443,7 +499,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l2_import_t0_min_wh",
@@ -451,7 +508,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l2_import_t0_max_wh",
@@ -459,7 +517,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l1_import_t0_min_wh",
@@ -467,7 +526,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l1_import_t0_max_wh",
@@ -475,7 +535,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_meter_fee_eur",
@@ -483,7 +544,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_fee_total_eur",
@@ -491,7 +553,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "total_with_tax_eur",
@@ -499,7 +562,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "total_eur",
@@ -507,7 +571,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "tax_rate_percent",
@@ -515,7 +580,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "tax_eur",
@@ -523,7 +589,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "supply_renewable_energy_fee_eur",
@@ -531,7 +598,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "supply_fee_total_eur",
@@ -539,7 +607,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "supply_business_usage_fee_eur",
@@ -547,7 +616,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_reactive_energy_total_ramped_t0_fee_eur",
@@ -555,7 +625,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_active_power_total_import_t1_peak_fee_eur",
@@ -563,7 +634,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_active_energy_total_import_t2_fee_eur",
@@ -571,7 +643,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_active_energy_total_import_t1_fee_eur",
@@ -579,7 +652,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_active_energy_total_import_t0_fee_eur",
@@ -587,7 +661,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "supply_active_energy_total_import_t2_fee_eur",
@@ -595,7 +670,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "supply_active_energy_total_import_t1_fee_eur",
@@ -603,7 +679,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "reactive_energy_total_ramped_t0_price_eur",
@@ -612,7 +689,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "meter_fee_price_eur",
@@ -620,7 +698,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "active_power_total_import_t1_price_eur",
@@ -629,7 +708,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "active_energy_total_import_t2_price_eur",
@@ -638,7 +718,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "active_energy_total_import_t1_price_eur",
@@ -647,7 +728,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "active_energy_total_import_t0_price_eur",
@@ -656,7 +738,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_meter_fee_total_eur",
@@ -664,7 +747,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_meter_fee_price_eur",
@@ -672,7 +756,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_fee_total_eur",
@@ -680,7 +765,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "trp_total_eur",
@@ -688,7 +774,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "trp_price_eur",
@@ -696,7 +783,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "total_eur",
@@ -704,7 +792,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "svt_total_eur",
@@ -713,7 +802,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "svt_price_eur",
@@ -722,7 +812,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "supply_fee_total_eur",
@@ -730,7 +821,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "rvt_total_eur",
@@ -738,7 +830,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "rvt_price_eur",
@@ -746,7 +839,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "rnt_total_eur",
@@ -754,7 +848,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "rnt_price_eur",
@@ -762,7 +857,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "oie_total_eur",
@@ -770,7 +866,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "oie_price_eur",
@@ -778,7 +875,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric(19,4)",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric");
+                oldType: "numeric"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "mvt_total_eur",
@@ -787,7 +885,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "mvt_price_eur",
@@ -796,7 +895,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "mnt_total_eur",
@@ -805,7 +905,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "mnt_price_eur",
@@ -814,7 +915,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "mjt_total_eur",
@@ -823,7 +925,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "mjt_price_eur",
@@ -832,7 +935,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "jen_total_eur",
@@ -841,7 +945,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "jen_price_eur",
@@ -850,7 +955,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_total_import_t0_varh",
@@ -858,7 +964,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_total_export_t0_varh",
@@ -866,7 +973,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l3_import_t0_varh",
@@ -874,7 +982,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l3_export_t0_varh",
@@ -882,7 +991,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l2_import_t0_varh",
@@ -890,7 +1000,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l2_export_t0_varh",
@@ -898,7 +1009,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l1_import_t0_varh",
@@ -906,7 +1018,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l1_export_t0_varh",
@@ -914,7 +1027,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t2_wh",
@@ -922,7 +1036,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t1_wh",
@@ -930,7 +1045,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t0_wh",
@@ -938,7 +1054,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_export_t0_wh",
@@ -946,7 +1063,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l3_import_t0_wh",
@@ -954,7 +1072,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l3_export_t0_wh",
@@ -962,7 +1081,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l2_import_t0_wh",
@@ -970,7 +1090,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l2_export_t0_wh",
@@ -978,7 +1099,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l1_import_t0_wh",
@@ -986,7 +1108,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l1_export_t0_wh",
@@ -994,7 +1117,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_total_import_t0_min_varh",
@@ -1002,7 +1126,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_total_import_t0_max_varh",
@@ -1010,7 +1135,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_total_export_t0_min_varh",
@@ -1018,7 +1144,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_total_export_t0_max_varh",
@@ -1026,7 +1153,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l3_import_t0_min_varh",
@@ -1034,7 +1162,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l3_import_t0_max_varh",
@@ -1042,7 +1171,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l3_export_t0_min_varh",
@@ -1050,7 +1180,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l3_export_t0_max_varh",
@@ -1058,7 +1189,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l2_import_t0_min_varh",
@@ -1066,7 +1198,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l2_import_t0_max_varh",
@@ -1074,7 +1207,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l2_export_t0_min_varh",
@@ -1082,7 +1216,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l2_export_t0_max_varh",
@@ -1090,7 +1225,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l1_import_t0_min_varh",
@@ -1098,7 +1234,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l1_import_t0_max_varh",
@@ -1106,7 +1243,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l1_export_t0_min_varh",
@@ -1114,7 +1252,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "reactive_energy_l1_export_t0_max_varh",
@@ -1122,7 +1261,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_total_import_t0_min_var",
@@ -1130,7 +1270,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_total_import_t0_max_var",
@@ -1138,7 +1279,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_reactive_power_total_import_t0_avg_var",
@@ -1146,7 +1288,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_total_export_t0_min_var",
@@ -1154,7 +1297,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_total_export_t0_max_var",
@@ -1162,7 +1306,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_reactive_power_total_export_t0_avg_var",
@@ -1170,7 +1315,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_l3_import_t0_min_var",
@@ -1178,7 +1324,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_l3_import_t0_max_var",
@@ -1186,7 +1333,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_reactive_power_l3_import_t0_avg_var",
@@ -1194,7 +1342,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_l3_export_t0_min_var",
@@ -1202,7 +1351,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_l3_export_t0_max_var",
@@ -1210,7 +1360,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_reactive_power_l3_export_t0_avg_var",
@@ -1218,7 +1369,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_l2_import_t0_min_var",
@@ -1226,7 +1378,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_l2_import_t0_max_var",
@@ -1234,7 +1387,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_reactive_power_l2_import_t0_avg_var",
@@ -1242,7 +1396,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_l2_export_t0_min_var",
@@ -1250,7 +1405,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_l2_export_t0_max_var",
@@ -1258,7 +1414,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_reactive_power_l2_export_t0_avg_var",
@@ -1266,7 +1423,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_l1_import_t0_min_var",
@@ -1274,7 +1432,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_l1_import_t0_max_var",
@@ -1282,7 +1441,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_reactive_power_l1_import_t0_avg_var",
@@ -1290,7 +1450,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_l1_export_t0_min_var",
@@ -1298,7 +1459,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_reactive_power_l1_export_t0_max_var",
@@ -1306,7 +1468,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_reactive_power_l1_export_t0_avg_var",
@@ -1314,7 +1477,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_import_t2_min_w",
@@ -1322,7 +1486,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_import_t2_max_w",
@@ -1330,7 +1495,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_total_import_t2_avg_w",
@@ -1338,7 +1504,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_import_t1_min_w",
@@ -1346,7 +1513,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_import_t1_max_w",
@@ -1354,7 +1522,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_total_import_t1_avg_w",
@@ -1362,7 +1531,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_import_t0_min_w",
@@ -1370,7 +1540,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_import_t0_max_w",
@@ -1378,7 +1549,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_total_import_t0_avg_w",
@@ -1386,7 +1558,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_export_t0_min_w",
@@ -1394,7 +1567,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_total_export_t0_max_w",
@@ -1402,7 +1576,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_total_export_t0_avg_w",
@@ -1410,7 +1585,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l3_import_t0_min_w",
@@ -1418,7 +1594,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l3_import_t0_max_w",
@@ -1426,7 +1603,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_l3_import_t0_avg_w",
@@ -1434,7 +1612,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l3_export_t0_min_w",
@@ -1442,7 +1621,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l3_export_t0_max_w",
@@ -1450,7 +1630,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_l3_export_t0_avg_w",
@@ -1458,7 +1639,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l2_import_t0_min_w",
@@ -1466,7 +1648,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l2_import_t0_max_w",
@@ -1474,7 +1657,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_l2_import_t0_avg_w",
@@ -1482,7 +1666,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l2_export_t0_min_w",
@@ -1490,7 +1675,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l2_export_t0_max_w",
@@ -1498,7 +1684,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_l2_export_t0_avg_w",
@@ -1506,7 +1693,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l1_import_t0_min_w",
@@ -1514,7 +1702,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l1_import_t0_max_w",
@@ -1522,7 +1711,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_l1_import_t0_avg_w",
@@ -1530,7 +1720,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l1_export_t0_min_w",
@@ -1538,7 +1729,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "derived_active_power_l1_export_t0_max_w",
@@ -1546,7 +1738,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<double>(
                 name: "derived_active_power_l1_export_t0_avg_w",
@@ -1554,7 +1747,8 @@ namespace Ozds.Data.Migrations
                 type: "double precision",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t2_min_wh",
@@ -1562,7 +1756,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t2_max_wh",
@@ -1570,7 +1765,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t1_min_wh",
@@ -1578,7 +1774,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t1_max_wh",
@@ -1586,7 +1783,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t0_min_wh",
@@ -1594,7 +1792,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_import_t0_max_wh",
@@ -1602,7 +1801,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_export_t0_min_wh",
@@ -1610,7 +1810,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_total_export_t0_max_wh",
@@ -1618,7 +1819,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l3_import_t0_min_wh",
@@ -1626,7 +1828,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l3_import_t0_max_wh",
@@ -1634,7 +1837,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l3_export_t0_min_wh",
@@ -1642,7 +1846,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l3_export_t0_max_wh",
@@ -1650,7 +1855,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l2_import_t0_min_wh",
@@ -1658,7 +1864,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l2_import_t0_max_wh",
@@ -1666,7 +1873,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l2_export_t0_min_wh",
@@ -1674,7 +1882,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l2_export_t0_max_wh",
@@ -1682,7 +1891,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l1_import_t0_min_wh",
@@ -1690,7 +1900,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l1_import_t0_max_wh",
@@ -1698,7 +1909,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l1_export_t0_min_wh",
@@ -1706,7 +1918,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
 
             migrationBuilder.AlterColumn<long>(
                 name: "active_energy_l1_export_t0_max_wh",
@@ -1714,7 +1927,8 @@ namespace Ozds.Data.Migrations
                 type: "bigint",
                 nullable: false,
                 oldClrType: typeof(float),
-                oldType: "real");
+                oldType: "real"
+            );
         }
 
         /// <inheritdoc />
@@ -1723,37 +1937,44 @@ namespace Ozds.Data.Migrations
             migrationBuilder.RenameColumn(
                 name: "usage_reactive_energy_total_ramped_t0_fee_eur",
                 table: "network_user_invoices",
-                newName: "usage_reactive_energy_total_ramped_t0fee_eur");
+                newName: "usage_reactive_energy_total_ramped_t0fee_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "usage_active_power_total_import_t1_peak_fee_eur",
                 table: "network_user_invoices",
-                newName: "usage_active_power_total_import_t1peak_fee_eur");
+                newName: "usage_active_power_total_import_t1peak_fee_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "usage_active_energy_total_import_t2_fee_eur",
                 table: "network_user_invoices",
-                newName: "usage_active_energy_total_import_t2fee_eur");
+                newName: "usage_active_energy_total_import_t2fee_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "usage_active_energy_total_import_t1_fee_eur",
                 table: "network_user_invoices",
-                newName: "usage_active_energy_total_import_t1fee_eur");
+                newName: "usage_active_energy_total_import_t1fee_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "usage_active_energy_total_import_t0_fee_eur",
                 table: "network_user_invoices",
-                newName: "usage_active_energy_total_import_t0fee_eur");
+                newName: "usage_active_energy_total_import_t0fee_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "supply_active_energy_total_import_t2_fee_eur",
                 table: "network_user_invoices",
-                newName: "supply_active_energy_total_import_t2fee_eur");
+                newName: "supply_active_energy_total_import_t2fee_eur"
+            );
 
             migrationBuilder.RenameColumn(
                 name: "supply_active_energy_total_import_t1_fee_eur",
                 table: "network_user_invoices",
-                newName: "supply_active_energy_total_import_t1fee_eur");
+                newName: "supply_active_energy_total_import_t1fee_eur"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_total_import_t0_varh",
@@ -1761,7 +1982,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_total_export_t0_varh",
@@ -1769,7 +1991,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t2_wh",
@@ -1777,7 +2000,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t1_wh",
@@ -1785,7 +2009,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t0_wh",
@@ -1793,7 +2018,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_export_t0_wh",
@@ -1801,7 +2027,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l3_import_t0_wh",
@@ -1809,7 +2036,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l2_import_t0_wh",
@@ -1817,7 +2045,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l1_import_t0_wh",
@@ -1825,7 +2054,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_total_import_t0_min_varh",
@@ -1833,7 +2063,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_total_import_t0_max_varh",
@@ -1841,7 +2072,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_total_export_t0_min_varh",
@@ -1849,7 +2081,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_total_export_t0_max_varh",
@@ -1857,7 +2090,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_total_import_t0_min_var",
@@ -1865,7 +2099,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_total_import_t0_max_var",
@@ -1873,7 +2108,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_total_import_t0_avg_var",
@@ -1881,7 +2117,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_total_export_t0_min_var",
@@ -1889,7 +2126,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_total_export_t0_max_var",
@@ -1897,7 +2135,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_total_export_t0_avg_var",
@@ -1905,7 +2144,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t2_min_w",
@@ -1913,7 +2153,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t2_max_w",
@@ -1921,7 +2162,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t2_avg_w",
@@ -1929,7 +2171,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t1_min_w",
@@ -1937,7 +2180,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t1_max_w",
@@ -1945,7 +2189,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t1_avg_w",
@@ -1953,7 +2198,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t0_min_w",
@@ -1961,7 +2207,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t0_max_w",
@@ -1969,7 +2216,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t0_avg_w",
@@ -1977,7 +2225,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_export_t0_min_w",
@@ -1985,7 +2234,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_export_t0_max_w",
@@ -1993,7 +2243,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_export_t0_avg_w",
@@ -2001,7 +2252,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l3_import_t0_min_w",
@@ -2009,7 +2261,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l3_import_t0_max_w",
@@ -2017,7 +2270,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l3_import_t0_avg_w",
@@ -2025,7 +2279,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l2_import_t0_min_w",
@@ -2033,7 +2288,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l2_import_t0_max_w",
@@ -2041,7 +2297,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l2_import_t0_avg_w",
@@ -2049,7 +2306,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l1_import_t0_min_w",
@@ -2057,7 +2315,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l1_import_t0_max_w",
@@ -2065,7 +2324,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l1_import_t0_avg_w",
@@ -2073,7 +2333,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t2_min_wh",
@@ -2081,7 +2342,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t2_max_wh",
@@ -2089,7 +2351,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t1_min_wh",
@@ -2097,7 +2360,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t1_max_wh",
@@ -2105,7 +2369,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t0_min_wh",
@@ -2113,7 +2378,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t0_max_wh",
@@ -2121,7 +2387,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_export_t0_min_wh",
@@ -2129,7 +2396,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_export_t0_max_wh",
@@ -2137,7 +2405,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l3_import_t0_min_wh",
@@ -2145,7 +2414,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l3_import_t0_max_wh",
@@ -2153,7 +2423,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l2_import_t0_min_wh",
@@ -2161,7 +2432,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l2_import_t0_max_wh",
@@ -2169,7 +2441,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l1_import_t0_min_wh",
@@ -2177,7 +2450,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l1_import_t0_max_wh",
@@ -2185,7 +2459,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_meter_fee_eur",
@@ -2193,7 +2468,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_fee_total_eur",
@@ -2201,7 +2477,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "total_with_tax_eur",
@@ -2209,7 +2486,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "total_eur",
@@ -2217,7 +2495,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "tax_rate_percent",
@@ -2225,7 +2504,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "tax_eur",
@@ -2233,7 +2513,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "supply_renewable_energy_fee_eur",
@@ -2241,7 +2522,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "supply_fee_total_eur",
@@ -2249,7 +2531,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "supply_business_usage_fee_eur",
@@ -2257,7 +2540,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_reactive_energy_total_ramped_t0fee_eur",
@@ -2265,7 +2549,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_active_power_total_import_t1peak_fee_eur",
@@ -2273,7 +2558,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_active_energy_total_import_t2fee_eur",
@@ -2281,7 +2567,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_active_energy_total_import_t1fee_eur",
@@ -2289,7 +2576,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_active_energy_total_import_t0fee_eur",
@@ -2297,7 +2585,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "supply_active_energy_total_import_t2fee_eur",
@@ -2305,7 +2594,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "supply_active_energy_total_import_t1fee_eur",
@@ -2313,7 +2603,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "reactive_energy_total_ramped_t0_price_eur",
@@ -2322,7 +2613,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "meter_fee_price_eur",
@@ -2330,7 +2622,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "active_power_total_import_t1_price_eur",
@@ -2339,7 +2632,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "active_energy_total_import_t2_price_eur",
@@ -2348,7 +2642,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "active_energy_total_import_t1_price_eur",
@@ -2357,7 +2652,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "active_energy_total_import_t0_price_eur",
@@ -2366,7 +2662,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_meter_fee_total_eur",
@@ -2374,7 +2671,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_meter_fee_price_eur",
@@ -2382,7 +2680,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "usage_fee_total_eur",
@@ -2390,7 +2689,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "trp_total_eur",
@@ -2398,7 +2698,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "trp_price_eur",
@@ -2406,7 +2707,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "total_eur",
@@ -2414,7 +2716,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "svt_total_eur",
@@ -2423,7 +2726,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "svt_price_eur",
@@ -2432,7 +2736,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "supply_fee_total_eur",
@@ -2440,7 +2745,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "rvt_total_eur",
@@ -2448,7 +2754,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "rvt_price_eur",
@@ -2456,7 +2763,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "rnt_total_eur",
@@ -2464,7 +2772,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "rnt_price_eur",
@@ -2472,7 +2781,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "oie_total_eur",
@@ -2480,7 +2790,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "oie_price_eur",
@@ -2488,7 +2799,8 @@ namespace Ozds.Data.Migrations
                 type: "numeric",
                 nullable: false,
                 oldClrType: typeof(decimal),
-                oldType: "numeric(19,4)");
+                oldType: "numeric(19,4)"
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "mvt_total_eur",
@@ -2497,7 +2809,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "mvt_price_eur",
@@ -2506,7 +2819,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "mnt_total_eur",
@@ -2515,7 +2829,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "mnt_price_eur",
@@ -2524,7 +2839,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "mjt_total_eur",
@@ -2533,7 +2849,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "mjt_price_eur",
@@ -2542,7 +2859,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "jen_total_eur",
@@ -2551,7 +2869,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "jen_price_eur",
@@ -2560,7 +2879,8 @@ namespace Ozds.Data.Migrations
                 nullable: true,
                 oldClrType: typeof(decimal),
                 oldType: "numeric(19,4)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_total_import_t0_varh",
@@ -2568,7 +2888,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_total_export_t0_varh",
@@ -2576,7 +2897,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l3_import_t0_varh",
@@ -2584,7 +2906,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l3_export_t0_varh",
@@ -2592,7 +2915,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l2_import_t0_varh",
@@ -2600,7 +2924,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l2_export_t0_varh",
@@ -2608,7 +2933,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l1_import_t0_varh",
@@ -2616,7 +2942,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l1_export_t0_varh",
@@ -2624,7 +2951,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t2_wh",
@@ -2632,7 +2960,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t1_wh",
@@ -2640,7 +2969,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t0_wh",
@@ -2648,7 +2978,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_export_t0_wh",
@@ -2656,7 +2987,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l3_import_t0_wh",
@@ -2664,7 +2996,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l3_export_t0_wh",
@@ -2672,7 +3005,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l2_import_t0_wh",
@@ -2680,7 +3014,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l2_export_t0_wh",
@@ -2688,7 +3023,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l1_import_t0_wh",
@@ -2696,7 +3032,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l1_export_t0_wh",
@@ -2704,7 +3041,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_total_import_t0_min_varh",
@@ -2712,7 +3050,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_total_import_t0_max_varh",
@@ -2720,7 +3059,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_total_export_t0_min_varh",
@@ -2728,7 +3068,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_total_export_t0_max_varh",
@@ -2736,7 +3077,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l3_import_t0_min_varh",
@@ -2744,7 +3086,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l3_import_t0_max_varh",
@@ -2752,7 +3095,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l3_export_t0_min_varh",
@@ -2760,7 +3104,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l3_export_t0_max_varh",
@@ -2768,7 +3113,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l2_import_t0_min_varh",
@@ -2776,7 +3122,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l2_import_t0_max_varh",
@@ -2784,7 +3131,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l2_export_t0_min_varh",
@@ -2792,7 +3140,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l2_export_t0_max_varh",
@@ -2800,7 +3149,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l1_import_t0_min_varh",
@@ -2808,7 +3158,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l1_import_t0_max_varh",
@@ -2816,7 +3167,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l1_export_t0_min_varh",
@@ -2824,7 +3176,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "reactive_energy_l1_export_t0_max_varh",
@@ -2832,7 +3185,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_total_import_t0_min_var",
@@ -2840,7 +3194,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_total_import_t0_max_var",
@@ -2848,7 +3203,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_total_import_t0_avg_var",
@@ -2856,7 +3212,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_total_export_t0_min_var",
@@ -2864,7 +3221,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_total_export_t0_max_var",
@@ -2872,7 +3230,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_total_export_t0_avg_var",
@@ -2880,7 +3239,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l3_import_t0_min_var",
@@ -2888,7 +3248,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l3_import_t0_max_var",
@@ -2896,7 +3257,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l3_import_t0_avg_var",
@@ -2904,7 +3266,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l3_export_t0_min_var",
@@ -2912,7 +3275,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l3_export_t0_max_var",
@@ -2920,7 +3284,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l3_export_t0_avg_var",
@@ -2928,7 +3293,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l2_import_t0_min_var",
@@ -2936,7 +3302,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l2_import_t0_max_var",
@@ -2944,7 +3311,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l2_import_t0_avg_var",
@@ -2952,7 +3320,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l2_export_t0_min_var",
@@ -2960,7 +3329,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l2_export_t0_max_var",
@@ -2968,7 +3338,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l2_export_t0_avg_var",
@@ -2976,7 +3347,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l1_import_t0_min_var",
@@ -2984,7 +3356,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l1_import_t0_max_var",
@@ -2992,7 +3365,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l1_import_t0_avg_var",
@@ -3000,7 +3374,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l1_export_t0_min_var",
@@ -3008,7 +3383,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l1_export_t0_max_var",
@@ -3016,7 +3392,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_reactive_power_l1_export_t0_avg_var",
@@ -3024,7 +3401,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t2_min_w",
@@ -3032,7 +3410,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t2_max_w",
@@ -3040,7 +3419,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t2_avg_w",
@@ -3048,7 +3428,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t1_min_w",
@@ -3056,7 +3437,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t1_max_w",
@@ -3064,7 +3446,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t1_avg_w",
@@ -3072,7 +3455,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t0_min_w",
@@ -3080,7 +3464,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t0_max_w",
@@ -3088,7 +3473,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_import_t0_avg_w",
@@ -3096,7 +3482,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_export_t0_min_w",
@@ -3104,7 +3491,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_export_t0_max_w",
@@ -3112,7 +3500,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_total_export_t0_avg_w",
@@ -3120,7 +3509,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l3_import_t0_min_w",
@@ -3128,7 +3518,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l3_import_t0_max_w",
@@ -3136,7 +3527,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l3_import_t0_avg_w",
@@ -3144,7 +3536,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l3_export_t0_min_w",
@@ -3152,7 +3545,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l3_export_t0_max_w",
@@ -3160,7 +3554,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l3_export_t0_avg_w",
@@ -3168,7 +3563,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l2_import_t0_min_w",
@@ -3176,7 +3572,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l2_import_t0_max_w",
@@ -3184,7 +3581,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l2_import_t0_avg_w",
@@ -3192,7 +3590,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l2_export_t0_min_w",
@@ -3200,7 +3599,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l2_export_t0_max_w",
@@ -3208,7 +3608,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l2_export_t0_avg_w",
@@ -3216,7 +3617,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l1_import_t0_min_w",
@@ -3224,7 +3626,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l1_import_t0_max_w",
@@ -3232,7 +3635,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l1_import_t0_avg_w",
@@ -3240,7 +3644,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l1_export_t0_min_w",
@@ -3248,7 +3653,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l1_export_t0_max_w",
@@ -3256,7 +3662,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "derived_active_power_l1_export_t0_avg_w",
@@ -3264,7 +3671,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(double),
-                oldType: "double precision");
+                oldType: "double precision"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t2_min_wh",
@@ -3272,7 +3680,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t2_max_wh",
@@ -3280,7 +3689,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t1_min_wh",
@@ -3288,7 +3698,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t1_max_wh",
@@ -3296,7 +3707,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t0_min_wh",
@@ -3304,7 +3716,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_import_t0_max_wh",
@@ -3312,7 +3725,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_export_t0_min_wh",
@@ -3320,7 +3734,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_total_export_t0_max_wh",
@@ -3328,7 +3743,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l3_import_t0_min_wh",
@@ -3336,7 +3752,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l3_import_t0_max_wh",
@@ -3344,7 +3761,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l3_export_t0_min_wh",
@@ -3352,7 +3770,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l3_export_t0_max_wh",
@@ -3360,7 +3779,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l2_import_t0_min_wh",
@@ -3368,7 +3788,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l2_import_t0_max_wh",
@@ -3376,7 +3797,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l2_export_t0_min_wh",
@@ -3384,7 +3806,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l2_export_t0_max_wh",
@@ -3392,7 +3815,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l1_import_t0_min_wh",
@@ -3400,7 +3824,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l1_import_t0_max_wh",
@@ -3408,7 +3833,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l1_export_t0_min_wh",
@@ -3416,7 +3842,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
 
             migrationBuilder.AlterColumn<float>(
                 name: "active_energy_l1_export_t0_max_wh",
@@ -3424,7 +3851,8 @@ namespace Ozds.Data.Migrations
                 type: "real",
                 nullable: false,
                 oldClrType: typeof(long),
-                oldType: "bigint");
+                oldType: "bigint"
+            );
         }
     }
 }

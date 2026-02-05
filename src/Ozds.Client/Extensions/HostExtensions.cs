@@ -34,11 +34,10 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    builder.Services
-      .AddRazorComponents()
-      .AddInteractiveServerComponents();
+    builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-    builder.Services.AddServerSideBlazor()
+    builder
+      .Services.AddServerSideBlazor()
       .AddCircuitOptions(options =>
       {
         if (builder.Environment.IsDevelopment())

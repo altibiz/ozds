@@ -3,9 +3,8 @@ using Ozds.Caching.Entities.Dependencies;
 
 namespace Ozds.Caching.Cache.Dependencies;
 
-public class DependencyPolicyCache(
-  IPolicyCache policyCache
-) : IDependencyPolicyCache
+public class DependencyPolicyCache(IPolicyCache policyCache)
+  : IDependencyPolicyCache
 {
   private const string DependenciesSuffix = "#dependencies";
 
@@ -29,10 +28,7 @@ public class DependencyPolicyCache(
     return policyCache.Read(type, key, cancellationToken);
   }
 
-  public Task Delete(
-    string key,
-    CancellationToken cancellationToken
-  )
+  public Task Delete(string key, CancellationToken cancellationToken)
   {
     return policyCache.Delete(key, cancellationToken);
   }
@@ -69,10 +65,10 @@ public class DependencyPolicyCache(
   )
   {
     return await policyCache.Read(
-      typeof(DependenciesEntity),
-      GetDependenciesCacheKey(key),
-      cancellationToken
-    ) as DependenciesEntity;
+        typeof(DependenciesEntity),
+        GetDependenciesCacheKey(key),
+        cancellationToken
+      ) as DependenciesEntity;
   }
 
   public async Task<ReverseDependenciesEntity?> ReadReverseDependencies(
@@ -81,10 +77,10 @@ public class DependencyPolicyCache(
   )
   {
     return await policyCache.Read(
-      typeof(ReverseDependenciesEntity),
-      GetReverseDependenciesCacheKey(key),
-      cancellationToken
-    ) as ReverseDependenciesEntity;
+        typeof(ReverseDependenciesEntity),
+        GetReverseDependenciesCacheKey(key),
+        cancellationToken
+      ) as ReverseDependenciesEntity;
   }
 
   public Task DeleteDependencies(
@@ -92,10 +88,7 @@ public class DependencyPolicyCache(
     CancellationToken cancellationToken
   )
   {
-    return policyCache.Delete(
-      GetDependenciesCacheKey(key),
-      cancellationToken
-    );
+    return policyCache.Delete(GetDependenciesCacheKey(key), cancellationToken);
   }
 
   public Task DeleteReverseDependencies(
@@ -120,9 +113,10 @@ public class DependencyPolicyCache(
       cancellationToken
     );
 
-    if (reverseDependencies is null
-      || !reverseDependencies.ReverseDependencies
-        .Contains(reverseDependencyKey))
+    if (
+      reverseDependencies is null
+      || !reverseDependencies.ReverseDependencies.Contains(reverseDependencyKey)
+    )
     {
       reverseDependencies ??= new ReverseDependenciesEntity();
       reverseDependencies.ReverseDependencies.Add(reverseDependencyKey);
@@ -145,17 +139,15 @@ public class DependencyPolicyCache(
       cancellationToken
     );
 
-    if (reverseDependencies is not null
-      && reverseDependencies.ReverseDependencies
-        .Contains(reverseDependencyKey))
+    if (
+      reverseDependencies is not null
+      && reverseDependencies.ReverseDependencies.Contains(reverseDependencyKey)
+    )
     {
       reverseDependencies.ReverseDependencies.Remove(reverseDependencyKey);
       if (reverseDependencies.ReverseDependencies.Count == 0)
       {
-        await DeleteReverseDependencies(
-          dependencyKey,
-          cancellationToken
-        );
+        await DeleteReverseDependencies(dependencyKey, cancellationToken);
       }
       else
       {

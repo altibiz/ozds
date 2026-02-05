@@ -17,9 +17,7 @@ public abstract class ConcreteModelFaker<TModel>(
     get { return typeof(TModel); }
   }
 
-  public virtual void Initialize(TModel model, Faker faker)
-  {
-  }
+  public virtual void Initialize(TModel model, Faker faker) { }
 
   public override object Fake()
   {
@@ -47,8 +45,7 @@ public abstract class ConcreteModelFaker<TModel>(
 
   public virtual TModel Create()
   {
-    var activator = serviceProvider
-      .GetRequiredService<ModelActivator>();
+    var activator = serviceProvider.GetRequiredService<ModelActivator>();
 
     return activator.Activate<TModel>();
   }

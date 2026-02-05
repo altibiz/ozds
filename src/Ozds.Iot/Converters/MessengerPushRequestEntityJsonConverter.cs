@@ -5,8 +5,7 @@ using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Iot.Converters;
 
-public class MessengerPushRequestEntityJsonConverter<T>
-  : JsonConverter<T>
+public class MessengerPushRequestEntityJsonConverter<T> : JsonConverter<T>
   where T : IMessengerPushRequestEntity
 {
   public override T? Read(
@@ -15,17 +14,19 @@ public class MessengerPushRequestEntityJsonConverter<T>
     JsonSerializerOptions options
   )
   {
-    return (T?)JsonSerializer.Deserialize(
-      ref reader,
-      typeof(PidgeonMessengerPushRequestEntity),
-      options
-    );
+    return (T?)
+      JsonSerializer.Deserialize(
+        ref reader,
+        typeof(PidgeonMessengerPushRequestEntity),
+        options
+      );
   }
 
   public override void Write(
     Utf8JsonWriter writer,
     T value,
-    JsonSerializerOptions options)
+    JsonSerializerOptions options
+  )
   {
     var type = value?.GetType();
     if (type == null)

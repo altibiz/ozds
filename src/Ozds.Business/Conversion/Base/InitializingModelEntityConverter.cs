@@ -30,11 +30,7 @@ public abstract class InitializingModelEntityConverter : IModelEntityConverter
 
   public abstract object BoxModel();
 
-  public virtual void InitializeEntity(object model, object entity)
-  {
-  }
+  public virtual void InitializeEntity(object model, object entity) { }
 
-  public virtual void InitializeModel(object entity, object model)
-  {
-  }
+  public virtual void InitializeModel(object entity, object model) { }
 }

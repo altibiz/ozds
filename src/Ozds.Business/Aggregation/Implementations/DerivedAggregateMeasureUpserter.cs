@@ -5,8 +5,8 @@ using Ozds.Business.Queries;
 
 namespace Ozds.Business.Aggregation.Implementations;
 
-public class DerivedAggregateMeasureUpserter :
-  ConcreteAggregateMeasureUpserter<DerivedAggregateMeasureModel>
+public class DerivedAggregateMeasureUpserter
+  : ConcreteAggregateMeasureUpserter<DerivedAggregateMeasureModel>
 {
   protected override DerivedAggregateMeasureModel UpsertConcreteModel(
     DerivedAggregateMeasureModel lhs,
@@ -15,11 +15,7 @@ public class DerivedAggregateMeasureUpserter :
     long rhsCount
   )
   {
-    return lhs.Upsert(
-      lhsCount,
-      rhs,
-      rhsCount
-    );
+    return lhs.Upsert(lhsCount, rhs, rhsCount);
   }
 }
 
@@ -34,13 +30,14 @@ public static class DerivedAggregateMeasureUpserterExtensions
   {
     return new DerivedAggregateMeasureModel
     {
-      Avg = lhsCount + rhsCount == 0
-        ? 0
-        : (lhs.Avg * lhsCount + rhs.Avg * rhsCount) / (lhsCount + rhsCount),
+      Avg =
+        lhsCount + rhsCount == 0
+          ? 0
+          : (lhs.Avg * lhsCount + rhs.Avg * rhsCount) / (lhsCount + rhsCount),
       Min = lhs.Min < rhs.Min ? lhs.Min : rhs.Min,
       Max = lhs.Max > rhs.Max ? lhs.Max : rhs.Max,
       MinTimestamp = lhs.Min < rhs.Min ? lhs.MinTimestamp : rhs.MinTimestamp,
-      MaxTimestamp = lhs.Max > rhs.Max ? lhs.MaxTimestamp : rhs.MaxTimestamp
+      MaxTimestamp = lhs.Max > rhs.Max ? lhs.MaxTimestamp : rhs.MaxTimestamp,
     };
   }
 
@@ -69,7 +66,8 @@ public static class DerivedAggregateMeasureUpserterExtensions
       lhsEnergy.Min < rhsEnergy.Min ? lhsEnergy.Min : rhsEnergy.Min;
     var maxEnergy =
       lhsEnergy.Max > rhsEnergy.Max ? lhsEnergy.Max : rhsEnergy.Max;
-    var power = (maxEnergy - minEnergy)
+    var power =
+      (maxEnergy - minEnergy)
       / (decimal)time.IntervalTimeSpan(interval, timestamp).TotalHours;
 
     return new DerivedAggregateMeasureModel
@@ -78,7 +76,7 @@ public static class DerivedAggregateMeasureUpserterExtensions
       Max = power,
       Min = power,
       MinTimestamp = timestamp,
-      MaxTimestamp = timestamp
+      MaxTimestamp = timestamp,
     };
   }
 }

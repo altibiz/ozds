@@ -1,5 +1,3 @@
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IRegulatoryCatalogue : ICatalogue
-{
-}
+public interface IRegulatoryCatalogue : ICatalogue { }

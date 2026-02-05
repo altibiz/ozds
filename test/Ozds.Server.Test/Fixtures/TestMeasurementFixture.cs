@@ -14,9 +14,7 @@ using Ozds.Server.Test.Containers;
 
 namespace Ozds.Server.Test.Fixtures;
 
-public class TestMeasurementFixture(
-  ServiceComposition composition
-)
+public class TestMeasurementFixture(ServiceComposition composition)
 {
   private const int BatchSize = 1000;
 
@@ -32,13 +30,15 @@ public class TestMeasurementFixture(
     var worker = ActivatorUtilities.CreateInstance<Worker>(
       scope.ServiceProvider
     );
-    await foreach (var measurements in worker.Insert(
+    await foreach (
+      var measurements in worker.Insert(
         ids,
         dateFrom,
         dateTo,
         cancellationToken,
         aggregatesOnly
-      ))
+      )
+    )
     {
       yield return measurements;
     }
@@ -57,14 +57,16 @@ public class TestMeasurementFixture(
     var worker = ActivatorUtilities.CreateInstance<Worker>(
       scope.ServiceProvider
     );
-    await foreach (var measurements in worker.Push(
+    await foreach (
+      var measurements in worker.Push(
         messengerId,
         apiKey,
         ids,
         dateFrom,
         dateTo,
         cancellationToken
-      ))
+      )
+    )
     {
       yield return measurements;
     }
@@ -82,13 +84,15 @@ public class TestMeasurementFixture(
     var worker = ActivatorUtilities.CreateInstance<Worker>(
       scope.ServiceProvider
     );
-    await foreach (var measurements in worker.Push(
+    await foreach (
+      var measurements in worker.Push(
         messengerId,
         apiKey,
         ids,
         interval,
         cancellationToken
-      ))
+      )
+    )
     {
       yield return measurements;
     }
@@ -117,22 +121,26 @@ public class TestMeasurementFixture(
       bool aggregatesOnly = true
     )
     {
-      var generatedIds = ids
-        .GroupBy(x => x.MeterModel)
+      var generatedIds = ids.GroupBy(x => x.MeterModel)
         .Select(x => x.First())
         .ToList();
 
-      var clonedIds = ids
-        .Where(id => !generatedIds.Contains(id));
+      var clonedIds = ids.Where(id => !generatedIds.Contains(id));
 
-      foreach (var date in enumerable
-        .Split(dateFrom, dateTo, Environment.ProcessorCount))
+      foreach (
+        var date in enumerable.Split(
+          dateFrom,
+          dateTo,
+          Environment.ProcessorCount
+        )
+      )
       {
         var records = generator.BatchGenerateMeasurementRecords(
           date.DateFrom,
           date.DateTo,
           generatedIds,
-          cancellationToken);
+          cancellationToken
+        );
 
         var measurements = converter.ConvertToModels(
           records,
@@ -142,19 +150,18 @@ public class TestMeasurementFixture(
         var aggregated = aggregatesOnly
           ? aggregateUpserter.UpsertAggregates(
             aggregateConverter.ToAggregates(measurements, cancellationToken),
-            cancellationToken)
+            cancellationToken
+          )
           : aggregateUpserter.UpsertMeasurements(
             aggregateConverter.WithAggregates(measurements, cancellationToken),
-            cancellationToken);
+            cancellationToken
+          );
 
-        var cloned = cloner.CloneWith(
-          aggregated,
-          clonedIds,
-          cancellationToken
-        );
+        var cloned = cloner.CloneWith(aggregated, clonedIds, cancellationToken);
 
-        await foreach (var batch in enumerable
-          .Batch(cloned, BatchSize, cancellationToken))
+        await foreach (
+          var batch in enumerable.Batch(cloned, BatchSize, cancellationToken)
+        )
         {
           var inserted = await insertClient.Insert(batch, cancellationToken);
 
@@ -175,16 +182,23 @@ public class TestMeasurementFixture(
       [EnumeratorCancellation] CancellationToken cancellationToken
     )
     {
-      foreach (var range in enumerable
-        .Split(dateFrom, dateTo, Environment.ProcessorCount))
+      foreach (
+        var range in enumerable.Split(
+          dateFrom,
+          dateTo,
+          Environment.ProcessorCount
+        )
+      )
       {
-        await foreach (var measurements in PushRange(
+        await foreach (
+          var measurements in PushRange(
             messengerId,
             apiKey,
             ids,
             range,
             cancellationToken
-          ))
+          )
+        )
         {
           yield return measurements;
         }
@@ -201,13 +215,15 @@ public class TestMeasurementFixture(
     {
       await foreach (var range in clock.Future(interval, cancellationToken))
       {
-        await foreach (var measurements in PushRange(
+        await foreach (
+          var measurements in PushRange(
             messengerId,
             apiKey,
             ids,
             range,
             cancellationToken
-          ))
+          )
+        )
         {
           yield return measurements;
         }
@@ -222,19 +238,18 @@ public class TestMeasurementFixture(
       [EnumeratorCancellation] CancellationToken cancellationToken
     )
     {
-      var generatedIds = ids
-        .GroupBy(x => x.MeterModel)
+      var generatedIds = ids.GroupBy(x => x.MeterModel)
         .Select(x => x.First())
         .ToList();
 
-      var clonedIds = ids
-        .Where(id => !generatedIds.Contains(id));
+      var clonedIds = ids.Where(id => !generatedIds.Contains(id));
 
       var records = generator.BatchGenerateMeasurementRecords(
         range.DateFrom,
         range.DateTo,
         generatedIds,
-        cancellationToken);
+        cancellationToken
+      );
 
       var generated = recordConverter.ConvertToModels(
         records,
@@ -252,9 +267,11 @@ public class TestMeasurementFixture(
         cancellationToken
       );
 
-      await foreach (var (batchPushRequests, batchMeasurements) in
-        enumerable.Batch(requests, BatchSize, cancellationToken)
-          .Zip(enumerable.Batch(measurements, BatchSize, cancellationToken)))
+      await foreach (
+        var (batchPushRequests, batchMeasurements) in enumerable
+          .Batch(requests, BatchSize, cancellationToken)
+          .Zip(enumerable.Batch(measurements, BatchSize, cancellationToken))
+      )
       {
         var request = await packer.Pack(
           messengerId,

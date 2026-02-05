@@ -1,5 +1,3 @@
 namespace Ozds.Business.Models.Abstractions;
 
-public interface IReport
-{
-}
+public interface IReport { }

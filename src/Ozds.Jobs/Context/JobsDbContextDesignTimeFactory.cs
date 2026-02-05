@@ -9,16 +9,14 @@ public class JobsDbContextDesignTimeFactory
   public JobsDbContext CreateDbContext(string[] args)
   {
     var optionsBuilder = new DbContextOptionsBuilder<JobsDbContext>();
-    optionsBuilder
-      .UseNpgsql(
-        "Server=localhost;Port=5432;User Id=ozds;Password=ozds;Database=ozds",
-        x =>
-        {
-          x.MigrationsAssembly(
-            typeof(JobsDbContext).Assembly.GetName().Name);
-          x.MigrationsHistoryTable(
-            $"__Ozds{nameof(JobsDbContext)}");
-        });
+    optionsBuilder.UseNpgsql(
+      "Server=localhost;Port=5432;User Id=ozds;Password=ozds;Database=ozds",
+      x =>
+      {
+        x.MigrationsAssembly(typeof(JobsDbContext).Assembly.GetName().Name);
+        x.MigrationsHistoryTable($"__Ozds{nameof(JobsDbContext)}");
+      }
+    );
     return new JobsDbContext(optionsBuilder.Options);
   }
 }

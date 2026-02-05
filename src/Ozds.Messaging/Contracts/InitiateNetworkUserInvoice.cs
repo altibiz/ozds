@@ -2,6 +2,5 @@ using Ozds.Messaging.Contracts.Abstractions;
 
 namespace Ozds.Messaging.Contracts;
 
-public record class InitiateNetworkUserInvoice(
-  string NetworkUserInvoiceId
-) : IInitiateNetworkUserInvoice;
+public record class InitiateNetworkUserInvoice(string NetworkUserInvoiceId)
+  : IInitiateNetworkUserInvoice;

@@ -6,9 +6,8 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class RepresentativeQueries(
-  IDbContextFactory<DataDbContext> factory
-) : IQueries
+public class RepresentativeQueries(IDbContextFactory<DataDbContext> factory)
+  : IQueries
 {
   public async Task<List<RepresentativeEntity>> ReadByUserIds(
     IEnumerable<string> userIds,
@@ -16,11 +15,13 @@ public class RepresentativeQueries(
     bool deleted = false
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var filtered = context.Representatives
-      .Where(context.PrimaryKeyIn<RepresentativeEntity>(userIds));
+    var filtered = context.Representatives.Where(
+      context.PrimaryKeyIn<RepresentativeEntity>(userIds)
+    );
 
     if (!deleted)
     {

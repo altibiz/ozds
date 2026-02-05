@@ -6,75 +6,73 @@ namespace Ozds.Business.Math;
 
 public record class CumulativeSpanningMeasure<T>(
   TariffMeasure<T> Min,
-  TariffMeasure<T> Max)
-  : SpanningMeasure<T>
+  TariffMeasure<T> Max
+) : SpanningMeasure<T>
   where T : struct,
-  IComparisonOperators<T, T, bool>,
-  IAdditionOperators<T, T, T>,
-  ISubtractionOperators<T, T, T>,
-  IMultiplyOperators<T, T, T>,
-  IDivisionOperators<T, T, T>;
+    IComparisonOperators<T, T, bool>,
+    IAdditionOperators<T, T, T>,
+    ISubtractionOperators<T, T, T>,
+    IMultiplyOperators<T, T, T>,
+    IDivisionOperators<T, T, T>;
 
 public record class InstantaneousSpanningMeasure<T>(
   TariffMeasure<T> Avg,
   TariffMeasure<T> Min,
   DateTimeOffset MinTimestamp,
   TariffMeasure<T> Max,
-  DateTimeOffset MaxTimestamp)
-  : SpanningMeasure<T>
+  DateTimeOffset MaxTimestamp
+) : SpanningMeasure<T>
   where T : struct,
-  IComparisonOperators<T, T, bool>,
-  IAdditionOperators<T, T, T>,
-  ISubtractionOperators<T, T, T>,
-  IMultiplyOperators<T, T, T>,
-  IDivisionOperators<T, T, T>;
+    IComparisonOperators<T, T, bool>,
+    IAdditionOperators<T, T, T>,
+    ISubtractionOperators<T, T, T>,
+    IMultiplyOperators<T, T, T>,
+    IDivisionOperators<T, T, T>;
 
 public record class MinMaxSpanningMeasure<T>(
   TariffMeasure<T> TrueMin,
-  TariffMeasure<T> TrueMax)
-  : SpanningMeasure<T>
+  TariffMeasure<T> TrueMax
+) : SpanningMeasure<T>
   where T : struct,
-  IComparisonOperators<T, T, bool>,
-  IAdditionOperators<T, T, T>,
-  ISubtractionOperators<T, T, T>,
-  IMultiplyOperators<T, T, T>,
-  IDivisionOperators<T, T, T>;
+    IComparisonOperators<T, T, bool>,
+    IAdditionOperators<T, T, T>,
+    ISubtractionOperators<T, T, T>,
+    IMultiplyOperators<T, T, T>,
+    IDivisionOperators<T, T, T>;
 
-public record class AvgSpanningMeasure<T>(
-  TariffMeasure<T> TrueAvg)
+public record class AvgSpanningMeasure<T>(TariffMeasure<T> TrueAvg)
   : SpanningMeasure<T>
   where T : struct,
-  IComparisonOperators<T, T, bool>,
-  IAdditionOperators<T, T, T>,
-  ISubtractionOperators<T, T, T>,
-  IMultiplyOperators<T, T, T>,
-  IDivisionOperators<T, T, T>;
+    IComparisonOperators<T, T, bool>,
+    IAdditionOperators<T, T, T>,
+    ISubtractionOperators<T, T, T>,
+    IMultiplyOperators<T, T, T>,
+    IDivisionOperators<T, T, T>;
 
-public record class PeakSpanningMeasure<T>(
-  TariffMeasure<T> TruePeak)
+public record class PeakSpanningMeasure<T>(TariffMeasure<T> TruePeak)
   : SpanningMeasure<T>
   where T : struct,
-  IComparisonOperators<T, T, bool>,
-  IAdditionOperators<T, T, T>,
-  ISubtractionOperators<T, T, T>,
-  IMultiplyOperators<T, T, T>,
-  IDivisionOperators<T, T, T>;
+    IComparisonOperators<T, T, bool>,
+    IAdditionOperators<T, T, T>,
+    ISubtractionOperators<T, T, T>,
+    IMultiplyOperators<T, T, T>,
+    IDivisionOperators<T, T, T>;
 
 public record class NullSpanningMeasure<T> : SpanningMeasure<T>
   where T : struct,
-  IComparisonOperators<T, T, bool>,
-  IAdditionOperators<T, T, T>,
-  ISubtractionOperators<T, T, T>,
-  IMultiplyOperators<T, T, T>,
-  IDivisionOperators<T, T, T>;
+    IComparisonOperators<T, T, bool>,
+    IAdditionOperators<T, T, T>,
+    ISubtractionOperators<T, T, T>,
+    IMultiplyOperators<T, T, T>,
+    IDivisionOperators<T, T, T>;
 
 public abstract record class SpanningMeasure<T>
   where T : struct,
-  IComparisonOperators<T, T, bool>,
-  IAdditionOperators<T, T, T>,
-  ISubtractionOperators<T, T, T>,
-  IMultiplyOperators<T, T, T>,
-  IDivisionOperators<T, T, T>
+    IComparisonOperators<T, T, bool>,
+    IAdditionOperators<T, T, T>,
+    ISubtractionOperators<T, T, T>,
+    IMultiplyOperators<T, T, T>,
+    IDivisionOperators<T, T, T>
 {
   public static readonly SpanningMeasure<T> Null = new NullSpanningMeasure<T>();
 
@@ -86,7 +84,7 @@ public abstract record class SpanningMeasure<T>
         CumulativeSpanningMeasure<T> cumulative => cumulative.Min,
         InstantaneousSpanningMeasure<T> instantaneous => instantaneous.Min,
         MinMaxSpanningMeasure<T> minMax => minMax.TrueMin,
-        _ => TariffMeasure<T>.Null
+        _ => TariffMeasure<T>.Null,
       };
     }
   }
@@ -99,7 +97,7 @@ public abstract record class SpanningMeasure<T>
         CumulativeSpanningMeasure<T> cumulative => cumulative.Max,
         InstantaneousSpanningMeasure<T> instantaneous => instantaneous.Max,
         MinMaxSpanningMeasure<T> minMax => minMax.TrueMax,
-        _ => TariffMeasure<T>.Null
+        _ => TariffMeasure<T>.Null,
       };
     }
   }
@@ -111,7 +109,7 @@ public abstract record class SpanningMeasure<T>
       {
         InstantaneousSpanningMeasure<T> instantaneous => instantaneous.Avg,
         AvgSpanningMeasure<T> avg => avg.TrueAvg,
-        _ => TariffMeasure<T>.Null
+        _ => TariffMeasure<T>.Null,
       };
     }
   }
@@ -123,7 +121,7 @@ public abstract record class SpanningMeasure<T>
       {
         InstantaneousSpanningMeasure<T> instantaneous => instantaneous.Max,
         PeakSpanningMeasure<T> peak => peak.TruePeak,
-        _ => TariffMeasure<T>.Null
+        _ => TariffMeasure<T>.Null,
       };
     }
   }
@@ -135,22 +133,25 @@ public abstract record class SpanningMeasure<T>
 
   public SpanningMeasure<TConverted> ConvertPrimitiveTo<TConverted>()
     where TConverted : struct,
-    IComparisonOperators<TConverted, TConverted, bool>,
-    IAdditionOperators<TConverted, TConverted, TConverted>,
-    ISubtractionOperators<TConverted, TConverted, TConverted>,
-    IMultiplyOperators<TConverted, TConverted, TConverted>,
-    IDivisionOperators<TConverted, TConverted, TConverted>
+      IComparisonOperators<TConverted, TConverted, bool>,
+      IAdditionOperators<TConverted, TConverted, TConverted>,
+      ISubtractionOperators<TConverted, TConverted, TConverted>,
+      IMultiplyOperators<TConverted, TConverted, TConverted>,
+      IDivisionOperators<TConverted, TConverted, TConverted>
   {
     return this switch
     {
       MinMaxSpanningMeasure<T> minMax => new MinMaxSpanningMeasure<TConverted>(
         minMax.TrueMin.ConvertPrimitiveTo<TConverted>(),
-        minMax.TrueMax.ConvertPrimitiveTo<TConverted>()),
+        minMax.TrueMax.ConvertPrimitiveTo<TConverted>()
+      ),
       AvgSpanningMeasure<T> avg => new AvgSpanningMeasure<TConverted>(
-        avg.TrueAvg.ConvertPrimitiveTo<TConverted>()),
+        avg.TrueAvg.ConvertPrimitiveTo<TConverted>()
+      ),
       PeakSpanningMeasure<T> peak => new PeakSpanningMeasure<TConverted>(
-        peak.TruePeak.ConvertPrimitiveTo<TConverted>()),
-      _ => new NullSpanningMeasure<TConverted>()
+        peak.TruePeak.ConvertPrimitiveTo<TConverted>()
+      ),
+      _ => new NullSpanningMeasure<TConverted>(),
     };
   }
 

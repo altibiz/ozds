@@ -4,10 +4,11 @@ using Ozds.Report.Entities;
 
 namespace Ozds.Business.Conversion.Implementations.Report;
 
-public class AccountingPeriodModelReportEntityConverter :
-  ConcreteModelReportEntityConverter<
+public class AccountingPeriodModelReportEntityConverter
+  : ConcreteModelReportEntityConverter<
     AccountingPeriodReportModel,
-    AccountingPeriodEntity>
+    AccountingPeriodEntity
+  >
 {
   public override void InitializeEntity(
     AccountingPeriodReportModel model,
@@ -24,7 +25,8 @@ public class AccountingPeriodModelReportEntityConverter :
 
   public override void InitializeModel(
     AccountingPeriodEntity entity,
-    AccountingPeriodReportModel model)
+    AccountingPeriodReportModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.MeasurementLocationCode = entity.MeasurementLocationCode;

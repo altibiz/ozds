@@ -6,11 +6,13 @@ namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class MeasurementLocationModelCachingEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelCachingEntityConverter<
-  MeasurementLocationModel,
-  TrackableModel,
-  MeasurementLocationEntity,
-  TrackableEntity>(serviceProvider)
+)
+  : InheritingModelCachingEntityConverter<
+    MeasurementLocationModel,
+    TrackableModel,
+    MeasurementLocationEntity,
+    TrackableEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     MeasurementLocationModel model,

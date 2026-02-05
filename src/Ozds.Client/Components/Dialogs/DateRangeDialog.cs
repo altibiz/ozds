@@ -50,11 +50,10 @@ public partial class DateRangeDialog : OzdsComponentBase
     if (startDate.HasValue && endDate.HasValue)
     {
       MudDialog.Close(
-        DialogResult
-          .Ok(
-            (
-              startDate.Value.ToUniversalTime(),
-              endDate.Value.ToUniversalTime())));
+        DialogResult.Ok(
+          (startDate.Value.ToUniversalTime(), endDate.Value.ToUniversalTime())
+        )
+      );
     }
   }
 

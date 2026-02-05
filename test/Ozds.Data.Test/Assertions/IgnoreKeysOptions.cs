@@ -4,19 +4,13 @@ using Ozds.Data.Test.Extensions;
 
 namespace Ozds.Data.Test.Assertions;
 
-public class IgnoreKeysOptions(
-  DbContext dbContext
-)
+public class IgnoreKeysOptions(DbContext dbContext)
 {
-  private readonly Lazy<HashSet<(string, Type?)>> keys =
-    new(() => dbContext
-      .GetKeys()
-      .Select(x => (x.Name, x.DeclaringType))
-      .ToHashSet());
+  private readonly Lazy<HashSet<(string, Type?)>> keys = new(() =>
+    dbContext.GetKeys().Select(x => (x.Name, x.DeclaringType)).ToHashSet()
+  );
 
-  public SelfReferenceEquivalencyAssertionOptions<TSelf> Configure<
-    TSelf
-  >(
+  public SelfReferenceEquivalencyAssertionOptions<TSelf> Configure<TSelf>(
     SelfReferenceEquivalencyAssertionOptions<TSelf> options
   )
     where TSelf : SelfReferenceEquivalencyAssertionOptions<TSelf>

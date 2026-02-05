@@ -5,6 +5,4 @@ using Ozds.Business.Models.Base;
 namespace Ozds.Business.Activation.Implementations.System;
 
 public class SystemEventModelActivator(IServiceProvider serviceProvider)
-  : InheritingModelActivator<SystemEventModel, EventModel>(serviceProvider)
-{
-}
+  : InheritingModelActivator<SystemEventModel, EventModel>(serviceProvider) { }

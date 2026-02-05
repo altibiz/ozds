@@ -10,10 +10,7 @@ public class EntityQueries(
   EntityReflector entityReflector
 ) : IQueries
 {
-  public async Task<T?> Read<T>(
-    string id,
-    CancellationToken cancellationToken
-  )
+  public async Task<T?> Read<T>(string id, CancellationToken cancellationToken)
     where T : notnull, IEntity
   {
     foreach (var subtype in entityReflector.ResolveSubtypes<T>())
@@ -37,8 +34,7 @@ public class EntityQueries(
   {
     if (!entityType.IsAssignableTo(typeof(IEntity)))
     {
-      throw new InvalidOperationException(
-        "Entity type must implement IEntity");
+      throw new InvalidOperationException("Entity type must implement IEntity");
     }
 
     foreach (var subtype in entityReflector.ResolveSubtypes(entityType))

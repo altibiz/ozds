@@ -7,9 +7,7 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class MeterQueries(
-  IDbContextFactory<DataDbContext> factory
-) : IQueries
+public class MeterQueries(IDbContextFactory<DataDbContext> factory) : IQueries
 {
   public async Task<IMeterEntity?> ReadByMeasurementLocationId(
     string measurementLocationId,
@@ -42,20 +40,19 @@ public class MeterQueries(
 
     var intermediaries = await context
       .MeasurementLocations.Where(
-        context.PrimaryKeyIn<MeasurementLocationEntity>(
-          measurementLocationIds
-        )
+        context.PrimaryKeyIn<MeasurementLocationEntity>(measurementLocationIds)
       )
       .Include(x => x.Meter)
       .Select(x => new ReadByMeasurementLocationIdsIntermediary
       {
         MeasurementLocation = x,
-        Meter = x.Meter
+        Meter = x.Meter,
       })
       .ToDictionaryAsync(
         x => x.MeasurementLocation.Id,
         x => x,
-        cancellationToken);
+        cancellationToken
+      );
 
     return measurementLocationIds
       .Select(id =>
@@ -79,8 +76,8 @@ public class MeterQueries(
     await using var context = await factory.CreateDbContextAsync(
       cancellationToken
     );
-    var meter = await context.Meters
-      .Where(
+    var meter = await context
+      .Meters.Where(
         context.ForeignKeyEquals<MeterEntity>(
           nameof(MeterEntity.Messenger),
           messengerId
@@ -98,8 +95,8 @@ public class MeterQueries(
     await using var context = await factory.CreateDbContextAsync(
       cancellationToken
     );
-    var meters = await context.Meters
-      .Where(
+    var meters = await context
+      .Meters.Where(
         context.ForeignKeyIn<MeterEntity>(
           nameof(MeterEntity.Messenger),
           messengerIds
@@ -108,8 +105,8 @@ public class MeterQueries(
       .OfType<IMeterEntity>()
       .ToListAsync(cancellationToken);
 
-    var intermediaries = await context.Meters
-      .Where(
+    var intermediaries = await context
+      .Meters.Where(
         context.ForeignKeyIn<MeterEntity>(
           nameof(MeterEntity.Messenger),
           messengerIds
@@ -120,12 +117,9 @@ public class MeterQueries(
       {
         // NOTE: id has to be one of the provided ones
         Messenger = x.Messenger!,
-        Meter = x
+        Meter = x,
       })
-      .ToDictionaryAsync(
-        x => x.Messenger.Id,
-        x => x,
-        cancellationToken);
+      .ToDictionaryAsync(x => x.Messenger.Id, x => x, cancellationToken);
 
     return meters
       .Select(meter =>

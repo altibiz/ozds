@@ -16,7 +16,8 @@ namespace Ozds.Data.Migrations
                 type: "text",
                 defaultValue: "",
                 nullable: false,
-                oldNullable: true);
+                oldNullable: true
+            );
         }
 
         /// <inheritdoc />
@@ -27,7 +28,8 @@ namespace Ozds.Data.Migrations
                 table: "measurement_locations",
                 type: "text",
                 nullable: true,
-                oldNullable: false);
+                oldNullable: false
+            );
         }
     }
 }

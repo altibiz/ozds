@@ -26,24 +26,19 @@ public class JsonParameter : ICustomQueryParameter
     if (jsonElement is not null)
     {
       command.Parameters.Add(
-        new NpgsqlParameter(name, NpgsqlDbType.Jsonb)
-        {
-          Value = jsonElement
-        });
+        new NpgsqlParameter(name, NpgsqlDbType.Jsonb) { Value = jsonElement }
+      );
       return;
     }
 
     if (jsonDocument is not null)
     {
       command.Parameters.Add(
-        new NpgsqlParameter(name, NpgsqlDbType.Jsonb)
-        {
-          Value = jsonDocument
-        });
+        new NpgsqlParameter(name, NpgsqlDbType.Jsonb) { Value = jsonDocument }
+      );
       return;
     }
 
-    throw new InvalidOperationException(
-      $"No json parameter found for {name}.");
+    throw new InvalidOperationException($"No json parameter found for {name}.");
   }
 }

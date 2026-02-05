@@ -20,15 +20,17 @@ public class ApiKeyAuthAttribute : Attribute, IAsyncAuthorizationFilter
 
   public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
   {
-    var clock = context.HttpContext.RequestServices
-      .GetRequiredService<ClockQueries>();
+    var clock =
+      context.HttpContext.RequestServices.GetRequiredService<ClockQueries>();
     var now = clock.Now();
 
     var req = context.HttpContext.Request;
     var header = req.Headers.Authorization.ToString();
 
-    if (string.IsNullOrWhiteSpace(header)
-      || !header.StartsWith(ApiKeyHeaderScheme))
+    if (
+      string.IsNullOrWhiteSpace(header)
+      || !header.StartsWith(ApiKeyHeaderScheme)
+    )
     {
       context.Result = new ForbidResult();
       return;
@@ -36,18 +38,19 @@ public class ApiKeyAuthAttribute : Attribute, IAsyncAuthorizationFilter
 
     var token = header[ApiKeyHeaderScheme.Length..].Trim();
 
-    var manager = context.HttpContext.RequestServices
-      .GetRequiredService<ApiKeyManager>();
+    var manager =
+      context.HttpContext.RequestServices.GetRequiredService<ApiKeyManager>();
 
     var (keyId, provided) = manager.Split(token);
 
-    var apiKeyAuthCache = context.HttpContext.RequestServices
-      .GetRequiredService<ApiKeyAuthQueries>();
+    var apiKeyAuthCache =
+      context.HttpContext.RequestServices.GetRequiredService<ApiKeyAuthQueries>();
 
     var auth = await apiKeyAuthCache.ReadByApiKeyIdAndScopeId(
       keyId,
       null,
-      context.HttpContext.RequestAborted);
+      context.HttpContext.RequestAborted
+    );
 
     if (auth is null)
     {
@@ -55,8 +58,7 @@ public class ApiKeyAuthAttribute : Attribute, IAsyncAuthorizationFilter
       return;
     }
 
-    if (auth.ApiKey.ExpiresOn is not null
-      && auth.ApiKey.ExpiresOn < now)
+    if (auth.ApiKey.ExpiresOn is not null && auth.ApiKey.ExpiresOn < now)
     {
       context.Result = new ForbidResult();
       return;
@@ -73,7 +75,7 @@ public class ApiKeyAuthAttribute : Attribute, IAsyncAuthorizationFilter
     {
       new(PrincipalModelTypeClaim, auth.ApiKey.PrincipalModelType),
       new(PrincipalModelIdClaim, auth.ApiKey.PrincipalModelId),
-      new(ApiKeyIdClaim, auth.ApiKey.Id)
+      new(ApiKeyIdClaim, auth.ApiKey.Id),
     };
     var identity = new ClaimsIdentity(claims, "ApiKey");
 

@@ -73,20 +73,19 @@ public static class HostExtensions
   {
     builder.Services.AddScoped(serviceProvider =>
     {
-      var connectionString = ConfigureOzdsUsersOptions
-        .LdapConnectionString(builder.Configuration);
+      var connectionString = ConfigureOzdsUsersOptions.LdapConnectionString(
+        builder.Configuration
+      );
 
       var options = new LdapConnectionOptions();
       if (builder.Environment.IsDevelopment())
       {
-        options.ConfigureRemoteCertificateValidationCallback((
-          sender,
-          certificate,
-          chain,
-          errors) =>
-        {
-          return true;
-        });
+        options.ConfigureRemoteCertificateValidationCallback(
+          (sender, certificate, chain, errors) =>
+          {
+            return true;
+          }
+        );
       }
 
       var connection = new LdapConnection(options);
@@ -108,8 +107,8 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    builder.Services
-      .AddAuthentication(options =>
+    builder
+      .Services.AddAuthentication(options =>
       {
         options.DefaultScheme =
           CookieAuthenticationDefaults.AuthenticationScheme;
@@ -119,24 +118,28 @@ public static class HostExtensions
       .AddCookie()
       .AddOpenIdConnect(options =>
       {
-        var connectionString = ConfigureOzdsUsersOptions
-          .OidcConnectionString(builder.Configuration);
-        var requireHttpsMetadata = ConfigureOzdsUsersOptions
-          .RequireHttpsMetadata(builder.Configuration);
-        var authLogoutSubpath = ConfigureOzdsUsersOptions
-          .AuthLogoutSubpath(builder.Configuration);
-        var idKey = ConfigureOzdsUsersOptions
-          .IdKey(builder.Configuration);
-        var idClaim = ConfigureOzdsUsersOptions
-          .IdClaim(builder.Configuration);
-        var signInCallbackSubpath = ConfigureOzdsUsersOptions
-          .SignInCallbackSubpath(builder.Configuration);
-        var signOutCallbackSubpath = ConfigureOzdsUsersOptions
-          .SignOutCallbackSubpath(builder.Configuration);
+        var connectionString = ConfigureOzdsUsersOptions.OidcConnectionString(
+          builder.Configuration
+        );
+        var requireHttpsMetadata =
+          ConfigureOzdsUsersOptions.RequireHttpsMetadata(builder.Configuration);
+        var authLogoutSubpath = ConfigureOzdsUsersOptions.AuthLogoutSubpath(
+          builder.Configuration
+        );
+        var idKey = ConfigureOzdsUsersOptions.IdKey(builder.Configuration);
+        var idClaim = ConfigureOzdsUsersOptions.IdClaim(builder.Configuration);
+        var signInCallbackSubpath =
+          ConfigureOzdsUsersOptions.SignInCallbackSubpath(
+            builder.Configuration
+          );
+        var signOutCallbackSubpath =
+          ConfigureOzdsUsersOptions.SignOutCallbackSubpath(
+            builder.Configuration
+          );
 
         options.Authority = connectionString.Authority;
-        options.RequireHttpsMetadata = requireHttpsMetadata
-          ?? !builder.Environment.IsDevelopment();
+        options.RequireHttpsMetadata =
+          requireHttpsMetadata ?? !builder.Environment.IsDevelopment();
         options.ClientId = connectionString.ClientId;
         options.ClientSecret = connectionString.ClientSecret;
         options.ResponseType = OpenIdConnectResponseType.Code;
@@ -163,17 +166,20 @@ public static class HostExtensions
         {
           events.OnUserInformationReceived = context =>
           {
-            var logger = context.HttpContext.RequestServices
-              .GetRequiredService<ILogger<OpenIdConnectEvents>>();
+            var logger = context.HttpContext.RequestServices.GetRequiredService<
+              ILogger<OpenIdConnectEvents>
+            >();
             logger.LogDebug(
               "User info received from user info endpoint: {User}",
-              context.User.ToString());
+              context.User.ToString()
+            );
             return Task.CompletedTask;
           };
           events.OnTokenValidated = context =>
           {
-            var logger = context.HttpContext.RequestServices
-              .GetRequiredService<ILogger<OpenIdConnectEvents>>();
+            var logger = context.HttpContext.RequestServices.GetRequiredService<
+              ILogger<OpenIdConnectEvents>
+            >();
             logger.LogDebug("Token validated. Claims from ID token:");
             foreach (var claim in context.Principal?.Claims ?? [])
             {
@@ -188,11 +194,10 @@ public static class HostExtensions
           };
           events.OnAuthenticationFailed = context =>
           {
-            var logger = context.HttpContext.RequestServices
-              .GetRequiredService<ILogger<OpenIdConnectEvents>>();
-            logger.LogDebug(
-              context.Exception,
-              "Authentication failed");
+            var logger = context.HttpContext.RequestServices.GetRequiredService<
+              ILogger<OpenIdConnectEvents>
+            >();
+            logger.LogDebug(context.Exception, "Authentication failed");
             return Task.CompletedTask;
           };
         }
@@ -206,7 +211,7 @@ public static class HostExtensions
           options.BackchannelHttpHandler = new HttpClientHandler
           {
             ServerCertificateCustomValidationCallback =
-              HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+              HttpClientHandler.DangerousAcceptAnyServerCertificateValidator,
           };
 #pragma warning restore S4830 // Server certificates should be verified during SSL/TLS connections
         }

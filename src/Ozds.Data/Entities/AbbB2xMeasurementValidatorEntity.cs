@@ -5,9 +5,8 @@ using Ozds.Data.Entities.Base;
 
 namespace Ozds.Data.Entities;
 
-public class
-  AbbB2xMeasurementValidatorEntity : MeasurementValidatorEntity<
-  AbbB2xMeterEntity>
+public class AbbB2xMeasurementValidatorEntity
+  : MeasurementValidatorEntity<AbbB2xMeterEntity>
 {
 #pragma warning disable CA1707
   public float MinVoltage_V { get; set; }
@@ -21,12 +20,12 @@ public class
 #pragma warning restore CA1707
 }
 
-public class
-  AbbB2xMeasurementValidatorEntityTypeConfiguration : EntityTypeConfiguration<
-  AbbB2xMeasurementValidatorEntity>
+public class AbbB2xMeasurementValidatorEntityTypeConfiguration
+  : EntityTypeConfiguration<AbbB2xMeasurementValidatorEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<AbbB2xMeasurementValidatorEntity> builder)
+    EntityTypeBuilder<AbbB2xMeasurementValidatorEntity> builder
+  )
   {
     builder
       .Property(nameof(AbbB2xMeasurementValidatorEntity.MinVoltage_V))

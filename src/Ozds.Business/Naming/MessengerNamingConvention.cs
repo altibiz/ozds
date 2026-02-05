@@ -5,13 +5,15 @@ namespace Ozds.Business.Naming;
 
 public class MessengerNamingConvention(IServiceProvider serviceProvider)
 {
-  private readonly ConcurrentDictionary<string, IMessengerNamingConvention>
-    idCache =
-      new();
+  private readonly ConcurrentDictionary<
+    string,
+    IMessengerNamingConvention
+  > idCache = new();
 
-  private readonly ConcurrentDictionary<Type, IMessengerNamingConvention>
-    typeCache =
-      new();
+  private readonly ConcurrentDictionary<
+    Type,
+    IMessengerNamingConvention
+  > typeCache = new();
 
   public Type MessengerTypeForMessengerId(string meterId)
   {
@@ -34,11 +36,13 @@ public class MessengerNamingConvention(IServiceProvider serviceProvider)
       return meterNamingConvention;
     }
 
-    meterNamingConvention = serviceProvider
+    meterNamingConvention =
+      serviceProvider
         .GetServices<IMessengerNamingConvention>()
         .FirstOrDefault(service => meterIdPrefix == service.IdPrefix)
       ?? throw new InvalidOperationException(
-        $"No MessengerNamingConvention found for {meterId}");
+        $"No MessengerNamingConvention found for {meterId}"
+      );
 
     idCache.TryAdd(meterId, meterNamingConvention);
 
@@ -54,11 +58,13 @@ public class MessengerNamingConvention(IServiceProvider serviceProvider)
       return meterNamingConvention;
     }
 
-    meterNamingConvention = serviceProvider
+    meterNamingConvention =
+      serviceProvider
         .GetServices<IMessengerNamingConvention>()
         .FirstOrDefault(service => meterType == service.MessengerType)
       ?? throw new InvalidOperationException(
-        $"No MessengerNamingConvention found for {meterType}");
+        $"No MessengerNamingConvention found for {meterType}"
+      );
 
     typeCache.TryAdd(meterType, meterNamingConvention);
 

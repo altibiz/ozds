@@ -24,9 +24,7 @@ public class ModelQueries(
       pageCount
     );
 
-    return models.Items
-      .OfType<T>()
-      .ToPaginatedList(models.TotalCount);
+    return models.Items.OfType<T>().ToPaginatedList(models.TotalCount);
   }
 
   public async Task<PaginatedList<object>> Read(
@@ -39,7 +37,8 @@ public class ModelQueries(
     if (!modelType.IsAssignableTo(typeof(IModel)))
     {
       throw new InvalidOperationException(
-        $"Type {modelType} is not assignable to {typeof(IModel)}");
+        $"Type {modelType} is not assignable to {typeof(IModel)}"
+      );
     }
 
     var entityType = modelEntityConverter.EntityType(modelType);
@@ -50,8 +49,8 @@ public class ModelQueries(
       pageCount
     );
 
-    return entities.Items
-      .Select(modelEntityConverter.ToModel)
+    return entities
+      .Items.Select(modelEntityConverter.ToModel)
       .ToPaginatedList(entities.TotalCount);
   }
 }

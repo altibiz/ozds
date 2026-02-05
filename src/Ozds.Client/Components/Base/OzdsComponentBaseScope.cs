@@ -14,8 +14,8 @@ public abstract partial class OzdsComponentBase : DisposableComponentBase
   {
     get
     {
-      return ScopeState?.ScopedServices ??
-        throw new InvalidOperationException($"{this} got disposed");
+      return ScopeState?.ScopedServices
+        ?? throw new InvalidOperationException($"{this} got disposed");
     }
   }
 }

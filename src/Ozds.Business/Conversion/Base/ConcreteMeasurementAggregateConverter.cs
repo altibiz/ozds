@@ -3,9 +3,10 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Conversion.Base;
 
-public abstract class
-  ConcreteMeasurementAggregateConverter<TMeasurement, TAggregate> :
-  InitializingMeasurementAggregateConverter
+public abstract class ConcreteMeasurementAggregateConverter<
+  TMeasurement,
+  TAggregate
+> : InitializingMeasurementAggregateConverter
   where TAggregate : IAggregate
   where TMeasurement : IMeasurement
 {
@@ -22,7 +23,8 @@ public abstract class
   public abstract void Initialize(
     TAggregate aggregate,
     TMeasurement measurement,
-    IntervalModel interval);
+    IntervalModel interval
+  );
 
   public override bool CanConvertToAggregate(Type measurement)
   {
@@ -37,11 +39,9 @@ public abstract class
   public override void Initialize(
     IAggregate aggregate,
     IMeasurement measurement,
-    IntervalModel interval)
+    IntervalModel interval
+  )
   {
-    Initialize(
-      (TAggregate)aggregate,
-      (TMeasurement)measurement,
-      interval);
+    Initialize((TAggregate)aggregate, (TMeasurement)measurement, interval);
   }
 }

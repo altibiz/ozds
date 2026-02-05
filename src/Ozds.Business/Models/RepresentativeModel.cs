@@ -17,16 +17,15 @@ public class RepresentativeModel : TrackableModel
   public required List<TopicModel> Topics { get; set; } = default!;
 
   public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
+    ValidationContext validationContext
+  )
   {
     foreach (var result in base.Validate(validationContext))
     {
       yield return result;
     }
 
-    if (
-      validationContext.MemberName is null or nameof(PhysicalPerson)
-    )
+    if (validationContext.MemberName is null or nameof(PhysicalPerson))
     {
       foreach (var result in PhysicalPerson.Validate(validationContext))
       {

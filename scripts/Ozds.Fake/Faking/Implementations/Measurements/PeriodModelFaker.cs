@@ -20,7 +20,7 @@ public class PeriodModelFaker(IServiceProvider serviceProvider)
       DurationModel.Week => faker.Random.UInt(1, 52),
       DurationModel.Month => faker.Random.UInt(1, 12),
       DurationModel.Year => faker.Random.UInt(1, 100),
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 }

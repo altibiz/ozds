@@ -35,68 +35,63 @@ public class AbbB2xAggregateModelCloner
 
       DerivedActivePowerL1ImportT0_W =
         measurement.DerivedActivePowerL1ImportT0_W.Clone(),
-      ActiveEnergyL2ImportT0_Wh = measurement.ActiveEnergyL2ImportT0_Wh
-        .Clone(),
+      ActiveEnergyL2ImportT0_Wh = measurement.ActiveEnergyL2ImportT0_Wh.Clone(),
 
       DerivedActivePowerL2ImportT0_W =
         measurement.DerivedActivePowerL2ImportT0_W.Clone(),
-      ActiveEnergyL3ImportT0_Wh = measurement.ActiveEnergyL3ImportT0_Wh
-        .Clone(),
+      ActiveEnergyL3ImportT0_Wh = measurement.ActiveEnergyL3ImportT0_Wh.Clone(),
 
       DerivedActivePowerL3ImportT0_W =
         measurement.DerivedActivePowerL3ImportT0_W.Clone(),
-      ActiveEnergyL1ExportT0_Wh = measurement.ActiveEnergyL1ExportT0_Wh
-        .Clone(),
+      ActiveEnergyL1ExportT0_Wh = measurement.ActiveEnergyL1ExportT0_Wh.Clone(),
 
       DerivedActivePowerL1ExportT0_W =
         measurement.DerivedActivePowerL1ExportT0_W.Clone(),
-      ActiveEnergyL2ExportT0_Wh = measurement.ActiveEnergyL2ExportT0_Wh
-        .Clone(),
+      ActiveEnergyL2ExportT0_Wh = measurement.ActiveEnergyL2ExportT0_Wh.Clone(),
 
       DerivedActivePowerL2ExportT0_W =
         measurement.DerivedActivePowerL2ExportT0_W.Clone(),
-      ActiveEnergyL3ExportT0_Wh = measurement.ActiveEnergyL3ExportT0_Wh
-        .Clone(),
+      ActiveEnergyL3ExportT0_Wh = measurement.ActiveEnergyL3ExportT0_Wh.Clone(),
 
       DerivedActivePowerL3ExportT0_W =
         measurement.DerivedActivePowerL3ExportT0_W.Clone(),
-      ReactiveEnergyL1ImportT0_VARh = measurement.ReactiveEnergyL1ImportT0_VARh
-        .Clone(),
+      ReactiveEnergyL1ImportT0_VARh =
+        measurement.ReactiveEnergyL1ImportT0_VARh.Clone(),
 
       DerivedReactivePowerL1ImportT0_VAR =
         measurement.DerivedReactivePowerL1ImportT0_VAR.Clone(),
-      ReactiveEnergyL2ImportT0_VARh = measurement.ReactiveEnergyL2ImportT0_VARh
-        .Clone(),
+      ReactiveEnergyL2ImportT0_VARh =
+        measurement.ReactiveEnergyL2ImportT0_VARh.Clone(),
 
       DerivedReactivePowerL2ImportT0_VAR =
         measurement.DerivedReactivePowerL2ImportT0_VAR.Clone(),
-      ReactiveEnergyL3ImportT0_VARh = measurement.ReactiveEnergyL3ImportT0_VARh
-        .Clone(),
+      ReactiveEnergyL3ImportT0_VARh =
+        measurement.ReactiveEnergyL3ImportT0_VARh.Clone(),
 
       DerivedReactivePowerL3ImportT0_VAR =
         measurement.DerivedReactivePowerL3ImportT0_VAR.Clone(),
-      ReactiveEnergyL1ExportT0_VARh = measurement.ReactiveEnergyL1ExportT0_VARh
-        .Clone(),
+      ReactiveEnergyL1ExportT0_VARh =
+        measurement.ReactiveEnergyL1ExportT0_VARh.Clone(),
 
       DerivedReactivePowerL1ExportT0_VAR =
         measurement.DerivedReactivePowerL1ExportT0_VAR.Clone(),
-      ReactiveEnergyL2ExportT0_VARh = measurement.ReactiveEnergyL2ExportT0_VARh
-        .Clone(),
+      ReactiveEnergyL2ExportT0_VARh =
+        measurement.ReactiveEnergyL2ExportT0_VARh.Clone(),
 
       DerivedReactivePowerL2ExportT0_VAR =
         measurement.DerivedReactivePowerL2ExportT0_VAR.Clone(),
-      ReactiveEnergyL3ExportT0_VARh = measurement.ReactiveEnergyL3ExportT0_VARh
-        .Clone(),
+      ReactiveEnergyL3ExportT0_VARh =
+        measurement.ReactiveEnergyL3ExportT0_VARh.Clone(),
 
       DerivedReactivePowerL3ExportT0_VAR =
         measurement.DerivedReactivePowerL3ExportT0_VAR.Clone(),
-      ActiveEnergyTotalImportT0_Wh = measurement.ActiveEnergyTotalImportT0_Wh
-        .Clone(),
+      ActiveEnergyTotalImportT0_Wh =
+        measurement.ActiveEnergyTotalImportT0_Wh.Clone(),
 
       DerivedActivePowerTotalImportT0_W =
         measurement.DerivedActivePowerTotalImportT0_W.Clone(),
-      ActiveEnergyTotalExportT0_Wh = measurement.ActiveEnergyTotalExportT0_Wh
-        .Clone(),
+      ActiveEnergyTotalExportT0_Wh =
+        measurement.ActiveEnergyTotalExportT0_Wh.Clone(),
 
       DerivedActivePowerTotalExportT0_W =
         measurement.DerivedActivePowerTotalExportT0_W.Clone(),
@@ -112,16 +107,16 @@ public class AbbB2xAggregateModelCloner
 
       DerivedReactivePowerTotalExportT0_VAR =
         measurement.DerivedReactivePowerTotalExportT0_VAR.Clone(),
-      ActiveEnergyTotalImportT1_Wh = measurement.ActiveEnergyTotalImportT1_Wh
-        .Clone(),
+      ActiveEnergyTotalImportT1_Wh =
+        measurement.ActiveEnergyTotalImportT1_Wh.Clone(),
 
       DerivedActivePowerTotalImportT1_W =
         measurement.DerivedActivePowerTotalImportT1_W.Clone(),
-      ActiveEnergyTotalImportT2_Wh = measurement.ActiveEnergyTotalImportT2_Wh
-        .Clone(),
+      ActiveEnergyTotalImportT2_Wh =
+        measurement.ActiveEnergyTotalImportT2_Wh.Clone(),
 
       DerivedActivePowerTotalImportT2_W =
-        measurement.DerivedActivePowerTotalImportT2_W.Clone()
+        measurement.DerivedActivePowerTotalImportT2_W.Clone(),
     };
   }
 }

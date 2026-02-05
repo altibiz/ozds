@@ -7,7 +7,6 @@ public interface IAuditableEntity : IEntity
   public string? CreatedById { get; }
 }
 
-public interface IAuditableIdentifiableEntity :
-  IAuditableEntity, IIdentifiableEntity
-{
-}
+public interface IAuditableIdentifiableEntity
+  : IAuditableEntity,
+    IIdentifiableEntity { }

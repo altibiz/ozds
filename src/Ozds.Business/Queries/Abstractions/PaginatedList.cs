@@ -2,16 +2,10 @@ using System.Collections;
 
 namespace Ozds.Business.Queries.Abstractions;
 
-public record PaginatedList(
-  Type Type,
-  IList ObjectItems,
-  int TotalCount
-);
+public record PaginatedList(Type Type, IList ObjectItems, int TotalCount);
 
-public record PaginatedList<T>(
-  List<T> Items,
-  int TotalCount
-) : PaginatedList(typeof(T), Items, TotalCount)
+public record PaginatedList<T>(List<T> Items, int TotalCount)
+  : PaginatedList(typeof(T), Items, TotalCount)
 {
   public static readonly PaginatedList<T> Empty = new(new List<T>(), 0);
 }

@@ -6,7 +6,7 @@ public enum TariffModel
 {
   T0,
   T1,
-  T2
+  T2,
 }
 
 public static class TariffModelExtensions
@@ -24,7 +24,7 @@ public static class TariffModelExtensions
       TariffModel.T0 => measurement.TariffUnary(),
       TariffModel.T1 => measurement.TariffBinary().T1,
       TariffModel.T2 => measurement.TariffBinary().T2,
-      _ => measurement.TariffUnary()
+      _ => measurement.TariffUnary(),
     };
   }
 }

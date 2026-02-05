@@ -12,10 +12,11 @@ public class NetworkUserInvoiceStateSagaDefinition
 
   public NetworkUserInvoiceStateSagaDefinition(IConfiguration configuration)
   {
-    var options = configuration.GetSection(
-        "Ozds:Messaging").Get<OzdsMessagingOptions>()
+    var options =
+      configuration.GetSection("Ozds:Messaging").Get<OzdsMessagingOptions>()
       ?? throw new InvalidOperationException(
-        "Ozds:Messaging not found in configuration");
+        "Ozds:Messaging not found in configuration"
+      );
 
     Endpoint(e =>
     {
@@ -41,13 +42,17 @@ public class NetworkUserInvoiceStateSagaDefinition
 
     var partition = endpointConfigurator.CreatePartitioner(ConcurrencyLimit);
 
-    sagaConfigurator.Message<IAbortNetworkUserInvoice>(x => x
-      .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
-    sagaConfigurator.Message<IInitiateNetworkUserInvoice>(x => x
-      .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
-    sagaConfigurator.Message<IRegisterNetworkUserInvoice>(x => x
-      .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
-    sagaConfigurator.Message<IApproveNetworkUserInvoice>(x => x
-      .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
+    sagaConfigurator.Message<IAbortNetworkUserInvoice>(x =>
+      x.UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId)
+    );
+    sagaConfigurator.Message<IInitiateNetworkUserInvoice>(x =>
+      x.UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId)
+    );
+    sagaConfigurator.Message<IRegisterNetworkUserInvoice>(x =>
+      x.UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId)
+    );
+    sagaConfigurator.Message<IApproveNetworkUserInvoice>(x =>
+      x.UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId)
+    );
   }
 }

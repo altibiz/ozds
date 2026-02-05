@@ -9,6 +9,5 @@ public class CatalogueModelEntityConverter(IServiceProvider serviceProvider)
     CatalogueModel,
     TrackableModel,
     CatalogueEntity,
-    TrackableEntity>(serviceProvider)
-{
-}
+    TrackableEntity
+  >(serviceProvider) { }

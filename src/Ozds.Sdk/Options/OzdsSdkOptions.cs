@@ -9,9 +9,8 @@ public class OzdsSdkOptions
   public string ApiKey { get; set; } = default!;
 }
 
-public class ConfigureOzdsSdkOptions(
-  IConfiguration configuration
-) : IConfigureOptions<OzdsSdkOptions>
+public class ConfigureOzdsSdkOptions(IConfiguration configuration)
+  : IConfigureOptions<OzdsSdkOptions>
 {
   public void Configure(OzdsSdkOptions options)
   {
@@ -20,15 +19,13 @@ public class ConfigureOzdsSdkOptions(
 
   public static string BaseUrl(IConfiguration configuration)
   {
-    return configuration
-        .GetValue<string>("Ozds:Sdk:BaseUrl")
+    return configuration.GetValue<string>("Ozds:Sdk:BaseUrl")
       ?? throw new InvalidOperationException("OZDS SDK BaseUrl not set");
   }
 
   public static string ApiKey(IConfiguration configuration)
   {
-    return configuration
-        .GetValue<string>("Ozds:Sdk:ApiKey")
+    return configuration.GetValue<string>("Ozds:Sdk:ApiKey")
       ?? throw new InvalidOperationException("OZDS SDK ApiKey not set");
   }
 }

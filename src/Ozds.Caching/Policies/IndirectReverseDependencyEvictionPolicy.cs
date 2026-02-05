@@ -8,7 +8,8 @@ using Ozds.Caching.Reflection;
 namespace Ozds.Caching.Policies;
 
 public delegate string? IndirectReverseDependencyEvictionPolicyKeyResolver(
-  object value);
+  object value
+);
 
 public class IndirectReverseDependencyEvictionPolicy(
   IndirectReverseDependencyEvictionPolicyKeyResolver keyResolver,
@@ -30,13 +31,16 @@ public class IndirectReverseDependencyEvictionPolicy(
     await base.HandleCacheEvent(policyContext, cancellationToken);
 
     var eventArgs = policyContext.EventArgs;
-    if (eventArgs.Operation == CacheOperation.Delete
-      || eventArgs.Operation == CacheOperation.Create)
+    if (
+      eventArgs.Operation == CacheOperation.Delete
+      || eventArgs.Operation == CacheOperation.Create
+    )
     {
       var reverseDependencies = await ResolveReverseDependencies(
         policyContext,
         value,
-        cancellationToken);
+        cancellationToken
+      );
       if (reverseDependencies.ReverseDependencies.Count == 0)
       {
         return;
@@ -45,7 +49,8 @@ public class IndirectReverseDependencyEvictionPolicy(
       await EvictReverseDependencies(
         policyContext,
         cancellationToken,
-        reverseDependencies);
+        reverseDependencies
+      );
     }
   }
 
@@ -57,12 +62,11 @@ public class IndirectReverseDependencyEvictionPolicy(
   {
     var cache = new DependencyPolicyCache(policyContext.Cache);
 
-    var entityReflector = policyContext.ServiceProvider
-      .GetRequiredService<EntityReflector>();
+    var entityReflector =
+      policyContext.ServiceProvider.GetRequiredService<EntityReflector>();
 
     var reverseDependencies = new List<string>();
-    foreach (var subtype in entityReflector
-      .ResolveSubtypes(type))
+    foreach (var subtype in entityReflector.ResolveSubtypes(type))
     {
       var id = keyResolver(value);
       if (id is null)
@@ -70,25 +74,25 @@ public class IndirectReverseDependencyEvictionPolicy(
         continue;
       }
 
-      var key = entityReflector
-        .ResolveEntityKeyFromId(subtype, id);
+      var key = entityReflector.ResolveEntityKeyFromId(subtype, id);
 
-      var scopeReverseDependencies = await cache
-        .ReadReverseDependencies(
-          key,
-          cancellationToken);
+      var scopeReverseDependencies = await cache.ReadReverseDependencies(
+        key,
+        cancellationToken
+      );
       if (scopeReverseDependencies is null)
       {
         continue;
       }
 
       reverseDependencies.AddRange(
-        scopeReverseDependencies.ReverseDependencies);
+        scopeReverseDependencies.ReverseDependencies
+      );
     }
 
     return new ReverseDependenciesEntity
     {
-      ReverseDependencies = reverseDependencies
+      ReverseDependencies = reverseDependencies,
     };
   }
 }

@@ -8,21 +8,24 @@ namespace Ozds.Fake.Faking.Implementations.Measurements;
 
 public class NetworkUserMeasurementLocationModelFaker(
   IServiceProvider serviceProvider
-) : InheritingModelFaker<NetworkUserMeasurementLocationModel,
-  MeasurementLocationModel>(serviceProvider)
+)
+  : InheritingModelFaker<
+    NetworkUserMeasurementLocationModel,
+    MeasurementLocationModel
+  >(serviceProvider)
 {
   private readonly HtmlSanitizer htmlSanitizer =
     serviceProvider.GetRequiredService<HtmlSanitizer>();
 
   public override void Initialize(
     NetworkUserMeasurementLocationModel model,
-    Faker faker)
+    Faker faker
+  )
   {
     base.Initialize(model, faker);
 
-    model.CalculationRemark =
-      htmlSanitizer.Sanitize(
-        faker.Random.Words(
-          faker.Random.Number(1, 10)));
+    model.CalculationRemark = htmlSanitizer.Sanitize(
+      faker.Random.Words(faker.Random.Number(1, 10))
+    );
   }
 }

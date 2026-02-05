@@ -6,8 +6,7 @@ namespace Ozds.Business.Activation.Implementations.Measurements;
 
 public class SchneideriEM3xxxMeterModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  SchneideriEM3xxxMeterModel,
-  MeterModel>(serviceProvider)
-{
-}
+)
+  : InheritingModelActivator<SchneideriEM3xxxMeterModel, MeterModel>(
+    serviceProvider
+  ) { }

@@ -1,7 +1,7 @@
 namespace Ozds.Document.Entities;
 
-public abstract class
-  ActivePowerTotalImportT1PeakCalculationItemEntity : CalculationItemEntity
+public abstract class ActivePowerTotalImportT1PeakCalculationItemEntity
+  : CalculationItemEntity
 {
   public decimal Peak_kW { get; set; }
 
@@ -14,6 +14,4 @@ public abstract class
 }
 
 public class UsageActivePowerTotalImportT1PeakCalculationItemEntity
-  : ActivePowerTotalImportT1PeakCalculationItemEntity
-{
-}
+  : ActivePowerTotalImportT1PeakCalculationItemEntity { }

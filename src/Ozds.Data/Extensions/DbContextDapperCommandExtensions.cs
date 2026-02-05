@@ -16,8 +16,10 @@ namespace Ozds.Data.Extensions;
 
 public static class DbContextDapperCommandExtensions
 {
-  private static readonly ConcurrentDictionary<Type, List<PropertyMapping>>
-    _propertyMappingsCache = new();
+  private static readonly ConcurrentDictionary<
+    Type,
+    List<PropertyMapping>
+  > _propertyMappingsCache = new();
 
   public static async Task<List<T>> DapperCommand<T>(
     this DbContext context,
@@ -86,13 +88,16 @@ public static class DbContextDapperCommandExtensions
     var results = new List<T>();
     var propertyMappings = _propertyMappingsCache.GetOrAdd(
       type,
-      type => GetPropertyMappings(context, type));
+      type => GetPropertyMappings(context, type)
+    );
     while (await reader.ReadAsync(cancellationToken))
     {
       var splits = SplitReader(reader, propertyMappings);
-      var instance = Activator.CreateInstance(type)
+      var instance =
+        Activator.CreateInstance(type)
         ?? throw new InvalidOperationException(
-          $"Failed to create instance of {type.Name}");
+          $"Failed to create instance of {type.Name}"
+        );
       MapProperties(context, instance, splits);
 
       if (resultAttribute is not null)
@@ -101,9 +106,11 @@ public static class DbContextDapperCommandExtensions
       }
       else
       {
-        var result = instance.GetType().GetProperty("Value")?.GetValue(instance)
+        var result =
+          instance.GetType().GetProperty("Value")?.GetValue(instance)
           ?? throw new InvalidOperationException(
-            $"Failed to get value from {instance.GetType().Name}");
+            $"Failed to get value from {instance.GetType().Name}"
+          );
         results.Add((T)result);
       }
     }
@@ -118,23 +125,27 @@ public static class DbContextDapperCommandExtensions
   {
     var propertyMappings = new List<PropertyMapping>();
 
-    var properties = clrType
-      .GetProperties(BindingFlags.Public | BindingFlags.Instance);
+    var properties = clrType.GetProperties(
+      BindingFlags.Public | BindingFlags.Instance
+    );
     foreach (var property in properties)
     {
       var efType = context.Model.FindEntityType(property.PropertyType);
       if (efType is { } entityType)
       {
         var columnMappings = GetColumnMappings(efType, efType);
-        var complexPropertyMappings =
-          GetComplexPropertyMappings(context, efType, efType);
+        var complexPropertyMappings = GetComplexPropertyMappings(
+          context,
+          efType,
+          efType
+        );
 
         var entityPropertyMapping = new EntityPropertyMapping
         {
           EntityType = entityType,
           ComplexPropertyMappings = complexPropertyMappings,
           ColumnMappings = columnMappings,
-          Property = property
+          Property = property,
         };
 
         propertyMappings.Add(entityPropertyMapping);
@@ -145,7 +156,7 @@ public static class DbContextDapperCommandExtensions
         var scalarPropertyMapping = new ScalarPropertyMapping
         {
           Property = property,
-          ColumnName = columnName
+          ColumnName = columnName,
         };
         propertyMappings.Add(scalarPropertyMapping);
       }
@@ -164,8 +175,11 @@ public static class DbContextDapperCommandExtensions
 
     foreach (var efProperty in type.GetComplexProperties())
     {
-      var complexPropertyMapping =
-        GetComplexPropertyMapping(context, tableType, efProperty);
+      var complexPropertyMapping = GetComplexPropertyMapping(
+        context,
+        tableType,
+        efProperty
+      );
       complexPropertyMappings.Add(complexPropertyMapping);
     }
 
@@ -178,8 +192,9 @@ public static class DbContextDapperCommandExtensions
     IComplexProperty complexProperty
   )
   {
-    var correspondingEntityType = context.Model
-      .FindEntityType(complexProperty.ComplexType.ClrType);
+    var correspondingEntityType = context.Model.FindEntityType(
+      complexProperty.ComplexType.ClrType
+    );
 
     var columnMappings = GetColumnMappings(
       tableType,
@@ -187,11 +202,15 @@ public static class DbContextDapperCommandExtensions
     );
     var complexPropertyMappings = new List<ComplexPropertyMapping>();
 
-    foreach (var efProperty in
-      complexProperty.ComplexType.GetComplexProperties())
+    foreach (
+      var efProperty in complexProperty.ComplexType.GetComplexProperties()
+    )
     {
-      var complexPropertyMapping =
-        GetComplexPropertyMapping(context, tableType, efProperty);
+      var complexPropertyMapping = GetComplexPropertyMapping(
+        context,
+        tableType,
+        efProperty
+      );
       complexPropertyMappings.Add(complexPropertyMapping);
     }
 
@@ -201,7 +220,7 @@ public static class DbContextDapperCommandExtensions
       CorrespondingEntityType = correspondingEntityType,
       TableType = tableType,
       ColumnMappings = columnMappings,
-      ComplexPropertyMappings = complexPropertyMappings
+      ComplexPropertyMappings = complexPropertyMappings,
     };
   }
 
@@ -221,8 +240,9 @@ public static class DbContextDapperCommandExtensions
           new PropertyColumnMapping
           {
             Property = property,
-            ColumnName = columnName
-          });
+            ColumnName = columnName,
+          }
+        );
 
         continue;
       }
@@ -230,11 +250,8 @@ public static class DbContextDapperCommandExtensions
       if (efProperty.FieldInfo is { } field)
       {
         columnMappings.Add(
-          new FieldColumnMapping
-          {
-            Field = field,
-            ColumnName = columnName
-          });
+          new FieldColumnMapping { Field = field, ColumnName = columnName }
+        );
       }
     }
 
@@ -257,11 +274,11 @@ public static class DbContextDapperCommandExtensions
         }
 
         var entityType = entitySplit.EntityMapping.EntityType;
-        var discriminatorProperty = entityType
-          .FindDiscriminatorProperty();
-        var discriminatorColumnName = discriminatorProperty != null
-          ? GetColumnNameForProperty(entityType, discriminatorProperty)
-          : null;
+        var discriminatorProperty = entityType.FindDiscriminatorProperty();
+        var discriminatorColumnName =
+          discriminatorProperty != null
+            ? GetColumnNameForProperty(entityType, discriminatorProperty)
+            : null;
 
         object? discriminatorValue = null;
         if (discriminatorColumnName != null)
@@ -271,19 +288,16 @@ public static class DbContextDapperCommandExtensions
 
         var finalType = entityType;
         var finalColumnMappings = entitySplit.EntityMapping.ColumnMappings;
-        var finalComplexPropertyMappings =
-          entitySplit.EntityMapping.ComplexPropertyMappings;
-        if (discriminatorValue is not null
-          && discriminatorValue != DBNull.Value)
+        var finalComplexPropertyMappings = entitySplit
+          .EntityMapping
+          .ComplexPropertyMappings;
+        if (
+          discriminatorValue is not null
+          && discriminatorValue != DBNull.Value
+        )
         {
-          finalType = GetConcreteEntityType(
-            entityType,
-            discriminatorValue
-          );
-          finalColumnMappings = GetColumnMappings(
-            finalType,
-            finalType
-          );
+          finalType = GetConcreteEntityType(entityType, discriminatorValue);
+          finalColumnMappings = GetColumnMappings(finalType, finalType);
           finalComplexPropertyMappings = GetComplexPropertyMappings(
             context,
             finalType,
@@ -291,15 +305,13 @@ public static class DbContextDapperCommandExtensions
           );
         }
 
-        var entityInstance = Activator.CreateInstance(finalType.ClrType)
+        var entityInstance =
+          Activator.CreateInstance(finalType.ClrType)
           ?? throw new InvalidOperationException(
-            $"Failed to create instance of {finalType.Name}");
+            $"Failed to create instance of {finalType.Name}"
+          );
 
-        MapColumns(
-          entityInstance,
-          finalColumnMappings,
-          entitySplit.Values
-        );
+        MapColumns(entityInstance, finalColumnMappings, entitySplit.Values);
 
         MapComplexProperties(
           context,
@@ -319,7 +331,8 @@ public static class DbContextDapperCommandExtensions
 
         var converted = ConvertValue(
           scalarSplit.Value,
-          scalarSplit.ScalarMapping.Property.PropertyType);
+          scalarSplit.ScalarMapping.Property.PropertyType
+        );
         scalarSplit.ScalarMapping.Property.SetValue(instance, converted);
       }
     }
@@ -335,14 +348,17 @@ public static class DbContextDapperCommandExtensions
     foreach (var complexMapping in complexPropertyMappings)
     {
       var correspondingEntityType = complexMapping.CorrespondingEntityType;
-      var discriminatorProperty = correspondingEntityType
-        ?.FindDiscriminatorProperty();
-      var discriminatorColumnName = discriminatorProperty != null
-        ? GetColumnNameForProperty(
-          complexMapping.TableType,
-          complexMapping.ComplexProperty.ComplexType
-            .GetProperty(discriminatorProperty.Name))
-        : null;
+      var discriminatorProperty =
+        correspondingEntityType?.FindDiscriminatorProperty();
+      var discriminatorColumnName =
+        discriminatorProperty != null
+          ? GetColumnNameForProperty(
+            complexMapping.TableType,
+            complexMapping.ComplexProperty.ComplexType.GetProperty(
+              discriminatorProperty.Name
+            )
+          )
+          : null;
 
       object? discriminatorValue = null;
       if (discriminatorColumnName != null)
@@ -353,8 +369,11 @@ public static class DbContextDapperCommandExtensions
       var finalType = (ITypeBase)complexMapping.ComplexProperty.ComplexType;
       var finalColumnMappings = complexMapping.ColumnMappings;
       var finalComplexPropertyMappings = complexMapping.ComplexPropertyMappings;
-      if (correspondingEntityType is not null && discriminatorValue is not null
-        && !string.IsNullOrEmpty(discriminatorValue.ToString()))
+      if (
+        correspondingEntityType is not null
+        && discriminatorValue is not null
+        && !string.IsNullOrEmpty(discriminatorValue.ToString())
+      )
       {
         var entityType = GetConcreteEntityType(
           correspondingEntityType,
@@ -371,9 +390,11 @@ public static class DbContextDapperCommandExtensions
         }
       }
 
-      var complexInstance = Activator.CreateInstance(finalType.ClrType)
+      var complexInstance =
+        Activator.CreateInstance(finalType.ClrType)
         ?? throw new InvalidOperationException(
-          $"Failed to create instance of {finalType.ClrType.Name}");
+          $"Failed to create instance of {finalType.ClrType.Name}"
+        );
 
       MapColumns(complexInstance, finalColumnMappings, reader);
 
@@ -412,15 +433,16 @@ public static class DbContextDapperCommandExtensions
 
       if (columnMapping is PropertyColumnMapping propertyMapping)
       {
-        var converted =
-          ConvertValue(value, propertyMapping.Property.PropertyType);
+        var converted = ConvertValue(
+          value,
+          propertyMapping.Property.PropertyType
+        );
         propertyMapping.Property.SetValue(instance, converted);
       }
 
       if (columnMapping is FieldColumnMapping fieldMapping)
       {
-        var converted =
-          ConvertValue(value, fieldMapping.Field.FieldType);
+        var converted = ConvertValue(value, fieldMapping.Field.FieldType);
         fieldMapping.Field.SetValue(instance, converted);
       }
     }
@@ -431,16 +453,18 @@ public static class DbContextDapperCommandExtensions
     IProperty property
   )
   {
-    var storeObjectIdentifier = StoreObjectIdentifier
-        .Create(tableType, StoreObjectType.Table)
+    var storeObjectIdentifier =
+      StoreObjectIdentifier.Create(tableType, StoreObjectType.Table)
       ?? throw new InvalidOperationException(
         $"Unable to determine store object identifier"
-        + $" for type {tableType.ClrType.Name}");
+          + $" for type {tableType.ClrType.Name}"
+      );
 
     return property.GetColumnName(storeObjectIdentifier)
       ?? throw new InvalidOperationException(
         $"Column name not found for property"
-        + $" {property.Name} in type {tableType.ClrType.Name}");
+          + $" {property.Name} in type {tableType.ClrType.Name}"
+      );
   }
 
   private static IEntityType GetConcreteEntityType(
@@ -448,13 +472,15 @@ public static class DbContextDapperCommandExtensions
     object discriminatorValue
   )
   {
-    var concreteEntityType = baseEntityType
+    var concreteEntityType =
+      baseEntityType
         .GetDerivedTypesInclusive()
-        .FirstOrDefault(e => Equals(
-          e.GetDiscriminatorValue(),
-          discriminatorValue))
+        .FirstOrDefault(e =>
+          Equals(e.GetDiscriminatorValue(), discriminatorValue)
+        )
       ?? throw new InvalidOperationException(
-        $"Unknown discriminator value: {discriminatorValue}");
+        $"Unknown discriminator value: {discriminatorValue}"
+      );
 
     return concreteEntityType;
   }
@@ -467,49 +493,58 @@ public static class DbContextDapperCommandExtensions
     var results = new List<ReaderSplit>();
 
     var splitColumns = new Queue<string>(
-      propertyMappings
-        .Select(mapping =>
+      propertyMappings.Select(mapping =>
+      {
+        var splitColumn = mapping switch
         {
-          var splitColumn = mapping switch
-          {
-            EntityPropertyMapping entityMapping => entityMapping
-                .EntityType.FindPrimaryKey()
-                ?.Properties[0]
-                ?.GetColumnName()
-              ?? throw new InvalidOperationException(
-                "Primary key not found for entity"
-                + entityMapping.EntityType.ClrType.Name),
-            ScalarPropertyMapping scalarMapping =>
-              scalarMapping.Property.Name,
-            _ => throw new InvalidOperationException(
-              $"Unknown property mapping type: {mapping.GetType().Name}")
-          };
-          return splitColumn;
-        }));
+          EntityPropertyMapping entityMapping => entityMapping
+            .EntityType.FindPrimaryKey()
+            ?.Properties[0]
+            ?.GetColumnName()
+            ?? throw new InvalidOperationException(
+              "Primary key not found for entity"
+                + entityMapping.EntityType.ClrType.Name
+            ),
+          ScalarPropertyMapping scalarMapping => scalarMapping.Property.Name,
+          _ => throw new InvalidOperationException(
+            $"Unknown property mapping type: {mapping.GetType().Name}"
+          ),
+        };
+        return splitColumn;
+      })
+    );
 
-    var splits = Enumerable.Range(0, reader.FieldCount)
+    var splits = Enumerable
+      .Range(0, reader.FieldCount)
       .Aggregate(
-        new List<int>(), (splits, i) =>
+        new List<int>(),
+        (splits, i) =>
         {
-          if (splitColumns.TryPeek(out var splitColumn)
-            && reader.GetName(i) == splitColumn)
+          if (
+            splitColumns.TryPeek(out var splitColumn)
+            && reader.GetName(i) == splitColumn
+          )
           {
             splits.Add(i);
             splitColumns.Dequeue();
           }
 
           return splits;
-        });
+        }
+      );
 
     if (splitColumns.Count > 0)
     {
       throw new InvalidOperationException(
-        $"Unable to find split column for {splitColumns.Peek()}");
+        $"Unable to find split column for {splitColumns.Peek()}"
+      );
     }
 
-    foreach (var ((mapping, splitStart), splitEnd) in propertyMappings
-      .Zip(splits)
-      .Zip(splits.Skip(1).Append(reader.FieldCount)))
+    foreach (
+      var ((mapping, splitStart), splitEnd) in propertyMappings
+        .Zip(splits)
+        .Zip(splits.Skip(1).Append(reader.FieldCount))
+    )
     {
       if (mapping is EntityPropertyMapping entityMapping)
       {
@@ -524,8 +559,9 @@ public static class DbContextDapperCommandExtensions
           new EntityReaderSplit
           {
             EntityMapping = entityMapping,
-            Values = values
-          });
+            Values = values,
+          }
+        );
       }
 
       if (mapping is ScalarPropertyMapping scalarMapping)
@@ -537,8 +573,9 @@ public static class DbContextDapperCommandExtensions
           {
             ScalarMapping = scalarMapping,
             Value = value,
-            ColumnName = columnName
-          });
+            ColumnName = columnName,
+          }
+        );
       }
     }
 
@@ -550,12 +587,15 @@ public static class DbContextDapperCommandExtensions
     if (type == typeof(DateTimeOffset) || type == typeof(DateTimeOffset?))
     {
       return new DateTimeOffset(
-        DateTime.SpecifyKind((DateTime)value, DateTimeKind.Utc));
+        DateTime.SpecifyKind((DateTime)value, DateTimeKind.Utc)
+      );
     }
 
-    if (type.IsGenericType
+    if (
+      type.IsGenericType
       && type.GetGenericTypeDefinition() == typeof(List<>)
-      && type.GetGenericArguments().Single() is { } elementType)
+      && type.GetGenericArguments().Single() is { } elementType
+    )
     {
       return typeof(Enumerable)
         .GetMethod(nameof(Enumerable.ToList))!
@@ -589,11 +629,7 @@ public static class DbContextDapperCommandExtensions
 
     public required List<ColumnMapping> ColumnMappings { get; init; }
 
-    public required List<ComplexPropertyMapping> ComplexPropertyMappings
-    {
-      get;
-      init;
-    }
+    public required List<ComplexPropertyMapping> ComplexPropertyMappings { get; init; }
   }
 
   private sealed class ScalarPropertyMapping : PropertyMapping
@@ -611,11 +647,7 @@ public static class DbContextDapperCommandExtensions
 
     public required List<ColumnMapping> ColumnMappings { get; init; }
 
-    public required List<ComplexPropertyMapping> ComplexPropertyMappings
-    {
-      get;
-      init;
-    }
+    public required List<ComplexPropertyMapping> ComplexPropertyMappings { get; init; }
   }
 
   private abstract class ColumnMapping
@@ -636,8 +668,7 @@ public static class DbContextDapperCommandExtensions
 #pragma warning disable S2094 // Classes should not be empty
   private abstract class ReaderSplit
 #pragma warning restore S2094 // Classes should not be empty
-  {
-  }
+  { }
 
   private sealed class EntityReaderSplit : ReaderSplit
   {

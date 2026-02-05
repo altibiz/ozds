@@ -6,11 +6,8 @@ using Ozds.Business.Reflection;
 
 namespace Ozds.Business.Activation.Implementations.Administration;
 
-public class ApiKeyModelActivator(
-  IServiceProvider serviceProvider
-) : InheritingModelActivator<ApiKeyModel, TrackableModel>(
-  serviceProvider
-)
+public class ApiKeyModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<ApiKeyModel, TrackableModel>(serviceProvider)
 {
   private readonly ApiKeyManager apiKeyManager =
     serviceProvider.GetRequiredService<ApiKeyManager>();
@@ -24,8 +21,9 @@ public class ApiKeyModelActivator(
 
     model.Id = Guid.NewGuid().ToString();
 
-    model.PrincipalModelType = modelReflector
-      .ResolveModelName(modelReflector.PrincipalTypeList.First());
+    model.PrincipalModelType = modelReflector.ResolveModelName(
+      modelReflector.PrincipalTypeList.First()
+    );
     model.PrincipalModelId = string.Empty;
 
     model.Value = apiKeyManager.Generate();

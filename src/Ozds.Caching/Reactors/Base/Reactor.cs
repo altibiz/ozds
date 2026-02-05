@@ -25,11 +25,9 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
     subscriber.Subscribe(OnEvent);
     await base.StartAsync(cancellationToken);
     var logger = serviceProvider.GetRequiredService<
-      ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
-    logger.LogInformation(
-      "Reactor {Reactor} started",
-      GetType().Name
-    );
+      ILogger<Reactor<TEventArgs, TSubscriber, THandler>>
+    >();
+    logger.LogInformation("Reactor {Reactor} started", GetType().Name);
   }
 
   public override async Task StopAsync(CancellationToken cancellationToken)
@@ -37,7 +35,8 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
     var subscriber = serviceProvider.GetRequiredService<TSubscriber>();
     subscriber.Unsubscribe(OnEvent);
     var logger = serviceProvider.GetRequiredService<
-      ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
+      ILogger<Reactor<TEventArgs, TSubscriber, THandler>>
+    >();
     if (!channel.Writer.TryComplete())
     {
       logger.LogWarning(
@@ -47,18 +46,14 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
     }
 
     await base.StopAsync(cancellationToken);
-    logger.LogInformation(
-      "Reactor {Reactor} stopped",
-      GetType().Name
-    );
+    logger.LogInformation("Reactor {Reactor} stopped", GetType().Name);
   }
 
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
-    var lifetime = serviceProvider
-      .GetRequiredService<IHostApplicationLifetime>();
-    var factory = serviceProvider
-      .GetRequiredService<IServiceScopeFactory>();
+    var lifetime =
+      serviceProvider.GetRequiredService<IHostApplicationLifetime>();
+    var factory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
 
     if (!await lifetime.WaitForAppStartup(stoppingToken))
     {
@@ -68,11 +63,11 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
     {
       await using var scope = factory.CreateAsyncScope();
       var logger = scope.ServiceProvider.GetRequiredService<
-        ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
+        ILogger<Reactor<TEventArgs, TSubscriber, THandler>>
+      >();
       try
       {
-        var handler = scope.ServiceProvider
-          .GetRequiredService<THandler>();
+        var handler = scope.ServiceProvider.GetRequiredService<THandler>();
         logger.LogDebug(
           "Invoking handler {Handler} for reactor {Reactor} after start",
           handler.GetType().Name,
@@ -93,12 +88,14 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
 
     try
     {
-      await foreach (var eventArgs in
-        channel.Reader.ReadAllAsync(stoppingToken))
+      await foreach (
+        var eventArgs in channel.Reader.ReadAllAsync(stoppingToken)
+      )
       {
         await using var scope = factory.CreateAsyncScope();
         var logger = scope.ServiceProvider.GetRequiredService<
-          ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
+          ILogger<Reactor<TEventArgs, TSubscriber, THandler>>
+        >();
 
         logger.LogDebug(
           "Invoking handler {Handler} for reactor {Reactor} event {Event}",
@@ -108,8 +105,7 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
         );
         try
         {
-          var handler = scope.ServiceProvider
-            .GetRequiredService<THandler>();
+          var handler = scope.ServiceProvider.GetRequiredService<THandler>();
           await handler.Handle(eventArgs, stoppingToken);
         }
         catch (Exception ex)
@@ -130,10 +126,10 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
 
     {
       await using var scope = factory.CreateAsyncScope();
-      var handler = scope.ServiceProvider
-        .GetRequiredService<THandler>();
+      var handler = scope.ServiceProvider.GetRequiredService<THandler>();
       var logger = scope.ServiceProvider.GetRequiredService<
-        ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
+        ILogger<Reactor<TEventArgs, TSubscriber, THandler>>
+      >();
       try
       {
         logger.LogDebug(
@@ -160,7 +156,8 @@ public abstract class Reactor<TEventArgs, TSubscriber, THandler>(
     if (!channel.Writer.TryWrite(eventArgs))
     {
       var logger = serviceProvider.GetRequiredService<
-        ILogger<Reactor<TEventArgs, TSubscriber, THandler>>>();
+        ILogger<Reactor<TEventArgs, TSubscriber, THandler>>
+      >();
       logger.LogWarning(
         "Reactor {Reactor} event {Event} dropped",
         GetType().Name,

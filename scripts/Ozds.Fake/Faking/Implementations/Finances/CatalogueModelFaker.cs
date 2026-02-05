@@ -3,8 +3,5 @@ using Ozds.Fake.Faking.Base;
 
 namespace Ozds.Fake.Faking.Implementations.Finances;
 
-public class CatalogueModelFaker(
-  IServiceProvider serviceProvider
-) : InheritingModelFaker<CatalogueModel, TrackableModel>(serviceProvider)
-{
-}
+public class CatalogueModelFaker(IServiceProvider serviceProvider)
+  : InheritingModelFaker<CatalogueModel, TrackableModel>(serviceProvider) { }

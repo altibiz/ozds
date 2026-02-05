@@ -17,7 +17,7 @@ public class LevelModelEntityConverter
       LevelModel.Warning => LevelEntity.Warning,
       LevelModel.Error => LevelEntity.Error,
       LevelModel.Critical => LevelEntity.Critical,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 
@@ -31,7 +31,7 @@ public class LevelModelEntityConverter
       LevelEntity.Warning => LevelModel.Warning,
       LevelEntity.Error => LevelModel.Error,
       LevelEntity.Critical => LevelModel.Critical,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 }

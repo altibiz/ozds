@@ -22,7 +22,8 @@ public static class DbContextAssertionsExtensions
   {
     var ignoreNavigationsOptions = new IgnoreNavigationsOptions(dbContext);
     var ignoreIgnoredPropertiesOptions = new IgnoreIgnoredPropertiesOptions(
-      dbContext);
+      dbContext
+    );
     var dateTimeOffsetOptions = new DateTimeOffsetOptions();
 
     return assertions.BeEquivalentTo(
@@ -38,7 +39,8 @@ public static class DbContextAssertionsExtensions
           .RespectingRuntimeTypes();
       },
       because,
-      becauseArgs);
+      becauseArgs
+    );
   }
 
   public static AndConstraint<TAssertions> NotBeContextuallyEquivalentTo<
@@ -56,7 +58,8 @@ public static class DbContextAssertionsExtensions
   {
     var ignoreNavigationsOptions = new IgnoreNavigationsOptions(dbContext);
     var ignoreIgnoredPropertiesOptions = new IgnoreIgnoredPropertiesOptions(
-      dbContext);
+      dbContext
+    );
     var dateTimeOffsetOptions = new DateTimeOffsetOptions();
 
     return assertions.NotBeEquivalentTo(
@@ -72,7 +75,8 @@ public static class DbContextAssertionsExtensions
           .RespectingRuntimeTypes();
       },
       because,
-      becauseArgs);
+      becauseArgs
+    );
   }
 
   public static AndConstraint<TAssertions> BeContextuallyEquivalentTo<
@@ -80,20 +84,27 @@ public static class DbContextAssertionsExtensions
     TAssertions,
     TCollection
   >(
-    this GenericCollectionAssertions<TCollection, TSubject, TAssertions>
-      assertions,
+    this GenericCollectionAssertions<
+      TCollection,
+      TSubject,
+      TAssertions
+    > assertions,
     DbContext dbContext,
     TCollection expectation,
     string because = "",
     params object[] becauseArgs
   )
-    where TAssertions : GenericCollectionAssertions<TCollection, TSubject,
-      TAssertions>
+    where TAssertions : GenericCollectionAssertions<
+        TCollection,
+        TSubject,
+        TAssertions
+      >
     where TCollection : IEnumerable<TSubject>
   {
     var ignoreNavigationsOptions = new IgnoreNavigationsOptions(dbContext);
     var ignoreIgnoredPropertiesOptions = new IgnoreIgnoredPropertiesOptions(
-      dbContext);
+      dbContext
+    );
     var dateTimeOffsetOptions = new DateTimeOffsetOptions();
 
     return assertions.BeEquivalentTo(
@@ -107,17 +118,18 @@ public static class DbContextAssertionsExtensions
           .AllowingInfiniteRecursion()
           .IncludingNestedObjects()
           .RespectingRuntimeTypes()
-          .Using<float>(ctx => ctx.Subject
-            .Should()
-            .BeApproximately(ctx.Expectation, 0.000001f))
+          .Using<float>(ctx =>
+            ctx.Subject.Should().BeApproximately(ctx.Expectation, 0.000001f)
+          )
           .WhenTypeIs<float>()
-          .Using<double>(ctx => ctx.Subject
-            .Should()
-            .BeApproximately(ctx.Expectation, 0.000001d))
+          .Using<double>(ctx =>
+            ctx.Subject.Should().BeApproximately(ctx.Expectation, 0.000001d)
+          )
           .WhenTypeIs<double>();
       },
       because,
-      becauseArgs);
+      becauseArgs
+    );
   }
 
   public static AndConstraint<TAssertions> NotBeContextuallyEquivalentTo<
@@ -125,20 +137,27 @@ public static class DbContextAssertionsExtensions
     TAssertions,
     TCollection
   >(
-    this GenericCollectionAssertions<TCollection, TSubject, TAssertions>
-      assertions,
+    this GenericCollectionAssertions<
+      TCollection,
+      TSubject,
+      TAssertions
+    > assertions,
     DbContext dbContext,
     TCollection expectation,
     string because = "",
     params object[] becauseArgs
   )
-    where TAssertions : GenericCollectionAssertions<TCollection, TSubject,
-      TAssertions>
+    where TAssertions : GenericCollectionAssertions<
+        TCollection,
+        TSubject,
+        TAssertions
+      >
     where TCollection : IEnumerable<TSubject>
   {
     var ignoreNavigationsOptions = new IgnoreNavigationsOptions(dbContext);
     var ignoreIgnoredPropertiesOptions = new IgnoreIgnoredPropertiesOptions(
-      dbContext);
+      dbContext
+    );
     var dateTimeOffsetOptions = new DateTimeOffsetOptions();
 
     return assertions.NotBeEquivalentTo(
@@ -154,6 +173,7 @@ public static class DbContextAssertionsExtensions
           .RespectingRuntimeTypes();
       },
       because,
-      becauseArgs);
+      becauseArgs
+    );
   }
 }

@@ -6,10 +6,10 @@ namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class MeasurementValidatorModelCachingEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelCachingEntityConverter<
-  MeasurementValidatorModel,
-  TrackableModel,
-  MeasurementValidatorEntity,
-  TrackableEntity>(serviceProvider)
-{
-}
+)
+  : InheritingModelCachingEntityConverter<
+    MeasurementValidatorModel,
+    TrackableModel,
+    MeasurementValidatorEntity,
+    TrackableEntity
+  >(serviceProvider) { }

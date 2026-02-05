@@ -14,9 +14,8 @@ public class OzdsTranslationOpenAiApiOptions
   public string ApiKey { get; set; } = default!;
 }
 
-public class ConfigureOzdsTranslationOptions(
-  IConfiguration configuration
-) : IConfigureOptions<OzdsTranslationOptions>
+public class ConfigureOzdsTranslationOptions(IConfiguration configuration)
+  : IConfigureOptions<OzdsTranslationOptions>
 {
   public void Configure(OzdsTranslationOptions options)
   {

@@ -19,10 +19,13 @@ public class ClockWinder(
       return Task.CompletedTask;
     }
 
-    if (!DateTimeOffset.TryParse(
-      options.Value.RewindTimeStart,
-      CultureInfo.InvariantCulture,
-      out var rewindTimeStart))
+    if (
+      !DateTimeOffset.TryParse(
+        options.Value.RewindTimeStart,
+        CultureInfo.InvariantCulture,
+        out var rewindTimeStart
+      )
+    )
     {
       return Task.CompletedTask;
     }
@@ -33,9 +36,9 @@ public class ClockWinder(
 
     Offset = rewindTimeStart - now;
     logger.LogWarning(
-      "Rewind time start is set to {RewindTimeStart}. " +
-      "Current time is {CurrentTime}. " +
-      "Offset is {Offset}.",
+      "Rewind time start is set to {RewindTimeStart}. "
+        + "Current time is {CurrentTime}. "
+        + "Offset is {Offset}.",
       rewindTimeStart,
       now,
       Offset

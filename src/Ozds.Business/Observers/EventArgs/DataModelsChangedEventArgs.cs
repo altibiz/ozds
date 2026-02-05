@@ -16,5 +16,5 @@ public enum DataModelChangedState
 {
   Added,
   Modified,
-  Removed
+  Removed,
 }

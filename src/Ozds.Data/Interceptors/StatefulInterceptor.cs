@@ -8,8 +8,8 @@ public abstract class StatefulInterceptor<T>(IServiceProvider serviceProvider)
   : ServedInterceptor(serviceProvider)
   where T : class
 {
-  private readonly ConditionalWeakTable<DbContext, T>
-    _contextAsyncState = new();
+  private readonly ConditionalWeakTable<DbContext, T> _contextAsyncState =
+    new();
 
   private readonly ConditionalWeakTable<DbContext, T> _contextState = new();
 
@@ -21,7 +21,8 @@ public abstract class StatefulInterceptor<T>(IServiceProvider serviceProvider)
     }
 
     throw new InvalidOperationException(
-      $"No state found for {context.GetType().Name}.");
+      $"No state found for {context.GetType().Name}."
+    );
   }
 
   protected T AsyncState(DbContext context)
@@ -32,12 +33,14 @@ public abstract class StatefulInterceptor<T>(IServiceProvider serviceProvider)
     }
 
     throw new InvalidOperationException(
-      $"No state found for {context.GetType().Name}.");
+      $"No state found for {context.GetType().Name}."
+    );
   }
 
   public override InterceptionResult<int> SavingChanges(
     DbContextEventData eventData,
-    InterceptionResult<int> result)
+    InterceptionResult<int> result
+  )
   {
     var context = eventData.Context;
     if (context is null)
@@ -54,13 +57,17 @@ public abstract class StatefulInterceptor<T>(IServiceProvider serviceProvider)
   public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(
     DbContextEventData eventData,
     InterceptionResult<int> result,
-    CancellationToken cancellationToken = default)
+    CancellationToken cancellationToken = default
+  )
   {
     var context = eventData.Context;
     if (context is null)
     {
       return await base.SavingChangesAsync(
-        eventData, result, cancellationToken);
+        eventData,
+        result,
+        cancellationToken
+      );
     }
 
     var entries = ProcessSavingChanges(context);

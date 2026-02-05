@@ -6,7 +6,7 @@ public enum PushEventBufferBehavior
 {
   Realtime,
   Buffer,
-  Aggregate
+  Aggregate,
 }
 
 public class PushEventArgs : System.EventArgs

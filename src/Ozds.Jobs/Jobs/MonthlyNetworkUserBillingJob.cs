@@ -12,7 +12,7 @@ public class MonthlyNetworkUserBillingJob(
 {
   private static readonly JsonSerializerOptions JsonSerializerOptions = new()
   {
-    WriteIndented = true
+    WriteIndented = true,
   };
 
   public string NetworkUserId { get; set; } = default!;
@@ -28,13 +28,14 @@ public class MonthlyNetworkUserBillingJob(
       StartedAt = context.Trigger.StartTimeUtc,
       ScheduledFireAt = context.ScheduledFireTimeUtc ?? default,
       FiredAt = context.FireTimeUtc,
-      RefireCount = context.RefireCount
+      RefireCount = context.RefireCount,
     };
 
     logger.LogDebug(
       "Executing job for {Id} with {EventArgs}",
       NetworkUserId,
-      JsonSerializer.Serialize(eventArgs, JsonSerializerOptions));
+      JsonSerializer.Serialize(eventArgs, JsonSerializerOptions)
+    );
 
     messengerJobPublisher.Publish(eventArgs);
 

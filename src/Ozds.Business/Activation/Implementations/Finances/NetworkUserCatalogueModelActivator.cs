@@ -5,8 +5,7 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 
 public class NetworkUserCatalogueModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  NetworkUserCatalogueModel,
-  TrackableModel>(serviceProvider)
-{
-}
+)
+  : InheritingModelActivator<NetworkUserCatalogueModel, TrackableModel>(
+    serviceProvider
+  ) { }

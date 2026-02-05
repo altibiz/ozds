@@ -10,16 +10,16 @@ public class MessagingDbContextDesignTimeFactory
   {
     var optionsBuilder = new DbContextOptionsBuilder<MessagingDbContext>();
 
-    optionsBuilder
-      .UseNpgsql(
-        "Server=localhost;Port=5432;User Id=ozds;Password=ozds;Database=ozds",
-        x =>
-        {
-          x.MigrationsAssembly(
-            typeof(MessagingDbContext).Assembly.GetName().Name);
-          x.MigrationsHistoryTable(
-            $"__Ozds{nameof(MessagingDbContext)}");
-        });
+    optionsBuilder.UseNpgsql(
+      "Server=localhost;Port=5432;User Id=ozds;Password=ozds;Database=ozds",
+      x =>
+      {
+        x.MigrationsAssembly(
+          typeof(MessagingDbContext).Assembly.GetName().Name
+        );
+        x.MigrationsHistoryTable($"__Ozds{nameof(MessagingDbContext)}");
+      }
+    );
 
     optionsBuilder.UseSnakeCaseNamingConvention();
 

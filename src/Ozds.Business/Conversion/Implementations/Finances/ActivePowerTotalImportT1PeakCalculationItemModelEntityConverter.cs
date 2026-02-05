@@ -13,7 +13,8 @@ public class ActivePowerTotalImportT1PeakCalculationItemModelEntityConverter(
     ActivePowerTotalImportT1PeakCalculationItemModel,
     CalculationItemModel,
     ActivePowerTotalImportT1PeakCalculationItemEntity,
-    CalculationItemEntity>(serviceProvider)
+    CalculationItemEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     ActivePowerTotalImportT1PeakCalculationItemModel model,
@@ -36,13 +37,12 @@ public class ActivePowerTotalImportT1PeakCalculationItemModelEntityConverter(
   }
 }
 
-public class
-  UsageActivePowerTotalImportT1PeakCalculationItemModelEntityConverter(
-    IServiceProvider serviceProvider
-  ) : InheritingModelEntityConverter<
-  UsageActivePowerTotalImportT1PeakCalculationItemModel,
-  ActivePowerTotalImportT1PeakCalculationItemModel,
-  UsageActivePowerTotalImportT1PeakCalculationItemEntity,
-  ActivePowerTotalImportT1PeakCalculationItemEntity>(serviceProvider)
-{
-}
+public class UsageActivePowerTotalImportT1PeakCalculationItemModelEntityConverter(
+  IServiceProvider serviceProvider
+)
+  : InheritingModelEntityConverter<
+    UsageActivePowerTotalImportT1PeakCalculationItemModel,
+    ActivePowerTotalImportT1PeakCalculationItemModel,
+    UsageActivePowerTotalImportT1PeakCalculationItemEntity,
+    ActivePowerTotalImportT1PeakCalculationItemEntity
+  >(serviceProvider) { }

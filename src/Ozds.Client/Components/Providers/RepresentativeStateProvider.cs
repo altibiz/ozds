@@ -21,13 +21,13 @@ public partial class RepresentativeStateProvider : OzdsComponentBase
 
   private async Task<RepresentativeState?> LoadAsync()
   {
-    var representativeQueries = ScopedServices
-      .GetRequiredService<RepresentativeQueries>();
+    var representativeQueries =
+      ScopedServices.GetRequiredService<RepresentativeQueries>();
 
-    var representative = await representativeQueries
-      .ReadRepresentativeByUserId(
-        UserState.User.Id,
-        CancellationToken);
+    var representative = await representativeQueries.ReadRepresentativeByUserId(
+      UserState.User.Id,
+      CancellationToken
+    );
     if (representative is null)
     {
       return default;

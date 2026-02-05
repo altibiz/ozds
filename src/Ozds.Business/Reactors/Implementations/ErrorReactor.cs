@@ -10,11 +10,8 @@ using ErrorEventArgs = Ozds.Business.Observers.EventArgs.ErrorEventArgs;
 
 namespace Ozds.Business.Reactors.Implementations;
 
-public class ErrorReactor(
-  IServiceProvider serviceProvider
-) : Reactor<ErrorEventArgs, IErrorSubscriber, ErrorHandler>(serviceProvider)
-{
-}
+public class ErrorReactor(IServiceProvider serviceProvider)
+  : Reactor<ErrorEventArgs, IErrorSubscriber, ErrorHandler>(serviceProvider) { }
 
 public class ErrorHandler(
   ModelActivator activator,
@@ -24,7 +21,8 @@ public class ErrorHandler(
 {
   public override async Task Handle(
     ErrorEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var now = clock.Timestamp();
 
@@ -43,12 +41,13 @@ public class ErrorHandler(
       {
         content.Message,
         content.Exception,
-        content.StackTrace
-      });
+        content.StackTrace,
+      }
+    );
     @event.Categories = new List<CategoryModel>
     {
       CategoryModel.All,
-      CategoryModel.Error
+      CategoryModel.Error,
     };
     await mutations.Create(@event, cancellationToken);
 
@@ -65,7 +64,7 @@ public class ErrorHandler(
     notification.Topics = new HashSet<TopicModel>
     {
       TopicModel.All,
-      TopicModel.Error
+      TopicModel.Error,
     };
     await mutations.Create(notification, cancellationToken);
   }

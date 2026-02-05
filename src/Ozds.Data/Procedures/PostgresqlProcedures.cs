@@ -14,13 +14,17 @@ public class PostgresqlProcedures : IProcedures
     string jsonParameter
   )
   {
-    var entityType = context.Model.FindEntityType(type)
+    var entityType =
+      context.Model.FindEntityType(type)
       ?? throw new InvalidOperationException(
-        $"No entity type found for {type}.");
+        $"No entity type found for {type}."
+      );
 
-    var tableName = entityType.GetTableName()
+    var tableName =
+      entityType.GetTableName()
       ?? throw new InvalidOperationException(
-        $"No table name found for {type}.");
+        $"No table name found for {type}."
+      );
 
     var tableFunctionName = tableName.EndsWith('s')
       ? tableName
@@ -38,13 +42,17 @@ public class PostgresqlProcedures : IProcedures
     string jsonParameter
   )
   {
-    var entityType = context.Model.FindEntityType(type)
+    var entityType =
+      context.Model.FindEntityType(type)
       ?? throw new InvalidOperationException(
-        $"No entity type found for {type}.");
+        $"No entity type found for {type}."
+      );
 
-    var tableName = entityType.GetTableName()
+    var tableName =
+      entityType.GetTableName()
       ?? throw new InvalidOperationException(
-        $"No table name found for {type}.");
+        $"No table name found for {type}."
+      );
 
     var tableFunctionName = tableName.EndsWith('s')
       ? tableName.TrimEnd('s')
@@ -55,28 +63,29 @@ public class PostgresqlProcedures : IProcedures
     ";
   }
 
-  public string UnionAll(
-    IEnumerable<string> queries
-  )
+  public string UnionAll(IEnumerable<string> queries)
   {
-    return string.Join(
-      "\nUNION ALL\n",
-      queries);
+    return string.Join("\nUNION ALL\n", queries);
   }
 
   public string OverwriteBatchMutation(
     DbContext context,
     string name,
     Type type,
-    string query)
+    string query
+  )
   {
-    var entityType = context.Model.FindEntityType(type)
+    var entityType =
+      context.Model.FindEntityType(type)
       ?? throw new InvalidOperationException(
-        $"No entity type found for {type}.");
+        $"No entity type found for {type}."
+      );
 
-    var tableName = entityType.GetTableName()
+    var tableName =
+      entityType.GetTableName()
       ?? throw new InvalidOperationException(
-        $"No table name found for {type}.");
+        $"No table name found for {type}."
+      );
 
     var tableFunctionName = tableName.EndsWith('s')
       ? tableName
@@ -100,10 +109,11 @@ public class PostgresqlProcedures : IProcedures
     string query
   )
   {
-    var tableName = context.Model.FindEntityType(type)
-        ?.GetTableName()
+    var tableName =
+      context.Model.FindEntityType(type)?.GetTableName()
       ?? throw new InvalidOperationException(
-        $"No table name found for {type}.");
+        $"No table name found for {type}."
+      );
 
     var tableFunctionName = tableName.EndsWith('s')
       ? tableName.TrimEnd('s')
@@ -138,19 +148,19 @@ public class PostgresqlProcedures : IProcedures
     ";
   }
 
-  public string DeleteBatchMutation(
-    DbContext context,
-    Type type,
-    string name
-  )
+  public string DeleteBatchMutation(DbContext context, Type type, string name)
   {
-    var entityType = context.Model.FindEntityType(type)
+    var entityType =
+      context.Model.FindEntityType(type)
       ?? throw new InvalidOperationException(
-        $"No entity type found for {type}.");
+        $"No entity type found for {type}."
+      );
 
-    var tableName = entityType.GetTableName()
+    var tableName =
+      entityType.GetTableName()
       ?? throw new InvalidOperationException(
-        $"No table name found for {type}.");
+        $"No table name found for {type}."
+      );
 
     var tableFunctionName = tableName.EndsWith('s')
       ? tableName
@@ -162,31 +172,22 @@ public class PostgresqlProcedures : IProcedures
     );
   }
 
-  public string DeleteMutation(
-    DbContext context,
-    Type type,
-    string name
-  )
+  public string DeleteMutation(DbContext context, Type type, string name)
   {
-    var tableName = context.Model.FindEntityType(type)
-        ?.GetTableName()
+    var tableName =
+      context.Model.FindEntityType(type)?.GetTableName()
       ?? throw new InvalidOperationException(
-        $"No table name found for {type}.");
+        $"No table name found for {type}."
+      );
 
     var tableFunctionName = tableName.EndsWith('s')
       ? tableName.TrimEnd('s')
       : tableName;
 
-    return DeleteFunction(
-      $"{name}_{tableFunctionName}",
-      "entity jsonb"
-    );
+    return DeleteFunction($"{name}_{tableFunctionName}", "entity jsonb");
   }
 
-  public string DeleteFunction(
-    string name,
-    string parameters
-  )
+  public string DeleteFunction(string name, string parameters)
   {
     return $@"
       DROP FUNCTION IF EXISTS {name}({parameters});

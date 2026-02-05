@@ -8,11 +8,13 @@ namespace Ozds.Business.Conversion.Implementations.Administration;
 
 public class MeasurementScopeModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  MeasurementScopeModel,
-  ScopeModel,
-  MeasurementScopeEntity,
-  ScopeEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    MeasurementScopeModel,
+    ScopeModel,
+    MeasurementScopeEntity,
+    ScopeEntity
+  >(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();
@@ -24,8 +26,9 @@ public class MeasurementScopeModelEntityConverter(
   {
     base.InitializeEntity(model, entity);
 
-    entity.Interval =
-      modelEntityConverter.ToEntity<IntervalEntity>(model.Interval);
+    entity.Interval = modelEntityConverter.ToEntity<IntervalEntity>(
+      model.Interval
+    );
   }
 
   public override void InitializeModel(
@@ -35,7 +38,8 @@ public class MeasurementScopeModelEntityConverter(
   {
     base.InitializeModel(entity, model);
 
-    model.Interval =
-      modelEntityConverter.ToModel<IntervalModel>(entity.Interval);
+    model.Interval = modelEntityConverter.ToModel<IntervalModel>(
+      entity.Interval
+    );
   }
 }

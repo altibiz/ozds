@@ -1,5 +1,3 @@
 namespace Ozds.Messaging.Queries.Abstractions;
 
-public interface IQueries
-{
-}
+public interface IQueries { }

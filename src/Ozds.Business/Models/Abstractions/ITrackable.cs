@@ -13,6 +13,4 @@ public interface ITrackable : IAuditable
   public string? DeletedById { get; }
 }
 
-public interface ITrackableIdentifiable : ITrackable, IAuditableIdentifiable
-{
-}
+public interface ITrackableIdentifiable : ITrackable, IAuditableIdentifiable { }

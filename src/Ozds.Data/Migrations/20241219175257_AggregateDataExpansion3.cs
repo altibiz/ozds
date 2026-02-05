@@ -15,26 +15,24 @@ namespace Ozds.Data.Migrations
                 table: "schneider_iem3xxx_aggregates",
                 type: "bigint",
                 nullable: false,
-                defaultValue: 0L);
+                defaultValue: 0L
+            );
 
             migrationBuilder.AddColumn<long>(
                 name: "quarter_hour_count",
                 table: "abb_b2x_aggregates",
                 type: "bigint",
                 nullable: false,
-                defaultValue: 0L);
+                defaultValue: 0L
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "quarter_hour_count",
-                table: "schneider_iem3xxx_aggregates");
+            migrationBuilder.DropColumn(name: "quarter_hour_count", table: "schneider_iem3xxx_aggregates");
 
-            migrationBuilder.DropColumn(
-                name: "quarter_hour_count",
-                table: "abb_b2x_aggregates");
+            migrationBuilder.DropColumn(name: "quarter_hour_count", table: "abb_b2x_aggregates");
         }
     }
 }

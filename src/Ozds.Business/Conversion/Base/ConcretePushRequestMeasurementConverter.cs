@@ -5,7 +5,8 @@ namespace Ozds.Business.Conversion.Base;
 
 public abstract class ConcretePushRequestMeasurementConverter<
   TPushRequest,
-  TMeasurement> : InitializingPushRequestMeasurementConverter
+  TMeasurement
+> : InitializingPushRequestMeasurementConverter
   where TMeasurement : IMeasurement
   where TPushRequest : IMeterPushRequestEntity
 {
@@ -32,9 +33,7 @@ public abstract class ConcretePushRequestMeasurementConverter<
     TMeasurement measurement
   );
 
-  public override bool CanConvertToPushRequest(
-    IMeasurement measurement
-  )
+  public override bool CanConvertToPushRequest(IMeasurement measurement)
   {
     return measurement.MeterId.StartsWith(MeterIdPrefix);
   }
@@ -58,21 +57,22 @@ public abstract class ConcretePushRequestMeasurementConverter<
 
   public override void InitializePushRequest(
     IMeasurement measurement,
-    IMeterPushRequestEntity pushRequest)
+    IMeterPushRequestEntity pushRequest
+  )
   {
-    InitializePushRequest(
-      (TMeasurement)measurement,
-      (TPushRequest)pushRequest);
+    InitializePushRequest((TMeasurement)measurement, (TPushRequest)pushRequest);
   }
 
   public override void InitializeMeasurement(
     IMeterPushRequestEntity pushRequest,
     string measurementLocationId,
-    IMeasurement measurement)
+    IMeasurement measurement
+  )
   {
     InitializeMeasurement(
       (TPushRequest)pushRequest,
       measurementLocationId,
-      (TMeasurement)measurement);
+      (TMeasurement)measurement
+    );
   }
 }

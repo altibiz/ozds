@@ -4,11 +4,13 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation.Implementations.Measurements;
 
-public class
-  AbbB2xMeasurementValidatorModelActivator(IServiceProvider serviceProvider)
+public class AbbB2xMeasurementValidatorModelActivator(
+  IServiceProvider serviceProvider
+)
   : InheritingModelActivator<
     AbbB2xMeasurementValidatorModel,
-    MeasurementValidatorModel>(serviceProvider)
+    MeasurementValidatorModel
+  >(serviceProvider)
 {
   public override void Initialize(AbbB2xMeasurementValidatorModel model)
   {

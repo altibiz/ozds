@@ -37,9 +37,9 @@ public class TranslationWorker(
     {
       logger.LogInformation(
         ">>>>>Prompt\n{Prompt}"
-        + "\n>>>>>Thinking\n{Thinking}"
-        + "\n>>>>>Translation\n{Translation}"
-        + "\n>>>>>",
+          + "\n>>>>>Thinking\n{Thinking}"
+          + "\n>>>>>Translation\n{Translation}"
+          + "\n>>>>>",
         result.Prompt,
         result.Thinking,
         result.Translation
@@ -49,8 +49,8 @@ public class TranslationWorker(
     {
       logger.LogInformation(
         ">>>>>Prompt\n{Prompt}"
-        + "\n>>>>>Translation\n{Translation}"
-        + "\n>>>>>",
+          + "\n>>>>>Translation\n{Translation}"
+          + "\n>>>>>",
         result.Prompt,
         result.Translation
       );

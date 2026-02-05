@@ -7,9 +7,9 @@ using Ozds.Fake.Records.Abstractions;
 
 namespace Ozds.Fake.Generation.Base;
 
-public abstract class
-  RepeatingCsvResourceMeasurementGenerator<TMeasurement>(
-    IServiceProvider serviceProvider) : IMeasurementRecordGenerator
+public abstract class RepeatingCsvResourceMeasurementGenerator<TMeasurement>(
+  IServiceProvider serviceProvider
+) : IMeasurementRecordGenerator
   where TMeasurement : class, IMeasurementRecord
 {
   private readonly RecordCorrector _corrector =
@@ -34,15 +34,11 @@ public abstract class
     [EnumeratorCancellation] CancellationToken cancellationToken
   )
   {
-    var records = await _resources
-      .GetAsync<CsvLoader<TMeasurement>, List<TMeasurement>>(
-        CsvResourceName,
-        cancellationToken);
-    var expanded = ExpandRecords(
-      records,
-      dateFrom,
-      dateTo
-    );
+    var records = await _resources.GetAsync<
+      CsvLoader<TMeasurement>,
+      List<TMeasurement>
+    >(CsvResourceName, cancellationToken);
+    var expanded = ExpandRecords(records, dateFrom, dateTo);
     foreach (var record in expanded)
     {
       if (cancellationToken.IsCancellationRequested)
@@ -50,25 +46,18 @@ public abstract class
         break;
       }
 
-      _corrector.CorrectMeterId(
-        record,
-        id.MeterId
-      );
+      _corrector.CorrectMeterId(record, id.MeterId);
 
-      _corrector.CorrectMeasurementLocationId(
-        record,
-        id.MeasurementLocationId
-      );
+      _corrector.CorrectMeasurementLocationId(record, id.MeasurementLocationId);
 
-      if (id is MeasurementLocationMeterIdWithValidator
+      if (
+        id is MeasurementLocationMeterIdWithValidator
         {
           Validator: { } validator
-        })
+        }
+      )
       {
-        _corrector.CorrectValidation(
-          record,
-          validator
-        );
+        _corrector.CorrectValidation(record, validator);
       }
 
       yield return record;
@@ -82,20 +71,16 @@ public abstract class
     [EnumeratorCancellation] CancellationToken cancellationToken
   )
   {
-    var records = await _resources
-      .GetAsync<CsvLoader<TMeasurement>, List<TMeasurement>>(
-        CsvResourceName,
-        (initial, cancellationToken) =>
-          Task.FromResult(
-            initial
-              .OrderBy(record => record.Timestamp)
-              .ToList()),
-        cancellationToken);
-    var expanded = ExpandRecords(
-      records,
-      dateFrom,
-      dateTo
+    var records = await _resources.GetAsync<
+      CsvLoader<TMeasurement>,
+      List<TMeasurement>
+    >(
+      CsvResourceName,
+      (initial, cancellationToken) =>
+        Task.FromResult(initial.OrderBy(record => record.Timestamp).ToList()),
+      cancellationToken
     );
+    var expanded = ExpandRecords(records, dateFrom, dateTo);
     foreach (var record in expanded)
     {
       if (cancellationToken.IsCancellationRequested)
@@ -105,25 +90,21 @@ public abstract class
 
       foreach (var id in ids)
       {
-        _corrector.CorrectMeterId(
-          record,
-          id.MeterId
-        );
+        _corrector.CorrectMeterId(record, id.MeterId);
 
         _corrector.CorrectMeasurementLocationId(
           record,
           id.MeasurementLocationId
         );
 
-        if (id is MeasurementLocationMeterIdWithValidator
+        if (
+          id is MeasurementLocationMeterIdWithValidator
           {
             Validator: { } validator
-          })
+          }
+        )
         {
-          _corrector.CorrectValidation(
-            record,
-            validator
-          );
+          _corrector.CorrectValidation(record, validator);
         }
 
         yield return record;
@@ -152,40 +133,37 @@ public abstract class
     var dateFromCsv = csvRecordsMinTimestamp.AddTicks(
       (dateFrom - csvRecordsMinTimestamp).Ticks % csvRecordsTimeSpan.Ticks
     );
-    var dateToCsv = dateFromCsv + timeSpan > csvRecordsMaxTimestamp
-      ? csvRecordsMaxTimestamp
-      : dateFromCsv + timeSpan;
+    var dateToCsv =
+      dateFromCsv + timeSpan > csvRecordsMaxTimestamp
+        ? csvRecordsMaxTimestamp
+        : dateFromCsv + timeSpan;
     var currentDateFrom = dateFrom;
     var currentDateTo = dateFrom + (dateToCsv - dateFromCsv);
     while (timeSpan > TimeSpan.Zero)
     {
-      foreach (var record in records
-        .Where(record =>
-          record.Timestamp >= dateFromCsv
-          && record.Timestamp < dateToCsv))
+      foreach (
+        var record in records.Where(record =>
+          record.Timestamp >= dateFromCsv && record.Timestamp < dateToCsv
+        )
+      )
       {
         var timestamp = currentDateFrom + (record.Timestamp - dateFromCsv);
         var copied = _corrector.CopyRecord(record);
-        _corrector.CorrectTimestamp(
-          copied,
-          timestamp
-        );
-        _corrector.CorrectCumulatives(
-          copied,
-          firstRecord,
-          lastRecord
-        );
+        _corrector.CorrectTimestamp(copied, timestamp);
+        _corrector.CorrectCumulatives(copied, firstRecord, lastRecord);
         yield return copied;
       }
 
       timeSpan -= dateToCsv - dateFromCsv;
 
-      dateFromCsv = dateToCsv == csvRecordsMaxTimestamp
-        ? csvRecordsMinTimestamp
-        : dateToCsv;
-      dateToCsv = dateFromCsv + timeSpan > csvRecordsMaxTimestamp
-        ? csvRecordsMaxTimestamp
-        : dateFromCsv + timeSpan;
+      dateFromCsv =
+        dateToCsv == csvRecordsMaxTimestamp
+          ? csvRecordsMinTimestamp
+          : dateToCsv;
+      dateToCsv =
+        dateFromCsv + timeSpan > csvRecordsMaxTimestamp
+          ? csvRecordsMaxTimestamp
+          : dateFromCsv + timeSpan;
 
       currentDateFrom = currentDateTo;
       currentDateTo = currentDateFrom + (dateToCsv - dateFromCsv);

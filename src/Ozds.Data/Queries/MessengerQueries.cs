@@ -6,9 +6,8 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class MessengerQueries(
-  IDbContextFactory<DataDbContext> factory
-) : IQueries
+public class MessengerQueries(IDbContextFactory<DataDbContext> factory)
+  : IQueries
 {
   public async Task<PaginatedList<MessengerEntity>> ReadByLocationId(
     string locationId,
@@ -19,14 +18,16 @@ public class MessengerQueries(
     string? title = null
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var filtered = context.Messengers
-      .Where(
-        context.ForeignKeyEquals<MessengerEntity>(
-          nameof(MessengerEntity.Location),
-          locationId));
+    var filtered = context.Messengers.Where(
+      context.ForeignKeyEquals<MessengerEntity>(
+        nameof(MessengerEntity.Location),
+        locationId
+      )
+    );
 
     filtered = deleted
       ? filtered.Where(x => x.IsDeleted)
@@ -37,8 +38,7 @@ public class MessengerQueries(
       filtered = filtered.Where(x => x.Title.Contains(title));
     }
 
-    var ordered = filtered
-      .OrderBy(context.PrimaryKeyOf<MessengerEntity>());
+    var ordered = filtered.OrderBy(context.PrimaryKeyOf<MessengerEntity>());
 
     var count = await filtered.CountAsync(cancellationToken);
 
@@ -55,11 +55,12 @@ public class MessengerQueries(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var messenger = await context.Meters
-      .Where(context.PrimaryKeyEquals<MeterEntity>(meterId))
+    var messenger = await context
+      .Meters.Where(context.PrimaryKeyEquals<MeterEntity>(meterId))
       .Include(x => x.Messenger)
       .Select(x => x.Messenger)
       .FirstOrDefaultAsync(cancellationToken);
@@ -72,21 +73,19 @@ public class MessengerQueries(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var intermediaries = await context.Meters
-      .Where(context.PrimaryKeyIn<MeterEntity>(meterIds))
+    var intermediaries = await context
+      .Meters.Where(context.PrimaryKeyIn<MeterEntity>(meterIds))
       .Include(x => x.Messenger)
       .Select(x => new ReadByMeterIdsIntermediary
       {
         Meter = x,
-        Messenger = x.Messenger
+        Messenger = x.Messenger,
       })
-      .ToDictionaryAsync(
-        x => x.Meter.Id,
-        x => x,
-        cancellationToken);
+      .ToDictionaryAsync(x => x.Meter.Id, x => x, cancellationToken);
 
     return meterIds
       .Select(id =>

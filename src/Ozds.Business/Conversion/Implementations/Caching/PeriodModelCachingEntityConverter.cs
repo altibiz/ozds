@@ -15,16 +15,18 @@ public class PeriodModelCachingEntityConverter(IServiceProvider serviceProvider)
   public override void InitializeEntity(PeriodModel model, PeriodEntity entity)
   {
     base.InitializeEntity(model, entity);
-    entity.Duration = modelEntityConverter
-      .ToEntity<DurationEntity>(model.Duration);
+    entity.Duration = modelEntityConverter.ToEntity<DurationEntity>(
+      model.Duration
+    );
     entity.Multiplier = model.Multiplier;
   }
 
   public override void InitializeModel(PeriodEntity entity, PeriodModel model)
   {
     base.InitializeModel(entity, model);
-    model.Duration = modelEntityConverter
-      .ToModel<DurationModel>(entity.Duration);
+    model.Duration = modelEntityConverter.ToModel<DurationModel>(
+      entity.Duration
+    );
     model.Multiplier = entity.Multiplier;
   }
 }

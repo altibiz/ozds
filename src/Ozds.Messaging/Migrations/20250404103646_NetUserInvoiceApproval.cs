@@ -4,26 +4,28 @@
 
 namespace Ozds.Messaging.Migrations
 {
+  /// <inheritdoc />
+  public partial class NetUserInvoiceApproval : Migration
+  {
     /// <inheritdoc />
-    public partial class NetUserInvoiceApproval : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<bool>(
-                name: "approved",
-                table: "network_user_invoice_states",
-                type: "boolean",
-                nullable: false,
-                defaultValue: false);
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "approved",
-                table: "network_user_invoice_states");
-        }
+      migrationBuilder.AddColumn<bool>(
+        name: "approved",
+        table: "network_user_invoice_states",
+        type: "boolean",
+        nullable: false,
+        defaultValue: false
+      );
     }
+
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+      migrationBuilder.DropColumn(
+        name: "approved",
+        table: "network_user_invoice_states"
+      );
+    }
+  }
 }

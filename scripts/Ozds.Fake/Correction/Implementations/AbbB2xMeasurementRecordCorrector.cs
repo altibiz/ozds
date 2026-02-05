@@ -5,11 +5,14 @@ using Ozds.Fake.Records;
 namespace Ozds.Fake.Correction.Implementations;
 
 public class AbbB2xMeasurementRecordCorrector
-  : ConcreteRecordCorrector<AbbB2xMeasurementRecord,
-    AbbB2xMeasurementValidatorModel>
+  : ConcreteRecordCorrector<
+    AbbB2xMeasurementRecord,
+    AbbB2xMeasurementValidatorModel
+  >
 {
   protected override AbbB2xMeasurementRecord CopyRecord(
-    AbbB2xMeasurementRecord record)
+    AbbB2xMeasurementRecord record
+  )
   {
     return new AbbB2xMeasurementRecord
     {
@@ -47,7 +50,7 @@ public class AbbB2xMeasurementRecordCorrector
       ReactiveEnergyTotalExportT0_VARh =
         record.ReactiveEnergyTotalExportT0_VARh,
       ActiveEnergyTotalImportT1_Wh = record.ActiveEnergyTotalImportT1_Wh,
-      ActiveEnergyTotalImportT2_Wh = record.ActiveEnergyTotalImportT2_Wh
+      ActiveEnergyTotalImportT2_Wh = record.ActiveEnergyTotalImportT2_Wh,
     };
   }
 
@@ -62,7 +65,8 @@ public class AbbB2xMeasurementRecordCorrector
 
   protected override AbbB2xMeasurementRecord CorrectMeasurementLocationId(
     AbbB2xMeasurementRecord measurementRecord,
-    string measurementLocationId)
+    string measurementLocationId
+  )
   {
     measurementRecord.MeasurementLocationId = measurementLocationId;
     return measurementRecord;
@@ -89,60 +93,108 @@ public class AbbB2xMeasurementRecordCorrector
       lastMeasurementRecord.Timestamp
     );
 
-    var activeEnergy = measurementRecord.ActiveEnergy_Wh
-      .Add(
-        lastMeasurementRecord.ActiveEnergy_Wh
-          .Subtract(firstMeasurementRecord.ActiveEnergy_Wh)
-          .Multiply(diffMultiplier)
-      );
+    var activeEnergy = measurementRecord.ActiveEnergy_Wh.Add(
+      lastMeasurementRecord
+        .ActiveEnergy_Wh.Subtract(firstMeasurementRecord.ActiveEnergy_Wh)
+        .Multiply(diffMultiplier)
+    );
 
-    var reactiveEnergy = measurementRecord.ReactiveEnergy_VARh
-      .Add(
-        lastMeasurementRecord.ReactiveEnergy_VARh
-          .Subtract(firstMeasurementRecord.ReactiveEnergy_VARh)
-          .Multiply(diffMultiplier)
-      );
+    var reactiveEnergy = measurementRecord.ReactiveEnergy_VARh.Add(
+      lastMeasurementRecord
+        .ReactiveEnergy_VARh.Subtract(
+          firstMeasurementRecord.ReactiveEnergy_VARh
+        )
+        .Multiply(diffMultiplier)
+    );
 
-    measurementRecord.ActiveEnergyL1ImportT0_Wh =
-      activeEnergy.TariffUnary().DuplexImport().PhaseSplit().ValueL1;
-    measurementRecord.ActiveEnergyL2ImportT0_Wh =
-      activeEnergy.TariffUnary().DuplexImport().PhaseSplit().ValueL2;
-    measurementRecord.ActiveEnergyL3ImportT0_Wh =
-      activeEnergy.TariffUnary().DuplexImport().PhaseSplit().ValueL3;
-    measurementRecord.ActiveEnergyTotalImportT0_Wh =
-      activeEnergy.TariffUnary().DuplexImport().PhaseSum();
+    measurementRecord.ActiveEnergyL1ImportT0_Wh = activeEnergy
+      .TariffUnary()
+      .DuplexImport()
+      .PhaseSplit()
+      .ValueL1;
+    measurementRecord.ActiveEnergyL2ImportT0_Wh = activeEnergy
+      .TariffUnary()
+      .DuplexImport()
+      .PhaseSplit()
+      .ValueL2;
+    measurementRecord.ActiveEnergyL3ImportT0_Wh = activeEnergy
+      .TariffUnary()
+      .DuplexImport()
+      .PhaseSplit()
+      .ValueL3;
+    measurementRecord.ActiveEnergyTotalImportT0_Wh = activeEnergy
+      .TariffUnary()
+      .DuplexImport()
+      .PhaseSum();
 
-    measurementRecord.ActiveEnergyL1ExportT0_Wh =
-      activeEnergy.TariffUnary().DuplexExport().PhaseSplit().ValueL1;
-    measurementRecord.ActiveEnergyL2ExportT0_Wh =
-      activeEnergy.TariffUnary().DuplexExport().PhaseSplit().ValueL2;
-    measurementRecord.ActiveEnergyL3ExportT0_Wh =
-      activeEnergy.TariffUnary().DuplexExport().PhaseSplit().ValueL3;
-    measurementRecord.ActiveEnergyTotalExportT0_Wh =
-      activeEnergy.TariffUnary().DuplexExport().PhaseSum();
+    measurementRecord.ActiveEnergyL1ExportT0_Wh = activeEnergy
+      .TariffUnary()
+      .DuplexExport()
+      .PhaseSplit()
+      .ValueL1;
+    measurementRecord.ActiveEnergyL2ExportT0_Wh = activeEnergy
+      .TariffUnary()
+      .DuplexExport()
+      .PhaseSplit()
+      .ValueL2;
+    measurementRecord.ActiveEnergyL3ExportT0_Wh = activeEnergy
+      .TariffUnary()
+      .DuplexExport()
+      .PhaseSplit()
+      .ValueL3;
+    measurementRecord.ActiveEnergyTotalExportT0_Wh = activeEnergy
+      .TariffUnary()
+      .DuplexExport()
+      .PhaseSum();
 
-    measurementRecord.ReactiveEnergyL1ImportT0_VARh =
-      reactiveEnergy.TariffUnary().DuplexImport().PhaseSplit().ValueL1;
-    measurementRecord.ReactiveEnergyL2ImportT0_VARh =
-      reactiveEnergy.TariffUnary().DuplexImport().PhaseSplit().ValueL2;
-    measurementRecord.ReactiveEnergyL3ImportT0_VARh =
-      reactiveEnergy.TariffUnary().DuplexImport().PhaseSplit().ValueL3;
-    measurementRecord.ReactiveEnergyTotalImportT0_VARh =
-      reactiveEnergy.TariffUnary().DuplexImport().PhaseSum();
+    measurementRecord.ReactiveEnergyL1ImportT0_VARh = reactiveEnergy
+      .TariffUnary()
+      .DuplexImport()
+      .PhaseSplit()
+      .ValueL1;
+    measurementRecord.ReactiveEnergyL2ImportT0_VARh = reactiveEnergy
+      .TariffUnary()
+      .DuplexImport()
+      .PhaseSplit()
+      .ValueL2;
+    measurementRecord.ReactiveEnergyL3ImportT0_VARh = reactiveEnergy
+      .TariffUnary()
+      .DuplexImport()
+      .PhaseSplit()
+      .ValueL3;
+    measurementRecord.ReactiveEnergyTotalImportT0_VARh = reactiveEnergy
+      .TariffUnary()
+      .DuplexImport()
+      .PhaseSum();
 
-    measurementRecord.ReactiveEnergyL1ExportT0_VARh =
-      reactiveEnergy.TariffUnary().DuplexExport().PhaseSplit().ValueL1;
-    measurementRecord.ReactiveEnergyL2ImportT0_VARh =
-      reactiveEnergy.TariffUnary().DuplexExport().PhaseSplit().ValueL2;
-    measurementRecord.ReactiveEnergyL3ImportT0_VARh =
-      reactiveEnergy.TariffUnary().DuplexExport().PhaseSplit().ValueL3;
-    measurementRecord.ReactiveEnergyTotalExportT0_VARh =
-      reactiveEnergy.TariffUnary().DuplexExport().PhaseSum();
+    measurementRecord.ReactiveEnergyL1ExportT0_VARh = reactiveEnergy
+      .TariffUnary()
+      .DuplexExport()
+      .PhaseSplit()
+      .ValueL1;
+    measurementRecord.ReactiveEnergyL2ImportT0_VARh = reactiveEnergy
+      .TariffUnary()
+      .DuplexExport()
+      .PhaseSplit()
+      .ValueL2;
+    measurementRecord.ReactiveEnergyL3ImportT0_VARh = reactiveEnergy
+      .TariffUnary()
+      .DuplexExport()
+      .PhaseSplit()
+      .ValueL3;
+    measurementRecord.ReactiveEnergyTotalExportT0_VARh = reactiveEnergy
+      .TariffUnary()
+      .DuplexExport()
+      .PhaseSum();
 
-    measurementRecord.ActiveEnergyTotalImportT1_Wh =
-      activeEnergy.TariffBinary().T1.DuplexImport().PhaseSum();
-    measurementRecord.ActiveEnergyTotalImportT2_Wh =
-      activeEnergy.TariffBinary().T2.DuplexExport().PhaseSum();
+    measurementRecord.ActiveEnergyTotalImportT1_Wh = activeEnergy
+      .TariffBinary()
+      .T1.DuplexImport()
+      .PhaseSum();
+    measurementRecord.ActiveEnergyTotalImportT2_Wh = activeEnergy
+      .TariffBinary()
+      .T2.DuplexExport()
+      .PhaseSum();
 
     return measurementRecord;
   }
@@ -155,51 +207,63 @@ public class AbbB2xMeasurementRecordCorrector
     measurementRecord.VoltageL1AnyT0_V = Clamp(
       measurementRecord.VoltageL1AnyT0_V,
       validator.MinVoltage_V,
-      validator.MaxVoltage_V);
+      validator.MaxVoltage_V
+    );
     measurementRecord.VoltageL2AnyT0_V = Clamp(
       measurementRecord.VoltageL2AnyT0_V,
       validator.MinVoltage_V,
-      validator.MaxVoltage_V);
+      validator.MaxVoltage_V
+    );
     measurementRecord.VoltageL3AnyT0_V = Clamp(
       measurementRecord.VoltageL3AnyT0_V,
       validator.MinVoltage_V,
-      validator.MaxVoltage_V);
+      validator.MaxVoltage_V
+    );
     measurementRecord.CurrentL1AnyT0_A = Clamp(
       measurementRecord.CurrentL1AnyT0_A,
       validator.MinCurrent_A,
-      validator.MaxCurrent_A);
+      validator.MaxCurrent_A
+    );
     measurementRecord.CurrentL2AnyT0_A = Clamp(
       measurementRecord.CurrentL2AnyT0_A,
       validator.MinCurrent_A,
-      validator.MaxCurrent_A);
+      validator.MaxCurrent_A
+    );
     measurementRecord.CurrentL3AnyT0_A = Clamp(
       measurementRecord.CurrentL3AnyT0_A,
       validator.MinCurrent_A,
-      validator.MaxCurrent_A);
+      validator.MaxCurrent_A
+    );
     measurementRecord.ActivePowerL1NetT0_W = Clamp(
       measurementRecord.ActivePowerL1NetT0_W,
       validator.MinActivePower_W,
-      validator.MaxActivePower_W);
+      validator.MaxActivePower_W
+    );
     measurementRecord.ActivePowerL2NetT0_W = Clamp(
       measurementRecord.ActivePowerL2NetT0_W,
       validator.MinActivePower_W,
-      validator.MaxActivePower_W);
+      validator.MaxActivePower_W
+    );
     measurementRecord.ActivePowerL3NetT0_W = Clamp(
       measurementRecord.ActivePowerL3NetT0_W,
       validator.MinActivePower_W,
-      validator.MaxActivePower_W);
+      validator.MaxActivePower_W
+    );
     measurementRecord.ReactivePowerL1NetT0_VAR = Clamp(
       measurementRecord.ReactivePowerL1NetT0_VAR,
       validator.MinReactivePower_VAR,
-      validator.MaxReactivePower_VAR);
+      validator.MaxReactivePower_VAR
+    );
     measurementRecord.ReactivePowerL2NetT0_VAR = Clamp(
       measurementRecord.ReactivePowerL2NetT0_VAR,
       validator.MinReactivePower_VAR,
-      validator.MaxReactivePower_VAR);
+      validator.MaxReactivePower_VAR
+    );
     measurementRecord.ReactivePowerL3NetT0_VAR = Clamp(
       measurementRecord.ReactivePowerL3NetT0_VAR,
       validator.MinReactivePower_VAR,
-      validator.MaxReactivePower_VAR);
+      validator.MaxReactivePower_VAR
+    );
     return measurementRecord;
   }
 }

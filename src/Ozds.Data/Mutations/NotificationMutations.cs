@@ -19,19 +19,24 @@ public class NotificationMutations(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     // NOTE: like this instead of direct update because of events
-    var recipient = await context.NotificationRecipients
-      .Where(
+    var recipient = await context
+      .NotificationRecipients.Where(
         context.ForeignKeyEquals<NotificationRecipientEntity>(
           nameof(NotificationRecipientEntity.Notification),
-          notificationId))
+          notificationId
+        )
+      )
       .Where(
         context.ForeignKeyEquals<NotificationRecipientEntity>(
           nameof(NotificationRecipientEntity.Representative),
-          representativeId))
+          representativeId
+        )
+      )
       .FirstOrDefaultAsync(cancellationToken);
 
     if (recipient is null)
@@ -50,8 +55,9 @@ public class NotificationMutations(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     context.Update(notification);
 

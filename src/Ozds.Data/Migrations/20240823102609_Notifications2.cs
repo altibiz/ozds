@@ -10,19 +10,23 @@ namespace Ozds.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(
+                @"
                 UPDATE events
                 SET content = '{}'::jsonb;
-            ");
+            "
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(
+                @"
                 UPDATE events
                 SET content = NULL;
-            ");
+            "
+            );
         }
     }
 }

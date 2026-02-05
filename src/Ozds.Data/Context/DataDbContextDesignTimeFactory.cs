@@ -12,22 +12,22 @@ public class DataDbContextDesignTimeFactory
   {
     var optionsBuilder = new DbContextOptionsBuilder<DataDbContext>();
 
-    var dataSourceBuilder =
-      new NpgsqlDataSourceBuilder(
-        "Server=localhost;Port=5432;User Id=ozds;Password=ozds;Database=ozds");
+    var dataSourceBuilder = new NpgsqlDataSourceBuilder(
+      "Server=localhost;Port=5432;User Id=ozds;Password=ozds;Database=ozds"
+    );
     dataSourceBuilder.ApplyConfigurationsFromAssembly(
-      typeof(DataDbContext).Assembly);
+      typeof(DataDbContext).Assembly
+    );
 
     optionsBuilder
       .UseNpgsql(
         dataSourceBuilder.Build(),
         x =>
         {
-          x.MigrationsAssembly(
-            typeof(DataDbContext).Assembly.GetName().Name);
-          x.MigrationsHistoryTable(
-            $"__Ozds{nameof(DataDbContext)}");
-        })
+          x.MigrationsAssembly(typeof(DataDbContext).Assembly.GetName().Name);
+          x.MigrationsHistoryTable($"__Ozds{nameof(DataDbContext)}");
+        }
+      )
       .UseTimescale()
       .UseLazyLoadingProxies()
       .UseSnakeCaseNamingConvention();

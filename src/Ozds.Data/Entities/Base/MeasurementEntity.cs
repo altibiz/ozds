@@ -9,8 +9,8 @@ public abstract class MeasurementEntity : IMeasurementEntity
 {
   protected long _measurementLocationId;
 
-  public virtual MeasurementLocationEntity MeasurementLocation { get; set; }
-    = default!;
+  public virtual MeasurementLocationEntity MeasurementLocation { get; set; } =
+    default!;
 
   public DateTimeOffset Timestamp { get; set; }
 
@@ -29,10 +29,8 @@ public class MeasurementEntity<T> : MeasurementEntity
   public virtual T Meter { get; set; } = default!;
 }
 
-public class
-  MeasurementEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration
-<
-  MeasurementEntity>
+public class MeasurementEntityTypeHierarchyConfiguration
+  : EntityTypeHierarchyConfiguration<MeasurementEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
@@ -90,9 +88,6 @@ public class
 
     builder
       .Property<DateTimeOffset>(nameof(MeasurementEntity.Timestamp))
-      .HasConversion(
-        x => x.ToUniversalTime(),
-        x => x.ToUniversalTime()
-      );
+      .HasConversion(x => x.ToUniversalTime(), x => x.ToUniversalTime());
   }
 }

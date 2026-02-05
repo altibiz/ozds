@@ -6,9 +6,8 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class AuditableQueries(
-  IDbContextFactory<DataDbContext> factory
-) : IQueries
+public class AuditableQueries(IDbContextFactory<DataDbContext> factory)
+  : IQueries
 {
   public async Task<T?> ReadById<T>(
     string id,
@@ -29,11 +28,13 @@ public class AuditableQueries(
     if (!entityType.IsAssignableTo(typeof(IAuditableIdentifiableEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(IAuditableIdentifiableEntity)}");
+        $"Type {entityType} is not assignable to {typeof(IAuditableIdentifiableEntity)}"
+      );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var queryable = context.GetQueryable(entityType);
     var item = await queryable
       .Where(context.PrimaryKeyEquals(entityType, id))
@@ -60,19 +61,20 @@ public class AuditableQueries(
     if (!entityType.IsAssignableTo(typeof(IAuditableIdentifiableEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(IAuditableIdentifiableEntity)}");
+        $"Type {entityType} is not assignable to {typeof(IAuditableIdentifiableEntity)}"
+      );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var queryable = context
       .GetQueryable<IAuditableIdentifiableEntity>(entityType)
       .Where(context.PrimaryKeyIn(entityType, ids));
 
     var filtered = queryable;
 
-    var items = await filtered
-      .ToListAsync(cancellationToken);
+    var items = await filtered.ToListAsync(cancellationToken);
 
     return items.OfType<object>().ToList();
   }
@@ -83,11 +85,7 @@ public class AuditableQueries(
   )
     where T : class, IAuditableIdentifiableEntity
   {
-    var entities = await ReadByIdsOrdered(
-      typeof(T),
-      ids,
-      cancellationToken
-    );
+    var entities = await ReadByIdsOrdered(typeof(T), ids, cancellationToken);
     return entities.Cast<T?>().ToList();
   }
 
@@ -100,11 +98,13 @@ public class AuditableQueries(
     if (!entityType.IsAssignableTo(typeof(IAuditableIdentifiableEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(IAuditableIdentifiableEntity)}");
+        $"Type {entityType} is not assignable to {typeof(IAuditableIdentifiableEntity)}"
+      );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var queryable = context
       .GetQueryable<IAuditableIdentifiableEntity>(entityType)
       .Where(context.PrimaryKeyIn(entityType, ids))
@@ -112,14 +112,13 @@ public class AuditableQueries(
 
     var filtered = queryable;
 
-    var items = await filtered
-      .ToDictionaryAsync(
-        x => x.Id,
-        x => x,
-        cancellationToken);
+    var items = await filtered.ToDictionaryAsync(
+      x => x.Id,
+      x => x,
+      cancellationToken
+    );
 
-    return ids
-      .Select(id =>
+    return ids.Select(id =>
       {
         if (items.TryGetValue(id, out var item))
         {
@@ -166,16 +165,17 @@ public class AuditableQueries(
       );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var queryable = context
-      .GetQueryable<IAuditableIdentifiableEntity>(modelType);
+    var queryable = context.GetQueryable<IAuditableIdentifiableEntity>(
+      modelType
+    );
 
     var filtered = queryable.Where(x => x.Title.Contains(title));
 
-    var ordered = filtered
-      .OrderByDescending(x => x.CreatedOn);
+    var ordered = filtered.OrderByDescending(x => x.CreatedOn);
 
     var total = await filtered.CountAsync(cancellationToken);
     var items = await ordered
@@ -183,9 +183,7 @@ public class AuditableQueries(
       .Take(pageCount)
       .ToListAsync(cancellationToken);
 
-    return items
-      .OfType<object>()
-      .ToPaginatedList(total);
+    return items.OfType<object>().ToPaginatedList(total);
   }
 
   public async Task<PaginatedList<T>> Read<T>(
@@ -215,17 +213,18 @@ public class AuditableQueries(
     if (!entityType.IsAssignableTo(typeof(IAuditableEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(IAuditableEntity)}");
+        $"Type {entityType} is not assignable to {typeof(IAuditableEntity)}"
+      );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var queryable = context.GetQueryable<IAuditableEntity>(entityType);
 
     var filtered = queryable;
 
-    var ordered = filtered
-      .OrderByDescending(x => x.CreatedOn);
+    var ordered = filtered.OrderByDescending(x => x.CreatedOn);
 
     var count = await filtered.CountAsync(cancellationToken);
     var items = await ordered

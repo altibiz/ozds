@@ -12,13 +12,16 @@ namespace Ozds.Data.Migrations
         {
             migrationBuilder.DropIndex(
                 name: "ix_network_user_invoices__network_user_id",
-                table: "network_user_invoices");
+                table: "network_user_invoices"
+            );
 
             migrationBuilder.DropIndex(
                 name: "ix_network_user_calculations__network_user_measurement_locatio",
-                table: "network_user_calculations");
+                table: "network_user_calculations"
+            );
 
-            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(
+                @"
                 DELETE FROM network_user_invoices
                 WHERE id IN (
                     SELECT id FROM (
@@ -31,9 +34,11 @@ namespace Ozds.Data.Migrations
                     ) t
                     WHERE rn > 1
                 );
-            ");
+            "
+            );
 
-            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(
+                @"
                 DELETE FROM network_user_calculations
                 WHERE id IN (
                     SELECT id FROM (
@@ -47,19 +52,22 @@ namespace Ozds.Data.Migrations
                     ) t
                     WHERE rn > 1
                 );
-            ");
+            "
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_network_user_invoices__network_user_id_from_date_to_date",
                 table: "network_user_invoices",
                 columns: new[] { "network_user_id", "from_date", "to_date" },
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_network_user_calculations__network_user_measurement_locatio",
                 table: "network_user_calculations",
                 columns: new[] { "network_user_measurement_location_id", "from_date", "to_date" },
-                unique: true);
+                unique: true
+            );
         }
 
         /// <inheritdoc />
@@ -67,21 +75,25 @@ namespace Ozds.Data.Migrations
         {
             migrationBuilder.DropIndex(
                 name: "ix_network_user_invoices__network_user_id_from_date_to_date",
-                table: "network_user_invoices");
+                table: "network_user_invoices"
+            );
 
             migrationBuilder.DropIndex(
                 name: "ix_network_user_calculations__network_user_measurement_locatio",
-                table: "network_user_calculations");
+                table: "network_user_calculations"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_network_user_invoices__network_user_id",
                 table: "network_user_invoices",
-                column: "network_user_id");
+                column: "network_user_id"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "ix_network_user_calculations__network_user_measurement_locatio",
                 table: "network_user_calculations",
-                column: "network_user_measurement_location_id");
+                column: "network_user_measurement_location_id"
+            );
         }
     }
 }

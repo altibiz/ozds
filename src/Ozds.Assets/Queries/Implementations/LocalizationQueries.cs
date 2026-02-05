@@ -13,18 +13,22 @@ public class LocalizationQueries(
   ICultureQueries cultureQueries
 ) : ILocalizationQueries
 {
-  private readonly ConcurrentDictionary<TranslationKey, string>
-    translationCache = new();
+  private readonly ConcurrentDictionary<
+    TranslationKey,
+    string
+  > translationCache = new();
 
   public string Translate(CultureInfo culture, Type type, bool plural = false)
   {
     var cacheKey = new TranslationTypeKey(culture, type, plural);
 
     return translationCache.GetOrAdd(
-      cacheKey, _ =>
+      cacheKey,
+      _ =>
       {
-        var translations =
-          assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
+        var translations = assetQueries.LoadTranslations(
+          cultureQueries.CultureToId(culture)
+        );
 
         var overrides = translationQueries.KeyOverrides(type, plural);
         foreach (var key in overrides)
@@ -36,7 +40,8 @@ public class LocalizationQueries(
         }
 
         return overrides.First();
-      });
+      }
+    );
   }
 
   public string Translate(CultureInfo culture, Type type, string member)
@@ -44,10 +49,12 @@ public class LocalizationQueries(
     var cacheKey = new TranslationMemberKey(culture, type, member);
 
     return translationCache.GetOrAdd(
-      cacheKey, _ =>
+      cacheKey,
+      _ =>
       {
-        var translations =
-          assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
+        var translations = assetQueries.LoadTranslations(
+          cultureQueries.CultureToId(culture)
+        );
 
         var overrides = translationQueries.KeyOverrides(type, member);
         foreach (var key in overrides)
@@ -59,7 +66,8 @@ public class LocalizationQueries(
         }
 
         return overrides.First();
-      });
+      }
+    );
   }
 
   public string Translate(CultureInfo culture, MemberExpression member)
@@ -67,10 +75,12 @@ public class LocalizationQueries(
     var cacheKey = new TranslationExpressionKey(culture, member);
 
     return translationCache.GetOrAdd(
-      cacheKey, _ =>
+      cacheKey,
+      _ =>
       {
-        var translations =
-          assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
+        var translations = assetQueries.LoadTranslations(
+          cultureQueries.CultureToId(culture)
+        );
 
         var overrides = translationQueries.KeyOverrides(member);
         foreach (var key in overrides)
@@ -82,7 +92,8 @@ public class LocalizationQueries(
         }
 
         return overrides.First();
-      });
+      }
+    );
   }
 
   public string Translate(CultureInfo culture, string notLocalized)
@@ -90,10 +101,12 @@ public class LocalizationQueries(
     var cacheKey = new TranslationStringKey(culture, notLocalized);
 
     return translationCache.GetOrAdd(
-      cacheKey, _ =>
+      cacheKey,
+      _ =>
       {
-        var translations =
-          assetQueries.LoadTranslations(cultureQueries.CultureToId(culture));
+        var translations = assetQueries.LoadTranslations(
+          cultureQueries.CultureToId(culture)
+        );
 
         if (translations.TryGetValue(notLocalized, out var value))
         {
@@ -101,7 +114,8 @@ public class LocalizationQueries(
         }
 
         return notLocalized;
-      });
+      }
+    );
   }
 
   public string NumericString(decimal? number, int places = 2)
@@ -147,9 +161,9 @@ public class LocalizationQueries(
 
     var cultureInfo = cultureQueries.CroatianCulture;
 
-    var withTimezone = dateTimeOffset
-      .Value
-      .ToOffset(timeQueries.GetCroatianOffset(dateTimeOffset.Value));
+    var withTimezone = dateTimeOffset.Value.ToOffset(
+      timeQueries.GetCroatianOffset(dateTimeOffset.Value)
+    );
 
     return withTimezone.ToString(DateFormat(cultureInfo), cultureInfo);
   }
@@ -163,18 +177,18 @@ public class LocalizationQueries(
 
     var cultureInfo = cultureQueries.CroatianCulture;
 
-    var withTimezone = dateTimeOffset
-      .Value
-      .ToOffset(timeQueries.GetCroatianOffset(dateTimeOffset.Value));
+    var withTimezone = dateTimeOffset.Value.ToOffset(
+      timeQueries.GetCroatianOffset(dateTimeOffset.Value)
+    );
 
     return withTimezone.ToString(DateTimeFormat(cultureInfo), cultureInfo);
   }
 
-  public DateTimeOffset DateTimeApplyOffset(
-    DateTimeOffset dateTimeOffset)
+  public DateTimeOffset DateTimeApplyOffset(DateTimeOffset dateTimeOffset)
   {
     var a = dateTimeOffset.UtcDateTime.Add(
-      timeQueries.GetCroatianOffset(dateTimeOffset));
+      timeQueries.GetCroatianOffset(dateTimeOffset)
+    );
     return a;
   }
 
@@ -213,8 +227,8 @@ public class LocalizationQueries(
   private sealed record TranslationTypeKey(
     CultureInfo Culture,
     Type Type,
-    bool Plural)
-    : TranslationKey(Culture);
+    bool Plural
+  ) : TranslationKey(Culture);
 
   private sealed record TranslationMemberKey(
     CultureInfo Culture,

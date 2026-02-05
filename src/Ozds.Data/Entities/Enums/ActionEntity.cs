@@ -12,7 +12,7 @@ public enum ActionEntity
   Update,
   Delete,
   Restore,
-  Forget
+  Forget,
 }
 
 public class ActionEntityTypeConfiguration : IModelConfiguration
@@ -23,8 +23,8 @@ public class ActionEntityTypeConfiguration : IModelConfiguration
   }
 }
 
-public class
-  ActionEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class ActionEntityNpgsqlDataSourceConfiguration
+  : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

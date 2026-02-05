@@ -13,7 +13,7 @@ public enum OrderOfMagnitudeModel
   Centi = -2,
   Milli = -3,
   Micro = -6,
-  Nano = -9
+  Nano = -9,
 }
 
 public static class OrderOfMagnitudeModelExtensions
@@ -33,7 +33,7 @@ public static class OrderOfMagnitudeModelExtensions
       OrderOfMagnitudeModel.Milli => System.Math.Pow(10, 3).ToDecimal(),
       OrderOfMagnitudeModel.Micro => System.Math.Pow(10, 6).ToDecimal(),
       OrderOfMagnitudeModel.Nano => System.Math.Pow(10, 9).ToDecimal(),
-      _ => throw new ArgumentOutOfRangeException(nameof(order), order, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(order), order, null),
     };
   }
 
@@ -52,7 +52,7 @@ public static class OrderOfMagnitudeModelExtensions
       OrderOfMagnitudeModel.Milli => "Milli",
       OrderOfMagnitudeModel.Micro => "Micro",
       OrderOfMagnitudeModel.Nano => "Nano",
-      _ => throw new ArgumentOutOfRangeException(nameof(order), order, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(order), order, null),
     };
   }
 
@@ -71,12 +71,13 @@ public static class OrderOfMagnitudeModelExtensions
       OrderOfMagnitudeModel.Milli => "m",
       OrderOfMagnitudeModel.Micro => "μ",
       OrderOfMagnitudeModel.Nano => "n",
-      _ => throw new ArgumentOutOfRangeException(nameof(order), order, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(order), order, null),
     };
   }
 
   public static OrderOfMagnitudeModel ToOrderOfMagnitudeFromTitle(
-    this string title)
+    this string title
+  )
   {
     return title switch
     {
@@ -90,12 +91,13 @@ public static class OrderOfMagnitudeModelExtensions
       "Milli" => OrderOfMagnitudeModel.Milli,
       "Micro" => OrderOfMagnitudeModel.Micro,
       "Nano" => OrderOfMagnitudeModel.Nano,
-      _ => throw new ArgumentOutOfRangeException(nameof(title), title, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(title), title, null),
     };
   }
 
   public static OrderOfMagnitudeModel ToOrderOfMagnitudeFromPrefix(
-    this string prefix)
+    this string prefix
+  )
   {
     return prefix switch
     {
@@ -109,7 +111,7 @@ public static class OrderOfMagnitudeModelExtensions
       "m" => OrderOfMagnitudeModel.Milli,
       "μ" => OrderOfMagnitudeModel.Micro,
       "n" => OrderOfMagnitudeModel.Nano,
-      _ => throw new ArgumentOutOfRangeException(nameof(prefix), prefix, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(prefix), prefix, null),
     };
   }
 }

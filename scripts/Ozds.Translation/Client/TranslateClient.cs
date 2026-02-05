@@ -17,21 +17,17 @@ public record TranslationResult(
   string Prompt
 );
 
-public partial class TranslateClient(
-  OpenAIClient client
-)
+public partial class TranslateClient(OpenAIClient client)
 {
   private const string Model = "deepseek-chat";
 
-  private static readonly string CommandPromptTemplate =
-    @"
+  private static readonly string CommandPromptTemplate = @"
       Translate the following from {1} to {2}.
       {1}: {0}
       {2}:
     ".Dedent(6, "\n").Trim();
 
-  private static readonly string BasePromptTemplate =
-    @"
+  private static readonly string BasePromptTemplate = @"
       You are a professional UI/UX translator. You ONLY provide the
       translations. You DO NOT provide any additional information or
       explanations or further considerations or context. You ONLY translate to
@@ -68,8 +64,7 @@ public partial class TranslateClient(
         case of percentages)
     ".Dedent(6, "\n").Trim();
 
-  private static readonly string TranslatePromptTemplate =
-    @$"
+  private static readonly string TranslatePromptTemplate = @$"
       {BasePromptTemplate.Indent(6, "\n").Trim()}
 
       {CommandPromptTemplate.Indent(6, "\n").Trim()}
@@ -128,17 +123,20 @@ public partial class TranslateClient(
 
     var completion = response.Value.Content.Last().Text.Trim();
 
-    var thoughts = ThinkingRegex()
-      .Matches(completion);
+    var thoughts = ThinkingRegex().Matches(completion);
 
-    var thinking =
-      string.Join("\n", thoughts.Select(thought => thought.Groups[1].Value))
-        .Trim();
+    var thinking = string.Join(
+        "\n",
+        thoughts.Select(thought => thought.Groups[1].Value)
+      )
+      .Trim();
 
     var translation = thoughts
       .Aggregate(
-        completion, (current, thought) => current
-          .Replace(thought.Groups[0].Value, string.Empty))
+        completion,
+        (current, thought) =>
+          current.Replace(thought.Groups[0].Value, string.Empty)
+      )
       .Trim();
 
     return new TranslationResult(

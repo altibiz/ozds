@@ -8,15 +8,18 @@ namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class ApiKeyScopeModelCachingEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelCachingEntityConverter<
-  ApiKeyScopeModel,
-  AuditableJoinModel,
-  ApiKeyScopeEntity,
-  AuditableJoinEntity>(serviceProvider)
+)
+  : InheritingModelCachingEntityConverter<
+    ApiKeyScopeModel,
+    AuditableJoinModel,
+    ApiKeyScopeEntity,
+    AuditableJoinEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     ApiKeyScopeModel model,
-    ApiKeyScopeEntity entity)
+    ApiKeyScopeEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.ApiKeyId = model.ApiKeyId;
@@ -25,7 +28,8 @@ public class ApiKeyScopeModelCachingEntityConverter(
 
   public override void InitializeModel(
     ApiKeyScopeEntity entity,
-    ApiKeyScopeModel model)
+    ApiKeyScopeModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.ApiKeyId = entity.ApiKeyId;

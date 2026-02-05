@@ -5,16 +5,19 @@ using Ozds.Caching.Entities.Base;
 namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class AuditableJoinModelCachingEntityConverter(
-  IServiceProvider serviceProvider)
+  IServiceProvider serviceProvider
+)
   : InheritingModelCachingEntityConverter<
     AuditableJoinModel,
     JoinModel,
     AuditableJoinEntity,
-    JoinEntity>(serviceProvider)
+    JoinEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     AuditableJoinModel model,
-    AuditableJoinEntity entity)
+    AuditableJoinEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.CreatedOn = model.CreatedOn;
@@ -23,7 +26,8 @@ public class AuditableJoinModelCachingEntityConverter(
 
   public override void InitializeModel(
     AuditableJoinEntity entity,
-    AuditableJoinModel model)
+    AuditableJoinModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.CreatedOn = entity.CreatedOn;

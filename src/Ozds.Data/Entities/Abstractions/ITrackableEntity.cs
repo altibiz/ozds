@@ -20,6 +20,5 @@ public interface ITrackableEntity : IAuditableEntity
 }
 
 public interface ITrackableIdentifiableEntity
-  : ITrackableEntity, IIdentifiableEntity
-{
-}
+  : ITrackableEntity,
+    IIdentifiableEntity { }

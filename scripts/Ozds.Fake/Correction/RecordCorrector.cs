@@ -33,8 +33,10 @@ public class RecordCorrector(IServiceProvider serviceProvider)
   {
     var corrector = GetCorrector(measurementRecord.GetType());
 
-    return corrector
-      .CorrectMeasurementLocationId(measurementRecord, measurementLocationId);
+    return corrector.CorrectMeasurementLocationId(
+      measurementRecord,
+      measurementLocationId
+    );
   }
 
   public IMeasurementRecord CorrectTimestamp(
@@ -69,20 +71,20 @@ public class RecordCorrector(IServiceProvider serviceProvider)
   {
     var corrector = GetCorrector(measurementRecord.GetType());
 
-    return corrector.CorrectValidation(
-      measurementRecord,
-      validator
-    );
+    return corrector.CorrectValidation(measurementRecord, validator);
   }
 
   private IRecordCorrector GetCorrector(Type measurementRecordType)
   {
-    var corrector = _serviceProvider.GetServices<IRecordCorrector>()
+    var corrector =
+      _serviceProvider
+        .GetServices<IRecordCorrector>()
         .FirstOrDefault(corrector =>
-          corrector.CanCorrectFor(
-            measurementRecordType))
+          corrector.CanCorrectFor(measurementRecordType)
+        )
       ?? throw new InvalidOperationException(
-        $"No corrector found for {measurementRecordType.Name}");
+        $"No corrector found for {measurementRecordType.Name}"
+      );
     return corrector;
   }
 }

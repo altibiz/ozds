@@ -5,9 +5,7 @@ using Ozds.Document.Entities;
 namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class FinancialModelDocumentEntityConverter
-  : ConcreteModelDocumentEntityConverter<
-    FinancialModel,
-    FinancialEntity>
+  : ConcreteModelDocumentEntityConverter<FinancialModel, FinancialEntity>
 {
   public override void InitializeEntity(
     FinancialModel model,

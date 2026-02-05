@@ -18,12 +18,16 @@ public abstract class OzdsBusinessHostTestBase
               "Server=localhost;Port=5432;Database=ozds;User Id=ozds;Password=ozds"
             },
             { "Ozds:Data:SelfContainedReflection", "true" },
-            { "Ozds:Caching:ConnectionString", "memory://" }
+            { "Ozds:Caching:ConnectionString", "memory://" },
           }
         );
       },
-      builder => { return builder.Build(); }
-    ));
+      builder =>
+      {
+        return builder.Build();
+      }
+    )
+  );
 
   public IHost Host
   {

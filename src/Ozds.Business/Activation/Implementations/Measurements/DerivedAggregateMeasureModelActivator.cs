@@ -7,9 +7,7 @@ namespace Ozds.Business.Activation.Implementations.Measurements;
 public class DerivedAggregateMeasureModelActivator(ClockQueries clock)
   : ConcreteModelActivator<DerivedAggregateMeasureModel>
 {
-  public override void Initialize(
-    DerivedAggregateMeasureModel model
-  )
+  public override void Initialize(DerivedAggregateMeasureModel model)
   {
     base.Initialize(model);
 

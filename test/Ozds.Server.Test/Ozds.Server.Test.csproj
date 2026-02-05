@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <ItemGroup>
     <ProjectReference Include="../../src/Ozds.Server/Ozds.Server.csproj" />
     <ProjectReference Include="../../src/Ozds.Sdk/Ozds.Sdk.csproj" />
@@ -14,5 +13,4 @@
     <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
     <PackageReference Include="BCrypt.Net-Next" />
   </ItemGroup>
-
 </Project>

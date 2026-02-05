@@ -5,8 +5,7 @@ namespace Ozds.Business.Activation.Implementations.Measurements;
 
 public class MeasurementValidatorModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  MeasurementValidatorModel,
-  TrackableModel>(serviceProvider)
-{
-}
+)
+  : InheritingModelActivator<MeasurementValidatorModel, TrackableModel>(
+    serviceProvider
+  ) { }
