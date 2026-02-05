@@ -38,6 +38,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
   RegexService.cs and MeasurementMutations.cs
 - fix more decimal places on Column definitions for Regulatory catalogue
 - fix more decimal places on Column definitions for Network User catalogue
+- use csharpier over jetbrains formatter
 
 ### Removed
 
