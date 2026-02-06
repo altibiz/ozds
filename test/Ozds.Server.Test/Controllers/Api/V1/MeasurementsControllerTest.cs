@@ -165,27 +165,21 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
       DateTo, CultureInfo.InvariantCulture);
     var insertionDateFrom = insertionDateTo.AddDays(-1);
 
-    var inserted = await measurementLocations.Select(
-        m => Measurement.Insert(
-            [
-              new MeasurementLocationMeterId(
-                m.MeasurementLocation.Id,
-                m.Meter.Id
-              )
-            ],
-            insertionDateFrom,
-            insertionDateTo,
-            cancellationToken
+    var inserted = await Measurement.Insert(
+      measurementLocations.Select(
+          m => new MeasurementLocationMeterId(
+            m.MeasurementLocation.Id,
+            m.Meter.Id
           )
-          .OfType<IAggregate>()
-          .Where(
-            aggregate =>
-              aggregate.Interval == IntervalModel.QuarterHour
-          )
-      )
-      .ToAsyncEnumerable()
-      .SelectMany(x => x)
-      .ToListAsync(cancellationToken);
+      ),
+      insertionDateFrom,
+      insertionDateTo,
+      cancellationToken
+    ).OfType<IAggregate>()
+    .Where(
+      aggregate =>
+        aggregate.Interval == IntervalModel.QuarterHour
+    ).ToListAsync(cancellationToken);
 
     var client = Services.GetRequiredService<IOzdsApiV1Client>();
     var apiKeyManager = Services.GetRequiredService<ApiKeyManager>();
