@@ -20,6 +20,11 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - added dapper queries for getting chunk interval information (WIP)
 - fix MeasurementDeletionJobReactorTest now uses chunk interval information to
   determine which measurement chunks will be removed from db
+
+### Changed
+
+- fix converters should now return first elements and not cause discrepancies in
+  data
 - updated HtmlSanitizer to version 9.0.892
 - fix ReadLastByMeasurementLocationIds now returns latest measurement info for
   all meters that have measurements
