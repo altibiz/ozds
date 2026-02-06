@@ -9,9 +9,14 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
-### Changed
+### Added
 
 - added new specific test for API returning latest measurements by meter
+
+### Changed
+
+- fix optimized N+1 problem in API test -
+  GetsQuarterHourlyAggregatesByLocationLast
 - updated HtmlSanitizer to version 9.0.892
 - fix ReadLastByMeasurementLocationIds now returns latest measurement info for
   all meters that have measurements
