@@ -1,83 +1,100 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Ozds.Assets.Queries.Abstractions;
+using Ozds.Data.Attributes;
 using Ozds.Data.Context;
 using Ozds.Data.Extensions;
 using Ozds.Data.Reflection;
 
 namespace Ozds.Data.Queries;
 
-public record ChunkInfo
+// NOTE: this code is specific for measurement deletion job test
+// hence it's not implemented further
+[DapperResult]
+public sealed class ChunkIntervalInfo
 {
-  Type? HypertableName;
+  public string HypertableName { get; init; } = "";
 
-  DateTimeOffset? RangeStart;
+  public DateTimeOffset RangeStart { get; init; }
 
-  DateTimeOffset? RangeEnd;
+  public DateTimeOffset RangeEnd { get; init; }
 }
 
 public class TimescaleChunkIntervalQueries(
-  IDbContextFactory<DataDbContext> factory,
-  EntityReflector reflector,
-  ILogger<TimescaleChunkIntervalQueries> logger
+  IDbContextFactory<DataDbContext> factory
 ) : IQueries
 {
 
-  // this could be more specified to be for chunks of measurements
-  public async Task<List<ChunkInfo>>
-    GetChunkInformationForEntityTable(
-      Type entityType,
-      CancellationToken cancellationToken
-    )
-  {
-
-    var context = await factory.CreateDbContextAsync(cancellationToken);
-
-    var tableName = context.GetTableName(entityType);
-
-    const string sqlString = """
-      SELECT hypertable_name, range_start, range_end FROM timescaledb_information.chunks
-      WHERE hypertable_name = @TableName
-      ORDER BY range_start;
-      """;
-
-    var rows = await context.DapperCommand<ChunkInfo>(
-        sqlString,
-        cancellationToken,
-        new { TableName = tableName }
-      );
-
-    return rows;
-  }
-
-  public async Task<ChunkInfo?>
-   GetLatestChunkBeforeCutoff(
+  public async Task<ChunkIntervalInfo?>
+   GetLatestChunkIntervalBeforeCutoff(
      DateTimeOffset threshold,
      Type entityType,
      CancellationToken cancellationToken
    )
   {
 
-    var context = await factory.CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(cancellationToken);
 
-    var tableName = context.GetTableName(entityType);
+    var tableName = context.GetTableName(entityType)
+      ?? throw new InvalidOperationException($"Table name not found for for {entityType.Name}.");
 
     const string sqlString = """
-      SELECT hypertable_name, range_start, range_end FROM timescaledb_information.chunks
+      SELECT hypertable_name  AS    "HypertableName",
+             range_start      AS    "RangeStart",
+             range_end        AS    "RangeEnd"
+      FROM timescaledb_information.chunks
       WHERE hypertable_name = @TableName AND range_end < @Threshold
       ORDER BY range_end DESC
       LIMIT 1;
       """;
 
-    var latestChunk = (await context.DapperCommand<ChunkInfo>(
+    return (await context.DapperCommand<ChunkIntervalInfo>(
         sqlString,
         cancellationToken,
-        new {
+        new
+        {
           TableName = tableName,
           Threshold = threshold
         }
       )).FirstOrDefault();
+  }
 
-    return latestChunk;
+  public async Task<List<ChunkIntervalInfo>>
+   GetLatestChunkIntervalBeforeCutoff(
+     DateTimeOffset threshold,
+     IEnumerable<Type> entityTypes,
+     CancellationToken cancellationToken
+   )
+  {
+
+    await using var context = await factory.CreateDbContextAsync(cancellationToken);
+
+    var hypertableNames = entityTypes
+      .Select(x => context.GetTableName(x)
+        ?? throw new InvalidOperationException($"Table name not found for for {x.Name}.")
+      )
+      .ToArray()!;
+
+    const string sqlString = """
+      SELECT hypertable_name  AS    "HypertableName",
+             MIN(range_start) AS    "RangeStart",
+             MAX(range_end)   AS    "RangeEnd"
+      FROM timescaledb_information.chunks
+      WHERE range_end < @Threshold AND hypertable_name = ANY(@HypertableNames)
+      GROUP BY hypertable_name
+      ORDER BY MAX(range_end) DESC
+      LIMIT 1;
+      """;
+
+    return await context.DapperCommand<ChunkIntervalInfo>(
+        sqlString,
+        cancellationToken,
+        new
+        {
+          Threshold = threshold,
+          HypertableNames = hypertableNames
+        }
+      );
   }
 }
