@@ -3,9 +3,9 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries;
 using Ozds.Fake.Identification;
 using Ozds.Server.Test.Base;
-
 using DataEntityReflector = Ozds.Data.Reflection.EntityReflector;
-using DataTimescaleChunkIntervalQueries = Ozds.Data.Queries.TimescaleChunkIntervalQueries;
+using DataTimescaleChunkIntervalQueries =
+  Ozds.Data.Queries.TimescaleChunkIntervalQueries;
 
 namespace Ozds.Server.Test.Reactors;
 
@@ -64,18 +64,19 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
       .Where(x => x is not IAggregate)
       .ToListAsync(cancellationToken);
 
-    var lastChunkByModelType = (await Services.GetRequiredService<DataTimescaleChunkIntervalQueries>()
-    .GetLatestChunkIntervalBeforeCutoff(
-      deletionCutoff,
-      reflector.MeasurementTypes,
-      cancellationToken)
-    ).ToDictionary(
-      x =>
-        Services.GetRequiredService<ModelEntityConverter>()
-        .ModelType(
-            reflector.ResolveEntityTypeFromTable(x.HypertableName)
-        )
-    );
+    var lastChunkByModelType = (await Services
+        .GetRequiredService<DataTimescaleChunkIntervalQueries>()
+        .GetLatestChunkIntervalBeforeCutoff(
+          deletionCutoff,
+          reflector.MeasurementTypes,
+          cancellationToken)
+      ).ToDictionary(
+        x =>
+          Services.GetRequiredService<ModelEntityConverter>()
+            .ModelType(
+              reflector.ResolveEntityTypeFromTable(x.HypertableName)
+            )
+      );
 
     itemsBefore.Should().AllSatisfy(
       x =>
@@ -98,13 +99,14 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
 
     var determinedItemsAfter = itemsBefore.Where(
       x =>
-      !lastChunkByModelType.TryGetValue(x.GetType(), out var chunkInfo)
-      || x.Timestamp > chunkInfo.RangeEnd
+        !lastChunkByModelType.TryGetValue(x.GetType(), out var chunkInfo)
+        || x.Timestamp > chunkInfo.RangeEnd
     ).ToList();
 
     var determinedTimestampMinimum = itemsBefore.Min(x => x.Timestamp);
 
-    itemsAfter.TotalCount.Should().BeLessThanOrEqualTo(determinedItemsAfter.Count);
+    itemsAfter.TotalCount.Should()
+      .BeLessThanOrEqualTo(determinedItemsAfter.Count);
 
     itemsAfter.Items.Should().AllSatisfy(
       x =>
