@@ -40,13 +40,11 @@ public class TimescaleChunkIntervalQueries(
       ?? throw new InvalidOperationException($"Table name not found for for {entityType.Name}.");
 
     const string sqlString = """
-      SELECT hypertable_name  AS    "HypertableName",
-             range_start      AS    "RangeStart",
-             range_end        AS    "RangeEnd"
+      SELECT @TableName            AS    "HypertableName",
+             MIN(range_start)      AS    "RangeStart",
+             MAX(range_end)        AS    "RangeEnd"
       FROM timescaledb_information.chunks
-      WHERE hypertable_name = @TableName AND range_end < @Threshold
-      ORDER BY range_end DESC
-      LIMIT 1;
+      WHERE hypertable_name = @TableName AND range_end < @Threshold;
       """;
 
     return (await context.DapperCommand<ChunkIntervalInfo>(
@@ -77,14 +75,12 @@ public class TimescaleChunkIntervalQueries(
       .ToArray()!;
 
     const string sqlString = """
-      SELECT hypertable_name  AS    "HypertableName",
-             MIN(range_start) AS    "RangeStart",
-             MAX(range_end)   AS    "RangeEnd"
+      SELECT hypertable_name      AS    "HypertableName",
+             MIN(range_start)     AS    "RangeStart",
+             MAX(range_end)       AS    "RangeEnd"
       FROM timescaledb_information.chunks
       WHERE range_end < @Threshold AND hypertable_name = ANY(@HypertableNames)
-      GROUP BY hypertable_name
-      ORDER BY MAX(range_end) DESC
-      LIMIT 1;
+      GROUP BY hypertable_name;
       """;
 
     return await context.DapperCommand<ChunkIntervalInfo>(

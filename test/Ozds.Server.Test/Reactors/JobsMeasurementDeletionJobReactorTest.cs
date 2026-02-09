@@ -47,7 +47,7 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
     var dateFrom = dateTo - Interval * 2;
     var deletionCutoff = dateFrom + Interval;
 
-    var reflector = Services.GetRequiredService<DataEntityReflector>();
+    var dataReflector = Services.GetRequiredService<DataEntityReflector>();
 
     var itemsBefore = await Measurement
       .Insert(
@@ -67,13 +67,13 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
     var lastChunkByModelType = (await Services.GetRequiredService<DataTimescaleChunkIntervalQueries>()
     .GetLatestChunkIntervalBeforeCutoff(
       deletionCutoff,
-      reflector.MeasurementTypes,
+      dataReflector.MeasurementTypes,
       cancellationToken)
     ).ToDictionary(
       x =>
         Services.GetRequiredService<ModelEntityConverter>()
         .ModelType(
-            reflector.ResolveEntityTypeFromTable(x.HypertableName)
+            dataReflector.ResolveEntityTypeFromTable(x.HypertableName)
         )
     );
 
