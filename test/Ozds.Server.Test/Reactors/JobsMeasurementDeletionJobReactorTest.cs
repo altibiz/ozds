@@ -63,11 +63,13 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
       .Where(x => x is not IAggregate)
       .ToListAsync(cancellationToken);
 
-    var lastChunkByModelType = (await Services.GetRequiredService<DataTimescaleChunkIntervalQueries>()
-    .GetChunkIntervalBeforeCutoff(
-      deletionCutoff,
-      dataReflector.MeasurementTypes,
-      cancellationToken)
+    var deletedChunkIntervalByModelType =
+    (
+      await Services.GetRequiredService<DataTimescaleChunkIntervalQueries>()
+      .GetChunkIntervalBeforeCutoff(
+        deletionCutoff,
+        dataReflector.MeasurementTypes,
+        cancellationToken)
     ).ToDictionary(
       x =>
         Services.GetRequiredService<ModelEntityConverter>()
@@ -97,7 +99,7 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
 
     var determinedItemsAfter = itemsBefore.Where(
       x =>
-      !lastChunkByModelType.TryGetValue(x.GetType(), out var chunkInfo)
+      !deletedChunkIntervalByModelType.TryGetValue(x.GetType(), out var chunkInfo)
       || x.Timestamp > chunkInfo.RangeEnd
     ).ToList();
 
