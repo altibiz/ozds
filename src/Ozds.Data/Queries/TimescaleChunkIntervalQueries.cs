@@ -23,11 +23,11 @@ public class TimescaleChunkIntervalQueries(
 ) : IQueries
 {
   public async Task<ChunkIntervalInfo?>
-   GetChunkIntervalBeforeCutoff(
-     DateTimeOffset threshold,
-     Type entityType,
-     CancellationToken cancellationToken
-   )
+    GetChunkIntervalBeforeCutoff(
+      DateTimeOffset threshold,
+      Type entityType,
+      CancellationToken cancellationToken
+    )
   {
     await using var context =
       await factory.CreateDbContextAsync(cancellationToken);
@@ -56,11 +56,11 @@ public class TimescaleChunkIntervalQueries(
   }
 
   public async Task<List<ChunkIntervalInfo>>
-   GetChunkIntervalBeforeCutoff(
-     DateTimeOffset threshold,
-     IEnumerable<Type> entityTypes,
-     CancellationToken cancellationToken
-   )
+    GetChunkIntervalBeforeCutoff(
+      DateTimeOffset threshold,
+      IEnumerable<Type> entityTypes,
+      CancellationToken cancellationToken
+    )
   {
     await using var context =
       await factory.CreateDbContextAsync(cancellationToken);
