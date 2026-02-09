@@ -35,7 +35,6 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
 
   private TimeSpan Interval { get; }
 
-  // TODO: make it work with delete_chunks
   [Test]
   public async Task MeasurementDeletionJobReactor_Reacts(
     CancellationToken cancellationToken
@@ -65,7 +64,7 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
       .ToListAsync(cancellationToken);
 
     var lastChunkByModelType = (await Services.GetRequiredService<DataTimescaleChunkIntervalQueries>()
-    .GetLatestChunkIntervalBeforeCutoff(
+    .GetChunkIntervalBeforeCutoff(
       deletionCutoff,
       dataReflector.MeasurementTypes,
       cancellationToken)

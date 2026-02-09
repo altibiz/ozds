@@ -27,7 +27,7 @@ public class TimescaleChunkIntervalQueries(
 {
 
   public async Task<ChunkIntervalInfo?>
-   GetLatestChunkIntervalBeforeCutoff(
+   GetChunkIntervalBeforeCutoff(
      DateTimeOffset threshold,
      Type entityType,
      CancellationToken cancellationToken
@@ -59,7 +59,7 @@ public class TimescaleChunkIntervalQueries(
   }
 
   public async Task<List<ChunkIntervalInfo>>
-   GetLatestChunkIntervalBeforeCutoff(
+   GetChunkIntervalBeforeCutoff(
      DateTimeOffset threshold,
      IEnumerable<Type> entityTypes,
      CancellationToken cancellationToken
