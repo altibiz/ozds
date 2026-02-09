@@ -3,9 +3,9 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries;
 using Ozds.Fake.Identification;
 using Ozds.Server.Test.Base;
-
 using DataEntityReflector = Ozds.Data.Reflection.EntityReflector;
-using DataTimescaleChunkIntervalQueries = Ozds.Data.Queries.TimescaleChunkIntervalQueries;
+using DataTimescaleChunkIntervalQueries =
+  Ozds.Data.Queries.TimescaleChunkIntervalQueries;
 
 namespace Ozds.Server.Test.Reactors;
 
@@ -105,7 +105,8 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
 
     var determinedTimestampMinimum = itemsBefore.Min(x => x.Timestamp);
 
-    itemsAfter.TotalCount.Should().BeLessThanOrEqualTo(determinedItemsAfter.Count);
+    itemsAfter.TotalCount.Should()
+      .BeLessThanOrEqualTo(determinedItemsAfter.Count);
 
     itemsAfter.Items.Should().AllSatisfy(
       x =>

@@ -1,11 +1,8 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Ozds.Assets.Queries.Abstractions;
 using Ozds.Data.Attributes;
 using Ozds.Data.Context;
 using Ozds.Data.Extensions;
-using Ozds.Data.Reflection;
 
 namespace Ozds.Data.Queries;
 
@@ -25,7 +22,6 @@ public class TimescaleChunkIntervalQueries(
   IDbContextFactory<DataDbContext> factory
 ) : IQueries
 {
-
   public async Task<ChunkIntervalInfo?>
    GetChunkIntervalBeforeCutoff(
      DateTimeOffset threshold,
@@ -33,11 +29,12 @@ public class TimescaleChunkIntervalQueries(
      CancellationToken cancellationToken
    )
   {
-
-    await using var context = await factory.CreateDbContextAsync(cancellationToken);
+    await using var context =
+      await factory.CreateDbContextAsync(cancellationToken);
 
     var tableName = context.GetTableName(entityType)
-      ?? throw new InvalidOperationException($"Table name not found for for {entityType.Name}.");
+      ?? throw new InvalidOperationException(
+        $"Table name not found for for {entityType.Name}.");
 
     const string sqlString = """
       SELECT @TableName            AS    "HypertableName",
@@ -48,14 +45,14 @@ public class TimescaleChunkIntervalQueries(
       """;
 
     return (await context.DapperCommand<ChunkIntervalInfo>(
-        sqlString,
-        cancellationToken,
-        new
-        {
-          TableName = tableName,
-          Threshold = threshold
-        }
-      )).FirstOrDefault();
+      sqlString,
+      cancellationToken,
+      new
+      {
+        TableName = tableName,
+        Threshold = threshold
+      }
+    )).FirstOrDefault();
   }
 
   public async Task<List<ChunkIntervalInfo>>
@@ -65,12 +62,14 @@ public class TimescaleChunkIntervalQueries(
      CancellationToken cancellationToken
    )
   {
-
-    await using var context = await factory.CreateDbContextAsync(cancellationToken);
+    await using var context =
+      await factory.CreateDbContextAsync(cancellationToken);
 
     var hypertableNames = entityTypes
-      .Select(x => context.GetTableName(x)
-        ?? throw new InvalidOperationException($"Table name not found for for {x.Name}.")
+      .Select(
+        x => context.GetTableName(x)
+          ?? throw new InvalidOperationException(
+            $"Table name not found for for {x.Name}.")
       )
       .ToArray()!;
 
@@ -84,13 +83,13 @@ public class TimescaleChunkIntervalQueries(
       """;
 
     return await context.DapperCommand<ChunkIntervalInfo>(
-        sqlString,
-        cancellationToken,
-        new
-        {
-          Threshold = threshold,
-          HypertableNames = hypertableNames
-        }
-      );
+      sqlString,
+      cancellationToken,
+      new
+      {
+        Threshold = threshold,
+        HypertableNames = hypertableNames
+      }
+    );
   }
 }
