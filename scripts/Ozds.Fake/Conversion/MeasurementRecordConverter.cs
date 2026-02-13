@@ -27,6 +27,8 @@ public class MeasurementRecordConverter(
     var current = enumerator.Current;
     var converter = GetModelConverter(current);
 
+    yield return converter.ConvertToModel(current);
+
     while (enumerator.MoveNext())
     {
       var next = enumerator.Current;
@@ -53,6 +55,8 @@ public class MeasurementRecordConverter(
 
     var current = enumerator.Current;
     var converter = GetModelConverter(current);
+
+    yield return converter.ConvertToModel(current);
 
     while (await enumerator.MoveNextAsync(cancellationToken))
     {
