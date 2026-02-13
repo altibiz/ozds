@@ -18,6 +18,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - fix MeasurementDeletionJobReactorTest now uses chunk interval information to
   determine which measurement chunks will be removed from db
+- fix optimized N+1 problem in API test -
+  GetsQuarterHourlyAggregatesByLocationLast
 - updated HtmlSanitizer to version 9.0.892
 - fix ReadLastByMeasurementLocationIds now returns latest measurement info for
   all meters that have measurements
