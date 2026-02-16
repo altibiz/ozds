@@ -66,16 +66,16 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
     var deletedChunkIntervalByModelType =
     (
       await Services.GetRequiredService<DataTimescaleChunkIntervalQueries>()
-      .GetChunkIntervalBeforeCutoff(
-        deletionCutoff,
-        dataReflector.MeasurementTypes,
-        cancellationToken)
+        .GetChunkIntervalBeforeCutoff(
+          deletionCutoff,
+          dataReflector.MeasurementTypes,
+          cancellationToken)
     ).ToDictionary(
       x =>
         Services.GetRequiredService<ModelEntityConverter>()
-        .ModelType(
+          .ModelType(
             dataReflector.ResolveEntityTypeFromTable(x.HypertableName)
-        )
+          )
     );
 
     itemsBefore.Should().AllSatisfy(
@@ -99,8 +99,9 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
 
     var determinedItemsAfter = itemsBefore.Where(
       x =>
-      !deletedChunkIntervalByModelType.TryGetValue(x.GetType(), out var chunkInfo)
-      || x.Timestamp > chunkInfo.RangeEnd
+        !deletedChunkIntervalByModelType.TryGetValue(
+          x.GetType(), out var chunkInfo)
+        || x.Timestamp > chunkInfo.RangeEnd
     ).ToList();
 
     var determinedTimestampMinimum = itemsBefore.Min(x => x.Timestamp);
