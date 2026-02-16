@@ -166,20 +166,20 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
     var insertionDateFrom = insertionDateTo.AddDays(-1);
 
     var inserted = await Measurement.Insert(
-      measurementLocations.Select(
+        measurementLocations.Select(
           m => new MeasurementLocationMeterId(
             m.MeasurementLocation.Id,
             m.Meter.Id
           )
-      ),
-      insertionDateFrom,
-      insertionDateTo,
-      cancellationToken
-    ).OfType<IAggregate>()
-    .Where(
-      aggregate =>
-        aggregate.Interval == IntervalModel.QuarterHour
-    ).ToListAsync(cancellationToken);
+        ),
+        insertionDateFrom,
+        insertionDateTo,
+        cancellationToken
+      ).OfType<IAggregate>()
+      .Where(
+        aggregate =>
+          aggregate.Interval == IntervalModel.QuarterHour
+      ).ToListAsync(cancellationToken);
 
     var client = Services.GetRequiredService<IOzdsApiV1Client>();
     var apiKeyManager = Services.GetRequiredService<ApiKeyManager>();
