@@ -12,10 +12,12 @@ and adheres to [Semantic Versioning](https://semver.org/).
 ### Added
 
 - added new specific test for API returning latest measurements by meter
-- added dapper queries for getting chunk interval information (WIP)
 
 ### Changed
 
+- fix optimized N+1 problem in API test -
+  GetsQuarterHourlyAggregatesByLocationLast
+- added dapper queries for getting chunk interval information (WIP)
 - fix MeasurementDeletionJobReactorTest now uses chunk interval information to
   determine which measurement chunks will be removed from db
 - updated HtmlSanitizer to version 9.0.892
