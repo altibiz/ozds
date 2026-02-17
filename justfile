@@ -166,7 +166,7 @@ format:
 
     # yapf --recursive --in-place --parallel '{{ root }}'
 
-    @just format-jb
+    @just format-csharp
 
 format-prettier:
     prettier --write \
