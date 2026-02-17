@@ -170,7 +170,8 @@ public partial class MappedLoading<T, TMapped> : OzdsComponentBase
       try
       {
         var activator = ScopedServices.GetRequiredService<ModelActivator>();
-        var created = (T)activator.ActivateDynamic(_activationType ?? typeof(T));
+        var created = (T)
+          activator.ActivateDynamic(_activationType ?? typeof(T));
         if (
           created is IJoin join
           && JoinActivationSide != null
@@ -226,7 +227,8 @@ public partial class MappedLoading<T, TMapped> : OzdsComponentBase
       try
       {
         _state = _state.WithValue(
-          (T?)await ScopedServices
+          (T?)
+            await ScopedServices
               .GetRequiredService<TrackableQueries>()
               .ReadById(typeof(T), Id, CancellationToken)
         );
@@ -242,7 +244,8 @@ public partial class MappedLoading<T, TMapped> : OzdsComponentBase
       try
       {
         _state = _state.WithValue(
-          (T?)await ScopedServices
+          (T?)
+            await ScopedServices
               .GetRequiredService<IdentifiableQueries>()
               .ReadById(typeof(T), Id, CancellationToken)
         );
@@ -280,7 +283,8 @@ public partial class MappedLoading<T, TMapped> : OzdsComponentBase
       try
       {
         var activator = ScopedServices.GetRequiredService<ModelActivator>();
-        var created = (T)activator.ActivateDynamic(_activationType ?? typeof(T));
+        var created = (T)
+          activator.ActivateDynamic(_activationType ?? typeof(T));
         if (
           created is IJoin join
           && JoinActivationSide != null
