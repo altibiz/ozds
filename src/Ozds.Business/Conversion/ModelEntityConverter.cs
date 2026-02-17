@@ -39,6 +39,8 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
     var current = enumerator.Current;
     var converter = GetEntityConverterForConversion(current.GetType());
 
+    yield return converter.ToEntity(current);
+
     while (enumerator.MoveNext())
     {
       var next = enumerator.Current;
@@ -73,6 +75,8 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
 
     var current = enumerator.Current;
     var converter = GetEntityConverterForConversion(current.GetType());
+
+    yield return converter.ToEntity(current);
 
     while (await enumerator.MoveNextAsync(cancellationToken))
     {
@@ -114,6 +118,8 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
     var current = enumerator.Current;
     var converter = GetModelConverterForConversion(current.GetType());
 
+    yield return converter.ToModel(current);
+
     while (enumerator.MoveNext())
     {
       var next = enumerator.Current;
@@ -148,6 +154,8 @@ public class ModelEntityConverter(IServiceProvider serviceProvider)
 
     var current = enumerator.Current;
     var converter = GetModelConverterForConversion(current.GetType());
+
+    yield return converter.ToModel(current);
 
     while (await enumerator.MoveNextAsync())
     {
