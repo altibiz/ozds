@@ -216,7 +216,7 @@ public class CreateMeasurementsTest : OzdsDataTestBase
         ))
       .Select(
         x =>
-          x.Key.Item5 is { }
+          x.Key.Item5 is not null
             ? x.Aggregate(
               (lhs, rhs) => (lhs, rhs) switch
               {
