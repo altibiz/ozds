@@ -216,7 +216,7 @@ public class CreateMeasurementsTest : OzdsDataTestBase
         ))
       .Select(
         x =>
-          x.Key.Item4 is { }
+          x.Key.Item5 is { }
             ? x.Aggregate(
               (lhs, rhs) => (lhs, rhs) switch
               {
@@ -888,13 +888,13 @@ public class CreateMeasurementsTest : OzdsDataTestBase
         Avg = (lhs.Avg * lhsCount + rhs.Avg * rhsCount)
           / (lhsCount + rhsCount),
         Min = Math.Min(lhs.Min, rhs.Min),
-        MinTimestamp = lhs.Min < rhs.Min
-          ? lhs.MinTimestamp
-          : rhs.MinTimestamp,
+        MinTimestamp = rhs.Min < lhs.Min
+          ? rhs.MinTimestamp
+          : lhs.MinTimestamp,
         Max = Math.Max(lhs.Max, rhs.Max),
-        MaxTimestamp = lhs.Max > rhs.Max
-          ? lhs.MaxTimestamp
-          : rhs.MaxTimestamp
+        MaxTimestamp = rhs.Max > lhs.Max
+          ? rhs.MaxTimestamp
+          : lhs.MaxTimestamp
       };
     }
 
@@ -910,13 +910,13 @@ public class CreateMeasurementsTest : OzdsDataTestBase
         Avg = (lhs.Avg * lhsCount + rhs.Avg * rhsCount)
           / (lhsCount + rhsCount),
         Min = Math.Min(lhs.Min, rhs.Min),
-        MinTimestamp = lhs.Min < rhs.Min
-          ? lhs.MinTimestamp
-          : rhs.MinTimestamp,
+        MinTimestamp = rhs.Min < lhs.Min
+          ? rhs.MinTimestamp
+          : lhs.MinTimestamp,
         Max = Math.Max(lhs.Max, rhs.Max),
-        MaxTimestamp = lhs.Max > rhs.Max
-          ? lhs.MaxTimestamp
-          : rhs.MaxTimestamp
+        MaxTimestamp = rhs.Max > lhs.Max
+          ? rhs.MaxTimestamp
+          : lhs.MaxTimestamp
       };
     }
 
