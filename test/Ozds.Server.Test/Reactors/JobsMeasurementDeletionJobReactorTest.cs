@@ -4,8 +4,7 @@ using Ozds.Business.Queries;
 using Ozds.Fake.Identification;
 using Ozds.Server.Test.Base;
 using DataEntityReflector = Ozds.Data.Reflection.EntityReflector;
-using DataTimescaleChunkIntervalQueries =
-  Ozds.Data.Queries.TimescaleChunkIntervalQueries;
+using DataTimescaleChunkIntervalQueries = Ozds.Data.Queries.TimescaleChunkIntervalQueries;
 
 namespace Ozds.Server.Test.Reactors;
 
@@ -63,31 +62,28 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
       .Where(x => x is not IAggregate)
       .ToListAsync(cancellationToken);
 
-    itemsBefore.Should().AllSatisfy(x =>
-      x.Timestamp.Should().BeAfter(dateFrom));
-    itemsBefore.Should().AllSatisfy(x =>
-      x.Timestamp.Should().BeBefore(dateTo));
-    var deletedChunkIntervalByModelType =
-    (
-      await Services.GetRequiredService<DataTimescaleChunkIntervalQueries>()
+    itemsBefore
+      .Should()
+      .AllSatisfy(x => x.Timestamp.Should().BeAfter(dateFrom));
+    itemsBefore.Should().AllSatisfy(x => x.Timestamp.Should().BeBefore(dateTo));
+    var deletedChunkIntervalByModelType = (
+      await Services
+        .GetRequiredService<DataTimescaleChunkIntervalQueries>()
         .GetChunkIntervalBeforeCutoff(
           deletionCutoff,
           dataReflector.MeasurementTypes,
-          cancellationToken)
-    ).ToDictionary(
-      x =>
-        Services.GetRequiredService<ModelEntityConverter>()
-          .ModelType(
-            dataReflector.ResolveEntityTypeFromTable(x.HypertableName)
-          )
+          cancellationToken
+        )
+    ).ToDictionary(x =>
+      Services
+        .GetRequiredService<ModelEntityConverter>()
+        .ModelType(dataReflector.ResolveEntityTypeFromTable(x.HypertableName))
     );
 
-    itemsBefore.Should().AllSatisfy(
-      x =>
-        x.Timestamp.Should().BeAfter(dateFrom));
-    itemsBefore.Should().AllSatisfy(
-      x =>
-        x.Timestamp.Should().BeBefore(dateTo));
+    itemsBefore
+      .Should()
+      .AllSatisfy(x => x.Timestamp.Should().BeAfter(dateFrom));
+    itemsBefore.Should().AllSatisfy(x => x.Timestamp.Should().BeBefore(dateTo));
 
     await Task.Delay(TimeSpan.FromMinutes(1), cancellationToken);
 
@@ -102,22 +98,29 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
         cancellationToken
       );
 
-    var determinedItemsAfter = itemsBefore.Where(
-      x =>
+    var determinedItemsAfter = itemsBefore
+      .Where(x =>
         !deletedChunkIntervalByModelType.TryGetValue(
-          x.GetType(), out var chunkInfo)
+          x.GetType(),
+          out var chunkInfo
+        )
         || x.Timestamp > chunkInfo.RangeEnd
-    ).ToList();
+      )
+      .ToList();
 
     var determinedTimestampMinimum = itemsBefore.Min(x => x.Timestamp);
 
-    itemsAfter.TotalCount.Should()
+    itemsAfter
+      .TotalCount.Should()
       .BeLessThanOrEqualTo(determinedItemsAfter.Count);
 
-    itemsAfter.Items.Should().AllSatisfy(x =>
-      x.Timestamp.Should().BeAfter(deletionCutoff));
-    itemsAfter.Items.Should().AllSatisfy(
-      x =>
-        x.Timestamp.Should().BeOnOrAfter(determinedTimestampMinimum));
+    itemsAfter
+      .Items.Should()
+      .AllSatisfy(x => x.Timestamp.Should().BeAfter(deletionCutoff));
+    itemsAfter
+      .Items.Should()
+      .AllSatisfy(x =>
+        x.Timestamp.Should().BeOnOrAfter(determinedTimestampMinimum)
+      );
   }
 }

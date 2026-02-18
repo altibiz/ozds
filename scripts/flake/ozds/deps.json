@@ -58,13 +58,9 @@
     "pname": "Azure.Core",
     "version": "1.38.0",
     "hash": "sha256-gzWMtIZJgwtE51dTMzLCbN4KxmE4/bzdjb/NU86N1uY="
-    "version": "1.38.0",
-    "hash": "sha256-gzWMtIZJgwtE51dTMzLCbN4KxmE4/bzdjb/NU86N1uY="
   },
   {
     "pname": "Azure.Core",
-    "version": "1.50.0",
-    "hash": "sha256-8Pjz0/2wTLK5uY7G5qrxQr4CsmrjiR8gL4g6zJymj5s="
     "version": "1.50.0",
     "hash": "sha256-8Pjz0/2wTLK5uY7G5qrxQr4CsmrjiR8gL4g6zJymj5s="
   },

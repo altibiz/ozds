@@ -36,18 +36,20 @@ public class CreateMeasurementsTest : OzdsDataTestBase
     );
 
     var infrastructureMeasurements = await Task.WhenAll(
-      infrastructures
-        .SelectMany(infrastructure => Enum
-          .GetValues<IntervalEntity>()
+      infrastructures.SelectMany(infrastructure =>
+        Enum.GetValues<IntervalEntity>()
           .Cast<IntervalEntity?>()
           .Append(null)
-          .Select(interval => Measurements
-            .Create(
+          .Select(interval =>
+            Measurements.Create(
               infrastructure,
               cancellationToken,
-              x => x
-                .WithCount(Constants.MeasurementCount)
-                .WithInterval(interval)))));
+              x =>
+                x.WithCount(Constants.MeasurementCount).WithInterval(interval)
+            )
+          )
+      )
+    );
 
     var measurements = infrastructureMeasurements.SelectMany(x => x).ToList();
 
@@ -1007,13 +1009,9 @@ public class CreateMeasurementsTest : OzdsDataTestBase
       {
         Avg = (lhs.Avg * lhsCount + rhs.Avg * rhsCount) / (lhsCount + rhsCount),
         Min = Math.Min(lhs.Min, rhs.Min),
-        MinTimestamp = rhs.Min < lhs.Min
-          ? rhs.MinTimestamp
-          : lhs.MinTimestamp,
+        MinTimestamp = rhs.Min < lhs.Min ? rhs.MinTimestamp : lhs.MinTimestamp,
         Max = Math.Max(lhs.Max, rhs.Max),
-        MaxTimestamp = rhs.Max > lhs.Max
-          ? rhs.MaxTimestamp
-          : lhs.MaxTimestamp
+        MaxTimestamp = rhs.Max > lhs.Max ? rhs.MaxTimestamp : lhs.MaxTimestamp,
       };
     }
 
@@ -1028,13 +1026,9 @@ public class CreateMeasurementsTest : OzdsDataTestBase
       {
         Avg = (lhs.Avg * lhsCount + rhs.Avg * rhsCount) / (lhsCount + rhsCount),
         Min = Math.Min(lhs.Min, rhs.Min),
-        MinTimestamp = rhs.Min < lhs.Min
-          ? rhs.MinTimestamp
-          : lhs.MinTimestamp,
+        MinTimestamp = rhs.Min < lhs.Min ? rhs.MinTimestamp : lhs.MinTimestamp,
         Max = Math.Max(lhs.Max, rhs.Max),
-        MaxTimestamp = rhs.Max > lhs.Max
-          ? rhs.MaxTimestamp
-          : lhs.MaxTimestamp
+        MaxTimestamp = rhs.Max > lhs.Max ? rhs.MaxTimestamp : lhs.MaxTimestamp,
       };
     }
 

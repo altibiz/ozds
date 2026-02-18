@@ -157,7 +157,8 @@ public class PushRequestMeasurementConverter(IServiceProvider serviceProvider)
 
     yield return converter.ToMeasurement(
       current.MeterPushRequest,
-      current.MeasurementLocationId);
+      current.MeasurementLocationId
+    );
 
     while (enumerator.MoveNext())
     {
@@ -191,7 +192,8 @@ public class PushRequestMeasurementConverter(IServiceProvider serviceProvider)
 
     yield return converter.ToMeasurement(
       current.MeterPushRequest,
-      current.MeasurementLocationId);
+      current.MeasurementLocationId
+    );
 
     while (await enumerator.MoveNextAsync(cancellationToken))
     {
