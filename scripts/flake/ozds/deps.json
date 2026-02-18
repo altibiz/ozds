@@ -11,6 +11,11 @@
   },
   {
     "pname": "AngleSharp",
+    "version": "0.17.0",
+    "hash": "sha256-cQvLOL296TROZkL2nVLoLEuRaN5UfjFFJIzG0/JgYrg="
+  },
+  {
+    "pname": "AngleSharp",
     "version": "0.17.1",
     "hash": "sha256-8DLs4SGXeG4ilbAJ8H6KLjaK/GmaXizMEMc3P8ZrEQ0="
   },
@@ -53,9 +58,13 @@
     "pname": "Azure.Core",
     "version": "1.38.0",
     "hash": "sha256-gzWMtIZJgwtE51dTMzLCbN4KxmE4/bzdjb/NU86N1uY="
+    "version": "1.38.0",
+    "hash": "sha256-gzWMtIZJgwtE51dTMzLCbN4KxmE4/bzdjb/NU86N1uY="
   },
   {
     "pname": "Azure.Core",
+    "version": "1.50.0",
+    "hash": "sha256-8Pjz0/2wTLK5uY7G5qrxQr4CsmrjiR8gL4g6zJymj5s="
     "version": "1.50.0",
     "hash": "sha256-8Pjz0/2wTLK5uY7G5qrxQr4CsmrjiR8gL4g6zJymj5s="
   },

@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
+    <PackageReference Include="Azure.Identity" />
     <PackageReference Include="HtmlSanitizer" />
     <PackageReference Include="System.Linq.Async" />
   </ItemGroup>
