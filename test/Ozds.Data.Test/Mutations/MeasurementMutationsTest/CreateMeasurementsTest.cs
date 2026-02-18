@@ -48,20 +48,6 @@ public class CreateMeasurementsTest : OzdsDataTestBase
               x => x
                 .WithCount(Constants.MeasurementCount)
                 .WithInterval(interval)))));
-        .SelectMany(infrastructure => Enum
-          .GetValues<IntervalEntity>()
-          .Cast<IntervalEntity?>()
-          .Append(null)
-          .Select(interval =>
-            Measurements.Create(
-              infrastructure,
-              cancellationToken,
-              x =>
-                x.WithCount(Constants.MeasurementCount).WithInterval(interval)
-            )
-          )
-      )
-    );
 
     var measurements = infrastructureMeasurements.SelectMany(x => x).ToList();
 
