@@ -219,12 +219,13 @@ lint-dotnet:
     #dotnet roslynator analyze '{{ sln }}' \
     #  --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
-    dotnet jb inspectcode '{{ sln }}' \
-      --no-build \
-      --verbosity=WARN \
-      --caches-home='{{ jbcache }}' \
-      -o='{{ jbinspectlog }}' \
-      --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
+    # this one also causes chaos with removing imports
+    #dotnet jb inspectcode '{{ sln }}' \
+    #  --no-build \
+    #  --verbosity=WARN \
+    #  --caches-home='{{ jbcache }}' \
+    #  -o='{{ jbinspectlog }}' \
+    #  --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
 lint-model:
     dotnet ef migrations \
