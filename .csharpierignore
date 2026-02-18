@@ -1,0 +1,3 @@
+# list of files / dirs that csharpier formatter will ignore
+
+test/Ozds.Server.Test/Ozds.Server.Test.cs
