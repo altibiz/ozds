@@ -1,3 +1,4 @@
 # list of files / dirs that csharpier formatter will ignore
 
+# ignored for now since it likes to add extra newline on ParallelLimiter in Ozds.Server.Test
 test/Ozds.Server.Test/Ozds.Server.Test.cs
