@@ -1,27 +1,22 @@
 using Ozds.Business.Models;
 using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Composite;
-
 using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
 
 namespace Ozds.Business.Test.Sentinel;
 
 public static class MidpointRoundingSentinel
 {
-
   public static void InjectInvoiceSentinel(
-      CalculatedNetworkUserInvoiceModel model,
-      decimal sentinel = 2.685M // NOTE: default sentinel value
-                                // that differs between bankers and away from zero rounding
-    )
+    CalculatedNetworkUserInvoiceModel model,
+    decimal sentinel = 2.685M // NOTE: default sentinel value
+  // that differs between bankers and away from zero rounding
+  )
   {
-
-    model.Invoice
-      .ArchivedRegulatoryCatalogue.TaxRate_Percent = 0M;
+    model.Invoice.ArchivedRegulatoryCatalogue.TaxRate_Percent = 0M;
 
     var meteredCalculations = model
-      .Calculations
-      .OfType<MeteredNetworkUserCalculationModel>()
+      .Calculations.OfType<MeteredNetworkUserCalculationModel>()
       .ToList();
 
     if (meteredCalculations.Count == 0)
@@ -55,6 +50,7 @@ public static class MidpointRoundingSentinel
     model.SupplyFeeTotal_EUR = 0M;
     model.Total_EUR = model.UsageFeeTotal_EUR;
   }
+
   private static void InjectCalculationSentinelInternal(
     MeteredNetworkUserCalculationModel model
   )

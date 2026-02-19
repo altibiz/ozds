@@ -4,7 +4,6 @@ using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries;
-
 using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
 
 namespace Ozds.Business.Finance.Implementations;

@@ -1,7 +1,6 @@
 using Ozds.Business.Finance.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
-
 using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
 
 namespace Ozds.Business.Finance.Complex;
@@ -43,9 +42,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator
       .AggregateMin()
       .PhaseSum();
 
-    var reactiveImportMinKilo = Round(
-      reactiveImportMin / 1000M,
-      2);
+    var reactiveImportMinKilo = Round(reactiveImportMin / 1000M, 2);
 
     var reactiveImportMax = aggregates
       .Last()
@@ -54,9 +51,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator
       .AggregateMin()
       .PhaseSum();
 
-    var reactiveImportMaxKilo = Round(
-      reactiveImportMax / 1000M,
-      2);
+    var reactiveImportMaxKilo = Round(reactiveImportMax / 1000M, 2);
 
     var reactiveImportAmountKilo = Round(
       reactiveImportMaxKilo - reactiveImportMinKilo,
@@ -70,9 +65,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator
       .AggregateMin()
       .PhaseSum();
 
-    var reactiveExportMinKilo = Round(
-      reactiveExportMin / 1000M,
-      2);
+    var reactiveExportMinKilo = Round(reactiveExportMin / 1000M, 2);
 
     var reactiveExportMax = aggregates
       .Last()
@@ -81,9 +74,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator
       .AggregateMin()
       .PhaseSum();
 
-    var reactiveExportMaxKilo = Round(
-      reactiveExportMax / 1000M,
-      2);
+    var reactiveExportMaxKilo = Round(reactiveExportMax / 1000M, 2);
 
     var reactiveExportAmountKilo = Round(
       reactiveExportMaxKilo - reactiveExportMinKilo,
@@ -97,9 +88,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator
       .AggregateMin()
       .PhaseSum();
 
-    var activeImportMinKilo = Round(
-      activeImportMin / 1000M,
-      2);
+    var activeImportMinKilo = Round(activeImportMin / 1000M, 2);
 
     var activeImportMax = aggregates
       .Last()
@@ -108,9 +97,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator
       .AggregateMin()
       .PhaseSum();
 
-    var activeImportMaxKilo = Round(
-      activeImportMax / 1000M,
-      2);
+    var activeImportMaxKilo = Round(activeImportMax / 1000M, 2);
 
     var activeImportAmountKilo = Round(
       activeImportMaxKilo - activeImportMinKilo,
@@ -127,13 +114,9 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculator
       0
     );
 
-    var price = Round(
-      calculationBasis.Price_EUR,
-      6);
+    var price = Round(calculationBasis.Price_EUR, 6);
 
-    var total = Round(
-      amountKilo * price,
-      2);
+    var total = Round(amountKilo * price, 2);
 
     return new UsageReactiveEnergyTotalRampedT0CalculationItemModel
     {

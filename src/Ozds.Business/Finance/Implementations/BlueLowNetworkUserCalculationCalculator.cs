@@ -9,12 +9,10 @@ namespace Ozds.Business.Finance.Implementations;
 
 using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
 
-public class
-  BlueLowNetworkUserCalculationCalculator(
-    CalculationItemCalculator calculationItemCalculator,
-    ClockQueries clock)
-  : NetworkUserCalculationCalculator<
-    BlueLowNetworkUserCatalogueModel>
+public class BlueLowNetworkUserCalculationCalculator(
+  CalculationItemCalculator calculationItemCalculator,
+  ClockQueries clock
+) : NetworkUserCalculationCalculator<BlueLowNetworkUserCatalogueModel>
 {
   private readonly CalculationItemCalculator _calculationItemCalculator =
     calculationItemCalculator;

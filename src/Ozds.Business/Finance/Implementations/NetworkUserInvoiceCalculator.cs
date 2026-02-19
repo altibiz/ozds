@@ -4,7 +4,6 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries;
-
 using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
 
 namespace Ozds.Business.Finance.Implementations;
@@ -144,9 +143,7 @@ public class NetworkUserInvoiceCalculator(
     );
 
     var total = Round(usageFeeTotal + supplyFeeTotal, 2);
-    var taxRate = Round(
-      basis.RegulatoryCatalogue.TaxRate_Percent,
-      2);
+    var taxRate = Round(basis.RegulatoryCatalogue.TaxRate_Percent, 2);
     var tax = Round(total * taxRate / 100M, 2);
     var totalWithTax = Round(total + tax, 2);
 
