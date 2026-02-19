@@ -9,6 +9,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+## [1.8.0] - 2025-02-19
+
 ### Added
 
 - new specific test for API returning latest measurements by meter
@@ -616,6 +618,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.8.0]: https://github.com/altibiz/ozds/compare/1.7.1...1.8.0
 [1.7.1]: https://github.com/altibiz/ozds/compare/1.7.0...1.7.1
 [1.7.0]: https://github.com/altibiz/ozds/compare/1.6.1...1.7.0
 [1.6.1]: https://github.com/altibiz/ozds/compare/1.6.0...1.6.1
