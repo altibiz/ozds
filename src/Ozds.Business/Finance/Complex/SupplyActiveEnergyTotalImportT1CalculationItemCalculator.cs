@@ -2,6 +2,8 @@ using Ozds.Business.Finance.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 
+using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
+
 namespace Ozds.Business.Finance.Complex;
 
 public class SupplyActiveEnergyTotalImportT1CalculationItemCalculator
@@ -34,7 +36,7 @@ public class SupplyActiveEnergyTotalImportT1CalculationItemCalculator
       .AggregateMin()
       .PhaseSum();
 
-    var minKilo = System.Math.Round(min / 1000M, 2);
+    var minKilo = Round(min / 1000M, 2);
 
     var max = aggregates
       .Last()
@@ -43,13 +45,13 @@ public class SupplyActiveEnergyTotalImportT1CalculationItemCalculator
       .AggregateMin()
       .PhaseSum();
 
-    var maxKilo = System.Math.Round(max / 1000M, 2);
+    var maxKilo = Round(max / 1000M, 2);
 
-    var amountKilo = System.Math.Round(maxKilo - minKilo, 0);
+    var amountKilo = Round(maxKilo - minKilo, 0);
 
-    var price = System.Math.Round(calculationBasis.Price_EUR, 6);
+    var price = Round(calculationBasis.Price_EUR, 6);
 
-    var total = System.Math.Round(amountKilo * price, 2);
+    var total = Round(amountKilo * price, 2);
 
     return new SupplyActiveEnergyTotalImportT1CalculationItemModel
     {

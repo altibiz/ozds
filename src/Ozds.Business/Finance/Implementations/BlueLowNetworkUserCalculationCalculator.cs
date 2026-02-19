@@ -7,10 +7,14 @@ using Ozds.Business.Queries;
 
 namespace Ozds.Business.Finance.Implementations;
 
-public class BlueLowNetworkUserCalculationCalculator(
-  CalculationItemCalculator calculationItemCalculator,
-  ClockQueries clock
-) : NetworkUserCalculationCalculator<BlueLowNetworkUserCatalogueModel>
+using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
+
+public class
+  BlueLowNetworkUserCalculationCalculator(
+    CalculationItemCalculator calculationItemCalculator,
+    ClockQueries clock)
+  : NetworkUserCalculationCalculator<
+    BlueLowNetworkUserCatalogueModel>
 {
   private readonly CalculationItemCalculator _calculationItemCalculator =
     calculationItemCalculator;
@@ -67,7 +71,7 @@ public class BlueLowNetworkUserCalculationCalculator(
         }
       );
 
-    var usageFeeTotal = System.Math.Round(
+    var usageFeeTotal = Round(
       usageActiveEnergyTotalImportT0.Total
         + usageReactiveEnergyTotalRampedT0.Total
         + usageMeterFee.Total,
@@ -134,7 +138,7 @@ public class BlueLowNetworkUserCalculationCalculator(
         }
       );
 
-    var supplyFeeTotal = System.Math.Round(
+    var supplyFeeTotal = Round(
       supplyActiveEnergyTotalImportT1.Total
         + supplyActiveEnergyTotalImportT2.Total
         + supplyBusinessUsageFee.Total
@@ -142,7 +146,7 @@ public class BlueLowNetworkUserCalculationCalculator(
       2
     );
 
-    var total = System.Math.Round(usageFeeTotal + supplyFeeTotal, 2);
+    var total = Round(usageFeeTotal + supplyFeeTotal, 2);
 
     var now = clock.Timestamp();
 

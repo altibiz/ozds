@@ -5,6 +5,8 @@ using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries;
 
+using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
+
 namespace Ozds.Business.Finance.Implementations;
 
 public class RedLowNetworkUserCalculationCalculator(
@@ -97,7 +99,7 @@ public class RedLowNetworkUserCalculationCalculator(
         }
       );
 
-    var usageFeeTotal = System.Math.Round(
+    var usageFeeTotal = Round(
       usageActiveEnergyTotalImportT1.Total
         + usageActiveEnergyTotalImportT2.Total
         + usageActivePowerTotalImportT1Peak.Total
@@ -166,7 +168,7 @@ public class RedLowNetworkUserCalculationCalculator(
         }
       );
 
-    var supplyFeeTotal = System.Math.Round(
+    var supplyFeeTotal = Round(
       supplyActiveEnergyTotalImportT1.Total
         + supplyActiveEnergyTotalImportT2.Total
         + supplyBusinessUsageFee.Total
@@ -174,7 +176,7 @@ public class RedLowNetworkUserCalculationCalculator(
       2
     );
 
-    var total = System.Math.Round(usageFeeTotal + supplyFeeTotal, 2);
+    var total = Round(usageFeeTotal + supplyFeeTotal, 2);
 
     var now = clock.Timestamp();
 
