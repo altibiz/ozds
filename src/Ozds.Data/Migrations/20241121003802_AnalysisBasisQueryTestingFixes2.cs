@@ -15,36 +15,33 @@ namespace Ozds.Data.Migrations
                 table: "network_user_calculations",
                 type: "text",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: ""
+            );
 
             migrationBuilder.AddColumn<string>(
                 name: "anuml_kind",
                 table: "network_user_calculations",
                 type: "text",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: ""
+            );
 
             migrationBuilder.AddColumn<string>(
                 name: "aunuc_kind",
                 table: "network_user_calculations",
                 type: "text",
-                nullable: true);
+                nullable: true
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "am_kind",
-                table: "network_user_calculations");
+            migrationBuilder.DropColumn(name: "am_kind", table: "network_user_calculations");
 
-            migrationBuilder.DropColumn(
-                name: "anuml_kind",
-                table: "network_user_calculations");
+            migrationBuilder.DropColumn(name: "anuml_kind", table: "network_user_calculations");
 
-            migrationBuilder.DropColumn(
-                name: "aunuc_kind",
-                table: "network_user_calculations");
+            migrationBuilder.DropColumn(name: "aunuc_kind", table: "network_user_calculations");
         }
     }
 }

@@ -6,11 +6,8 @@ using Ozds.Business.Reflection;
 
 namespace Ozds.Business.Activation.Implementations.Administration;
 
-public class ScopeModelActivator(
-  IServiceProvider serviceProvider
-) : InheritingModelActivator<ScopeModel, TrackableModel>(
-  serviceProvider
-)
+public class ScopeModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<ScopeModel, TrackableModel>(serviceProvider)
 {
   private readonly ModelReflector modelReflector =
     serviceProvider.GetRequiredService<ModelReflector>();
@@ -21,10 +18,9 @@ public class ScopeModelActivator(
 
     model.Id = Guid.NewGuid().ToString();
 
-    model.ScopeModelType =
-      modelReflector.ScopeTypeList.First() is { } first
-        ? modelReflector.ResolveModelName(first)
-        : null;
+    model.ScopeModelType = modelReflector.ScopeTypeList.First() is { } first
+      ? modelReflector.ResolveModelName(first)
+      : null;
     model.ScopeModelId = string.Empty;
 
     model.ScopeAction = ActionModel.Read;

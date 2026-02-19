@@ -24,12 +24,13 @@ public abstract class ParallelAsyncEnumeratedService<TItem, TWorker>(
             await using var scope = services.CreateAsyncScope();
             var worker = scope.ServiceProvider.GetRequiredService<TWorker>();
             await worker.ExecuteAsync(item, stoppingToken);
-          }, stoppingToken));
+          },
+          stoppingToken
+        )
+      );
     }
 
     await Task.WhenAll(tasks);
-    services
-      .GetRequiredService<IHostApplicationLifetime>()
-      .StopApplication();
+    services.GetRequiredService<IHostApplicationLifetime>().StopApplication();
   }
 }

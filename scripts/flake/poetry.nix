@@ -33,6 +33,7 @@
                 --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.nodejs ]}
             '';
           });
+          # TODO: fix build
           psycopg2 = prev.psycopg2.overridePythonAttrs (old: {
             nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
               pkgs.postgresql.pg_config

@@ -5,7 +5,8 @@ using Ozds.Data.Entities.Abstractions;
 namespace Ozds.Data.Entities.Base;
 
 public class ResolvableNotificationEntity
-  : NotificationEntity, IResolvableNotificationEntity
+  : NotificationEntity,
+    IResolvableNotificationEntity
 {
   public virtual RepresentativeEntity? ResolvedBy { get; set; } = default!;
   public string? AuditingRepresentativeId { get; set; }
@@ -15,8 +16,8 @@ public class ResolvableNotificationEntity
   public DateTimeOffset? ResolvedOn { get; set; } = default!;
 }
 
-public class ResolvableNotificationEntityModelConfiguration :
-  EntityTypeHierarchyConfiguration<ResolvableNotificationEntity>
+public class ResolvableNotificationEntityModelConfiguration
+  : EntityTypeHierarchyConfiguration<ResolvableNotificationEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
@@ -28,6 +29,7 @@ public class ResolvableNotificationEntityModelConfiguration :
       .HasForeignKey(nameof(ResolvableNotificationEntity.ResolvedById));
 
     builder.Ignore(
-      nameof(ResolvableNotificationEntity.AuditingRepresentativeId));
+      nameof(ResolvableNotificationEntity.AuditingRepresentativeId)
+    );
   }
 }

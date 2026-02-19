@@ -21,17 +21,23 @@ public class PasswordModel : Base.UserModel
   )
   {
     if (
-      (validationContext.MemberName is null ||
-        validationContext.MemberName == nameof(ConfirmNewPassword))
-      && NewPassword != ConfirmNewPassword)
+      (
+        validationContext.MemberName is null
+        || validationContext.MemberName == nameof(ConfirmNewPassword)
+      )
+      && NewPassword != ConfirmNewPassword
+    )
     {
       yield return new ValidationResult(
         "Passwords do not match.",
-        new[] { nameof(ConfirmNewPassword) });
+        new[] { nameof(ConfirmNewPassword) }
+      );
     }
 
-    if (validationContext.MemberName is null
-      || validationContext.MemberName == nameof(NewPassword))
+    if (
+      validationContext.MemberName is null
+      || validationContext.MemberName == nameof(NewPassword)
+    )
     {
       if (NewPassword.Length < 8)
       {
@@ -57,12 +63,14 @@ public class PasswordModel : Base.UserModel
         );
       }
 
-      if (!NewPassword.All(
-        @char =>
+      if (
+        !NewPassword.All(@char =>
           char.IsLetter(@char)
           || char.IsDigit(@char)
           || char.IsSymbol(@char)
-          || char.IsPunctuation(@char)))
+          || char.IsPunctuation(@char)
+        )
+      )
       {
         yield return new ValidationResult(
           "Password characters must be letters, digits, symbols or punctuation.",
@@ -86,10 +94,11 @@ public class PasswordModel : Base.UserModel
         );
       }
 
-      if (!NewPassword.Any(
-        @char =>
-          char.IsSymbol(@char)
-          || char.IsPunctuation(@char)))
+      if (
+        !NewPassword.Any(@char =>
+          char.IsSymbol(@char) || char.IsPunctuation(@char)
+        )
+      )
       {
         yield return new ValidationResult(
           "Password must contain at least one symbol or punctuation.",

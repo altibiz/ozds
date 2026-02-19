@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <OutputType>Library</OutputType>
   </PropertyGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="../../src/Ozds.Time/Ozds.Time.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Ozds.Time/Ozds.Time.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Quartz" />
@@ -18,5 +17,4 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
   </ItemGroup>
-
 </Project>

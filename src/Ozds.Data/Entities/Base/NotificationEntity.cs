@@ -12,11 +12,11 @@ public class NotificationEntity : IdentifiableEntity, INotificationEntity
 
   public virtual EventEntity? Event { get; set; } = default!;
 
-  public virtual ICollection<NotificationRecipientEntity>
-    NotificationRepresentatives { get; set; } = default!;
+  public virtual ICollection<NotificationRecipientEntity> NotificationRepresentatives { get; set; } =
+    default!;
 
-  public virtual ICollection<RepresentativeEntity>
-    Representatives { get; set; } = default!;
+  public virtual ICollection<RepresentativeEntity> Representatives { get; set; } =
+    default!;
 
   public string Kind { get; set; } = default!;
 
@@ -38,9 +38,8 @@ public class NotificationEntity : IdentifiableEntity, INotificationEntity
   public List<TopicEntity> Topics { get; set; } = default!;
 }
 
-public class
-  NotificationEntityTypeHierarchyConfiguration :
-  EntityTypeHierarchyConfiguration<NotificationEntity>
+public class NotificationEntityTypeHierarchyConfiguration
+  : EntityTypeHierarchyConfiguration<NotificationEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
@@ -53,10 +52,7 @@ public class
 
     builder
       .Property<DateTimeOffset>(nameof(NotificationEntity.Timestamp))
-      .HasConversion(
-        x => x.ToUniversalTime(),
-        x => x.ToUniversalTime()
-      );
+      .HasConversion(x => x.ToUniversalTime(), x => x.ToUniversalTime());
 
     builder
       .HasOne(nameof(NotificationEntity.Event))

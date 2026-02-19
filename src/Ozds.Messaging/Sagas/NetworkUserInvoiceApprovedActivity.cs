@@ -17,16 +17,14 @@ public class NetworkUserInvoiceApprovedActivity(
   public async Task Execute(
     BehaviorContext<
       NetworkUserInvoiceStateEntity,
-      IApproveNetworkUserInvoice> context,
-    IBehavior<
-      NetworkUserInvoiceStateEntity,
-      IApproveNetworkUserInvoice> next)
+      IApproveNetworkUserInvoice
+    > context,
+    IBehavior<NetworkUserInvoiceStateEntity, IApproveNetworkUserInvoice> next
+  )
   {
     publisher.Publish(
-      new NetworkUserInvoiceStateEventArgs
-      {
-        State = context.Saga
-      });
+      new NetworkUserInvoiceStateEventArgs { State = context.Saga }
+    );
 
     await next.Execute(context);
   }
@@ -35,10 +33,9 @@ public class NetworkUserInvoiceApprovedActivity(
     BehaviorExceptionContext<
       NetworkUserInvoiceStateEntity,
       IApproveNetworkUserInvoice,
-      TException> context,
-    IBehavior<
-      NetworkUserInvoiceStateEntity,
-      IApproveNetworkUserInvoice> next
+      TException
+    > context,
+    IBehavior<NetworkUserInvoiceStateEntity, IApproveNetworkUserInvoice> next
   )
     where TException : Exception
   {

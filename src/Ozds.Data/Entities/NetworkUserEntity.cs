@@ -11,11 +11,11 @@ public class NetworkUserEntity : TrackableEntity
 {
   private long _locationId;
 
-  public virtual ICollection<RepresentativeEntity>
-    Representatives { get; set; } = default!;
+  public virtual ICollection<RepresentativeEntity> Representatives { get; set; } =
+    default!;
 
-  public virtual ICollection<NetworkUserRepresentativeEntity>
-    NetworkUserRepresentatives { get; set; } = default!;
+  public virtual ICollection<NetworkUserRepresentativeEntity> NetworkUserRepresentatives { get; set; } =
+    default!;
 
   public virtual string LocationId
   {
@@ -25,8 +25,8 @@ public class NetworkUserEntity : TrackableEntity
 
   public virtual LocationEntity Location { get; set; } = default!;
 
-  public virtual ICollection<NetworkUserMeasurementLocationEntity>
-    NetworkUserMeasurementLocations { get; set; } = default!;
+  public virtual ICollection<NetworkUserMeasurementLocationEntity> NetworkUserMeasurementLocations { get; set; } =
+    default!;
 
   public virtual ICollection<NetworkUserInvoiceEntity> Invoices { get; set; } =
     default!;
@@ -40,9 +40,8 @@ public class NetworkUserEntity : TrackableEntity
   public bool AutomaticallyApproveInvoices { get; set; }
 }
 
-public class
-  NetworkUserEntityTypeConfiguration : EntityTypeConfiguration<
-  NetworkUserEntity>
+public class NetworkUserEntityTypeConfiguration
+  : EntityTypeConfiguration<NetworkUserEntity>
 {
   public override void Configure(EntityTypeBuilder<NetworkUserEntity> builder)
   {
@@ -60,9 +59,7 @@ public class
       .WithOne(nameof(NetworkUserInvoiceEntity.NetworkUser));
 
     builder.Ignore(nameof(NetworkUserEntity.LocationId));
-    builder
-      .Property("_locationId")
-      .HasColumnName("location_id");
+    builder.Property("_locationId").HasColumnName("location_id");
 
     builder.ComplexProperty(nameof(NetworkUserEntity.LegalPerson));
   }

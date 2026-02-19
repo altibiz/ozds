@@ -34,27 +34,24 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    builder.Services
-      .AddRazorComponents()
-      .AddInteractiveServerComponents();
+    builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-    builder.Services.AddServerSideBlazor()
-      .AddCircuitOptions(
-        options =>
+    builder
+      .Services.AddServerSideBlazor()
+      .AddCircuitOptions(options =>
+      {
+        if (builder.Environment.IsDevelopment())
         {
-          if (builder.Environment.IsDevelopment())
-          {
-            options.DetailedErrors = true;
-          }
-        })
-      .AddHubOptions(
-        options =>
+          options.DetailedErrors = true;
+        }
+      })
+      .AddHubOptions(options =>
+      {
+        if (builder.Environment.IsDevelopment())
         {
-          if (builder.Environment.IsDevelopment())
-          {
-            options.EnableDetailedErrors = true;
-          }
-        });
+          options.EnableDetailedErrors = true;
+        }
+      });
 
     builder.Services.AddCascadingAuthenticationState();
 

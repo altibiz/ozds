@@ -5,9 +5,7 @@ using TimeTimeQueries = Ozds.Time.Queries.Abstractions.ITimeQueries;
 
 namespace Ozds.Business.Queries;
 
-public class TimeQueries(
-  TimeTimeQueries timeTimeQueries
-) : ISingletonQueries
+public class TimeQueries(TimeTimeQueries timeTimeQueries) : ISingletonQueries
 {
   public TimeZoneInfo DefaultTimeZone
   {
@@ -51,10 +49,7 @@ public class TimeQueries(
     return timeTimeQueries.GetMonthRange(dateTimeOffset);
   }
 
-  public (DateTimeOffset, DateTimeOffset) GetMonthRange(
-    int year,
-    int month
-  )
+  public (DateTimeOffset, DateTimeOffset) GetMonthRange(int year, int month)
   {
     return timeTimeQueries.GetMonthRange(year, month);
   }
@@ -66,65 +61,50 @@ public class TimeQueries(
     return timeTimeQueries.GetYearRange(dateTimeOffset);
   }
 
-  public (DateTimeOffset, DateTimeOffset) GetYearRange(
-    int year
-  )
+  public (DateTimeOffset, DateTimeOffset) GetYearRange(int year)
   {
     return timeTimeQueries.GetYearRange(year);
   }
 
-  public DateTimeOffset GetStartOfQuarterHour(
-    DateTimeOffset dateTimeOffset
-  )
+  public DateTimeOffset GetStartOfQuarterHour(DateTimeOffset dateTimeOffset)
   {
     return timeTimeQueries.GetStartOfQuarterHour(dateTimeOffset);
   }
 
   // NOTE: virtual for mocking purposes
-  public virtual DateTimeOffset GetStartOfMonth(
-    DateTimeOffset dateTimeOffset
-  )
+  public virtual DateTimeOffset GetStartOfMonth(DateTimeOffset dateTimeOffset)
   {
     return timeTimeQueries.GetStartOfMonth(dateTimeOffset);
   }
 
-  public DateTimeOffset GetStartOfLastMonth(
-    DateTimeOffset dateTimeOffset
-  )
+  public DateTimeOffset GetStartOfLastMonth(DateTimeOffset dateTimeOffset)
   {
     return timeTimeQueries.GetStartOfLastMonth(dateTimeOffset);
   }
 
-  public DateTimeOffset GetStartOfNextMonth(
-    DateTimeOffset dateTimeOffset
-  )
+  public DateTimeOffset GetStartOfNextMonth(DateTimeOffset dateTimeOffset)
   {
     return timeTimeQueries.GetStartOfNextMonth(dateTimeOffset);
   }
 
-  public DateTimeOffset GetStartOfDay(
-    DateTimeOffset dateTimeOffset
-  )
+  public DateTimeOffset GetStartOfDay(DateTimeOffset dateTimeOffset)
   {
     return timeTimeQueries.GetStartOfDay(dateTimeOffset);
   }
 
-  public DateTimeOffset GetStartOfYear(
-    DateTimeOffset dateTimeOffset
-  )
+  public DateTimeOffset GetStartOfYear(DateTimeOffset dateTimeOffset)
   {
     return timeTimeQueries.GetStartOfYear(dateTimeOffset);
   }
 
   public IEnumerable<DateTimeOffset> GetThisYearMonthStarts(
-    DateTimeOffset dateTimeOffset)
+    DateTimeOffset dateTimeOffset
+  )
   {
     return timeTimeQueries.GetThisYearMonthStarts(dateTimeOffset);
   }
 
-  public DateTimeOffset GetStartOfMonthLastYear(
-    DateTimeOffset dateTimeOffset
-  )
+  public DateTimeOffset GetStartOfMonthLastYear(DateTimeOffset dateTimeOffset)
   {
     return timeTimeQueries.GetStartOfMonthLastYear(dateTimeOffset);
   }
@@ -138,7 +118,8 @@ public class TimeQueries(
     return timeTimeQueries.ResolutionTimeSpan(
       resolution.ToTimeEntity(),
       timestamp,
-      multiplier);
+      multiplier
+    );
   }
 
   public TimeSpan IntervalTimeSpan(
@@ -146,9 +127,7 @@ public class TimeQueries(
     DateTimeOffset timestamp
   )
   {
-    return timeTimeQueries.IntervalTimeSpan(
-      model.ToTimeEntity(),
-      timestamp);
+    return timeTimeQueries.IntervalTimeSpan(model.ToTimeEntity(), timestamp);
   }
 
   public TimeSpan HigherResolutionIntervalTimeSpan(
@@ -158,7 +137,8 @@ public class TimeQueries(
   {
     return timeTimeQueries.HigherResolutionIntervalTimeSpan(
       model.ToTimeEntity(),
-      timestamp);
+      timestamp
+    );
   }
 
   public TimeSpan AggregateThreshold(
@@ -172,7 +152,8 @@ public class TimeQueries(
       interval.ToTimeEntity(),
       timestamp,
       meterCount,
-      pageCount);
+      pageCount
+    );
   }
 
   public IntervalModel? AppropriateInterval(
@@ -187,14 +168,9 @@ public class TimeQueries(
       ?.ToModel();
   }
 
-  public TimeSpan DurationTimeSpan(
-    DurationModel model,
-    uint multiplier = 1
-  )
+  public TimeSpan DurationTimeSpan(DurationModel model, uint multiplier = 1)
   {
-    return timeTimeQueries.DurationTimeSpan(
-      model.ToTimeEntity(),
-      multiplier);
+    return timeTimeQueries.DurationTimeSpan(model.ToTimeEntity(), multiplier);
   }
 
   public TimeSpan DurationTimeSpan(
@@ -206,26 +182,24 @@ public class TimeQueries(
     return timeTimeQueries.DurationTimeSpan(
       model.ToTimeEntity(),
       timestamp,
-      multiplier);
+      multiplier
+    );
   }
 
-  public TimeSpan PeriodTimeSpan(
-    PeriodModel model
-  )
+  public TimeSpan PeriodTimeSpan(PeriodModel model)
   {
     return timeTimeQueries.DurationTimeSpan(
       model.Duration.ToTimeEntity(),
-      model.Multiplier);
+      model.Multiplier
+    );
   }
 
-  public TimeSpan PeriodTimeSpan(
-    PeriodModel model,
-    DateTimeOffset timestamp
-  )
+  public TimeSpan PeriodTimeSpan(PeriodModel model, DateTimeOffset timestamp)
   {
     return timeTimeQueries.DurationTimeSpan(
       model.Duration.ToTimeEntity(),
       timestamp,
-      model.Multiplier);
+      model.Multiplier
+    );
   }
 }

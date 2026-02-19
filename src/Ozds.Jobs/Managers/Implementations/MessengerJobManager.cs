@@ -18,104 +18,119 @@ public class MessengerJobManager(
 {
   public Task EnsureInactivityMonitorJob(
     MessengerInactivityMonitorDetails details,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Ensure(
       new MessengerJobContext(details.MessengerId, details.InactivityDuration),
-      cancellationToken);
+      cancellationToken
+    );
   }
 
   public Task EnsureInactivityMonitorJobs(
     IEnumerable<MessengerInactivityMonitorDetails> details,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Ensure(
-      details.Select(
-        details =>
-          new MessengerJobContext(
-            details.MessengerId,
-            details.InactivityDuration)),
-      cancellationToken);
+      details.Select(details => new MessengerJobContext(
+        details.MessengerId,
+        details.InactivityDuration
+      )),
+      cancellationToken
+    );
   }
 
   public Task RescheduleInactivityMonitorJob(
     MessengerInactivityMonitorDetails details,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Reschedule(
       new MessengerJobContext(details.MessengerId, details.InactivityDuration),
-      cancellationToken);
+      cancellationToken
+    );
   }
 
   public Task RescheduleInactivityMonitorJobs(
     IEnumerable<MessengerInactivityMonitorDetails> details,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Reschedule(
-      details.Select(
-        details =>
-          new MessengerJobContext(
-            details.MessengerId,
-            details.InactivityDuration)),
-      cancellationToken);
+      details.Select(details => new MessengerJobContext(
+        details.MessengerId,
+        details.InactivityDuration
+      )),
+      cancellationToken
+    );
   }
 
   public Task UnscheduleInactivityMonitorJob(
     string id,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Unschedule(
       new MessengerJobContext(id, TimeSpan.Zero),
-      cancellationToken);
+      cancellationToken
+    );
   }
 
   public Task UnscheduleInactivityMonitorJobs(
     IEnumerable<string> ids,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Unschedule(
       ids.Select(id => new MessengerJobContext(id, TimeSpan.Zero)),
-      cancellationToken);
+      cancellationToken
+    );
   }
 
   protected override IJobDetail CreateJob(MessengerJobContext context)
   {
     var now = clock.Now();
 
-    return JobBuilder.Create<MessengerInactivityMonitorJob>()
+    return JobBuilder
+      .Create<MessengerInactivityMonitorJob>()
       .UsingJobData(
         nameof(MessengerInactivityMonitorJob.Id),
-        context.MessengerId)
+        context.MessengerId
+      )
       .UsingJobData(
         nameof(MessengerInactivityMonitorJob.ScheduledAt),
-        now.ToString("o", CultureInfo.InvariantCulture))
+        now.ToString("o", CultureInfo.InvariantCulture)
+      )
       .Build();
   }
 
   protected override ITrigger CreateTrigger(
     TriggerBuilder builder,
-    MessengerJobContext context)
+    MessengerJobContext context
+  )
   {
     var now = clock.Now();
     var startAt = now.Add(context.InactivityDuration);
 
     return builder
       .StartAt(startAt)
-      .WithSimpleSchedule(
-        x => x
-          .WithMisfireHandlingInstructionNextWithExistingCount())
+      .WithSimpleSchedule(x =>
+        x.WithMisfireHandlingInstructionNextWithExistingCount()
+      )
       .Build();
   }
 
   protected override IReadOnlyCollection<TriggerKey> CreateTriggerKeys(
-    MessengerJobContext context)
+    MessengerJobContext context
+  )
   {
     return
     [
       new TriggerKey(
         context.MessengerId,
         nameof(MessengerInactivityMonitorJob)
-      )
+      ),
     ];
   }
 }

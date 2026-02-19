@@ -16,14 +16,13 @@ public class InsertClient(
   )
   {
     var now = clock.Timestamp();
-    var analysisBases = await analysisQueries
-      .ReadByLocationIdAndRepresentative(
-        locationId,
-        null,
-        now,
-        now,
-        cancellationToken
-      );
+    var analysisBases = await analysisQueries.ReadByLocationIdAndRepresentative(
+      locationId,
+      null,
+      now,
+      now,
+      cancellationToken
+    );
     return analysisBases
       .Select(x => $"{x.MeasurementLocation.Id}:{x.Meter.Id}")
       .ToList();
@@ -34,11 +33,7 @@ public class InsertClient(
     CancellationToken cancellationToken
   )
   {
-    return await mutations.Create(
-      measurements,
-      cancellationToken,
-      false
-    );
+    return await mutations.Create(measurements, cancellationToken, false);
   }
 
   public async Task<List<IMeasurement>> Insert(
@@ -46,10 +41,6 @@ public class InsertClient(
     CancellationToken cancellationToken
   )
   {
-    return await mutations.Create(
-      measurements,
-      cancellationToken,
-      false
-    );
+    return await mutations.Create(measurements, cancellationToken, false);
   }
 }

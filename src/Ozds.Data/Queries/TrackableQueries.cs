@@ -6,9 +6,8 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class TrackableQueries(
-  IDbContextFactory<DataDbContext> factory
-) : IQueries
+public class TrackableQueries(IDbContextFactory<DataDbContext> factory)
+  : IQueries
 {
   public async Task<T?> ReadById<T>(
     string id,
@@ -29,11 +28,13 @@ public class TrackableQueries(
     if (!entityType.IsAssignableTo(typeof(ITrackableIdentifiableEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(ITrackableIdentifiableEntity)}");
+        $"Type {entityType} is not assignable to {typeof(ITrackableIdentifiableEntity)}"
+      );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var queryable = context.GetQueryable(entityType);
     var item = await queryable
       .Where(context.PrimaryKeyEquals(entityType, id))
@@ -62,11 +63,13 @@ public class TrackableQueries(
     if (!entityType.IsAssignableTo(typeof(ITrackableIdentifiableEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(ITrackableIdentifiableEntity)}");
+        $"Type {entityType} is not assignable to {typeof(ITrackableIdentifiableEntity)}"
+      );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var queryable = context
       .GetQueryable(entityType)
       .Where(context.PrimaryKeyIn(entityType, ids))
@@ -76,8 +79,7 @@ public class TrackableQueries(
       ? queryable.Where(x => x.IsDeleted)
       : queryable.Where(x => !x.IsDeleted);
 
-    var items = await filtered
-      .ToListAsync(cancellationToken);
+    var items = await filtered.ToListAsync(cancellationToken);
 
     return items.OfType<object>().ToList();
   }
@@ -108,11 +110,13 @@ public class TrackableQueries(
     if (!entityType.IsAssignableTo(typeof(ITrackableIdentifiableEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(ITrackableIdentifiableEntity)}");
+        $"Type {entityType} is not assignable to {typeof(ITrackableIdentifiableEntity)}"
+      );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var queryable = context
       .GetQueryable(entityType)
       .Where(context.PrimaryKeyIn(entityType, ids))
@@ -122,23 +126,21 @@ public class TrackableQueries(
       ? queryable.Where(x => x.IsDeleted)
       : queryable.Where(x => !x.IsDeleted);
 
-    var items = await filtered
-      .ToDictionaryAsync(
-        x => x.Id,
-        x => x,
-        cancellationToken);
+    var items = await filtered.ToDictionaryAsync(
+      x => x.Id,
+      x => x,
+      cancellationToken
+    );
 
-    return ids
-      .Select(
-        id =>
+    return ids.Select(id =>
+      {
+        if (items.TryGetValue(id, out var item))
         {
-          if (items.TryGetValue(id, out var item))
-          {
-            return item;
-          }
+          return item;
+        }
 
-          return default;
-        })
+        return default;
+      })
       .Cast<object?>()
       .ToList();
   }
@@ -179,11 +181,13 @@ public class TrackableQueries(
       );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var queryable = context
-      .GetQueryable<ITrackableIdentifiableEntity>(modelType);
+    var queryable = context.GetQueryable<ITrackableIdentifiableEntity>(
+      modelType
+    );
 
     var filtered = queryable.Where(x => x.Title.Contains(title));
 
@@ -202,9 +206,7 @@ public class TrackableQueries(
       .Take(pageCount)
       .ToListAsync(cancellationToken);
 
-    return items
-      .OfType<object>()
-      .ToPaginatedList(total);
+    return items.OfType<object>().ToPaginatedList(total);
   }
 
   public async Task<PaginatedList<T>> Read<T>(
@@ -237,11 +239,13 @@ public class TrackableQueries(
     if (!entityType.IsAssignableTo(typeof(ITrackableEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(ITrackableEntity)}");
+        $"Type {entityType} is not assignable to {typeof(ITrackableEntity)}"
+      );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var queryable = context.GetQueryable<ITrackableEntity>(entityType);
 
     var filtered = deleted

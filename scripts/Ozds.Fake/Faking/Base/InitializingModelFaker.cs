@@ -24,7 +24,5 @@ public abstract class InitializingModelFaker : IModelFaker
     return faker;
   }
 
-  public virtual void Initialize(object model, Faker faker)
-  {
-  }
+  public virtual void Initialize(object model, Faker faker) { }
 }

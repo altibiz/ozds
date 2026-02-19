@@ -7,11 +7,13 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class BlackoutNetworkUserCalculationModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
-  BlackoutNetworkUserCalculationModel,
-  NetworkUserCalculationModel,
-  BlackoutNetworkUserCalculationEntity,
-  NetworkUserCalculationEntity>(serviceProvider)
+)
+  : InheritingModelDocumentEntityConverter<
+    BlackoutNetworkUserCalculationModel,
+    NetworkUserCalculationModel,
+    BlackoutNetworkUserCalculationEntity,
+    NetworkUserCalculationEntity
+  >(serviceProvider)
 {
   private readonly ModelDocumentEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelDocumentEntityConverter>();
@@ -24,7 +26,8 @@ public class BlackoutNetworkUserCalculationModelEntityConverter(
     base.InitializeEntity(model, entity);
     entity.ConcreteUsageNetworkUserCatalogue =
       modelEntityConverter.ToEntity<NetworkUserCatalogueEntity>(
-        model.ConcreteArchivedUsageNetworkUserCatalogue);
+        model.ConcreteArchivedUsageNetworkUserCatalogue
+      );
     entity.Total_EUR = model.Total_EUR;
   }
 }

@@ -6,9 +6,7 @@ namespace Ozds.Business.Activation.Implementations.Measurements;
 public class CumulativeAggregateMeasureModelActivator
   : ConcreteModelActivator<CumulativeAggregateMeasureModel>
 {
-  public override void Initialize(
-    CumulativeAggregateMeasureModel model
-  )
+  public override void Initialize(CumulativeAggregateMeasureModel model)
   {
     base.Initialize(model);
 

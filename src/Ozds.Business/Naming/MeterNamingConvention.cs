@@ -6,13 +6,15 @@ namespace Ozds.Business.Naming;
 
 public class MeterNamingConvention(IServiceProvider serviceProvider)
 {
-  private readonly ConcurrentDictionary<string, IMeterNamingConvention>
-    idCache =
-      new();
+  private readonly ConcurrentDictionary<
+    string,
+    IMeterNamingConvention
+  > idCache = new();
 
-  private readonly ConcurrentDictionary<Type, IMeterNamingConvention>
-    typeCache =
-      new();
+  private readonly ConcurrentDictionary<
+    Type,
+    IMeterNamingConvention
+  > typeCache = new();
 
   public Type MeasurementTypeForMeterId(string meterId)
   {
@@ -44,9 +46,7 @@ public class MeterNamingConvention(IServiceProvider serviceProvider)
     return GetMeterNamingConvention(meterType).IdPrefix;
   }
 
-  private IMeterNamingConvention GetMeterNamingConvention(
-    string meterId
-  )
+  private IMeterNamingConvention GetMeterNamingConvention(string meterId)
   {
     var meterIdPrefix = string.Join('-', meterId.Split('-').SkipLast(1));
 
@@ -55,31 +55,33 @@ public class MeterNamingConvention(IServiceProvider serviceProvider)
       return meterNamingConvention;
     }
 
-    meterNamingConvention = serviceProvider
+    meterNamingConvention =
+      serviceProvider
         .GetServices<IMeterNamingConvention>()
         .FirstOrDefault(service => meterIdPrefix == service.IdPrefix)
       ?? throw new InvalidOperationException(
-        $"No MeterNamingConvention found for {meterId}");
+        $"No MeterNamingConvention found for {meterId}"
+      );
 
     idCache.TryAdd(meterId, meterNamingConvention);
 
     return meterNamingConvention;
   }
 
-  private IMeterNamingConvention GetMeterNamingConvention(
-    Type meterType
-  )
+  private IMeterNamingConvention GetMeterNamingConvention(Type meterType)
   {
     if (typeCache.TryGetValue(meterType, out var meterNamingConvention))
     {
       return meterNamingConvention;
     }
 
-    meterNamingConvention = serviceProvider
+    meterNamingConvention =
+      serviceProvider
         .GetServices<IMeterNamingConvention>()
         .FirstOrDefault(service => meterType == service.MeterType)
       ?? throw new InvalidOperationException(
-        $"No MeterNamingConvention found for {meterType}");
+        $"No MeterNamingConvention found for {meterType}"
+      );
 
     typeCache.TryAdd(meterType, meterNamingConvention);
 

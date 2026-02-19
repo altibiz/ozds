@@ -22,11 +22,10 @@ public class NetworkUserModel : TrackableModel
   public required bool AutomaticallyApproveInvoices { get; set; } = false;
 
   public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
+    ValidationContext validationContext
+  )
   {
-    if (
-      validationContext.MemberName is null or nameof(LegalPerson)
-    )
+    if (validationContext.MemberName is null or nameof(LegalPerson))
     {
       foreach (var result in LegalPerson.Validate(validationContext))
       {

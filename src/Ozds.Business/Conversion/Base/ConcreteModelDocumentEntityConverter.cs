@@ -15,9 +15,7 @@ public abstract class ConcreteModelDocumentEntityConverter<TModel, TEntity>
     get { return typeof(TModel); }
   }
 
-  public virtual void InitializeEntity(TModel model, TEntity entity)
-  {
-  }
+  public virtual void InitializeEntity(TModel model, TEntity entity) { }
 
   public virtual TEntity ToEntity(TModel model)
   {

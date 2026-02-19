@@ -31,10 +31,9 @@ public class RegisterEntityProfiler : Profiler<RegisterEntity>
     CacheConfigurationBuilder builder
   )
   {
-    return builder
-      .WithIndirectReverseDependencyEvictionPolicy(
-        x => x is RegisterEntity entity ? entity.ScopeId : null,
-        typeof(IScopeEntity)
-      );
+    return builder.WithIndirectReverseDependencyEvictionPolicy(
+      x => x is RegisterEntity entity ? entity.ScopeId : null,
+      typeof(IScopeEntity)
+    );
   }
 }

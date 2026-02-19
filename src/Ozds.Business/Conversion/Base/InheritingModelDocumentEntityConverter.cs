@@ -6,7 +6,8 @@ public abstract class InheritingModelDocumentEntityConverter<
   TModel,
   TSuperModel,
   TEntity,
-  TSuperEntity>(IServiceProvider serviceProvider)
+  TSuperEntity
+>(IServiceProvider serviceProvider)
   : ConcreteModelDocumentEntityConverter<TModel, TEntity>
   where TModel : notnull, TSuperModel
   where TEntity : notnull, TSuperEntity
@@ -19,11 +20,12 @@ public abstract class InheritingModelDocumentEntityConverter<
   {
     _baseEntityConverter ??=
       serviceProvider
-          .GetServices<IModelDocumentEntityConverter>()
-          .FirstOrDefault(x => x.EntityType == typeof(TSuperEntity))
+        .GetServices<IModelDocumentEntityConverter>()
+        .FirstOrDefault(x => x.EntityType == typeof(TSuperEntity))
         as InitializingModelDocumentEntityConverter
       ?? throw new InvalidOperationException(
-        $"No model entity converter found for type {typeof(TSuperEntity)}");
+        $"No model entity converter found for type {typeof(TSuperEntity)}"
+      );
 
     base.InitializeEntity(model, entity);
     _baseEntityConverter.InitializeEntity(model, entity);

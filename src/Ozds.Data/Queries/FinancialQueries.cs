@@ -7,36 +7,40 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class FinancialQueries(
-  IDbContextFactory<DataDbContext> factory
-) : IQueries
+public class FinancialQueries(IDbContextFactory<DataDbContext> factory)
+  : IQueries
 {
-  public async Task<PaginatedList<IFinancialEntity>>
-    ReadByMeasurementLocationIds(
-      IEnumerable<string> measurementLocationIds,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      int pageCount = QueryConstants.DefaultFinancialPageCount
-    )
+  public async Task<
+    PaginatedList<IFinancialEntity>
+  > ReadByMeasurementLocationIds(
+    IEnumerable<string> measurementLocationIds,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultFinancialPageCount
+  )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var filtered = context.NetworkUserCalculations
-      .Where(
+    var filtered = context
+      .NetworkUserCalculations.Where(
         context.ForeignKeyIn<NetworkUserCalculationEntity>(
           nameof(NetworkUserCalculationEntity.NetworkUserMeasurementLocation),
-          measurementLocationIds))
-      .Where(
-        calculation =>
-          (calculation.FromDate >= fromDate && calculation.FromDate < toDate)
-          || (calculation.ToDate >= fromDate && calculation.ToDate < toDate))
+          measurementLocationIds
+        )
+      )
+      .Where(calculation =>
+        (calculation.FromDate >= fromDate && calculation.FromDate < toDate)
+        || (calculation.ToDate >= fromDate && calculation.ToDate < toDate)
+      )
       .Include(calculation => calculation.NetworkUserInvoice);
 
-    var ordered = filtered
-      .OrderByDescending(calculation => calculation.IssuedOn);
+    var ordered = filtered.OrderByDescending(calculation =>
+      calculation.IssuedOn
+    );
 
     var count = await filtered.CountAsync(cancellationToken);
 
@@ -51,37 +55,40 @@ public class FinancialQueries(
           items
             .Select(calculation => calculation.NetworkUserInvoice)
             .OfType<IFinancialEntity>()
-            .DistinctBy(invoice => invoice.Id))
+            .DistinctBy(invoice => invoice.Id)
+        )
         .ToList(),
       count
     );
   }
 
-  public async Task<PaginatedList<IFinancialEntity>>
-    ReadByMeterIds(
-      IEnumerable<string> meterIds,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      int pageCount = QueryConstants.DefaultFinancialPageCount
-    )
+  public async Task<PaginatedList<IFinancialEntity>> ReadByMeterIds(
+    IEnumerable<string> meterIds,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageCount = QueryConstants.DefaultFinancialPageCount
+  )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var filtered = context.NetworkUserCalculations
-      .Where(
+    var filtered = context
+      .NetworkUserCalculations.Where(
         context.ForeignKeyIn<NetworkUserCalculationEntity>(
           nameof(NetworkUserCalculationEntity.MeterId),
-          meterIds))
+          meterIds
+        )
+      )
       .Where(calculation => calculation.FromDate >= fromDate)
       .Where(calculation => calculation.FromDate < toDate)
       .Include(calculation => calculation.NetworkUserInvoice);
 
-    var ordered = filtered
-      .OrderByDescending(
-        calculation => calculation.NetworkUserInvoice.IssuedOn);
+    var ordered = filtered.OrderByDescending(calculation =>
+      calculation.NetworkUserInvoice.IssuedOn
+    );
 
     var count = await filtered.CountAsync(cancellationToken);
 
@@ -96,7 +103,8 @@ public class FinancialQueries(
           items
             .Select(calculation => calculation.NetworkUserInvoice)
             .OfType<IFinancialEntity>()
-            .DistinctBy(invoice => invoice.Id))
+            .DistinctBy(invoice => invoice.Id)
+        )
         .ToList(),
       count
     );

@@ -11,18 +11,11 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- new specific test for API returning latest measurements by meter
 - added new specific test for API returning latest measurements by meter
 
 ### Changed
 
-- fix upserter logic now matches one used in DB
-- fix optimized N+1 problem in API test -
-  GetsQuarterHourlyAggregatesByLocationLast
-- added dapper queries for getting chunk interval information (WIP)
-- fix MeasurementDeletionJobReactorTest now uses chunk interval information to
-  determine which measurement chunks will be removed from db
-- fix converters should now return first elements and not cause discrepancies in
-  data
 - updated HtmlSanitizer to version 9.0.892
 - fix ReadLastByMeasurementLocationIds now returns latest measurement info for
   all meters that have measurements
@@ -31,8 +24,25 @@ and adheres to [Semantic Versioning](https://semver.org/).
   and params of chart control persist after reloading the page)
 - fix ReadLastByMeasurementLocationIds now returns latest measurement info for
   all meters that have measurements
+- updated .NET version from 8 to 10
+- updated Azure.Identity package
+- replaced deprecated implementation on ServiceCryptography
+- update System.Linq.Async package to version 7.0.0
+- fixed problem with removed async functions from package System.Linq.Async on
+  RegexService.cs and MeasurementMutations.cs
+- updated .NET version from 8 to 10
+- updated Azure.Identity package
+- replaced deprecated implementation on ServiceCryptography
+- update System.Linq.Async package to version 7.0.0
+- fixed problem with removed async functions from package System.Linq.Async on
+  RegexService.cs and MeasurementMutations.cs
 - fix more decimal places on Column definitions for Regulatory catalogue
 - fix more decimal places on Column definitions for Network User catalogue
+- use csharpier over jetbrains formatter
+
+### Removed
+
+- deprecated/unused packages and dependencies
 
 ## [1.7.1] - 2025-12-14
 

@@ -22,11 +22,7 @@ public class AppDocumentController(
     CancellationToken cancellationToken
   )
   {
-    var invoice =
-      await queries.ReadCalculatedById(
-        id,
-        cancellationToken
-      );
+    var invoice = await queries.ReadCalculatedById(id, cancellationToken);
     if (invoice is null)
     {
       return NotFound();
@@ -43,11 +39,16 @@ public class AppDocumentController(
 
     var fileName =
       localizationQueries.Translate(
-        localizationQueries.CroatianCulture, "network-user-")
+        localizationQueries.CroatianCulture,
+        "network-user-"
+      )
       + invoice.Invoice.NetworkUserId
       + localizationQueries.Translate(
-        localizationQueries.CroatianCulture, "-invoice-for-")
-      + invoice.Invoice.ToDate.ToString("MM-yyyy") + ".pdf";
+        localizationQueries.CroatianCulture,
+        "-invoice-for-"
+      )
+      + invoice.Invoice.ToDate.ToString("MM-yyyy")
+      + ".pdf";
 
     return File(pdf, "application/pdf", fileName);
   }
@@ -81,11 +82,16 @@ public class AppDocumentController(
 
     var fileName =
       localizationQueries.Translate(
-        localizationQueries.CroatianCulture, "network-user-")
+        localizationQueries.CroatianCulture,
+        "network-user-"
+      )
       + invoice.Invoice.NetworkUserId
       + localizationQueries.Translate(
-        localizationQueries.CroatianCulture, "-invoice-preview-for-")
-      + invoice.Invoice.ToDate.ToString("MM-yyyy") + ".pdf";
+        localizationQueries.CroatianCulture,
+        "-invoice-preview-for-"
+      )
+      + invoice.Invoice.ToDate.ToString("MM-yyyy")
+      + ".pdf";
 
     return File(pdf, "application/pdf", fileName);
   }

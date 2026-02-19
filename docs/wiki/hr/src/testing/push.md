@@ -22,12 +22,10 @@ Ovdje je popis kvarova koji se mogu pojaviti u procesu push podijeljenih po
 područjima:
 
 - **Raspberry PI -> Server**:
-
   - Raspberry PI ne šalje podatke
   - Raspberry PI šalje netočne podatke
 
 - **Server**:
-
   - Server nije povezan na mrežu
   - Server baca iznimku (softverski bug)
 

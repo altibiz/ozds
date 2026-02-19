@@ -4,8 +4,8 @@ using Ozds.Client.Extensions;
 
 namespace Ozds.Client.Components.Models.Base;
 
-public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
-  OzdsModelComponentBase<TModel>
+public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel>
+  : OzdsModelComponentBase<TModel>
 {
   private Expression<Func<TPrefix, TModel?>>? exp;
 
@@ -35,15 +35,10 @@ public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
       nextReplaced
     );
 
-    return Expression.Lambda<Func<TPrefix, T?>>(
-      condition,
-      inner.Parameters[0]
-    );
+    return Expression.Lambda<Func<TPrefix, T?>>(condition, inner.Parameters[0]);
   }
 
-  protected MemberExpression Label<T>(
-    Expression<Func<TModel, T?>> next
-  )
+  protected MemberExpression Label<T>(Expression<Func<TModel, T?>> next)
   {
     var inner = Exp;
 
@@ -73,11 +68,10 @@ public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
 
     var tryCatch = Expression.TryCatch(
       @try,
-      Expression.Catch(typeof(Exception), @catch));
+      Expression.Catch(typeof(Exception), @catch)
+    );
 
-    return Expression.Lambda<Func<TPrefix, TModel?>>(
-      tryCatch,
-      parameter);
+    return Expression.Lambda<Func<TPrefix, TModel?>>(tryCatch, parameter);
   }
 
   protected override Type CreateBaseComponentType()
@@ -86,7 +80,8 @@ public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
     if (baseModelType is null)
     {
       throw new InvalidOperationException(
-        $"No base type found for {ModelType.FullName}");
+        $"No base type found for {ModelType.FullName}"
+      );
     }
 
     return Provider.GetPrefixedComponentType(
@@ -102,7 +97,8 @@ public abstract class OzdsPrefixedModelComponentBase<TPrefix, TModel> :
     if (!baseModelType.IsAssignableFrom(typeof(TModel)))
     {
       throw new InvalidOperationException(
-        $"{baseModelType} is not assignable to {typeof(TModel)}");
+        $"{baseModelType} is not assignable to {typeof(TModel)}"
+      );
     }
 
     return Provider.GetPrefixedComponentType(

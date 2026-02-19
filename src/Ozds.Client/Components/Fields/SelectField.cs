@@ -24,7 +24,7 @@ public partial class SelectField<T>
   public EventCallback<IEnumerable<T>> SelectedValuesChanged { get; set; }
 
   [Parameter]
-  public bool MultiSelection { get; set; } = false;
+  public bool MultiSelection { get; set; }
 
   [Parameter]
   public Expression<Func<T>> For { get; set; } = default!;

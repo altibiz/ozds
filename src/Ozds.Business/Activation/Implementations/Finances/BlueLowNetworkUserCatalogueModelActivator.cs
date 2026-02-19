@@ -5,9 +5,12 @@ using Ozds.Business.Models.Base;
 namespace Ozds.Business.Activation.Implementations.Finances;
 
 public class BlueLowNetworkUserCatalogueModelActivator(
-  IServiceProvider serviceProvider) : InheritingModelActivator<
-  BlueLowNetworkUserCatalogueModel,
-  NetworkUserCatalogueModel>(serviceProvider)
+  IServiceProvider serviceProvider
+)
+  : InheritingModelActivator<
+    BlueLowNetworkUserCatalogueModel,
+    NetworkUserCatalogueModel
+  >(serviceProvider)
 {
   public override void Initialize(BlueLowNetworkUserCatalogueModel model)
   {

@@ -42,25 +42,25 @@ public partial class LocationStateProvider : OzdsComponentBase
 
     var locationSet = locationId is not null;
 
-    if (!locationSet
+    if (
+      !locationSet
       && RepresentativeState.Representative.Role
-        is RoleModel.NetworkUserRepresentative)
+        is RoleModel.NetworkUserRepresentative
+    )
     {
       await SetLocationToLocalStorage(null);
       locationSet = true;
     }
 
-    var locationQueries = ScopedServices
-      .GetRequiredService<LocationQueries>();
+    var locationQueries = ScopedServices.GetRequiredService<LocationQueries>();
 
     if (!locationSet)
     {
-      var locations = await locationQueries
-        .ReadAllIndirectByRepresentativeId(
-          RepresentativeState.Representative.Id,
-          RepresentativeState.Representative.Role,
-          CancellationToken
-        );
+      var locations = await locationQueries.ReadAllIndirectByRepresentativeId(
+        RepresentativeState.Representative.Id,
+        RepresentativeState.Representative.Role,
+        CancellationToken
+      );
 
       _representativeLocations = locations;
       return;
@@ -77,19 +77,13 @@ public partial class LocationStateProvider : OzdsComponentBase
       );
     }
 
-    _state = new LocationState(
-      location,
-      UnsetLocation
-    );
+    _state = new LocationState(location, UnsetLocation);
   }
 
   private async Task OnLocationSelected(LocationModel location)
   {
     await SetLocationToLocalStorage(location.Id);
-    _state = new LocationState(
-      location,
-      UnsetLocation
-    );
+    _state = new LocationState(location, UnsetLocation);
   }
 
   private async Task UnsetLocation()
@@ -98,8 +92,8 @@ public partial class LocationStateProvider : OzdsComponentBase
 
     if (_representativeLocations.Count == 0)
     {
-      var locationQueries = ScopedServices
-        .GetRequiredService<LocationQueries>();
+      var locationQueries =
+        ScopedServices.GetRequiredService<LocationQueries>();
       var locations = await locationQueries.ReadAllIndirectByRepresentativeId(
         RepresentativeState.Representative.Id,
         RepresentativeState.Representative.Role,

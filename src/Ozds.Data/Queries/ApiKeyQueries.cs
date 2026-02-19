@@ -21,14 +21,16 @@ public class ApiKeyQueries(
     string? title = null
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     // NOTE: filtering only by table name because potential TPH
-    var filtered = context.ApiKeys
-      .Where(
-        x => x.PrincipalEntityTable == entityReflector
-          .ResolveEntityTable(typeof(RepresentativeEntity)))
+    var filtered = context
+      .ApiKeys.Where(x =>
+        x.PrincipalEntityTable
+        == entityReflector.ResolveEntityTable(typeof(RepresentativeEntity))
+      )
       .Where(x => x.PrincipalEntityId == representativeId);
 
     filtered = deleted
@@ -63,14 +65,16 @@ public class ApiKeyQueries(
     string? title = null
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     // NOTE: filtering only by table name because potential TPH
-    var filtered = context.ApiKeys
-      .Where(
-        x => x.PrincipalEntityTable == entityReflector
-          .ResolveEntityTable(typeof(MessengerEntity)))
+    var filtered = context
+      .ApiKeys.Where(x =>
+        x.PrincipalEntityTable
+        == entityReflector.ResolveEntityTable(typeof(MessengerEntity))
+      )
       .Where(x => x.PrincipalEntityId == messengerId);
 
     filtered = deleted

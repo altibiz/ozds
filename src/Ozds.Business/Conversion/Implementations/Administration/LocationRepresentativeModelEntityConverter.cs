@@ -8,15 +8,18 @@ namespace Ozds.Business.Conversion.Implementations.Administration;
 
 public class LocationRepresentativeEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  LocationRepresentativeModel,
-  AuditableJoinModel,
-  LocationRepresentativeEntity,
-  AuditableJoinEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    LocationRepresentativeModel,
+    AuditableJoinModel,
+    LocationRepresentativeEntity,
+    AuditableJoinEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     LocationRepresentativeModel model,
-    LocationRepresentativeEntity entity)
+    LocationRepresentativeEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.LocationId = model.LocationId;
@@ -25,7 +28,8 @@ public class LocationRepresentativeEntityConverter(
 
   public override void InitializeModel(
     LocationRepresentativeEntity entity,
-    LocationRepresentativeModel model)
+    LocationRepresentativeModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.LocationId = entity.LocationId;

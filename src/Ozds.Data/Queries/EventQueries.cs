@@ -48,22 +48,22 @@ public class EventQueries(
     if (!entityType.IsAssignableTo(typeof(IEventEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(IEventEntity)}");
+        $"Type {entityType} is not assignable to {typeof(IEventEntity)}"
+      );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var filtered = context.Events
-      .Where(x => x.Level >= minLevel);
+    var filtered = context.Events.Where(x => x.Level >= minLevel);
 
     if (!string.IsNullOrWhiteSpace(title))
     {
       filtered = filtered.Where(x => x.Title.Contains(title));
     }
 
-    var ordered = filtered
-      .OrderBy(context.PrimaryKeyOf(entityType));
+    var ordered = filtered.OrderBy(context.PrimaryKeyOf(entityType));
 
     var count = await filtered.CountAsync(cancellationToken);
 
@@ -87,30 +87,32 @@ public class EventQueries(
     if (!entityType.IsAssignableTo(typeof(IAuditEventEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(IAuditEventEntity)}");
+        $"Type {entityType} is not assignable to {typeof(IAuditEventEntity)}"
+      );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     // NOTE: filtering only by table name because potential TPH
     var auditableEntityId = auditableEntity.AuditingId;
-    var auditableEntityTable = entityReflector
-      .ResolveEntityTable(auditableEntity.GetType());
-    var filtered = context.Events
-      .OfType<AuditEventEntity>()
-      .Where(
-        x =>
-          x.AuditableEntityId == auditableEntityId
-          && x.AuditableEntityTable == auditableEntityTable);
+    var auditableEntityTable = entityReflector.ResolveEntityTable(
+      auditableEntity.GetType()
+    );
+    var filtered = context
+      .Events.OfType<AuditEventEntity>()
+      .Where(x =>
+        x.AuditableEntityId == auditableEntityId
+        && x.AuditableEntityTable == auditableEntityTable
+      );
 
     if (!string.IsNullOrWhiteSpace(title))
     {
       filtered = filtered.Where(x => x.Title.Contains(title));
     }
 
-    var ordered = filtered
-      .OrderByDescending(x => x.Timestamp);
+    var ordered = filtered.OrderByDescending(x => x.Timestamp);
 
     var count = await filtered.CountAsync(cancellationToken);
     var items = await ordered
@@ -126,11 +128,12 @@ public class EventQueries(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var messengerEvent = await context.Events
-      .OfType<MessengerEventEntity>()
+    var messengerEvent = await context
+      .Events.OfType<MessengerEventEntity>()
       .Where(
         context.ForeignKeyEquals<MessengerEventEntity>(
           nameof(MessengerEventEntity.Messenger),

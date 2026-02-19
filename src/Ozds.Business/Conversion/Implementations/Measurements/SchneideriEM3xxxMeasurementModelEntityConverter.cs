@@ -9,15 +9,18 @@ namespace Ozds.Business.Conversion.Implementations.Measurements;
 
 public class SchneideriEM3xxxMeasurementModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  SchneideriEM3xxxMeasurementModel,
-  MeasurementModel,
-  SchneideriEM3xxxMeasurementEntity,
-  MeasurementEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    SchneideriEM3xxxMeasurementModel,
+    MeasurementModel,
+    SchneideriEM3xxxMeasurementEntity,
+    MeasurementEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     SchneideriEM3xxxMeasurementModel model,
-    SchneideriEM3xxxMeasurementEntity entity)
+    SchneideriEM3xxxMeasurementEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.MeterId = model.MeterId;
@@ -36,12 +39,9 @@ public class SchneideriEM3xxxMeasurementModelEntityConverter(
       model.ReactivePowerTotalNetT0_VAR.ToFloat();
     entity.ApparentPowerTotalNetT0_VA =
       model.ApparentPowerTotalNetT0_VA.ToFloat();
-    entity.ActiveEnergyL1ImportT0_Wh =
-      model.ActiveEnergyL1ImportT0_Wh.ToLong();
-    entity.ActiveEnergyL2ImportT0_Wh =
-      model.ActiveEnergyL2ImportT0_Wh.ToLong();
-    entity.ActiveEnergyL3ImportT0_Wh =
-      model.ActiveEnergyL3ImportT0_Wh.ToLong();
+    entity.ActiveEnergyL1ImportT0_Wh = model.ActiveEnergyL1ImportT0_Wh.ToLong();
+    entity.ActiveEnergyL2ImportT0_Wh = model.ActiveEnergyL2ImportT0_Wh.ToLong();
+    entity.ActiveEnergyL3ImportT0_Wh = model.ActiveEnergyL3ImportT0_Wh.ToLong();
     entity.ActiveEnergyTotalImportT0_Wh =
       model.ActiveEnergyTotalImportT0_Wh.ToLong();
     entity.ActiveEnergyTotalExportT0_Wh =
@@ -58,7 +58,8 @@ public class SchneideriEM3xxxMeasurementModelEntityConverter(
 
   public override void InitializeModel(
     SchneideriEM3xxxMeasurementEntity entity,
-    SchneideriEM3xxxMeasurementModel model)
+    SchneideriEM3xxxMeasurementModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.MeterId = entity.MeterId;

@@ -5,8 +5,7 @@ namespace Ozds.Fake.Sagas;
 
 public class NetworkUserInvoiceApprovalActivity(
   ILogger<NetworkUserInvoiceApprovalActivity> logger
-)
-  : IStateMachineActivity<NetworkUserInvoiceStateEntity>
+) : IStateMachineActivity<NetworkUserInvoiceStateEntity>
 {
   private readonly ILogger _logger = logger;
 
@@ -41,8 +40,11 @@ public class NetworkUserInvoiceApprovalActivity(
   }
 
   public Task Faulted<T, TException>(
-    BehaviorExceptionContext<NetworkUserInvoiceStateEntity, T, TException>
-      context,
+    BehaviorExceptionContext<
+      NetworkUserInvoiceStateEntity,
+      T,
+      TException
+    > context,
     IBehavior<NetworkUserInvoiceStateEntity, T> next
   )
     where T : class
@@ -62,7 +64,8 @@ public class NetworkUserInvoiceApprovalActivity(
   }
 
   private async Task ApproveNetworkUserInvoice(
-    NetworkUserInvoiceStateEntity saga)
+    NetworkUserInvoiceStateEntity saga
+  )
   {
     if (saga.Approved)
     {

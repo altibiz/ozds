@@ -6,9 +6,11 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 
 public class RedLowNetworkUserCatalogueModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  RedLowNetworkUserCatalogueModel,
-  NetworkUserCatalogueModel>(serviceProvider)
+)
+  : InheritingModelActivator<
+    RedLowNetworkUserCatalogueModel,
+    NetworkUserCatalogueModel
+  >(serviceProvider)
 {
   public override void Initialize(RedLowNetworkUserCatalogueModel model)
   {

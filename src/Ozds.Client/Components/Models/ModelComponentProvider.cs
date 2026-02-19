@@ -10,22 +10,17 @@ public class ModelComponentProvider(
   TemplateBinderFactory TemplateBinderFactory
 )
 {
-  private readonly Dictionary<
-    CacheKey,
-    IModelComponentProvider> cache = new();
+  private readonly Dictionary<CacheKey, IModelComponentProvider> cache = new();
 
-  private readonly Dictionary<
-    Type,
-    IModelPageComponentProvider> pageCache = new();
+  private readonly Dictionary<Type, IModelPageComponentProvider> pageCache =
+    new();
 
   private readonly Dictionary<
     PrefixedCacheKey,
-    IModelComponentProvider> prefixedCache = new();
+    IModelComponentProvider
+  > prefixedCache = new();
 
-  public Type GetComponentType(
-    Type modelType,
-    ModelComponentKind componentKind
-  )
+  public Type GetComponentType(Type modelType, ModelComponentKind componentKind)
   {
     var provider = GetComponentProvider(modelType, componentKind);
 
@@ -60,11 +55,7 @@ public class ModelComponentProvider(
   {
     var provider = GetPageProvider(model.GetType());
 
-    return provider.CreateLink(
-      NavigationManager,
-      TemplateBinderFactory,
-      model
-    );
+    return provider.CreateLink(NavigationManager, TemplateBinderFactory, model);
   }
 
   private IModelComponentProvider GetComponentProvider(
@@ -78,25 +69,26 @@ public class ModelComponentProvider(
       return provider;
     }
 
-    provider = ServiceProvider
+    provider =
+      ServiceProvider
         .GetServices<IModelComponentProvider>()
-        .Where(
-          provider =>
-            provider.CanRender(modelType)
-            && provider.ComponentKind == componentKind)
+        .Where(provider =>
+          provider.CanRender(modelType)
+          && provider.ComponentKind == componentKind
+        )
         .DefaultIfEmpty(null)
         .Aggregate(
           (acc, next) =>
-            acc is null
-              ? null
-              : next!.ModelType.IsAssignableTo(acc.ModelType)
-                ? next
-                : acc)
+            acc is null ? null
+            : next!.ModelType.IsAssignableTo(acc.ModelType) ? next
+            : acc
+        )
       ?? throw new InvalidOperationException(
         "No model component provider found for model type "
-        + modelType.FullName
-        + " and kind "
-        + componentKind);
+          + modelType.FullName
+          + " and kind "
+          + componentKind
+      );
 
     cache.TryAdd(key, provider);
 
@@ -107,7 +99,8 @@ public class ModelComponentProvider(
     Type prefixType,
     Type modelType,
     Type constraintType,
-    ModelComponentKind componentKind)
+    ModelComponentKind componentKind
+  )
   {
     var key = new PrefixedCacheKey(
       prefixType,
@@ -121,81 +114,79 @@ public class ModelComponentProvider(
       return provider;
     }
 
-    provider = typeof(ModelComponentProvider).Assembly
-        .GetTypes()
-        .Where(
-          type =>
+    provider =
+      typeof(ModelComponentProvider)
+        .Assembly.GetTypes()
+        .Where(type =>
+        {
+          if (!type.IsAssignableTo(typeof(IModelComponentProvider)))
           {
-            if (!type.IsAssignableTo(typeof(IModelComponentProvider)))
-            {
-              return false;
-            }
+            return false;
+          }
 
-            if (!type.IsGenericType || type.IsAbstract)
-            {
-              return false;
-            }
-
-            var genericTypeArguments = type.GetGenericArguments();
-            if (genericTypeArguments.Length != 2)
-            {
-              return false;
-            }
-
-            var genericArgumentConstraints = genericTypeArguments[1]
-              .GetGenericParameterConstraints();
-            if (genericArgumentConstraints.Length == 0)
-            {
-              return true;
-            }
-
-            if (genericArgumentConstraints.Length != 1)
-            {
-              return false;
-            }
-
-            return constraintType.IsAssignableTo(
-              genericArgumentConstraints.First());
-          })
-        .Select(
-          generic =>
+          if (!type.IsGenericType || type.IsAbstract)
           {
-            var constraintType = generic
-                .GetGenericArguments()[1]
-                .GetGenericParameterConstraints()
-                .FirstOrDefault()
-              ?? typeof(object);
-            var service = (ServiceProvider
-                .GetRequiredService(
-                  generic.MakeGenericType(prefixType, modelType))
-              as IModelComponentProvider)!;
+            return false;
+          }
 
-            return new
-            {
-              Service = service,
-              ConstraintType = constraintType
-            };
-          })
-        .Where(
-          x =>
-            x.Service.CanRender(modelType) &&
-            x.Service.ComponentKind == componentKind)
+          var genericTypeArguments = type.GetGenericArguments();
+          if (genericTypeArguments.Length != 2)
+          {
+            return false;
+          }
+
+          var genericArgumentConstraints = genericTypeArguments[1]
+            .GetGenericParameterConstraints();
+          if (genericArgumentConstraints.Length == 0)
+          {
+            return true;
+          }
+
+          if (genericArgumentConstraints.Length != 1)
+          {
+            return false;
+          }
+
+          return constraintType.IsAssignableTo(
+            genericArgumentConstraints.First()
+          );
+        })
+        .Select(generic =>
+        {
+          var constraintType =
+            generic
+              .GetGenericArguments()[1]
+              .GetGenericParameterConstraints()
+              .FirstOrDefault()
+            ?? typeof(object);
+          var service = (
+            ServiceProvider.GetRequiredService(
+              generic.MakeGenericType(prefixType, modelType)
+            ) as IModelComponentProvider
+          )!;
+
+          return new { Service = service, ConstraintType = constraintType };
+        })
+        .Where(x =>
+          x.Service.CanRender(modelType)
+          && x.Service.ComponentKind == componentKind
+        )
         .DefaultIfEmpty(null)
         .Aggregate(
           (acc, next) =>
-            acc is null
-              ? null
-              : next!.ConstraintType.IsAssignableTo(acc.ConstraintType)
-                ? next
-                : acc)
+            acc is null ? null
+            : next!.ConstraintType.IsAssignableTo(acc.ConstraintType) ? next
+            : acc
+        )
         ?.Service
       ?? throw new InvalidOperationException(
         "No model component provider found for model type "
-        + modelType.FullName
-        + " with constraint type "
-        + constraintType.FullName
-        + " and kind "
-        + componentKind);
+          + modelType.FullName
+          + " with constraint type "
+          + constraintType.FullName
+          + " and kind "
+          + componentKind
+      );
 
     prefixedCache.TryAdd(key, provider);
 
@@ -209,20 +200,20 @@ public class ModelComponentProvider(
       return provider;
     }
 
-    provider = ServiceProvider
+    provider =
+      ServiceProvider
         .GetServices<IModelPageComponentProvider>()
         .Where(provider => provider.CanRender(modelType))
         .DefaultIfEmpty(null)
         .Aggregate(
           (acc, next) =>
-            acc is null
-              ? null
-              : next!.ModelType.IsAssignableTo(acc.ModelType)
-                ? acc
-                : next)
+            acc is null ? null
+            : next!.ModelType.IsAssignableTo(acc.ModelType) ? acc
+            : next
+        )
       ?? throw new InvalidOperationException(
-        "No model component provider found for model type "
-        + modelType.FullName);
+        "No model component provider found for model type " + modelType.FullName
+      );
 
     pageCache.TryAdd(modelType, provider);
 

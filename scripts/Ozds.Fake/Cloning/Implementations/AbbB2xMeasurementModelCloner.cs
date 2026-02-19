@@ -46,7 +46,7 @@ public class AbbB2xMeasurementModelCloner
       ReactiveEnergyTotalExportT0_VARh =
         measurement.ReactiveEnergyTotalExportT0_VARh,
       ActiveEnergyTotalImportT1_Wh = measurement.ActiveEnergyTotalImportT1_Wh,
-      ActiveEnergyTotalImportT2_Wh = measurement.ActiveEnergyTotalImportT2_Wh
+      ActiveEnergyTotalImportT2_Wh = measurement.ActiveEnergyTotalImportT2_Wh,
     };
   }
 }

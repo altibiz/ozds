@@ -12,12 +12,12 @@ public abstract class InitializingPushRequestMeasurementConverter
   public abstract Type MeasurementType { get; }
 
   public abstract bool CanConvertToMeasurement(
-    IMeterPushRequestEntity pushRequest);
+    IMeterPushRequestEntity pushRequest
+  );
 
   public abstract bool CanConvertToPushRequest(IMeasurement measurement);
 
-  public IMeterPushRequestEntity ToPushRequest(
-    IMeasurement measurement)
+  public IMeterPushRequestEntity ToPushRequest(IMeasurement measurement)
   {
     var pushRequest = BoxPushRequest();
     InitializePushRequest(measurement, pushRequest);
@@ -26,7 +26,8 @@ public abstract class InitializingPushRequestMeasurementConverter
 
   public IMeasurement ToMeasurement(
     IMeterPushRequestEntity pushRequest,
-    string measurementLocationId)
+    string measurementLocationId
+  )
   {
     var measurement = BoxMeasurement();
     InitializeMeasurement(pushRequest, measurementLocationId, measurement);
@@ -39,10 +40,12 @@ public abstract class InitializingPushRequestMeasurementConverter
 
   public abstract void InitializePushRequest(
     IMeasurement measurement,
-    IMeterPushRequestEntity pushRequest);
+    IMeterPushRequestEntity pushRequest
+  );
 
   public abstract void InitializeMeasurement(
     IMeterPushRequestEntity pushRequest,
     string measurementLocationId,
-    IMeasurement measurement);
+    IMeasurement measurement
+  );
 }

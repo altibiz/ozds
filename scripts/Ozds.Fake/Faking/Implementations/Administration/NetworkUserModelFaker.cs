@@ -8,11 +8,8 @@ using Ozds.Fake.Faking.Base;
 
 namespace Ozds.Fake.Implementations.Administration;
 
-public class NetworkUserModelFaker(
-  IServiceProvider serviceProvider
-) : InheritingModelFaker<NetworkUserModel, TrackableModel>(
-  serviceProvider
-)
+public class NetworkUserModelFaker(IServiceProvider serviceProvider)
+  : InheritingModelFaker<NetworkUserModel, TrackableModel>(serviceProvider)
 {
   private readonly HtmlSanitizer htmlSanitizer =
     serviceProvider.GetRequiredService<HtmlSanitizer>();
@@ -24,10 +21,9 @@ public class NetworkUserModelFaker(
   {
     base.Initialize(model, faker);
 
-    model.LegalPerson = modelFaker
-      .Fake<LegalPersonModel>();
+    model.LegalPerson = modelFaker.Fake<LegalPersonModel>();
     model.InvoiceRemark = htmlSanitizer.Sanitize(
-      faker.Random.Words(
-        faker.Random.Number(1, 10)));
+      faker.Random.Words(faker.Random.Number(1, 10))
+    );
   }
 }

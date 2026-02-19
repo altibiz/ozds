@@ -4,12 +4,12 @@ using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance.Complex;
 
-public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
-  CalculationItemCalculator<
-    UsageActivePowerTotalImportT1PeakCalculationItemModel>
+public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator
+  : CalculationItemCalculator<UsageActivePowerTotalImportT1PeakCalculationItemModel>
 {
-  protected override UsageActivePowerTotalImportT1PeakCalculationItemModel
-    CalculateConcrete(CalculationItemBasisModel calculationBasis)
+  protected override UsageActivePowerTotalImportT1PeakCalculationItemModel CalculateConcrete(
+    CalculationItemBasisModel calculationBasis
+  )
   {
     if (calculationBasis.Aggregates.Count < 1)
     {
@@ -18,7 +18,7 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
         Peak_kW = 0,
         Amount_kW = 0,
         Price_EUR = calculationBasis.Price_EUR,
-        Total_EUR = 0
+        Total_EUR = 0,
       };
     }
 
@@ -27,12 +27,12 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
     var peak = aggregates
       .Where(x => x.Timestamp >= calculationBasis.FromDate)
       .Where(x => x.Timestamp < calculationBasis.ToDate)
-      .Select(
-        x => x.DerivedActivePower_W
-          .TariffBinary().T1
-          .DuplexImport()
+      .Select(x =>
+        x.DerivedActivePower_W.TariffBinary()
+          .T1.DuplexImport()
           .AggregateMax()
-          .PhaseSum())
+          .PhaseSum()
+      )
       .DefaultIfEmpty()
       .Max();
 
@@ -49,7 +49,7 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator :
       Peak_kW = peakKilo,
       Amount_kW = amountKilo,
       Price_EUR = price,
-      Total_EUR = total
+      Total_EUR = total,
     };
   }
 }

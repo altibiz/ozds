@@ -15,18 +15,22 @@ public static class NavigationManagerExtensions
     object? queryParameters = null
   )
   {
-    var attribute = type.GetCustomAttribute<RouteAttribute>()
+    var attribute =
+      type.GetCustomAttribute<RouteAttribute>()
       ?? throw new InvalidOperationException(
-        $"{type} is not decorated with {nameof(RouteAttribute)}");
+        $"{type} is not decorated with {nameof(RouteAttribute)}"
+      );
     var route = attribute.Template;
     var template = TemplateParser.Parse(route);
     var pattern = RoutePatternFactory.Parse(route);
     var values = new RouteValueDictionary(parameters);
-    var binder = templateBinderFactory
-      .Create(template, new RouteValueDictionary(pattern.Defaults));
-    var uri = binder.BindValues(values)
-      ?? throw new InvalidOperationException(
-        $"{type} has no route template");
+    var binder = templateBinderFactory.Create(
+      template,
+      new RouteValueDictionary(pattern.Defaults)
+    );
+    var uri =
+      binder.BindValues(values)
+      ?? throw new InvalidOperationException($"{type} has no route template");
     var query = Query(queryParameters);
     return navigationManager.BasedHref(uri) + query;
   }
@@ -66,18 +70,17 @@ public static class NavigationManagerExtensions
 
         var separator = index == 0 ? "?" : "&";
         queryString +=
-          separator
-          + key
-          + "="
-          + Uri.EscapeDataString(valueString);
+          separator + key + "=" + Uri.EscapeDataString(valueString);
       }
     }
     else
     {
-      foreach (var (queryParameter, index) in queryParameters
-        .GetType()
-        .GetProperties()
-        .Select((x, i) => (x, i)))
+      foreach (
+        var (queryParameter, index) in queryParameters
+          .GetType()
+          .GetProperties()
+          .Select((x, i) => (x, i))
+      )
       {
         var value = queryParameter.GetValue(queryParameters);
         if (value is null)

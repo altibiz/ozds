@@ -36,8 +36,8 @@ public class NetworkUserRepresentativeEntity : AuditableJoinEntity
   public virtual RepresentativeEntity Representative { get; set; } = default!;
 }
 
-public class
-  NetworkUserRepresentativeEntityModelConfiguration : IModelConfiguration
+public class NetworkUserRepresentativeEntityModelConfiguration
+  : IModelConfiguration
 {
   public void Configure(ModelBuilder modelBuilder)
   {
@@ -48,23 +48,22 @@ public class
       .WithMany(nameof(RepresentativeEntity.NetworkUsers))
       .UsingEntity(
         typeof(NetworkUserRepresentativeEntity),
-        configureLeft: l => l
-          .HasOne(nameof(NetworkUserRepresentativeEntity.NetworkUser))
-          .WithMany(nameof(NetworkUserEntity.NetworkUserRepresentatives))
-          .HasForeignKey("_networkUserId"),
-        configureRight: r => r
-          .HasOne(nameof(NetworkUserRepresentativeEntity.Representative))
-          .WithMany(nameof(RepresentativeEntity.NetworkUserRepresentatives))
-          .HasForeignKey(
-            nameof(NetworkUserRepresentativeEntity.RepresentativeId)),
+        configureLeft: l =>
+          l.HasOne(nameof(NetworkUserRepresentativeEntity.NetworkUser))
+            .WithMany(nameof(NetworkUserEntity.NetworkUserRepresentatives))
+            .HasForeignKey("_networkUserId"),
+        configureRight: r =>
+          r.HasOne(nameof(NetworkUserRepresentativeEntity.Representative))
+            .WithMany(nameof(RepresentativeEntity.NetworkUserRepresentatives))
+            .HasForeignKey(
+              nameof(NetworkUserRepresentativeEntity.RepresentativeId)
+            ),
         configureJoinEntityType: entity =>
         {
           entity.ToTable("network_user_representatives");
 
           entity.Ignore(nameof(NetworkUserRepresentativeEntity.NetworkUserId));
-          entity
-            .Property("_networkUserId")
-            .HasColumnName("network_user_id");
+          entity.Property("_networkUserId").HasColumnName("network_user_id");
         }
       );
   }

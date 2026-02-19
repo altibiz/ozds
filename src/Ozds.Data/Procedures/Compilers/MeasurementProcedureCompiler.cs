@@ -7,23 +7,22 @@ namespace Ozds.Data.Procedures.Compilers;
 
 public static class MeasurementProcedureCompiler
 {
-  public static IMeasurementProcedureParts Find(
-    Type aggregateType
-  )
+  public static IMeasurementProcedureParts Find(Type aggregateType)
   {
-    var parts = typeof(IMeasurementProcedureParts)
-        .Assembly
-        .GetTypes()
-        .Where(
-          type =>
-            !type.IsAbstract
-            && !type.IsGenericType
-            && typeof(IMeasurementProcedureParts).IsAssignableFrom(type))
+    var parts =
+      typeof(IMeasurementProcedureParts)
+        .Assembly.GetTypes()
+        .Where(type =>
+          !type.IsAbstract
+          && !type.IsGenericType
+          && typeof(IMeasurementProcedureParts).IsAssignableFrom(type)
+        )
         .Select(Activator.CreateInstance)
         .OfType<IMeasurementProcedureParts>()
         .FirstOrDefault(x => x.AggregateType == aggregateType)
       ?? throw new InvalidOperationException(
-        $"No measurement procedure parts found for {aggregateType}.");
+        $"No measurement procedure parts found for {aggregateType}."
+      );
 
     return parts;
   }
@@ -36,36 +35,39 @@ public static class MeasurementProcedureCompiler
   {
     return part switch
     {
-      IUpsertAverageMeasurementProcedurePart upsertAveragePart =>
-        UpsertAverage(
-          context,
-          aggregateType,
-          upsertAveragePart.Value.GetMemberExpressionPath()),
-      IUpsertMinMeasurementProcedurePart upsertMinPart =>
-        UpsertMin(
-          context,
-          aggregateType,
-          upsertMinPart.Value.GetMemberExpressionPath()),
+      IUpsertAverageMeasurementProcedurePart upsertAveragePart => UpsertAverage(
+        context,
+        aggregateType,
+        upsertAveragePart.Value.GetMemberExpressionPath()
+      ),
+      IUpsertMinMeasurementProcedurePart upsertMinPart => UpsertMin(
+        context,
+        aggregateType,
+        upsertMinPart.Value.GetMemberExpressionPath()
+      ),
       IUpsertMinTimestampMeasurementProcedurePart upsertMinTimestampPart =>
         UpsertMinTimestamp(
           context,
           aggregateType,
           upsertMinTimestampPart.Value.GetMemberExpressionPath(),
-          upsertMinTimestampPart.Timestamp.GetMemberExpressionPath()),
-      IUpsertMaxMeasurementProcedurePart upsertMaxPart =>
-        UpsertMax(
-          context,
-          aggregateType,
-          upsertMaxPart.Value.GetMemberExpressionPath()),
+          upsertMinTimestampPart.Timestamp.GetMemberExpressionPath()
+        ),
+      IUpsertMaxMeasurementProcedurePart upsertMaxPart => UpsertMax(
+        context,
+        aggregateType,
+        upsertMaxPart.Value.GetMemberExpressionPath()
+      ),
       IUpsertMaxTimestampMeasurementProcedurePart upsertMaxTimestampPart =>
         UpsertMaxTimestamp(
           context,
           aggregateType,
           upsertMaxTimestampPart.Value.GetMemberExpressionPath(),
-          upsertMaxTimestampPart.Timestamp.GetMemberExpressionPath()),
+          upsertMaxTimestampPart.Timestamp.GetMemberExpressionPath()
+        ),
       _ => throw new ArgumentOutOfRangeException(
         nameof(part),
-        $"Unknown {nameof(part)} type {part.GetType()}.")
+        $"Unknown {nameof(part)} type {part.GetType()}."
+      ),
     };
   }
 
@@ -83,17 +85,19 @@ public static class MeasurementProcedureCompiler
           aggregateType,
           derivativePower.Value.GetMemberExpressionPath(),
           derivativePower.MinEnergy.GetMemberExpressionPath(),
-          derivativePower.MaxEnergy.GetMemberExpressionPath()),
-      IDerivativePowerTimestampMeasurementProcedurePart derivativePowerTimestamp
-        =>
+          derivativePower.MaxEnergy.GetMemberExpressionPath()
+        ),
+      IDerivativePowerTimestampMeasurementProcedurePart derivativePowerTimestamp =>
         DerivativePowerTimestamp(
           context,
           aggregateType,
           derivativePowerTimestamp.Value.GetMemberExpressionPath(),
-          derivativePowerTimestamp.Timestamp.GetMemberExpressionPath()),
+          derivativePowerTimestamp.Timestamp.GetMemberExpressionPath()
+        ),
       _ => throw new ArgumentOutOfRangeException(
         nameof(part),
-        $"Unknown {nameof(part)} type {part.GetType()}.")
+        $"Unknown {nameof(part)} type {part.GetType()}."
+      ),
     };
   }
 
@@ -107,42 +111,45 @@ public static class MeasurementProcedureCompiler
   {
     return part switch
     {
-      IDeriveAverageMeasurementProcedurePart deriveAveragePart =>
-        DeriveAverage(
-          context,
-          aggregateType,
-          deriveAveragePart.Value.GetMemberExpressionPath(),
-          newTable,
-          newCount),
-      IDeriveMinMeasurementProcedurePart deriveMinPart =>
-        DeriveMin(
-          context,
-          aggregateType,
-          deriveMinPart.Value.GetMemberExpressionPath(),
-          newTable),
+      IDeriveAverageMeasurementProcedurePart deriveAveragePart => DeriveAverage(
+        context,
+        aggregateType,
+        deriveAveragePart.Value.GetMemberExpressionPath(),
+        newTable,
+        newCount
+      ),
+      IDeriveMinMeasurementProcedurePart deriveMinPart => DeriveMin(
+        context,
+        aggregateType,
+        deriveMinPart.Value.GetMemberExpressionPath(),
+        newTable
+      ),
       IDeriveMinTimestampMeasurementProcedurePart deriveMinTimestampPart =>
         DeriveMinTimestamp(
           context,
           aggregateType,
           deriveMinTimestampPart.Value.GetMemberExpressionPath(),
           deriveMinTimestampPart.Timestamp.GetMemberExpressionPath(),
-          newTable),
-      IDeriveMaxMeasurementProcedurePart deriveMaxPart =>
-        DeriveMax(
-          context,
-          aggregateType,
-          deriveMaxPart.Value.GetMemberExpressionPath(),
-          newTable),
+          newTable
+        ),
+      IDeriveMaxMeasurementProcedurePart deriveMaxPart => DeriveMax(
+        context,
+        aggregateType,
+        deriveMaxPart.Value.GetMemberExpressionPath(),
+        newTable
+      ),
       IDeriveMaxTimestampMeasurementProcedurePart deriveMaxTimestampPart =>
         DeriveMaxTimestamp(
           context,
           aggregateType,
           deriveMaxTimestampPart.Value.GetMemberExpressionPath(),
           deriveMaxTimestampPart.Timestamp.GetMemberExpressionPath(),
-          newTable),
+          newTable
+        ),
       _ => throw new ArgumentOutOfRangeException(
         nameof(part),
-        $"Unknown {nameof(part)} type {part.GetType()}.")
+        $"Unknown {nameof(part)} type {part.GetType()}."
+      ),
     };
   }
 
@@ -156,20 +163,20 @@ public static class MeasurementProcedureCompiler
   {
     return part switch
     {
-      IDeltaAverageMeasurementProcedurePart deltaAveragePart =>
-        DeltaAverage(
-          context,
-          aggregateType,
-          deltaAveragePart.Value.GetMemberExpressionPath(),
-          newTable,
-          oldTable),
-      IDeltaMinMeasurementProcedurePart deltaMinPart =>
-        DeltaMin(
-          context,
-          aggregateType,
-          deltaMinPart.Value.GetMemberExpressionPath(),
-          newTable,
-          oldTable),
+      IDeltaAverageMeasurementProcedurePart deltaAveragePart => DeltaAverage(
+        context,
+        aggregateType,
+        deltaAveragePart.Value.GetMemberExpressionPath(),
+        newTable,
+        oldTable
+      ),
+      IDeltaMinMeasurementProcedurePart deltaMinPart => DeltaMin(
+        context,
+        aggregateType,
+        deltaMinPart.Value.GetMemberExpressionPath(),
+        newTable,
+        oldTable
+      ),
       IDeltaMinTimestampMeasurementProcedurePart deltaMinTimestampPart =>
         DeltaMinTimestamp(
           context,
@@ -177,14 +184,15 @@ public static class MeasurementProcedureCompiler
           deltaMinTimestampPart.Value.GetMemberExpressionPath(),
           deltaMinTimestampPart.Timestamp.GetMemberExpressionPath(),
           newTable,
-          oldTable),
-      IDeltaMaxMeasurementProcedurePart deltaMaxPart =>
-        DeltaMax(
-          context,
-          aggregateType,
-          deltaMaxPart.Value.GetMemberExpressionPath(),
-          newTable,
-          oldTable),
+          oldTable
+        ),
+      IDeltaMaxMeasurementProcedurePart deltaMaxPart => DeltaMax(
+        context,
+        aggregateType,
+        deltaMaxPart.Value.GetMemberExpressionPath(),
+        newTable,
+        oldTable
+      ),
       IDeltaMaxTimestampMeasurementProcedurePart deltaMaxTimestampPart =>
         DeltaMaxTimestamp(
           context,
@@ -192,10 +200,12 @@ public static class MeasurementProcedureCompiler
           deltaMaxTimestampPart.Value.GetMemberExpressionPath(),
           deltaMaxTimestampPart.Timestamp.GetMemberExpressionPath(),
           newTable,
-          oldTable),
+          oldTable
+        ),
       _ => throw new ArgumentOutOfRangeException(
         nameof(part),
-        $"Unknown {nameof(part)} type {part.GetType()}.")
+        $"Unknown {nameof(part)} type {part.GetType()}."
+      ),
     };
   }
 
@@ -205,13 +215,12 @@ public static class MeasurementProcedureCompiler
     IEnumerable<string> propertyName
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
     var tableName = context.GetTableName(aggregateType);
-    var countColumn = context
-      .GetColumnName(
-        aggregateType,
-        [nameof(IAggregateEntity.Count)]);
+    var countColumn = context.GetColumnName(
+      aggregateType,
+      [nameof(IAggregateEntity.Count)]
+    );
     return $@"
       {columnName} = ({tableName}.{columnName} * {tableName}.{countColumn}
         + EXCLUDED.{columnName} * EXCLUDED.{countColumn})
@@ -225,8 +234,7 @@ public static class MeasurementProcedureCompiler
     IEnumerable<string> propertyName
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
     var tableName = context.GetTableName(aggregateType);
     return $@"
       {columnName} = LEAST({tableName}.{columnName}, EXCLUDED.{columnName})
@@ -240,10 +248,11 @@ public static class MeasurementProcedureCompiler
     IEnumerable<string> timestampPropertyName
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
-    var timestampColumnName = context
-      .GetColumnName(aggregateType, timestampPropertyName);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
+    var timestampColumnName = context.GetColumnName(
+      aggregateType,
+      timestampPropertyName
+    );
     var tableName = context.GetTableName(aggregateType);
     return $@"
       {timestampColumnName} = CASE
@@ -260,8 +269,7 @@ public static class MeasurementProcedureCompiler
     IEnumerable<string> propertyName
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
     var tableName = context.GetTableName(aggregateType);
     return $@"
       {columnName} = GREATEST({tableName}.{columnName}, EXCLUDED.{columnName})
@@ -275,10 +283,11 @@ public static class MeasurementProcedureCompiler
     IEnumerable<string> timestampPropertyName
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
-    var timestampColumnName = context
-      .GetColumnName(aggregateType, timestampPropertyName);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
+    var timestampColumnName = context.GetColumnName(
+      aggregateType,
+      timestampPropertyName
+    );
     var tableName = context.GetTableName(aggregateType);
     return $@"
       {timestampColumnName} = CASE
@@ -297,12 +306,15 @@ public static class MeasurementProcedureCompiler
     IEnumerable<string> maxEnergyPropertyName
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
-    var minEnergyColumnName = context
-      .GetColumnName(aggregateType, minEnergyPropertyName);
-    var maxEnergyColumnName = context
-      .GetColumnName(aggregateType, maxEnergyPropertyName);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
+    var minEnergyColumnName = context.GetColumnName(
+      aggregateType,
+      minEnergyPropertyName
+    );
+    var maxEnergyColumnName = context.GetColumnName(
+      aggregateType,
+      maxEnergyPropertyName
+    );
     var tableName = context.GetTableName(aggregateType);
     return $@"
       {columnName} = (GREATEST(
@@ -325,10 +337,14 @@ public static class MeasurementProcedureCompiler
   )
   {
     var tableName = context.GetTableName(aggregateType);
-    var timestampColumnName = context
-      .GetColumnName(aggregateType, timestampPropertyName);
-    var actualTimestampColumnName = context
-      .GetColumnName(aggregateType, [nameof(IAggregateEntity.Timestamp)]);
+    var timestampColumnName = context.GetColumnName(
+      aggregateType,
+      timestampPropertyName
+    );
+    var actualTimestampColumnName = context.GetColumnName(
+      aggregateType,
+      [nameof(IAggregateEntity.Timestamp)]
+    );
 
     return $@"
       {timestampColumnName} = {tableName}.{actualTimestampColumnName}
@@ -343,12 +359,11 @@ public static class MeasurementProcedureCompiler
     string newCountColumn
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
-    var quarterHourCountColumn = context
-      .GetColumnName(
-        aggregateType,
-        [nameof(IAggregateEntity.QuarterHourCount)]);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
+    var quarterHourCountColumn = context.GetColumnName(
+      aggregateType,
+      [nameof(IAggregateEntity.QuarterHourCount)]
+    );
     var tableName = context.GetTableName(aggregateType);
     return $@"
       {columnName} =
@@ -367,8 +382,7 @@ public static class MeasurementProcedureCompiler
     string deltaTable
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
     var tableName = context.GetTableName(aggregateType);
     return $@"
       {columnName} = LEAST({tableName}.{columnName}, {deltaTable}.{columnName})
@@ -383,10 +397,11 @@ public static class MeasurementProcedureCompiler
     string deltaTable
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
-    var timestampColumnName = context
-      .GetColumnName(aggregateType, timestampPropertyName);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
+    var timestampColumnName = context.GetColumnName(
+      aggregateType,
+      timestampPropertyName
+    );
     var tableName = context.GetTableName(aggregateType);
     return $@"
       {timestampColumnName} = CASE
@@ -404,8 +419,7 @@ public static class MeasurementProcedureCompiler
     string deltaTable
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
     var tableName = context.GetTableName(aggregateType);
     return $@"
       {columnName} =
@@ -421,10 +435,11 @@ public static class MeasurementProcedureCompiler
     string deltaTable
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
-    var timestampColumnName = context
-      .GetColumnName(aggregateType, timestampPropertyName);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
+    var timestampColumnName = context.GetColumnName(
+      aggregateType,
+      timestampPropertyName
+    );
     var tableName = context.GetTableName(aggregateType);
     return $@"
       {timestampColumnName} =
@@ -444,8 +459,7 @@ public static class MeasurementProcedureCompiler
     string oldTable
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
     return $@"
       SUM({newTable}.{columnName} - COALESCE({oldTable}.{columnName}, 0))
         AS {columnName}
@@ -460,8 +474,7 @@ public static class MeasurementProcedureCompiler
     string oldTable
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
     return $@"
       MIN(LEAST(
         {newTable}.{columnName},
@@ -479,10 +492,11 @@ public static class MeasurementProcedureCompiler
     string oldTable
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
-    var timestampColumnName = context
-      .GetColumnName(aggregateType, timestampPropertyName);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
+    var timestampColumnName = context.GetColumnName(
+      aggregateType,
+      timestampPropertyName
+    );
     return $@"
       (ARRAY_AGG(
         CASE WHEN
@@ -508,8 +522,10 @@ public static class MeasurementProcedureCompiler
     string oldTable
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName.ToArray());
+    var columnName = context.GetColumnName(
+      aggregateType,
+      propertyName.ToArray()
+    );
     return $@"
       MAX(GREATEST(
         {newTable}.{columnName},
@@ -527,10 +543,11 @@ public static class MeasurementProcedureCompiler
     string oldTable
   )
   {
-    var columnName = context
-      .GetColumnName(aggregateType, propertyName);
-    var timestampColumnName = context
-      .GetColumnName(aggregateType, timestampPropertyName);
+    var columnName = context.GetColumnName(aggregateType, propertyName);
+    var timestampColumnName = context.GetColumnName(
+      aggregateType,
+      timestampPropertyName
+    );
     return $@"
       (ARRAY_AGG(
         CASE WHEN

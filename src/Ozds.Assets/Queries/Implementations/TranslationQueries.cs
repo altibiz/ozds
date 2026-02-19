@@ -4,14 +4,13 @@ using Ozds.Assets.Queries.Abstractions;
 
 namespace Ozds.Assets.Queries.Implementations;
 
-public class TranslationQueries(
-  ITypeQueries typeQueries
-) : ITranslationQueries
+public class TranslationQueries(ITypeQueries typeQueries) : ITranslationQueries
 {
   public string GeneralKey(Type type, bool trimmed = true, bool plural = false)
   {
     return AddPluralFn(plural)(
-      typeQueries.ResolveHumanFriendlyTypeName(type, trimmed));
+      typeQueries.ResolveHumanFriendlyTypeName(type, trimmed)
+    );
   }
 
   public string GeneralKey(Type type, string member)
@@ -27,24 +26,24 @@ public class TranslationQueries(
   public string Key(Type type, bool plural = false)
   {
     return AddPluralFn(plural)(
-      AddNamespace(type, typeQueries.ResolveHumanFriendlyTypeName(type)));
+      AddNamespace(type, typeQueries.ResolveHumanFriendlyTypeName(type))
+    );
   }
 
   public string Key(Type type, string member)
   {
-    return
-      $"{AddNamespace(type, typeQueries.ResolveHumanFriendlyTypeName(type))}.{member}";
+    return $"{AddNamespace(type, typeQueries.ResolveHumanFriendlyTypeName(type))}.{member}";
   }
 
   public string Key(MemberExpression member)
   {
     var order = MemberOrder(member);
     var type = order.First().Type;
-    var suffix = string.Join(
-      ".",
-      order.Select(x => x.Property));
+    var suffix = string.Join(".", order.Select(x => x.Property));
     return AddNamespace(
-      type, $"{typeQueries.ResolveHumanFriendlyTypeName(type)}.{suffix}");
+      type,
+      $"{typeQueries.ResolveHumanFriendlyTypeName(type)}.{suffix}"
+    );
   }
 
   public string[] KeyOverrides(Type type, bool plural = false)
@@ -71,21 +70,22 @@ public class TranslationQueries(
   {
     var memberOrder = MemberOrder(member);
     var overrides = new List<string>();
-    foreach (var ((type, property), index) in memberOrder
-      .Select((x, i) => (x, i)))
+    foreach (
+      var ((type, property), index) in memberOrder.Select((x, i) => (x, i))
+    )
     {
       var suffix = string.Join(
         ".",
-        memberOrder.Skip(index + 1).Select(x => x.Property));
+        memberOrder.Skip(index + 1).Select(x => x.Property)
+      );
       suffix = suffix == string.Empty ? "" : $".{suffix}";
       var virtualizationOrder = VirtualizationOrder(type, property);
       overrides.AddRange(
-        virtualizationOrder.Select(x => $"{Key(x, property)}{suffix}"));
+        virtualizationOrder.Select(x => $"{Key(x, property)}{suffix}")
+      );
     }
 
-    return overrides
-      .Append(GeneralKey(member))
-      .ToArray();
+    return overrides.Append(GeneralKey(member)).ToArray();
   }
 
   public string ShortKey(Type type, bool plural = false)
@@ -102,9 +102,7 @@ public class TranslationQueries(
   {
     var order = MemberOrder(member);
     var type = order.First().Type;
-    var suffix = string.Join(
-      ".",
-      order.Select(x => x.Property));
+    var suffix = string.Join(".", order.Select(x => x.Property));
     return $"{typeQueries.ResolveHumanFriendlyTypeName(type)}.{suffix}";
   }
 
@@ -131,16 +129,19 @@ public class TranslationQueries(
   {
     var memberOrder = MemberOrder(member);
     var overrides = new List<string>();
-    foreach (var ((type, property), index) in memberOrder
-      .Select((x, i) => (x, i)))
+    foreach (
+      var ((type, property), index) in memberOrder.Select((x, i) => (x, i))
+    )
     {
       var suffix = string.Join(
         ".",
-        memberOrder.Skip(index + 1).Select(x => x.Property));
+        memberOrder.Skip(index + 1).Select(x => x.Property)
+      );
       suffix = suffix == string.Empty ? "" : $".{suffix}";
       var virtualizationOrder = VirtualizationOrder(type, property);
       overrides.AddRange(
-        virtualizationOrder.Select(x => $"{ShortKey(x, property)}{suffix}"));
+        virtualizationOrder.Select(x => $"{ShortKey(x, property)}{suffix}")
+      );
     }
 
     return overrides
@@ -166,21 +167,23 @@ public class TranslationQueries(
       : $"{type.Namespace}.{name}";
   }
 
-  private static List<MemberExpressionItem> MemberOrder(
-    MemberExpression member
-  )
+  private static List<MemberExpressionItem> MemberOrder(MemberExpression member)
   {
     var expression = member as Expression;
     var order = new List<MemberExpressionItem>();
     while (expression is MemberExpression memberExpression)
     {
-      expression = memberExpression.Expression
+      expression =
+        memberExpression.Expression
         ?? throw new InvalidOperationException(
-          $"Expression of {memberExpression} is null");
+          $"Expression of {memberExpression} is null"
+        );
       order.Add(
         new MemberExpressionItem(
           memberExpression.Expression.Type,
-          memberExpression.Member.Name));
+          memberExpression.Member.Name
+        )
+      );
     }
 
     order.Reverse();
@@ -222,8 +225,10 @@ public class TranslationQueries(
 #pragma warning disable S3267 // Loops should be simplified with "LINQ" expressions
         foreach (var @interface in GetAllInterfacesRecursively(currentType))
         {
-          if (DeclaresProperty(@interface, property)
-            && !overrides.Contains(@interface))
+          if (
+            DeclaresProperty(@interface, property)
+            && !overrides.Contains(@interface)
+          )
           {
             overrides.Add(@interface);
           }
@@ -243,8 +248,10 @@ public class TranslationQueries(
 
   private static bool DeclaresProperty(Type type, string property)
   {
-    var info = type
-      .GetProperty(property, BindingFlags.Instance | BindingFlags.Public);
+    var info = type.GetProperty(
+      property,
+      BindingFlags.Instance | BindingFlags.Public
+    );
     return info is not null;
   }
 
@@ -252,9 +259,10 @@ public class TranslationQueries(
   {
     var interfaces = new HashSet<Type>();
 
-    foreach (var @interface in type
-      .GetInterfaces()
-      .Except(type.BaseType?.GetInterfaces() ?? Enumerable.Empty<Type>()))
+    foreach (
+      var @interface in type.GetInterfaces()
+        .Except(type.BaseType?.GetInterfaces() ?? Enumerable.Empty<Type>())
+    )
     {
       interfaces.Add(@interface);
 
@@ -267,8 +275,5 @@ public class TranslationQueries(
     return interfaces;
   }
 
-  private sealed record MemberExpressionItem(
-    Type Type,
-    string Property
-  );
+  private sealed record MemberExpressionItem(Type Type, string Property);
 }

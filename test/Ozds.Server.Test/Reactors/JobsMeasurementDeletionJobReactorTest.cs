@@ -4,8 +4,7 @@ using Ozds.Business.Queries;
 using Ozds.Fake.Identification;
 using Ozds.Server.Test.Base;
 using DataEntityReflector = Ozds.Data.Reflection.EntityReflector;
-using DataTimescaleChunkIntervalQueries =
-  Ozds.Data.Queries.TimescaleChunkIntervalQueries;
+using DataTimescaleChunkIntervalQueries = Ozds.Data.Queries.TimescaleChunkIntervalQueries;
 
 namespace Ozds.Server.Test.Reactors;
 
@@ -15,22 +14,20 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
   {
     Interval = TimeSpan.FromHours(1);
 
-    Configure(
-      x =>
+    Configure(x =>
+    {
+      x.Ozds.ConfigureHost(builder =>
       {
-        x.Ozds.ConfigureHost(
-          builder =>
+        builder.Configuration.AddInMemoryCollection(
+          new Dictionary<string, string?>
           {
-            builder.Configuration.AddInMemoryCollection(
-              new Dictionary<string, string?>
-              {
-                ["Ozds:Jobs:Archival:DailyMeasurementDeletionCron"] =
-                  "0 * * * * ?", // NOTE: on the first second of every minute
-                ["Ozds:Business:Reactor:MeasurementDeletionJobIntervalSeconds"] =
-                  Interval.TotalSeconds.ToString()
-              });
-          });
+            ["Ozds:Jobs:Archival:DailyMeasurementDeletionCron"] = "0 * * * * ?", // NOTE: on the first second of every minute
+            ["Ozds:Business:Reactor:MeasurementDeletionJobIntervalSeconds"] =
+              Interval.TotalSeconds.ToString(),
+          }
+        );
       });
+    });
   }
 
   private TimeSpan Interval { get; }
@@ -54,40 +51,44 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
           new MeasurementLocationMeterIdWithValidator(
             x.MeasurementLocation.Id,
             x.Meter.Id,
-            x.MeasurementValidator)
+            x.MeasurementValidator
+          ),
         ],
         dateFrom,
         dateTo,
         cancellationToken,
-        false)
+        false
+      )
       .Where(x => x is not IAggregate)
       .ToListAsync(cancellationToken);
 
-    var deletedChunkIntervalByModelType =
-    (
-      await Services.GetRequiredService<DataTimescaleChunkIntervalQueries>()
+    itemsBefore
+      .Should()
+      .AllSatisfy(x => x.Timestamp.Should().BeAfter(dateFrom));
+    itemsBefore.Should().AllSatisfy(x => x.Timestamp.Should().BeBefore(dateTo));
+    var deletedChunkIntervalByModelType = (
+      await Services
+        .GetRequiredService<DataTimescaleChunkIntervalQueries>()
         .GetChunkIntervalBeforeCutoff(
           deletionCutoff,
           dataReflector.MeasurementTypes,
-          cancellationToken)
-    ).ToDictionary(
-      x =>
-        Services.GetRequiredService<ModelEntityConverter>()
-          .ModelType(
-            dataReflector.ResolveEntityTypeFromTable(x.HypertableName)
-          )
+          cancellationToken
+        )
+    ).ToDictionary(x =>
+      Services
+        .GetRequiredService<ModelEntityConverter>()
+        .ModelType(dataReflector.ResolveEntityTypeFromTable(x.HypertableName))
     );
 
-    itemsBefore.Should().AllSatisfy(
-      x =>
-        x.Timestamp.Should().BeAfter(dateFrom));
-    itemsBefore.Should().AllSatisfy(
-      x =>
-        x.Timestamp.Should().BeBefore(dateTo));
+    itemsBefore
+      .Should()
+      .AllSatisfy(x => x.Timestamp.Should().BeAfter(dateFrom));
+    itemsBefore.Should().AllSatisfy(x => x.Timestamp.Should().BeBefore(dateTo));
 
     await Task.Delay(TimeSpan.FromMinutes(1), cancellationToken);
 
-    var itemsAfter = await Services.GetRequiredService<MeasurementQueries>()
+    var itemsAfter = await Services
+      .GetRequiredService<MeasurementQueries>()
       .ReadByMeasurementLocationIds(
         [x.MeasurementLocation.Id],
         null,
@@ -97,20 +98,29 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
         cancellationToken
       );
 
-    var determinedItemsAfter = itemsBefore.Where(
-      x =>
+    var determinedItemsAfter = itemsBefore
+      .Where(x =>
         !deletedChunkIntervalByModelType.TryGetValue(
-          x.GetType(), out var chunkInfo)
+          x.GetType(),
+          out var chunkInfo
+        )
         || x.Timestamp > chunkInfo.RangeEnd
-    ).ToList();
+      )
+      .ToList();
 
     var determinedTimestampMinimum = itemsBefore.Min(x => x.Timestamp);
 
-    itemsAfter.TotalCount.Should()
+    itemsAfter
+      .TotalCount.Should()
       .BeLessThanOrEqualTo(determinedItemsAfter.Count);
 
-    itemsAfter.Items.Should().AllSatisfy(
-      x =>
-        x.Timestamp.Should().BeOnOrAfter(determinedTimestampMinimum));
+    itemsAfter
+      .Items.Should()
+      .AllSatisfy(x => x.Timestamp.Should().BeAfter(deletionCutoff));
+    itemsAfter
+      .Items.Should()
+      .AllSatisfy(x =>
+        x.Timestamp.Should().BeOnOrAfter(determinedTimestampMinimum)
+      );
   }
 }

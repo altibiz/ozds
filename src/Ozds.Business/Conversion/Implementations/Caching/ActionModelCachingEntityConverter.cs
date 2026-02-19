@@ -18,7 +18,7 @@ public class ActionModelCachingEntityConverter
       ActionModel.Delete => ActionEntity.Delete,
       ActionModel.Restore => ActionEntity.Restore,
       ActionModel.Forget => ActionEntity.Forget,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 
@@ -33,7 +33,7 @@ public class ActionModelCachingEntityConverter
       ActionEntity.Delete => ActionModel.Delete,
       ActionEntity.Restore => ActionModel.Restore,
       ActionEntity.Forget => ActionModel.Forget,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 }

@@ -49,15 +49,15 @@
     return @<SelectField Label="@IdLabel"
                          Value="@Id"
                          ValueChanged="@IdChanged">
-      @foreach (var model in models.ObjectItems.OfType<IIdentifiable>())
-      {
-        <MudSelectItem Value="@model.Id">
-          <MudText>
-            @model.Title
-          </MudText>
-        </MudSelectItem>
-      }
-    </SelectField>;
+             @foreach (var model in models.ObjectItems.OfType<IIdentifiable>())
+             {
+               <MudSelectItem Value="@model.Id">
+                 <MudText>
+                   @model.Title
+                 </MudText>
+               </MudSelectItem>
+             }
+           </SelectField>;
   };
 
   var pagingParameters = new Dictionary<string, object>

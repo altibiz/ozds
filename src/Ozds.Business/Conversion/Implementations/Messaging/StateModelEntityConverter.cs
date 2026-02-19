@@ -7,19 +7,13 @@ namespace Ozds.Business.Conversion.Implementations.Messaging;
 public class StateModelEntityConverter
   : ConcreteModelEntityConverter<StateModel, StateEntity>
 {
-  public override void InitializeEntity(
-    StateModel model,
-    StateEntity entity
-  )
+  public override void InitializeEntity(StateModel model, StateEntity entity)
   {
     base.InitializeEntity(model, entity);
     entity.CurrentState = model.CurrentState;
   }
 
-  public override void InitializeModel(
-    StateEntity entity,
-    StateModel model
-  )
+  public override void InitializeModel(StateEntity entity, StateModel model)
   {
     base.InitializeModel(entity, model);
     model.CurrentState = entity.CurrentState;

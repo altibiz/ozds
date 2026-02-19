@@ -22,7 +22,7 @@ public class PidgeonMessengerPushRequestPacker : IMessengerPushRequestPacker
       Timestamp = timestamp,
       Measurements = requests
         .OfType<IPidgeonMeterPushRequestEntity>()
-        .ToArray()
+        .ToArray(),
     };
 
     return entity;
@@ -40,7 +40,7 @@ public class PidgeonMessengerPushRequestPacker : IMessengerPushRequestPacker
       Timestamp = timestamp,
       Measurements = await requests
         .OfType<IPidgeonMeterPushRequestEntity>()
-        .ToArrayAsync(cancellationToken)
+        .ToArrayAsync(cancellationToken),
     };
 
     return entity;

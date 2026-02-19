@@ -4,9 +4,7 @@ using Ozds.Jobs.Observers.EventArgs;
 
 namespace Ozds.Jobs.Observers.Implementations;
 
-public class MessengerJobManager :
-  Observer<MessengerJobEventArgs>,
-  IMessengerJobPublisher,
-  IMessengerJobSubscriber
-{
-}
+public class MessengerJobManager
+  : Observer<MessengerJobEventArgs>,
+    IMessengerJobPublisher,
+    IMessengerJobSubscriber { }

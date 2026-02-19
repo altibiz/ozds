@@ -14,11 +14,9 @@ public static class PrimitiveConversionExtensions
 
   public static long ToLong(this decimal value)
   {
-    return value > long.MaxValue
-      ? long.MaxValue
-      : value < long.MinValue
-        ? long.MinValue
-        : Convert.ToInt64(value);
+    return value > long.MaxValue ? long.MaxValue
+      : value < long.MinValue ? long.MinValue
+      : Convert.ToInt64(value);
   }
 
   public static decimal ToDecimal(this float value)

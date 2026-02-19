@@ -31,13 +31,13 @@ public class MessengerPushRequestPacker(IServiceProvider services)
     );
   }
 
-  private IMessengerPushRequestPacker GetPacker(
-    string messengerId
-  )
+  private IMessengerPushRequestPacker GetPacker(string messengerId)
   {
-    return services.GetServices<IMessengerPushRequestPacker>()
+    return services
+        .GetServices<IMessengerPushRequestPacker>()
         .FirstOrDefault(p => p.CanPack(messengerId))
       ?? throw new InvalidOperationException(
-        $"No packer found for {messengerId}");
+        $"No packer found for {messengerId}"
+      );
   }
 }

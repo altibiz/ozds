@@ -17,11 +17,11 @@ public static class INpgsqlDataSourceConfigurationExtensions
   {
     return assembly
       .GetTypes()
-      .Where(
-        type =>
-          !type.IsAbstract
-          && !type.IsGenericType
-          && typeof(INpgsqlDataSourceConfiguration).IsAssignableFrom(type))
+      .Where(type =>
+        !type.IsAbstract
+        && !type.IsGenericType
+        && typeof(INpgsqlDataSourceConfiguration).IsAssignableFrom(type)
+      )
       .Aggregate(
         builder,
         (builder, type) =>

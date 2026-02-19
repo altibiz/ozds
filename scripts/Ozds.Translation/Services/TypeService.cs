@@ -17,12 +17,9 @@ public class TypeService(
   ITranslationQueries translationQueries,
   ICultureQueries cultureQueries,
   ILogger<TypeService> logger
-) : EnumeratedService<TranslationWorkerItem, TranslationWorker>(
-  services
-)
+) : EnumeratedService<TranslationWorkerItem, TranslationWorker>(services)
 {
-  private static readonly string AdditionalPropertyPrompt =
-    @"
+  private static readonly string AdditionalPropertyPrompt = @"
       You are tasked with translating model property paths from the source
       language to human-readable UI elements in the target language. Your
       translations will be used as labels, headings, and form fields in a web
@@ -133,8 +130,7 @@ public class TypeService(
       Remember: these were only examples of translation.
     ".Dedent(6, "\n").Trim();
 
-  private static readonly string AdditionalTypePrompt =
-    @"
+  private static readonly string AdditionalTypePrompt = @"
       You are tasked with translating types from the source
       language to human-readable UI elements in the target language. Your
       translations will be used as labels, headings, and form fields in a web
@@ -206,8 +202,7 @@ public class TypeService(
       Remember: these were only examples of translation.
     ".Dedent(6, "\n").Trim();
 
-  private static readonly string AdditionalPluralTypePrompt =
-    @"
+  private static readonly string AdditionalPluralTypePrompt = @"
       You are tasked with translating types from the source
       language to human-readable UI elements in the target language. Your
       translations will be used as labels, headings, and form fields in a web
@@ -312,7 +307,8 @@ public class TypeService(
     if (culture is null)
     {
       throw new InvalidOperationException(
-        $"Could not find culture '{arguments.Language}'");
+        $"Could not find culture '{arguments.Language}'"
+      );
     }
 
     var items = GroupItemsAcrossAssemblies(GroupItemsByDeclaration(GetItems()))
@@ -323,22 +319,22 @@ public class TypeService(
       // TODO: better way to detect managed translations
       var managedItems = dictionary
         .ToList()
-        .Where(
-          item => item.Metadata is { } metadata
-            && (metadata.StartsWith("Type")
-              || metadata.StartsWith("Property")))
+        .Where(item =>
+          item.Metadata is { } metadata
+          && (metadata.StartsWith("Type") || metadata.StartsWith("Property"))
+        )
         .ToList();
 
       var unusedManagedItems = managedItems
-        .Where(
-          dictionaryItem => !items.Exists(
-            item =>
-              item.Key == dictionaryItem.Key
-              || item.ShortKey == dictionaryItem.Key
-              || item.AdditionalKeys.Exists(
-                x =>
-                  x.Key == dictionaryItem.Key
-                  || x.ShortKey == dictionaryItem.Key)))
+        .Where(dictionaryItem =>
+          !items.Exists(item =>
+            item.Key == dictionaryItem.Key
+            || item.ShortKey == dictionaryItem.Key
+            || item.AdditionalKeys.Exists(x =>
+              x.Key == dictionaryItem.Key || x.ShortKey == dictionaryItem.Key
+            )
+          )
+        )
         .ToList();
 
       foreach (var key in unusedManagedItems.Select(x => x.Key))
@@ -350,9 +346,9 @@ public class TypeService(
 
     foreach (var item in items)
     {
-      var translated = dictionary.Get(item.Key) ??
-        item.AdditionalKeys
-          .Select(x => dictionary.Get(x.Key))
+      var translated =
+        dictionary.Get(item.Key)
+        ?? item.AdditionalKeys.Select(x => dictionary.Get(x.Key))
           .FirstOrDefault(x => x is not null);
       if (translated is not null)
       {
@@ -398,145 +394,137 @@ public class TypeService(
     }
   }
 
-  private IEnumerable<GroupedAcrossAssembliesTranslationItem>
-    GroupItemsAcrossAssemblies(
-      IEnumerable<GroupedByDeclarationTranslationItem> items
-    )
+  private IEnumerable<GroupedAcrossAssembliesTranslationItem> GroupItemsAcrossAssemblies(
+    IEnumerable<GroupedByDeclarationTranslationItem> items
+  )
   {
     return items
-      .GroupBy(
-        item => item.Property is { } property
+      .GroupBy(item =>
+        item.Property is { } property
           ? translationQueries.GeneralKey(item.Type, property)
-          : translationQueries.GeneralKey(item.Type, plural: item.Plural))
-      .Select(
-        group =>
-        {
-          var metadata = string
-            .Join("\n\n", group.Select(x => x.Metadata));
-          return new GroupedAcrossAssembliesTranslationItem(
-            false,
-            group.Key,
-            group.Key,
-            group
-              .Select(x => (x.Key, x.ShortKey))
-              .Concat(
-                group
-                  .Where(x => x.Property == null)
-                  .GroupBy(
-                    x => translationQueries
-                      .GeneralKey(x.Type, false))
-                  .Where(x => x.Key != group.Key)
-                  .Select(x => (x.Key, x.Key)))
-              .ToList(),
-            metadata,
-            AdditionalPropertyPrompt
-          );
-        });
+          : translationQueries.GeneralKey(item.Type, plural: item.Plural)
+      )
+      .Select(group =>
+      {
+        var metadata = string.Join("\n\n", group.Select(x => x.Metadata));
+        return new GroupedAcrossAssembliesTranslationItem(
+          false,
+          group.Key,
+          group.Key,
+          group
+            .Select(x => (x.Key, x.ShortKey))
+            .Concat(
+              group
+                .Where(x => x.Property == null)
+                .GroupBy(x => translationQueries.GeneralKey(x.Type, false))
+                .Where(x => x.Key != group.Key)
+                .Select(x => (x.Key, x.Key))
+            )
+            .ToList(),
+          metadata,
+          AdditionalPropertyPrompt
+        );
+      });
   }
 
-  private IEnumerable<GroupedByDeclarationTranslationItem>
-    GroupItemsByDeclaration(
-      IEnumerable<TypeTranslationItem> items
-    )
+  private IEnumerable<GroupedByDeclarationTranslationItem> GroupItemsByDeclaration(
+    IEnumerable<TypeTranslationItem> items
+  )
   {
     return items
-      .GroupBy(
-        item => (
+      .GroupBy(item =>
+        (
           Type: item.DeclaringType,
           IsPlural: item.Plural,
           Property: item.EnumName ?? item.Property?.Name
-        ))
-      .Select(
-        group =>
-        {
-          var type = group.Key.Type;
-          var property = group.Key.Property;
+        )
+      )
+      .Select(group =>
+      {
+        var type = group.Key.Type;
+        var property = group.Key.Property;
 
-          if (property is null)
-          {
-            var prompt = group.Key.IsPlural
-              ? AdditionalPluralTypePrompt
-              : AdditionalTypePrompt;
-            var first = group.First();
-            var typeMetadata = $"""
+        if (property is null)
+        {
+          var prompt = group.Key.IsPlural
+            ? AdditionalPluralTypePrompt
+            : AdditionalTypePrompt;
+          var first = group.First();
+          var typeMetadata = $"""
             Type '{type.FullName}'
           """.Trim();
-            return new GroupedByDeclarationTranslationItem(
-              type,
-              null,
-              first.Key,
-              first.ShortKey,
-              [],
-              typeMetadata,
-              prompt,
-              group.Key.IsPlural
-            );
-          }
+          return new GroupedByDeclarationTranslationItem(
+            type,
+            null,
+            first.Key,
+            first.ShortKey,
+            [],
+            typeMetadata,
+            prompt,
+            group.Key.IsPlural
+          );
+        }
 
-          var typeKey = translationQueries.Key(type);
-          var declaredItem = group.FirstOrDefault(
-            x =>
-              x.Key.StartsWith(typeKey));
-          if (declaredItem is null)
-          {
-            var keys = string.Join(
-              "\n",
-              group.Select(x => x.Key));
-            throw new InvalidOperationException(
-              $"Could not find declared item for '{typeKey}.{property}'"
-              + $" out of:\n{keys}");
-          }
+        var typeKey = translationQueries.Key(type);
+        var declaredItem = group.FirstOrDefault(x => x.Key.StartsWith(typeKey));
+        if (declaredItem is null)
+        {
+          var keys = string.Join("\n", group.Select(x => x.Key));
+          throw new InvalidOperationException(
+            $"Could not find declared item for '{typeKey}.{property}'"
+              + $" out of:\n{keys}"
+          );
+        }
 
-          var additional = group
-            .Where(x => x != declaredItem)
-            .ToList();
-          var memberMetadata = additional.Count == 0
+        var additional = group.Where(x => x != declaredItem).ToList();
+        var memberMetadata =
+          additional.Count == 0
             ? $"Property '{property}' of type '{typeKey}'"
             : $"""
               Property '{property}' of type '{typeKey}' with overrides:
             {string
               .Join("\n", additional.Select(x => x.ShortKey))
               .Indent(2, "\n")}
-            """.Trim().Dedent(12, "\n");
-          return new GroupedByDeclarationTranslationItem(
-            type,
-            property,
-            declaredItem.Key,
-            declaredItem.ShortKey,
-            additional
-              .Select(x => (x.Key, x.ShortKey))
-              .ToList(),
-            memberMetadata,
-            AdditionalPropertyPrompt,
-            false
-          );
-        });
+            """.Trim().Dedent(
+              12,
+              "\n"
+            );
+        return new GroupedByDeclarationTranslationItem(
+          type,
+          property,
+          declaredItem.Key,
+          declaredItem.ShortKey,
+          additional.Select(x => (x.Key, x.ShortKey)).ToList(),
+          memberMetadata,
+          AdditionalPropertyPrompt,
+          false
+        );
+      });
   }
 
   private IEnumerable<TypeTranslationItem> GetItems()
   {
-    var assemblies = AppDomain.CurrentDomain
-      .GetAssemblies()
-      .Where(
-        assembly =>
-          arguments.InputAssemblies.Contains(assembly.GetName().Name));
+    var assemblies = AppDomain
+      .CurrentDomain.GetAssemblies()
+      .Where(assembly =>
+        arguments.InputAssemblies.Contains(assembly.GetName().Name)
+      );
 
     logger.LogInformation(
       "Found assemblies:\n{Assemblies}",
       string.Join("\n", assemblies)
     );
 
-    var types = assemblies
-      .SelectMany(
-        assembly => assembly
-          .GetTypes()
-          .Where(type => !(type.Name?.StartsWith('<') ?? false))
-          .Where(type => !(type.Name?.EndsWith("Extensions") ?? false))
-          .Where(
-            type =>
-              type.Namespace is not null
-              && arguments.InputNamespaces.Any(
-                type.Namespace.StartsWith)));
+    var types = assemblies.SelectMany(assembly =>
+      assembly
+        .GetTypes()
+        .Where(type => !(type.Name?.StartsWith('<') ?? false))
+        .Where(type => !(type.Name?.EndsWith("Extensions") ?? false))
+        .Where(type =>
+          type.Namespace is not null
+          && arguments.InputNamespaces.Any(type.Namespace.StartsWith)
+        )
+    );
 
     foreach (var type in types)
     {
@@ -635,15 +623,12 @@ public class TypeService(
         if (
           elementType != null
           && elementType.Namespace != null
-          && arguments.InputNamespaces.Any(
-            elementType.Namespace.StartsWith)
+          && arguments.InputNamespaces.Any(elementType.Namespace.StartsWith)
         )
         {
-          foreach (var item in
-            GetTypeItems(
-              elementType,
-              fullPath,
-              fullShortPath))
+          foreach (
+            var item in GetTypeItems(elementType, fullPath, fullShortPath)
+          )
           {
             yield return item;
           }
@@ -651,15 +636,12 @@ public class TypeService(
       }
       else if (
         propertyType.Namespace != null
-        && arguments.InputNamespaces.Any(
-          propertyType.Namespace.StartsWith)
+        && arguments.InputNamespaces.Any(propertyType.Namespace.StartsWith)
       )
       {
-        foreach (var item in
-          GetTypeItems(
-            propertyType,
-            fullPath,
-            fullShortPath))
+        foreach (
+          var item in GetTypeItems(propertyType, fullPath, fullShortPath)
+        )
         {
           yield return item;
         }
@@ -669,9 +651,11 @@ public class TypeService(
 
   private Type GetLogicalDeclaringType(PropertyInfo property)
   {
-    var declaringType = property.DeclaringType
+    var declaringType =
+      property.DeclaringType
       ?? throw new InvalidOperationException(
-        $"Could not find declaring type for '{property.Name}'");
+        $"Could not find declaring type for '{property.Name}'"
+      );
 
     if (declaringType.IsInterface)
     {
@@ -685,7 +669,8 @@ public class TypeService(
 
     var declaringTypeProperty = declaringType.GetProperty(
       property.Name,
-      BindingFlags.Public | BindingFlags.Instance)!;
+      BindingFlags.Public | BindingFlags.Instance
+    )!;
 
     var interfaces = GetAllInterfacesInHierarchy(declaringType);
 
@@ -696,8 +681,10 @@ public class TypeService(
       var getter = declaringTypeProperty.GetGetMethod();
       var setter = declaringTypeProperty.GetSetMethod();
 
-      if ((getter != null && mapping.TargetMethods.Contains(getter)) ||
-        (setter != null && mapping.TargetMethods.Contains(setter)))
+      if (
+        (getter != null && mapping.TargetMethods.Contains(getter))
+        || (setter != null && mapping.TargetMethods.Contains(setter))
+      )
       {
         return @interface;
       }
@@ -719,8 +706,10 @@ public class TypeService(
 
       type = type.BaseType!;
 
-      if (type.Namespace == null
-        || !arguments.InputNamespaces.Any(type.Namespace.StartsWith))
+      if (
+        type.Namespace == null
+        || !arguments.InputNamespaces.Any(type.Namespace.StartsWith)
+      )
       {
         break;
       }
@@ -735,8 +724,10 @@ public class TypeService(
 
     foreach (var @interface in type.GetInterfaces())
     {
-      if (@interface.Namespace == null
-        || !arguments.InputNamespaces.Any(@interface.Namespace.StartsWith))
+      if (
+        @interface.Namespace == null
+        || !arguments.InputNamespaces.Any(@interface.Namespace.StartsWith)
+      )
       {
         continue;
       }

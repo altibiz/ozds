@@ -32,7 +32,7 @@ public partial class NetworkUserCalculationDocumentPage : OzdsComponentBase
     return new NetworkUserCalculationModelWithHtml
     {
       Calculation = calculation,
-      Html = html
+      Html = html,
     };
   }
 

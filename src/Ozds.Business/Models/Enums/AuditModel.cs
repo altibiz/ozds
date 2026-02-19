@@ -9,7 +9,7 @@ public enum AuditModel
   Modification,
   Deletion,
   Restoration,
-  Forgetting
+  Forgetting,
 }
 
 public static class AuditModelExtensions
@@ -26,7 +26,9 @@ public static class AuditModelExtensions
       AuditEntity.Forgetting => AuditModel.Forgetting,
       _ => throw new ArgumentOutOfRangeException(
         nameof(auditEntity),
-        auditEntity, null)
+        auditEntity,
+        null
+      ),
     };
   }
 
@@ -41,8 +43,10 @@ public static class AuditModelExtensions
       AuditModel.Restoration => AuditEntity.Restoration,
       AuditModel.Forgetting => AuditEntity.Forgetting,
       _ => throw new ArgumentOutOfRangeException(
-        nameof(auditModel), auditModel,
-        null)
+        nameof(auditModel),
+        auditModel,
+        null
+      ),
     };
   }
 
@@ -56,9 +60,7 @@ public static class AuditModelExtensions
       AuditModel.Deletion => "Deletion",
       AuditModel.Restoration => "Restoration",
       AuditModel.Forgetting => "Forgetting",
-      _ => throw new ArgumentOutOfRangeException(
-        nameof(audit), audit,
-        null)
+      _ => throw new ArgumentOutOfRangeException(nameof(audit), audit, null),
     };
   }
 }

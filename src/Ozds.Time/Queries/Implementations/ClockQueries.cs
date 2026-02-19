@@ -5,9 +5,7 @@ using Ozds.Time.Queries.Abstractions;
 
 namespace Ozds.Time.Queries.Implementations;
 
-public class ClockQueries(
-  ClockWinder winder
-) : IClockQueries
+public class ClockQueries(ClockWinder winder) : IClockQueries
 {
   public DateTimeOffset Timestamp()
   {
@@ -38,7 +36,7 @@ public class ClockQueries(
       yield return new DateTimeOffsetRangeEntity
       {
         DateFrom = dateFrom,
-        DateTo = dateTo
+        DateTo = dateTo,
       };
     }
   }

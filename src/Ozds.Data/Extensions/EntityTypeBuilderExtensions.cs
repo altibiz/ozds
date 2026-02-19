@@ -92,45 +92,41 @@ public static class EntityTypeBuilderExtensions
   // they depend on the name of the property
   public static ComplexPropertyBuilder Archived(
     this ComplexPropertyBuilder complexPropertyBuilder,
-    string? propertyName = null)
+    string? propertyName = null
+  )
   {
     propertyName ??= complexPropertyBuilder.Metadata.Name;
 
     // NOTE: navigation properties are virtual and not final
     // if a property is virtual and final it is not possible to override it
     // which EF Core will do when it encounters a navigation property
-    var propertiesToIgnore = complexPropertyBuilder.Metadata
-      .ComplexType
-      .ClrType
-      .GetProperties()
-      .Where(
-        property => property
-            is { GetMethod.IsVirtual: true }
+    var propertiesToIgnore = complexPropertyBuilder
+      .Metadata.ComplexType.ClrType.GetProperties()
+      .Where(property =>
+        property
+          is { GetMethod.IsVirtual: true }
             and { GetMethod.IsFinal: false }
-          || property.Name == nameof(IJoinEntity.LeftId)
-          || property.Name == nameof(IJoinEntity.RightId)
-          || property.Name == nameof(IAuditableEntity.AuditingId)
-          || property.Name == nameof(IAuditableEntity.AuditingTitle)
-          || property.Name == nameof(IAuditableEntity.AuditingRepresentativeId)
-          || property.Name == nameof(ITrackableEntity.Forget)
-          || property.Name == nameof(ITrackableEntity.Restore))
+        || property.Name == nameof(IJoinEntity.LeftId)
+        || property.Name == nameof(IJoinEntity.RightId)
+        || property.Name == nameof(IAuditableEntity.AuditingId)
+        || property.Name == nameof(IAuditableEntity.AuditingTitle)
+        || property.Name == nameof(IAuditableEntity.AuditingRepresentativeId)
+        || property.Name == nameof(ITrackableEntity.Forget)
+        || property.Name == nameof(ITrackableEntity.Restore)
+      )
       .ToList();
 
-    var propertiesToArchive = complexPropertyBuilder.Metadata
-      .ComplexType
-      .ClrType
-      .GetProperties()
-      .Where(
-        property =>
-          property.PropertyType.Name.EndsWith("Entity")
-          && !property.PropertyType.IsEnum)
+    var propertiesToArchive = complexPropertyBuilder
+      .Metadata.ComplexType.ClrType.GetProperties()
+      .Where(property =>
+        property.PropertyType.Name.EndsWith("Entity")
+        && !property.PropertyType.IsEnum
+      )
       .Except(propertiesToIgnore)
       .ToList();
 
-    var propertiesToShorten = complexPropertyBuilder.Metadata
-      .ComplexType
-      .ClrType
-      .GetProperties()
+    var propertiesToShorten = complexPropertyBuilder
+      .Metadata.ComplexType.ClrType.GetProperties()
       .Except(propertiesToIgnore)
       .Except(propertiesToArchive)
       .ToList();
@@ -162,9 +158,8 @@ public static class EntityTypeBuilderExtensions
       complexPropertyBuilder
         .Property(property.Name)
         .HasColumnName(
-          propertyName.Abbreviation()
-          + "_"
-          + property.Name.ToSnakeCase());
+          propertyName.Abbreviation() + "_" + property.Name.ToSnakeCase()
+        );
     }
 
     foreach (var property in propertiesToArchive)
@@ -172,9 +167,8 @@ public static class EntityTypeBuilderExtensions
       complexPropertyBuilder
         .ComplexProperty(property.Name)
         .Archived(
-          propertyName.Abbreviation()
-          + "_"
-          + property.Name.Abbreviation());
+          propertyName.Abbreviation() + "_" + property.Name.Abbreviation()
+        );
     }
 #pragma warning restore S3267
 

@@ -5,9 +5,7 @@ using Ozds.Server.Test.Containers;
 
 namespace Ozds.Server.Test.Fixtures;
 
-public class TestAuditableFixture(
-  ServiceComposition composition
-)
+public class TestAuditableFixture(ServiceComposition composition)
 {
   public async Task<T> Create<T>(
     CancellationToken cancellationToken,
@@ -16,10 +14,9 @@ public class TestAuditableFixture(
     where T : IAuditable
   {
     await using var scope = composition.Ozds.Services.CreateAsyncScope();
-    var mutations = scope.ServiceProvider
-      .GetRequiredService<AuditableMutations>();
-    var faker = scope.ServiceProvider
-      .GetRequiredService<ModelFaker>();
+    var mutations =
+      scope.ServiceProvider.GetRequiredService<AuditableMutations>();
+    var faker = scope.ServiceProvider.GetRequiredService<ModelFaker>();
 
     var trackable = faker.Fake<T>();
 
@@ -40,10 +37,9 @@ public class TestAuditableFixture(
   )
   {
     await using var scope = composition.Ozds.Services.CreateAsyncScope();
-    var mutations = scope.ServiceProvider
-      .GetRequiredService<AuditableMutations>();
-    var faker = scope.ServiceProvider
-      .GetRequiredService<ModelFaker>();
+    var mutations =
+      scope.ServiceProvider.GetRequiredService<AuditableMutations>();
+    var faker = scope.ServiceProvider.GetRequiredService<ModelFaker>();
 
     if (faker.FakeDynamic(type) is not IAuditable trackable)
     {

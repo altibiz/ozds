@@ -9,7 +9,7 @@ public enum ResolutionModel
   Day,
   Week,
   Month,
-  Year
+  Year,
 }
 
 public static class ChartResolutionExtensions
@@ -27,7 +27,8 @@ public static class ChartResolutionExtensions
       _ => throw new ArgumentOutOfRangeException(
         nameof(resolution),
         resolution,
-        null)
+        null
+      ),
     };
   }
 
@@ -46,7 +47,8 @@ public static class ChartResolutionExtensions
         _ => throw new ArgumentOutOfRangeException(
           nameof(resolution),
           resolution,
-          null)
+          null
+        ),
       };
     }
 
@@ -61,7 +63,8 @@ public static class ChartResolutionExtensions
       _ => throw new ArgumentOutOfRangeException(
         nameof(resolution),
         resolution,
-        null)
+        null
+      ),
     };
   }
 
@@ -75,7 +78,7 @@ public static class ChartResolutionExtensions
       TimeResolutionEntity.Week => ResolutionModel.Week,
       TimeResolutionEntity.Month => ResolutionModel.Month,
       TimeResolutionEntity.Year => ResolutionModel.Year,
-      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null),
     };
   }
 
@@ -89,7 +92,7 @@ public static class ChartResolutionExtensions
       ResolutionModel.Week => TimeResolutionEntity.Week,
       ResolutionModel.Month => TimeResolutionEntity.Month,
       ResolutionModel.Year => TimeResolutionEntity.Year,
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 }

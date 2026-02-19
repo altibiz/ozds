@@ -8,7 +8,8 @@ using Ozds.Data.Procedures.Builders;
 namespace Ozds.Data.Entities.Complex;
 
 public class InstantaneousAggregateMeasureEntity
-  : AggregateMeasureEntity, IInstantaneousMeasureEntity
+  : AggregateMeasureEntity,
+    IInstantaneousMeasureEntity
 {
   public DateTimeOffset MinTimestamp { get; set; } = default!;
 
@@ -30,23 +31,20 @@ public static class InstantaneousAggregateMeasureEntityExtensions
   {
     builder.AggregateMeasure(name, unit);
 
-    builder
-      .InstantaneousMeasurementMeasure(
-        nameof(InstantaneousAggregateMeasureEntity.Min),
-        $"{name}_min_{unit}"
-      );
+    builder.InstantaneousMeasurementMeasure(
+      nameof(InstantaneousAggregateMeasureEntity.Min),
+      $"{name}_min_{unit}"
+    );
 
-    builder
-      .InstantaneousMeasurementMeasure(
-        nameof(InstantaneousAggregateMeasureEntity.Max),
-        $"{name}_max_{unit}"
-      );
+    builder.InstantaneousMeasurementMeasure(
+      nameof(InstantaneousAggregateMeasureEntity.Max),
+      $"{name}_max_{unit}"
+    );
 
-    builder
-      .InstantaneousMeasurementMeasure(
-        nameof(InstantaneousAggregateMeasureEntity.Avg),
-        $"{name}_avg_{unit}"
-      );
+    builder.InstantaneousMeasurementMeasure(
+      nameof(InstantaneousAggregateMeasureEntity.Avg),
+      $"{name}_avg_{unit}"
+    );
 
     builder
       .Property(nameof(InstantaneousAggregateMeasureEntity.MinTimestamp))
@@ -67,10 +65,12 @@ public static class InstantaneousAggregateMeasureEntityExtensions
       .UpsertMin(value.Suffix(x => x.Min))
       .UpsertMinTimestamp(
         value.Suffix(x => x.Min),
-        value.Suffix(x => x.MinTimestamp))
+        value.Suffix(x => x.MinTimestamp)
+      )
       .UpsertMax(value.Suffix(x => x.Max))
       .UpsertMaxTimestamp(
         value.Suffix(x => x.Max),
-        value.Suffix(x => x.MaxTimestamp));
+        value.Suffix(x => x.MaxTimestamp)
+      );
   }
 }

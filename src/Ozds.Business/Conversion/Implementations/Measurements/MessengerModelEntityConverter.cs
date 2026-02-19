@@ -11,7 +11,8 @@ public class MessengerEntityConverter(IServiceProvider serviceProvider)
     MessengerModel,
     TrackableModel,
     MessengerEntity,
-    TrackableEntity>(serviceProvider)
+    TrackableEntity
+  >(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();
@@ -24,9 +25,11 @@ public class MessengerEntityConverter(IServiceProvider serviceProvider)
     base.InitializeEntity(model, entity);
     entity.LocationId = model.LocationId;
     entity.MaxInactivityPeriod = modelEntityConverter.ToEntity<PeriodEntity>(
-      model.MaxInactivityPeriod);
+      model.MaxInactivityPeriod
+    );
     entity.PushDelayPeriod = modelEntityConverter.ToEntity<PeriodEntity>(
-      model.PushDelayPeriod);
+      model.PushDelayPeriod
+    );
   }
 
   public override void InitializeModel(
@@ -37,8 +40,10 @@ public class MessengerEntityConverter(IServiceProvider serviceProvider)
     base.InitializeModel(entity, model);
     model.LocationId = entity.LocationId;
     model.MaxInactivityPeriod = modelEntityConverter.ToModel<PeriodModel>(
-      entity.MaxInactivityPeriod);
+      entity.MaxInactivityPeriod
+    );
     model.PushDelayPeriod = modelEntityConverter.ToModel<PeriodModel>(
-      entity.PushDelayPeriod);
+      entity.PushDelayPeriod
+    );
   }
 }

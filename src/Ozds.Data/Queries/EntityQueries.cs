@@ -6,9 +6,7 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class EntityQueries(
-  IDbContextFactory<DataDbContext> factory
-) : IQueries
+public class EntityQueries(IDbContextFactory<DataDbContext> factory) : IQueries
 {
   public async Task<PaginatedList<T>> Read<T>(
     int pageNumber,
@@ -36,11 +34,13 @@ public class EntityQueries(
     if (!entityType.IsAssignableTo(typeof(IEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(IEntity)}");
+        $"Type {entityType} is not assignable to {typeof(IEntity)}"
+      );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var queryable = context.GetQueryable<IEntity>(entityType);
 
     var filtered = queryable;

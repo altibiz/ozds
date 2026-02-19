@@ -13,7 +13,8 @@ public class NetworkUserModelEntityConverter(IServiceProvider serviceProvider)
     NetworkUserModel,
     TrackableModel,
     NetworkUserEntity,
-    TrackableEntity>(serviceProvider)
+    TrackableEntity
+  >(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();

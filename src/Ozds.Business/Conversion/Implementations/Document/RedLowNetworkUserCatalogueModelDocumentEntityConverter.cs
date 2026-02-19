@@ -7,11 +7,13 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class RedLowNetworkUserCatalogueModelDocumentEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
-  RedLowNetworkUserCatalogueModel,
-  NetworkUserCatalogueModel,
-  RedLowNetworkUserCatalogueEntity,
-  NetworkUserCatalogueEntity>(serviceProvider)
+)
+  : InheritingModelDocumentEntityConverter<
+    RedLowNetworkUserCatalogueModel,
+    NetworkUserCatalogueModel,
+    RedLowNetworkUserCatalogueEntity,
+    NetworkUserCatalogueEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     RedLowNetworkUserCatalogueModel model,

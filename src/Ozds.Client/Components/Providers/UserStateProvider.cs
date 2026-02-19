@@ -18,20 +18,22 @@ public partial class UserStateProvider : OzdsComponentBase
 
   private async Task<UserState?> LoadAsync()
   {
-    var representativeQueries = ScopedServices
-      .GetRequiredService<RepresentativeQueries>();
+    var representativeQueries =
+      ScopedServices.GetRequiredService<RepresentativeQueries>();
 
-    var representativeId = await representativeQueries
-      .ReadAuthenticatedRepresentativeId(CancellationToken);
+    var representativeId =
+      await representativeQueries.ReadAuthenticatedRepresentativeId(
+        CancellationToken
+      );
     if (representativeId is null)
     {
       return default;
     }
 
-    var user = await representativeQueries
-      .ReadUserByUserId(
-        representativeId,
-        CancellationToken);
+    var user = await representativeQueries.ReadUserByUserId(
+      representativeId,
+      CancellationToken
+    );
     if (user is null)
     {
       Logger.LogWarning(
@@ -41,10 +43,7 @@ public partial class UserStateProvider : OzdsComponentBase
       return default;
     }
 
-    var state = new UserState(
-      LogoutToken,
-      user
-    );
+    var state = new UserState(LogoutToken, user);
 
     return state;
   }

@@ -6,9 +6,8 @@ public static class StringExtensions
   {
     return string.Join(
       newline,
-      value
-        .Split(newline)
-        .Select(line => new string(' ', indent) + line));
+      value.Split(newline).Select(line => new string(' ', indent) + line)
+    );
   }
 
   public static string Dedent(this string value, int indent, string newline)
@@ -17,9 +16,11 @@ public static class StringExtensions
       newline,
       value
         .Split(newline)
-        .Select(
-          line => line.StartsWith(new string(' ', indent))
+        .Select(line =>
+          line.StartsWith(new string(' ', indent))
             ? line[indent..]
-            : line.TrimStart()));
+            : line.TrimStart()
+        )
+    );
   }
 }

@@ -4,11 +4,10 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation.Implementations.Finances;
 
-public class RegulatoryCatalogueModelActivator(
-  IServiceProvider serviceProvider
-) : InheritingModelActivator<RegulatoryCatalogueModel, TrackableModel>(
-  serviceProvider
-)
+public class RegulatoryCatalogueModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<RegulatoryCatalogueModel, TrackableModel>(
+    serviceProvider
+  )
 {
   public override void Initialize(RegulatoryCatalogueModel model)
   {

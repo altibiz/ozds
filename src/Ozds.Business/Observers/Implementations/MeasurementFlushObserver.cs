@@ -4,9 +4,7 @@ using Ozds.Business.Observers.EventArgs;
 
 namespace Ozds.Business.Observers.Implementations;
 
-public class MeasurementFlushObserver :
-  Observer<MeasurementFlushEventArgs>,
-  IMeasurementFlushPublisher,
-  IMeasurementFlushSubscriber
-{
-}
+public class MeasurementFlushObserver
+  : Observer<MeasurementFlushEventArgs>,
+    IMeasurementFlushPublisher,
+    IMeasurementFlushSubscriber { }

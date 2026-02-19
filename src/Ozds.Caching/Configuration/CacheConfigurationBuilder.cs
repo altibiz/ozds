@@ -9,8 +9,7 @@ namespace Ozds.Caching.Configuration;
 
 public class CacheConfigurationBuilder
 {
-  private readonly JsonSerializerOptions jsonSerializerOptions
-    = new();
+  private readonly JsonSerializerOptions jsonSerializerOptions = new();
 
   private readonly List<IPolicy> policies = new();
 
@@ -72,7 +71,8 @@ public class CacheConfigurationBuilder
   {
     var builder = new IndirectReverseDependencyEvictionPolicyBuilder(
       keyResolver,
-      type);
+      type
+    );
     var policy = builder.Build();
     policies.Add(policy);
     return this;
@@ -91,30 +91,29 @@ public class CacheConfigurationBuilder
     IEnumerable<Type> WhereNamespace(IEnumerable<Type> types)
     {
       return @namespace is not null
-        ? types.Where(
-          type =>
-            type.Namespace is not null && type.Namespace.StartsWith(@namespace))
+        ? types.Where(type =>
+          type.Namespace is not null && type.Namespace.StartsWith(@namespace)
+        )
         : types;
     }
 
-    var types = assemblies
-      .SelectMany(type => WhereNamespace(type.GetTypes()));
+    var types = assemblies.SelectMany(type => WhereNamespace(type.GetTypes()));
 
     var baseTypes = types
-      .Where(
-        type => types
-          .Any(
-            concreteType =>
-              concreteType != type
-              && concreteType.IsAssignableTo(type)))
+      .Where(type =>
+        types.Any(concreteType =>
+          concreteType != type && concreteType.IsAssignableTo(type)
+        )
+      )
       .ToList();
 
-    var subtypes = baseTypes
-      .ToDictionary(
-        type => type,
-        root => types
+    var subtypes = baseTypes.ToDictionary(
+      type => type,
+      root =>
+        types
           .Where(type => !type.IsAbstract)
-          .Where(type => type.IsAssignableTo(root)));
+          .Where(type => type.IsAssignableTo(root))
+    );
 
     void Modifier(JsonTypeInfo typeInfo)
     {
@@ -128,21 +127,22 @@ public class CacheConfigurationBuilder
         TypeDiscriminatorPropertyName = "$type",
         IgnoreUnrecognizedTypeDiscriminators = false,
         UnknownDerivedTypeHandling =
-          JsonUnknownDerivedTypeHandling.FailSerialization
+          JsonUnknownDerivedTypeHandling.FailSerialization,
       };
 
       foreach (var subtype in typeSubtypes)
       {
         typeInfo.PolymorphismOptions.DerivedTypes.Add(
-          new JsonDerivedType(subtype, subtype.FullName ?? subtype.Name));
+          new JsonDerivedType(subtype, subtype.FullName ?? subtype.Name)
+        );
       }
     }
 
     if (!jsonSerializerOptions.TypeInfoResolverChain.IsReadOnly)
     {
       jsonSerializerOptions.TypeInfoResolverChain.Add(
-        new DefaultJsonTypeInfoResolver()
-          .WithAddedModifier(Modifier));
+        new DefaultJsonTypeInfoResolver().WithAddedModifier(Modifier)
+      );
     }
     else if (jsonSerializerOptions.TypeInfoResolver is not null)
     {
@@ -152,8 +152,7 @@ public class CacheConfigurationBuilder
     else
     {
       jsonSerializerOptions.TypeInfoResolver =
-        new DefaultJsonTypeInfoResolver()
-          .WithAddedModifier(Modifier);
+        new DefaultJsonTypeInfoResolver().WithAddedModifier(Modifier);
     }
 
     return this;
@@ -165,7 +164,7 @@ public class CacheConfigurationBuilder
     {
       Policies = policies.ToList(),
       JsonSerializerOptions = jsonSerializerOptions,
-      Entry = entry
+      Entry = entry,
     };
   }
 }
@@ -179,51 +178,53 @@ public static class CacheConfigurationExtensions
   {
     var jsonSerializerOptions = new JsonSerializerOptions
     {
-      TypeInfoResolver =
-        right.JsonSerializerOptions.TypeInfoResolver
-          is { } rightResolver
-          ? configuration.JsonSerializerOptions.TypeInfoResolver
-            is { } leftResolver
-            ? new MergedTypeInfoResolver(leftResolver, rightResolver)
-            : rightResolver
-          : configuration.JsonSerializerOptions.TypeInfoResolver
-            is { } leftResolver2
-            ? leftResolver2
-            : null
+      TypeInfoResolver = right.JsonSerializerOptions.TypeInfoResolver
+        is { } rightResolver
+        ? configuration.JsonSerializerOptions.TypeInfoResolver
+          is { } leftResolver
+          ? new MergedTypeInfoResolver(leftResolver, rightResolver)
+          : rightResolver
+        : configuration.JsonSerializerOptions.TypeInfoResolver
+          is { } leftResolver2
+          ? leftResolver2
+          : null,
     };
 
-    foreach (var resolver
-      in configuration.JsonSerializerOptions.TypeInfoResolverChain)
+    foreach (
+      var resolver in configuration.JsonSerializerOptions.TypeInfoResolverChain
+    )
     {
       jsonSerializerOptions.TypeInfoResolverChain.Add(resolver);
     }
 
-    foreach (var resolver
-      in right.JsonSerializerOptions.TypeInfoResolverChain)
+    foreach (var resolver in right.JsonSerializerOptions.TypeInfoResolverChain)
     {
       jsonSerializerOptions.TypeInfoResolverChain.Add(resolver);
     }
 
     var entry = new CacheEntryConfiguration
     {
-      HardTtl = configuration.Entry.HardTtl < right.Entry.HardTtl
-        ? configuration.Entry.HardTtl
-        : right.Entry.HardTtl,
-      SoftTtl = configuration.Entry.SoftTtl < right.Entry.SoftTtl
-        ? configuration.Entry.SoftTtl
-        : right.Entry.SoftTtl
+      HardTtl =
+        configuration.Entry.HardTtl < right.Entry.HardTtl
+          ? configuration.Entry.HardTtl
+          : right.Entry.HardTtl,
+      SoftTtl =
+        configuration.Entry.SoftTtl < right.Entry.SoftTtl
+          ? configuration.Entry.SoftTtl
+          : right.Entry.SoftTtl,
     };
 
     return new CacheConfiguration
     {
       Policies = configuration.Policies.Concat(right.Policies).ToList(),
       JsonSerializerOptions = jsonSerializerOptions,
-      Entry = entry
+      Entry = entry,
     };
   }
 
   public static CacheConfiguration Merge(
-    this IEnumerable<CacheConfiguration> enumerable)
+    this IEnumerable<CacheConfiguration> enumerable
+  )
   {
     var result = enumerable
       .DefaultIfEmpty(CacheConfiguration.Default)

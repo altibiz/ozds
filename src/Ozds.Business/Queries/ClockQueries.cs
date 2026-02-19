@@ -4,9 +4,7 @@ using TimeClockQueries = Ozds.Time.Queries.Abstractions.IClockQueries;
 
 namespace Ozds.Business.Queries;
 
-public class ClockQueries(
-  TimeClockQueries timeClockQueries
-) : ISingletonQueries
+public class ClockQueries(TimeClockQueries timeClockQueries) : ISingletonQueries
 {
   // NOTE: virtual because we want to mock it
   public virtual DateTimeOffset Timestamp()
@@ -25,12 +23,12 @@ public class ClockQueries(
     CancellationToken cancellationToken
   )
   {
-    return timeClockQueries.Future(interval, cancellationToken)
-      .Select(
-        x => new DateTimeOffsetRangeModel
-        {
-          DateFrom = x.DateFrom,
-          DateTo = x.DateTo
-        });
+    return timeClockQueries
+      .Future(interval, cancellationToken)
+      .Select(x => new DateTimeOffsetRangeModel
+      {
+        DateFrom = x.DateFrom,
+        DateTo = x.DateTo,
+      });
   }
 }

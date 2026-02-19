@@ -36,8 +36,8 @@ public class LocationRepresentativeEntity : AuditableJoinEntity
   public virtual RepresentativeEntity Representative { get; set; } = default!;
 }
 
-public class
-  LocationRepresentativeEntityModelConfiguration : IModelConfiguration
+public class LocationRepresentativeEntityModelConfiguration
+  : IModelConfiguration
 {
   public void Configure(ModelBuilder modelBuilder)
   {
@@ -48,22 +48,22 @@ public class
       .WithMany(nameof(RepresentativeEntity.Locations))
       .UsingEntity(
         typeof(LocationRepresentativeEntity),
-        configureLeft: l => l
-          .HasOne(nameof(LocationRepresentativeEntity.Location))
-          .WithMany(nameof(LocationEntity.LocationRepresentatives))
-          .HasForeignKey("_locationId"),
-        configureRight: r => r
-          .HasOne(nameof(LocationRepresentativeEntity.Representative))
-          .WithMany(nameof(RepresentativeEntity.LocationRepresentatives))
-          .HasForeignKey(nameof(LocationRepresentativeEntity.RepresentativeId)),
+        configureLeft: l =>
+          l.HasOne(nameof(LocationRepresentativeEntity.Location))
+            .WithMany(nameof(LocationEntity.LocationRepresentatives))
+            .HasForeignKey("_locationId"),
+        configureRight: r =>
+          r.HasOne(nameof(LocationRepresentativeEntity.Representative))
+            .WithMany(nameof(RepresentativeEntity.LocationRepresentatives))
+            .HasForeignKey(
+              nameof(LocationRepresentativeEntity.RepresentativeId)
+            ),
         configureJoinEntityType: entity =>
         {
           entity.ToTable("location_representatives");
 
           entity.Ignore(nameof(LocationRepresentativeEntity.LocationId));
-          entity
-            .Property("_locationId")
-            .HasColumnName("location_id");
+          entity.Property("_locationId").HasColumnName("location_id");
         }
       );
   }

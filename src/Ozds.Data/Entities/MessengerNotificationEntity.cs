@@ -11,8 +11,8 @@ public class MessengerNotificationEntity : ResolvableNotificationEntity
   public virtual MessengerEntity Messenger { get; set; } = default!;
 }
 
-public class MessengerInactivityNotificationEntityConfiguration :
-  IEntityTypeConfiguration<MessengerNotificationEntity>
+public class MessengerInactivityNotificationEntityConfiguration
+  : IEntityTypeConfiguration<MessengerNotificationEntity>
 {
   public void Configure(EntityTypeBuilder<MessengerNotificationEntity> builder)
   {

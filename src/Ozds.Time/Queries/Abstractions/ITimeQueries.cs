@@ -24,49 +24,31 @@ public interface ITimeQueries : IQueries
     DateTimeOffset dateTimeOffset
   );
 
-  public (DateTimeOffset, DateTimeOffset) GetMonthRange(
-    int year,
-    int month
-  );
+  public (DateTimeOffset, DateTimeOffset) GetMonthRange(int year, int month);
 
   public (DateTimeOffset, DateTimeOffset) GetYearRange(
     DateTimeOffset dateTimeOffset
   );
 
-  public (DateTimeOffset, DateTimeOffset) GetYearRange(
-    int year
-  );
+  public (DateTimeOffset, DateTimeOffset) GetYearRange(int year);
 
-  public DateTimeOffset GetStartOfQuarterHour(
-    DateTimeOffset dateTimeOffset
-  );
+  public DateTimeOffset GetStartOfQuarterHour(DateTimeOffset dateTimeOffset);
 
-  public DateTimeOffset GetStartOfMonth(
-    DateTimeOffset dateTimeOffset
-  );
+  public DateTimeOffset GetStartOfMonth(DateTimeOffset dateTimeOffset);
 
-  public DateTimeOffset GetStartOfLastMonth(
-    DateTimeOffset dateTimeOffset
-  );
+  public DateTimeOffset GetStartOfLastMonth(DateTimeOffset dateTimeOffset);
 
-  public DateTimeOffset GetStartOfNextMonth(
-    DateTimeOffset dateTimeOffset
-  );
+  public DateTimeOffset GetStartOfNextMonth(DateTimeOffset dateTimeOffset);
 
-  public DateTimeOffset GetStartOfDay(
-    DateTimeOffset dateTimeOffset
-  );
+  public DateTimeOffset GetStartOfDay(DateTimeOffset dateTimeOffset);
 
-  public DateTimeOffset GetStartOfYear(
-    DateTimeOffset dateTimeOffset
-  );
+  public DateTimeOffset GetStartOfYear(DateTimeOffset dateTimeOffset);
 
   public IEnumerable<DateTimeOffset> GetThisYearMonthStarts(
-    DateTimeOffset dateTimeOffset);
-
-  public DateTimeOffset GetStartOfMonthLastYear(
     DateTimeOffset dateTimeOffset
   );
+
+  public DateTimeOffset GetStartOfMonthLastYear(DateTimeOffset dateTimeOffset);
 
   public TimeSpan ResolutionTimeSpan(
     ResolutionEntity resolution,
@@ -98,10 +80,7 @@ public interface ITimeQueries : IQueries
     int pageCount
   );
 
-  public TimeSpan DurationTimeSpan(
-    DurationEntity model,
-    uint multiplier = 1
-  );
+  public TimeSpan DurationTimeSpan(DurationEntity model, uint multiplier = 1);
 
   public TimeSpan DurationTimeSpan(
     DurationEntity model,

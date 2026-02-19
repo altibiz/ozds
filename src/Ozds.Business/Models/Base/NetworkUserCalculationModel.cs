@@ -3,8 +3,9 @@ using Ozds.Business.Models.Abstractions;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class NetworkUserCalculationModel : CalculationModel,
-  INetworkUserCalculation
+public abstract class NetworkUserCalculationModel
+  : CalculationModel,
+    INetworkUserCalculation
 {
   [Required]
   public required string MeterId { get; set; } = default!;
@@ -17,8 +18,8 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
     default!;
 
   [Required]
-  public required NetworkUserMeasurementLocationModel
-    ArchivedNetworkUserMeasurementLocation { get; set; } = default!;
+  public required NetworkUserMeasurementLocationModel ArchivedNetworkUserMeasurementLocation { get; set; } =
+    default!;
 
   [Required]
   public required string UsageNetworkUserCatalogueId { get; set; } = default!;
@@ -30,14 +31,8 @@ public abstract class NetworkUserCalculationModel : CalculationModel,
   public required string NetworkUserInvoiceId { get; set; } = default!;
 
   [Required]
-  public required RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue
-  {
-    get;
-    set;
-  } = default!;
+  public required RegulatoryCatalogueModel ArchivedSupplyRegulatoryCatalogue { get; set; } =
+    default!;
 
-  public abstract NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue
-  {
-    get;
-  }
+  public abstract NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue { get; }
 }

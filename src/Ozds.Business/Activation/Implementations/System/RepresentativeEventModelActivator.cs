@@ -4,11 +4,10 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Activation.Implementations.System;
 
-public class RepresentativeEventModelActivator(
-  IServiceProvider serviceProvider
-) : InheritingModelActivator<RepresentativeEventModel, EventModel>(
-  serviceProvider
-)
+public class RepresentativeEventModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<RepresentativeEventModel, EventModel>(
+    serviceProvider
+  )
 {
   public override void Initialize(RepresentativeEventModel model)
   {

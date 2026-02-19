@@ -5,8 +5,7 @@ namespace Ozds.Fake.Faking;
 
 public class ModelFaker(IServiceProvider serviceProvider)
 {
-  private readonly ConcurrentDictionary<Type, IModelFaker> fakerCache =
-    new();
+  private readonly ConcurrentDictionary<Type, IModelFaker> fakerCache = new();
 
   private readonly ConcurrentDictionary<Type, List<Type>> subtypeCache = new();
 
@@ -23,19 +22,20 @@ public class ModelFaker(IServiceProvider serviceProvider)
       return activator.Fake();
     }
 
-    activator = serviceProvider
+    activator =
+      serviceProvider
         .GetServices<IModelFaker>()
         .Where(converter => converter.CanFake(type))
         .DefaultIfEmpty(null)
         .Aggregate(
           (acc, next) =>
-            acc is null
-              ? null
-              : next!.ModelType.IsAssignableTo(acc.ModelType)
-                ? next
-                : acc)
+            acc is null ? null
+            : next!.ModelType.IsAssignableTo(acc.ModelType) ? next
+            : acc
+        )
       ?? throw new InvalidOperationException(
-        $"No model activator found for {type}");
+        $"No model activator found for {type}"
+      );
 
     fakerCache.TryAdd(type, activator);
 
@@ -51,12 +51,12 @@ public class ModelFaker(IServiceProvider serviceProvider)
 
     subtypes = serviceProvider
       .GetServices<IModelFaker>()
-      .Where(
-        converter =>
-          !converter.ModelType.IsAbstract
-          && !converter.ModelType.IsInterface
-          && converter.ModelType.IsAssignableTo(type)
-          && converter.CanFake(type))
+      .Where(converter =>
+        !converter.ModelType.IsAbstract
+        && !converter.ModelType.IsInterface
+        && converter.ModelType.IsAssignableTo(type)
+        && converter.CanFake(type)
+      )
       .Select(converter => converter.ModelType)
       .ToList();
 

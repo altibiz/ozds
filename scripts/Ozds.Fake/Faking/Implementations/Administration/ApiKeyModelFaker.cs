@@ -4,10 +4,5 @@ using Ozds.Fake.Faking.Base;
 
 namespace Ozds.Fake.Implementations.Administration;
 
-public class ApiKeyModelFaker(
-  IServiceProvider serviceProvider
-) : InheritingModelFaker<ApiKeyModel, TrackableModel>(
-  serviceProvider
-)
-{
-}
+public class ApiKeyModelFaker(IServiceProvider serviceProvider)
+  : InheritingModelFaker<ApiKeyModel, TrackableModel>(serviceProvider) { }

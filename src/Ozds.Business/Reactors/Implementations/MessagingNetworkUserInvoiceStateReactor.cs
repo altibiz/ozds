@@ -11,12 +11,12 @@ namespace Ozds.Business.Reactors.Implementations;
 
 public class MessagingNetworkUserInvoiceStateReactor(
   IServiceProvider serviceProvider
-) : Reactor<
-  MessagingNetworkUserInvoiceStateEventArgs,
-  IMessagingNetworkUserInvoiceStateSubscriber,
-  MessagingNetworkUserInvoiceStateHandler>(serviceProvider)
-{
-}
+)
+  : Reactor<
+    MessagingNetworkUserInvoiceStateEventArgs,
+    IMessagingNetworkUserInvoiceStateSubscriber,
+    MessagingNetworkUserInvoiceStateHandler
+  >(serviceProvider) { }
 
 public class MessagingNetworkUserInvoiceStateHandler(
   ModelActivator activator,
@@ -28,7 +28,8 @@ public class MessagingNetworkUserInvoiceStateHandler(
 {
   public override async Task Handle(
     MessagingNetworkUserInvoiceStateEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     if (!eventArgs.State.Approved || eventArgs.State.BillId is null)
     {
@@ -59,27 +60,25 @@ public class MessagingNetworkUserInvoiceStateHandler(
       return;
     }
 
-    var notification = activator
-      .Activate<NetworkUserInvoiceNotificationModel>();
+    var notification =
+      activator.Activate<NetworkUserInvoiceNotificationModel>();
     notification.InvoiceId = invoice.Id;
-    notification.Topics =
-    [
-      TopicModel.All,
-      TopicModel.NetworkUserInvoiceState
-    ];
+    notification.Topics = [TopicModel.All, TopicModel.NetworkUserInvoiceState];
     notification.Summary =
       localizationQueries.Translate(
         localizationQueries.CroatianCulture,
-        "Invoice")
+        "Invoice"
+      )
       + $" \"{invoice.Title}\" "
       + localizationQueries.Translate(
         localizationQueries.CroatianCulture,
-        "issued");
+        "issued"
+      );
     notification.Content =
       localizationQueries.Translate(
         localizationQueries.CroatianCulture,
-        "Invoice url is")
-      + $" 'invoices/{invoice.Id}'";
+        "Invoice url is"
+      ) + $" 'invoices/{invoice.Id}'";
     await modelMutations.Create(notification, cancellationToken);
   }
 }

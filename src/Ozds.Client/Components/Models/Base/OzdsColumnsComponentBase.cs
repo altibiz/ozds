@@ -1,7 +1,7 @@
 namespace Ozds.Client.Components.Models.Base;
 
-public abstract partial class OzdsColumnsComponentBase<TPrefix, TModel> :
-  OzdsListModelComponentBase<TPrefix, TModel>
+public abstract partial class OzdsColumnsComponentBase<TPrefix, TModel>
+  : OzdsListModelComponentBase<TPrefix, TModel>
 {
   protected virtual int NestingLevel
   {

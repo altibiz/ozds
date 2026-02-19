@@ -7,10 +7,7 @@ namespace Ozds.Business.Conversion.Implementations.Administration;
 public class UserModelEntityConverter
   : ConcreteModelUserEntityConverter<UserModel, UserEntity>
 {
-  public override void InitializeEntity(
-    UserModel model,
-    UserEntity entity
-  )
+  public override void InitializeEntity(UserModel model, UserEntity entity)
   {
     base.InitializeEntity(model, entity);
     entity.Name = model.Name;
@@ -18,10 +15,7 @@ public class UserModelEntityConverter
     entity.Id = model.Id;
   }
 
-  public override void InitializeModel(
-    UserEntity entity,
-    UserModel model
-  )
+  public override void InitializeModel(UserEntity entity, UserModel model)
   {
     base.InitializeModel(entity, model);
     model.Name = entity.Name;

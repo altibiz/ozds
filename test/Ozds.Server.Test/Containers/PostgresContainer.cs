@@ -15,8 +15,7 @@ public sealed class PostgresContainer : IComposableService<PostgresContainer>
 
   private const string PostgresPassword = "ozds";
 
-  private const string PostgresReady =
-    ".*listening on IPv4.*";
+  private const string PostgresReady = ".*listening on IPv4.*";
 
   private readonly IContainer container;
 
@@ -24,11 +23,7 @@ public sealed class PostgresContainer : IComposableService<PostgresContainer>
 
   private readonly int hostPort;
 
-  private PostgresContainer(
-    IContainer container,
-    string host,
-    int hostPort
-  )
+  private PostgresContainer(IContainer container, string host, int hostPort)
   {
     this.container = container;
     this.host = host;
@@ -84,12 +79,8 @@ public sealed class PostgresContainer : IComposableService<PostgresContainer>
   {
     var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     var wait = isWindows
-      ? Wait
-        .ForWindowsContainer()
-        .UntilMessageIsLogged(PostgresReady)
-      : Wait
-        .ForUnixContainer()
-        .UntilMessageIsLogged(PostgresReady);
+      ? Wait.ForWindowsContainer().UntilMessageIsLogged(PostgresReady)
+      : Wait.ForUnixContainer().UntilMessageIsLogged(PostgresReady);
 
     var host = network.Host<PostgresContainer>();
     var hostPort = network.Port<PostgresContainer>();

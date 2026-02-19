@@ -19,7 +19,8 @@ namespace Ozds.Data.Migrations
         {
             // Handle enum label changes using raw SQL
             // Rename 'general' to 'all' in 'topic_entity' enum
-            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(
+                @"
                 DO $$
                 BEGIN
                     IF EXISTS (
@@ -29,24 +30,34 @@ namespace Ozds.Data.Migrations
                         ALTER TYPE topic_entity RENAME VALUE 'general' TO 'all';
                     END IF;
                 END
-                $$;", suppressTransaction: true);
+                $$;",
+                suppressTransaction: true
+            );
             // Add new enum labels to 'topic_entity' enum
-            migrationBuilder.Sql("ALTER TYPE topic_entity ADD VALUE IF NOT EXISTS 'messenger';", suppressTransaction: true);
-            migrationBuilder.Sql("ALTER TYPE topic_entity ADD VALUE IF NOT EXISTS 'messenger_inactivity';", suppressTransaction: true);
+            migrationBuilder.Sql(
+                "ALTER TYPE topic_entity ADD VALUE IF NOT EXISTS 'messenger';",
+                suppressTransaction: true
+            );
+            migrationBuilder.Sql(
+                "ALTER TYPE topic_entity ADD VALUE IF NOT EXISTS 'messenger_inactivity';",
+                suppressTransaction: true
+            );
 
             // Create new enum types if they don't exist
-            migrationBuilder.Sql("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'category_entity') THEN CREATE TYPE category_entity AS ENUM ('all', 'messenger', 'messenger_push', 'audit'); END IF; END $$;", suppressTransaction: true);
-            migrationBuilder.Sql("DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'duration_entity') THEN CREATE TYPE duration_entity AS ENUM ('second', 'minute', 'hour', 'day', 'week', 'month', 'year'); END IF; END $$;", suppressTransaction: true);
+            migrationBuilder.Sql(
+                "DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'category_entity') THEN CREATE TYPE category_entity AS ENUM ('all', 'messenger', 'messenger_push', 'audit'); END IF; END $$;",
+                suppressTransaction: true
+            );
+            migrationBuilder.Sql(
+                "DO $$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'duration_entity') THEN CREATE TYPE duration_entity AS ENUM ('second', 'minute', 'hour', 'day', 'week', 'month', 'year'); END IF; END $$;",
+                suppressTransaction: true
+            );
 
             // Drop existing foreign key
-            migrationBuilder.DropForeignKey(
-                name: "fk_messengers_locations_location_id",
-                table: "messengers");
+            migrationBuilder.DropForeignKey(name: "fk_messengers_locations_location_id", table: "messengers");
 
             // Drop existing column
-            migrationBuilder.DropColumn(
-                name: "topic",
-                table: "notifications");
+            migrationBuilder.DropColumn(name: "topic", table: "notifications");
 
 #pragma warning disable S125 // Sections of code should not be commented out
             // Update database annotations
@@ -73,35 +84,42 @@ namespace Ozds.Data.Migrations
             EnumMappings.ApplyUpMigrations(migrationBuilder);
 
             // Recreate primary keys on 'aggregates' tables
-            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(
+                @"
                 ALTER TABLE schneider_iem3xxx_aggregates
                 ADD PRIMARY KEY (interval, timestamp, meter_id);
-            ");
+            "
+            );
 
-            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(
+                @"
                 ALTER TABLE abb_b2x_aggregates
                 ADD PRIMARY KEY (interval, timestamp, meter_id);
-            ");
+            "
+            );
 
             // Add new columns
             migrationBuilder.AddColumn<string>(
                 name: "messenger_id",
                 table: "notifications",
                 type: "text",
-                nullable: true);
+                nullable: true
+            );
 
             migrationBuilder.AddColumn<HashSet<TopicEntity>>(
                 name: "topics",
                 table: "notifications",
                 type: "topic_entity[]",
-                nullable: false);
+                nullable: false
+            );
 
             migrationBuilder.AddColumn<HashSet<CategoryEntity>>(
                 name: "categories",
                 table: "events",
                 type: "category_entity[]",
                 nullable: false,
-                defaultValue: new HashSet<CategoryEntity>() { CategoryEntity.All, CategoryEntity.Audit });
+                defaultValue: new HashSet<CategoryEntity>() { CategoryEntity.All, CategoryEntity.Audit }
+            );
 
             migrationBuilder.AddColumn<string>(
                 name: "kind",
@@ -109,41 +127,47 @@ namespace Ozds.Data.Migrations
                 type: "character varying(34)",
                 maxLength: 34,
                 nullable: false,
-                defaultValue: "PidgeonMessengerEntity");
+                defaultValue: "PidgeonMessengerEntity"
+            );
 
             migrationBuilder.AddColumn<DurationEntity>(
                 name: "max_inactivity_period_duration",
                 table: "messengers",
                 type: "duration_entity",
                 nullable: false,
-                defaultValue: DurationEntity.Second);
+                defaultValue: DurationEntity.Second
+            );
 
             migrationBuilder.AddColumn<long>(
                 name: "max_inactivity_period_multiplier",
                 table: "messengers",
                 type: "bigint",
                 nullable: false,
-                defaultValue: 0L);
+                defaultValue: 0L
+            );
 
             migrationBuilder.AddColumn<DurationEntity>(
                 name: "push_delay_period_duration",
                 table: "messengers",
                 type: "duration_entity",
                 nullable: false,
-                defaultValue: DurationEntity.Second);
+                defaultValue: DurationEntity.Second
+            );
 
             migrationBuilder.AddColumn<long>(
                 name: "push_delay_period_multiplier",
                 table: "messengers",
                 type: "bigint",
                 nullable: false,
-                defaultValue: 0L);
+                defaultValue: 0L
+            );
 
             // Create index
             migrationBuilder.CreateIndex(
                 name: "ix_notifications_messenger_id",
                 table: "notifications",
-                column: "messenger_id");
+                column: "messenger_id"
+            );
 
             // Add foreign keys
             migrationBuilder.AddForeignKey(
@@ -152,7 +176,8 @@ namespace Ozds.Data.Migrations
                 column: "location_id",
                 principalTable: "locations",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "fk_notifications_messengers_messenger_id",
@@ -160,82 +185,69 @@ namespace Ozds.Data.Migrations
                 column: "messenger_id",
                 principalTable: "messengers",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             // Drop foreign keys
-            migrationBuilder.DropForeignKey(
-                name: "fk_messengers_locations__location_id",
-                table: "messengers");
+            migrationBuilder.DropForeignKey(name: "fk_messengers_locations__location_id", table: "messengers");
 
-            migrationBuilder.DropForeignKey(
-                name: "fk_notifications_messengers_messenger_id",
-                table: "notifications");
+            migrationBuilder.DropForeignKey(name: "fk_notifications_messengers_messenger_id", table: "notifications");
 
             // Drop index
-            migrationBuilder.DropIndex(
-                name: "ix_notifications_messenger_id",
-                table: "notifications");
+            migrationBuilder.DropIndex(name: "ix_notifications_messenger_id", table: "notifications");
 
             // Drop new columns
-            migrationBuilder.DropColumn(
-                name: "messenger_id",
-                table: "notifications");
+            migrationBuilder.DropColumn(name: "messenger_id", table: "notifications");
 
-            migrationBuilder.DropColumn(
-                name: "topics",
-                table: "notifications");
+            migrationBuilder.DropColumn(name: "topics", table: "notifications");
 
-            migrationBuilder.DropColumn(
-                name: "categories",
-                table: "events");
+            migrationBuilder.DropColumn(name: "categories", table: "events");
 
-            migrationBuilder.DropColumn(
-                name: "kind",
-                table: "messengers");
+            migrationBuilder.DropColumn(name: "kind", table: "messengers");
 
-            migrationBuilder.DropColumn(
-                name: "max_inactivity_period_duration",
-                table: "messengers");
+            migrationBuilder.DropColumn(name: "max_inactivity_period_duration", table: "messengers");
 
-            migrationBuilder.DropColumn(
-                name: "max_inactivity_period_multiplier",
-                table: "messengers");
+            migrationBuilder.DropColumn(name: "max_inactivity_period_multiplier", table: "messengers");
 
-            migrationBuilder.DropColumn(
-                name: "push_delay_period_duration",
-                table: "messengers");
+            migrationBuilder.DropColumn(name: "push_delay_period_duration", table: "messengers");
 
-            migrationBuilder.DropColumn(
-                name: "push_delay_period_multiplier",
-                table: "messengers");
+            migrationBuilder.DropColumn(name: "push_delay_period_multiplier", table: "messengers");
 
             // Revert data conversions from enum back to int types
             EnumMappings.ApplyDownMigrations(migrationBuilder);
 
             // Drop and recreate primary keys on 'aggregates' tables
-            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(
+                @"
                 ALTER TABLE schneider_iem3xxx_aggregates
                 DROP CONSTRAINT IF EXISTS schneider_iem3xxx_aggregates_pkey;
-            ");
+            "
+            );
 
-            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(
+                @"
                 ALTER TABLE schneider_iem3xxx_aggregates
                 ADD PRIMARY KEY (interval, timestamp, meter_id);
-            ");
+            "
+            );
 
-            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(
+                @"
                 ALTER TABLE abb_b2x_aggregates
                 DROP CONSTRAINT IF EXISTS abb_b2x_aggregates_pkey;
-            ");
+            "
+            );
 
-            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(
+                @"
                 ALTER TABLE abb_b2x_aggregates
                 ADD PRIMARY KEY (interval, timestamp, meter_id);
-            ");
+            "
+            );
 
             // Revert enum label changes
             migrationBuilder.Sql("ALTER TYPE topic_entity RENAME VALUE 'all' TO 'general';");
@@ -247,7 +259,8 @@ namespace Ozds.Data.Migrations
                 table: "notifications",
                 type: "integer",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: 0
+            );
 
             // Re-add foreign key
             migrationBuilder.AddForeignKey(
@@ -256,7 +269,8 @@ namespace Ozds.Data.Migrations
                 column: "location_id",
                 principalTable: "locations",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Cascade
+            );
         }
 
         public static class EnumMappings
@@ -267,7 +281,7 @@ namespace Ozds.Data.Migrations
                 { 0, "query" },
                 { 1, "creation" },
                 { 2, "modification" },
-                { 3, "deletion" }
+                { 3, "deletion" },
             };
 
             public static readonly Dictionary<string, int> AuditEntityEnumToInt = new Dictionary<string, int>
@@ -275,7 +289,7 @@ namespace Ozds.Data.Migrations
                 { "query", 0 },
                 { "creation", 1 },
                 { "modification", 2 },
-                { "deletion", 3 }
+                { "deletion", 3 },
             };
 
             public static readonly Dictionary<int, string> CategoryEntityIntToEnum = new Dictionary<int, string>
@@ -283,7 +297,7 @@ namespace Ozds.Data.Migrations
                 { 0, "all" },
                 { 1, "messenger" },
                 { 2, "messenger_push" },
-                { 3, "audit" }
+                { 3, "audit" },
             };
 
             public static readonly Dictionary<string, int> CategoryEntityEnumToInt = new Dictionary<string, int>
@@ -291,7 +305,7 @@ namespace Ozds.Data.Migrations
                 { "all", 0 },
                 { "messenger", 1 },
                 { "messenger_push", 2 },
-                { "audit", 3 }
+                { "audit", 3 },
             };
 
             public static readonly Dictionary<int, string> DurationEntityIntToEnum = new Dictionary<int, string>
@@ -302,7 +316,7 @@ namespace Ozds.Data.Migrations
                 { 3, "day" },
                 { 4, "week" },
                 { 5, "month" },
-                { 6, "year" }
+                { 6, "year" },
             };
 
             public static readonly Dictionary<string, int> DurationEntityEnumToInt = new Dictionary<string, int>
@@ -313,21 +327,21 @@ namespace Ozds.Data.Migrations
                 { "day", 3 },
                 { "week", 4 },
                 { "month", 5 },
-                { "year", 6 }
+                { "year", 6 },
             };
 
             public static readonly Dictionary<int, string> IntervalEntityIntToEnum = new Dictionary<int, string>
             {
                 { 0, "quarter_hour" },
                 { 1, "day" },
-                { 2, "month" }
+                { 2, "month" },
             };
 
             public static readonly Dictionary<string, int> IntervalEntityEnumToInt = new Dictionary<string, int>
             {
                 { "quarter_hour", 0 },
                 { "day", 1 },
-                { "month", 2 }
+                { "month", 2 },
             };
 
             public static readonly Dictionary<int, string> LevelEntityIntToEnum = new Dictionary<int, string>
@@ -337,7 +351,7 @@ namespace Ozds.Data.Migrations
                 { 2, "info" },
                 { 3, "warning" },
                 { 4, "error" },
-                { 5, "critical" }
+                { 5, "critical" },
             };
 
             public static readonly Dictionary<string, int> LevelEntityEnumToInt = new Dictionary<string, int>
@@ -347,49 +361,49 @@ namespace Ozds.Data.Migrations
                 { "info", 2 },
                 { "warning", 3 },
                 { "error", 4 },
-                { "critical", 5 }
+                { "critical", 5 },
             };
 
             public static readonly Dictionary<int, string> PhaseEntityIntToEnum = new Dictionary<int, string>
             {
                 { 0, "l1" },
                 { 1, "l2" },
-                { 2, "l3" }
+                { 2, "l3" },
             };
 
             public static readonly Dictionary<string, int> PhaseEntityEnumToInt = new Dictionary<string, int>
             {
                 { "l1", 0 },
                 { "l2", 1 },
-                { "l3", 2 }
+                { "l3", 2 },
             };
 
             public static readonly Dictionary<int, string> RoleEntityIntToEnum = new Dictionary<int, string>
             {
                 { 0, "operator_representative" },
                 { 1, "location_representative" },
-                { 2, "network_user_representative" }
+                { 2, "network_user_representative" },
             };
 
             public static readonly Dictionary<string, int> RoleEntityEnumToInt = new Dictionary<string, int>
             {
                 { "operator_representative", 0 },
                 { "location_representative", 1 },
-                { "network_user_representative", 2 }
+                { "network_user_representative", 2 },
             };
 
             public static readonly Dictionary<int, string> TopicEntityIntToEnum = new Dictionary<int, string>
             {
                 { 0, "all" },
                 { 1, "messenger" },
-                { 2, "messenger_inactivity" }
+                { 2, "messenger_inactivity" },
             };
 
             public static readonly Dictionary<string, int> TopicEntityEnumToInt = new Dictionary<string, int>
             {
                 { "all", 0 },
                 { "messenger", 1 },
-                { "messenger_inactivity", 2 }
+                { "messenger_inactivity", 2 },
             };
 
             public static void ApplyUpMigrations(MigrationBuilder migrationBuilder)
@@ -419,12 +433,7 @@ namespace Ozds.Data.Migrations
                 );
 
                 // Convert int to enum for 'role' in 'representatives'
-                migrationBuilder.ConvertIntToEnum(
-                    "representatives",
-                    "role",
-                    RoleEntityIntToEnum,
-                    "role_entity"
-                );
+                migrationBuilder.ConvertIntToEnum("representatives", "role", RoleEntityIntToEnum, "role_entity");
 
                 // Convert int[] to enum[] for 'am_phases' in 'network_user_calculations'
                 migrationBuilder.ConvertIntArrayToEnumArray(
@@ -435,59 +444,28 @@ namespace Ozds.Data.Migrations
                 );
 
                 // Convert int[] to enum[] for 'phases' in 'meters'
-                migrationBuilder.ConvertIntArrayToEnumArray(
-                    "meters",
-                    "phases",
-                    PhaseEntityIntToEnum,
-                    "phase_entity"
-                );
+                migrationBuilder.ConvertIntArrayToEnumArray("meters", "phases", PhaseEntityIntToEnum, "phase_entity");
 
                 // Convert int to enum for 'level' in 'events'
-                migrationBuilder.ConvertIntToEnum(
-                    "events",
-                    "level",
-                    LevelEntityIntToEnum,
-                    "level_entity"
-                );
+                migrationBuilder.ConvertIntToEnum("events", "level", LevelEntityIntToEnum, "level_entity");
 
                 // Convert nullable int to enum for 'audit' in 'events'
-                migrationBuilder.ConvertNullableIntToEnum(
-                    "events",
-                    "audit",
-                    AuditEntityIntToEnum,
-                    "audit_entity"
-                );
+                migrationBuilder.ConvertNullableIntToEnum("events", "audit", AuditEntityIntToEnum, "audit_entity");
             }
 
             public static void ApplyDownMigrations(MigrationBuilder migrationBuilder)
             {
                 // Revert 'interval' in 'schneider_iem3xxx_aggregates' from enum to int
-                migrationBuilder.ConvertEnumToInt(
-                    "schneider_iem3xxx_aggregates",
-                    "interval",
-                    IntervalEntityEnumToInt
-                );
+                migrationBuilder.ConvertEnumToInt("schneider_iem3xxx_aggregates", "interval", IntervalEntityEnumToInt);
 
                 // Revert 'interval' in 'abb_b2x_aggregates' from enum to int
-                migrationBuilder.ConvertEnumToInt(
-                    "abb_b2x_aggregates",
-                    "interval",
-                    IntervalEntityEnumToInt
-                );
+                migrationBuilder.ConvertEnumToInt("abb_b2x_aggregates", "interval", IntervalEntityEnumToInt);
 
                 // Revert enum[] to int[] for 'topics' in 'representatives'
-                migrationBuilder.ConvertEnumArrayToIntArray(
-                    "representatives",
-                    "topics",
-                    TopicEntityEnumToInt
-                );
+                migrationBuilder.ConvertEnumArrayToIntArray("representatives", "topics", TopicEntityEnumToInt);
 
                 // Revert enum to int for 'role' in 'representatives'
-                migrationBuilder.ConvertEnumToInt(
-                    "representatives",
-                    "role",
-                    RoleEntityEnumToInt
-                );
+                migrationBuilder.ConvertEnumToInt("representatives", "role", RoleEntityEnumToInt);
 
                 // Revert enum[] to int[] for 'am_phases' in 'network_user_calculations'
                 migrationBuilder.ConvertEnumArrayToIntArray(
@@ -497,25 +475,13 @@ namespace Ozds.Data.Migrations
                 );
 
                 // Revert enum[] to int[] for 'phases' in 'meters'
-                migrationBuilder.ConvertEnumArrayToIntArray(
-                    "meters",
-                    "phases",
-                    PhaseEntityEnumToInt
-                );
+                migrationBuilder.ConvertEnumArrayToIntArray("meters", "phases", PhaseEntityEnumToInt);
 
                 // Revert enum to int for 'level' in 'events'
-                migrationBuilder.ConvertEnumToInt(
-                    "events",
-                    "level",
-                    LevelEntityEnumToInt
-                );
+                migrationBuilder.ConvertEnumToInt("events", "level", LevelEntityEnumToInt);
 
                 // Revert nullable enum to int for 'audit' in 'events'
-                migrationBuilder.ConvertEnumToNullableInt(
-                    "events",
-                    "audit",
-                    AuditEntityEnumToInt
-                );
+                migrationBuilder.ConvertEnumToNullableInt("events", "audit", AuditEntityEnumToInt);
             }
         }
     }
@@ -533,15 +499,17 @@ namespace Ozds.Data.Migrations
             var sql = new StringBuilder();
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {tableName}
                         ADD COLUMN temp_{columnName} {enumTypeName};
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         UPDATE {tableName}
-                        SET temp_{columnName} = CASE");
+                        SET temp_{columnName} = CASE"
+            );
 
             foreach (var kvp in intToEnumMapping)
             {
@@ -549,25 +517,29 @@ namespace Ozds.Data.Migrations
                 var enumName = kvp.Value;
                 sql.AppendLine(
                     $@"
-                            WHEN {columnName} = {enumIndex} THEN '{enumName}'::{enumTypeName}");
+                            WHEN {columnName} = {enumIndex} THEN '{enumName}'::{enumTypeName}"
+                );
             }
 
             sql.AppendLine(
-            @"
+                @"
                         END;
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {tableName}
                         DROP COLUMN {columnName};
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {tableName}
                         RENAME COLUMN temp_{columnName} TO {columnName};
-                    ");
+                    "
+            );
 
             migrationBuilder.Sql(sql.ToString());
         }
@@ -583,7 +555,7 @@ namespace Ozds.Data.Migrations
             var sql = new StringBuilder();
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
@@ -592,23 +564,25 @@ namespace Ozds.Data.Migrations
                         } {
                         enumTypeName
                         };
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         UPDATE {
                         tableName
                         }
                         SET temp_{
                         columnName
-                        } = CASE");
+                        } = CASE"
+            );
 
             foreach (var kvp in intToEnumMapping)
             {
-            var enumIndex = kvp.Key;
-            var enumName = kvp.Value;
-            sql.AppendLine(
-                $@"
+                var enumIndex = kvp.Key;
+                var enumName = kvp.Value;
+                sql.AppendLine(
+                    $@"
                             WHEN {
                             columnName
                             } = {
@@ -617,29 +591,32 @@ namespace Ozds.Data.Migrations
                             enumName
                             }'::{
                             enumTypeName
-                            }");
+                            }"
+                );
             }
 
             sql.AppendLine(
-            $@"
+                $@"
                             WHEN {
                             columnName
                             } IS NULL THEN NULL
                         END;
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
                         DROP COLUMN {
                         columnName
                         };
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
@@ -648,7 +625,8 @@ namespace Ozds.Data.Migrations
                         } TO {
                         columnName
                         };
-                    ");
+                    "
+            );
 
             migrationBuilder.Sql(sql.ToString());
         }
@@ -663,56 +641,61 @@ namespace Ozds.Data.Migrations
             var sql = new StringBuilder();
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
                         ADD COLUMN temp_{
                         columnName
                         } integer;
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         UPDATE {
                         tableName
                         }
                         SET temp_{
                         columnName
-                        } = CASE");
+                        } = CASE"
+            );
 
             foreach (var kvp in enumToIntMapping)
             {
-            var enumName = kvp.Key;
-            var enumIndex = kvp.Value;
-            sql.AppendLine(
-                $@"
+                var enumName = kvp.Key;
+                var enumIndex = kvp.Value;
+                sql.AppendLine(
+                    $@"
                             WHEN {
                             columnName
                             } = '{
                             enumName
                             }' THEN {
                             enumIndex
-                            }");
+                            }"
+                );
             }
 
             sql.AppendLine(
-            @"
+                @"
                         END;
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
                         DROP COLUMN {
                         columnName
                         };
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
@@ -721,7 +704,8 @@ namespace Ozds.Data.Migrations
                         } TO {
                         columnName
                         };
-                    ");
+                    "
+            );
 
             migrationBuilder.Sql(sql.ToString());
         }
@@ -736,59 +720,64 @@ namespace Ozds.Data.Migrations
             var sql = new StringBuilder();
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
                         ADD COLUMN temp_{
                         columnName
                         } integer;
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         UPDATE {
                         tableName
                         }
                         SET temp_{
                         columnName
-                        } = CASE");
+                        } = CASE"
+            );
 
             foreach (var kvp in enumToIntMapping)
             {
-            var enumName = kvp.Key;
-            var enumIndex = kvp.Value;
-            sql.AppendLine(
-                $@"
+                var enumName = kvp.Key;
+                var enumIndex = kvp.Value;
+                sql.AppendLine(
+                    $@"
                             WHEN {
                             columnName
                             } = '{
                             enumName
                             }' THEN {
                             enumIndex
-                            }");
+                            }"
+                );
             }
 
             sql.AppendLine(
-            $@"
+                $@"
                             WHEN {
                             columnName
                             } IS NULL THEN NULL
                         END;
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
                         DROP COLUMN {
                         columnName
                         };
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
@@ -797,7 +786,8 @@ namespace Ozds.Data.Migrations
                         } TO {
                         columnName
                         };
-                    ");
+                    "
+            );
 
             migrationBuilder.Sql(sql.ToString());
         }
@@ -813,7 +803,7 @@ namespace Ozds.Data.Migrations
             var sql = new StringBuilder();
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
@@ -822,54 +812,59 @@ namespace Ozds.Data.Migrations
                         } {
                         enumTypeName
                         }[];
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         UPDATE {
                         tableName
                         }
                         SET temp_{
                         columnName
                         } = ARRAY(
-                            SELECT CASE");
+                            SELECT CASE"
+            );
 
             foreach (var kvp in intToEnumMapping)
             {
-            var enumIndex = kvp.Key;
-            var enumName = kvp.Value;
-            sql.AppendLine(
-                $@"
+                var enumIndex = kvp.Key;
+                var enumName = kvp.Value;
+                sql.AppendLine(
+                    $@"
                             WHEN x = {
                             enumIndex
                             } THEN '{
                             enumName
                             }'::{
                             enumTypeName
-                            }");
+                            }"
+                );
             }
 
             sql.AppendLine(
-            $@"
+                $@"
                             END
                             FROM unnest({
                             columnName
                             }) AS x
                         );
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
                         DROP COLUMN {
                         columnName
                         };
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
@@ -878,7 +873,8 @@ namespace Ozds.Data.Migrations
                         } TO {
                         columnName
                         };
-                    ");
+                    "
+            );
 
             migrationBuilder.Sql(sql.ToString());
         }
@@ -893,59 +889,64 @@ namespace Ozds.Data.Migrations
             var sql = new StringBuilder();
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
                         ADD COLUMN temp_{
                         columnName
                         } integer[];
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         UPDATE {
                         tableName
                         }
                         SET temp_{
                         columnName
                         } = ARRAY(
-                            SELECT CASE");
+                            SELECT CASE"
+            );
 
             foreach (var kvp in enumToIntMapping)
             {
-            var enumName = kvp.Key;
-            var enumIndex = kvp.Value;
-            sql.AppendLine(
-                $@"
+                var enumName = kvp.Key;
+                var enumIndex = kvp.Value;
+                sql.AppendLine(
+                    $@"
                             WHEN x = '{
                             enumName
                             }' THEN {
                             enumIndex
-                            }");
+                            }"
+                );
             }
 
             sql.AppendLine(
-            $@"
+                $@"
                             END
                             FROM unnest({
                             columnName
                             }) AS x
                         );
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
                         DROP COLUMN {
                         columnName
                         };
-                    ");
+                    "
+            );
 
             sql.AppendLine(
-            $@"
+                $@"
                         ALTER TABLE {
                         tableName
                         }
@@ -954,7 +955,8 @@ namespace Ozds.Data.Migrations
                         } TO {
                         columnName
                         };
-                    ");
+                    "
+            );
 
             migrationBuilder.Sql(sql.ToString());
         }

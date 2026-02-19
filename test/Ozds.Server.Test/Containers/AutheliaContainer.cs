@@ -22,8 +22,7 @@ public sealed class AutheliaContainer : IComposableService<AutheliaContainer>
 
   private const string AutheliaCookieDomain = "127.0.0.1";
 
-  private const string AutheliaReady =
-    "Listening for non-TLS connections";
+  private const string AutheliaReady = "Listening for non-TLS connections";
 
   private const string AutheliaLogoutSubpath = "logout";
 
@@ -121,22 +120,15 @@ public sealed class AutheliaContainer : IComposableService<AutheliaContainer>
   {
     var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     var wait = isWindows
-      ? Wait
-        .ForWindowsContainer()
-        .UntilMessageIsLogged(AutheliaReady)
-      : Wait
-        .ForUnixContainer()
-        .UntilMessageIsLogged(AutheliaReady);
+      ? Wait.ForWindowsContainer().UntilMessageIsLogged(AutheliaReady)
+      : Wait.ForUnixContainer().UntilMessageIsLogged(AutheliaReady);
 
     var tmpDir = Path.Combine(
       Path.GetTempPath(),
       $"ozds-client-test-authelia-{Guid.NewGuid()}"
     );
     Directory.CreateDirectory(tmpDir);
-    var configFilePath = Path.Combine(
-      tmpDir,
-      "configuration.yml"
-    );
+    var configFilePath = Path.Combine(tmpDir, "configuration.yml");
 
     var (privateKeyPem, certificatePem) = ServiceCryptography.Rs256KeyPair(
       "ozds-jwks-key-id"
@@ -154,7 +146,8 @@ public sealed class AutheliaContainer : IComposableService<AutheliaContainer>
       .WithBindMount(
         configFilePath,
         "/config/configuration.yml",
-        AccessMode.ReadWrite)
+        AccessMode.ReadWrite
+      )
       .Build();
     await File.WriteAllTextAsync(configFilePath, "", cancellationToken);
 
@@ -176,18 +169,20 @@ public sealed class AutheliaContainer : IComposableService<AutheliaContainer>
   {
     var lldap = composition.Lldap;
     var ozds = composition.Ozds;
-    var clientSecret =
-      ServiceCryptography.GlibcPbkdf2Hash(AutheliaClientSecret);
+    var clientSecret = ServiceCryptography.GlibcPbkdf2Hash(
+      AutheliaClientSecret
+    );
     var escapedPrivateKeyPem = privateKeyPem.Escape();
     var escapedCertificatePem = certificatePem.Escape();
     var signOutCallbackSubpath = composition.Ozds.SignOutCallbackSubpath;
     var signInCallbackSubpath = composition.Ozds.SignInCallbackSubpath;
 
     var assembly = Assembly.GetExecutingAssembly();
-    using var stream = assembly.GetManifestResourceStream(
-        "Ozds.Server.Test.Assets.authelia-config.yaml.template")
-      ?? throw new InvalidOperationException(
-        "Lldap config template not found");
+    using var stream =
+      assembly.GetManifestResourceStream(
+        "Ozds.Server.Test.Assets.authelia-config.yaml.template"
+      )
+      ?? throw new InvalidOperationException("Lldap config template not found");
     using var reader = new StreamReader(stream);
     var configTemplate = await reader.ReadToEndAsync(cancellationToken);
     var configContent = configTemplate

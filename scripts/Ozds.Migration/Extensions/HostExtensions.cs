@@ -34,22 +34,25 @@ public static class HostExtensions
   )
   {
     builder.Services.ConfigureOptions<ConfigureOzdsMigrationOptions>();
-    var relativeServerSettings = builder.Configuration
-      .GetSection("Ozds:Migration:ServerSettings")
+    var relativeServerSettings = builder
+      .Configuration.GetSection("Ozds:Migration:ServerSettings")
       .Get<string>();
     if (relativeServerSettings is not null)
     {
       var serverSettings = Path.GetFullPath(
         relativeServerSettings,
-        builder.Environment.ContentRootPath);
-      var directory = Path.GetDirectoryName(serverSettings)
+        builder.Environment.ContentRootPath
+      );
+      var directory =
+        Path.GetDirectoryName(serverSettings)
         ?? throw new InvalidOperationException(
-          "ServerSettings must be a file path");
+          "ServerSettings must be a file path"
+        );
       var file = Path.GetFileName(serverSettings);
       var source = new JsonConfigurationSource
       {
         FileProvider = new PhysicalFileProvider(directory),
-        Path = file
+        Path = file,
       };
       builder.Configuration.Sources.Insert(0, source);
     }

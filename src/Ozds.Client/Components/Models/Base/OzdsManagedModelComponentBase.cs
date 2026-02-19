@@ -4,23 +4,20 @@ using Ozds.Client.Extensions;
 
 namespace Ozds.Client.Components.Models.Base;
 
-public abstract class OzdsManagedModelComponentBase<TModel> :
-  OzdsModelComponentBase<TModel>
+public abstract class OzdsManagedModelComponentBase<TModel>
+  : OzdsModelComponentBase<TModel>
 {
   [Parameter]
   public TModel Model { get; set; } = default!;
 
   protected override Dictionary<string, object> CreateBaseParameters()
   {
-    return new Dictionary<string, object>
-    {
-      { nameof(Model), Model! }
-    };
+    return new Dictionary<string, object> { { nameof(Model), Model! } };
   }
 }
 
-public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
-  OzdsPrefixedModelComponentBase<TPrefix, TModel>
+public abstract class OzdsManagedModelComponentBase<TPrefix, TModel>
+  : OzdsPrefixedModelComponentBase<TPrefix, TModel>
 {
   private Expression<Func<TModel?>>? fix;
 
@@ -39,9 +36,7 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
     get { return fix ??= CreateFix(); }
   }
 
-  protected T? Get<T>(
-    Func<TModel, T> next
-  )
+  protected T? Get<T>(Func<TModel, T> next)
   {
     var first = Raw();
     if (first is not null)
@@ -52,10 +47,7 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
     return default;
   }
 
-  protected T Get<T>(
-    Func<TModel, T> next,
-    Func<T> @default
-  )
+  protected T Get<T>(Func<TModel, T> next, Func<T> @default)
   {
     var first = Raw();
     if (first is not null)
@@ -66,9 +58,7 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
     return @default();
   }
 
-  protected EventCallback<T> Set<T>(
-    Expression<Func<TModel, T>> next
-  )
+  protected EventCallback<T> Set<T>(Expression<Func<TModel, T>> next)
   {
     var parameter = Expression.Parameter(typeof(T));
     var prefixGetter = Fix;
@@ -81,14 +71,8 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
       next.Parameters[0],
       prefixGetter.Body
     );
-    var memberAssignment = Expression.Assign(
-      memberGetter,
-      parameter
-    );
-    var body = Expression.IfThen(
-      nullCheck,
-      memberAssignment
-    );
+    var memberAssignment = Expression.Assign(memberGetter, parameter);
+    var body = Expression.IfThen(nullCheck, memberAssignment);
     var lambda = Expression.Lambda<Action<T>>(body, parameter);
     return new EventCallback<T>(null, lambda.Compile());
   }
@@ -110,21 +94,13 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
       next.Parameters[0],
       prefixGetter.Body
     );
-    var memberAssignment = Expression.Assign(
-      memberGetter,
-      adapted
-    );
-    var body = Expression.IfThen(
-      nullCheck,
-      memberAssignment
-    );
+    var memberAssignment = Expression.Assign(memberGetter, adapted);
+    var body = Expression.IfThen(nullCheck, memberAssignment);
     var lambda = Expression.Lambda<Action<TAdapter>>(body, parameter);
     return new EventCallback<TAdapter>(null, lambda.Compile());
   }
 
-  protected Expression<Func<T?>> For<T>(
-    Expression<Func<TModel, T?>> next
-  )
+  protected Expression<Func<T?>> For<T>(Expression<Func<TModel, T?>> next)
   {
     var first = Fix;
     var replacedBody = ParameterReplacer.Replace(
@@ -163,7 +139,7 @@ public abstract class OzdsManagedModelComponentBase<TPrefix, TModel> :
     return new Dictionary<string, object>
     {
       { nameof(Model), Model! },
-      { nameof(Prefix), Prefix! }
+      { nameof(Prefix), Prefix! },
     };
   }
 

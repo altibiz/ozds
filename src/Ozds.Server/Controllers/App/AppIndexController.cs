@@ -24,10 +24,7 @@ public class AppIndexController(
   [HttpGet]
   [Route("{culture}/{**catchall}")]
   [Authorize]
-  public IActionResult Index(
-    string culture,
-    string? catchall
-  )
+  public IActionResult Index(string culture, string? catchall)
   {
     if (catchall?.StartsWith("_content") ?? false)
     {
@@ -40,10 +37,9 @@ public class AppIndexController(
       return Redirect($"/app/{LocalStorageCulture}");
     }
 
-    var cultureInfoId =
-      cultureInfo is null
-        ? null
-        : localizationQueries.CultureToId(cultureInfo);
+    var cultureInfoId = cultureInfo is null
+      ? null
+      : localizationQueries.CultureToId(cultureInfo);
     if (cultureInfoId is not null && culture != cultureInfoId)
     {
       return Redirect($"/app/{cultureInfoId}");
@@ -52,8 +48,8 @@ public class AppIndexController(
     string? logoutToken;
     try
     {
-      logoutToken = antiforgery
-          .GetAndStoreTokens(Request.HttpContext).RequestToken
+      logoutToken =
+        antiforgery.GetAndStoreTokens(Request.HttpContext).RequestToken
         ?? throw new InvalidOperationException("Antiforgery token is null.");
     }
     catch (Exception ex)
@@ -63,10 +59,7 @@ public class AppIndexController(
 
     return View(
       "App",
-      new AppViewModel
-      {
-        CultureId = cultureInfoId,
-        LogoutToken = logoutToken
-      });
+      new AppViewModel { CultureId = cultureInfoId, LogoutToken = logoutToken }
+    );
   }
 }

@@ -18,7 +18,8 @@ namespace Ozds.Data.Migrations
                 nullable: false,
                 oldClrType: typeof(JsonDocument),
                 oldType: "jsonb",
-                oldNullable: true);
+                oldNullable: true
+            );
         }
 
         /// <inheritdoc />
@@ -30,7 +31,8 @@ namespace Ozds.Data.Migrations
                 type: "jsonb",
                 nullable: true,
                 oldClrType: typeof(JsonDocument),
-                oldType: "jsonb");
+                oldType: "jsonb"
+            );
         }
     }
 }

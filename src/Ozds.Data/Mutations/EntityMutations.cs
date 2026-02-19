@@ -5,17 +5,14 @@ using Ozds.Data.Mutations.Abstractions;
 
 namespace Ozds.Data.Mutations;
 
-public class EntityMutations(
-  IDbContextFactory<DataDbContext> factory
-) : IMutations
+public class EntityMutations(IDbContextFactory<DataDbContext> factory)
+  : IMutations
 {
-  public async Task Create(
-    IEntity entity,
-    CancellationToken cancellationToken
-  )
+  public async Task Create(IEntity entity, CancellationToken cancellationToken)
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     context.Add(entity);
     await context.SaveChangesAsync(cancellationToken);
   }
@@ -25,8 +22,9 @@ public class EntityMutations(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     context.AddRange(entities);
     await context.SaveChangesAsync(cancellationToken);
   }

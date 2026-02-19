@@ -12,7 +12,7 @@ public enum DurationEntity
   Day,
   Week,
   Month,
-  Year
+  Year,
 }
 
 public class DurationEntityModelConfiguration : IModelConfiguration
@@ -23,8 +23,8 @@ public class DurationEntityModelConfiguration : IModelConfiguration
   }
 }
 
-public class
-  DurationEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class DurationEntityNpgsqlDataSourceConfiguration
+  : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

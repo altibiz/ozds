@@ -12,9 +12,7 @@ public abstract class ActivePowerTotalImportT1PeakCalculationItemEntity
 }
 
 public class UsageActivePowerTotalImportT1PeakCalculationItemEntity
-  : ActivePowerTotalImportT1PeakCalculationItemEntity
-{
-}
+  : ActivePowerTotalImportT1PeakCalculationItemEntity { }
 
 public static class ActivePowerTotalImportT1PeakCalculationItemEntityExtensions
 {
@@ -26,13 +24,14 @@ public static class ActivePowerTotalImportT1PeakCalculationItemEntityExtensions
 
     builder
       .Property(
-        nameof(ActivePowerTotalImportT1PeakCalculationItemEntity.Peak_kW))
+        nameof(ActivePowerTotalImportT1PeakCalculationItemEntity.Peak_kW)
+      )
       .HasColumnName("svt_peak_kw");
 
     builder
       .Property(
-        nameof(ActivePowerTotalImportT1PeakCalculationItemEntity
-          .Amount_kW))
+        nameof(ActivePowerTotalImportT1PeakCalculationItemEntity.Amount_kW)
+      )
       .HasColumnName("svt_amount_kw");
   }
 }

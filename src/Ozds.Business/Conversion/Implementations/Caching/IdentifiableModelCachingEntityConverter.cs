@@ -19,7 +19,8 @@ public class IdentifiableModelCachingEntityConverter
 
   public override void InitializeModel(
     IdentifiableEntity entity,
-    IdentifiableModel model)
+    IdentifiableModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.Id = entity.Id;

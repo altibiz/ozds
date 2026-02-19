@@ -33,41 +33,37 @@ public class InsertWorker(
     CancellationToken stoppingToken
   )
   {
-    var generatedIds = item.Ids
-      .GroupBy(x => x.MeterModel)
+    var generatedIds = item
+      .Ids.GroupBy(x => x.MeterModel)
       .Select(x => x.First())
       .ToList();
 
-    var clonedIds = item.Ids
-      .Where(id => !generatedIds.Contains(id));
+    var clonedIds = item.Ids.Where(id => !generatedIds.Contains(id));
 
     var records = generator.BatchGenerateMeasurementRecords(
       item.DateFrom,
       item.DateTo,
       generatedIds,
-      stoppingToken);
-
-    var measurements = converter.ConvertToModels(
-      records,
       stoppingToken
     );
+
+    var measurements = converter.ConvertToModels(records, stoppingToken);
 
     var aggregated = item.AggregatesOnly
       ? aggregateUpserter.UpsertAggregates(
         aggregateConverter.ToAggregates(measurements, stoppingToken),
-        stoppingToken)
+        stoppingToken
+      )
       : aggregateUpserter.UpsertMeasurements(
         aggregateConverter.WithAggregates(measurements, stoppingToken),
-        stoppingToken);
+        stoppingToken
+      );
 
-    var cloned = cloner.CloneWith(
-      aggregated,
-      clonedIds,
-      stoppingToken
-    );
+    var cloned = cloner.CloneWith(aggregated, clonedIds, stoppingToken);
 
-    await foreach (var batch in enumerable
-      .Batch(cloned, item.BatchSize, stoppingToken))
+    await foreach (
+      var batch in enumerable.Batch(cloned, item.BatchSize, stoppingToken)
+    )
     {
       await client.Insert(batch, stoppingToken);
     }

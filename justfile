@@ -54,7 +54,7 @@ prepare:
     dotnet tool restore
     dotnet build
     (which prettier | is-not-empty) or (npm install -g prettier)
-    ($env | get --ignore-errors PLAYWRIGHT_BROWSERS_PATH | is-not-empty) or \
+    ($env | get --optional PLAYWRIGHT_BROWSERS_PATH | is-not-empty) or \
       ((pwsh '{{ playwright }}' install --with-deps chromium) | is-empty)
     @just clean
 
@@ -162,19 +162,21 @@ format:
 
     nixpkgs-fmt '{{ root }}'
 
+    @just format-prettier
+
+    # yapf --recursive --in-place --parallel '{{ root }}'
+
+    @just format-csharp
+
+format-prettier:
     prettier --write \
       --ignore-path '{{ gitignore }}' \
       --ignore-path '{{ prettierignore }}' \
       --cache --cache-strategy metadata \
       '{{ root }}'
 
-    yapf --recursive --in-place --parallel '{{ root }}'
-
-    dotnet jb cleanupcode '{{ sln }}' \
-      --verbosity=WARN \
-      --caches-home='{{ jbcache }}' \
-      -o='{{ jbinspectlog }}' \
-      --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*;**/*.xml'
+format-csharp:
+    dotnet csharpier format '{{ root }}'
 
 deps:
     exec \
@@ -198,9 +200,9 @@ lint:
       | get exit_code) == 0 { exit 1 }
 
     # TODO: make it work in CI
-    ($env | get CI? | is-not-empty) \
-      or ((pyright '{{ root }}' | complete | get exit_code) == 0)
-    ruff check '{{ root }}'
+    # ($env | get CI? | is-not-empty) \
+    #   or ((pyright '{{ root }}' | complete | get exit_code) == 0)
+    # ruff check '{{ root }}'
 
     @just lint-dotnet
 
@@ -213,15 +215,17 @@ lint-spelling:
 lint-dotnet:
     dotnet build --no-incremental /warnaserror '{{ sln }}'
 
-    dotnet roslynator analyze '{{ sln }}' \
-      --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
+    # commented out for now since roslynator is not yet compatible with .NET 10 SDK
+    #dotnet roslynator analyze '{{ sln }}' \
+    #  --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
-    dotnet jb inspectcode '{{ sln }}' \
-      --no-build \
-      --verbosity=WARN \
-      --caches-home='{{ jbcache }}' \
-      -o='{{ jbinspectlog }}' \
-      --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
+    # this one also causes chaos with removing imports
+    #dotnet jb inspectcode '{{ sln }}' \
+    #  --no-build \
+    #  --verbosity=WARN \
+    #  --caches-home='{{ jbcache }}' \
+    #  -o='{{ jbinspectlog }}' \
+    #  --exclude='**/.git/**/*;**/.nuget/**/*;**/obj/**/*;**/bin/**/*'
 
 lint-model:
     dotnet ef migrations \
@@ -500,14 +504,14 @@ clean:
     docker compose ps -a -q | lines | each { |x| docker stop $x }
     docker compose --profile "*" down
     docker volume ls -q | lines \
-      | filter { |x| \
+      | where { |x| \
           ($x | str starts-with "ozds") \
           and not ($x | str contains "ollama") \
         } \
       | each { |x| docker volume rm $x }
     @just up
 
-    nu {{ isllmready }}
+    #nu {{ isllmready }}
 
     nu {{ isdatabaseready }}
 

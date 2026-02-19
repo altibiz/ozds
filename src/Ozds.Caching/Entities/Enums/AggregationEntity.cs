@@ -4,5 +4,5 @@ public enum AggregationEntity
 {
   Min,
   Max,
-  Avg
+  Avg,
 }

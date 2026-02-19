@@ -4,8 +4,8 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models.Complex;
 
-public abstract class
-  ActiveEnergyTotalImportCalculationItemModel : CalculationItemModel
+public abstract class ActiveEnergyTotalImportCalculationItemModel
+  : CalculationItemModel
 {
   [Required]
   public required decimal Min_kWh { get; set; }
@@ -200,9 +200,8 @@ public class SupplyActiveEnergyTotalImportT2CalculationItemModel
   }
 }
 
-public class
-  SupplyBusinessUsageCalculationItemModel :
-  ActiveEnergyTotalImportT0CalculationItemModel
+public class SupplyBusinessUsageCalculationItemModel
+  : ActiveEnergyTotalImportT0CalculationItemModel
 {
   public override ExpenditureMeasure<decimal> Price
   {
@@ -220,9 +219,8 @@ public class
   }
 }
 
-public class
-  SupplyRenewableEnergyCalculationItemModel :
-  ActiveEnergyTotalImportT0CalculationItemModel
+public class SupplyRenewableEnergyCalculationItemModel
+  : ActiveEnergyTotalImportT0CalculationItemModel
 {
   public override ExpenditureMeasure<decimal> Price
   {

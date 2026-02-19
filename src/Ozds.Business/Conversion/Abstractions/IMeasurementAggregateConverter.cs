@@ -13,5 +13,6 @@ public interface IMeasurementAggregateConverter
 
   public IAggregate ToAggregate(
     IMeasurement measurement,
-    IntervalModel interval);
+    IntervalModel interval
+  );
 }

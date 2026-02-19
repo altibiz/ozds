@@ -22,32 +22,29 @@ public class SchneideriEM3xxxAggregateModelReportEntityConverter(
   )
   {
     base.InitializeEntity(model, entity);
-    entity.ActiveEnergyTotalImportT0_Wh = model.ActiveEnergy_Wh
-      .TariffUnary()
+    entity.ActiveEnergyTotalImportT0_Wh = model
+      .ActiveEnergy_Wh.TariffUnary()
       .DuplexImport()
       .PhaseSum();
-    entity.ActiveEnergyTotalImportT1_Wh = model.ActiveEnergy_Wh
-      .TariffBinary()
-      .T1
+    entity.ActiveEnergyTotalImportT1_Wh = model
+      .ActiveEnergy_Wh.TariffBinary()
+      .T1.DuplexImport()
+      .PhaseSum();
+    entity.ActiveEnergyTotalImportT2_Wh = model
+      .ActiveEnergy_Wh.TariffBinary()
+      .T2.DuplexImport()
+      .PhaseSum();
+    entity.ReactiveEnergyTotalImportT0_VARh = model
+      .ReactiveEnergy_VARh.TariffUnary()
       .DuplexImport()
       .PhaseSum();
-    entity.ActiveEnergyTotalImportT2_Wh = model.ActiveEnergy_Wh
-      .TariffBinary()
-      .T2
-      .DuplexImport()
-      .PhaseSum();
-    entity.ReactiveEnergyTotalImportT0_VARh = model.ReactiveEnergy_VARh
-      .TariffUnary()
-      .DuplexImport()
-      .PhaseSum();
-    entity.ReactiveEnergyTotalExportT0_VARh = model.ReactiveEnergy_VARh
-      .TariffUnary()
+    entity.ReactiveEnergyTotalExportT0_VARh = model
+      .ReactiveEnergy_VARh.TariffUnary()
       .DuplexExport()
       .PhaseSum();
-    entity.MaxActivePowerTotalNetT1_W = model.ActivePower_W
-      .TariffBinary()
-      .T1
-      .DuplexImport()
+    entity.MaxActivePowerTotalNetT1_W = model
+      .ActivePower_W.TariffBinary()
+      .T1.DuplexImport()
       .AggregateMax()
       .PhaseSum();
   }

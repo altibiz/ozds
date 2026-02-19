@@ -3,11 +3,14 @@ namespace Ozds.Jobs.Manager.Abstractions;
 public interface IArchivalJobManager : IJobManager
 {
   public Task EnsureDailyMeasurementDeletionJob(
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 
   public Task RescheduleDailyMeasurementDeletionJob(
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 
   public Task UnscheduleDailyMeasurementDeletionJob(
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 }

@@ -40,39 +40,40 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    var connectionString = ConfigureOzdsCachingOptions
-      .ConnectionString(builder.Configuration);
+    var connectionString = ConfigureOzdsCachingOptions.ConnectionString(
+      builder.Configuration
+    );
     if (connectionString.StartsWith("memory://"))
     {
       builder.Services.AddMemoryCache();
       builder.Services.AddTransient(
         typeof(ICache),
-        typeof(InMemoryCache<object>));
-      builder.Services.AddTransient(
-        typeof(ICache<>),
-        typeof(InMemoryCache<>));
+        typeof(InMemoryCache<object>)
+      );
+      builder.Services.AddTransient(typeof(ICache<>), typeof(InMemoryCache<>));
       builder.Services.AddTransient(
         typeof(IConfigurableCache),
-        typeof(InMemoryCache<object>));
+        typeof(InMemoryCache<object>)
+      );
       builder.Services.AddTransient(
         typeof(IConfigurableCache<>),
-        typeof(InMemoryCache<>));
+        typeof(InMemoryCache<>)
+      );
       builder.Services.AddTransient(
         typeof(IPolicyCache),
-        typeof(InMemoryCache<object>));
+        typeof(InMemoryCache<object>)
+      );
     }
     else
     {
-      throw new InvalidOperationException(
-        "Only memory cache is supported");
+      throw new InvalidOperationException("Only memory cache is supported");
     }
 
-    builder.Services.AddSingleton(
-      typeof(ICacheFactory),
-      typeof(CacheFactory));
+    builder.Services.AddSingleton(typeof(ICacheFactory), typeof(CacheFactory));
     builder.Services.AddSingleton(
       typeof(IPolicyCacheFactory),
-      typeof(CacheFactory));
+      typeof(CacheFactory)
+    );
 
     return builder;
   }
@@ -116,10 +117,11 @@ public static class HostExtensions
   )
   {
     builder.Services.AddSingleton<ProfileBuilder>();
-    builder.Services.AddSingleton(
-      services =>
-        services.GetRequiredService<ProfileBuilder>()
-          .Build(typeof(HostExtensions).Assembly));
+    builder.Services.AddSingleton(services =>
+      services
+        .GetRequiredService<ProfileBuilder>()
+        .Build(typeof(HostExtensions).Assembly)
+    );
     return builder;
   }
 

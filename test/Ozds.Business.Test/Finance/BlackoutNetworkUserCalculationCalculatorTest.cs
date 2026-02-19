@@ -15,80 +15,108 @@ public class BlackoutNetworkUserCalculationCalculatorTest
   {
     return new Fixture()
       .Customize(
-        new TypeRelay(typeof(IAggregate), typeof(AbbB2xAggregateModel))
-          .ToCustomization())
-      .Customize(
-        new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
-          .ToCustomization())
-      .Customize(
-        new TypeRelay(typeof(IMeter), typeof(AbbB2xMeterModel))
-          .ToCustomization())
-      .Customize(
-        new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
-          .ToCustomization())
+        new TypeRelay(
+          typeof(IAggregate),
+          typeof(AbbB2xAggregateModel)
+        ).ToCustomization()
+      )
       .Customize(
         new TypeRelay(
-            typeof(NetworkUserCatalogueModel),
-            typeof(BlueLowNetworkUserCatalogueModel))
-          .ToCustomization())
+          typeof(AggregateModel),
+          typeof(AbbB2xAggregateModel)
+        ).ToCustomization()
+      )
+      .Customize(
+        new TypeRelay(
+          typeof(IMeter),
+          typeof(AbbB2xMeterModel)
+        ).ToCustomization()
+      )
+      .Customize(
+        new TypeRelay(
+          typeof(MeterModel),
+          typeof(AbbB2xMeterModel)
+        ).ToCustomization()
+      )
+      .Customize(
+        new TypeRelay(
+          typeof(NetworkUserCatalogueModel),
+          typeof(BlueLowNetworkUserCatalogueModel)
+        ).ToCustomization()
+      )
       .Build<BlackoutNetworkUserCalculationModel>()
       .CreateMany(Constants.DefaultFuzzCount)
-      .Select(
-        x =>
-        {
-          x.UsageNetworkUserCatalogueId =
-            x.ConcreteArchivedUsageNetworkUserCatalogue.Id;
-          x.SupplyRegulatoryCatalogueId =
-            x.ArchivedSupplyRegulatoryCatalogue.Id;
-          x.NetworkUserMeasurementLocationId =
-            x.ArchivedNetworkUserMeasurementLocation.Id;
-          x.Remark =
-            x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
-          x.MeterId = x.ArchivedMeter.Id;
+      .Select(x =>
+      {
+        x.UsageNetworkUserCatalogueId =
+          x.ConcreteArchivedUsageNetworkUserCatalogue.Id;
+        x.SupplyRegulatoryCatalogueId = x.ArchivedSupplyRegulatoryCatalogue.Id;
+        x.NetworkUserMeasurementLocationId =
+          x.ArchivedNetworkUserMeasurementLocation.Id;
+        x.Remark = x.ArchivedNetworkUserMeasurementLocation.CalculationRemark;
+        x.MeterId = x.ArchivedMeter.Id;
 
-          x.Total_EUR = 0.0M;
+        x.Total_EUR = 0.0M;
 
-          return x;
-        });
+        return x;
+      });
   }
 
   [Test]
   [MethodDataSource(nameof(TestData))]
   public void CalculatesCorrectlyWithFuzzyAbbB2xMeter(
-    BlackoutNetworkUserCalculationModel expected)
+    BlackoutNetworkUserCalculationModel expected
+  )
   {
     var clockQueriesMock = new Mock<ClockQueries>(
       MockBehavior.Loose,
-      Mock.Of<IClockQueries>());
+      Mock.Of<IClockQueries>()
+    );
 
     clockQueriesMock
       .Setup(x => x.Timestamp())
       .Returns(
         DateTimeOffset.Parse(
           "2000-01-01T00:00:00Z",
-          CultureInfo.InvariantCulture));
+          CultureInfo.InvariantCulture
+        )
+      );
 
     var timeQueriesMock = new Mock<TimeQueries>(
       MockBehavior.Loose,
-      Mock.Of<ITimeQueries>());
+      Mock.Of<ITimeQueries>()
+    );
 
     var calculator = new BlackoutNetworkUserCalculationCalculator(
       clockQueriesMock.Object,
-      timeQueriesMock.Object);
+      timeQueriesMock.Object
+    );
 
     var fixture = new Fixture()
       .Customize(
-        new TypeRelay(typeof(IAggregate), typeof(AbbB2xAggregateModel))
-          .ToCustomization())
+        new TypeRelay(
+          typeof(IAggregate),
+          typeof(AbbB2xAggregateModel)
+        ).ToCustomization()
+      )
       .Customize(
-        new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
-          .ToCustomization())
+        new TypeRelay(
+          typeof(AggregateModel),
+          typeof(AbbB2xAggregateModel)
+        ).ToCustomization()
+      )
       .Customize(
-        new TypeRelay(typeof(IMeter), typeof(AbbB2xMeterModel))
-          .ToCustomization())
+        new TypeRelay(
+          typeof(IMeter),
+          typeof(AbbB2xMeterModel)
+        ).ToCustomization()
+      )
       .Customize(
-        new TypeRelay(typeof(MeterModel), typeof(AbbB2xMeterModel))
-          .ToCustomization());
+        new TypeRelay(
+          typeof(MeterModel),
+          typeof(AbbB2xMeterModel)
+        ).ToCustomization()
+      );
 
     var basis = fixture
       .Build<NetworkUserCalculationBasisModel>()
@@ -100,29 +128,34 @@ public class BlackoutNetworkUserCalculationCalculatorTest
       .With(x => x.MeasuredToDate, expected.MeteredToDate)
       .With(
         x => x.MeasurementLocation,
-        expected.ArchivedNetworkUserMeasurementLocation)
+        expected.ArchivedNetworkUserMeasurementLocation
+      )
       .With(
         x => x.SupplyRegulatoryCatalogue,
-        expected.ArchivedSupplyRegulatoryCatalogue)
+        expected.ArchivedSupplyRegulatoryCatalogue
+      )
       .With(
         x => x.UsageNetworkUserCatalogue,
-        expected.ConcreteArchivedUsageNetworkUserCatalogue)
+        expected.ConcreteArchivedUsageNetworkUserCatalogue
+      )
       .With(x => x.Meter, expected.ArchivedMeter)
       .Create();
 
     var actual = calculator.Calculate(basis);
 
-    actual.Should()
-      .BeOfType<BlackoutNetworkUserCalculationModel>().And
-      .BeEquivalentTo(
+    actual
+      .Should()
+      .BeOfType<BlackoutNetworkUserCalculationModel>()
+      .And.BeEquivalentTo(
         expected,
-        c => c
-          .Excluding(x => x.Id)
-          .Excluding(x => x.Title)
-          .Excluding(x => x.NetworkUserInvoiceId)
-          .Excluding(x => x.IssuedOn)
-          .Excluding(x => x.IssuedById)
-          .Excluding(x => x.Created));
+        c =>
+          c.Excluding(x => x.Id)
+            .Excluding(x => x.Title)
+            .Excluding(x => x.NetworkUserInvoiceId)
+            .Excluding(x => x.IssuedOn)
+            .Excluding(x => x.IssuedById)
+            .Excluding(x => x.Created)
+      );
   }
 
   [Test]
@@ -130,7 +163,8 @@ public class BlackoutNetworkUserCalculationCalculatorTest
   {
     var timeQueriesMock = new Mock<TimeQueries>(
       MockBehavior.Strict,
-      Mock.Of<ITimeQueries>());
+      Mock.Of<ITimeQueries>()
+    );
 
     var fixedStartOfMonth = DateTimeOffset.UtcNow;
     timeQueriesMock
@@ -139,27 +173,35 @@ public class BlackoutNetworkUserCalculationCalculatorTest
 
     var clockQueriesMock = new Mock<ClockQueries>(
       MockBehavior.Loose,
-      Mock.Of<IClockQueries>());
+      Mock.Of<IClockQueries>()
+    );
 
     var calculator = new BlackoutNetworkUserCalculationCalculator(
       clockQueriesMock.Object,
-      timeQueriesMock.Object);
+      timeQueriesMock.Object
+    );
 
     var fixture = new Fixture()
       .Customize(
-        new TypeRelay(typeof(IAggregate), typeof(AbbB2xAggregateModel))
-          .ToCustomization())
-      .Customize(
-        new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
-          .ToCustomization())
+        new TypeRelay(
+          typeof(IAggregate),
+          typeof(AbbB2xAggregateModel)
+        ).ToCustomization()
+      )
       .Customize(
         new TypeRelay(
-            typeof(NetworkUserCatalogueModel),
-            typeof(BlueLowNetworkUserCatalogueModel))
-          .ToCustomization());
+          typeof(AggregateModel),
+          typeof(AbbB2xAggregateModel)
+        ).ToCustomization()
+      )
+      .Customize(
+        new TypeRelay(
+          typeof(NetworkUserCatalogueModel),
+          typeof(BlueLowNetworkUserCatalogueModel)
+        ).ToCustomization()
+      );
 
-    var basis = fixture.Build<NetworkUserCalculationBasisModel>()
-      .Create();
+    var basis = fixture.Build<NetworkUserCalculationBasisModel>().Create();
 
     var result = calculator.CanCalculate(basis);
 
@@ -171,7 +213,8 @@ public class BlackoutNetworkUserCalculationCalculatorTest
   {
     var timeQueriesMock = new Mock<TimeQueries>(
       MockBehavior.Strict,
-      Mock.Of<ITimeQueries>());
+      Mock.Of<ITimeQueries>()
+    );
 
     timeQueriesMock
       .Setup(x => x.GetStartOfMonth(It.IsAny<DateTimeOffset>()))
@@ -179,27 +222,35 @@ public class BlackoutNetworkUserCalculationCalculatorTest
 
     var clockQueriesMock = new Mock<ClockQueries>(
       MockBehavior.Loose,
-      Mock.Of<IClockQueries>());
+      Mock.Of<IClockQueries>()
+    );
 
     var calculator = new BlackoutNetworkUserCalculationCalculator(
       clockQueriesMock.Object,
-      timeQueriesMock.Object);
+      timeQueriesMock.Object
+    );
 
     var fixture = new Fixture()
       .Customize(
-        new TypeRelay(typeof(IAggregate), typeof(AbbB2xAggregateModel))
-          .ToCustomization())
-      .Customize(
-        new TypeRelay(typeof(AggregateModel), typeof(AbbB2xAggregateModel))
-          .ToCustomization())
+        new TypeRelay(
+          typeof(IAggregate),
+          typeof(AbbB2xAggregateModel)
+        ).ToCustomization()
+      )
       .Customize(
         new TypeRelay(
-            typeof(NetworkUserCatalogueModel),
-            typeof(BlueLowNetworkUserCatalogueModel))
-          .ToCustomization());
+          typeof(AggregateModel),
+          typeof(AbbB2xAggregateModel)
+        ).ToCustomization()
+      )
+      .Customize(
+        new TypeRelay(
+          typeof(NetworkUserCatalogueModel),
+          typeof(BlueLowNetworkUserCatalogueModel)
+        ).ToCustomization()
+      );
 
-    var basis = fixture.Build<NetworkUserCalculationBasisModel>()
-      .Create();
+    var basis = fixture.Build<NetworkUserCalculationBasisModel>().Create();
 
     var result = calculator.CanCalculate(basis);
 

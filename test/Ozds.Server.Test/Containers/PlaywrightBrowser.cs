@@ -11,10 +11,7 @@ public sealed class PlaywrightBrowser : IComposableService<PlaywrightBrowser>
 
   private IPage? page;
 
-  private PlaywrightBrowser(
-    IPlaywright playwright,
-    IBrowser browser
-  )
+  private PlaywrightBrowser(IPlaywright playwright, IBrowser browser)
   {
     this.playwright = playwright;
     this.browser = browser;
@@ -47,12 +44,9 @@ public sealed class PlaywrightBrowser : IComposableService<PlaywrightBrowser>
     CancellationToken cancellationToken
   )
   {
-    context = await browser
-      .NewContextAsync(
-        new BrowserNewContextOptions
-        {
-          BaseURL = composition.Ozds.HttpBaseUrl
-        });
+    context = await browser.NewContextAsync(
+      new BrowserNewContextOptions { BaseURL = composition.Ozds.HttpBaseUrl }
+    );
     page = await context.NewPageAsync();
   }
 

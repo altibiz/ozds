@@ -11,33 +11,36 @@ namespace Ozds.Business.Observers.Implementations;
 public class DataModelsChangedRelay(
   IServiceProvider serviceProvider,
   IEntitiesChangedSubscriber subscriber
-) : Relay<
-  EntitiesChangedEventArgs,
-  DataModelsChangedEventArgs,
-  DataModelsChangedPipe>(
-  serviceProvider
-), IDataModelsChangedSubscriber
+)
+  : Relay<
+    EntitiesChangedEventArgs,
+    DataModelsChangedEventArgs,
+    DataModelsChangedPipe
+  >(serviceProvider),
+    IDataModelsChangedSubscriber
 {
   protected override void SubscribeIn(
-    EventHandler<EntitiesChangedEventArgs> eventHandler)
+    EventHandler<EntitiesChangedEventArgs> eventHandler
+  )
   {
     subscriber.Subscribe(eventHandler);
   }
 
   protected override void UnsubscribeIn(
-    EventHandler<EntitiesChangedEventArgs> eventHandler)
+    EventHandler<EntitiesChangedEventArgs> eventHandler
+  )
   {
     subscriber.Unsubscribe(eventHandler);
   }
 }
 
-public class DataModelsChangedPipe(
-  ModelEntityConverter ModelEntityConverter
-) : IPipe<EntitiesChangedEventArgs, DataModelsChangedEventArgs>
+public class DataModelsChangedPipe(ModelEntityConverter ModelEntityConverter)
+  : IPipe<EntitiesChangedEventArgs, DataModelsChangedEventArgs>
 {
   public Task<DataModelsChangedEventArgs> Transform(
     EntitiesChangedEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var models = new List<DataModelChangedEntry>();
     foreach (var entity in eventArgs.Entities)
@@ -49,17 +52,14 @@ public class DataModelsChangedPipe(
             EntityChangedState.Added => DataModelChangedState.Added,
             EntityChangedState.Modified => DataModelChangedState.Modified,
             EntityChangedState.Removed => DataModelChangedState.Removed,
-            _ => throw new NotImplementedException()
+            _ => throw new NotImplementedException(),
           },
           ModelEntityConverter.ToModel<IModel>(entity.Entity)
         )
       );
     }
 
-    var modelsEventArgs = new DataModelsChangedEventArgs
-    {
-      Models = models
-    };
+    var modelsEventArgs = new DataModelsChangedEventArgs { Models = models };
 
     return Task.FromResult(modelsEventArgs);
   }

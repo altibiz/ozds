@@ -7,7 +7,8 @@ using Ozds.Report.Entities;
 namespace Ozds.Business.Conversion.Implementations.Report;
 
 public class AbbB2xMeterModelReportEntityConverter(
-  IServiceProvider serviceProvider)
+  IServiceProvider serviceProvider
+)
   : InheritingModelReportEntityConverter<
     AbbB2xMeterModel,
     IdentifiableModel,
@@ -46,13 +47,12 @@ public class AbbB2xMeterModelReportEntityConverter(
         ReportConversionConstants.ListDelimiter,
         StringSplitOptions.RemoveEmptyEntries
       )
-      .Select(
-        static s =>
-          Enum.TryParse<PhaseModel>(s.Trim(), out var phase)
-            ? phase
-            : throw new InvalidOperationException(
-              "An error occurred while trying to parse a csv input as a PhaseModel."
-            )
+      .Select(static s =>
+        Enum.TryParse<PhaseModel>(s.Trim(), out var phase)
+          ? phase
+          : throw new InvalidOperationException(
+            "An error occurred while trying to parse a csv input as a PhaseModel."
+          )
       )
       .ToHashSet();
   }

@@ -148,7 +148,7 @@
             nodePackages.yaml-language-server
             nodePackages.vscode-langservers-extracted
             taplo
-          ] ++ builtins.attrValues (self.lib.poetry.pkgs pkgs);
+          ];
       }
       // (self.lib.playwright.env pkgs.system)
       // (self.lib.dotnet.env pkgs));

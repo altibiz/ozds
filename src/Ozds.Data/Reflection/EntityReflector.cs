@@ -16,41 +16,37 @@ public sealed class EntityReflector : IAsyncDisposable
 
   private readonly DataDbContext context;
 
-  private readonly Assembly entitiesAssembly =
-    typeof(EntityReflector).Assembly;
+  private readonly Assembly entitiesAssembly = typeof(EntityReflector).Assembly;
 
   private readonly string entitiesNamespace = "Ozds.Data.Entities";
 #pragma warning disable S4487 // Unread "private" fields should be removed
   private readonly IDbContextFactory<DataDbContext> factory;
 #pragma warning restore S4487 // Unread "private" fields should be removed
-  private readonly Lazy<List<Type>> measurementTypes;
 
   private readonly Lazy<Dictionary<Type, Type>> measurementTypeToMeterType;
-
-  private readonly Lazy<List<Type>> meterTypes;
+  private readonly Lazy<List<Type>> measurementTypes;
 
   private readonly Lazy<Dictionary<Type, Type>> meterTypeToAggregateType;
 
   private readonly Lazy<Dictionary<Type, Type>> meterTypeToMeasurementType;
 
-  private readonly Lazy<Dictionary<Type, Type>>
-    meterTypeToMeasurementValidatorType;
+  private readonly Lazy<
+    Dictionary<Type, Type>
+  > meterTypeToMeasurementValidatorType;
 
-  private readonly ConcurrentDictionary<string, Type> nameToTypeCache =
-    new();
+  private readonly Lazy<List<Type>> meterTypes;
+
+  private readonly ConcurrentDictionary<string, Type> nameToTypeCache = new();
 
   private readonly IOptions<OzdsDataOptions> options;
 
-  private readonly ConcurrentDictionary<string, Type> tableToTypeCache =
-    new();
+  private readonly ConcurrentDictionary<string, Type> tableToTypeCache = new();
 
   private readonly ITypeQueries typeQueries;
 
-  private readonly ConcurrentDictionary<Type, string> typeToNameCache =
-    new();
+  private readonly ConcurrentDictionary<Type, string> typeToNameCache = new();
 
-  private readonly ConcurrentDictionary<Type, string> typeToTableCache =
-    new();
+  private readonly ConcurrentDictionary<Type, string> typeToTableCache = new();
 
   public EntityReflector(
     IDbContextFactory<DataDbContext> factory,
@@ -64,68 +60,78 @@ public sealed class EntityReflector : IAsyncDisposable
 
     context = factory.CreateDbContext();
 
-    aggregateTypes = new Lazy<List<Type>>(
-      () => context.Model
-        .GetEntityTypes()
-        .Where(
-          x =>
-            x.ClrType.IsAssignableTo(typeof(IAggregateEntity))
-            && !x.ClrType.IsAbstract
-            && !x.ClrType.IsGenericType)
+    aggregateTypes = new Lazy<List<Type>>(() =>
+      context
+        .Model.GetEntityTypes()
+        .Where(x =>
+          x.ClrType.IsAssignableTo(typeof(IAggregateEntity))
+          && !x.ClrType.IsAbstract
+          && !x.ClrType.IsGenericType
+        )
         .Select(x => x.ClrType)
-        .ToList());
+        .ToList()
+    );
 
-    measurementTypes = new Lazy<List<Type>>(
-      () => context.Model
-        .GetEntityTypes()
-        .Where(
-          x =>
-            x.ClrType.IsAssignableTo(typeof(IMeasurementEntity))
-            && !x.ClrType.IsAssignableTo(typeof(IAggregateEntity))
-            && !x.ClrType.IsAbstract
-            && !x.ClrType.IsGenericType)
+    measurementTypes = new Lazy<List<Type>>(() =>
+      context
+        .Model.GetEntityTypes()
+        .Where(x =>
+          x.ClrType.IsAssignableTo(typeof(IMeasurementEntity))
+          && !x.ClrType.IsAssignableTo(typeof(IAggregateEntity))
+          && !x.ClrType.IsAbstract
+          && !x.ClrType.IsGenericType
+        )
         .Select(x => x.ClrType)
-        .ToList());
+        .ToList()
+    );
 
-    meterTypes = new Lazy<List<Type>>(
-      () => context.Model
-        .GetEntityTypes()
-        .Where(
-          x =>
-            x.ClrType.IsAssignableTo(typeof(IMeterEntity))
-            && !x.ClrType.IsAbstract
-            && !x.ClrType.IsGenericType)
+    meterTypes = new Lazy<List<Type>>(() =>
+      context
+        .Model.GetEntityTypes()
+        .Where(x =>
+          x.ClrType.IsAssignableTo(typeof(IMeterEntity))
+          && !x.ClrType.IsAbstract
+          && !x.ClrType.IsGenericType
+        )
         .Select(x => x.ClrType)
-        .ToList());
+        .ToList()
+    );
 
-    measurementTypeToMeterType = new Lazy<Dictionary<Type, Type>>(
-      () => aggregateTypes.Value.Concat(measurementTypes.Value)
+    measurementTypeToMeterType = new Lazy<Dictionary<Type, Type>>(() =>
+      aggregateTypes
+        .Value.Concat(measurementTypes.Value)
         .ToDictionary(
           x => x,
-          x => x.GetProperty("Meter")?.PropertyType
+          x =>
+            x.GetProperty("Meter")?.PropertyType
             ?? throw new InvalidOperationException(
-              $"No meter property found for {x.Name}.")));
+              $"No meter property found for {x.Name}."
+            )
+        )
+    );
 
-    meterTypeToAggregateType = new Lazy<Dictionary<Type, Type>>(
-      () => measurementTypeToMeterType.Value
-        .Where(x => x.Key.IsAssignableTo(typeof(IAggregateEntity)))
-        .ToDictionary(
-          x => x.Value,
-          x => x.Key));
+    meterTypeToAggregateType = new Lazy<Dictionary<Type, Type>>(() =>
+      measurementTypeToMeterType
+        .Value.Where(x => x.Key.IsAssignableTo(typeof(IAggregateEntity)))
+        .ToDictionary(x => x.Value, x => x.Key)
+    );
 
-    meterTypeToMeasurementType = new Lazy<Dictionary<Type, Type>>(
-      () => measurementTypeToMeterType.Value
-        .Where(x => !x.Key.IsAssignableTo(typeof(IAggregateEntity)))
-        .ToDictionary(
-          x => x.Value,
-          x => x.Key));
+    meterTypeToMeasurementType = new Lazy<Dictionary<Type, Type>>(() =>
+      measurementTypeToMeterType
+        .Value.Where(x => !x.Key.IsAssignableTo(typeof(IAggregateEntity)))
+        .ToDictionary(x => x.Value, x => x.Key)
+    );
 
-    meterTypeToMeasurementValidatorType = new Lazy<Dictionary<Type, Type>>(
-      () => MeterTypes.ToDictionary(
+    meterTypeToMeasurementValidatorType = new Lazy<Dictionary<Type, Type>>(() =>
+      MeterTypes.ToDictionary(
         x => x,
-        x => x.GetProperty("MeasurementValidator")?.PropertyType
+        x =>
+          x.GetProperty("MeasurementValidator")?.PropertyType
           ?? throw new InvalidOperationException(
-            $"No measurement validator property found for {x.Name}.")));
+            $"No measurement validator property found for {x.Name}."
+          )
+      )
+    );
   }
 
   public List<Type> AggregateTypes
@@ -159,7 +165,8 @@ public sealed class EntityReflector : IAsyncDisposable
     {
       try
       {
-        name = context.GetTableName(entityType)
+        name =
+          context.GetTableName(entityType)
           ?? throw new InvalidOperationException("Table name not found");
       }
       catch
@@ -169,7 +176,8 @@ public sealed class EntityReflector : IAsyncDisposable
     }
     else
     {
-      name = context.GetTableName(entityType)
+      name =
+        context.GetTableName(entityType)
         ?? throw new InvalidOperationException("Table name not found");
     }
 
@@ -180,8 +188,10 @@ public sealed class EntityReflector : IAsyncDisposable
 
   public string ResolveEntityName(Type entityType)
   {
-    if (entityType.Namespace == null
-      || !entityType.Namespace.StartsWith(entitiesNamespace))
+    if (
+      entityType.Namespace == null
+      || !entityType.Namespace.StartsWith(entitiesNamespace)
+    )
     {
       throw new InvalidOperationException("Entity type not found");
     }
@@ -204,8 +214,9 @@ public sealed class EntityReflector : IAsyncDisposable
       return type;
     }
 
-    type = context.Model
-        .GetEntityTypes()
+    type =
+      context
+        .Model.GetEntityTypes()
         .FirstOrDefault(entity => entity.GetTableName() == name)
         ?.ClrType
       ?? throw new InvalidOperationException("Entity type not found");
@@ -222,11 +233,12 @@ public sealed class EntityReflector : IAsyncDisposable
       return type;
     }
 
-    type = typeQueries.ResolveTypeFromHumanFriendlyName(
-      entitiesAssembly,
-      entitiesNamespace,
-      name
-    ) ?? throw new InvalidOperationException("Entity type not found");
+    type =
+      typeQueries.ResolveTypeFromHumanFriendlyName(
+        entitiesAssembly,
+        entitiesNamespace,
+        name
+      ) ?? throw new InvalidOperationException("Entity type not found");
 
     nameToTypeCache.TryAdd(name, type);
 
@@ -243,13 +255,12 @@ public sealed class EntityReflector : IAsyncDisposable
     bool aggregate = false
   )
   {
-    return (aggregate ? meterTypeToAggregateType : meterTypeToMeasurementType)
-      .Value[meterType];
+    return (
+      aggregate ? meterTypeToAggregateType : meterTypeToMeasurementType
+    ).Value[meterType];
   }
 
-  public Type ResolveMeterMeasurementValidatorType(
-    Type meterType
-  )
+  public Type ResolveMeterMeasurementValidatorType(Type meterType)
   {
     return meterTypeToMeasurementValidatorType.Value[meterType];
   }

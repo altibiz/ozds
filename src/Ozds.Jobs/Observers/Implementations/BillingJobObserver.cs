@@ -4,9 +4,7 @@ using Ozds.Jobs.Observers.EventArgs;
 
 namespace Ozds.Jobs.Observers.Implementations;
 
-public class BillingJobObserver :
-  Observer<BillingJobEventArgs>,
-  IBillingJobPublisher,
-  IBillingJobSubscriber
-{
-}
+public class BillingJobObserver
+  : Observer<BillingJobEventArgs>,
+    IBillingJobPublisher,
+    IBillingJobSubscriber { }

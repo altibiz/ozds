@@ -2,31 +2,40 @@ using CommandLine;
 
 namespace Ozds.Translation.Arguments;
 
-public interface IOzdsTranslationArguments
-{
-}
+public interface IOzdsTranslationArguments { }
 
 [Verb("regex", HelpText = "Translate regexes.")]
 public class OzdsTranslationRegexArguments : IOzdsTranslationArguments
 {
   [Option(
-    'l', "language", Required = true,
-    HelpText = "The target language in two letter ISO format.")]
+    'l',
+    "language",
+    Required = true,
+    HelpText = "The target language in two letter ISO format."
+  )]
   public string Language { get; set; } = default!;
 
   [Option('i', "input", Required = true, HelpText = "Input razor folder path.")]
   public string InputRazorFolderPath { get; set; } = default!;
 
   [Option(
-    'u', "update", Required = false, HelpText = "Path of file to update.")]
+    'u',
+    "update",
+    Required = false,
+    HelpText = "Path of file to update."
+  )]
   public string? UpdateFilePath { get; set; } = default!;
 
   [Option('o', "output", Required = true, HelpText = "Output file path.")]
   public string OutputFilePath { get; set; } = default!;
 
   [Option(
-    'r', "remove-unused", Required = false, Default = false,
-    HelpText = "Remove unused strings.")]
+    'r',
+    "remove-unused",
+    Required = false,
+    Default = false,
+    HelpText = "Remove unused strings."
+  )]
   public bool RemoveUnused { get; set; } = default!;
 }
 
@@ -34,33 +43,46 @@ public class OzdsTranslationRegexArguments : IOzdsTranslationArguments
 public class OzdsTranslationTypeArguments : IOzdsTranslationArguments
 {
   [Option(
-    'l', "language", Required = true,
-    HelpText = "The target language in two letter ISO format.")]
+    'l',
+    "language",
+    Required = true,
+    HelpText = "The target language in two letter ISO format."
+  )]
   public string Language { get; set; } = default!;
 
   [Option('a', "assemblies", Required = true, HelpText = "Input assemblies.")]
   public IEnumerable<string> InputAssemblies { get; set; } = default!;
 
-  [Option(
-    'n', "namespaces", Required = true,
-    HelpText = "Input namespaces.")]
+  [Option('n', "namespaces", Required = true, HelpText = "Input namespaces.")]
   public IEnumerable<string> InputNamespaces { get; set; } = default!;
 
   [Option(
-    'u', "update", Required = false, HelpText = "Path of file to update.")]
+    'u',
+    "update",
+    Required = false,
+    HelpText = "Path of file to update."
+  )]
   public string? UpdateFilePath { get; set; } = default!;
 
   [Option('o', "output", Required = true, HelpText = "Output file path.")]
   public string OutputFilePath { get; set; } = default!;
 
   [Option(
-    'R', "remove-overrides", Required = false, Default = false,
-    HelpText = "Remove overrides.")]
+    'R',
+    "remove-overrides",
+    Required = false,
+    Default = false,
+    HelpText = "Remove overrides."
+  )]
   public bool RemoveOverrides { get; set; } = default!;
 
   [Option(
-    'r', "remove-unused", Required = false, Default = false,
-    HelpText = "Remove unused types and properties.")]
+    'r',
+    "remove-unused",
+    Required = false,
+    Default = false,
+    HelpText = "Remove unused types and properties."
+  )]
   public bool RemoveUnused { get; set; } = default!;
 }
 
@@ -70,16 +92,16 @@ public static class OzdsTranslationArguments
   {
     try
     {
-      var result = new Parser(
-        with =>
-        {
-          with.CaseInsensitiveEnumValues = true;
-          with.AutoHelp = true;
-          with.AutoVersion = true;
-          with.HelpWriter = Console.Out;
-        }).ParseArguments<
+      var result = new Parser(with =>
+      {
+        with.CaseInsensitiveEnumValues = true;
+        with.AutoHelp = true;
+        with.AutoVersion = true;
+        with.HelpWriter = Console.Out;
+      }).ParseArguments<
         OzdsTranslationRegexArguments,
-        OzdsTranslationTypeArguments>(args);
+        OzdsTranslationTypeArguments
+      >(args);
 
       if (result.Tag == ParserResultType.NotParsed)
       {

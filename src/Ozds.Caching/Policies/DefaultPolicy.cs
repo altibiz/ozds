@@ -16,13 +16,12 @@ public class DefaultPolicy : Policy
       await policyContext.Cache.Create(
         createPolicyContext.Key,
         createPolicyContext.Value,
-        cancellationToken);
+        cancellationToken
+      );
     }
     else if (policyContext.Operation == CacheOperation.Delete)
     {
-      await policyContext.Cache.Delete(
-        policyContext.Key,
-        cancellationToken);
+      await policyContext.Cache.Delete(policyContext.Key, cancellationToken);
     }
   }
 

@@ -15,44 +15,40 @@ public class RepresentativeEntity : TrackableEntity, ICustomIdentifiableEntity
   public virtual ICollection<NetworkUserEntity> NetworkUsers { get; set; } =
     default!;
 
-  public virtual ICollection<NetworkUserRepresentativeEntity>
-    NetworkUserRepresentatives { get; set; } = default!;
+  public virtual ICollection<NetworkUserRepresentativeEntity> NetworkUserRepresentatives { get; set; } =
+    default!;
 
   public virtual ICollection<LocationEntity> Locations { get; set; } = default!;
 
-  public virtual ICollection<LocationRepresentativeEntity>
-    LocationRepresentatives { get; set; } = default!;
+  public virtual ICollection<LocationRepresentativeEntity> LocationRepresentatives { get; set; } =
+    default!;
 
   public virtual ICollection<RepresentativeEventEntity> Events { get; set; } =
     default!;
 
-  public virtual ICollection<RepresentativeAuditEventEntity> AuditEvents
-  {
-    get;
-    set;
-  } =
+  public virtual ICollection<RepresentativeAuditEventEntity> AuditEvents { get; set; } =
     default!;
 
-  public virtual ICollection<NotificationRecipientEntity>
-    NotificationRecipients { get; set; } = default!;
+  public virtual ICollection<NotificationRecipientEntity> NotificationRecipients { get; set; } =
+    default!;
 
   public virtual ICollection<NotificationEntity> Notifications { get; set; } =
     default!;
 
-  public virtual ICollection<ResolvableNotificationEntity>
-    ResolvableNotifications { get; set; } = default!;
+  public virtual ICollection<ResolvableNotificationEntity> ResolvableNotifications { get; set; } =
+    default!;
 
   public PhysicalPersonEntity PhysicalPerson { get; set; } = default!;
 
   public List<TopicEntity> Topics { get; set; } = default!;
 }
 
-public class
-  RepresentativeEntityTypeConfiguration : EntityTypeConfiguration<
-  RepresentativeEntity>
+public class RepresentativeEntityTypeConfiguration
+  : EntityTypeConfiguration<RepresentativeEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<RepresentativeEntity> builder)
+    EntityTypeBuilder<RepresentativeEntity> builder
+  )
   {
     builder.ComplexProperty(nameof(RepresentativeEntity.PhysicalPerson));
   }

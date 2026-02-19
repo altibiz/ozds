@@ -23,8 +23,8 @@ public class PasswordMutations(
   )
   {
     using var scope = serviceProvider.CreateAsyncScope();
-    var ldapConnection = scope.ServiceProvider
-      .GetRequiredService<LdapConnection>();
+    var ldapConnection =
+      scope.ServiceProvider.GetRequiredService<LdapConnection>();
 
     try
     {
@@ -36,22 +36,26 @@ public class PasswordMutations(
       {
         options.Value.Ldap.UserIdAttribute,
         options.Value.Ldap.UserNameAttribute,
-        options.Value.Ldap.UserEmailAttribute
+        options.Value.Ldap.UserEmailAttribute,
       };
 
       var searchResults = await Task.Run(
-        () => ldapConnection.Search(
-          options.Value.Ldap.BaseDn,
-          LdapConnection.ScopeSub,
-          filter,
-          attributes,
-          false
-        ), cancellationToken);
+        () =>
+          ldapConnection.Search(
+            options.Value.Ldap.BaseDn,
+            LdapConnection.ScopeSub,
+            filter,
+            attributes,
+            false
+          ),
+        cancellationToken
+      );
 
       if (!searchResults.HasMore())
       {
         throw new InvalidOperationException(
-          $"User with id '{entity.UserId}' not found");
+          $"User with id '{entity.UserId}' not found"
+        );
       }
 
       var entry = searchResults.Next();
@@ -84,7 +88,8 @@ public class PasswordMutations(
 
       await Task.Run(
         () => ldapConnection.ExtendedOperation(passwordOperation),
-        cancellationToken);
+        cancellationToken
+      );
     }
     catch (Exception ex)
     {

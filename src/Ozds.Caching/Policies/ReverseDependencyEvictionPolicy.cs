@@ -14,12 +14,12 @@ public class ReverseDependencyEvictionPolicy : DependencyPolicy
     await base.HandleCacheEvent(policyContext, cancellationToken);
 
     var eventArgs = policyContext.EventArgs;
-    if (eventArgs.Operation == CacheOperation.Delete
-      || eventArgs.Operation == CacheOperation.Create)
+    if (
+      eventArgs.Operation == CacheOperation.Delete
+      || eventArgs.Operation == CacheOperation.Create
+    )
     {
-      await EvictReverseDependencies(
-        policyContext,
-        cancellationToken);
+      await EvictReverseDependencies(policyContext, cancellationToken);
     }
   }
 }

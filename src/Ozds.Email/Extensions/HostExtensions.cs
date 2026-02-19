@@ -33,9 +33,7 @@ public static class HostExtensions
     return builder;
   }
 
-  private static void AddMail(
-    this IHostApplicationBuilder builder
-  )
+  private static void AddMail(this IHostApplicationBuilder builder)
   {
     builder.Services.AddTransient<ISmtpClient, SmtpClient>();
   }

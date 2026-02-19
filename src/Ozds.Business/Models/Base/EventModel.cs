@@ -21,7 +21,8 @@ public abstract class EventModel : IdentifiableModel, IEvent
   public required JsonDocument Content { get; set; }
 
   public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
+    ValidationContext validationContext
+  )
   {
     foreach (var validationResult in base.Validate(validationContext))
     {
@@ -38,13 +39,14 @@ public abstract class EventModel : IdentifiableModel, IEvent
     var now = clock.Timestamp();
 
     if (
-      validationContext.MemberName is null or nameof(Timestamp) &&
-      Timestamp > now
+      validationContext.MemberName is null or nameof(Timestamp)
+      && Timestamp > now
     )
     {
       yield return new ValidationResult(
         "Timestamp must be in the past",
-        new[] { nameof(Timestamp) });
+        new[] { nameof(Timestamp) }
+      );
     }
   }
 }

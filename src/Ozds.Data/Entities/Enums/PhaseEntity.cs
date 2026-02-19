@@ -8,7 +8,7 @@ public enum PhaseEntity
 {
   L1,
   L2,
-  L3
+  L3,
 }
 
 public class PhaseEntityTypeConfiguration : IModelConfiguration
@@ -19,8 +19,8 @@ public class PhaseEntityTypeConfiguration : IModelConfiguration
   }
 }
 
-public class
-  PhaseEntityNpgsqlDataSourceConfiguration : INpgsqlDataSourceConfiguration
+public class PhaseEntityNpgsqlDataSourceConfiguration
+  : INpgsqlDataSourceConfiguration
 {
   public void Configure(NpgsqlDataSourceBuilder builder)
   {

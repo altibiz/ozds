@@ -4,11 +4,8 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Activation.Implementations.System;
 
-public class AuditEventModelActivator(
-  IServiceProvider serviceProvider
-) : InheritingModelActivator<AuditEventModel, EventModel>(
-  serviceProvider
-)
+public class AuditEventModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<AuditEventModel, EventModel>(serviceProvider)
 {
   public override void Initialize(AuditEventModel model)
   {

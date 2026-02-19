@@ -12,9 +12,9 @@ using Ozds.Report.Serialization.Abstractions;
 
 namespace Ozds.Report.Serialization.Implementations;
 
-public class CsvSerialization(
-  IServiceProvider serviceProvider
-) : IExporter, IImporter
+public class CsvSerialization(IServiceProvider serviceProvider)
+  : IExporter,
+    IImporter
 {
   private const char Separator = ';';
 
@@ -33,15 +33,17 @@ public class CsvSerialization(
   )
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
   {
-    var localizationQueries = serviceProvider
-      .GetRequiredService<ILocalizationQueries>();
+    var localizationQueries =
+      serviceProvider.GetRequiredService<ILocalizationQueries>();
     var stringBuilder = new StringBuilder();
 
     Type type;
     var properties = new List<PropertyInfo>();
-    foreach (var (model, index) in models
-      .Where(x => x is not null)
-      .Select((x, i) => (x, i)))
+    foreach (
+      var (model, index) in models
+        .Where(x => x is not null)
+        .Select((x, i) => (x, i))
+    )
     {
       if (index == 0)
       {
@@ -50,8 +52,11 @@ public class CsvSerialization(
 
         foreach (var property in properties.Select(property => property.Name))
         {
-          var translation = localizationQueries
-            .Translate(culture, type, property);
+          var translation = localizationQueries.Translate(
+            culture,
+            type,
+            property
+          );
           stringBuilder.Append(translation);
           stringBuilder.Append(Separator);
         }
@@ -99,15 +104,17 @@ public class CsvSerialization(
     CancellationToken cancellationToken
   )
   {
-    var localizationQueries = serviceProvider
-      .GetRequiredService<ILocalizationQueries>();
+    var localizationQueries =
+      serviceProvider.GetRequiredService<ILocalizationQueries>();
     var stringBuilder = new StringBuilder();
 
     Type type;
     var properties = new List<PropertyInfo>();
-    await foreach (var (model, index) in models
-      .Where(x => x is not null)
-      .Select((x, i) => (x, i)))
+    await foreach (
+      var (model, index) in models
+        .Where(x => x is not null)
+        .Select((x, i) => (x, i))
+    )
     {
       if (index == 0)
       {
@@ -116,8 +123,11 @@ public class CsvSerialization(
 
         foreach (var property in properties.Select(property => property.Name))
         {
-          var translation =
-            localizationQueries.Translate(culture, type, property);
+          var translation = localizationQueries.Translate(
+            culture,
+            type,
+            property
+          );
           stringBuilder.Append(translation);
           stringBuilder.Append(Separator);
         }
@@ -156,10 +166,7 @@ public class CsvSerialization(
     get { return "csv"; }
   }
 
-  public IImportStreamer<T> Import<T>(
-    CultureInfo culture,
-    Stream csvStream
-  )
+  public IImportStreamer<T> Import<T>(CultureInfo culture, Stream csvStream)
   {
     var streamReader = new StreamReader(csvStream);
     var config = new CsvConfiguration(CultureInfo.InvariantCulture);
@@ -281,9 +288,7 @@ internal sealed class CsvImportStreamer(
 {
   public IEnumerable<object> Stream()
   {
-    return reader
-      .Register(type, serviceProvider, culture)
-      .GetRecords(type);
+    return reader.Register(type, serviceProvider, culture).GetRecords(type);
   }
 
   public void Dispose()
@@ -302,9 +307,7 @@ internal sealed class CsvImportStreamer<T>(
 {
   public IEnumerable<T> Stream()
   {
-    return reader
-      .Register<T>(serviceProvider, culture)
-      .GetRecords<T>();
+    return reader.Register<T>(serviceProvider, culture).GetRecords<T>();
   }
 
   public void Dispose()
@@ -317,13 +320,10 @@ internal sealed class CsvImportStreamer<T>(
 // NOTE: public because ObjectResolver
 public sealed class EntityMap<T> : ClassMap<T>
 {
-  public EntityMap(
-    IServiceProvider serviceProvider,
-    CultureInfo culture
-  )
+  public EntityMap(IServiceProvider serviceProvider, CultureInfo culture)
   {
-    var localizationQueries = serviceProvider
-      .GetRequiredService<ILocalizationQueries>();
+    var localizationQueries =
+      serviceProvider.GetRequiredService<ILocalizationQueries>();
 
     var entityType = typeof(T);
     var entityProperties = entityType.GetProperties();
@@ -332,10 +332,12 @@ public sealed class EntityMap<T> : ClassMap<T>
       var parameter = Expression.Parameter(entityType);
       var member = Expression.MakeMemberAccess(parameter, entityProperty);
       var cast = Expression.Convert(member, typeof(object));
-      var expression =
-        Expression.Lambda<Func<T, object>>(cast, parameter);
-      var translation = localizationQueries
-        .Translate(culture, entityType, entityProperty.Name);
+      var expression = Expression.Lambda<Func<T, object>>(cast, parameter);
+      var translation = localizationQueries.Translate(
+        culture,
+        entityType,
+        entityProperty.Name
+      );
 
       serviceProvider
         .GetRequiredService<ILogger<EntityMap<T>>>()
@@ -355,15 +357,13 @@ public static class EntityMapExtensions
   )
   {
     var entityMapType = typeof(EntityMap<>).MakeGenericType(type);
-    var map = (ClassMap)ObjectResolver.Current.Resolve(
-      entityMapType,
-      serviceProvider,
-      culture
-    );
-    (serviceProvider
-        .GetRequiredService(
-          typeof(ILogger<>).MakeGenericType(entityMapType)) as ILogger)!
-      .LogDebug("Mapped {Map}", map);
+    var map = (ClassMap)
+      ObjectResolver.Current.Resolve(entityMapType, serviceProvider, culture);
+    (
+      serviceProvider.GetRequiredService(
+        typeof(ILogger<>).MakeGenericType(entityMapType)
+      ) as ILogger
+    )!.LogDebug("Mapped {Map}", map);
     reader.Context.RegisterClassMap(map);
     return reader;
   }

@@ -25,7 +25,8 @@ public class ApiKeyScopeEntity : AuditableJoinEntity
 public class ApiKeyScopeEntityProfiler : Profiler<ApiKeyScopeEntity>
 {
   protected override CacheConfigurationBuilder Configure(
-    CacheConfigurationBuilder builder)
+    CacheConfigurationBuilder builder
+  )
   {
     return builder
       .WithIndirectReverseDependencyEvictionPolicy(

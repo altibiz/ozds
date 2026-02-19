@@ -46,21 +46,20 @@ public static class HostExtensions
     Configurator configurator
   )
   {
-    builder.Services.AddScoped<IOzdsApiV1Client>(
-      services =>
-      {
-        var factory = services.GetRequiredService<IHttpClientFactory>();
-        var client = factory.CreateClient();
+    builder.Services.AddScoped<IOzdsApiV1Client>(services =>
+    {
+      var factory = services.GetRequiredService<IHttpClientFactory>();
+      var client = factory.CreateClient();
 
-        var options = services.GetRequiredService<IOptions<OzdsSdkOptions>>();
-        client.BaseAddress = new Uri(options.Value.BaseUrl);
-        client.DefaultRequestHeaders.Authorization =
-          new AuthenticationHeaderValue("Bearer", options.Value.ApiKey);
+      var options = services.GetRequiredService<IOptions<OzdsSdkOptions>>();
+      client.BaseAddress = new Uri(options.Value.BaseUrl);
+      client.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", options.Value.ApiKey);
 
-        client = configurator.ConfigureClient(client);
+      client = configurator.ConfigureClient(client);
 
-        return new OzdsApiV1Client(client);
-      });
+      return new OzdsApiV1Client(client);
+    });
     return builder;
   }
 
@@ -69,9 +68,7 @@ public static class HostExtensions
     public Func<HttpClient, HttpClient> ConfigureClient { get; private set; } =
       httpClient => httpClient;
 
-    public Configurator WithClient(
-      Func<HttpClient, HttpClient> configureClient
-    )
+    public Configurator WithClient(Func<HttpClient, HttpClient> configureClient)
     {
       var prior = ConfigureClient;
       ConfigureClient = httpClient =>

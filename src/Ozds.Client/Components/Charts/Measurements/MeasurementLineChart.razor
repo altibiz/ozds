@@ -61,9 +61,8 @@ else
         .ToList()
       : measurementLocation is { } measurementMeasurementLocation
         ? Parameters.Measurements.Items
-          .Where(
-            x =>
-              x.MeasurementLocationId == measurementMeasurementLocation?.Id)
+          .Where(x =>
+            x.MeasurementLocationId == measurementMeasurementLocation?.Id)
           .ToList()
         : Parameters.Measurements.Items;
     var phaseName = phase is { } selectedPhase

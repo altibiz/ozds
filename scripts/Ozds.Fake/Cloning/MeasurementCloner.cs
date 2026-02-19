@@ -6,21 +6,15 @@ using Ozds.Fake.Identification;
 
 namespace Ozds.Fake.Cloning;
 
-public class MeasurementCloner(
-  IServiceProvider serviceProvider
-)
+public class MeasurementCloner(IServiceProvider serviceProvider)
 {
-  public IMeasurement Clone(
-    IMeasurement measurement
-  )
+  public IMeasurement Clone(IMeasurement measurement)
   {
     var cloner = GetCloner(measurement.GetType());
     return cloner.Clone(measurement);
   }
 
-  public IEnumerable<IMeasurement> Clone(
-    IEnumerable<IMeasurement> measurements
-  )
+  public IEnumerable<IMeasurement> Clone(IEnumerable<IMeasurement> measurements)
   {
     var enumerator = measurements.GetEnumerator();
     if (!enumerator.MoveNext())
@@ -86,8 +80,7 @@ public class MeasurementCloner(
 
     var current = enumerator.Current;
     var cloner = GetCloner(current.GetType());
-    var currentIds = ids
-      .Where(id => id.MeterModel == current.MeterModel())
+    var currentIds = ids.Where(id => id.MeterModel == current.MeterModel())
       .ToList();
 
     yield return current;
@@ -102,8 +95,7 @@ public class MeasurementCloner(
       if (current.GetType() != next.GetType())
       {
         cloner = GetCloner(next.GetType());
-        currentIds = ids
-          .Where(id => id.MeterModel == next.MeterModel())
+        currentIds = ids.Where(id => id.MeterModel == next.MeterModel())
           .ToList();
         current = next;
       }
@@ -130,8 +122,7 @@ public class MeasurementCloner(
 
     var current = enumerator.Current;
     var cloner = GetCloner(current.GetType());
-    var currentIds = ids
-      .Where(id => id.MeterModel == current.MeterModel())
+    var currentIds = ids.Where(id => id.MeterModel == current.MeterModel())
       .ToList();
 
     yield return current;
@@ -146,8 +137,7 @@ public class MeasurementCloner(
       if (current.GetType() != next.GetType())
       {
         cloner = GetCloner(next.GetType());
-        currentIds = ids
-          .Where(id => id.MeterModel == next.MeterModel())
+        currentIds = ids.Where(id => id.MeterModel == next.MeterModel())
           .ToList();
         current = next;
       }
@@ -162,10 +152,11 @@ public class MeasurementCloner(
 
   private IMeasurementCloner GetCloner(Type type)
   {
-    var cloner = serviceProvider.GetServices<IMeasurementCloner>()
+    var cloner =
+      serviceProvider
+        .GetServices<IMeasurementCloner>()
         .FirstOrDefault(cloner => cloner.CanClone(type))
-      ?? throw new InvalidOperationException(
-        $"No cloner found for {type}");
+      ?? throw new InvalidOperationException($"No cloner found for {type}");
 
     return cloner;
   }

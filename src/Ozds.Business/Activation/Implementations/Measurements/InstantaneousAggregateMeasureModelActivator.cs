@@ -7,9 +7,7 @@ namespace Ozds.Business.Activation.Implementations.Measurements;
 public class InstantaneousAggregateMeasureModelActivator(ClockQueries clock)
   : ConcreteModelActivator<InstantaneousAggregateMeasureModel>
 {
-  public override void Initialize(
-    InstantaneousAggregateMeasureModel model
-  )
+  public override void Initialize(InstantaneousAggregateMeasureModel model)
   {
     base.Initialize(model);
 

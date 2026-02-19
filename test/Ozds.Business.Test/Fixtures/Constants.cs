@@ -19,7 +19,5 @@ public static class Constants
   public const decimal MaxTotalValue = uint.MaxValue;
 
   public static readonly DateTimeOffset DefaultDateTimeOffset =
-    DateTimeOffset.Parse(
-      "2000-01-01T00:00:00Z",
-      CultureInfo.InvariantCulture);
+    DateTimeOffset.Parse("2000-01-01T00:00:00Z", CultureInfo.InvariantCulture);
 }

@@ -13,7 +13,6 @@ public interface ITrackableEntity : IAuditableEntity
   public string? DeletedById { get; }
 }
 
-public interface ITrackableIdentifiableEntity :
-  ITrackableEntity, IIdentifiableEntity
-{
-}
+public interface ITrackableIdentifiableEntity
+  : ITrackableEntity,
+    IIdentifiableEntity { }

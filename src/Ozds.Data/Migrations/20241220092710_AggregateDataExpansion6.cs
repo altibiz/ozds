@@ -10,21 +10,23 @@ namespace Ozds.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            foreach (var (columnPrefix, unit, derivedColumnPrefix, derivedUnit) in new[]
-            {
-                ("active_energy_l1_import_t0", "wh", "derived_active_power_l1_import_t0", "w"),
-                ("active_energy_l2_import_t0", "wh", "derived_active_power_l2_import_t0", "w"),
-                ("active_energy_l3_import_t0", "wh", "derived_active_power_l3_import_t0", "w"),
-                ("active_energy_l1_export_t0", "wh", "derived_active_power_l1_export_t0", "w"),
-                ("active_energy_l2_export_t0", "wh", "derived_active_power_l2_export_t0", "w"),
-                ("active_energy_l3_export_t0", "wh", "derived_active_power_l3_export_t0", "w"),
-                ("reactive_energy_l1_import_t0", "varh", "derived_reactive_power_l1_import_t0", "var"),
-                ("reactive_energy_l2_import_t0", "varh", "derived_reactive_power_l2_import_t0", "var"),
-                ("reactive_energy_l3_import_t0", "varh", "derived_reactive_power_l3_import_t0", "var"),
-                ("reactive_energy_l1_export_t0", "varh", "derived_reactive_power_l1_export_t0", "var"),
-                ("reactive_energy_l2_export_t0", "varh", "derived_reactive_power_l2_export_t0", "var"),
-                ("reactive_energy_l3_export_t0", "varh", "derived_reactive_power_l3_export_t0", "var"),
-            })
+            foreach (
+                var (columnPrefix, unit, derivedColumnPrefix, derivedUnit) in new[]
+                {
+                    ("active_energy_l1_import_t0", "wh", "derived_active_power_l1_import_t0", "w"),
+                    ("active_energy_l2_import_t0", "wh", "derived_active_power_l2_import_t0", "w"),
+                    ("active_energy_l3_import_t0", "wh", "derived_active_power_l3_import_t0", "w"),
+                    ("active_energy_l1_export_t0", "wh", "derived_active_power_l1_export_t0", "w"),
+                    ("active_energy_l2_export_t0", "wh", "derived_active_power_l2_export_t0", "w"),
+                    ("active_energy_l3_export_t0", "wh", "derived_active_power_l3_export_t0", "w"),
+                    ("reactive_energy_l1_import_t0", "varh", "derived_reactive_power_l1_import_t0", "var"),
+                    ("reactive_energy_l2_import_t0", "varh", "derived_reactive_power_l2_import_t0", "var"),
+                    ("reactive_energy_l3_import_t0", "varh", "derived_reactive_power_l3_import_t0", "var"),
+                    ("reactive_energy_l1_export_t0", "varh", "derived_reactive_power_l1_export_t0", "var"),
+                    ("reactive_energy_l2_export_t0", "varh", "derived_reactive_power_l2_export_t0", "var"),
+                    ("reactive_energy_l3_export_t0", "varh", "derived_reactive_power_l3_export_t0", "var"),
+                }
+            )
             {
                 var tablePrefix = "abb_b2x";
                 CalculateDerivedValues(
@@ -37,12 +39,14 @@ namespace Ozds.Data.Migrations
                 );
             }
 
-            foreach (var (columnPrefix, unit, derivedColumnPrefix, derivedUnit) in new[]
-            {
-                ("active_energy_l1_import_t0", "wh", "derived_active_power_l1_import_t0", "w"),
-                ("active_energy_l2_import_t0", "wh", "derived_active_power_l2_import_t0", "w"),
-                ("active_energy_l3_import_t0", "wh", "derived_active_power_l3_import_t0", "w"),
-            })
+            foreach (
+                var (columnPrefix, unit, derivedColumnPrefix, derivedUnit) in new[]
+                {
+                    ("active_energy_l1_import_t0", "wh", "derived_active_power_l1_import_t0", "w"),
+                    ("active_energy_l2_import_t0", "wh", "derived_active_power_l2_import_t0", "w"),
+                    ("active_energy_l3_import_t0", "wh", "derived_active_power_l3_import_t0", "w"),
+                }
+            )
             {
                 var tablePrefix = "schneider_iem3xxx";
                 CalculateDerivedValues(
@@ -57,9 +61,7 @@ namespace Ozds.Data.Migrations
         }
 
         /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-        }
+        protected override void Down(MigrationBuilder migrationBuilder) { }
 
         private static void CalculateDerivedValues(
             MigrationBuilder migrationBuilder,
@@ -70,7 +72,8 @@ namespace Ozds.Data.Migrations
             string derivedUnit
         )
         {
-            migrationBuilder.Sql($@"
+            migrationBuilder.Sql(
+                $@"
                 update {tablePrefix}_aggregates aggregates
                 set
                     {derivedColumnPrefix}_min_{derivedUnit} = quarter_hours.min_value,
@@ -196,7 +199,8 @@ namespace Ozds.Data.Migrations
                     quarter_hours.meter_id = aggregates.meter_id
                     and quarter_hours.measurement_location_id = aggregates.measurement_location_id
                     and quarter_hours.{derivedColumnPrefix}_{derivedUnit} = aggregates.{derivedColumnPrefix}_max_{derivedUnit};
-            ");
+            "
+            );
         }
     }
 }

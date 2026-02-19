@@ -9,11 +9,13 @@ public class TrackableModelEntityConverter(IServiceProvider serviceProvider)
     TrackableModel,
     IdentifiableModel,
     TrackableEntity,
-    IdentifiableEntity>(serviceProvider)
+    IdentifiableEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     TrackableModel model,
-    TrackableEntity entity)
+    TrackableEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.CreatedOn = model.CreatedOn;
@@ -27,7 +29,8 @@ public class TrackableModelEntityConverter(IServiceProvider serviceProvider)
 
   public override void InitializeModel(
     TrackableEntity entity,
-    TrackableModel model)
+    TrackableModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.CreatedOn = entity.CreatedOn;

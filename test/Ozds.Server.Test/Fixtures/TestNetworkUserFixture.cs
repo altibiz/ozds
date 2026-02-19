@@ -15,9 +15,7 @@ public record NetworkUserWithLocation(
   NetworkUserModel NetworkUser
 );
 
-public class TestNetworkUserFixture(
-  ServiceComposition composition
-)
+public class TestNetworkUserFixture(ServiceComposition composition)
 {
   public async Task<NetworkUserWithLocation> Create(
     CancellationToken cancellationToken,
@@ -36,15 +34,17 @@ public class TestNetworkUserFixture(
 
     var location = await locationFixture.Create(
       cancellationToken,
-      configurator.ConfigureLocation);
+      configurator.ConfigureLocation
+    );
 
-    var networkUser = await trackableFixture
-      .Create<NetworkUserModel>(
-        cancellationToken, n =>
-        {
-          n.LocationId = location.Location.Id;
-          configurator.ConfigureNetworkUser(n);
-        });
+    var networkUser = await trackableFixture.Create<NetworkUserModel>(
+      cancellationToken,
+      n =>
+      {
+        n.LocationId = location.Location.Id;
+        configurator.ConfigureNetworkUser(n);
+      }
+    );
 
     return new NetworkUserWithLocation(
       location.RegulatoryCatalogue,
@@ -67,11 +67,9 @@ public class TestNetworkUserFixture(
     {
       get;
       private set;
-    } =
-      _ => { };
+    } = _ => { };
 
-    public Configurator WithNetworkUser(
-      Action<NetworkUserModel> configure)
+    public Configurator WithNetworkUser(Action<NetworkUserModel> configure)
     {
       var prior = ConfigureNetworkUser;
       ConfigureNetworkUser = x =>
@@ -83,7 +81,8 @@ public class TestNetworkUserFixture(
     }
 
     public Configurator WithLocation(
-      Action<TestLocationFixture.Configurator> configure)
+      Action<TestLocationFixture.Configurator> configure
+    )
     {
       var prior = ConfigureLocation;
       ConfigureLocation = x =>

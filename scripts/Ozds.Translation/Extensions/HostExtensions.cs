@@ -20,10 +20,7 @@ public static class HostExtensions
   )
   {
     builder.Services.AddSingleton(arguments.GetType(), arguments);
-    builder
-      .AddOptions()
-      .AddWorkers()
-      .AddClient();
+    builder.AddOptions().AddWorkers().AddClient();
 
     if (arguments is OzdsTranslationRegexArguments)
     {
@@ -43,22 +40,25 @@ public static class HostExtensions
   )
   {
     builder.Services.ConfigureOptions<ConfigureOzdsTranslationOptions>();
-    var relativeServerSettings = builder.Configuration
-      .GetSection("Ozds:Translation:ServerSettings")
+    var relativeServerSettings = builder
+      .Configuration.GetSection("Ozds:Translation:ServerSettings")
       .Get<string>();
     if (relativeServerSettings is not null)
     {
       var serverSettings = Path.GetFullPath(
         relativeServerSettings,
-        builder.Environment.ContentRootPath);
-      var directory = Path.GetDirectoryName(serverSettings)
+        builder.Environment.ContentRootPath
+      );
+      var directory =
+        Path.GetDirectoryName(serverSettings)
         ?? throw new InvalidOperationException(
-          "ServerSettings must be a file path");
+          "ServerSettings must be a file path"
+        );
       var file = Path.GetFileName(serverSettings);
       var source = new JsonConfigurationSource
       {
         FileProvider = new PhysicalFileProvider(directory),
-        Path = file
+        Path = file,
       };
       builder.Configuration.Sources.Insert(0, source);
     }
@@ -78,23 +78,23 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    builder.Services.AddScoped(
-      services =>
+    builder.Services.AddScoped(services =>
+    {
+      var options = services
+        .GetRequiredService<IOptions<OzdsTranslationOptions>>()
+        .Value;
+
+      var clientOptions = new OpenAIClientOptions
       {
-        var options = services
-          .GetRequiredService<IOptions<OzdsTranslationOptions>>().Value;
+        Endpoint = new Uri(options.OpenAiApi.BaseUrl),
+      };
 
-        var clientOptions = new OpenAIClientOptions
-        {
-          Endpoint = new Uri(options.OpenAiApi.BaseUrl)
-        };
+      var clientCredential = new ApiKeyCredential(options.OpenAiApi.ApiKey);
 
-        var clientCredential = new ApiKeyCredential(options.OpenAiApi.ApiKey);
+      var client = new OpenAIClient(clientCredential, clientOptions);
 
-        var client = new OpenAIClient(clientCredential, clientOptions);
-
-        return client;
-      });
+      return client;
+    });
     builder.Services.AddScoped<TranslateClient>();
     return builder;
   }

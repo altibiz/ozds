@@ -23,17 +23,14 @@ Ovdje je popis kvarova koji se mogu pojaviti u procesu naplate podijeljenih po
 područjima:
 
 - **Server -> Baza podataka**:
-
   - Baza podataka nije povezana na mrežu
   - Baza podataka baca iznimku (softverski bug)
 
 - **Server**:
-
   - Server nije povezan na mrežu
   - Server baca iznimku (softverski bug)
 
 - **Server -> Altibiz ERP**:
-
   - Altibiz ERP server nije povezan na mrežu
   - Altibiz ERP server šalje netočne podatke
   - Altibiz ERP server baca iznimku (softverski bug)

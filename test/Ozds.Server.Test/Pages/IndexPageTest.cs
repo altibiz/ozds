@@ -45,18 +45,13 @@ public partial class IndexPageTest : OzdsServerTestBase
   )
   {
     // NOTE: two locations because otherwise it just goes to the first location
-    var locationA = await Location
-      .Create(cancellationToken);
-    var locationB = await Location
-      .Create(cancellationToken);
+    var locationA = await Location.Create(cancellationToken);
+    var locationB = await Location.Create(cancellationToken);
 
     await User.Create(
       user,
       cancellationToken,
-      [
-        locationA.Location,
-        locationB.Location
-      ]
+      [locationA.Location, locationB.Location]
     );
 
     await Page.GotoAsync("/");

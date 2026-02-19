@@ -6,9 +6,11 @@ namespace Ozds.Business.Activation.Implementations.Finances;
 
 public class BlackoutNetworkUserCalculationModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  BlackoutNetworkUserCalculationModel,
-  NetworkUserCalculationModel>(serviceProvider)
+)
+  : InheritingModelActivator<
+    BlackoutNetworkUserCalculationModel,
+    NetworkUserCalculationModel
+  >(serviceProvider)
 {
   private readonly ModelActivator modelActivator =
     serviceProvider.GetRequiredService<ModelActivator>();
@@ -18,7 +20,6 @@ public class BlackoutNetworkUserCalculationModelActivator(
     base.Initialize(model);
 
     model.ConcreteArchivedUsageNetworkUserCatalogue =
-      modelActivator
-        .Activate<NetworkUserCatalogueModel>();
+      modelActivator.Activate<NetworkUserCatalogueModel>();
   }
 }

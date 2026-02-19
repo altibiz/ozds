@@ -12,17 +12,19 @@ public class NetworkUserInvoiceStateSagaDefinition
 
   public NetworkUserInvoiceStateSagaDefinition(IConfiguration configuration)
   {
-    var options = configuration.GetSection(
-        "Ozds:Fake:Messaging").Get<OzdsFakeMessagingOptions>()
+    var options =
+      configuration
+        .GetSection("Ozds:Fake:Messaging")
+        .Get<OzdsFakeMessagingOptions>()
       ?? throw new InvalidOperationException(
-        "Ozds:Messaging not found in configuration");
+        "Ozds:Messaging not found in configuration"
+      );
 
-    Endpoint(
-      e =>
-      {
-        e.Name = options.Sagas.NetworkUserInvoiceState;
-        e.PrefetchCount = ConcurrencyLimit;
-      });
+    Endpoint(e =>
+    {
+      e.Name = options.Sagas.NetworkUserInvoiceState;
+      e.PrefetchCount = ConcurrencyLimit;
+    });
   }
 
   protected override void ConfigureSaga(
@@ -36,8 +38,8 @@ public class NetworkUserInvoiceStateSagaDefinition
 
     var partition = endpointConfigurator.CreatePartitioner(ConcurrencyLimit);
 
-    sagaConfigurator.Message<IAcknowledgeNetworkUserInvoice>(
-      x => x
-        .UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId));
+    sagaConfigurator.Message<IAcknowledgeNetworkUserInvoice>(x =>
+      x.UsePartitioner(partition, m => m.Message.NetworkUserInvoiceId)
+    );
   }
 }

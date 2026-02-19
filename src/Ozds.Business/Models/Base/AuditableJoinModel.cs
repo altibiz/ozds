@@ -27,7 +27,8 @@ public abstract class AuditableJoinModel : JoinModel, IAuditable
   public required string? CreatedById { get; set; }
 
   public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
+    ValidationContext validationContext
+  )
   {
     foreach (var validationResult in base.Validate(validationContext))
     {
@@ -44,13 +45,14 @@ public abstract class AuditableJoinModel : JoinModel, IAuditable
     var now = clock.Timestamp();
 
     if (
-      validationContext.MemberName is null or nameof(CreatedOn) &&
-      CreatedOn > now
+      validationContext.MemberName is null or nameof(CreatedOn)
+      && CreatedOn > now
     )
     {
       yield return new ValidationResult(
         "Created on must be in the past",
-        new[] { nameof(CreatedOn) });
+        new[] { nameof(CreatedOn) }
+      );
     }
   }
 }

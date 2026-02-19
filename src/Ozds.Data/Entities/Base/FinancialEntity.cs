@@ -47,35 +47,22 @@ public class FinancialEntityTypeHierarchyConfiguration
 
     builder
       .Property<DateTimeOffset>(nameof(FinancialEntity.FromDate))
-      .HasConversion(
-        x => x.ToUniversalTime(),
-        x => x.ToUniversalTime()
-      );
+      .HasConversion(x => x.ToUniversalTime(), x => x.ToUniversalTime());
 
     builder
       .Property<DateTimeOffset>(nameof(FinancialEntity.ToDate))
-      .HasConversion(
-        x => x.ToUniversalTime(),
-        x => x.ToUniversalTime()
-      );
+      .HasConversion(x => x.ToUniversalTime(), x => x.ToUniversalTime());
 
     builder
       .Property<DateTimeOffset>(nameof(FinancialEntity.IssuedOn))
-      .HasConversion(
-        x => x.ToUniversalTime(),
-        x => x.ToUniversalTime()
-      );
+      .HasConversion(x => x.ToUniversalTime(), x => x.ToUniversalTime());
 
     builder
       .HasOne(nameof(CalculationEntity.IssuedBy))
       .WithMany()
       .HasForeignKey(nameof(CalculationEntity.IssuedById));
 
-    builder
-      .MonetaryValue(
-        nameof(FinancialEntity.Total_EUR),
-        "total_eur"
-      );
+    builder.MonetaryValue(nameof(FinancialEntity.Total_EUR), "total_eur");
 
     builder.Ignore(nameof(FinancialEntity.AuditingRepresentativeId));
   }

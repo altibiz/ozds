@@ -13,10 +13,10 @@ public static class DataDbContextDapperNaiveCommandExtensions
         BindingFlags.Static | BindingFlags.NonPublic
 #pragma warning restore S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
       )
-      .FirstOrDefault(
-        method =>
-          method.Name == "MultiMapAsync" &&
-          method.GetGenericArguments().Length == 1)
+      .FirstOrDefault(method =>
+        method.Name == "MultiMapAsync"
+        && method.GetGenericArguments().Length == 1
+      )
     ?? throw new InvalidOperationException("MultiMapAsync doesn't exist");
 #pragma warning disable S1133 // Deprecated code should be removed
   [Obsolete("Use DapperCommand instead")]
@@ -36,18 +36,21 @@ public static class DataDbContextDapperNaiveCommandExtensions
       cancellationToken: cancellationToken
     );
 
-    var results = await (MultiMapAsync
-      .MakeGenericMethod(typeof(T))
-      .Invoke(
-        null,
-        new object[]
-        {
-          connection,
-          command,
-          context.GetDapperTypes(typeof(T)),
-          context.GetDapperMap<T>(),
-          context.GetDapperSplitOn(typeof(T))
-        }) as Task<IEnumerable<T>>)!;
+    var results = await (
+      MultiMapAsync
+        .MakeGenericMethod(typeof(T))
+        .Invoke(
+          null,
+          new object[]
+          {
+            connection,
+            command,
+            context.GetDapperTypes(typeof(T)),
+            context.GetDapperMap<T>(),
+            context.GetDapperSplitOn(typeof(T)),
+          }
+        ) as Task<IEnumerable<T>>
+    )!;
 
     return results.ToList();
   }
@@ -56,33 +59,35 @@ public static class DataDbContextDapperNaiveCommandExtensions
   private static Type[] GetDapperTypes(this DbContext context, Type type)
 #pragma warning restore IDE0060 // Remove unused parameter
   {
-    return type
-      .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+    return type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
       .Select(property => property.PropertyType)
       .ToArray();
   }
 
-  private static Func<object[], T> GetDapperMap<T>(
-    this DbContext context
-  )
+  private static Func<object[], T> GetDapperMap<T>(this DbContext context)
     where T : class
   {
     return objects =>
     {
-      var instance = Activator.CreateInstance(typeof(T))
+      var instance =
+        Activator.CreateInstance(typeof(T))
         ?? throw new InvalidOperationException(
-          $"Failed to create instance of {typeof(T).Name}");
+          $"Failed to create instance of {typeof(T).Name}"
+        );
 
-      foreach (var (property, @object) in typeof(T)
-        .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-        .Zip(objects))
+      foreach (
+        var (property, @object) in typeof(T)
+          .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+          .Zip(objects)
+      )
       {
         property.SetValue(instance, @object);
       }
 
       return instance as T
         ?? throw new InvalidOperationException(
-          $"Failed to cast instance to type {typeof(T).Name}");
+          $"Failed to cast instance to type {typeof(T).Name}"
+        );
     };
   }
 
@@ -90,23 +95,25 @@ public static class DataDbContextDapperNaiveCommandExtensions
   {
     return string.Join(
       ",",
-      type
-        .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-        .Select(
-          property =>
-          {
-            var entityType = context.Model.FindEntityType(property.PropertyType)
-              ?? throw new InvalidOperationException(
-                $"Entity type not found for {property.PropertyType.Name}");
+      type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+        .Select(property =>
+        {
+          var entityType =
+            context.Model.FindEntityType(property.PropertyType)
+            ?? throw new InvalidOperationException(
+              $"Entity type not found for {property.PropertyType.Name}"
+            );
 
-            var primaryKey = entityType.FindPrimaryKey()?.Properties[0]
-              ?? throw new InvalidOperationException(
-                $"Primary key not found for entity {entityType.ClrType.Name}");
+          var primaryKey =
+            entityType.FindPrimaryKey()?.Properties[0]
+            ?? throw new InvalidOperationException(
+              $"Primary key not found for entity {entityType.ClrType.Name}"
+            );
 
-            var columnName = primaryKey.GetColumnName();
+          var columnName = primaryKey.GetColumnName();
 
-            return columnName;
-          })
+          return columnName;
+        })
     );
   }
 }

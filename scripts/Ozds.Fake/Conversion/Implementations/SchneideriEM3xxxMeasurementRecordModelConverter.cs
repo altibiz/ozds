@@ -7,10 +7,12 @@ namespace Ozds.Fake.Conversion.Implementations;
 public class SchneideriEM3xxxMeasurementRecordModelConverter
   : MeasurementRecordModelConverter<
     SchneideriEM3xxxMeasurementRecord,
-    SchneideriEM3xxxMeasurementModel>
+    SchneideriEM3xxxMeasurementModel
+  >
 {
   protected override SchneideriEM3xxxMeasurementModel ConvertToModel(
-    SchneideriEM3xxxMeasurementRecord record)
+    SchneideriEM3xxxMeasurementRecord record
+  )
   {
     return new SchneideriEM3xxxMeasurementModel
     {
@@ -38,12 +40,13 @@ public class SchneideriEM3xxxMeasurementRecordModelConverter
       ReactiveEnergyTotalExportT0_VARh =
         record.ReactiveEnergyTotalExportT0_VARh,
       ActiveEnergyTotalImportT1_Wh = record.ActiveEnergyTotalImportT1_Wh,
-      ActiveEnergyTotalImportT2_Wh = record.ActiveEnergyTotalImportT2_Wh
+      ActiveEnergyTotalImportT2_Wh = record.ActiveEnergyTotalImportT2_Wh,
     };
   }
 
   protected override SchneideriEM3xxxMeasurementRecord ConvertToRecord(
-    SchneideriEM3xxxMeasurementModel model)
+    SchneideriEM3xxxMeasurementModel model
+  )
   {
     return new SchneideriEM3xxxMeasurementRecord
     {
@@ -66,12 +69,10 @@ public class SchneideriEM3xxxMeasurementRecordModelConverter
       ActiveEnergyL3ImportT0_Wh = model.ActiveEnergyL3ImportT0_Wh,
       ActiveEnergyTotalImportT0_Wh = model.ActiveEnergyTotalImportT0_Wh,
       ActiveEnergyTotalExportT0_Wh = model.ActiveEnergyTotalExportT0_Wh,
-      ReactiveEnergyTotalImportT0_VARh =
-        model.ReactiveEnergyTotalImportT0_VARh,
-      ReactiveEnergyTotalExportT0_VARh =
-        model.ReactiveEnergyTotalExportT0_VARh,
+      ReactiveEnergyTotalImportT0_VARh = model.ReactiveEnergyTotalImportT0_VARh,
+      ReactiveEnergyTotalExportT0_VARh = model.ReactiveEnergyTotalExportT0_VARh,
       ActiveEnergyTotalImportT1_Wh = model.ActiveEnergyTotalImportT1_Wh,
-      ActiveEnergyTotalImportT2_Wh = model.ActiveEnergyTotalImportT2_Wh
+      ActiveEnergyTotalImportT2_Wh = model.ActiveEnergyTotalImportT2_Wh,
     };
   }
 }

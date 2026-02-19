@@ -15,10 +15,7 @@ public class ModelMutations(
   ModelValidator modelValidator
 ) : IMutations
 {
-  public async Task Create(
-    IModel model,
-    CancellationToken cancellationToken
-  )
+  public async Task Create(IModel model, CancellationToken cancellationToken)
   {
     var validationResult = await modelValidator.Validate(
       model,
@@ -38,8 +35,10 @@ public class ModelMutations(
 
     await entityMutations.Create(entity, cancellationToken);
 
-    if (model is IdentifiableModel identifiableModel &&
-      entity is IdentifiableEntity identifiableEntity)
+    if (
+      model is IdentifiableModel identifiableModel
+      && entity is IdentifiableEntity identifiableEntity
+    )
     {
       identifiableModel.Id = identifiableEntity.Id;
     }
@@ -72,8 +71,10 @@ public class ModelMutations(
 
     foreach (var (model, entity) in models.Zip(entities))
     {
-      if (model is IdentifiableModel identifiableModel &&
-        entity is IdentifiableEntity identifiableEntity)
+      if (
+        model is IdentifiableModel identifiableModel
+        && entity is IdentifiableEntity identifiableEntity
+      )
       {
         identifiableModel.Id = identifiableEntity.Id;
       }

@@ -11,7 +11,7 @@ public enum DurationModel
   Day,
   Week,
   Month,
-  Year
+  Year,
 }
 
 public static class DurationModelExtensions
@@ -27,7 +27,7 @@ public static class DurationModelExtensions
       DataDurationEntity.Week => DurationModel.Week,
       DataDurationEntity.Month => DurationModel.Month,
       DataDurationEntity.Year => DurationModel.Year,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 
@@ -42,7 +42,7 @@ public static class DurationModelExtensions
       DurationModel.Week => DataDurationEntity.Week,
       DurationModel.Month => DataDurationEntity.Month,
       DurationModel.Year => DataDurationEntity.Year,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 
@@ -57,7 +57,7 @@ public static class DurationModelExtensions
       TimeDurationEntity.Week => DurationModel.Week,
       TimeDurationEntity.Month => DurationModel.Month,
       TimeDurationEntity.Year => DurationModel.Year,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 
@@ -72,7 +72,7 @@ public static class DurationModelExtensions
       DurationModel.Week => TimeDurationEntity.Week,
       DurationModel.Month => TimeDurationEntity.Month,
       DurationModel.Year => TimeDurationEntity.Year,
-      _ => throw new NotImplementedException()
+      _ => throw new NotImplementedException(),
     };
   }
 }

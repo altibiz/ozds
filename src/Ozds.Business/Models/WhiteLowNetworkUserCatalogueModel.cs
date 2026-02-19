@@ -27,7 +27,7 @@ public class WhiteLowNetworkUserCatalogueModel : NetworkUserCatalogueModel
         ObisModel.ActiveEnergyTotalImportT1_kWh,
         ObisModel.ActiveEnergyTotalImportT2_kWh,
         ObisModel.ReactiveEnergyTotalImportT0_kVARh,
-        ObisModel.ReactiveEnergyTotalExportT0_kVARh
+        ObisModel.ReactiveEnergyTotalExportT0_kVARh,
       ];
     }
   }

@@ -7,14 +7,12 @@ using Ozds.Business.Reactors.Base;
 
 namespace Ozds.Business.Reactors.Implementations;
 
-public class DataNotificationChangeReactor(
-  IServiceProvider serviceProvider
-) : Reactor<
-  DataModelsChangedEventArgs,
-  IDataModelsChangedSubscriber,
-  DataNotificationChangeHandler>(serviceProvider)
-{
-}
+public class DataNotificationChangeReactor(IServiceProvider serviceProvider)
+  : Reactor<
+    DataModelsChangedEventArgs,
+    IDataModelsChangedSubscriber,
+    DataNotificationChangeHandler
+  >(serviceProvider) { }
 
 public class DataNotificationChangeHandler(
   NotificationQueries notificationQueries,
@@ -24,10 +22,11 @@ public class DataNotificationChangeHandler(
 {
   public override async Task Handle(
     DataModelsChangedEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
-    var notifications = eventArgs.Models
-      .Where(x => x.State == DataModelChangedState.Added)
+    var notifications = eventArgs
+      .Models.Where(x => x.State == DataModelChangedState.Added)
       .Select(x => x.Model)
       .OfType<NotificationModel>()
       .ToList();
@@ -44,14 +43,15 @@ public class DataNotificationChangeHandler(
         NotificationRecipients = recipients
           .GroupBy(x => x.NotificationId)
           .Select(
-            x =>
-              new NotificationRecipientsCreatedEventArgsNotificationRecipients
-              {
-                Notification = notifications.First(y => y.Id == x.Key),
-                Recipients = x.ToList()
-              })
-          .ToList()
-      });
+            x => new NotificationRecipientsCreatedEventArgsNotificationRecipients
+            {
+              Notification = notifications.First(y => y.Id == x.Key),
+              Recipients = x.ToList(),
+            }
+          )
+          .ToList(),
+      }
+    );
 
     await modelMutations.Create(recipients, cancellationToken);
   }

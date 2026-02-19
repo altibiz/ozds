@@ -4,20 +4,16 @@ using Ozds.Data.Test.Extensions;
 
 namespace Ozds.Data.Test.Assertions;
 
-public class IgnoreForeignKeysOptions(
-  DbContext dbContext
-)
+public class IgnoreForeignKeysOptions(DbContext dbContext)
 {
-  private readonly Lazy<HashSet<(string, Type?)>> foreign =
-    new(
-      () => dbContext
-        .GetForeignKeys()
-        .Select(x => (x.Name, x.DeclaringType))
-        .ToHashSet());
+  private readonly Lazy<HashSet<(string, Type?)>> foreign = new(() =>
+    dbContext
+      .GetForeignKeys()
+      .Select(x => (x.Name, x.DeclaringType))
+      .ToHashSet()
+  );
 
-  public SelfReferenceEquivalencyAssertionOptions<TSelf> Configure<
-    TSelf
-  >(
+  public SelfReferenceEquivalencyAssertionOptions<TSelf> Configure<TSelf>(
     SelfReferenceEquivalencyAssertionOptions<TSelf> options
   )
     where TSelf : SelfReferenceEquivalencyAssertionOptions<TSelf>

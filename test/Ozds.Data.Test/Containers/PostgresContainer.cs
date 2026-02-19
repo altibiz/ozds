@@ -15,8 +15,7 @@ public sealed class PostgresContainer : IAsyncDisposable
 
   private const string PostgresPassword = "ozds";
 
-  private const string PostgresReady =
-    ".*listening on IPv4.*";
+  private const string PostgresReady = ".*listening on IPv4.*";
 
   private readonly IContainer container;
 
@@ -50,12 +49,8 @@ public sealed class PostgresContainer : IAsyncDisposable
   {
     var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
     var wait = isWindows
-      ? Wait
-        .ForWindowsContainer()
-        .UntilMessageIsLogged(PostgresReady)
-      : Wait
-        .ForUnixContainer()
-        .UntilMessageIsLogged(PostgresReady);
+      ? Wait.ForWindowsContainer().UntilMessageIsLogged(PostgresReady)
+      : Wait.ForUnixContainer().UntilMessageIsLogged(PostgresReady);
 
     var container = new ContainerBuilder()
       .WithImage("timescale/timescaledb-ha:pg14-latest")

@@ -9,59 +9,50 @@ public record class SchneideriEM3xxxMeasurementRecord : MeasurementRecord
   {
     get
     {
-      return ActiveEnergyL1ImportT0_Wh is not 0
+      return
+        ActiveEnergyL1ImportT0_Wh is not 0
         && ActiveEnergyL2ImportT0_Wh is not 0
         && ActiveEnergyL3ImportT0_Wh is not 0
-          ? new CompositeTariffMeasure<decimal>(
-          [
-            new UnaryTariffMeasure<decimal>(
-              new ImportExportDuplexMeasure<decimal>(
-                new TriPhasicMeasure<decimal>(
-                  ActiveEnergyL1ImportT0_Wh,
-                  ActiveEnergyL2ImportT0_Wh,
-                  ActiveEnergyL3ImportT0_Wh
-                ),
-                new SinglePhasicSumMeasure<decimal>(
-                  ActiveEnergyTotalExportT0_Wh
-                )
-              )
-            ),
-            new BinaryTariffMeasure<decimal>(
-              new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicSumMeasure<decimal>(
-                  ActiveEnergyTotalImportT1_Wh),
-                PhasicMeasure<decimal>.Null
+        ? new CompositeTariffMeasure<decimal>([
+          new UnaryTariffMeasure<decimal>(
+            new ImportExportDuplexMeasure<decimal>(
+              new TriPhasicMeasure<decimal>(
+                ActiveEnergyL1ImportT0_Wh,
+                ActiveEnergyL2ImportT0_Wh,
+                ActiveEnergyL3ImportT0_Wh
               ),
-              new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicSumMeasure<decimal>(
-                  ActiveEnergyTotalImportT2_Wh),
-                PhasicMeasure<decimal>.Null
-              )
+              new SinglePhasicSumMeasure<decimal>(ActiveEnergyTotalExportT0_Wh)
             )
-          ])
-          : new CompositeTariffMeasure<decimal>(
-          [
-            new UnaryTariffMeasure<decimal>(
-              new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicSumMeasure<decimal>(
-                  ActiveEnergyTotalImportT0_Wh),
-                new SinglePhasicSumMeasure<decimal>(
-                  ActiveEnergyTotalExportT0_Wh)
-              )
+          ),
+          new BinaryTariffMeasure<decimal>(
+            new ImportExportDuplexMeasure<decimal>(
+              new SinglePhasicSumMeasure<decimal>(ActiveEnergyTotalImportT1_Wh),
+              PhasicMeasure<decimal>.Null
             ),
-            new BinaryTariffMeasure<decimal>(
-              new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicSumMeasure<decimal>(
-                  ActiveEnergyTotalImportT1_Wh),
-                PhasicMeasure<decimal>.Null
-              ),
-              new ImportExportDuplexMeasure<decimal>(
-                new SinglePhasicSumMeasure<decimal>(
-                  ActiveEnergyTotalImportT2_Wh),
-                PhasicMeasure<decimal>.Null
-              )
+            new ImportExportDuplexMeasure<decimal>(
+              new SinglePhasicSumMeasure<decimal>(ActiveEnergyTotalImportT2_Wh),
+              PhasicMeasure<decimal>.Null
             )
-          ]);
+          ),
+        ])
+        : new CompositeTariffMeasure<decimal>([
+          new UnaryTariffMeasure<decimal>(
+            new ImportExportDuplexMeasure<decimal>(
+              new SinglePhasicSumMeasure<decimal>(ActiveEnergyTotalImportT0_Wh),
+              new SinglePhasicSumMeasure<decimal>(ActiveEnergyTotalExportT0_Wh)
+            )
+          ),
+          new BinaryTariffMeasure<decimal>(
+            new ImportExportDuplexMeasure<decimal>(
+              new SinglePhasicSumMeasure<decimal>(ActiveEnergyTotalImportT1_Wh),
+              PhasicMeasure<decimal>.Null
+            ),
+            new ImportExportDuplexMeasure<decimal>(
+              new SinglePhasicSumMeasure<decimal>(ActiveEnergyTotalImportT2_Wh),
+              PhasicMeasure<decimal>.Null
+            )
+          ),
+        ]);
     }
   }
 

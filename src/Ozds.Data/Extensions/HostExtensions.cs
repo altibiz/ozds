@@ -94,17 +94,15 @@ public static class HostExtensions
     return builder;
   }
 
-  private static void AddDatabase(
-    this IHostApplicationBuilder builder
-  )
+  private static void AddDatabase(this IHostApplicationBuilder builder)
   {
     builder.Services.AddPooledDbContextFactory<DataDbContext>(
       (services, options) =>
       {
         var dataOptions = services
-          .GetRequiredService<IOptions<OzdsDataOptions>>().Value;
-        var environment = services
-          .GetRequiredService<IHostEnvironment>();
+          .GetRequiredService<IOptions<OzdsDataOptions>>()
+          .Value;
+        var environment = services.GetRequiredService<IHostEnvironment>();
 
         if (environment.IsDevelopment() && dataOptions.LogSql)
         {
@@ -115,10 +113,12 @@ public static class HostExtensions
           );
         }
 
-        var dataSourceBuilder =
-          new NpgsqlDataSourceBuilder(dataOptions.ConnectionString);
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(
+          dataOptions.ConnectionString
+        );
         dataSourceBuilder.ApplyConfigurationsFromAssembly(
-          Assembly.GetExecutingAssembly());
+          Assembly.GetExecutingAssembly()
+        );
         var dataSource = dataSourceBuilder.Build();
 
         options
@@ -127,10 +127,11 @@ public static class HostExtensions
             options =>
             {
               options.MigrationsAssembly(
-                typeof(DataDbContext).Assembly.GetName().Name);
-              options.MigrationsHistoryTable(
-                $"__Ozds{nameof(DataDbContext)}");
-            })
+                typeof(DataDbContext).Assembly.GetName().Name
+              );
+              options.MigrationsHistoryTable($"__Ozds{nameof(DataDbContext)}");
+            }
+          )
           .UseTimescale()
           .AddServedSaveChangesInterceptorsFromAssembly(
             typeof(HostExtensions).Assembly,
@@ -139,9 +140,9 @@ public static class HostExtensions
 
         if (environment.IsDevelopment())
         {
-          options.ConfigureWarnings(
-            warnings => warnings
-              .Throw(RelationalEventId.MultipleCollectionIncludeWarning));
+          options.ConfigureWarnings(warnings =>
+            warnings.Throw(RelationalEventId.MultipleCollectionIncludeWarning)
+          );
         }
 
         if (dataOptions.UseProxies)
@@ -150,6 +151,7 @@ public static class HostExtensions
         }
 
         options.UseSnakeCaseNamingConvention();
-      });
+      }
+    );
   }
 }

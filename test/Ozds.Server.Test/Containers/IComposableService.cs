@@ -1,11 +1,8 @@
 namespace Ozds.Server.Test.Containers;
 
-public interface IComposableService
-{
-}
+public interface IComposableService { }
 
-public interface IComposableService<T>
-  : IComposableService, IAsyncDisposable
+public interface IComposableService<T> : IComposableService, IAsyncDisposable
 {
   static abstract Task<T> Create(
     ContainerNetwork network,

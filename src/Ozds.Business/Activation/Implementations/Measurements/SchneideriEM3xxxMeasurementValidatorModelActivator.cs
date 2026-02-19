@@ -6,9 +6,11 @@ namespace Ozds.Business.Activation.Implementations.Measurements;
 
 public class SchneideriEM3xxxMeasurementValidatorModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<
-  SchneideriEM3xxxMeasurementValidatorModel,
-  MeasurementValidatorModel>(serviceProvider)
+)
+  : InheritingModelActivator<
+    SchneideriEM3xxxMeasurementValidatorModel,
+    MeasurementValidatorModel
+  >(serviceProvider)
 {
   public override void Initialize(
     SchneideriEM3xxxMeasurementValidatorModel model

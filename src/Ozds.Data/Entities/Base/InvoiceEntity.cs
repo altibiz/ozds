@@ -29,30 +29,23 @@ public abstract class InvoiceEntity : FinancialEntity, IInvoiceEntity
   }
 }
 
-public class
-  InvoiceEntityTypeHierarchyConfiguration : EntityTypeHierarchyConfiguration<
-  InvoiceEntity>
+public class InvoiceEntityTypeHierarchyConfiguration
+  : EntityTypeHierarchyConfiguration<InvoiceEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
     var builder = modelBuilder.Entity(entity);
 
-    builder
-      .MonetaryValue(
-        nameof(InvoiceEntity.InvoiceTaxRate_Percent),
-        "tax_rate_percent"
-      );
+    builder.MonetaryValue(
+      nameof(InvoiceEntity.InvoiceTaxRate_Percent),
+      "tax_rate_percent"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(InvoiceEntity.InvoiceTax_EUR),
-        "tax_eur"
-      );
+    builder.MonetaryValue(nameof(InvoiceEntity.InvoiceTax_EUR), "tax_eur");
 
-    builder
-      .MonetaryValue(
-        nameof(InvoiceEntity.InvoiceTotalWithTax_EUR),
-        "total_with_tax_eur"
-      );
+    builder.MonetaryValue(
+      nameof(InvoiceEntity.InvoiceTotalWithTax_EUR),
+      "total_with_tax_eur"
+    );
   }
 }

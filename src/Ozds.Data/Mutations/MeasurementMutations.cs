@@ -28,14 +28,11 @@ public class MeasurementMutations(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
-
-    await DeleteOlderThan(
-      context,
-      threshold,
+    await using var context = await factory.CreateDbContextAsync(
       cancellationToken
     );
+
+    await DeleteOlderThan(context, threshold, cancellationToken);
   }
 
   private async Task DeleteOlderThan(
@@ -46,11 +43,7 @@ public class MeasurementMutations(
   {
     if (context.Database.CurrentTransaction is not null)
     {
-      await ExecuteDeleteOlderThan(
-        context,
-        threshold,
-        cancellationToken
-      );
+      await ExecuteDeleteOlderThan(context, threshold, cancellationToken);
     }
     else
     {
@@ -60,17 +53,15 @@ public class MeasurementMutations(
         {
           var isolationLevel = IsolationLevel.RepeatableRead;
 
-          await using var transaction = await context.Database
-            .BeginTransactionAsync(isolationLevel, cancellationToken);
+          await using var transaction =
+            await context.Database.BeginTransactionAsync(
+              isolationLevel,
+              cancellationToken
+            );
 
-          await ExecuteDeleteOlderThan(
-            context,
-            threshold,
-            cancellationToken
-          );
+          await ExecuteDeleteOlderThan(context, threshold, cancellationToken);
 
-          await context.Database
-            .CommitTransactionAsync(cancellationToken);
+          await context.Database.CommitTransactionAsync(cancellationToken);
 
           break;
         }
@@ -90,7 +81,8 @@ public class MeasurementMutations(
 #pragma warning disable S6667 // Logging in a catch clause should pass the caught exception as a parameter.
             logger.LogDebug(
               "Retying delete of measurements older than {Threshold} because of serialization issues...",
-              threshold);
+              threshold
+            );
 #pragma warning restore S6667 // Logging in a catch clause should pass the caught exception as a parameter.
             continue;
           }
@@ -105,7 +97,8 @@ public class MeasurementMutations(
 #pragma warning disable S6667 // Logging in a catch clause should pass the caught exception as a parameter.
             logger.LogDebug(
               "Retying delete of measurements older than {Threshold}",
-              threshold);
+              threshold
+            );
 #pragma warning restore S6667 // Logging in a catch clause should pass the caught exception as a parameter.
 
             continue;
@@ -151,8 +144,9 @@ public class MeasurementMutations(
     bool triggerEvents = true
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     if (triggerEvents)
     {
@@ -165,19 +159,16 @@ public class MeasurementMutations(
         new EntitiesChangingEventArgs
         {
           Entities = measurements
-            .Select(
-              measurement => new EntityChangingEntry(
-                EntityChangingState.Adding,
-                measurement))
-            .ToList()
-        });
+            .Select(measurement => new EntityChangingEntry(
+              EntityChangingState.Adding,
+              measurement
+            ))
+            .ToList(),
+        }
+      );
     }
 
-    var result = await Create(
-      context,
-      measurements,
-      cancellationToken
-    );
+    var result = await Create(context, measurements, cancellationToken);
 
     if (triggerEvents)
     {
@@ -185,12 +176,13 @@ public class MeasurementMutations(
         new EntitiesChangedEventArgs
         {
           Entities = result
-            .Select(
-              measurement => new EntityChangedEntry(
-                EntityChangedState.Added,
-                measurement))
-            .ToList()
-        });
+            .Select(measurement => new EntityChangedEntry(
+              EntityChangedState.Added,
+              measurement
+            ))
+            .ToList(),
+        }
+      );
     }
 
     return result;
@@ -202,8 +194,9 @@ public class MeasurementMutations(
     bool triggerEvents = true
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     List<IMeasurementEntity>? measurementsList = null;
     if (triggerEvents)
@@ -217,25 +210,18 @@ public class MeasurementMutations(
         new EntitiesChangingEventArgs
         {
           Entities = measurementsList!
-            .Select(
-              measurement => new EntityChangingEntry(
-                EntityChangingState.Adding,
-                measurement))
-            .ToList()
-        });
+            .Select(measurement => new EntityChangingEntry(
+              EntityChangingState.Adding,
+              measurement
+            ))
+            .ToList(),
+        }
+      );
     }
 
     var result = measurementsList is not null
-      ? await Create(
-        context,
-        measurementsList,
-        cancellationToken
-      )
-      : await Create(
-        context,
-        measurements,
-        cancellationToken
-      );
+      ? await Create(context, measurementsList, cancellationToken)
+      : await Create(context, measurements, cancellationToken);
 
     if (triggerEvents)
     {
@@ -243,12 +229,13 @@ public class MeasurementMutations(
         new EntitiesChangedEventArgs
         {
           Entities = result
-            .Select(
-              measurement => new EntityChangedEntry(
-                EntityChangedState.Added,
-                measurement))
-            .ToList()
-        });
+            .Select(measurement => new EntityChangedEntry(
+              EntityChangedState.Added,
+              measurement
+            ))
+            .ToList(),
+        }
+      );
     }
 
     return result;
@@ -261,23 +248,26 @@ public class MeasurementMutations(
   )
   {
     var grouped = measurements
-      .OrderBy(
-        x => x is IAggregateEntity aggregate
+      .OrderBy(x =>
+        x is IAggregateEntity aggregate
           ? aggregate.Interval switch
           {
             IntervalEntity.Month or IntervalEntity.Day => 1,
             IntervalEntity.QuarterHour => 2,
             _ => throw new InvalidOperationException(
-              $"Unknown interval {aggregate.Interval}.")
+              $"Unknown interval {aggregate.Interval}."
+            ),
           }
-          : 0)
-      .GroupBy(
-        x => (
+          : 0
+      )
+      .GroupBy(x =>
+        (
           Type: x.GetType(),
-          Interval:
-          x is AggregateEntity aggregate
+          Interval: x is AggregateEntity aggregate
             ? (IntervalEntity?)aggregate.Interval
-            : null))
+            : null
+        )
+      )
       .Select(x => new MeasurementGroup(x.Key.Type, x.Key.Interval, x.ToList()))
       .ToList();
     if (grouped.Count == 0)
@@ -296,29 +286,31 @@ public class MeasurementMutations(
   )
   {
     var grouped = await measurements
-      .OrderBy(
-        x => x is IAggregateEntity aggregate
+      .OrderBy(x =>
+        x is IAggregateEntity aggregate
           ? aggregate.Interval switch
           {
             IntervalEntity.Month or IntervalEntity.Day => 1,
             IntervalEntity.QuarterHour => 2,
             _ => throw new InvalidOperationException(
-              $"Unknown interval {aggregate.Interval}.")
+              $"Unknown interval {aggregate.Interval}."
+            ),
           }
-          : 0)
-      .GroupBy(
-        x => (
+          : 0
+      )
+      .GroupBy(x =>
+        (
           Type: x.GetType(),
-          Interval:
-          x is AggregateEntity aggregate
+          Interval: x is AggregateEntity aggregate
             ? (IntervalEntity?)aggregate.Interval
-            : null))
-      .SelectAwait(
-        async x =>
-        {
-          var measurements = await x.ToListAsync();
-          return new MeasurementGroup(x.Key.Type, x.Key.Interval, measurements);
-        })
+            : null
+        )
+      )
+      .Select(x =>
+      {
+        var measurements = x.ToList();
+        return new MeasurementGroup(x.Key.Type, x.Key.Interval, measurements);
+      })
       .ToListAsync(cancellationToken);
     if (grouped.Count == 0)
     {
@@ -353,8 +345,11 @@ public class MeasurementMutations(
         {
           var isolationLevel = IsolationLevel.RepeatableRead;
 
-          await using var transaction = await context.Database
-            .BeginTransactionAsync(isolationLevel, cancellationToken);
+          await using var transaction =
+            await context.Database.BeginTransactionAsync(
+              isolationLevel,
+              cancellationToken
+            );
 
           results = await ExecuteCreate(
             context,
@@ -363,8 +358,7 @@ public class MeasurementMutations(
             cancellationToken
           );
 
-          await context.Database
-            .CommitTransactionAsync(cancellationToken);
+          await context.Database.CommitTransactionAsync(cancellationToken);
 
           break;
         }
@@ -384,7 +378,8 @@ public class MeasurementMutations(
 #pragma warning disable S6667 // Logging in a catch clause should pass the caught exception as a parameter.
             logger.LogDebug(
               "Retying insert of {Count} measurements because of serialization issues...",
-              grouped.Sum(x => x.Measurements.Count));
+              grouped.Sum(x => x.Measurements.Count)
+            );
 #pragma warning restore S6667 // Logging in a catch clause should pass the caught exception as a parameter.
             continue;
           }
@@ -398,36 +393,33 @@ public class MeasurementMutations(
               grouped
                 .SelectMany(group => group.Measurements)
                 .OfType<IAggregateEntity>()
-                .GroupBy(
-                  aggregate => new
-                  {
-                    Type = aggregate.GetType(),
-                    aggregate.Interval,
-                    aggregate.MeterId,
-                    aggregate.MeasurementLocationId,
-                    aggregate.Timestamp
-                  })
-                .Select(
-                  x => new
-                  {
-                    x.Key,
-                    List = x.ToList()
-                  })
+                .GroupBy(aggregate => new
+                {
+                  Type = aggregate.GetType(),
+                  aggregate.Interval,
+                  aggregate.MeterId,
+                  aggregate.MeasurementLocationId,
+                  aggregate.Timestamp,
+                })
+                .Select(x => new { x.Key, List = x.ToList() })
                 .Where(x => x.List.Count > 1)
-                .Select(
-                  x => string.Join(
+                .Select(x =>
+                  string.Join(
                     Environment.NewLine,
                     $"Type: {x.Key.Type.Name}",
                     $"Interval: {x.Key.Interval}",
                     $"Meter ID: {x.Key.MeterId}",
                     $"Measurement Location ID: {x.Key.MeasurementLocationId}",
                     $"Timestamp: {x.Key.Timestamp}",
-                    $"Count: {x.List.Count}")));
+                    $"Count: {x.List.Count}"
+                  )
+                )
+            );
             logger.LogError(
               "Aggregate update affected a row more than once."
-              + " {Count} aggregates affected."
-              + "\nOffending aggregates:"
-              + "\n{OffendingAggregates}",
+                + " {Count} aggregates affected."
+                + "\nOffending aggregates:"
+                + "\n{OffendingAggregates}",
               grouped.Sum(x => x.Measurements.Count),
               offendingAggregates
             );
@@ -443,9 +435,10 @@ public class MeasurementMutations(
 #pragma warning disable S6667 // Logging in a catch clause should pass the caught exception as a parameter.
             logger.LogDebug(
               "Retying insert of {Count} measurements"
-              + " because timeout with chunk size {ChunkSize}...",
+                + " because timeout with chunk size {ChunkSize}...",
               grouped.Sum(x => x.Measurements.Count),
-              groupChunkSize);
+              groupChunkSize
+            );
 #pragma warning restore S6667 // Logging in a catch clause should pass the caught exception as a parameter.
 
             // TODO: figure out what to do when we're already at 10
@@ -472,16 +465,15 @@ public class MeasurementMutations(
     }
 
     return results
-      .GroupBy(
-        x => new
-        {
-          x.MeterId,
-          x.MeasurementLocationId,
-          x.Timestamp,
-          Interval = x is IAggregateEntity aggregate
-            ? aggregate.Interval
-            : (IntervalEntity?)null
-        })
+      .GroupBy(x => new
+      {
+        x.MeterId,
+        x.MeasurementLocationId,
+        x.Timestamp,
+        Interval = x is IAggregateEntity aggregate
+          ? aggregate.Interval
+          : (IntervalEntity?)null,
+      })
       .Select(x => x.Last())
       .ToList();
   }
@@ -496,9 +488,11 @@ public class MeasurementMutations(
     var results = new List<IMeasurementEntity>();
     foreach (var group in groups)
     {
-      foreach (var (index, chunk) in group.Measurements
-        .Chunk(groupChunkSize)
-        .Select((x, i) => (i, x)))
+      foreach (
+        var (index, chunk) in group
+          .Measurements.Chunk(groupChunkSize)
+          .Select((x, i) => (i, x))
+      )
       {
         var json = context.CreateBulkJsonParameter(chunk);
         var jsonParameter = new JsonParameter(json);
@@ -533,11 +527,9 @@ public class MeasurementMutations(
         context,
         type,
         aggregateInterval,
-        jsonParameterName)
-      : procedures.CallUpsertMeasurements(
-        context,
-        type,
-        jsonParameterName);
+        jsonParameterName
+      )
+      : procedures.CallUpsertMeasurements(context, type, jsonParameterName);
 
     // NOTE: good for debugging - please don't remove
 #pragma warning disable S125 // Sections of code should not be commented out
@@ -557,10 +549,7 @@ public class MeasurementMutations(
       type,
       sql,
       cancellationToken,
-      new Dictionary<string, object?>
-      {
-        { jsonParameterName, jsonParameter }
-      }
+      new Dictionary<string, object?> { { jsonParameterName, jsonParameter } }
     );
   }
 

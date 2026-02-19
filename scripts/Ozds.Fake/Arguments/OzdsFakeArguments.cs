@@ -9,7 +9,7 @@ public enum OzdsFakeIntervalArgument
   Week,
   Month,
   Season,
-  Year
+  Year,
 }
 
 public static class OzdsFakeIntervalOptionExtensions
@@ -24,14 +24,12 @@ public static class OzdsFakeIntervalOptionExtensions
       OzdsFakeIntervalArgument.Month => TimeSpan.FromDays(30),
       OzdsFakeIntervalArgument.Season => TimeSpan.FromDays(90),
       OzdsFakeIntervalArgument.Year => TimeSpan.FromDays(365),
-      _ => throw new InvalidOperationException($"Unknown interval: {interval}")
+      _ => throw new InvalidOperationException($"Unknown interval: {interval}"),
     };
   }
 }
 
-public interface IOzdsFakeArguments
-{
-}
+public interface IOzdsFakeArguments { }
 
 [Verb("push", HelpText = "Push measurements to the API.")]
 public class OzdsFakePushArguments : IOzdsFakeArguments
@@ -40,16 +38,22 @@ public class OzdsFakePushArguments : IOzdsFakeArguments
   public string MessengerId { get; set; } = "pidgeon";
 
   [Option(
-    'a', "messenger-api-key", Required = false,
-    HelpText = "Messenger API key.")]
+    'a',
+    "messenger-api-key",
+    Required = false,
+    HelpText = "Messenger API key."
+  )]
   public string MessengerApiKey { get; set; } = "pidgeon";
 
   [Option('e', "meter-ids", Required = false, HelpText = "Meter IDs.")]
   public IEnumerable<string> MeterIds { get; set; } = [];
 
   [Option(
-    'l', "location-id", Required = false,
-    HelpText = "Location ID. If not specified, all meters will be used.")]
+    'l',
+    "location-id",
+    Required = false,
+    HelpText = "Location ID. If not specified, all meters will be used."
+  )]
   public string? LocationId { get; set; } = default!;
 
   [Option('t', "timeout", Required = false, HelpText = "Timeout in seconds.")]
@@ -59,8 +63,11 @@ public class OzdsFakePushArguments : IOzdsFakeArguments
   public int Interval_s { get; set; } = 5;
 
   [Option(
-    'r', "realtime", Required = false,
-    HelpText = "Instruct measurement buffer to be realtime.")]
+    'r',
+    "realtime",
+    Required = false,
+    HelpText = "Instruct measurement buffer to be realtime."
+  )]
   public bool Realtime { get; set; } = false;
 }
 
@@ -78,16 +85,22 @@ public class OzdsFakeSeedArguments : IOzdsFakeArguments
   public string MessengerId { get; set; } = "pidgeon";
 
   [Option(
-    'a', "messenger-api-key", Required = false,
-    HelpText = "Messenger API key.")]
+    'a',
+    "messenger-api-key",
+    Required = false,
+    HelpText = "Messenger API key."
+  )]
   public string MessengerApiKey { get; set; } = "pidgeon";
 
   [Option('e', "meter-ids", Required = false, HelpText = "Meter IDs.")]
   public IEnumerable<string> MeterIds { get; set; } = [];
 
   [Option(
-    'l', "location-id", Required = false,
-    HelpText = "Location ID. If not specified, all meters will be used.")]
+    'l',
+    "location-id",
+    Required = false,
+    HelpText = "Location ID. If not specified, all meters will be used."
+  )]
   public string? LocationId { get; set; } = default!;
 
   [Option('t', "timeout", Required = false, HelpText = "Timeout in seconds.")]
@@ -96,8 +109,8 @@ public class OzdsFakeSeedArguments : IOzdsFakeArguments
 
 [Verb(
   "insert",
-  HelpText =
-    "Seed the database by directly inserting with a desired interval.")]
+  HelpText = "Seed the database by directly inserting with a desired interval."
+)]
 public class OzdsFakeInsertArguments : IOzdsFakeArguments
 {
   [Option('i', "interval", Required = true, HelpText = "Desired interval.")]
@@ -110,29 +123,36 @@ public class OzdsFakeInsertArguments : IOzdsFakeArguments
   public int BatchSize { get; set; } = 1000;
 
   [Option(
-    'e', "meters", Required = false, Min = 1,
-    HelpText =
-      "Meters in form of `<measurement-location-id>:<meter-id>`. If not specified, location will be used to fetch meters in that location.")]
+    'e',
+    "meters",
+    Required = false,
+    Min = 1,
+    HelpText = "Meters in form of `<measurement-location-id>:<meter-id>`. If not specified, location will be used to fetch meters in that location."
+  )]
   public IEnumerable<string> Meters { get; set; } = [];
 
   [Option(
-    'l', "location-id", Required = false,
-    HelpText = "Location ID. If not specified, all meters will be used.")]
+    'l',
+    "location-id",
+    Required = false,
+    HelpText = "Location ID. If not specified, all meters will be used."
+  )]
   public string? LocationId { get; set; } = default!;
 
   [Option('t', "timeout", Required = false, HelpText = "Timeout in seconds.")]
   public int Timeout_s { get; set; } = 3;
 
   [Option(
-    'a', "aggregates-only", Required = false,
-    HelpText = "Only generate aggregates.")]
+    'a',
+    "aggregates-only",
+    Required = false,
+    HelpText = "Only generate aggregates."
+  )]
   public bool AggregatesOnly { get; set; } = false;
 }
 
 [Verb("altibiz", HelpText = "Fake Altibiz ERP web application.")]
-public class OzdsFakeAltibizArguments : IOzdsFakeArguments
-{
-}
+public class OzdsFakeAltibizArguments : IOzdsFakeArguments { }
 
 public class OzdsFakeBypassArguments : IOzdsFakeArguments
 {
@@ -145,16 +165,18 @@ public static class OzdsFakeArguments
   {
     try
     {
-      var result = new Parser(
-        with =>
-        {
-          with.CaseInsensitiveEnumValues = true;
-          with.AutoHelp = true;
-          with.AutoVersion = true;
-          with.HelpWriter = Console.Out;
-        }).ParseArguments<OzdsFakePushArguments, OzdsFakeSeedArguments,
+      var result = new Parser(with =>
+      {
+        with.CaseInsensitiveEnumValues = true;
+        with.AutoHelp = true;
+        with.AutoVersion = true;
+        with.HelpWriter = Console.Out;
+      }).ParseArguments<
+        OzdsFakePushArguments,
+        OzdsFakeSeedArguments,
         OzdsFakeInsertArguments,
-        OzdsFakeAltibizArguments>(args);
+        OzdsFakeAltibizArguments
+      >(args);
 
       if (result.Tag == ParserResultType.NotParsed)
       {

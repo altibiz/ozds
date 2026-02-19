@@ -5,8 +5,10 @@ using Ozds.Caching.Entities.Enums;
 namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class OrderOfMagnitudeModelCachingEntityConverter
-  : ConcreteModelCachingEntityConverter<OrderOfMagnitudeModel,
-    OrderOfMagnitudeEntity>
+  : ConcreteModelCachingEntityConverter<
+    OrderOfMagnitudeModel,
+    OrderOfMagnitudeEntity
+  >
 {
   public override OrderOfMagnitudeEntity ToEntity(OrderOfMagnitudeModel model)
   {
@@ -22,7 +24,7 @@ public class OrderOfMagnitudeModelCachingEntityConverter
       OrderOfMagnitudeModel.Milli => OrderOfMagnitudeEntity.Milli,
       OrderOfMagnitudeModel.Micro => OrderOfMagnitudeEntity.Micro,
       OrderOfMagnitudeModel.Nano => OrderOfMagnitudeEntity.Nano,
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -40,7 +42,7 @@ public class OrderOfMagnitudeModelCachingEntityConverter
       OrderOfMagnitudeEntity.Milli => OrderOfMagnitudeModel.Milli,
       OrderOfMagnitudeEntity.Micro => OrderOfMagnitudeModel.Micro,
       OrderOfMagnitudeEntity.Nano => OrderOfMagnitudeModel.Nano,
-      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null),
     };
   }
 }

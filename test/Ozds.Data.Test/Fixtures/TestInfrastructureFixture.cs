@@ -36,40 +36,49 @@ public class TestInfrastructureFixture(
     Action<Configurator>? configure = null
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var configurator = new Configurator(reflector);
     configure?.Invoke(configurator);
 
     var fixture = context.ContextualFixture();
     fixture.Customizations.Add(
       new DateTimeOffsetInRangeSpecimenBuilder(
-        Constants.Now.AddMonths(-1), Constants.Now));
+        Constants.Now.AddMonths(-1),
+        Constants.Now
+      )
+    );
 
     var redLowCatalogue = await fixture.CreateInDb(
       context,
       cancellationToken,
-      configurator.ConfigureRedLowNetworkUserCatalogue);
+      configurator.ConfigureRedLowNetworkUserCatalogue
+    );
 
     var blueLowCatalogue = await fixture.CreateInDb(
       context,
       cancellationToken,
-      configurator.ConfigureBlueLowNetworkUserCatalogue);
+      configurator.ConfigureBlueLowNetworkUserCatalogue
+    );
 
     var whiteLowCatalogue = await fixture.CreateInDb(
       context,
       cancellationToken,
-      configurator.ConfigureWhiteLowNetworkUserCatalogue);
+      configurator.ConfigureWhiteLowNetworkUserCatalogue
+    );
 
     var whiteMediumCatalogue = await fixture.CreateInDb(
       context,
       cancellationToken,
-      configurator.ConfigureWhiteMediumNetworkUserCatalogue);
+      configurator.ConfigureWhiteMediumNetworkUserCatalogue
+    );
 
     var regulatoryCatalogue = await fixture.CreateInDb(
       context,
       cancellationToken,
-      configurator.ConfigureRegulatoryCatalogue);
+      configurator.ConfigureRegulatoryCatalogue
+    );
 
     var location = await fixture.CreateInDb<LocationEntity>(
       context,
@@ -82,7 +91,8 @@ public class TestInfrastructureFixture(
         location.WhiteMediumNetworkUserCatalogueId = whiteMediumCatalogue.Id;
         location.RegulatoryCatalogueId = regulatoryCatalogue.Id;
         configurator.ConfigureLocation(location);
-      });
+      }
+    );
 
     var messenger = await fixture.CreateInDb<MessengerEntity>(
       context,
@@ -93,7 +103,8 @@ public class TestInfrastructureFixture(
         messenger.Id = $"pidgeon-{Interlocked.Increment(ref messengerIndex)}";
         messenger.LocationId = location.Id;
         configurator.ConfigureMessenger(messenger);
-      });
+      }
+    );
 
     var networkUser = await fixture.CreateInDb<NetworkUserEntity>(
       context,
@@ -102,13 +113,15 @@ public class TestInfrastructureFixture(
       {
         networkUser.LocationId = location.Id;
         configurator.ConfigureNetworkUser(networkUser);
-      });
+      }
+    );
 
     var validator = await fixture.CreateInDb(
       context,
       configurator.MeasurementValidatorType,
       cancellationToken,
-      configurator.ConfigureMeasurementValidator);
+      configurator.ConfigureMeasurementValidator
+    );
 
     var meter = await fixture.CreateInDb<MeterEntity>(
       context,
@@ -124,10 +137,11 @@ public class TestInfrastructureFixture(
         }
 
         configurator.ConfigureMeter(meter);
-      });
+      }
+    );
 
-    var measurementLocation = await fixture
-      .CreateInDb<NetworkUserMeasurementLocationEntity>(
+    var measurementLocation =
+      await fixture.CreateInDb<NetworkUserMeasurementLocationEntity>(
         context,
         cancellationToken,
         measurementLocation =>
@@ -137,7 +151,8 @@ public class TestInfrastructureFixture(
           measurementLocation.NetworkUserCatalogueId =
             configurator.GetNetworkUserCatalogueId(location);
           configurator.ConfigureMeasurementLocation(measurementLocation);
-        });
+        }
+      );
 
     return new InfrastructureEntities(
       regulatoryCatalogue,
@@ -156,17 +171,29 @@ public class TestInfrastructureFixture(
 
   public class Configurator(EntityReflector reflector)
   {
-    public Action<RedLowNetworkUserCatalogueEntity>
-      ConfigureRedLowNetworkUserCatalogue { get; private set; } = _ => { };
+    public Action<RedLowNetworkUserCatalogueEntity> ConfigureRedLowNetworkUserCatalogue
+    {
+      get;
+      private set;
+    } = _ => { };
 
-    public Action<BlueLowNetworkUserCatalogueEntity>
-      ConfigureBlueLowNetworkUserCatalogue { get; private set; } = _ => { };
+    public Action<BlueLowNetworkUserCatalogueEntity> ConfigureBlueLowNetworkUserCatalogue
+    {
+      get;
+      private set;
+    } = _ => { };
 
-    public Action<WhiteLowNetworkUserCatalogueEntity>
-      ConfigureWhiteLowNetworkUserCatalogue { get; private set; } = _ => { };
+    public Action<WhiteLowNetworkUserCatalogueEntity> ConfigureWhiteLowNetworkUserCatalogue
+    {
+      get;
+      private set;
+    } = _ => { };
 
-    public Action<WhiteMediumNetworkUserCatalogueEntity>
-      ConfigureWhiteMediumNetworkUserCatalogue { get; private set; } = _ => { };
+    public Action<WhiteMediumNetworkUserCatalogueEntity> ConfigureWhiteMediumNetworkUserCatalogue
+    {
+      get;
+      private set;
+    } = _ => { };
 
     public Action<RegulatoryCatalogueEntity> ConfigureRegulatoryCatalogue
     {
@@ -177,8 +204,11 @@ public class TestInfrastructureFixture(
     public Action<LocationEntity> ConfigureLocation { get; private set; } =
       _ => { };
 
-    public Action<NetworkUserEntity>
-      ConfigureNetworkUser { get; private set; } = _ => { };
+    public Action<NetworkUserEntity> ConfigureNetworkUser
+    {
+      get;
+      private set;
+    } = _ => { };
 
     public Action<MessengerEntity> ConfigureMessenger { get; private set; } =
       _ => { };
@@ -191,8 +221,11 @@ public class TestInfrastructureFixture(
 
     public Action<MeterEntity> ConfigureMeter { get; private set; } = _ => { };
 
-    public Action<NetworkUserMeasurementLocationEntity>
-      ConfigureMeasurementLocation { get; private set; } = _ => { };
+    public Action<NetworkUserMeasurementLocationEntity> ConfigureMeasurementLocation
+    {
+      get;
+      private set;
+    } = _ => { };
 
     public Type MessengerType { get; private set; } =
       typeof(PidgeonMessengerEntity);
@@ -207,46 +240,60 @@ public class TestInfrastructureFixture(
     {
       get;
       private set;
-    } =
-      location => location.RedLowNetworkUserCatalogueId;
+    } = location => location.RedLowNetworkUserCatalogueId;
 
     public Configurator WithRedLowNetworkUserCatalogue(
-      Action<RedLowNetworkUserCatalogueEntity> configure)
+      Action<RedLowNetworkUserCatalogueEntity> configure
+    )
     {
       ConfigureRedLowNetworkUserCatalogue = Chain(
-        ConfigureRedLowNetworkUserCatalogue, configure);
+        ConfigureRedLowNetworkUserCatalogue,
+        configure
+      );
       return this;
     }
 
     public Configurator WithBlueLowNetworkUserCatalogue(
-      Action<BlueLowNetworkUserCatalogueEntity> configure)
+      Action<BlueLowNetworkUserCatalogueEntity> configure
+    )
     {
       ConfigureBlueLowNetworkUserCatalogue = Chain(
-        ConfigureBlueLowNetworkUserCatalogue, configure);
+        ConfigureBlueLowNetworkUserCatalogue,
+        configure
+      );
       return this;
     }
 
     public Configurator WithWhiteLowNetworkUserCatalogue(
-      Action<WhiteLowNetworkUserCatalogueEntity> configure)
+      Action<WhiteLowNetworkUserCatalogueEntity> configure
+    )
     {
       ConfigureWhiteLowNetworkUserCatalogue = Chain(
-        ConfigureWhiteLowNetworkUserCatalogue, configure);
+        ConfigureWhiteLowNetworkUserCatalogue,
+        configure
+      );
       return this;
     }
 
     public Configurator WithWhiteMediumNetworkUserCatalogue(
-      Action<WhiteMediumNetworkUserCatalogueEntity> configure)
+      Action<WhiteMediumNetworkUserCatalogueEntity> configure
+    )
     {
       ConfigureWhiteMediumNetworkUserCatalogue = Chain(
-        ConfigureWhiteMediumNetworkUserCatalogue, configure);
+        ConfigureWhiteMediumNetworkUserCatalogue,
+        configure
+      );
       return this;
     }
 
     public Configurator WithRegulatoryCatalogue(
-      Action<RegulatoryCatalogueEntity> configure)
+      Action<RegulatoryCatalogueEntity> configure
+    )
     {
       ConfigureRegulatoryCatalogue = Chain(
-        ConfigureRegulatoryCatalogue, configure);
+        ConfigureRegulatoryCatalogue,
+        configure
+      );
       return this;
     }
 
@@ -259,8 +306,9 @@ public class TestInfrastructureFixture(
     public Configurator WithMeterType(Type t)
     {
       MeterType = t;
-      MeasurementValidatorType =
-        reflector.ResolveMeterMeasurementValidatorType(t);
+      MeasurementValidatorType = reflector.ResolveMeterMeasurementValidatorType(
+        t
+      );
       return this;
     }
 
@@ -289,10 +337,13 @@ public class TestInfrastructureFixture(
     }
 
     public Configurator WithMeasurementValidator(
-      Action<MeasurementValidatorEntity> configure)
+      Action<MeasurementValidatorEntity> configure
+    )
     {
       ConfigureMeasurementValidator = Chain(
-        ConfigureMeasurementValidator, configure);
+        ConfigureMeasurementValidator,
+        configure
+      );
       return this;
     }
 
@@ -303,15 +354,19 @@ public class TestInfrastructureFixture(
     }
 
     public Configurator WithMeasurementLocation(
-      Action<NetworkUserMeasurementLocationEntity> configure)
+      Action<NetworkUserMeasurementLocationEntity> configure
+    )
     {
       ConfigureMeasurementLocation = Chain(
-        ConfigureMeasurementLocation, configure);
+        ConfigureMeasurementLocation,
+        configure
+      );
       return this;
     }
 
     public Configurator WithNetworkUserCatalogueId(
-      Func<LocationEntity, string> pickId)
+      Func<LocationEntity, string> pickId
+    )
     {
       GetNetworkUserCatalogueId = pickId;
       return this;

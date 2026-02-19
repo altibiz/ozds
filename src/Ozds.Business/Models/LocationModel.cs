@@ -28,11 +28,10 @@ public class LocationModel : TrackableModel
   public required string AltiBizSubProjectCode { get; set; } = default!;
 
   public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
+    ValidationContext validationContext
+  )
   {
-    if (
-      validationContext.MemberName is null or nameof(LegalPerson)
-    )
+    if (validationContext.MemberName is null or nameof(LegalPerson))
     {
       foreach (var result in LegalPerson.Validate(validationContext))
       {

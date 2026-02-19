@@ -16,8 +16,8 @@ public partial class LocalizationDrawer : OzdsComponentBase
   {
     get
     {
-      return localizationQueries ??= ScopedServices
-        .GetRequiredService<LocalizationQueries>();
+      return localizationQueries ??=
+        ScopedServices.GetRequiredService<LocalizationQueries>();
     }
   }
 

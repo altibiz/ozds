@@ -2,9 +2,7 @@ using CommandLine;
 
 namespace Ozds.Migration.Arguments;
 
-public interface IOzdsMigrationArguments
-{
-}
+public interface IOzdsMigrationArguments { }
 
 [Verb("migrate", HelpText = "Migrate the database.")]
 public class OzdsMigrationMigrateArguments : IOzdsMigrationArguments
@@ -32,16 +30,16 @@ public static class OzdsMigrationArguments
   {
     try
     {
-      var result = new Parser(
-        with =>
-        {
-          with.CaseInsensitiveEnumValues = true;
-          with.AutoHelp = true;
-          with.AutoVersion = true;
-          with.HelpWriter = Console.Out;
-        }).ParseArguments<
+      var result = new Parser(with =>
+      {
+        with.CaseInsensitiveEnumValues = true;
+        with.AutoHelp = true;
+        with.AutoVersion = true;
+        with.HelpWriter = Console.Out;
+      }).ParseArguments<
         OzdsMigrationMigrateArguments,
-        OzdsMigrationGenerateArguments>(args);
+        OzdsMigrationGenerateArguments
+      >(args);
 
       if (result.Tag == ParserResultType.NotParsed)
       {

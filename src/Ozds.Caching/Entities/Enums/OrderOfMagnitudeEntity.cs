@@ -11,5 +11,5 @@ public enum OrderOfMagnitudeEntity
   Centi = -2,
   Milli = -3,
   Micro = -6,
-  Nano = -9
+  Nano = -9,
 }

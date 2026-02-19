@@ -18,16 +18,14 @@ public static class CalculationItemEntityExtensions
     string prefix
   )
   {
-    builder
-      .MonetaryValue(
-        nameof(CalculationItemEntity.Price_EUR),
-        $"{prefix}_price_eur"
-      );
+    builder.MonetaryValue(
+      nameof(CalculationItemEntity.Price_EUR),
+      $"{prefix}_price_eur"
+    );
 
-    builder
-      .MonetaryValue(
-        nameof(CalculationItemEntity.Total_EUR),
-        $"{prefix}_total_eur"
-      );
+    builder.MonetaryValue(
+      nameof(CalculationItemEntity.Total_EUR),
+      $"{prefix}_total_eur"
+    );
   }
 }

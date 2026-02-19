@@ -7,11 +7,13 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class WhiteLowNetworkUserCalculationModelDocumentEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
-  WhiteLowNetworkUserCalculationModel,
-  MeteredNetworkUserCalculationModel,
-  WhiteLowNetworkUserCalculationEntity,
-  MeteredNetworkUserCalculationEntity>(serviceProvider)
+)
+  : InheritingModelDocumentEntityConverter<
+    WhiteLowNetworkUserCalculationModel,
+    MeteredNetworkUserCalculationModel,
+    WhiteLowNetworkUserCalculationEntity,
+    MeteredNetworkUserCalculationEntity
+  >(serviceProvider)
 {
   private readonly ModelDocumentEntityConverter modelDocumentEntityConverter =
     serviceProvider.GetRequiredService<ModelDocumentEntityConverter>();
@@ -22,17 +24,21 @@ public class WhiteLowNetworkUserCalculationModelDocumentEntityConverter(
   )
   {
     base.InitializeEntity(model, entity);
-    entity.UsageActiveEnergyTotalImportT1 = modelDocumentEntityConverter
-      .ToEntity<UsageActiveEnergyTotalImportT1CalculationItemEntity>(
-        model.UsageActiveEnergyTotalImportT1);
-    entity.UsageActiveEnergyTotalImportT2 = modelDocumentEntityConverter
-      .ToEntity<UsageActiveEnergyTotalImportT2CalculationItemEntity>(
-        model.UsageActiveEnergyTotalImportT2);
-    entity.UsageReactiveEnergyTotalRampedT0 = modelDocumentEntityConverter
-      .ToEntity<UsageReactiveEnergyTotalRampedT0CalculationItemEntity>(
-        model.UsageReactiveEnergyTotalRampedT0);
-    entity.ConcreteUsageNetworkUserCatalogue = modelDocumentEntityConverter
-      .ToEntity<WhiteLowNetworkUserCatalogueEntity>(
-        model.ConcreteArchivedUsageNetworkUserCatalogue);
+    entity.UsageActiveEnergyTotalImportT1 =
+      modelDocumentEntityConverter.ToEntity<UsageActiveEnergyTotalImportT1CalculationItemEntity>(
+        model.UsageActiveEnergyTotalImportT1
+      );
+    entity.UsageActiveEnergyTotalImportT2 =
+      modelDocumentEntityConverter.ToEntity<UsageActiveEnergyTotalImportT2CalculationItemEntity>(
+        model.UsageActiveEnergyTotalImportT2
+      );
+    entity.UsageReactiveEnergyTotalRampedT0 =
+      modelDocumentEntityConverter.ToEntity<UsageReactiveEnergyTotalRampedT0CalculationItemEntity>(
+        model.UsageReactiveEnergyTotalRampedT0
+      );
+    entity.ConcreteUsageNetworkUserCatalogue =
+      modelDocumentEntityConverter.ToEntity<WhiteLowNetworkUserCatalogueEntity>(
+        model.ConcreteArchivedUsageNetworkUserCatalogue
+      );
   }
 }

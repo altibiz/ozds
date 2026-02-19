@@ -49,7 +49,8 @@ public abstract class AggregateModel : Model, IAggregate
   public abstract TariffMeasure<decimal> DerivedApparentPower_VA { get; }
 
   public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
+    ValidationContext validationContext
+  )
   {
     foreach (var validationResult in base.Validate(validationContext))
     {
@@ -61,26 +62,25 @@ public abstract class AggregateModel : Model, IAggregate
       yield break;
     }
 
-    if (
-      validationContext.MemberName is null or nameof(Count) &&
-      Count < 0
-    )
+    if (validationContext.MemberName is null or nameof(Count) && Count < 0)
     {
       yield return new ValidationResult(
         "Count must be greater than or equal to zero",
-        new[] { nameof(Count) });
+        new[] { nameof(Count) }
+      );
     }
 
     var clock = validationContext.GetRequiredService<ClockQueries>();
     var now = clock.Timestamp();
     if (
-      validationContext.MemberName is null or nameof(Timestamp) &&
-      Timestamp > now
+      validationContext.MemberName is null or nameof(Timestamp)
+      && Timestamp > now
     )
     {
       yield return new ValidationResult(
         "Timestamp must be in the past",
-        new[] { nameof(Timestamp) });
+        new[] { nameof(Timestamp) }
+      );
     }
   }
 }

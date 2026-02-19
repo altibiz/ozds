@@ -29,27 +29,25 @@ public class NavigationAttribute : Attribute
 
   private static List<NavigationDescriptor> CreateNavigationDescriptors()
   {
-    var descriptors = typeof(NavigationAttribute).Assembly
-      .GetTypes()
-      .Select(
-        type => new
-        {
-          Type = type,
-          Navigation = type.GetCustomAttributes<NavigationAttribute>(),
-          Route = type.GetCustomAttributes<RouteAttribute>()
-        })
+    var descriptors = typeof(NavigationAttribute)
+      .Assembly.GetTypes()
+      .Select(type => new
+      {
+        Type = type,
+        Navigation = type.GetCustomAttributes<NavigationAttribute>(),
+        Route = type.GetCustomAttributes<RouteAttribute>(),
+      })
       .Where(type => type.Navigation.Any() && type.Route.Any())
-      .SelectMany(
-        type => type.Navigation
-          .SelectMany(
-            navigation => type.Route
-              .Select(
-                route => new NavigationDescriptor
-                {
-                  Type = type.Type,
-                  Navigation = navigation,
-                  Route = route
-                })))
+      .SelectMany(type =>
+        type.Navigation.SelectMany(navigation =>
+          type.Route.Select(route => new NavigationDescriptor
+          {
+            Type = type.Type,
+            Navigation = navigation,
+            Route = route,
+          })
+        )
+      )
       .OrderBy(x => x.Navigation.Order)
       .ToList();
 
@@ -63,8 +61,10 @@ public class NavigationAttribute : Attribute
       var layer = new List<NavigationDescriptor>();
       foreach (var descriptor in descriptors.ToList())
       {
-        if (lastLayer.Find(x => x.Type == descriptor.Navigation.Parent)
-          is { } parent)
+        if (
+          lastLayer.Find(x => x.Type == descriptor.Navigation.Parent) is
+          { } parent
+        )
         {
           parent.Children.Add(descriptor);
           layer.Add(descriptor);

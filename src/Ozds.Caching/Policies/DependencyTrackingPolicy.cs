@@ -16,15 +16,11 @@ public class DependencyTrackingPolicy : DependencyPolicy
     var eventArgs = policyContext.EventArgs;
     if (eventArgs.Operation == CacheOperation.Create)
     {
-      await SetDependencies(
-        policyContext,
-        cancellationToken);
+      await SetDependencies(policyContext, cancellationToken);
     }
     else if (eventArgs.Operation == CacheOperation.Delete)
     {
-      await EvictDependencyReferences(
-        policyContext,
-        cancellationToken);
+      await EvictDependencyReferences(policyContext, cancellationToken);
     }
   }
 }

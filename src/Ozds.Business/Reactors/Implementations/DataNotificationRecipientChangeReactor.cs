@@ -15,12 +15,12 @@ namespace Ozds.Business.Reactors.Implementations;
 
 public class DataNotificationRecipientChangeReactor(
   IServiceProvider serviceProvider
-) : Reactor<
-  DataModelsChangedEventArgs,
-  IDataModelsChangedSubscriber,
-  DataNotificationRecipientChangeHandler>(serviceProvider)
-{
-}
+)
+  : Reactor<
+    DataModelsChangedEventArgs,
+    IDataModelsChangedSubscriber,
+    DataNotificationRecipientChangeHandler
+  >(serviceProvider) { }
 
 public class DataNotificationRecipientChangeHandler(
   IdentifiableQueries identifiableQueries,
@@ -29,10 +29,11 @@ public class DataNotificationRecipientChangeHandler(
 {
   public override async Task Handle(
     DataModelsChangedEventArgs eventArgs,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
-    var recipients = eventArgs.Models
-      .Where(x => x.State == DataModelChangedState.Added)
+    var recipients = eventArgs
+      .Models.Where(x => x.State == DataModelChangedState.Added)
       .Select(x => x.Model)
       .OfType<NotificationRecipientModel>()
       .ToList();
@@ -43,7 +44,8 @@ public class DataNotificationRecipientChangeHandler(
 
     var notifications = await identifiableQueries.ReadByIds<INotification>(
       recipients.Select(x => x.NotificationId),
-      cancellationToken);
+      cancellationToken
+    );
 
     var representatives =
       await identifiableQueries.ReadByIds<RepresentativeModel>(
@@ -53,18 +55,16 @@ public class DataNotificationRecipientChangeHandler(
 
     var groups = recipients
       .GroupBy(x => x.NotificationId)
-      .Select(
-        x => new
-        {
-          Notification = notifications.FirstOrDefault(y => y.Id == x.Key),
-          Recipients = x.ToList(),
-          Representatives = x
-            .Select(
-              y => representatives
-                .FirstOrDefault(z => z.Id == y.RepresentativeId))
-            .OfType<RepresentativeModel>()
-            .ToList()
-        });
+      .Select(x => new
+      {
+        Notification = notifications.FirstOrDefault(y => y.Id == x.Key),
+        Recipients = x.ToList(),
+        Representatives = x.Select(y =>
+            representatives.FirstOrDefault(z => z.Id == y.RepresentativeId)
+          )
+          .OfType<RepresentativeModel>()
+          .ToList(),
+      });
 
     var emails = new List<EmailMessage>();
     foreach (var group in groups)
@@ -76,7 +76,8 @@ public class DataNotificationRecipientChangeHandler(
 
       var notification = group.Notification;
       var titleBuilder = new StringBuilder(
-        $"[{nameof(Ozds)}]: {notification.Title}");
+        $"[{nameof(Ozds)}]: {notification.Title}"
+      );
       if (notification.Topics.Count > 0)
       {
         var topics = notification.Topics.Select(x => x.ToTitle());
@@ -86,25 +87,24 @@ public class DataNotificationRecipientChangeHandler(
       }
 
       emails.AddRange(
-        group.Representatives.Select(
-          representative => new EmailMessage(
-            representative.PhysicalPerson.Name,
-            representative.PhysicalPerson.Email,
-            titleBuilder.ToString(),
-            $"""
-              <p style="font-size: large;">
-                <a href="app/hr/notification/{notification.Id}">
-                  {notification.Summary}
-                </a>
-              </p>
-              <p style="font-size: small;">
-                <pre style="overflow-wrap: break-word;">
-                  {notification.Content}
-                </pre>
-              </p>
-            """
-          )
-        ));
+        group.Representatives.Select(representative => new EmailMessage(
+          representative.PhysicalPerson.Name,
+          representative.PhysicalPerson.Email,
+          titleBuilder.ToString(),
+          $"""
+            <p style="font-size: large;">
+              <a href="app/hr/notification/{notification.Id}">
+                {notification.Summary}
+              </a>
+            </p>
+            <p style="font-size: small;">
+              <pre style="overflow-wrap: break-word;">
+                {notification.Content}
+              </pre>
+            </p>
+          """
+        ))
+      );
     }
 
     await sender.SendBulkAsync(emails);

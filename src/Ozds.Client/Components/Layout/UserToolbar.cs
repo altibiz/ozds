@@ -16,7 +16,7 @@ public partial class UserToolbar : OzdsComponentBase
   public ThemeState ThemeState { get; set; } = default!;
 
   [CascadingParameter]
-  public LocationState? LocationState { get; set; } = default!;
+  public LocationState? LocationState { get; set; }
 
   private string CultureName
   {
@@ -46,7 +46,8 @@ public partial class UserToolbar : OzdsComponentBase
   private void ToggleLocalizationDrawer()
   {
     LayoutState.SetLocalizationDrawerOpen(
-      !LayoutState.IsLocalizationDrawerOpen);
+      !LayoutState.IsLocalizationDrawerOpen
+    );
   }
 
   private void ToggleUserDrawer()

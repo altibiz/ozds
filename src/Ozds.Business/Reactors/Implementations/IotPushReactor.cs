@@ -15,13 +15,10 @@ using Ozds.Jobs.Manager.Abstractions;
 
 namespace Ozds.Business.Reactors.Implementations;
 
-public class IotPushReactor(
-  IServiceProvider serviceProvider
-) : Reactor<IotPushEventArgs, IIotPushSubscriber, IotPushHandler>(
-  serviceProvider
-)
-{
-}
+public class IotPushReactor(IServiceProvider serviceProvider)
+  : Reactor<IotPushEventArgs, IIotPushSubscriber, IotPushHandler>(
+    serviceProvider
+  ) { }
 
 public class IotPushHandler(
   ModelValidator validator,
@@ -44,18 +41,21 @@ public class IotPushHandler(
 
     var validationResults = await Validate(
       eventArgs.Measurements,
-      cancellationToken);
+      cancellationToken
+    );
     if (validationResults?.Count > 0)
     {
       var eventId = await AddPushEvent(
         eventArgs,
         validationResults,
-        cancellationToken);
+        cancellationToken
+      );
       await AddInvalidPushNotification(
         eventArgs,
         validationResults,
         eventId,
-        cancellationToken);
+        cancellationToken
+      );
       return;
     }
 
@@ -89,19 +89,20 @@ public class IotPushHandler(
   {
     var messenger = await trackableQueries.ReadById<IMessenger>(
       eventArgs.MessengerId,
-      cancellationToken);
+      cancellationToken
+    );
     if (messenger is not null)
     {
       await messengerJobManager.RescheduleInactivityMonitorJob(
         new MessengerInactivityMonitorDetails(
-          messenger.Id, time.PeriodTimeSpan(messenger.MaxInactivityPeriod)),
+          messenger.Id,
+          time.PeriodTimeSpan(messenger.MaxInactivityPeriod)
+        ),
         cancellationToken
       );
     }
 
-    var meterIds = eventArgs.Measurements
-      .Select(x => x.MeterId)
-      .Distinct();
+    var meterIds = eventArgs.Measurements.Select(x => x.MeterId).Distinct();
     var meters = await trackableQueries.ReadByIds<IMeter>(
       meterIds,
       cancellationToken
@@ -109,10 +110,10 @@ public class IotPushHandler(
     if (meters.Count > 0)
     {
       await meterJobManager.RescheduleInactivityMonitorJobs(
-        meters.Select(
-          x => new MeterInactivityMonitorDetails(
-            x.Id,
-            time.PeriodTimeSpan(x.MaxInactivityPeriod))),
+        meters.Select(x => new MeterInactivityMonitorDetails(
+          x.Id,
+          time.PeriodTimeSpan(x.MaxInactivityPeriod)
+        )),
         cancellationToken
       );
     }
@@ -121,13 +122,15 @@ public class IotPushHandler(
   private async Task<string?> AddPushEvent(
     IotPushEventArgs eventArgs,
     List<ValidationResult>? validationResults,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var now = clock.Timestamp();
 
     var messenger = await trackableQueries.ReadById<IMessenger>(
       eventArgs.MessengerId,
-      cancellationToken);
+      cancellationToken
+    );
     if (messenger is null)
     {
       return null;
@@ -140,12 +143,15 @@ public class IotPushHandler(
     [
       CategoryModel.All,
       CategoryModel.Messenger,
-      CategoryModel.MessengerPush
+      CategoryModel.MessengerPush,
     ];
     var error = validationResults is not null
       ? string.Join(
-        "\n", validationResults
-          .Select(x => $"{x.MemberNames.First()}: {x.ErrorMessage}"))
+        "\n",
+        validationResults.Select(x =>
+          $"{x.MemberNames.First()}: {x.ErrorMessage}"
+        )
+      )
       : null;
     @event.Content = CreateEventContent(eventArgs, messenger, error);
     @event.Level = validationResults is null
@@ -163,13 +169,15 @@ public class IotPushHandler(
     IotPushEventArgs eventArgs,
     List<ValidationResult> validationResults,
     string? eventId,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var now = clock.Timestamp();
 
     var messenger = await trackableQueries.ReadById<IMessenger>(
       eventArgs.MessengerId,
-      cancellationToken);
+      cancellationToken
+    );
     if (messenger is null)
     {
       return;
@@ -178,16 +186,15 @@ public class IotPushHandler(
     var notification = activator.Activate<MessengerNotificationModel>();
     notification.MessengerId = messenger.Id;
     notification.Timestamp = now;
-    notification.Topics =
-    [
-      TopicModel.All,
-      TopicModel.InvalidPush
-    ];
+    notification.Topics = [TopicModel.All, TopicModel.InvalidPush];
     notification.Summary = $"Messenger \"{messenger.Title}\" push failed";
     // NOTE: \n is ok here because we're storing it in the database
     notification.Content = string.Join(
-      "\n", validationResults
-        .Select(x => $"{x.MemberNames.First()}: {x.ErrorMessage}"));
+      "\n",
+      validationResults.Select(x =>
+        $"{x.MemberNames.First()}: {x.ErrorMessage}"
+      )
+    );
     notification.EventId = eventId;
     await modelMutations.Create(notification, cancellationToken);
   }
@@ -201,8 +208,8 @@ public class IotPushHandler(
     var content = new EventContent(
       messenger.Id,
       eventArgs.Measurements.Count,
-      eventArgs.Measurements
-        .GroupBy(x => x.MeterId)
+      eventArgs
+        .Measurements.GroupBy(x => x.MeterId)
         .Select(group => new EventContentMeter(group.Key, group.Count()))
         .ToArray(),
       error
@@ -218,8 +225,5 @@ public class IotPushHandler(
     string? Error
   );
 
-  private sealed record EventContentMeter(
-    string Id,
-    int Count
-  );
+  private sealed record EventContentMeter(string Id, int Count);
 }

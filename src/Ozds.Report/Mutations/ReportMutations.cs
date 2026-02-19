@@ -4,9 +4,7 @@ using Ozds.Report.Serialization.Abstractions;
 
 namespace Ozds.Report.Mutations;
 
-public class ReportMutations(
-  IServiceProvider services
-) : IMutations
+public class ReportMutations(IServiceProvider services) : IMutations
 {
   public async Task<string> Create<T>(
     string fileName,
@@ -32,15 +30,15 @@ public class ReportMutations(
     return await exporter.Export(culture, entities, cancellationToken);
   }
 
-  private IExporter GetExporter(
-    string fileName
-  )
+  private IExporter GetExporter(string fileName)
   {
-    var exporter = services
+    var exporter =
+      services
         .GetServices<IExporter>()
         .FirstOrDefault(x => fileName.EndsWith(x.Extension))
       ?? throw new InvalidOperationException(
-        $"Exporter for {fileName} not found.");
+        $"Exporter for {fileName} not found."
+      );
 
     return exporter;
   }

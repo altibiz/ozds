@@ -8,11 +8,13 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 
 public class NetworkUserInvoiceModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  NetworkUserInvoiceModel,
-  InvoiceModel,
-  NetworkUserInvoiceEntity,
-  InvoiceEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    NetworkUserInvoiceModel,
+    InvoiceModel,
+    NetworkUserInvoiceEntity,
+    InvoiceEntity
+  >(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();
@@ -24,22 +26,21 @@ public class NetworkUserInvoiceModelEntityConverter(
   {
     base.InitializeEntity(model, entity);
     entity.BillId = model.BillId;
-    entity.ArchivedLocation =
-      model.ArchivedLocation is null
-        ? null!
-        : modelEntityConverter.ToEntity<LocationEntity>(
-          model.ArchivedLocation);
+    entity.ArchivedLocation = model.ArchivedLocation is null
+      ? null!
+      : modelEntityConverter.ToEntity<LocationEntity>(model.ArchivedLocation);
     entity.NetworkUserId = model.NetworkUserId;
-    entity.ArchivedNetworkUser =
-      model.ArchivedNetworkUser is null
-        ? null!
-        : modelEntityConverter.ToEntity<NetworkUserEntity>(
-          model.ArchivedNetworkUser);
-    entity.ArchivedRegulatoryCatalogue =
-      model.ArchivedRegulatoryCatalogue is null
-        ? null!
-        : modelEntityConverter.ToEntity<RegulatoryCatalogueEntity>(
-          model.ArchivedRegulatoryCatalogue);
+    entity.ArchivedNetworkUser = model.ArchivedNetworkUser is null
+      ? null!
+      : modelEntityConverter.ToEntity<NetworkUserEntity>(
+        model.ArchivedNetworkUser
+      );
+    entity.ArchivedRegulatoryCatalogue = model.ArchivedRegulatoryCatalogue
+      is null
+      ? null!
+      : modelEntityConverter.ToEntity<RegulatoryCatalogueEntity>(
+        model.ArchivedRegulatoryCatalogue
+      );
     entity.UsageActiveEnergyTotalImportT0Fee_EUR =
       model.UsageActiveEnergyTotalImportT0Fee_EUR;
     entity.UsageActiveEnergyTotalImportT1Fee_EUR =
@@ -72,22 +73,21 @@ public class NetworkUserInvoiceModelEntityConverter(
   {
     base.InitializeModel(entity, model);
     model.BillId = entity.BillId;
-    model.ArchivedLocation =
-      entity.ArchivedLocation is null
-        ? null!
-        : modelEntityConverter.ToModel<LocationModel>(
-          entity.ArchivedLocation);
+    model.ArchivedLocation = entity.ArchivedLocation is null
+      ? null!
+      : modelEntityConverter.ToModel<LocationModel>(entity.ArchivedLocation);
     model.NetworkUserId = entity.NetworkUserId;
-    model.ArchivedNetworkUser =
-      entity.ArchivedNetworkUser is null
-        ? null!
-        : modelEntityConverter.ToModel<NetworkUserModel>(
-          entity.ArchivedNetworkUser);
-    model.ArchivedRegulatoryCatalogue =
-      entity.ArchivedRegulatoryCatalogue is null
-        ? null!
-        : modelEntityConverter.ToModel<RegulatoryCatalogueModel>(
-          entity.ArchivedRegulatoryCatalogue);
+    model.ArchivedNetworkUser = entity.ArchivedNetworkUser is null
+      ? null!
+      : modelEntityConverter.ToModel<NetworkUserModel>(
+        entity.ArchivedNetworkUser
+      );
+    model.ArchivedRegulatoryCatalogue = entity.ArchivedRegulatoryCatalogue
+      is null
+      ? null!
+      : modelEntityConverter.ToModel<RegulatoryCatalogueModel>(
+        entity.ArchivedRegulatoryCatalogue
+      );
     model.UsageActiveEnergyTotalImportT0Fee_EUR =
       entity.UsageActiveEnergyTotalImportT0Fee_EUR;
     model.UsageActiveEnergyTotalImportT1Fee_EUR =

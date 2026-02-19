@@ -4,10 +4,10 @@ using Ozds.Fake.Faking.Base;
 
 namespace Ozds.Fake.Faking.Implementations.Finances;
 
-public class NetworkUserCatalogueModelFaker(
-  IServiceProvider serviceProvider
-) : InheritingModelFaker<NetworkUserCatalogueModel, CatalogueModel>(
-  serviceProvider)
+public class NetworkUserCatalogueModelFaker(IServiceProvider serviceProvider)
+  : InheritingModelFaker<NetworkUserCatalogueModel, CatalogueModel>(
+    serviceProvider
+  )
 {
   public override void Initialize(NetworkUserCatalogueModel model, Faker faker)
   {
@@ -15,6 +15,7 @@ public class NetworkUserCatalogueModelFaker(
 
     model.MeterFeePrice_EUR = decimal.Round(
       faker.Random.Decimal(uint.MinValue, uint.MaxValue),
-      2);
+      2
+    );
   }
 }

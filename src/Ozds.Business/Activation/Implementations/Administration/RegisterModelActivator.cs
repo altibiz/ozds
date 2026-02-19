@@ -5,11 +5,8 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Activation.Implementations.Administration;
 
-public class RegisterModelActivator(
-  IServiceProvider serviceProvider
-) : InheritingModelActivator<RegisterModel, TrackableModel>(
-  serviceProvider
-)
+public class RegisterModelActivator(IServiceProvider serviceProvider)
+  : InheritingModelActivator<RegisterModel, TrackableModel>(serviceProvider)
 {
   public override void Initialize(RegisterModel model)
   {

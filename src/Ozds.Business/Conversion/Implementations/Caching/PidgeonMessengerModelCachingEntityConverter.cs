@@ -8,10 +8,10 @@ namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class PidgeonMessengerModelCachingEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelCachingEntityConverter<
-  PidgeonMessengerModel,
-  MessengerModel,
-  PidgeonMessengerEntity,
-  MessengerEntity>(serviceProvider)
-{
-}
+)
+  : InheritingModelCachingEntityConverter<
+    PidgeonMessengerModel,
+    MessengerModel,
+    PidgeonMessengerEntity,
+    MessengerEntity
+  >(serviceProvider) { }

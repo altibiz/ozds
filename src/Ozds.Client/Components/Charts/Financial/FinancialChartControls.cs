@@ -34,9 +34,12 @@ public partial class FinancialChartControls : OzdsComponentBase
   {
     var now = ClockQueries.Now();
     var fromDate = now.Subtract(
-      TimeQueries
-        .ResolutionTimeSpan(
-          _parameters.Resolution, now, _parameters.Multiplier));
+      TimeQueries.ResolutionTimeSpan(
+        _parameters.Resolution,
+        now,
+        _parameters.Multiplier
+      )
+    );
     _parameters.FromDate = fromDate;
   }
 
@@ -49,7 +52,9 @@ public partial class FinancialChartControls : OzdsComponentBase
       TimeQueries.ResolutionTimeSpan(
         _parameters.Resolution,
         fromDate,
-        _parameters.Multiplier));
+        _parameters.Multiplier
+      )
+    );
 
     var fromMeters = await queries.ReadByMeterIds(
       Meters.Select(meter => meter.Id),
@@ -62,8 +67,9 @@ public partial class FinancialChartControls : OzdsComponentBase
     );
 
     var fromMeasurementLocations = await queries.ReadByMeasurementLocationIds(
-      MeasurementLocations.Select(
-        measurementLocation => measurementLocation.Id),
+      MeasurementLocations.Select(measurementLocation =>
+        measurementLocation.Id
+      ),
       _parameters.Resolution,
       _parameters.Multiplier,
       1,
@@ -73,14 +79,13 @@ public partial class FinancialChartControls : OzdsComponentBase
     );
 
     _parameters.Financials = new PaginatedList<IFinancial>(
-      fromMeters.Items
-        .Concat(fromMeasurementLocations.Items)
-        .DistinctBy(
-          financial => new
-          {
-            Type = financial.GetType(),
-            financial.Id
-          })
+      fromMeters
+        .Items.Concat(fromMeasurementLocations.Items)
+        .DistinctBy(financial => new
+        {
+          Type = financial.GetType(),
+          financial.Id,
+        })
         .ToList(),
       fromMeters.TotalCount + fromMeasurementLocations.TotalCount
     );

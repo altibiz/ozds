@@ -7,11 +7,13 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class NetworkUserInvoiceModelDocumentEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
-  NetworkUserInvoiceModel,
-  InvoiceModel,
-  NetworkUserInvoiceEntity,
-  InvoiceEntity>(serviceProvider)
+)
+  : InheritingModelDocumentEntityConverter<
+    NetworkUserInvoiceModel,
+    InvoiceModel,
+    NetworkUserInvoiceEntity,
+    InvoiceEntity
+  >(serviceProvider)
 {
   private readonly ModelDocumentEntityConverter modelDocumentEntityConverter =
     serviceProvider.GetRequiredService<ModelDocumentEntityConverter>();
@@ -23,12 +25,17 @@ public class NetworkUserInvoiceModelDocumentEntityConverter(
   {
     base.InitializeEntity(model, entity);
     entity.BillId = model.BillId;
-    entity.Location = modelDocumentEntityConverter
-      .ToEntity<LocationEntity>(model.ArchivedLocation);
-    entity.NetworkUser = modelDocumentEntityConverter
-      .ToEntity<NetworkUserEntity>(model.ArchivedNetworkUser);
-    entity.RegulatoryCatalogue = modelDocumentEntityConverter
-      .ToEntity<RegulatoryCatalogueEntity>(model.ArchivedRegulatoryCatalogue);
+    entity.Location = modelDocumentEntityConverter.ToEntity<LocationEntity>(
+      model.ArchivedLocation
+    );
+    entity.NetworkUser =
+      modelDocumentEntityConverter.ToEntity<NetworkUserEntity>(
+        model.ArchivedNetworkUser
+      );
+    entity.RegulatoryCatalogue =
+      modelDocumentEntityConverter.ToEntity<RegulatoryCatalogueEntity>(
+        model.ArchivedRegulatoryCatalogue
+      );
     entity.UsageActiveEnergyTotalImportT0Fee_EUR =
       model.UsageActiveEnergyTotalImportT0Fee_EUR;
     entity.UsageActiveEnergyTotalImportT1Fee_EUR =

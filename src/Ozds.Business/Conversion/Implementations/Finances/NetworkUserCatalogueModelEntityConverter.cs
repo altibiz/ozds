@@ -6,11 +6,13 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 
 public class NetworkUserCatalogueModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  NetworkUserCatalogueModel,
-  CatalogueModel,
-  NetworkUserCatalogueEntity,
-  CatalogueEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    NetworkUserCatalogueModel,
+    CatalogueModel,
+    NetworkUserCatalogueEntity,
+    CatalogueEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     NetworkUserCatalogueModel model,

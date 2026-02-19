@@ -5,9 +5,8 @@ using Ozds.Business.Validation.Base;
 
 namespace Ozds.Business.Validation.Implementations;
 
-public class MeasurementValidator(
-  IServiceProvider serviceProvider
-) : ConcreteModelValidator<IMeasurement>(serviceProvider)
+public class MeasurementValidator(IServiceProvider serviceProvider)
+  : ConcreteModelValidator<IMeasurement>(serviceProvider)
 {
   public override async Task<List<ValidationResult>> ValidateAsync(
     IMeasurement model,
@@ -15,29 +14,32 @@ public class MeasurementValidator(
   )
   {
     await using var scope = serviceProvider.CreateAsyncScope();
-    var trackableQueries = scope.ServiceProvider
-      .GetRequiredService<TrackableQueries>();
+    var trackableQueries =
+      scope.ServiceProvider.GetRequiredService<TrackableQueries>();
 
     var meter = await trackableQueries.ReadById<IMeter>(
       model.MeterId,
-      cancellationToken);
+      cancellationToken
+    );
     if (meter is null)
     {
       throw new InvalidOperationException(
-        $"Meter not found for meter {model.MeterId}");
+        $"Meter not found for meter {model.MeterId}"
+      );
     }
 
     var validator = await trackableQueries.ReadById<IMeasurementValidator>(
       meter.MeasurementValidatorId,
-      cancellationToken);
+      cancellationToken
+    );
     if (validator is null)
     {
       throw new InvalidOperationException(
-        $"MeasurementValidator not found for meter {model.MeterId}");
+        $"MeasurementValidator not found for meter {model.MeterId}"
+      );
     }
 
-    var validationContext =
-      new ValidationContext(model, serviceProvider, null);
+    var validationContext = new ValidationContext(model, serviceProvider, null);
     return validator.Validate(validationContext).ToList();
   }
 }

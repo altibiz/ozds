@@ -9,25 +9,22 @@ public sealed class PlaywrightHtmlToPdfRenderer(
   ILogger<PlaywrightHtmlToPdfRenderer> logger
 ) : IHtmlToPdfRenderer, IAsyncDisposable
 {
-  private readonly Lazy<Task<BrowserContext>> _browserContext = new(
-    async () =>
-    {
-      logger.LogInformation("Starting playwright");
-      var playwright = await Playwright.CreateAsync();
+  private readonly Lazy<Task<BrowserContext>> _browserContext = new(async () =>
+  {
+    logger.LogInformation("Starting playwright");
+    var playwright = await Playwright.CreateAsync();
 
-      logger.LogInformation("Launching browser");
-      var browser = await playwright.Chromium.LaunchAsync(
-        new BrowserTypeLaunchOptions
-        {
-          Headless = true
-        });
+    logger.LogInformation("Launching browser");
+    var browser = await playwright.Chromium.LaunchAsync(
+      new BrowserTypeLaunchOptions { Headless = true }
+    );
 
-      logger.LogInformation("Starting browser context");
-      var context = await browser.NewContextAsync();
+    logger.LogInformation("Starting browser context");
+    var context = await browser.NewContextAsync();
 
-      logger.LogInformation("Playwright browser context created");
-      return new BrowserContext(playwright, browser, context);
-    });
+    logger.LogInformation("Playwright browser context created");
+    return new BrowserContext(playwright, browser, context);
+  });
 
   private readonly SemaphoreSlim _lock = new(1, 1);
 
@@ -102,10 +99,12 @@ public sealed class PlaywrightHtmlToPdfRenderer(
       }
 
       await page.SetContentAsync(
-        html, new PageSetContentOptions
+        html,
+        new PageSetContentOptions
         {
-          WaitUntil = WaitUntilState.DOMContentLoaded
-        });
+          WaitUntil = WaitUntilState.DOMContentLoaded,
+        }
+      );
       if (cancellationToken.IsCancellationRequested)
       {
         await page.CloseAsync();
@@ -113,11 +112,8 @@ public sealed class PlaywrightHtmlToPdfRenderer(
       }
 
       var pdfBytes = await page.PdfAsync(
-        new PagePdfOptions
-        {
-          Format = "A4",
-          PrintBackground = true
-        });
+        new PagePdfOptions { Format = "A4", PrintBackground = true }
+      );
       if (cancellationToken.IsCancellationRequested)
       {
         await page.CloseAsync();

@@ -16,8 +16,11 @@ public class MessengerPushRequestEntityConverterFactory : JsonConverterFactory
     JsonSerializerOptions options
   )
   {
-    return (JsonConverter?)Activator.CreateInstance(
-      typeof(MessengerPushRequestEntityJsonConverter<>)
-        .MakeGenericType(typeToConvert));
+    return (JsonConverter?)
+      Activator.CreateInstance(
+        typeof(MessengerPushRequestEntityJsonConverter<>).MakeGenericType(
+          typeToConvert
+        )
+      );
   }
 }

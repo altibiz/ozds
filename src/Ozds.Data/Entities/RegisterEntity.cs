@@ -18,8 +18,7 @@ public class RegisterEntity : TrackableEntity
 
   public string Name { get; set; } = default!;
 
-  public virtual MeasurementScopeEntity Scope { get; set; } =
-    default!;
+  public virtual MeasurementScopeEntity Scope { get; set; } = default!;
 
   public MeasureEntity Measure { get; set; }
 
@@ -34,16 +33,12 @@ public class RegisterEntity : TrackableEntity
   public AggregationEntity? Aggregation { get; set; }
 }
 
-public class RegisterTypeConfiguration
-  : EntityTypeConfiguration<RegisterEntity>
+public class RegisterTypeConfiguration : EntityTypeConfiguration<RegisterEntity>
 {
-  public override void Configure(
-    EntityTypeBuilder<RegisterEntity> builder)
+  public override void Configure(EntityTypeBuilder<RegisterEntity> builder)
   {
     builder.Ignore(nameof(RegisterEntity.ScopeId));
-    builder
-      .Property("_scopeId")
-      .HasColumnName("scope_id");
+    builder.Property("_scopeId").HasColumnName("scope_id");
 
     builder
       .HasOne(nameof(RegisterEntity.Scope))

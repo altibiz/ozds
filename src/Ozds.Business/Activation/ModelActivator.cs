@@ -24,24 +24,25 @@ public class ModelActivator(IServiceProvider serviceProvider)
       return activator.Activate();
     }
 
-    activator = serviceProvider
+    activator =
+      serviceProvider
         .GetServices<IModelActivator>()
-        .Where(
-          converter =>
-            !converter.ModelType.IsAbstract
-            && !converter.ModelType.IsInterface
-            && converter.ModelType.IsAssignableTo(type)
-            && converter.CanActivate(type))
+        .Where(converter =>
+          !converter.ModelType.IsAbstract
+          && !converter.ModelType.IsInterface
+          && converter.ModelType.IsAssignableTo(type)
+          && converter.CanActivate(type)
+        )
         .DefaultIfEmpty(null)
         .Aggregate(
           (acc, next) =>
-            acc is null
-              ? null
-              : next!.ModelType.IsAssignableTo(acc.ModelType)
-                ? acc
-                : next)
+            acc is null ? null
+            : next!.ModelType.IsAssignableTo(acc.ModelType) ? acc
+            : next
+        )
       ?? throw new InvalidOperationException(
-        $"No model activator found for {type}");
+        $"No model activator found for {type}"
+      );
 
     activatorCache.TryAdd(type, activator);
 
@@ -64,16 +65,16 @@ public class ModelActivator(IServiceProvider serviceProvider)
 
     subtypes = serviceProvider
       .GetServices<IModelActivator>()
-      .Where(
-        converter =>
-          !converter.ModelType.IsAbstract
-          && !converter.ModelType.IsInterface
-          && converter.ModelType.IsAssignableTo(type)
-          // FIXME: hack for now because MeterModel
-          // and NetworkUserCatalogueModel are not abstract
-          && converter.ModelType != typeof(MeterModel)
-          && converter.ModelType != typeof(NetworkUserCatalogueModel)
-          && converter.CanActivate(type))
+      .Where(converter =>
+        !converter.ModelType.IsAbstract
+        && !converter.ModelType.IsInterface
+        && converter.ModelType.IsAssignableTo(type)
+        // FIXME: hack for now because MeterModel
+        // and NetworkUserCatalogueModel are not abstract
+        && converter.ModelType != typeof(MeterModel)
+        && converter.ModelType != typeof(NetworkUserCatalogueModel)
+        && converter.CanActivate(type)
+      )
       .Select(converter => converter.ModelType)
       .ToList();
 

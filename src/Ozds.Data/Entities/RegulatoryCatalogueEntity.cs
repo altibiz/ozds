@@ -9,8 +9,7 @@ public class RegulatoryCatalogueEntity : CatalogueEntity
 {
   public virtual ICollection<LocationEntity> Locations { get; set; } = default!;
 
-  public virtual ICollection<NetworkUserCalculationEntity>
-    NetworkUserCalculations { get; set; } =
+  public virtual ICollection<NetworkUserCalculationEntity> NetworkUserCalculations { get; set; } =
     default!;
 
 #pragma warning disable CA1707
@@ -22,26 +21,25 @@ public class RegulatoryCatalogueEntity : CatalogueEntity
 #pragma warning restore CA1707
 }
 
-public class
-  RegulatoryCatalogueEntityTypeConfiguration : EntityTypeConfiguration<
-  RegulatoryCatalogueEntity>
+public class RegulatoryCatalogueEntityTypeConfiguration
+  : EntityTypeConfiguration<RegulatoryCatalogueEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<RegulatoryCatalogueEntity> builder)
+    EntityTypeBuilder<RegulatoryCatalogueEntity> builder
+  )
   {
-    builder
-      .ToTable("regulatory_catalogues");
+    builder.ToTable("regulatory_catalogues");
 
     builder
       .Property(
-        nameof(RegulatoryCatalogueEntity
-          .ActiveEnergyTotalImportT1Price_EUR))
+        nameof(RegulatoryCatalogueEntity.ActiveEnergyTotalImportT1Price_EUR)
+      )
       .HasColumnName("active_energy_total_import_t1_price_eur");
 
     builder
       .Property(
-        nameof(RegulatoryCatalogueEntity
-          .ActiveEnergyTotalImportT2Price_EUR))
+        nameof(RegulatoryCatalogueEntity.ActiveEnergyTotalImportT2Price_EUR)
+      )
       .HasColumnName("active_energy_total_import_t2_price_eur");
 
     builder

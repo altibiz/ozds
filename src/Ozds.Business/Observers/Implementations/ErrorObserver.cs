@@ -4,9 +4,7 @@ using ErrorEventArgs = Ozds.Business.Observers.EventArgs.ErrorEventArgs;
 
 namespace Ozds.Business.Observers.Implementations;
 
-public class ErrorObserver :
-  Observer<ErrorEventArgs>,
-  IErrorPublisher,
-  IErrorSubscriber
-{
-}
+public class ErrorObserver
+  : Observer<ErrorEventArgs>,
+    IErrorPublisher,
+    IErrorSubscriber { }

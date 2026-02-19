@@ -3,7 +3,7 @@
 let container = docker compose ps --format json
   | lines
   | each { $in | from json }
-  | filter { $in.Image | str starts-with "timescale" }
+  | where { $in.Image | str starts-with "timescale" }
   | first
 
 def "main" [] {

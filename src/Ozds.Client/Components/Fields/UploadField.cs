@@ -50,9 +50,11 @@ public partial class UploadField : OzdsComponentBase
     try
     {
       var mutations = ScopedServices.GetRequiredService<ReportMutations>();
-      foreach (var (stream, name) in _fileStreams
-        .OfType<Stream>()
-        .Zip(_fileNames, (stream, name) => (stream, name)))
+      foreach (
+        var (stream, name) in _fileStreams
+          .OfType<Stream>()
+          .Zip(_fileNames, (stream, name) => (stream, name))
+      )
       {
         await mutations.Import(
           name,
@@ -72,10 +74,11 @@ public partial class UploadField : OzdsComponentBase
           {
             nameof(MutatingResult.Body),
             $"{Translate("Failed importing")}"
-            + $" {Translate(Type)} - {ex.Message}"
-          }
+              + $" {Translate(Type)} - {ex.Message}"
+          },
         },
-        new DialogOptions { CloseOnEscapeKey = true });
+        new DialogOptions { CloseOnEscapeKey = true }
+      );
       return;
     }
 
@@ -86,8 +89,9 @@ public partial class UploadField : OzdsComponentBase
         {
           nameof(MutatingResult.Body),
           $"{Translate("Successfully imported")} {Translate(Type)}"
-        }
+        },
       },
-      new DialogOptions { CloseOnEscapeKey = true });
+      new DialogOptions { CloseOnEscapeKey = true }
+    );
   }
 }

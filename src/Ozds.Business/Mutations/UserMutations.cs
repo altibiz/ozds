@@ -17,10 +17,7 @@ public class UserMutations(
   )
   {
     var entity = converter.ToEntity<UserEntity>(model);
-    await mutations.Create(
-      entity,
-      cancellationToken
-    );
+    await mutations.Create(entity, cancellationToken);
     return entity.Id;
   }
 

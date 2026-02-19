@@ -18,25 +18,25 @@ public class JobsMessengerInactivityJobReactorTest : OzdsServerTestBase
     var inactivityPeriod = new PeriodModel
     {
       Duration = DurationModel.Minute,
-      Multiplier = 1
+      Multiplier = 1,
     };
 
-    var inactivityTimeSpan = Services.GetRequiredService<TimeQueries>()
+    var inactivityTimeSpan = Services
+      .GetRequiredService<TimeQueries>()
       .PeriodTimeSpan(inactivityPeriod);
 
     var x = await MeasurementLocation.Create(
-      cancellationToken, x => x
-        .WithNetworkUser(
-          y => y
-            .WithLocation(
-              z => z
-                .WithMessenger(
-                  m =>
-                    m.MaxInactivityPeriod = inactivityPeriod))));
+      cancellationToken,
+      x =>
+        x.WithNetworkUser(y =>
+          y.WithLocation(z =>
+            z.WithMessenger(m => m.MaxInactivityPeriod = inactivityPeriod)
+          )
+        )
+    );
 
     {
-      using var cts = inactivityTimeSpan
-        .CancelIn(cancellationToken);
+      using var cts = inactivityTimeSpan.CancelIn(cancellationToken);
       var anyPushed = await Measurement
         .Push(
           x.Messenger.Id,
@@ -45,10 +45,12 @@ public class JobsMessengerInactivityJobReactorTest : OzdsServerTestBase
             new MeasurementLocationMeterIdWithValidator(
               x.MeasurementLocation.Id,
               x.Meter.Id,
-              x.MeasurementValidator)
+              x.MeasurementValidator
+            ),
           ],
           inactivityTimeSpan / 2,
-          cts.Token)
+          cts.Token
+        )
         .AnyAsync(cts.Token);
       anyPushed.Should().BeTrue();
     }
@@ -56,13 +58,20 @@ public class JobsMessengerInactivityJobReactorTest : OzdsServerTestBase
     await Task.Delay(inactivityTimeSpan * 2, cancellationToken);
 
     var modelQueries = Services.GetRequiredService<ModelQueries>();
-    var notifications = await modelQueries
-      .Read<MessengerNotificationModel>(0, cancellationToken);
+    var notifications = await modelQueries.Read<MessengerNotificationModel>(
+      0,
+      cancellationToken
+    );
     notifications.Items.Should().HaveCount(1);
     notifications.TotalCount.Should().Be(1);
     var notification = notifications.Items.First();
     notification.MessengerId.Should().Be(x.Messenger.Id);
-    notification.Topics.Should().BeSubsetOf(
-      [TopicModel.All, TopicModel.Messenger, TopicModel.MessengerInactivity]);
+    notification
+      .Topics.Should()
+      .BeSubsetOf([
+        TopicModel.All,
+        TopicModel.Messenger,
+        TopicModel.MessengerInactivity,
+      ]);
   }
 }

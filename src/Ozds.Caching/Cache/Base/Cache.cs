@@ -8,9 +8,9 @@ using Ozds.Caching.Profiles;
 
 namespace Ozds.Caching.Cache.Base;
 
-public abstract class Cache<TValue>(
-  IServiceProvider services
-) : IConfigurableCache<TValue>, IPolicyCache
+public abstract class Cache<TValue>(IServiceProvider services)
+  : IConfigurableCache<TValue>,
+    IPolicyCache
   where TValue : notnull
 {
   private readonly ICachePublisher publisher =
@@ -29,17 +29,15 @@ public abstract class Cache<TValue>(
   async Task ICache<TValue>.Create(
     string key,
     TValue value,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     foreach (var policy in configuration.Policies)
     {
       await policy.HandleCache(
-        new CreateCachePolicyContext(
-          services,
-          this,
-          key,
-          value
-        ), cancellationToken);
+        new CreateCachePolicyContext(services, this, key, value),
+        cancellationToken
+      );
     }
 
     publisher.Publish(
@@ -48,13 +46,15 @@ public abstract class Cache<TValue>(
         CacheConfiguration = configuration,
         Operation = CacheOperation.Create,
         Key = key,
-        Value = value
-      });
+        Value = value,
+      }
+    );
   }
 
   async Task<TValue?> ICache<TValue>.Read(
     string key,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var value = await Read(key, cancellationToken);
     if (value is null)
@@ -72,17 +72,15 @@ public abstract class Cache<TValue>(
 
   async Task ICache<TValue>.Delete(
     string key,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     foreach (var policy in configuration.Policies)
     {
       await policy.HandleCache(
-        new CachePolicyContext(
-          services,
-          this,
-          CacheOperation.Delete,
-          key
-        ), cancellationToken);
+        new CachePolicyContext(services, this, CacheOperation.Delete, key),
+        cancellationToken
+      );
     }
 
     publisher.Publish(
@@ -90,14 +88,16 @@ public abstract class Cache<TValue>(
       {
         CacheConfiguration = configuration,
         Operation = CacheOperation.Delete,
-        Key = key
-      });
+        Key = key,
+      }
+    );
   }
 
   async Task IPolicyCache.Create(
     string key,
     object value,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     var type = value.GetType();
     var typeConfiguration = registry.GetConfiguration(type);
@@ -144,13 +144,16 @@ public abstract class Cache<TValue>(
     CacheEntryConfiguration entryConfiguration,
     string key,
     string value,
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 
   protected abstract Task<string?> Read(
     string key,
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 
   protected abstract Task<string?> Delete(
     string key,
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 }

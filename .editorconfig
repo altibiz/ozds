@@ -180,6 +180,10 @@ dotnet_diagnostic.SA1515.severity = none
 # Split parameters should start on line after declaration
 dotnet_diagnostic.SA1116.severity = none
 
+# Operator should not appear at the end of a line.
+# Disabled because CSharpier formats nullable casts like (JsonConverter?) on their own line
+dotnet_diagnostic.SA1003.severity = none
+
 ###############################################################################
 # SonarAnalyzer.CSharp                                                        #
 ###############################################################################

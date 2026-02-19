@@ -16,10 +16,14 @@ public abstract class ConcreteAggregateUpserter<TModel> : IAggregateUpserter
   public IAggregate Upsert(IAggregate lhs, IAggregate rhs)
   {
     return UpsertConcreteModel(
-      lhs as TModel ?? throw new InvalidOperationException(
-        $"Model is not of type {typeof(TModel).Name}."),
-      rhs as TModel ?? throw new InvalidOperationException(
-        $"Model is not of type {typeof(TModel).Name}.")
+      lhs as TModel
+        ?? throw new InvalidOperationException(
+          $"Model is not of type {typeof(TModel).Name}."
+        ),
+      rhs as TModel
+        ?? throw new InvalidOperationException(
+          $"Model is not of type {typeof(TModel).Name}."
+        )
     );
   }
 

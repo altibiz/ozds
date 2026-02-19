@@ -9,5 +9,5 @@ public enum MeasureEntity
   ApparentPower,
   ActiveEnergy,
   ReactiveEnergy,
-  ApparentEnergy
+  ApparentEnergy,
 }

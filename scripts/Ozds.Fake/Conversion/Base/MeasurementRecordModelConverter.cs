@@ -4,8 +4,8 @@ using Ozds.Fake.Records.Abstractions;
 
 namespace Ozds.Fake.Conversion.Base;
 
-public abstract class MeasurementRecordModelConverter<TRecord,
-  TModel> : IMeasurementRecordModelConverter
+public abstract class MeasurementRecordModelConverter<TRecord, TModel>
+  : IMeasurementRecordModelConverter
   where TRecord : IMeasurementRecord
   where TModel : IMeasurement
 {

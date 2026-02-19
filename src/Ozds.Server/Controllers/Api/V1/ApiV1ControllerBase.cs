@@ -8,6 +8,4 @@ namespace Ozds.Server.Controllers.Api.V1;
 [ApiKeyAuth]
 [ProducesResponseType(StatusCodes.Status403Forbidden)]
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-public abstract class ApiV1ControllerBase : Controller
-{
-}
+public abstract class ApiV1ControllerBase : Controller { }

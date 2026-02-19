@@ -5,55 +5,61 @@ using Ozds.Data.Entities.Complex;
 
 namespace Ozds.Data.Entities;
 
-public class
-  WhiteMediumNetworkUserCalculationEntity : MeteredNetworkUserCalculationEntity<
-  WhiteMediumNetworkUserCatalogueEntity>
+public class WhiteMediumNetworkUserCalculationEntity
+  : MeteredNetworkUserCalculationEntity<WhiteMediumNetworkUserCatalogueEntity>
 {
 #pragma warning disable CA1707
-  public UsageActiveEnergyTotalImportT1CalculationItemEntity
-    UsageActiveEnergyTotalImportT1 { get; set; } = default!;
+  public UsageActiveEnergyTotalImportT1CalculationItemEntity UsageActiveEnergyTotalImportT1 { get; set; } =
+    default!;
 
-  public UsageActiveEnergyTotalImportT2CalculationItemEntity
-    UsageActiveEnergyTotalImportT2 { get; set; } = default!;
+  public UsageActiveEnergyTotalImportT2CalculationItemEntity UsageActiveEnergyTotalImportT2 { get; set; } =
+    default!;
 
-  public UsageActivePowerTotalImportT1PeakCalculationItemEntity
-    UsageActivePowerTotalImportT1Peak { get; set; } = default!;
+  public UsageActivePowerTotalImportT1PeakCalculationItemEntity UsageActivePowerTotalImportT1Peak { get; set; } =
+    default!;
 
-  public UsageReactiveEnergyTotalRampedT0CalculationItemEntity
-    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
+  public UsageReactiveEnergyTotalRampedT0CalculationItemEntity UsageReactiveEnergyTotalRampedT0 { get; set; } =
+    default!;
 #pragma warning restore CA1707
 }
 
-public class
-  WhiteMediumNetworkUserCalculationEntityTypeConfiguration :
-  EntityTypeConfiguration<
-    WhiteMediumNetworkUserCalculationEntity>
+public class WhiteMediumNetworkUserCalculationEntityTypeConfiguration
+  : EntityTypeConfiguration<WhiteMediumNetworkUserCalculationEntity>
 {
   public override void Configure(
-    EntityTypeBuilder<WhiteMediumNetworkUserCalculationEntity> builder)
+    EntityTypeBuilder<WhiteMediumNetworkUserCalculationEntity> builder
+  )
   {
     builder
       .ComplexProperty(
-        nameof(WhiteMediumNetworkUserCalculationEntity
-          .UsageActiveEnergyTotalImportT1))
+        nameof(
+          WhiteMediumNetworkUserCalculationEntity.UsageActiveEnergyTotalImportT1
+        )
+      )
       .UsageActiveEnergyTotalImportT1CalculationItem();
 
     builder
       .ComplexProperty(
-        nameof(WhiteMediumNetworkUserCalculationEntity
-          .UsageActiveEnergyTotalImportT2))
+        nameof(
+          WhiteMediumNetworkUserCalculationEntity.UsageActiveEnergyTotalImportT2
+        )
+      )
       .UsageActiveEnergyTotalImportT2CalculationItem();
 
     builder
       .ComplexProperty(
-        nameof(WhiteMediumNetworkUserCalculationEntity
-          .UsageActivePowerTotalImportT1Peak))
+        nameof(
+          WhiteMediumNetworkUserCalculationEntity.UsageActivePowerTotalImportT1Peak
+        )
+      )
       .UsageActivePowerTotalImportT1PeakCalculationItem();
 
     builder
       .ComplexProperty(
-        nameof(WhiteMediumNetworkUserCalculationEntity
-          .UsageReactiveEnergyTotalRampedT0))
+        nameof(
+          WhiteMediumNetworkUserCalculationEntity.UsageReactiveEnergyTotalRampedT0
+        )
+      )
       .UsageReactiveEnergyTotalRampedT0CalculationItem();
   }
 }

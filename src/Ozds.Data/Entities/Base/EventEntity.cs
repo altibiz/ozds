@@ -31,9 +31,8 @@ public class EventEntity : IdentifiableEntity, IEventEntity, IDisposable
   public List<CategoryEntity> Categories { get; set; } = default!;
 }
 
-public class
-  EventEntityTypeHierarchyConfiguration :
-  EntityTypeHierarchyConfiguration<EventEntity>
+public class EventEntityTypeHierarchyConfiguration
+  : EntityTypeHierarchyConfiguration<EventEntity>
 {
   public override void Configure(ModelBuilder modelBuilder, Type entity)
   {
@@ -46,9 +45,6 @@ public class
 
     builder
       .Property<DateTimeOffset>(nameof(EventEntity.Timestamp))
-      .HasConversion(
-        x => x.ToUniversalTime(),
-        x => x.ToUniversalTime()
-      );
+      .HasConversion(x => x.ToUniversalTime(), x => x.ToUniversalTime());
   }
 }

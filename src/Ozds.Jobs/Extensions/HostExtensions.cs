@@ -59,9 +59,9 @@ public static class HostExtensions
   )
   {
     builder.Services.AddSingleton<OzdsSchedulerFactory>();
-    builder.Services.AddHostedService(
-      x => x
-        .GetRequiredService<OzdsSchedulerFactory>());
+    builder.Services.AddHostedService(x =>
+      x.GetRequiredService<OzdsSchedulerFactory>()
+    );
     builder.Services.AddSingletonAssignableTo(typeof(IJobManager));
     return builder;
   }
@@ -90,9 +90,7 @@ public static class HostExtensions
     return builder;
   }
 
-  private static void AddJobs(
-    this IHostApplicationBuilder builder
-  )
+  private static void AddJobs(this IHostApplicationBuilder builder)
   {
     builder.Services.AddQuartz();
 
@@ -100,25 +98,26 @@ public static class HostExtensions
       (services, options) =>
       {
         var jobsOptions = services
-          .GetRequiredService<IOptions<OzdsJobsOptions>>().Value;
-        var environment = services
-          .GetRequiredService<IHostEnvironment>();
+          .GetRequiredService<IOptions<OzdsJobsOptions>>()
+          .Value;
+        var environment = services.GetRequiredService<IHostEnvironment>();
 
         options.UseNpgsql(
-          jobsOptions.ConnectionString, x =>
+          jobsOptions.ConnectionString,
+          x =>
           {
-            x.MigrationsAssembly(
-              typeof(JobsDbContext).Assembly.GetName().Name);
-            x.MigrationsHistoryTable(
-              $"__Ozds{nameof(JobsDbContext)}");
-          });
+            x.MigrationsAssembly(typeof(JobsDbContext).Assembly.GetName().Name);
+            x.MigrationsHistoryTable($"__Ozds{nameof(JobsDbContext)}");
+          }
+        );
 
         if (environment.IsDevelopment())
         {
-          options.ConfigureWarnings(
-            warnings => warnings
-              .Throw(RelationalEventId.MultipleCollectionIncludeWarning));
+          options.ConfigureWarnings(warnings =>
+            warnings.Throw(RelationalEventId.MultipleCollectionIncludeWarning)
+          );
         }
-      });
+      }
+    );
   }
 }

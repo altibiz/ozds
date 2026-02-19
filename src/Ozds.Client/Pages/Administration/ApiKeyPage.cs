@@ -27,8 +27,7 @@ public partial class ApiKeyPage
 
   private Task<ApiKeyModel> OnNewAsync()
   {
-    var modelActivator = ScopedServices
-      .GetRequiredService<ModelActivator>();
+    var modelActivator = ScopedServices.GetRequiredService<ModelActivator>();
 
     var model = modelActivator.Activate<ApiKeyModel>();
 

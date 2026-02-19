@@ -9,7 +9,7 @@ public enum LevelModel
   Information,
   Warning,
   Error,
-  Critical
+  Critical,
 }
 
 public static class LevelModelExtensions
@@ -26,7 +26,9 @@ public static class LevelModelExtensions
       LevelEntity.Critical => LevelModel.Critical,
       _ => throw new ArgumentOutOfRangeException(
         nameof(levelEntity),
-        levelEntity, null)
+        levelEntity,
+        null
+      ),
     };
   }
 
@@ -41,8 +43,10 @@ public static class LevelModelExtensions
       LevelModel.Error => LevelEntity.Error,
       LevelModel.Critical => LevelEntity.Critical,
       _ => throw new ArgumentOutOfRangeException(
-        nameof(levelModel), levelModel,
-        null)
+        nameof(levelModel),
+        levelModel,
+        null
+      ),
     };
   }
 
@@ -57,8 +61,10 @@ public static class LevelModelExtensions
       LevelModel.Error => "Error",
       LevelModel.Critical => "Critical",
       _ => throw new ArgumentOutOfRangeException(
-        nameof(levelModel), levelModel,
-        null)
+        nameof(levelModel),
+        levelModel,
+        null
+      ),
     };
   }
 }

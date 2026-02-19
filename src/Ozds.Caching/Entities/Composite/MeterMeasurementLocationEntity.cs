@@ -7,8 +7,7 @@ public class MeterMeasurementLocationEntity : ICompositeEntity
 {
   public MeterEntity Meter { get; set; } = default!;
 
-  public MeasurementLocationEntity MeasurementLocation { get; set; } =
-    default!;
+  public MeasurementLocationEntity MeasurementLocation { get; set; } = default!;
 
   public string Id
   {

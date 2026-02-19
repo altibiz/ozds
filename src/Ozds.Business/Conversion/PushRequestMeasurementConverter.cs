@@ -11,19 +11,19 @@ public record MeterPushRequestWithMeasurementLocationId(
   string MeasurementLocationId
 );
 
-public class PushRequestMeasurementConverter(
-  IServiceProvider serviceProvider
-)
+public class PushRequestMeasurementConverter(IServiceProvider serviceProvider)
 {
-  private readonly ConcurrentDictionary<Type, IPushRequestMeasurementConverter>
-    measurementCache = new();
+  private readonly ConcurrentDictionary<
+    Type,
+    IPushRequestMeasurementConverter
+  > measurementCache = new();
 
-  private readonly ConcurrentDictionary<Type, IPushRequestMeasurementConverter>
-    pushRequestCache = new();
+  private readonly ConcurrentDictionary<
+    Type,
+    IPushRequestMeasurementConverter
+  > pushRequestCache = new();
 
-  public TPushRequest ToPushRequest<TPushRequest>(
-    IMeasurement measurement
-  )
+  public TPushRequest ToPushRequest<TPushRequest>(IMeasurement measurement)
   {
     return (TPushRequest)ToPushRequest(measurement);
   }
@@ -138,7 +138,8 @@ public class PushRequestMeasurementConverter(
     return GetPushRequestConverter(pushRequest.MeterPushRequest.GetType())
       .ToMeasurement(
         pushRequest.MeterPushRequest,
-        pushRequest.MeasurementLocationId);
+        pushRequest.MeasurementLocationId
+      );
   }
 
   public IEnumerable<IMeasurement> ToMeasurements(
@@ -156,7 +157,8 @@ public class PushRequestMeasurementConverter(
 
     yield return converter.ToMeasurement(
       current.MeterPushRequest,
-      current.MeasurementLocationId);
+      current.MeasurementLocationId
+    );
 
     while (enumerator.MoveNext())
     {
@@ -169,7 +171,8 @@ public class PushRequestMeasurementConverter(
 
       yield return converter.ToMeasurement(
         next.MeterPushRequest,
-        next.MeasurementLocationId);
+        next.MeasurementLocationId
+      );
     }
   }
 
@@ -189,7 +192,8 @@ public class PushRequestMeasurementConverter(
 
     yield return converter.ToMeasurement(
       current.MeterPushRequest,
-      current.MeasurementLocationId);
+      current.MeasurementLocationId
+    );
 
     while (await enumerator.MoveNextAsync(cancellationToken))
     {
@@ -202,7 +206,8 @@ public class PushRequestMeasurementConverter(
 
       yield return converter.ToMeasurement(
         next.MeterPushRequest,
-        next.MeasurementLocationId);
+        next.MeasurementLocationId
+      );
     }
   }
 
@@ -215,13 +220,15 @@ public class PushRequestMeasurementConverter(
       return converter;
     }
 
-    converter = serviceProvider
+    converter =
+      serviceProvider
         .GetServices<IPushRequestMeasurementConverter>()
-        .FirstOrDefault(
-          converter =>
-            converter.PushRequestType.IsAssignableTo(pushRequestType))
+        .FirstOrDefault(converter =>
+          converter.PushRequestType.IsAssignableTo(pushRequestType)
+        )
       ?? throw new InvalidOperationException(
-        $"No converter found for {pushRequestType.Name}");
+        $"No converter found for {pushRequestType.Name}"
+      );
 
     pushRequestCache.TryAdd(pushRequestType, converter);
 
@@ -237,13 +244,15 @@ public class PushRequestMeasurementConverter(
       return converter;
     }
 
-    converter = serviceProvider
+    converter =
+      serviceProvider
         .GetServices<IPushRequestMeasurementConverter>()
-        .FirstOrDefault(
-          converter =>
-            converter.MeasurementType.IsAssignableTo(measurementType))
+        .FirstOrDefault(converter =>
+          converter.MeasurementType.IsAssignableTo(measurementType)
+        )
       ?? throw new InvalidOperationException(
-        $"No converter found for {measurementType.Name}");
+        $"No converter found for {measurementType.Name}"
+      );
 
     measurementCache.TryAdd(measurementType, converter);
 

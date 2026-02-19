@@ -7,8 +7,7 @@ namespace Ozds.Business.Activation.Implementations;
 public class TrackableModelActivator(
   IServiceProvider serviceProvider,
   ClockQueries clock
-)
-  : InheritingModelActivator<TrackableModel, IdentifiableModel>(serviceProvider)
+) : InheritingModelActivator<TrackableModel, IdentifiableModel>(serviceProvider)
 {
   public override void Initialize(TrackableModel model)
   {

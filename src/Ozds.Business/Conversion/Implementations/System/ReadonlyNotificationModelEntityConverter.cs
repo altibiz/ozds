@@ -6,10 +6,10 @@ namespace Ozds.Business.Conversion.Implementations.System;
 
 public class ReadonlyNotificationModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  ReadonlyNotificationModel,
-  NotificationModel,
-  ReadonlyNotificationEntity,
-  NotificationEntity>(serviceProvider)
-{
-}
+)
+  : InheritingModelEntityConverter<
+    ReadonlyNotificationModel,
+    NotificationModel,
+    ReadonlyNotificationEntity,
+    NotificationEntity
+  >(serviceProvider) { }

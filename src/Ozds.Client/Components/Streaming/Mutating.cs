@@ -12,9 +12,7 @@ namespace Ozds.Client.Components.Streaming;
 // TODO: memoize Loading parameters to prevent rerendering
 
 public class Mutating<T> : MappedMutating<T, T>
-  where T : notnull
-{
-}
+  where T : notnull { }
 
 public partial class MappedMutating<T, TMapped> : OzdsComponentBase
   where T : notnull
@@ -30,10 +28,10 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
   public T? Value { get; set; }
 
   [Parameter]
-  public string? Id { get; set; } = default!;
+  public string? Id { get; set; }
 
   [Parameter]
-  public Func<T, TMapped>? Map { get; set; } = default!;
+  public Func<T, TMapped>? Map { get; set; }
 
   [Parameter]
   public RenderFragment? Progress { get; set; }
@@ -96,44 +94,45 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
   public Func<T, ActionModel, RenderFragment>? OnSuccessMessage { get; set; }
 
   [Parameter]
-  public Func<T, ActionModel, Exception, RenderFragment>? OnFailureMessage
-  {
-    get;
-    set;
-  }
+  public Func<
+    T,
+    ActionModel,
+    Exception,
+    RenderFragment
+  >? OnFailureMessage { get; set; }
 
   [Parameter]
   public bool Reload { get; set; }
 
   [Parameter]
-  public RenderFragment<MutatingState<T>>? Details { get; set; } = default!;
+  public RenderFragment<MutatingState<T>>? Details { get; set; }
 
   [Parameter]
-  public RenderFragment<MutatingState<T>>? Edit { get; set; } = default!;
+  public RenderFragment<MutatingState<T>>? Edit { get; set; }
 
   [Parameter]
-  public RenderFragment<MutatingState<T>>? Footer { get; set; } = default!;
+  public RenderFragment<MutatingState<T>>? Footer { get; set; }
 
   [Parameter]
-  public bool AsReadonly { get; set; } = false;
+  public bool AsReadonly { get; set; }
 
   [Parameter]
-  public bool WithPreview { get; set; } = false;
+  public bool WithPreview { get; set; }
 
   [Parameter]
-  public bool WithTitle { get; set; } = false;
+  public bool WithTitle { get; set; }
 
   [Parameter]
-  public bool WithHeading { get; set; } = false;
+  public bool WithHeading { get; set; }
 
   [Parameter]
-  public bool NotFoundOnCreate { get; set; } = false;
+  public bool NotFoundOnCreate { get; set; }
 
   [Parameter]
-  public string? Class { get; set; } = default!;
+  public string? Class { get; set; }
 
   [Parameter]
-  public string? Style { get; set; } = default!;
+  public string? Style { get; set; }
 
   [CascadingParameter]
   private RepresentativeState RepresentativeState { get; set; } = default!;
@@ -172,7 +171,8 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
       else
       {
         throw new InvalidOperationException(
-          $"No create strategy found for {typeof(T)}");
+          $"No create strategy found for {typeof(T)}"
+        );
       }
     }
     catch (Exception ex)
@@ -190,18 +190,18 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
             Fragment.Combine(
               Fragment.String(
                 Translate("Failed creating")
-                + " "
-                + Translate(typeof(T))
-                + title
-                + ". "),
-              failureMessage)
+                  + " "
+                  + Translate(typeof(T))
+                  + title
+                  + ". "
+              ),
+              failureMessage
+            )
           },
-          {
-            nameof(MutatingResult.NavigationBehavior),
-            null
-          }
+          { nameof(MutatingResult.NavigationBehavior), null },
         },
-        new DialogOptions { CloseOnEscapeKey = true });
+        new DialogOptions { CloseOnEscapeKey = true }
+      );
       return;
     }
 
@@ -218,11 +218,13 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
           Fragment.Combine(
             Fragment.String(
               Translate("Successfully created")
-              + " "
-              + Translate(typeof(T))
-              + title
-              + ". "),
-            successMessage)
+                + " "
+                + Translate(typeof(T))
+                + title
+                + ". "
+            ),
+            successMessage
+          )
         },
         {
           nameof(MutatingResult.NavigationBehavior),
@@ -232,10 +234,14 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
         },
         {
           nameof(MutatingResult.Exit),
-          (IMudDialogInstance _) => { AnalysisState.Reset(); }
-        }
+          (IMudDialogInstance _) =>
+          {
+            AnalysisState.Reset();
+          }
+        },
       },
-      new DialogOptions { CloseOnEscapeKey = true });
+      new DialogOptions { CloseOnEscapeKey = true }
+    );
   }
 
   private async Task OnUpdate(T model)
@@ -264,7 +270,8 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
       else
       {
         throw new InvalidOperationException(
-          $"No update strategy found for {typeof(T)}");
+          $"No update strategy found for {typeof(T)}"
+        );
       }
     }
     catch (Exception ex)
@@ -282,18 +289,18 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
             Fragment.Combine(
               Fragment.String(
                 Translate("Failed updating")
-                + " "
-                + Translate(typeof(T))
-                + title
-                + ". "),
-              failureMessage)
+                  + " "
+                  + Translate(typeof(T))
+                  + title
+                  + ". "
+              ),
+              failureMessage
+            )
           },
-          {
-            nameof(MutatingResult.NavigationBehavior),
-            null
-          }
+          { nameof(MutatingResult.NavigationBehavior), null },
         },
-        new DialogOptions { CloseOnEscapeKey = true });
+        new DialogOptions { CloseOnEscapeKey = true }
+      );
       return;
     }
 
@@ -310,11 +317,13 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
           Fragment.Combine(
             Fragment.String(
               Translate("Successfully updated")
-              + " "
-              + Translate(typeof(T))
-              + title
-              + ". "),
-            successMessage)
+                + " "
+                + Translate(typeof(T))
+                + title
+                + ". "
+            ),
+            successMessage
+          )
         },
         {
           nameof(MutatingResult.NavigationBehavior),
@@ -324,10 +333,14 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
         },
         {
           nameof(MutatingResult.Exit),
-          (IMudDialogInstance _) => { AnalysisState.Reset(); }
-        }
+          (IMudDialogInstance _) =>
+          {
+            AnalysisState.Reset();
+          }
+        },
       },
-      new DialogOptions { CloseOnEscapeKey = true });
+      new DialogOptions { CloseOnEscapeKey = true }
+    );
   }
 
   private async Task OnDelete(T model)
@@ -361,7 +374,8 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
       else
       {
         throw new InvalidOperationException(
-          $"No delete strategy found for {typeof(T)}");
+          $"No delete strategy found for {typeof(T)}"
+        );
       }
     }
     catch (Exception ex)
@@ -379,18 +393,18 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
             Fragment.Combine(
               Fragment.String(
                 Translate("Failed deleting")
-                + " "
-                + Translate(typeof(T))
-                + title
-                + ". "),
-              failureMessage)
+                  + " "
+                  + Translate(typeof(T))
+                  + title
+                  + ". "
+              ),
+              failureMessage
+            )
           },
-          {
-            nameof(MutatingResult.NavigationBehavior),
-            null
-          }
+          { nameof(MutatingResult.NavigationBehavior), null },
         },
-        new DialogOptions { CloseOnEscapeKey = true });
+        new DialogOptions { CloseOnEscapeKey = true }
+      );
       return;
     }
 
@@ -407,11 +421,13 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
           Fragment.Combine(
             Fragment.String(
               Translate("Successfully deleted")
-              + " "
-              + Translate(typeof(T))
-              + title
-              + ". "),
-            successMessage)
+                + " "
+                + Translate(typeof(T))
+                + title
+                + ". "
+            ),
+            successMessage
+          )
         },
         {
           nameof(MutatingResult.NavigationBehavior),
@@ -421,10 +437,14 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
         },
         {
           nameof(MutatingResult.Exit),
-          (IMudDialogInstance _) => { AnalysisState.Reset(); }
-        }
+          (IMudDialogInstance _) =>
+          {
+            AnalysisState.Reset();
+          }
+        },
       },
-      new DialogOptions { CloseOnEscapeKey = true });
+      new DialogOptions { CloseOnEscapeKey = true }
+    );
   }
 
   private async Task OnRestore(T model)
@@ -453,7 +473,8 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
       else
       {
         throw new InvalidOperationException(
-          $"No restore strategy found for {typeof(T)}");
+          $"No restore strategy found for {typeof(T)}"
+        );
       }
     }
     catch (Exception ex)
@@ -471,18 +492,18 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
             Fragment.Combine(
               Fragment.String(
                 Translate("Failed restoring")
-                + " "
-                + Translate(typeof(T))
-                + title
-                + ". "),
-              failureMessage)
+                  + " "
+                  + Translate(typeof(T))
+                  + title
+                  + ". "
+              ),
+              failureMessage
+            )
           },
-          {
-            nameof(MutatingResult.NavigationBehavior),
-            null
-          }
+          { nameof(MutatingResult.NavigationBehavior), null },
         },
-        new DialogOptions { CloseOnEscapeKey = true });
+        new DialogOptions { CloseOnEscapeKey = true }
+      );
       return;
     }
 
@@ -499,11 +520,13 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
           Fragment.Combine(
             Fragment.String(
               Translate("Successfully restored")
-              + " "
-              + Translate(typeof(T))
-              + title
-              + ". "),
-            successMessage)
+                + " "
+                + Translate(typeof(T))
+                + title
+                + ". "
+            ),
+            successMessage
+          )
         },
         {
           nameof(MutatingResult.NavigationBehavior),
@@ -513,10 +536,14 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
         },
         {
           nameof(MutatingResult.Exit),
-          (IMudDialogInstance _) => { AnalysisState.Reset(); }
-        }
+          (IMudDialogInstance _) =>
+          {
+            AnalysisState.Reset();
+          }
+        },
       },
-      new DialogOptions { CloseOnEscapeKey = true });
+      new DialogOptions { CloseOnEscapeKey = true }
+    );
   }
 
   private async Task OnForget(T model)
@@ -545,7 +572,8 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
       else
       {
         throw new InvalidOperationException(
-          $"No forget strategy found for {typeof(T)}");
+          $"No forget strategy found for {typeof(T)}"
+        );
       }
     }
     catch (Exception ex)
@@ -563,18 +591,18 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
             Fragment.Combine(
               Fragment.String(
                 Translate("Failed forgetting")
-                + " "
-                + Translate(typeof(T))
-                + title
-                + ". "),
-              failureMessage)
+                  + " "
+                  + Translate(typeof(T))
+                  + title
+                  + ". "
+              ),
+              failureMessage
+            )
           },
-          {
-            nameof(MutatingResult.NavigationBehavior),
-            null
-          }
+          { nameof(MutatingResult.NavigationBehavior), null },
         },
-        new DialogOptions { CloseOnEscapeKey = true });
+        new DialogOptions { CloseOnEscapeKey = true }
+      );
       return;
     }
 
@@ -591,11 +619,13 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
           Fragment.Combine(
             Fragment.String(
               Translate("Successfully forgotten")
-              + " "
-              + Translate(typeof(T))
-              + title
-              + ". "),
-            successMessage)
+                + " "
+                + Translate(typeof(T))
+                + title
+                + ". "
+            ),
+            successMessage
+          )
         },
         {
           nameof(MutatingResult.NavigationBehavior),
@@ -605,9 +635,13 @@ public partial class MappedMutating<T, TMapped> : OzdsComponentBase
         },
         {
           nameof(MutatingResult.Exit),
-          (IMudDialogInstance _) => { AnalysisState.Reset(); }
-        }
+          (IMudDialogInstance _) =>
+          {
+            AnalysisState.Reset();
+          }
+        },
       },
-      new DialogOptions { CloseOnEscapeKey = true });
+      new DialogOptions { CloseOnEscapeKey = true }
+    );
   }
 }

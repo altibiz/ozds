@@ -57,16 +57,20 @@ public class NotificationMutations(
       );
     }
 
-    var representativeId = await representativeQueries
-      .ReadAuthenticatedRepresentativeId(cancellationToken);
+    var representativeId =
+      await representativeQueries.ReadAuthenticatedRepresentativeId(
+        cancellationToken
+      );
 
     var entity = modelEntityConverter.ToEntity<IResolvableNotificationEntity>(
       resolvableNotification
     );
     entity.AuditingRepresentativeId = representativeId;
 
-    var updated = await mutations
-      .MarkNotificationAsResolved(entity, cancellationToken);
+    var updated = await mutations.MarkNotificationAsResolved(
+      entity,
+      cancellationToken
+    );
 
     var model = modelEntityConverter.ToModel<IResolvableNotification>(updated);
 

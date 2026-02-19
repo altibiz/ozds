@@ -7,12 +7,14 @@ using Ozds.Report.Entities;
 namespace Ozds.Business.Conversion.Implementations.Report;
 
 public class NetworkUserModelReportEntityConverter(
-  IServiceProvider serviceProvider)
+  IServiceProvider serviceProvider
+)
   : InheritingModelReportEntityConverter<
     NetworkUserModel,
     IdentifiableModel,
     NetworkUserEntity,
-    IdentifiableEntity>(serviceProvider)
+    IdentifiableEntity
+  >(serviceProvider)
 {
   private readonly ModelReportEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelReportEntityConverter>();

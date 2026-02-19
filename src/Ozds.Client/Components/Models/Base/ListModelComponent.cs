@@ -61,7 +61,7 @@ public abstract class ListModelComponent<TPrefix, TModel> : ModelComponent
     return new Dictionary<string, object>
     {
       { nameof(OzdsListModelComponentBase<object, object>.Models), Models! },
-      { nameof(OzdsListModelComponentBase<object, object>.Prefix), Prefix! }
+      { nameof(OzdsListModelComponentBase<object, object>.Prefix), Prefix! },
     };
   }
 

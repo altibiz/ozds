@@ -15,9 +15,9 @@ public partial class MeasurementLocationPage
 {
   private DateTime selectedMonth =
     // NOTE: just so something is there
-    DateTimeOffset.Parse(
-      "2000-01-01T00:00:00Z",
-      CultureInfo.InvariantCulture).DateTime;
+    DateTimeOffset
+      .Parse("2000-01-01T00:00:00Z", CultureInfo.InvariantCulture)
+      .DateTime;
 
   private ObisModel selectedObis = ObisModel.ActiveEnergyTotalImportT1_kWh;
 

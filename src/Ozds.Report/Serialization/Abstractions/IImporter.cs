@@ -6,25 +6,26 @@ public interface IImporter
 {
   public string Extension { get; }
 
-  public IImportStreamer<T> Import<T>(
-    CultureInfo culture,
-    Stream csvStream);
+  public IImportStreamer<T> Import<T>(CultureInfo culture, Stream csvStream);
 
   public IImportStreamer Import(
     CultureInfo culture,
     Type type,
-    Stream csvStream);
+    Stream csvStream
+  );
 
   public IAsyncImportStreamer<T> Import<T>(
     CultureInfo culture,
     Stream csvStream,
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 
   public IAsyncImportStreamer Import(
     CultureInfo culture,
     Type type,
     Stream csvStream,
-    CancellationToken cancellationToken);
+    CancellationToken cancellationToken
+  );
 }
 
 public interface IImportStreamer : IDisposable

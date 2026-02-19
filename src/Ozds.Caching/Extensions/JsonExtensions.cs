@@ -23,7 +23,7 @@ public static class JsonExtensions
             JsonArray jsonBaseChildArray
               when prop.Value is JsonArray jsonMergeChildArray =>
               jsonBaseChildArray.Merge(jsonMergeChildArray),
-            _ => prop.Value
+            _ => prop.Value,
           };
         }
 
@@ -43,7 +43,8 @@ public static class JsonExtensions
       default:
         throw new ArgumentException(
           $"'{jsonBase.GetType().Name}'"
-          + $" is incompatible with '{jsonMerge.GetType().Name}'");
+            + $" is incompatible with '{jsonMerge.GetType().Name}'"
+        );
     }
 
     return jsonBase;

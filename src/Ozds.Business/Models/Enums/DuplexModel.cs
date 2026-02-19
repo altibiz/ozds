@@ -7,7 +7,7 @@ public enum DuplexModel
   Any,
   Net,
   Import,
-  Export
+  Export,
 }
 
 public static class DuplexModelExtensions
@@ -26,16 +26,15 @@ public static class DuplexModelExtensions
       DuplexModel.Export => phasic.DuplexExport(),
       _ => measure switch
       {
-        MeasureModel.Voltage
-          or MeasureModel.Current => phasic.DuplexAny(),
+        MeasureModel.Voltage or MeasureModel.Current => phasic.DuplexAny(),
         MeasureModel.ActivePower
-          or MeasureModel.ReactivePower
-          or MeasureModel.ApparentPower => phasic.DuplexNet(),
+        or MeasureModel.ReactivePower
+        or MeasureModel.ApparentPower => phasic.DuplexNet(),
         MeasureModel.ActiveEnergy
-          or MeasureModel.ReactiveEnergy
-          or MeasureModel.ApparentEnergy => phasic.DuplexImport(),
-        _ => phasic.DuplexAny()
-      }
+        or MeasureModel.ReactiveEnergy
+        or MeasureModel.ApparentEnergy => phasic.DuplexImport(),
+        _ => phasic.DuplexAny(),
+      },
     };
   }
 }

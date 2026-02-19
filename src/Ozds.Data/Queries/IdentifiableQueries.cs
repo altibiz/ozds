@@ -6,9 +6,8 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class IdentifiableQueries(
-  IDbContextFactory<DataDbContext> factory
-) : IQueries
+public class IdentifiableQueries(IDbContextFactory<DataDbContext> factory)
+  : IQueries
 {
   public async Task<T?> ReadById<T>(
     string id,
@@ -29,11 +28,13 @@ public class IdentifiableQueries(
     if (!entityType.IsAssignableTo(typeof(IEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(IEntity)}");
+        $"Type {entityType} is not assignable to {typeof(IEntity)}"
+      );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var queryable = context.GetQueryable(entityType);
     var item = await queryable
       .Where(context.PrimaryKeyEquals(entityType, id))
@@ -60,17 +61,18 @@ public class IdentifiableQueries(
     if (!entityType.IsAssignableTo(typeof(IEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(IEntity)}");
+        $"Type {entityType} is not assignable to {typeof(IEntity)}"
+      );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var queryable = context
       .GetQueryable(entityType)
       .Where(context.PrimaryKeyIn(entityType, ids));
 
-    var items = await queryable
-      .ToListAsync(cancellationToken);
+    var items = await queryable.ToListAsync(cancellationToken);
 
     return items;
   }
@@ -81,11 +83,7 @@ public class IdentifiableQueries(
   )
     where T : class, IIdentifiableEntity
   {
-    var entities = await ReadByIdsOrdered(
-      typeof(T),
-      ids,
-      cancellationToken
-    );
+    var entities = await ReadByIdsOrdered(typeof(T), ids, cancellationToken);
     return entities.Cast<T?>().ToList();
   }
 
@@ -98,11 +96,13 @@ public class IdentifiableQueries(
     if (!entityType.IsAssignableTo(typeof(IIdentifiableEntity)))
     {
       throw new InvalidOperationException(
-        $"Type {entityType} is not assignable to {typeof(IIdentifiableEntity)}");
+        $"Type {entityType} is not assignable to {typeof(IIdentifiableEntity)}"
+      );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
     var queryable = context
       .GetQueryable<IIdentifiableEntity>(entityType)
       .Where(context.PrimaryKeyIn(entityType, ids))
@@ -110,23 +110,21 @@ public class IdentifiableQueries(
 
     var filtered = queryable;
 
-    var items = await filtered
-      .ToDictionaryAsync(
-        x => x.Id,
-        x => x,
-        cancellationToken);
+    var items = await filtered.ToDictionaryAsync(
+      x => x.Id,
+      x => x,
+      cancellationToken
+    );
 
-    return ids
-      .Select(
-        id =>
+    return ids.Select(id =>
+      {
+        if (items.TryGetValue(id, out var item))
         {
-          if (items.TryGetValue(id, out var item))
-          {
-            return item;
-          }
+          return item;
+        }
 
-          return default;
-        })
+        return default;
+      })
       .Cast<object?>()
       .ToList();
   }
@@ -165,16 +163,15 @@ public class IdentifiableQueries(
       );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var queryable = context
-      .GetQueryable<IIdentifiableEntity>(modelType);
+    var queryable = context.GetQueryable<IIdentifiableEntity>(modelType);
 
     var filtered = queryable.Where(x => x.Title.Contains(title));
 
-    var ordered = filtered
-      .OrderByDescending(context.PrimaryKeyOf(modelType));
+    var ordered = filtered.OrderByDescending(context.PrimaryKeyOf(modelType));
 
     var total = await filtered.CountAsync(cancellationToken);
     var items = await ordered
@@ -182,9 +179,7 @@ public class IdentifiableQueries(
       .Take(pageCount)
       .ToListAsync(cancellationToken);
 
-    return items
-      .OfType<object>()
-      .ToPaginatedList(total);
+    return items.OfType<object>().ToPaginatedList(total);
   }
 
   public async Task<PaginatedList<T>> Read<T>(
@@ -218,16 +213,15 @@ public class IdentifiableQueries(
       );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var queryable = context
-      .GetQueryable<IIdentifiableEntity>(modelType);
+    var queryable = context.GetQueryable<IIdentifiableEntity>(modelType);
 
     var filtered = queryable;
 
-    var ordered = filtered
-      .OrderByDescending(context.PrimaryKeyOf(modelType));
+    var ordered = filtered.OrderByDescending(context.PrimaryKeyOf(modelType));
 
     var total = await filtered.CountAsync(cancellationToken);
     var items = await ordered
@@ -235,8 +229,6 @@ public class IdentifiableQueries(
       .Take(pageCount)
       .ToListAsync(cancellationToken);
 
-    return items
-      .OfType<object>()
-      .ToPaginatedList(total);
+    return items.OfType<object>().ToPaginatedList(total);
   }
 }

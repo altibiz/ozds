@@ -16,27 +16,30 @@ public class MigrationService(
 
     if (options.Value.MigrateOnStartup)
     {
-      var mutations = scope.ServiceProvider
-        .GetRequiredService<MigrationMutations>();
+      var mutations =
+        scope.ServiceProvider.GetRequiredService<MigrationMutations>();
       await mutations.MigrateAsync(cancellationToken);
       return;
     }
 
-    var queries = scope.ServiceProvider
-      .GetRequiredService<MigrationQueries>();
+    var queries = scope.ServiceProvider.GetRequiredService<MigrationQueries>();
 
     var pendingMigrations = await queries.ReadPendingMigrations(
-      cancellationToken);
+      cancellationToken
+    );
     if (pendingMigrations.Count == 0)
     {
       return;
     }
 
-    var pendingMigrationsString = string
-      .Join("," + Environment.NewLine, pendingMigrations);
+    var pendingMigrationsString = string.Join(
+      "," + Environment.NewLine,
+      pendingMigrations
+    );
 
     throw new InvalidOperationException(
-      $"Please run migrations:{Environment.NewLine}{pendingMigrationsString}");
+      $"Please run migrations:{Environment.NewLine}{pendingMigrationsString}"
+    );
   }
 
   public Task StopAsync(CancellationToken cancellationToken)

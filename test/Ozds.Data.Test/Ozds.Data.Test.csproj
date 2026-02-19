@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <ItemGroup>
     <ProjectReference Include="../../src/Ozds.Time/Ozds.Time.csproj" />
     <ProjectReference Include="../../src/Ozds.Assets/Ozds.Assets.csproj" />
@@ -7,7 +6,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Identity" />
     <PackageReference Include="Testcontainers" />
   </ItemGroup>
-
 </Project>

@@ -6,22 +6,22 @@ using Ozds.Business.Models.Enums;
 
 namespace Ozds.Business.Conversion;
 
-public class MeasurementAggregateConverter(
-  IServiceProvider serviceProvider)
+public class MeasurementAggregateConverter(IServiceProvider serviceProvider)
 {
-  private readonly
-    ConcurrentDictionary<Type, IMeasurementAggregateConverter> cache = new();
+  private readonly ConcurrentDictionary<
+    Type,
+    IMeasurementAggregateConverter
+  > cache = new();
 
-  public IAggregate ToAggregate(
-    IMeasurement model,
-    IntervalModel interval)
+  public IAggregate ToAggregate(IMeasurement model, IntervalModel interval)
   {
     return ToAggregate<IAggregate>(model, interval);
   }
 
   public TAggregate ToAggregate<TAggregate>(
     IMeasurement model,
-    IntervalModel interval)
+    IntervalModel interval
+  )
     where TAggregate : class, IAggregate
   {
     var converter = GetConverter(model.GetType());
@@ -194,13 +194,13 @@ public class MeasurementAggregateConverter(
       return converter;
     }
 
-    converter = serviceProvider
+    converter =
+      serviceProvider
         .GetServices<IMeasurementAggregateConverter>()
-        .FirstOrDefault(
-          converter =>
-            converter.CanConvertToAggregate(type))
+        .FirstOrDefault(converter => converter.CanConvertToAggregate(type))
       ?? throw new InvalidOperationException(
-        $"No converter found for measurement type {type}.");
+        $"No converter found for measurement type {type}."
+      );
 
     cache.TryAdd(type, converter);
 

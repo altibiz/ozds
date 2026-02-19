@@ -7,16 +7,13 @@ using Ozds.Business.Queries;
 
 namespace Ozds.Business.Finance.Implementations;
 
-public class
-  WhiteLowNetworkUserCalculationCalculator(
-    CalculationItemCalculator calculationItemCalculator,
-    ClockQueries clock)
-  : NetworkUserCalculationCalculator<
-    WhiteLowNetworkUserCatalogueModel>
+public class WhiteLowNetworkUserCalculationCalculator(
+  CalculationItemCalculator calculationItemCalculator,
+  ClockQueries clock
+) : NetworkUserCalculationCalculator<WhiteLowNetworkUserCatalogueModel>
 {
-  private readonly CalculationItemCalculator
-    _calculationItemCalculator =
-      calculationItemCalculator;
+  private readonly CalculationItemCalculator _calculationItemCalculator =
+    calculationItemCalculator;
 
   protected override MeteredNetworkUserCalculationModel CalculateForNetworkUser(
     WhiteLowNetworkUserCatalogueModel usageCatalogue,
@@ -25,8 +22,8 @@ public class
   {
     var supplyCatalogue = calculationBasis.SupplyRegulatoryCatalogue;
 
-    var usageActiveEnergyTotalImportT1 = _calculationItemCalculator
-      .Calculate<UsageActiveEnergyTotalImportT1CalculationItemModel>(
+    var usageActiveEnergyTotalImportT1 =
+      _calculationItemCalculator.Calculate<UsageActiveEnergyTotalImportT1CalculationItemModel>(
         new CalculationItemBasisModel
         {
           FromDate = calculationBasis.FromDate,
@@ -36,12 +33,12 @@ public class
           BilledFromDate = calculationBasis.BilledFromDate,
           BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
-          Price_EUR = usageCatalogue.ActiveEnergyTotalImportT1Price_EUR
+          Price_EUR = usageCatalogue.ActiveEnergyTotalImportT1Price_EUR,
         }
       );
 
-    var usageActiveEnergyTotalImportT2 = _calculationItemCalculator
-      .Calculate<UsageActiveEnergyTotalImportT2CalculationItemModel>(
+    var usageActiveEnergyTotalImportT2 =
+      _calculationItemCalculator.Calculate<UsageActiveEnergyTotalImportT2CalculationItemModel>(
         new CalculationItemBasisModel
         {
           FromDate = calculationBasis.FromDate,
@@ -51,12 +48,12 @@ public class
           BilledFromDate = calculationBasis.BilledFromDate,
           BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
-          Price_EUR = usageCatalogue.ActiveEnergyTotalImportT2Price_EUR
+          Price_EUR = usageCatalogue.ActiveEnergyTotalImportT2Price_EUR,
         }
       );
 
-    var usageReactiveEnergyTotalRampedT0 = _calculationItemCalculator
-      .Calculate<UsageReactiveEnergyTotalRampedT0CalculationItemModel>(
+    var usageReactiveEnergyTotalRampedT0 =
+      _calculationItemCalculator.Calculate<UsageReactiveEnergyTotalRampedT0CalculationItemModel>(
         new CalculationItemBasisModel
         {
           FromDate = calculationBasis.FromDate,
@@ -66,12 +63,12 @@ public class
           BilledFromDate = calculationBasis.BilledFromDate,
           BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
-          Price_EUR = usageCatalogue.ReactiveEnergyTotalRampedT0Price_EUR
+          Price_EUR = usageCatalogue.ReactiveEnergyTotalRampedT0Price_EUR,
         }
       );
 
-    var usageMeterFee = _calculationItemCalculator
-      .Calculate<UsageMeterFeeCalculationItemModel>(
+    var usageMeterFee =
+      _calculationItemCalculator.Calculate<UsageMeterFeeCalculationItemModel>(
         new CalculationItemBasisModel
         {
           FromDate = calculationBasis.FromDate,
@@ -81,19 +78,20 @@ public class
           BilledFromDate = calculationBasis.BilledFromDate,
           BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
-          Price_EUR = usageCatalogue.MeterFeePrice_EUR
+          Price_EUR = usageCatalogue.MeterFeePrice_EUR,
         }
       );
 
     var usageFeeTotal = System.Math.Round(
       usageActiveEnergyTotalImportT1.Total
-      + usageActiveEnergyTotalImportT2.Total
-      + usageReactiveEnergyTotalRampedT0.Total
-      + usageMeterFee.Total,
-      2);
+        + usageActiveEnergyTotalImportT2.Total
+        + usageReactiveEnergyTotalRampedT0.Total
+        + usageMeterFee.Total,
+      2
+    );
 
-    var supplyActiveEnergyTotalImportT1 = _calculationItemCalculator
-      .Calculate<SupplyActiveEnergyTotalImportT1CalculationItemModel>(
+    var supplyActiveEnergyTotalImportT1 =
+      _calculationItemCalculator.Calculate<SupplyActiveEnergyTotalImportT1CalculationItemModel>(
         new CalculationItemBasisModel
         {
           FromDate = calculationBasis.FromDate,
@@ -103,12 +101,12 @@ public class
           BilledFromDate = calculationBasis.BilledFromDate,
           BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
-          Price_EUR = supplyCatalogue.ActiveEnergyTotalImportT1Price_EUR
+          Price_EUR = supplyCatalogue.ActiveEnergyTotalImportT1Price_EUR,
         }
       );
 
-    var supplyActiveEnergyTotalImportT2 = _calculationItemCalculator
-      .Calculate<SupplyActiveEnergyTotalImportT2CalculationItemModel>(
+    var supplyActiveEnergyTotalImportT2 =
+      _calculationItemCalculator.Calculate<SupplyActiveEnergyTotalImportT2CalculationItemModel>(
         new CalculationItemBasisModel
         {
           FromDate = calculationBasis.FromDate,
@@ -118,12 +116,12 @@ public class
           BilledFromDate = calculationBasis.BilledFromDate,
           BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
-          Price_EUR = supplyCatalogue.ActiveEnergyTotalImportT2Price_EUR
+          Price_EUR = supplyCatalogue.ActiveEnergyTotalImportT2Price_EUR,
         }
       );
 
-    var supplyBusinessUsageFee = _calculationItemCalculator
-      .Calculate<SupplyBusinessUsageCalculationItemModel>(
+    var supplyBusinessUsageFee =
+      _calculationItemCalculator.Calculate<SupplyBusinessUsageCalculationItemModel>(
         new CalculationItemBasisModel
         {
           FromDate = calculationBasis.FromDate,
@@ -133,12 +131,12 @@ public class
           BilledFromDate = calculationBasis.BilledFromDate,
           BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
-          Price_EUR = supplyCatalogue.BusinessUsageFeePrice_EUR
+          Price_EUR = supplyCatalogue.BusinessUsageFeePrice_EUR,
         }
       );
 
-    var supplyRenewableEnergyFee = _calculationItemCalculator
-      .Calculate<SupplyRenewableEnergyCalculationItemModel>(
+    var supplyRenewableEnergyFee =
+      _calculationItemCalculator.Calculate<SupplyRenewableEnergyCalculationItemModel>(
         new CalculationItemBasisModel
         {
           FromDate = calculationBasis.FromDate,
@@ -148,16 +146,17 @@ public class
           BilledFromDate = calculationBasis.BilledFromDate,
           BilledToDate = calculationBasis.BilledToDate,
           Aggregates = calculationBasis.Aggregates,
-          Price_EUR = supplyCatalogue.RenewableEnergyFeePrice_EUR
+          Price_EUR = supplyCatalogue.RenewableEnergyFeePrice_EUR,
         }
       );
 
     var supplyFeeTotal = System.Math.Round(
       supplyActiveEnergyTotalImportT1.Total
-      + supplyActiveEnergyTotalImportT2.Total
-      + supplyBusinessUsageFee.Total
-      + supplyRenewableEnergyFee.Total,
-      2);
+        + supplyActiveEnergyTotalImportT2.Total
+        + supplyBusinessUsageFee.Total
+        + supplyRenewableEnergyFee.Total,
+      2
+    );
 
     var total = System.Math.Round(usageFeeTotal + supplyFeeTotal, 2);
 
@@ -179,10 +178,12 @@ public class
       MeteredToDate = calculationBasis.MeasuredToDate,
       NetworkUserInvoiceId = "0",
       UsageNetworkUserCatalogueId = usageCatalogue.Id,
-      SupplyRegulatoryCatalogueId =
-        calculationBasis.SupplyRegulatoryCatalogue.Id,
-      NetworkUserMeasurementLocationId =
-        calculationBasis.MeasurementLocation.Id,
+      SupplyRegulatoryCatalogueId = calculationBasis
+        .SupplyRegulatoryCatalogue
+        .Id,
+      NetworkUserMeasurementLocationId = calculationBasis
+        .MeasurementLocation
+        .Id,
       Remark = calculationBasis.MeasurementLocation.CalculationRemark,
       IssuedOn = now,
       IssuedById = default!,
@@ -202,7 +203,7 @@ public class
       SupplyBusinessUsageFee = supplyBusinessUsageFee,
       SupplyRenewableEnergyFee = supplyRenewableEnergyFee,
       SupplyFeeTotal_EUR = supplyFeeTotal,
-      Total_EUR = total
+      Total_EUR = total,
     };
 
     return initial;

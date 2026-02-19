@@ -24,6 +24,7 @@ public static class CachingAssertionExtensions
         return options;
       },
       because,
-      becauseArgs);
+      becauseArgs
+    );
   }
 }

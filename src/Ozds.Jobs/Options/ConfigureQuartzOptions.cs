@@ -3,24 +3,21 @@ using Quartz;
 
 namespace Ozds.Jobs.Options;
 
-public class ConfigureQuartzOptions(
-  IOptions<OzdsJobsOptions> jobsOptions
-) : IConfigureOptions<QuartzOptions>
+public class ConfigureQuartzOptions(IOptions<OzdsJobsOptions> jobsOptions)
+  : IConfigureOptions<QuartzOptions>
 {
   public void Configure(QuartzOptions options)
   {
     var builder = SchedulerBuilder.Create();
     builder.InterruptJobsOnShutdown = true;
-    builder.UsePersistentStore(
-      builder =>
+    builder.UsePersistentStore(builder =>
+    {
+      builder.UseSystemTextJsonSerializer();
+      builder.UsePostgres(builder =>
       {
-        builder.UseSystemTextJsonSerializer();
-        builder.UsePostgres(
-          builder =>
-          {
-            builder.ConnectionString = jobsOptions.Value.ConnectionString;
-          });
+        builder.ConnectionString = jobsOptions.Value.ConnectionString;
       });
+    });
 
     foreach (var key in builder.Properties.AllKeys)
     {

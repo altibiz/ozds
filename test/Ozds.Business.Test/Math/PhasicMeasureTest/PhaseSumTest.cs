@@ -9,7 +9,7 @@ public class PhaseSumTest
     return new List<PhasicMeasure<decimal>>
     {
       new SinglePhasicSumMeasure<decimal>(6),
-      new TriPhasicMeasure<decimal>(1, 2, 3)
+      new TriPhasicMeasure<decimal>(1, 2, 3),
     };
   }
 
@@ -19,7 +19,7 @@ public class PhaseSumTest
     {
       new SinglePhasicSumMeasure<decimal>(0),
       new TriPhasicMeasure<decimal>(0, 0, 0),
-      new NullPhasicMeasure<decimal>()
+      new NullPhasicMeasure<decimal>(),
     };
   }
 

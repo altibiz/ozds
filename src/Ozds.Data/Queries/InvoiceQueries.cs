@@ -8,46 +8,42 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class InvoiceQueries(
-  IDbContextFactory<DataDbContext> factory
-) : IQueries
+public class InvoiceQueries(IDbContextFactory<DataDbContext> factory) : IQueries
 {
-  public async Task<PaginatedList<NetworkUserInvoiceEntity>>
-    ReadInvoicesByRepresentative(
-      string representativeId,
-      RoleEntity role,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      DateTimeOffset? fromDate = null,
-      DateTimeOffset? toDate = null,
-      int pageCount = QueryConstants.DefaultPageCount
-    )
+  public async Task<
+    PaginatedList<NetworkUserInvoiceEntity>
+  > ReadInvoicesByRepresentative(
+    string representativeId,
+    RoleEntity role,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    DateTimeOffset? fromDate = null,
+    DateTimeOffset? toDate = null,
+    int pageCount = QueryConstants.DefaultPageCount
+  )
   {
     await using var context = await factory.CreateDbContextAsync();
 
     var filtered = role switch
     {
       RoleEntity.LocationRepresentative
-        or RoleEntity.NetworkUserRepresentative =>
-        context.Representatives
-          .Where(
-            context.PrimaryKeyEquals<RepresentativeEntity>(
-              representativeId))
-          .Include(x => x.Locations)
+      or RoleEntity.NetworkUserRepresentative => context
+        .Representatives.Where(
+          context.PrimaryKeyEquals<RepresentativeEntity>(representativeId)
+        )
+        .Include(x => x.Locations)
           .ThenInclude(x => x.NetworkUsers)
+            .ThenInclude(x => x.Invoices)
+        .Include(x => x.NetworkUsers)
           .ThenInclude(x => x.Invoices)
-          .Include(x => x.NetworkUsers)
-          .ThenInclude(x => x.Invoices)
-          .SelectMany(
-            x => x.Locations
-              .SelectMany(
-                x => x.NetworkUsers
-                  .SelectMany(x => x.Invoices))
-              .Concat(
-                x.NetworkUsers
-                  .SelectMany(x => x.Invoices))),
+        .SelectMany(x =>
+          x.Locations.SelectMany(x =>
+              x.NetworkUsers.SelectMany(x => x.Invoices)
+            )
+            .Concat(x.NetworkUsers.SelectMany(x => x.Invoices))
+        ),
       RoleEntity.OperatorRepresentative => context.NetworkUserInvoices,
-      _ => throw new ArgumentOutOfRangeException(nameof(role))
+      _ => throw new ArgumentOutOfRangeException(nameof(role)),
     };
 
     if (fromDate is not null)
@@ -68,22 +64,22 @@ public class InvoiceQueries(
       .Take(pageCount)
       .ToListAsync(cancellationToken);
 
-    return items
-      .OfType<NetworkUserInvoiceEntity>()
-      .ToPaginatedList(count);
+    return items.OfType<NetworkUserInvoiceEntity>().ToPaginatedList(count);
   }
 
-  public async Task<CalculatedNetworkUserInvoiceEntity?>
-    ReadCalculatedNetworkUserInvoice(
-      string id,
-      CancellationToken cancellationToken
-    )
+  public async Task<CalculatedNetworkUserInvoiceEntity?> ReadCalculatedNetworkUserInvoice(
+    string id,
+    CancellationToken cancellationToken
+  )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var invoice = await context.NetworkUserInvoices
-      .Where(context.PrimaryKeyEquals<NetworkUserInvoiceEntity>(id))
+    var invoice = await context
+      .NetworkUserInvoices.Where(
+        context.PrimaryKeyEquals<NetworkUserInvoiceEntity>(id)
+      )
       .Include(invoice => invoice.NetworkUserCalculations)
       .FirstOrDefaultAsync(cancellationToken);
     if (invoice is null)
@@ -94,26 +90,28 @@ public class InvoiceQueries(
     return new CalculatedNetworkUserInvoiceEntity
     {
       Calculations = invoice.NetworkUserCalculations.ToList(),
-      Invoice = invoice
+      Invoice = invoice,
     };
   }
 
-  public async Task<CalculatedNetworkUserInvoiceEntity?>
-    ReadCalculatedNetworkUserInvoice(
-      string networkUserId,
-      DateTimeOffset dateFrom,
-      DateTimeOffset dateTo,
-      CancellationToken cancellationToken
-    )
+  public async Task<CalculatedNetworkUserInvoiceEntity?> ReadCalculatedNetworkUserInvoice(
+    string networkUserId,
+    DateTimeOffset dateFrom,
+    DateTimeOffset dateTo,
+    CancellationToken cancellationToken
+  )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var invoice = await context.NetworkUserInvoices
-      .Where(
+    var invoice = await context
+      .NetworkUserInvoices.Where(
         context.ForeignKeyEquals<NetworkUserInvoiceEntity>(
           nameof(NetworkUserInvoiceEntity.NetworkUser),
-          networkUserId))
+          networkUserId
+        )
+      )
       .Where(x => x.FromDate == dateFrom)
       .Where(x => x.ToDate == dateTo)
       .Include(invoice => invoice.NetworkUserCalculations)
@@ -126,7 +124,7 @@ public class InvoiceQueries(
     return new CalculatedNetworkUserInvoiceEntity
     {
       Calculations = invoice.NetworkUserCalculations.ToList(),
-      Invoice = invoice
+      Invoice = invoice,
     };
   }
 }

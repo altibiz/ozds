@@ -16,7 +16,6 @@ public class CompositeEntityProfiler : Profiler<ICompositeEntity>
     CacheConfigurationBuilder builder
   )
   {
-    return builder
-      .WithDependencyTracking();
+    return builder.WithDependencyTracking();
   }
 }

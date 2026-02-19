@@ -13,21 +13,18 @@ namespace Ozds.Assets.Entities;
 
 public sealed class TranslationDictionaryEntity
 {
-  private static readonly Encoding Encoding = new UTF8Encoding(
-    false,
-    true
-  );
+  private static readonly Encoding Encoding = new UTF8Encoding(false, true);
 
   private static readonly JsonSerializerOptions JsonOptions = new()
   {
     WriteIndented = true,
-    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+    Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
   };
 
   private static readonly XmlWriterSettings XmlSettings = new()
   {
     Encoding = Encoding,
-    Indent = true
+    Indent = true,
   };
 
   private readonly ConcurrentDictionary<string, Item> items;
@@ -44,9 +41,7 @@ public sealed class TranslationDictionaryEntity
     items = dictionary;
   }
 
-  private TranslationDictionaryEntity(
-    TranslationDictionaryContent content
-  )
+  private TranslationDictionaryEntity(TranslationDictionaryContent content)
   {
     items = ContentToDictionary(content);
   }
@@ -58,9 +53,9 @@ public sealed class TranslationDictionaryEntity
 
   public static TranslationDictionaryEntity FromJson(string json)
   {
-    var content = JsonSerializer.Deserialize<
-      TranslationDictionaryContent
-    >(json) ?? throw new InvalidOperationException("Invalid JSON.");
+    var content =
+      JsonSerializer.Deserialize<TranslationDictionaryContent>(json)
+      ?? throw new InvalidOperationException("Invalid JSON.");
 
     return new TranslationDictionaryEntity(content);
   }
@@ -75,9 +70,7 @@ public sealed class TranslationDictionaryEntity
 
   public static TranslationDictionaryEntity FromToml(string toml)
   {
-    var content = Toml.ToModel<TranslationDictionaryContent>(
-      toml
-    );
+    var content = Toml.ToModel<TranslationDictionaryContent>(toml);
 
     return new TranslationDictionaryEntity(content);
   }
@@ -91,8 +84,8 @@ public sealed class TranslationDictionaryEntity
   {
     var serializer = new XmlSerializer(typeof(TranslationDictionaryContent));
     using var reader = new StringReader(xml);
-    var content = serializer.Deserialize(reader)
-        as TranslationDictionaryContent
+    var content =
+      serializer.Deserialize(reader) as TranslationDictionaryContent
       ?? throw new InvalidOperationException("Invalid XML.");
     return new TranslationDictionaryEntity(content);
   }
@@ -155,15 +148,15 @@ public sealed class TranslationDictionaryEntity
       new ConcurrentDictionary<string, Item>(
         dictionary.ToDictionary(
           x => x.Key,
-          x => new Item(string.Empty, x.Value))));
+          x => new Item(string.Empty, x.Value)
+        )
+      )
+    );
   }
 
   public Dictionary<string, string> ToDictionary()
   {
-    return items.ToDictionary(
-      x => x.Key,
-      x => x.Value.Value
-    );
+    return items.ToDictionary(x => x.Key, x => x.Value.Value);
   }
 
   public List<EnumerationItem> ToList()
@@ -188,19 +181,11 @@ public sealed class TranslationDictionaryEntity
     return FromString(text, path);
   }
 
-  public Task Save(
-    string path,
-    CancellationToken cancellationToken
-  )
+  public Task Save(string path, CancellationToken cancellationToken)
   {
     var text = ToString(path);
 
-    return File.WriteAllTextAsync(
-      path,
-      text,
-      Encoding,
-      cancellationToken
-    );
+    return File.WriteAllTextAsync(path, text, Encoding, cancellationToken);
   }
 
   public string? Get(string key)
@@ -228,7 +213,8 @@ public sealed class TranslationDictionaryEntity
     items.AddOrUpdate(
       key,
       _ => new Item(null, value),
-      (_, _) => new Item(null, value));
+      (_, _) => new Item(null, value)
+    );
   }
 
   public void AddOrUpdate(string key, string? metadata, string value)
@@ -236,7 +222,8 @@ public sealed class TranslationDictionaryEntity
     items.AddOrUpdate(
       key,
       _ => new Item(metadata, value),
-      (_, _) => new Item(metadata, value));
+      (_, _) => new Item(metadata, value)
+    );
   }
 
   public string? Remove(string key)
@@ -258,39 +245,36 @@ public sealed class TranslationDictionaryEntity
     {
       Translations = dictionary
         .OrderBy(item => item.Key)
-        .Select(
-          item => new TranslationDictionaryItem
-          {
-            Key = PrettyKeyValue(item.Key, format),
-            Metadata = item.Value.Metadata is { } metadata
-              ? PrettyMetadata(metadata, format)
-              : null,
-            Value = PrettyKeyValue(item.Value.Value, format)
-          })
-        .ToList()
+        .Select(item => new TranslationDictionaryItem
+        {
+          Key = PrettyKeyValue(item.Key, format),
+          Metadata = item.Value.Metadata is { } metadata
+            ? PrettyMetadata(metadata, format)
+            : null,
+          Value = PrettyKeyValue(item.Value.Value, format),
+        })
+        .ToList(),
     };
   }
 
-  private static ConcurrentDictionary<string, Item>
-    ContentToDictionary(TranslationDictionaryContent content)
+  private static ConcurrentDictionary<string, Item> ContentToDictionary(
+    TranslationDictionaryContent content
+  )
   {
     return new ConcurrentDictionary<string, Item>(
-      content.Translations
-        .Select(
-          item =>
-            new KeyValuePair<string, Item>(
-              item.Key.TrimWords(),
-              new Item(
-                item.Metadata?.Trim().Dedent(8, "\n"),
-                item.Value.TrimWords())))
+      content
+        .Translations.Select(item => new KeyValuePair<string, Item>(
+          item.Key.TrimWords(),
+          new Item(
+            item.Metadata?.Trim().Dedent(8, "\n"),
+            item.Value.TrimWords()
+          )
+        ))
         .DistinctBy(item => item.Key)
     );
   }
 
-  private static string PrettyKeyValue(
-    string value,
-    Format format
-  )
+  private static string PrettyKeyValue(string value, Format format)
   {
     if (format is Format.Json)
     {
@@ -312,10 +296,7 @@ public sealed class TranslationDictionaryEntity
     throw new InvalidOperationException("Invalid file extension.");
   }
 
-  private static string PrettyMetadata(
-    string metadata,
-    Format format
-  )
+  private static string PrettyMetadata(string metadata, Format format)
   {
     if (format is Format.Json)
     {
@@ -340,13 +321,14 @@ public sealed class TranslationDictionaryEntity
   {
     Json,
     Xml,
-    Toml
+    Toml,
   }
 
   public sealed record EnumerationItem(
     string Key,
     string? Metadata,
-    string Value);
+    string Value
+  );
 
   private sealed record Item(string? Metadata, string Value);
 }

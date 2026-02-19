@@ -9,7 +9,8 @@ public class CalculationModelEntityConverter(IServiceProvider serviceProvider)
     CalculationModel,
     FinancialModel,
     CalculationEntity,
-    FinancialEntity>(serviceProvider)
+    FinancialEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     CalculationModel model,

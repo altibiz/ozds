@@ -8,15 +8,18 @@ namespace Ozds.Business.Conversion.Implementations.System;
 
 public class NetworkUserInvoiceNotificationEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  NetworkUserInvoiceNotificationModel,
-  NotificationModel,
-  NetworkUserInvoiceNotificationEntity,
-  NotificationEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    NetworkUserInvoiceNotificationModel,
+    NotificationModel,
+    NetworkUserInvoiceNotificationEntity,
+    NotificationEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     NetworkUserInvoiceNotificationModel model,
-    NetworkUserInvoiceNotificationEntity entity)
+    NetworkUserInvoiceNotificationEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.InvoiceId = model.InvoiceId;
@@ -24,7 +27,8 @@ public class NetworkUserInvoiceNotificationEntityConverter(
 
   public override void InitializeModel(
     NetworkUserInvoiceNotificationEntity entity,
-    NetworkUserInvoiceNotificationModel model)
+    NetworkUserInvoiceNotificationModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.InvoiceId = entity.InvoiceId;

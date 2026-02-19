@@ -12,7 +12,7 @@ public enum MeasureModel
   ApparentPower,
   ActiveEnergy,
   ReactiveEnergy,
-  ApparentEnergy
+  ApparentEnergy,
 }
 
 public static class MeasureExtensions
@@ -41,11 +41,15 @@ public static class MeasureExtensions
   )
   {
     var byTariff = measurement.GetMeasure(
-      register.Measure, register.OrderOfMagnitude);
+      register.Measure,
+      register.OrderOfMagnitude
+    );
     var byDuplex = byTariff.GetMeasure(register.Tariff, register.Measure);
     var byPhase = byDuplex.GetMeasure(register.Duplex, register.Measure);
     var byAggregation = byPhase.GetMeasure(
-      register.Aggregation, register.Measure);
+      register.Aggregation,
+      register.Measure
+    );
     var result = byAggregation.GetMeasure(register.Phase, register.Measure);
     return result;
   }
@@ -62,13 +66,18 @@ public static class MeasureExtensions
       MeasureModel.ActiveEnergy => "Active Energy",
       MeasureModel.ReactiveEnergy => "Reactive Energy",
       MeasureModel.ApparentEnergy => "Apparent Energy",
-      _ => throw new ArgumentOutOfRangeException(nameof(measure), measure, null)
+      _ => throw new ArgumentOutOfRangeException(
+        nameof(measure),
+        measure,
+        null
+      ),
     };
   }
 
   public static string ToUnit(
     this MeasureModel measure,
-    OrderOfMagnitudeModel? orderOfMagnitude = null)
+    OrderOfMagnitudeModel? orderOfMagnitude = null
+  )
   {
     orderOfMagnitude ??= measure.DefaultOrderOfMagnitude();
 
@@ -82,7 +91,11 @@ public static class MeasureExtensions
       MeasureModel.ActiveEnergy => "Wh",
       MeasureModel.ReactiveEnergy => "VARh",
       MeasureModel.ApparentEnergy => "VAh",
-      _ => throw new ArgumentOutOfRangeException(nameof(measure), measure, null)
+      _ => throw new ArgumentOutOfRangeException(
+        nameof(measure),
+        measure,
+        null
+      ),
     };
 
     return $"{orderOfMagnitude.ToPrefix()}{unit}";
@@ -90,7 +103,8 @@ public static class MeasureExtensions
 
   public static string ToUnitTitle(
     this MeasureModel measure,
-    OrderOfMagnitudeModel? orderOfMagnitude = null)
+    OrderOfMagnitudeModel? orderOfMagnitude = null
+  )
   {
     orderOfMagnitude ??= measure.DefaultOrderOfMagnitude();
 
@@ -104,7 +118,11 @@ public static class MeasureExtensions
       MeasureModel.ActiveEnergy => "Watt-Hours",
       MeasureModel.ReactiveEnergy => "Volt-Amperes Reactive Hours",
       MeasureModel.ApparentEnergy => "Volt-Amperes Apparent Hours",
-      _ => throw new ArgumentOutOfRangeException(nameof(measure), measure, null)
+      _ => throw new ArgumentOutOfRangeException(
+        nameof(measure),
+        measure,
+        null
+      ),
     };
 
     var orderOfMagnitudeTitlePrefix = orderOfMagnitude.ToTitle();
@@ -119,7 +137,8 @@ public static class MeasureExtensions
   public static TariffMeasure<decimal> GetMeasure(
     this IMeasurement measurement,
     MeasureModel measure,
-    OrderOfMagnitudeModel? orderOfMagnitude = null)
+    OrderOfMagnitudeModel? orderOfMagnitude = null
+  )
   {
     orderOfMagnitude ??= measure.DefaultOrderOfMagnitude();
 
@@ -133,7 +152,11 @@ public static class MeasureExtensions
       MeasureModel.ActiveEnergy => measurement.ActiveEnergy_Wh,
       MeasureModel.ReactiveEnergy => measurement.ReactiveEnergy_VARh,
       MeasureModel.ApparentEnergy => measurement.ApparentEnergy_VAh,
-      _ => throw new ArgumentOutOfRangeException(nameof(measure), measure, null)
+      _ => throw new ArgumentOutOfRangeException(
+        nameof(measure),
+        measure,
+        null
+      ),
     };
 
     var multiplier = orderOfMagnitude.ToMultiplier();
@@ -142,15 +165,17 @@ public static class MeasureExtensions
   }
 
   public static OrderOfMagnitudeModel? DefaultOrderOfMagnitude(
-    this MeasureModel measure)
+    this MeasureModel measure
+  )
   {
-    return measure
-      is MeasureModel.ActivePower
-      or MeasureModel.ReactivePower
-      or MeasureModel.ApparentPower
-      or MeasureModel.ActiveEnergy
-      or MeasureModel.ReactiveEnergy
-      or MeasureModel.ApparentEnergy
+    return
+      measure
+        is MeasureModel.ActivePower
+          or MeasureModel.ReactivePower
+          or MeasureModel.ApparentPower
+          or MeasureModel.ActiveEnergy
+          or MeasureModel.ReactiveEnergy
+          or MeasureModel.ApparentEnergy
       ? OrderOfMagnitudeModel.Kilo
       : null;
   }

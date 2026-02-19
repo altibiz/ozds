@@ -6,11 +6,13 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class CalculationModelDocumentEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
-  CalculationModel,
-  FinancialModel,
-  CalculationEntity,
-  FinancialEntity>(serviceProvider)
+)
+  : InheritingModelDocumentEntityConverter<
+    CalculationModel,
+    FinancialModel,
+    CalculationEntity,
+    FinancialEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     CalculationModel model,

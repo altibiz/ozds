@@ -3,9 +3,7 @@ using Ozds.Data.Entities.Abstractions;
 
 namespace Ozds.Data.Entities.Complex;
 
-public class AggregateMeasureEntity : IAggregateMeasureEntity
-{
-}
+public class AggregateMeasureEntity : IAggregateMeasureEntity { }
 
 public static class AggregateMeasureEntityExtensions
 {

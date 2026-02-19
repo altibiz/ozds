@@ -8,13 +8,13 @@ using Ozds.Data.Reflection;
 
 namespace Ozds.Business.Conversion.Implementations.Administration;
 
-public class ApiKeyModelEntityConverter(
-  IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  ApiKeyModel,
-  TrackableModel,
-  ApiKeyEntity,
-  TrackableEntity>(serviceProvider)
+public class ApiKeyModelEntityConverter(IServiceProvider serviceProvider)
+  : InheritingModelEntityConverter<
+    ApiKeyModel,
+    TrackableModel,
+    ApiKeyEntity,
+    TrackableEntity
+  >(serviceProvider)
 {
   private readonly EntityReflector entityReflector =
     serviceProvider.GetRequiredService<EntityReflector>();
@@ -25,24 +25,25 @@ public class ApiKeyModelEntityConverter(
   private readonly ModelReflector modelReflector =
     serviceProvider.GetRequiredService<ModelReflector>();
 
-  public override void InitializeEntity(
-    ApiKeyModel model,
-    ApiKeyEntity entity
-  )
+  public override void InitializeEntity(ApiKeyModel model, ApiKeyEntity entity)
   {
     base.InitializeEntity(model, entity);
 
-    var principalModelType =
-      modelReflector.ResolveModelType(model.PrincipalModelType);
+    var principalModelType = modelReflector.ResolveModelType(
+      model.PrincipalModelType
+    );
 
-    var principalEntityType =
-      modelEntityConverter.EntityType(principalModelType);
+    var principalEntityType = modelEntityConverter.EntityType(
+      principalModelType
+    );
 
-    var principalEntityTypeName =
-      entityReflector.ResolveEntityName(principalEntityType);
+    var principalEntityTypeName = entityReflector.ResolveEntityName(
+      principalEntityType
+    );
 
-    var principalEntityTable =
-      entityReflector.ResolveEntityTable(principalEntityType);
+    var principalEntityTable = entityReflector.ResolveEntityTable(
+      principalEntityType
+    );
 
     entity.PrincipalEntityId = model.PrincipalModelId;
     entity.PrincipalEntityType = principalEntityTypeName;
@@ -51,21 +52,21 @@ public class ApiKeyModelEntityConverter(
     entity.ExpiresOn = model.ExpiresOn;
   }
 
-  public override void InitializeModel(
-    ApiKeyEntity entity,
-    ApiKeyModel model
-  )
+  public override void InitializeModel(ApiKeyEntity entity, ApiKeyModel model)
   {
     base.InitializeModel(entity, model);
 
-    var principalEntityType = entityReflector
-      .ResolveEntityTypeFromName(entity.PrincipalEntityType);
+    var principalEntityType = entityReflector.ResolveEntityTypeFromName(
+      entity.PrincipalEntityType
+    );
 
-    var principalModelType =
-      modelEntityConverter.ModelType(principalEntityType);
+    var principalModelType = modelEntityConverter.ModelType(
+      principalEntityType
+    );
 
-    var principalModelTypeName =
-      modelReflector.ResolveModelName(principalModelType);
+    var principalModelTypeName = modelReflector.ResolveModelName(
+      principalModelType
+    );
 
     model.PrincipalModelId = entity.PrincipalEntityId;
     model.PrincipalModelType = principalModelTypeName;

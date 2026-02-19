@@ -22,8 +22,9 @@ public class GetThisYearMonthStartsTest
       "2023-08-31T22:00:00Z", // September 1, 2023, CEST offset +2
       "2023-09-30T22:00:00Z", // October 1, 2023, CEST offset +2
       "2023-10-31T23:00:00Z", // November 1, 2023, CET offset +1
-      "2023-11-30T23:00:00Z" // December 1, 2023, CET offset +1
-    })]
+      "2023-11-30T23:00:00Z", // December 1, 2023, CET offset +1
+    }
+  )]
   [Arguments(
     "2024-03-15T12:34:56Z",
     new[]
@@ -39,8 +40,9 @@ public class GetThisYearMonthStartsTest
       "2024-08-31T22:00:00Z", // September 1, 2024, CEST offset +2
       "2024-09-30T22:00:00Z", // October 1, 2024, CEST offset +2
       "2024-10-31T23:00:00Z", // November 1, 2024, CET offset +1
-      "2024-11-30T23:00:00Z" // December 1, 2024, CET offset +1
-    })]
+      "2024-11-30T23:00:00Z", // December 1, 2024, CET offset +1
+    }
+  )]
   [Arguments(
     "2024-12-31T23:38:56Z",
     new[]
@@ -56,19 +58,24 @@ public class GetThisYearMonthStartsTest
       "2025-08-31T22:00:00Z", // September 1, 2025, CEST offset +2
       "2025-09-30T22:00:00Z", // October 1, 2025, CEST offset +2
       "2025-10-31T23:00:00Z", // November 1, 2025, CET offset +1
-      "2025-11-30T23:00:00Z" // December 1, 2025, CET offset +1
-    })]
+      "2025-11-30T23:00:00Z", // December 1, 2025, CET offset +1
+    }
+  )]
 #pragma warning restore CA1861 // Avoid constant arrays as arguments
   public void GetThisYearMonthStarts_ReturnsExpectedMonthStarts(
     string inputDateString,
-    string[] expectedDateStrings)
+    string[] expectedDateStrings
+  )
   {
     var timeQueries = new TimeQueries();
 
     var inputDate = DateTimeOffset.Parse(
-      inputDateString, CultureInfo.InvariantCulture);
-    var expectedDates = expectedDateStrings.Select(
-      s => DateTimeOffset.Parse(s, CultureInfo.InvariantCulture)).ToList();
+      inputDateString,
+      CultureInfo.InvariantCulture
+    );
+    var expectedDates = expectedDateStrings
+      .Select(s => DateTimeOffset.Parse(s, CultureInfo.InvariantCulture))
+      .ToList();
 
     var resultDates = timeQueries.GetThisYearMonthStarts(inputDate).ToList();
 

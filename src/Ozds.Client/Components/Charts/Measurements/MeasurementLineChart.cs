@@ -14,14 +14,13 @@ public partial class MeasurementLineChart : OzdsComponentBase
 {
   private readonly string _id = Guid.NewGuid().ToString();
 
-  private ApexChart<IMeasurement>? _chart = default!;
+  private ApexChart<IMeasurement>? _chart;
 
   private ApexChartOptions<IMeasurement> _options =
-    new ApexChartOptions<IMeasurement>()
-      .WithFixedScriptPath();
+    new ApexChartOptions<IMeasurement>().WithFixedScriptPath();
 
   [CascadingParameter]
-  public Breakpoint Breakpoint { get; set; } = default!;
+  public Breakpoint Breakpoint { get; set; }
 
   [CascadingParameter]
   public ThemeState ThemeState { get; set; } = default!;
@@ -36,10 +35,10 @@ public partial class MeasurementLineChart : OzdsComponentBase
   public MeasurementChartParameters Parameters { get; set; } = default!;
 
   [Parameter]
-  public bool Area { get; set; } = false;
+  public bool Area { get; set; }
 
   [Parameter]
-  public bool Brush { get; set; } = false;
+  public bool Brush { get; set; }
 
   [Parameter]
   public int Height { get; set; } = 300;
@@ -64,13 +63,17 @@ public partial class MeasurementLineChart : OzdsComponentBase
     var options = _options;
     options.Chart.Id = _id;
 
-    var maxPower = Parameters.Measurements.Items
-      .Select(x => x.ActivePower_W.TariffUnary().DuplexImport().PhaseSum())
+    var maxPower = Parameters
+      .Measurements.Items.Select(x =>
+        x.ActivePower_W.TariffUnary().DuplexImport().PhaseSum()
+      )
       .OrderByDescending(x => x)
       .Cast<decimal?>()
       .FirstOrDefault();
-    if (Parameters.Measure == MeasureModel.ActivePower
-      && Parameters.Meters.Count == 1)
+    if (
+      Parameters.Measure == MeasureModel.ActivePower
+      && Parameters.Meters.Count == 1
+    )
     {
       options = _options.WithActivePower(
         $"{Parameters.Meters.First().Id} {Translate("CONNECTION POWER")}",
@@ -82,9 +85,10 @@ public partial class MeasurementLineChart : OzdsComponentBase
     var measure =
       $"{Translate(Parameters.Measure.ToTitle())}"
       + $" ({Parameters.Measure.ToUnit()})";
-    options = Breakpoint <= Breakpoint.Sm
-      ? options.WithSmAndDown(measure)
-      : options.WithMdAndUp(measure);
+    options =
+      Breakpoint <= Breakpoint.Sm
+        ? options.WithSmAndDown(measure)
+        : options.WithMdAndUp(measure);
 
     if (Area)
     {
@@ -95,7 +99,8 @@ public partial class MeasurementLineChart : OzdsComponentBase
     var timeSpan = TimeQueries.ResolutionTimeSpan(
       Parameters.Resolution,
       now,
-      Parameters.Multiplier);
+      Parameters.Multiplier
+    );
     if (timeSpan.TotalDays > 1)
     {
       options = options.WithShortDate();

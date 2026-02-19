@@ -11,7 +11,7 @@ public abstract partial class OzdsComponentBase : DisposableComponentBase
 {
   private static readonly JsonSerializerOptions JsonSerializerOptions = new()
   {
-    WriteIndented = true
+    WriteIndented = true,
   };
 
   private LocalizationQueries? localizationQueries;
@@ -20,8 +20,8 @@ public abstract partial class OzdsComponentBase : DisposableComponentBase
   {
     get
     {
-      return localizationQueries ??= ScopedServices
-        .GetRequiredService<LocalizationQueries>();
+      return localizationQueries ??=
+        ScopedServices.GetRequiredService<LocalizationQueries>();
     }
   }
 
@@ -75,8 +75,7 @@ public abstract partial class OzdsComponentBase : DisposableComponentBase
     return LocalizationQueries.DateTimeString(dateTimeOffset);
   }
 
-  protected DateTimeOffset DateTimeApplyOffset(
-    DateTimeOffset dateTimeOffset)
+  protected DateTimeOffset DateTimeApplyOffset(DateTimeOffset dateTimeOffset)
   {
     return LocalizationQueries.DateTimeApplyOffset(dateTimeOffset);
   }
@@ -111,20 +110,13 @@ public abstract partial class OzdsComponentBase : DisposableComponentBase
   )
   {
     var culture = GetCulture();
-    return LocalizationQueries.TranslateDuration(
-      culture,
-      duration,
-      plural);
+    return LocalizationQueries.TranslateDuration(culture, duration, plural);
   }
 
-  protected string TranslatePeriod(
-    PeriodModel period
-  )
+  protected string TranslatePeriod(PeriodModel period)
   {
     var culture = GetCulture();
-    return LocalizationQueries.TranslatePeriod(
-      culture,
-      period);
+    return LocalizationQueries.TranslatePeriod(culture, period);
   }
 
   protected string DateFormat()

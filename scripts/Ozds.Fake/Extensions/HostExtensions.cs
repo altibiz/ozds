@@ -36,8 +36,7 @@ public static class HostExtensions
     IOzdsFakeArguments arguments
   )
   {
-    builder.Services
-      .AddSingleton(arguments.GetType(), arguments);
+    builder.Services.AddSingleton(arguments.GetType(), arguments);
 
     builder
       .AddOptions()
@@ -97,22 +96,25 @@ public static class HostExtensions
   )
   {
     builder.Services.ConfigureOptions<ConfigureOzdsFakeOptions>();
-    var relativeServerSettings = builder.Configuration
-      .GetSection("Ozds:Fake:ServerSettings")
+    var relativeServerSettings = builder
+      .Configuration.GetSection("Ozds:Fake:ServerSettings")
       .Get<string>();
     if (relativeServerSettings is not null)
     {
       var serverSettings = Path.GetFullPath(
         relativeServerSettings,
-        builder.Environment.ContentRootPath);
-      var directory = Path.GetDirectoryName(serverSettings)
+        builder.Environment.ContentRootPath
+      );
+      var directory =
+        Path.GetDirectoryName(serverSettings)
         ?? throw new InvalidOperationException(
-          "ServerSettings must be a file path");
+          "ServerSettings must be a file path"
+        );
       var file = Path.GetFileName(serverSettings);
       var source = new JsonConfigurationSource
       {
         FileProvider = new PhysicalFileProvider(directory),
-        Path = file
+        Path = file,
       };
       builder.Configuration.Sources.Insert(0, source);
     }
@@ -125,7 +127,8 @@ public static class HostExtensions
   )
   {
     builder.Services.AddTransientAssignableTo(
-      typeof(IMeasurementRecordGenerator));
+      typeof(IMeasurementRecordGenerator)
+    );
     builder.Services.AddSingleton(typeof(MeasurementRecordGenerator));
 
     return builder;
@@ -154,9 +157,9 @@ public static class HostExtensions
   )
   {
     builder.Services.AddTransientAssignableTo(
-      typeof(IMeasurementRecordModelConverter));
-    builder.Services.AddSingleton(
-      typeof(MeasurementRecordConverter));
+      typeof(IMeasurementRecordModelConverter)
+    );
+    builder.Services.AddSingleton(typeof(MeasurementRecordConverter));
     return builder;
   }
 
@@ -164,8 +167,7 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    builder.Services.AddTransientAssignableTo(
-      typeof(IRecordCorrector));
+    builder.Services.AddTransientAssignableTo(typeof(IRecordCorrector));
     builder.Services.AddSingleton(typeof(RecordCorrector));
     return builder;
   }
@@ -175,7 +177,8 @@ public static class HostExtensions
   )
   {
     builder.Services.AddTransientAssignableTo(
-      typeof(IMessengerPushRequestPacker));
+      typeof(IMessengerPushRequestPacker)
+    );
     builder.Services.AddSingleton(typeof(MessengerPushRequestPacker));
     return builder;
   }
@@ -198,11 +201,13 @@ public static class HostExtensions
       (services, options) =>
       {
         var clientOptions = services
-          .GetRequiredService<IOptions<OzdsFakeOptions>>().Value.Client;
+          .GetRequiredService<IOptions<OzdsFakeOptions>>()
+          .Value.Client;
 
         options.Timeout = TimeSpan.FromSeconds(timeout_s);
         options.BaseAddress = new Uri(clientOptions.BaseUrl);
-      });
+      }
+    );
     builder.Services.AddScoped(typeof(PushClient));
     builder.Services.AddScoped(typeof(InsertClient));
     return builder;
@@ -212,47 +217,50 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    builder.Services.AddMassTransit(
-      x =>
+    builder.Services.AddMassTransit(x =>
+    {
+      var fakeAssembly = typeof(HostExtensions).Assembly;
+      var messagingAssembly = typeof(MessagingDbContext).Assembly;
+
+      x.SetKebabCaseEndpointNameFormatter();
+
+      x.AddConsumers(fakeAssembly);
+      x.AddSagaStateMachines(fakeAssembly);
+      x.AddActivities(fakeAssembly);
+
+      x.AddSagas(messagingAssembly);
+      x.SetInMemorySagaRepositoryProvider();
+
+      var connectionString = ConfigureOzdsFakeOptions.ParseConnectionString(
+        builder.Configuration
+      );
+      if (
+        connectionString
+        is OzdsMessagingParsedRabbitMqConnectionString rabbitMqConnectionString
+      )
       {
-        var fakeAssembly = typeof(HostExtensions).Assembly;
-        var messagingAssembly = typeof(MessagingDbContext).Assembly;
-
-        x.SetKebabCaseEndpointNameFormatter();
-
-        x.AddConsumers(fakeAssembly);
-        x.AddSagaStateMachines(fakeAssembly);
-        x.AddActivities(fakeAssembly);
-
-        x.AddSagas(messagingAssembly);
-        x.SetInMemorySagaRepositoryProvider();
-
-        var connectionString = ConfigureOzdsFakeOptions
-          .ParseConnectionString(builder.Configuration);
-        if (connectionString is OzdsMessagingParsedRabbitMqConnectionString
-          rabbitMqConnectionString)
-        {
-          x.UsingRabbitMq(
-            (context, cfg) =>
-            {
-              cfg.Host(
-                rabbitMqConnectionString.Host,
-                (ushort)rabbitMqConnectionString.Port,
-                rabbitMqConnectionString.VirtualHost,
-                cfg =>
-                {
-                  cfg.Username(rabbitMqConnectionString.User);
-                  cfg.Password(rabbitMqConnectionString.Password);
-                });
-              cfg.ConfigureEndpoints(context);
-            });
-        }
-        else
-        {
-          throw new InvalidOperationException(
-            "Only RabbitMQ is supported");
-        }
-      });
+        x.UsingRabbitMq(
+          (context, cfg) =>
+          {
+            cfg.Host(
+              rabbitMqConnectionString.Host,
+              (ushort)rabbitMqConnectionString.Port,
+              rabbitMqConnectionString.VirtualHost,
+              cfg =>
+              {
+                cfg.Username(rabbitMqConnectionString.User);
+                cfg.Password(rabbitMqConnectionString.Password);
+              }
+            );
+            cfg.ConfigureEndpoints(context);
+          }
+        );
+      }
+      else
+      {
+        throw new InvalidOperationException("Only RabbitMQ is supported");
+      }
+    });
 
     return builder;
   }

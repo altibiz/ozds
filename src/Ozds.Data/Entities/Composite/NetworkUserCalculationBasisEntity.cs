@@ -22,11 +22,7 @@ public class NetworkUserCalculationBasisEntity
 
   public NetworkUserEntity NetworkUser { get; set; } = default!;
 
-  public NetworkUserMeasurementLocationEntity MeasurementLocation
-  {
-    get;
-    set;
-  } =
+  public NetworkUserMeasurementLocationEntity MeasurementLocation { get; set; } =
     default!;
 
   public NetworkUserCatalogueEntity UsageNetworkUserCatalogue { get; set; } =

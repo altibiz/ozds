@@ -171,13 +171,13 @@
               Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)">
-      @foreach (var choice in choices)
-      {
-        <MudSelectItem Value="@choice.Value">
-          @choice.Label
-        </MudSelectItem>
-      }
-    </SelectField>;
+             @foreach (var choice in choices)
+             {
+               <MudSelectItem Value="@choice.Value">
+                 @choice.Label
+               </MudSelectItem>
+             }
+           </SelectField>;
   }
 
   protected RenderFragment PasswordField(Expression<Func<TModel, string?>> next)
@@ -193,14 +193,14 @@
   {
     var nextFunc = next.Compile();
     return @<div>
-      <p>
-        @Translate(Label(next))
-      </p>
-      <MudHtmlEditor
-        Placeholder="..."
-        Html="@Get(nextFunc)"
-        HtmlChanged="@Set(next)"/>
-    </div>;
+             <p>
+               @Translate(Label(next))
+             </p>
+             <MudHtmlEditor
+               Placeholder="..."
+               Html="@Get(nextFunc)"
+               HtmlChanged="@Set(next)"/>
+           </div>;
   }
 
   protected RenderFragment NumericField<T>(Expression<Func<TModel, T?>> next)
@@ -290,24 +290,24 @@
               Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
               ValueChanged="@Set(next)">
-      @foreach (var choice in choices)
-      {
-        @if (choice is string stringChoice)
-        {
-          <MudSelectItem Value="@choice">
-            @Translate(stringChoice)
-          </MudSelectItem>
-        }
-        else if (
-          choice is { } nonNullChoice
-          && nonNullChoice.ToString() is { } nonNullChoiceString)
-        {
-          <MudSelectItem Value="@nonNullChoice">
-            @Translate(nonNullChoiceString)
-          </MudSelectItem>
-        }
-      }
-    </SelectField>;
+             @foreach (var choice in choices)
+             {
+               @if (choice is string stringChoice)
+               {
+                 <MudSelectItem Value="@choice">
+                   @Translate(stringChoice)
+                 </MudSelectItem>
+               }
+               else if (
+                 choice is { } nonNullChoice
+                 && nonNullChoice.ToString() is { } nonNullChoiceString)
+               {
+                 <MudSelectItem Value="@nonNullChoice">
+                   @Translate(nonNullChoiceString)
+                 </MudSelectItem>
+               }
+             }
+           </SelectField>;
   }
 
   protected RenderFragment LinkField<T>(
@@ -317,22 +317,22 @@
   {
     var nextFunc = next.Compile();
     return @<Paging T="T" Scroll="Scroll.Infinite">
-      <Found Context="models">
-        <SelectField Label="@(Translate(Label(next)))"
-                     Value="@Get(nextFunc)"
-                     ValueChanged="@Set(next)"
-                     For="@For(next)">
-          @foreach (var model in models.Items)
-          {
-            <MudSelectItem Value="@model.Id">
-              <MudText>
-                @model.Title
-              </MudText>
-            </MudSelectItem>
-          }
-        </SelectField>
-      </Found>
-    </Paging>;
+             <Found Context="models">
+               <SelectField Label="@(Translate(Label(next)))"
+                            Value="@Get(nextFunc)"
+                            ValueChanged="@Set(next)"
+                            For="@For(next)">
+                 @foreach (var model in models.Items)
+                 {
+                   <MudSelectItem Value="@model.Id">
+                     <MudText>
+                       @model.Title
+                     </MudText>
+                   </MudSelectItem>
+                 }
+               </SelectField>
+             </Found>
+           </Paging>;
   }
 
   protected RenderFragment PolymorphicLinkField(
@@ -349,15 +349,15 @@
                            Value="@Get(nextFunc)"
                            ValueChanged="@Set(next)"
                            For="@For(next)">
-        @foreach (var model in models.ObjectItems.OfType<IIdentifiable>())
-        {
-          <MudSelectItem Value="@model.Id">
-            <MudText>
-              @model.Title
-            </MudText>
-          </MudSelectItem>
-        }
-      </SelectField>;
+               @foreach (var model in models.ObjectItems.OfType<IIdentifiable>())
+               {
+                 <MudSelectItem Value="@model.Id">
+                   <MudText>
+                     @model.Title
+                   </MudText>
+                 </MudSelectItem>
+               }
+             </SelectField>;
     };
 
     var actualType = Get(typeFunc);

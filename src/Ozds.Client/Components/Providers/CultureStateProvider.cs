@@ -23,7 +23,7 @@ public partial class CultureStateProvider : DisposableComponentBase
   public RenderFragment? ChildContent { get; set; }
 
   [Parameter]
-  public string? CultureId { get; set; } = default!;
+  public string? CultureId { get; set; }
 
   [Inject]
   private NavigationManager NavigationManager { get; set; } = default!;
@@ -35,8 +35,8 @@ public partial class CultureStateProvider : DisposableComponentBase
   {
     get
     {
-      return ScopeState?.ScopedServices ??
-        throw new InvalidOperationException($"{this} got disposed");
+      return ScopeState?.ScopedServices
+        ?? throw new InvalidOperationException($"{this} got disposed");
     }
   }
 
@@ -44,8 +44,8 @@ public partial class CultureStateProvider : DisposableComponentBase
   {
     get
     {
-      return localizationQueries ??= ScopedServices
-        .GetRequiredService<LocalizationQueries>();
+      return localizationQueries ??=
+        ScopedServices.GetRequiredService<LocalizationQueries>();
     }
   }
 
@@ -94,8 +94,10 @@ public partial class CultureStateProvider : DisposableComponentBase
   {
     if (GetCultureFromUri() is { } uriCulture)
     {
-      if (LocalizationQueries.CultureToId(uriCulture)
-        == LocalizationQueries.CultureToId(culture))
+      if (
+        LocalizationQueries.CultureToId(uriCulture)
+        == LocalizationQueries.CultureToId(culture)
+      )
       {
         return;
       }
@@ -121,18 +123,19 @@ public partial class CultureStateProvider : DisposableComponentBase
 
   private async Task SetCultureToLocalStorage(CultureInfo culture)
   {
-    await LocalStorageService
-      .SetItemAsync(
-        CultureKey,
-        LocalizationQueries.CultureToId(culture),
-        CancellationToken);
+    await LocalStorageService.SetItemAsync(
+      CultureKey,
+      LocalizationQueries.CultureToId(culture),
+      CancellationToken
+    );
   }
 
   private CultureInfo? GetCultureFromUri()
   {
     var uri = new Uri(NavigationManager.Uri);
     var segments = uri.Segments;
-    var cultureString = segments.ElementAtOrDefault(2)
+    var cultureString = segments
+      .ElementAtOrDefault(2)
       ?.TrimStart('/')
       .TrimEnd('/');
     return cultureString is null
@@ -142,10 +145,12 @@ public partial class CultureStateProvider : DisposableComponentBase
 
   private async Task<CultureInfo?> GetCultureFromLocalStorage()
   {
-    return await LocalStorageService.GetItemAsync<string>(
+    return
+      await LocalStorageService.GetItemAsync<string>(
         CultureKey,
-        CancellationToken)
-      is { } cultureString
+        CancellationToken
+      )
+        is { } cultureString
       ? LocalizationQueries.IdToCulture(cultureString)
       : default;
   }

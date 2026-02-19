@@ -30,7 +30,8 @@ public abstract class FinancialModel : IdentifiableModel, IFinancial
   public abstract decimal TotalWithTax_EUR { get; }
 
   public override IEnumerable<ValidationResult> Validate(
-    ValidationContext validationContext)
+    ValidationContext validationContext
+  )
   {
     foreach (var validationResult in base.Validate(validationContext))
     {
@@ -43,25 +44,32 @@ public abstract class FinancialModel : IdentifiableModel, IFinancial
     }
 
     if (
-      validationContext.MemberName is null or nameof(FromDate)
-        or nameof(ToDate) &&
-      FromDate > ToDate
+      validationContext.MemberName is null or nameof(FromDate) or nameof(ToDate)
+      && FromDate > ToDate
     )
     {
       yield return new ValidationResult(
         "From date must be before to date",
-        new[] { nameof(FromDate), nameof(ToDate) });
+        new[] { nameof(FromDate), nameof(ToDate) }
+      );
     }
 
     if (
-      (validationContext.MemberName is null or nameof(IssuedOn)
-          or nameof(FromDate) or nameof(ToDate) &&
-        IssuedOn < FromDate) || IssuedOn < ToDate
+      (
+        validationContext.MemberName
+          is null
+            or nameof(IssuedOn)
+            or nameof(FromDate)
+            or nameof(ToDate)
+        && IssuedOn < FromDate
+      )
+      || IssuedOn < ToDate
     )
     {
       yield return new ValidationResult(
         "Issued on must be after from date and to date",
-        new[] { nameof(IssuedOn), nameof(FromDate), nameof(ToDate) });
+        new[] { nameof(IssuedOn), nameof(FromDate), nameof(ToDate) }
+      );
     }
 
     var clock = validationContext.GetRequiredService<ClockQueries>();
@@ -69,33 +77,33 @@ public abstract class FinancialModel : IdentifiableModel, IFinancial
     var now = clock.Timestamp();
 
     if (
-      validationContext.MemberName is null or nameof(IssuedOn) &&
-      IssuedOn > now
+      validationContext.MemberName is null or nameof(IssuedOn)
+      && IssuedOn > now
     )
     {
       yield return new ValidationResult(
         "Issued on must be in the past",
-        new[] { nameof(IssuedOn) });
+        new[] { nameof(IssuedOn) }
+      );
     }
 
     if (
-      validationContext.MemberName is null or nameof(FromDate) &&
-      FromDate > now
+      validationContext.MemberName is null or nameof(FromDate)
+      && FromDate > now
     )
     {
       yield return new ValidationResult(
         "From date must be in the past",
-        new[] { nameof(FromDate) });
+        new[] { nameof(FromDate) }
+      );
     }
 
-    if (
-      validationContext.MemberName is null or nameof(ToDate) &&
-      ToDate > now
-    )
+    if (validationContext.MemberName is null or nameof(ToDate) && ToDate > now)
     {
       yield return new ValidationResult(
         "To date must be in the past",
-        new[] { nameof(ToDate) });
+        new[] { nameof(ToDate) }
+      );
     }
   }
 }

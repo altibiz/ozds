@@ -49,15 +49,14 @@ public class OzdsUsersOptionsLdap
 
 public class OzdsUsersParsedOidcConnectionString
 {
-  public OzdsUsersParsedOidcConnectionString(
-    string connectionString
-  )
+  public OzdsUsersParsedOidcConnectionString(string connectionString)
   {
     var dictionary = connectionString
       .Split(';')
       .ToDictionary(
         x => x.Split('=')[0],
-        x => string.Join('=', x.Split('=')[1..]));
+        x => string.Join('=', x.Split('=')[1..])
+      );
 
     Authority = dictionary["Authority"];
     ClientId = dictionary["Client Id"];
@@ -73,15 +72,14 @@ public class OzdsUsersParsedOidcConnectionString
 
 public class OzdsUsersParsedLdapConnectionString
 {
-  public OzdsUsersParsedLdapConnectionString(
-    string connectionString
-  )
+  public OzdsUsersParsedLdapConnectionString(string connectionString)
   {
     var dictionary = connectionString
       .Split(';')
       .ToDictionary(
         x => x.Split('=')[0],
-        x => string.Join('=', x.Split('=')[1..]));
+        x => string.Join('=', x.Split('=')[1..])
+      );
 
     Host = dictionary["Host"];
     Port = int.Parse(dictionary["Port"]);
@@ -101,9 +99,8 @@ public class OzdsUsersParsedLdapConnectionString
   public bool Ssl { get; set; }
 }
 
-public class ConfigureOzdsUsersOptions(
-  IConfiguration configuration
-) : IConfigureOptions<OzdsUsersOptions>
+public class ConfigureOzdsUsersOptions(IConfiguration configuration)
+  : IConfigureOptions<OzdsUsersOptions>
 {
   public void Configure(OzdsUsersOptions options)
   {
@@ -114,8 +111,8 @@ public class ConfigureOzdsUsersOptions(
     IConfiguration configuration
   )
   {
-    var connectionString = configuration
-        .GetValue<string?>("Ozds:Users:Oidc:ConnectionString")
+    var connectionString =
+      configuration.GetValue<string?>("Ozds:Users:Oidc:ConnectionString")
       ?? string.Empty;
 
     return new OzdsUsersParsedOidcConnectionString(connectionString);
@@ -125,60 +122,54 @@ public class ConfigureOzdsUsersOptions(
     IConfiguration configuration
   )
   {
-    var connectionString = configuration
-        .GetValue<string?>("Ozds:Users:Ldap:ConnectionString")
+    var connectionString =
+      configuration.GetValue<string?>("Ozds:Users:Ldap:ConnectionString")
       ?? string.Empty;
 
     return new OzdsUsersParsedLdapConnectionString(connectionString);
   }
 
-  public static bool? RequireHttpsMetadata(
-    IConfiguration configuration
-  )
+  public static bool? RequireHttpsMetadata(IConfiguration configuration)
   {
-    return configuration
-      .GetValue<bool?>("Ozds:Users:Oidc:RequireHttpsMetadata");
+    return configuration.GetValue<bool?>(
+      "Ozds:Users:Oidc:RequireHttpsMetadata"
+    );
   }
 
   public static bool WithAuth(IConfiguration configuration)
   {
-    return configuration
-        .GetValue<bool?>("Ozds:Users:WithAuth")
-      ?? true;
+    return configuration.GetValue<bool?>("Ozds:Users:WithAuth") ?? true;
   }
 
   public static string? AuthLogoutSubpath(IConfiguration configuration)
   {
-    return configuration
-        .GetValue<string?>("Ozds:Users:Oidc:AuthLogoutSubpath")
+    return configuration.GetValue<string?>("Ozds:Users:Oidc:AuthLogoutSubpath")
       ?? default;
   }
 
   public static string IdKey(IConfiguration configuration)
   {
-    return configuration
-        .GetValue<string?>("Ozds:Users:Oidc:UserIdKey")
+    return configuration.GetValue<string?>("Ozds:Users:Oidc:UserIdKey")
       ?? string.Empty;
   }
 
   public static string IdClaim(IConfiguration configuration)
   {
-    return configuration
-        .GetValue<string?>("Ozds:Users:Oidc:UserIdClaim")
+    return configuration.GetValue<string?>("Ozds:Users:Oidc:UserIdClaim")
       ?? string.Empty;
   }
 
   public static string SignInCallbackSubpath(IConfiguration configuration)
   {
-    return configuration
-        .GetValue<string?>("Ozds:Users:Oidc:SignInCallbackSubpath")
-      ?? string.Empty;
+    return configuration.GetValue<string?>(
+        "Ozds:Users:Oidc:SignInCallbackSubpath"
+      ) ?? string.Empty;
   }
 
   public static string SignOutCallbackSubpath(IConfiguration configuration)
   {
-    return configuration
-        .GetValue<string?>("Ozds:Users:Oidc:SignOutCallbackSubpath")
-      ?? string.Empty;
+    return configuration.GetValue<string?>(
+        "Ozds:Users:Oidc:SignOutCallbackSubpath"
+      ) ?? string.Empty;
   }
 }

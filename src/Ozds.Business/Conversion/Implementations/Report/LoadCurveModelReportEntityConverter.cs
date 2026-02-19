@@ -4,10 +4,8 @@ using Ozds.Report.Entities;
 
 namespace Ozds.Business.Conversion.Implementations.Report;
 
-public class LoadCurveModelReportEntityConverter :
-  ConcreteModelReportEntityConverter<
-    LoadCurveReportModel,
-    LoadCurveEntity>
+public class LoadCurveModelReportEntityConverter
+  : ConcreteModelReportEntityConverter<LoadCurveReportModel, LoadCurveEntity>
 {
   public override void InitializeEntity(
     LoadCurveReportModel model,
@@ -20,13 +18,13 @@ public class LoadCurveModelReportEntityConverter :
     entity.ObisCode = model.ObisCode;
     entity.MeterId = model.MeterId;
     entity.Energy_kx = model.Energy_kx;
-    entity.Power_kx =
-      model.Power_kx;
+    entity.Power_kx = model.Power_kx;
   }
 
   public override void InitializeModel(
     LoadCurveEntity entity,
-    LoadCurveReportModel model)
+    LoadCurveReportModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.MeasurementLocationCode = entity.MeasurementLocationCode;
@@ -34,7 +32,6 @@ public class LoadCurveModelReportEntityConverter :
     model.ObisCode = entity.ObisCode;
     model.MeterId = entity.MeterId;
     model.Energy_kx = entity.Energy_kx;
-    model.Power_kx =
-      entity.Power_kx;
+    model.Power_kx = entity.Power_kx;
   }
 }

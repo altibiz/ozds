@@ -9,7 +9,7 @@ public enum CategoryModel
   MessengerPush,
   Audit,
   Error,
-  Lifecycle
+  Lifecycle,
 }
 
 public static class CategoryModelExtensions
@@ -24,7 +24,7 @@ public static class CategoryModelExtensions
       CategoryEntity.Audit => CategoryModel.Audit,
       CategoryEntity.Error => CategoryModel.Error,
       CategoryEntity.Lifecycle => CategoryModel.Lifecycle,
-      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null),
     };
   }
 
@@ -38,7 +38,7 @@ public static class CategoryModelExtensions
       CategoryModel.Audit => CategoryEntity.Audit,
       CategoryModel.Error => CategoryEntity.Error,
       CategoryModel.Lifecycle => CategoryEntity.Lifecycle,
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -52,7 +52,7 @@ public static class CategoryModelExtensions
       CategoryModel.Audit => "Audit",
       CategoryModel.Error => "Error",
       CategoryModel.Lifecycle => "Lifecycle",
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 }

@@ -7,11 +7,8 @@ using Ozds.Fake.Faking.Base;
 
 namespace Ozds.Fake.Implementations.Administration;
 
-public class LocationModelFaker(
-  IServiceProvider serviceProvider
-) : InheritingModelFaker<LocationModel, TrackableModel>(
-  serviceProvider
-)
+public class LocationModelFaker(IServiceProvider serviceProvider)
+  : InheritingModelFaker<LocationModel, TrackableModel>(serviceProvider)
 {
   private readonly ModelFaker modelFaker =
     serviceProvider.GetRequiredService<ModelFaker>();
@@ -20,7 +17,6 @@ public class LocationModelFaker(
   {
     base.Initialize(model, faker);
 
-    model.LegalPerson = modelFaker
-      .Fake<LegalPersonModel>();
+    model.LegalPerson = modelFaker.Fake<LegalPersonModel>();
   }
 }

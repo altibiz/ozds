@@ -5,33 +5,31 @@ namespace Ozds.Data.Test.Extensions;
 
 public static class SpecimenBuilderExtensions
 {
-  private static readonly Lazy<MethodInfo> GenericCreateMethodLazy = new(
-    () =>
-      typeof(SpecimenFactory)
-        .GetMethods(BindingFlags.Static | BindingFlags.Public)
-        .First(
-          method =>
-            method.Name == "Create"
-            && method.IsGenericMethod
-            && method.GetGenericArguments().Length == 1
-            && method.GetParameters().Length == 1
-            && method.GetParameters()[0].ParameterType
-            == typeof(ISpecimenBuilder)));
+  private static readonly Lazy<MethodInfo> GenericCreateMethodLazy = new(() =>
+    typeof(SpecimenFactory)
+      .GetMethods(BindingFlags.Static | BindingFlags.Public)
+      .First(method =>
+        method.Name == "Create"
+        && method.IsGenericMethod
+        && method.GetGenericArguments().Length == 1
+        && method.GetParameters().Length == 1
+        && method.GetParameters()[0].ParameterType == typeof(ISpecimenBuilder)
+      )
+  );
 
   private static readonly Lazy<MethodInfo> GenericCreateManyMethodLazy = new(
     () =>
       typeof(SpecimenFactory)
         .GetMethods(BindingFlags.Static | BindingFlags.Public)
-        .First(
-          method =>
-            method.Name == "CreateMany"
-            && method.IsGenericMethod
-            && method.GetGenericArguments().Length == 1
-            && method.GetParameters().Length == 2
-            && method.GetParameters()[0].ParameterType
-            == typeof(ISpecimenBuilder)
-            && method.GetParameters()[1].ParameterType
-            == typeof(int)));
+        .First(method =>
+          method.Name == "CreateMany"
+          && method.IsGenericMethod
+          && method.GetGenericArguments().Length == 1
+          && method.GetParameters().Length == 2
+          && method.GetParameters()[0].ParameterType == typeof(ISpecimenBuilder)
+          && method.GetParameters()[1].ParameterType == typeof(int)
+        )
+  );
 
   private static MethodInfo GenericCreateMethod
   {
@@ -43,13 +41,11 @@ public static class SpecimenBuilderExtensions
     get { return GenericCreateManyMethodLazy.Value; }
   }
 
-  public static T Create<T>(
-    this ISpecimenBuilder builder,
-    Type type
-  )
+  public static T Create<T>(this ISpecimenBuilder builder, Type type)
   {
     var createMethod = GenericCreateMethod.MakeGenericMethod(type);
-    var entity = createMethod.Invoke(null, [builder])
+    var entity =
+      createMethod.Invoke(null, [builder])
       ?? throw new InvalidOperationException("Entity not created");
     return (T)entity;
   }
@@ -61,7 +57,8 @@ public static class SpecimenBuilderExtensions
   )
   {
     var createManyMethod = GenericCreateManyMethod.MakeGenericMethod(type);
-    var entity = createManyMethod.Invoke(null, [builder, count])
+    var entity =
+      createManyMethod.Invoke(null, [builder, count])
       ?? throw new InvalidOperationException("Entities not created");
     return (IEnumerable<T>)entity;
   }
@@ -89,7 +86,8 @@ public static class SpecimenBuilderExtensions
   )
   {
     var createMethod = GenericCreateMethod.MakeGenericMethod(type);
-    var entity = createMethod.Invoke(null, [builder])
+    var entity =
+      createMethod.Invoke(null, [builder])
       ?? throw new InvalidOperationException("Entity not created");
     action?.Invoke((T)entity);
     context.Add(entity);

@@ -1,9 +1,6 @@
 namespace Ozds.Data.Queries.Abstractions;
 
-public record PaginatedList<T>(
-  List<T> Items,
-  int TotalCount
-);
+public record PaginatedList<T>(List<T> Items, int TotalCount);
 
 public static class PaginatedList
 {

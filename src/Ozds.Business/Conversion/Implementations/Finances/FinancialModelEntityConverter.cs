@@ -9,11 +9,13 @@ public class FinancialModelEntityConverter(IServiceProvider serviceProvider)
     FinancialModel,
     IdentifiableModel,
     FinancialEntity,
-    IdentifiableEntity>(serviceProvider)
+    IdentifiableEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     FinancialModel model,
-    FinancialEntity entity)
+    FinancialEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.IssuedOn = model.IssuedOn;
@@ -26,7 +28,8 @@ public class FinancialModelEntityConverter(IServiceProvider serviceProvider)
 
   public override void InitializeModel(
     FinancialEntity entity,
-    FinancialModel model)
+    FinancialModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.IssuedOn = entity.IssuedOn;

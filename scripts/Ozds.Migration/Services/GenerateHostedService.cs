@@ -20,24 +20,21 @@ public class GenerateHostedService(
   private static readonly List<Type> MeasurementTypes =
   [
     typeof(AbbB2xMeasurementEntity),
-    typeof(SchneideriEM3xxxMeasurementEntity)
+    typeof(SchneideriEM3xxxMeasurementEntity),
   ];
 
   private static readonly List<Type> AggregateTypes =
   [
     typeof(AbbB2xAggregateEntity),
-    typeof(SchneideriEM3xxxAggregateEntity)
+    typeof(SchneideriEM3xxxAggregateEntity),
   ];
 
   private static readonly List<IntervalEntity> Intervals =
     Enum.GetValues<IntervalEntity>().ToList();
 
-  protected override async Task ExecuteAsync(
-    CancellationToken stoppingToken
-  )
+  protected override async Task ExecuteAsync(CancellationToken stoppingToken)
   {
-    await using var scope = serviceProvider
-      .CreateAsyncScope();
+    await using var scope = serviceProvider.CreateAsyncScope();
 
     var up = await Up(scope.ServiceProvider, stoppingToken);
     var down = await Down(scope.ServiceProvider, stoppingToken);
@@ -67,13 +64,10 @@ public class GenerateHostedService(
       }}
     ".Dedent(6, "\n").Trim();
 
-    await File.WriteAllTextAsync(
-      arguments.Output,
-      migration,
-      stoppingToken);
+    await File.WriteAllTextAsync(arguments.Output, migration, stoppingToken);
 
-    var applicationLifetime = scope.ServiceProvider
-      .GetRequiredService<IHostApplicationLifetime>();
+    var applicationLifetime =
+      scope.ServiceProvider.GetRequiredService<IHostApplicationLifetime>();
     applicationLifetime.StopApplication();
   }
 
@@ -82,8 +76,8 @@ public class GenerateHostedService(
     CancellationToken cancellationToken
   )
   {
-    var measurementProcedures = serviceProvider
-      .GetRequiredService<MeasurementProcedures>();
+    var measurementProcedures =
+      serviceProvider.GetRequiredService<MeasurementProcedures>();
     await using var context = await serviceProvider
       .GetRequiredService<IDbContextFactory<DataDbContext>>()
       .CreateDbContextAsync(cancellationToken);
@@ -93,20 +87,28 @@ public class GenerateHostedService(
     {
       statements.Add(
         await Statement(
-          measurementProcedures
-            .OverwriteUpsertMeasurements(context, type),
-          cancellationToken));
+          measurementProcedures.OverwriteUpsertMeasurements(context, type),
+          cancellationToken
+        )
+      );
     }
 
-    foreach (var (type, interval) in AggregateTypes.SelectMany(
-      type =>
-        Intervals.Select(interval => (type, interval))))
+    foreach (
+      var (type, interval) in AggregateTypes.SelectMany(type =>
+        Intervals.Select(interval => (type, interval))
+      )
+    )
     {
       statements.Add(
         await Statement(
-          measurementProcedures
-            .OverwriteUpsertAggregates(context, type, interval),
-          cancellationToken));
+          measurementProcedures.OverwriteUpsertAggregates(
+            context,
+            type,
+            interval
+          ),
+          cancellationToken
+        )
+      );
     }
 
     return string.Join(Environment.NewLine, statements);
@@ -117,8 +119,8 @@ public class GenerateHostedService(
     CancellationToken cancellationToken
   )
   {
-    var measurementProcedures = serviceProvider
-      .GetRequiredService<MeasurementProcedures>();
+    var measurementProcedures =
+      serviceProvider.GetRequiredService<MeasurementProcedures>();
     await using var context = await serviceProvider
       .GetRequiredService<IDbContextFactory<DataDbContext>>()
       .CreateDbContextAsync(cancellationToken);
@@ -128,20 +130,24 @@ public class GenerateHostedService(
     {
       statements.Add(
         await Statement(
-          measurementProcedures
-            .DeleteUpsertMeasurements(context, type),
-          cancellationToken));
+          measurementProcedures.DeleteUpsertMeasurements(context, type),
+          cancellationToken
+        )
+      );
     }
 
-    foreach (var (type, interval) in AggregateTypes.SelectMany(
-      type =>
-        Intervals.Select(interval => (type, interval))))
+    foreach (
+      var (type, interval) in AggregateTypes.SelectMany(type =>
+        Intervals.Select(interval => (type, interval))
+      )
+    )
     {
       statements.Add(
         await Statement(
-          measurementProcedures
-            .DeleteUpsertAggregates(context, type, interval),
-          cancellationToken));
+          measurementProcedures.DeleteUpsertAggregates(context, type, interval),
+          cancellationToken
+        )
+      );
     }
 
     return string.Join(Environment.NewLine, statements);
@@ -169,14 +175,17 @@ public class GenerateHostedService(
           RedirectStandardInput = true,
           RedirectStandardOutput = true,
           RedirectStandardError = true,
-          UseShellExecute = false
+          UseShellExecute = false,
         };
-        using var process = Process.Start(processStartInfo)
+        using var process =
+          Process.Start(processStartInfo)
           ?? throw new InvalidOperationException(
-            $"Failed to start formatter:{Environment.NewLine}{formatter}");
+            $"Failed to start formatter:{Environment.NewLine}{formatter}"
+          );
         await process.StandardInput.WriteAsync(
           sql.AsMemory(),
-          cancellationToken);
+          cancellationToken
+        );
         await process.StandardInput.FlushAsync(cancellationToken);
         process.StandardInput.Close();
         sql = await process.StandardOutput.ReadToEndAsync(cancellationToken);
@@ -185,15 +194,13 @@ public class GenerateHostedService(
         {
           throw new InvalidOperationException(
             $"Formatter exited with code {process.ExitCode}:"
-            + $"{Environment.NewLine}{formatter}");
+              + $"{Environment.NewLine}{formatter}"
+          );
         }
       }
       catch (Exception ex)
       {
-        logger.LogError(
-          ex,
-          "Failed to format SQL:\n{Sql}",
-          sql);
+        logger.LogError(ex, "Failed to format SQL:\n{Sql}", sql);
       }
     }
 

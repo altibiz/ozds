@@ -9,18 +9,13 @@ internal partial class OzdsApiV1Client
 
   public string? BaseUrl
   {
-    get
-    {
-      return _baseUrl
-        ??= _httpClient.BaseAddress?.ToString();
-    }
+    get { return _baseUrl ??= _httpClient.BaseAddress?.ToString(); }
     set
     {
       _baseUrl ??= value;
-      _httpClient.BaseAddress =
-        _baseUrl is { } baseUrl
-          ? new Uri(baseUrl)
-          : null;
+      _httpClient.BaseAddress = _baseUrl is { } baseUrl
+        ? new Uri(baseUrl)
+        : null;
     }
   }
 
@@ -28,16 +23,17 @@ internal partial class OzdsApiV1Client
   {
     get
     {
-      return _apiKey
-        ??= _httpClient.DefaultRequestHeaders.Authorization?.Parameter;
+      return _apiKey ??= _httpClient
+        .DefaultRequestHeaders
+        .Authorization
+        ?.Parameter;
     }
     set
     {
       _apiKey ??= value;
-      _httpClient.DefaultRequestHeaders.Authorization =
-        _apiKey is { } apiKey
-          ? new AuthenticationHeaderValue("Bearer", apiKey)
-          : null;
+      _httpClient.DefaultRequestHeaders.Authorization = _apiKey is { } apiKey
+        ? new AuthenticationHeaderValue("Bearer", apiKey)
+        : null;
     }
   }
 }

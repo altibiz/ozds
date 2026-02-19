@@ -8,8 +8,7 @@ public class InvoiceModelActivator(
   IServiceProvider serviceProvider,
   ClockQueries clock,
   TimeQueries timeQueries
-)
-  : InheritingModelActivator<InvoiceModel, IdentifiableModel>(serviceProvider)
+) : InheritingModelActivator<InvoiceModel, IdentifiableModel>(serviceProvider)
 {
   public override void Initialize(InvoiceModel model)
   {

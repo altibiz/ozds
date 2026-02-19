@@ -18,92 +18,103 @@ public class MeterJobManager(
 {
   public Task EnsureInactivityMonitorJob(
     MeterInactivityMonitorDetails details,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Ensure(
       new MeterJobContext(details.MeterId, details.InactivityDuration),
-      cancellationToken);
+      cancellationToken
+    );
   }
 
   public Task EnsureInactivityMonitorJobs(
     IEnumerable<MeterInactivityMonitorDetails> details,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Ensure(
-      details.Select(
-        details =>
-          new MeterJobContext(
-            details.MeterId,
-            details.InactivityDuration)),
-      cancellationToken);
+      details.Select(details => new MeterJobContext(
+        details.MeterId,
+        details.InactivityDuration
+      )),
+      cancellationToken
+    );
   }
 
   public Task RescheduleInactivityMonitorJob(
     MeterInactivityMonitorDetails details,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Reschedule(
       new MeterJobContext(details.MeterId, details.InactivityDuration),
-      cancellationToken);
+      cancellationToken
+    );
   }
 
   public Task RescheduleInactivityMonitorJobs(
     IEnumerable<MeterInactivityMonitorDetails> details,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Reschedule(
-      details.Select(
-        details =>
-          new MeterJobContext(
-            details.MeterId,
-            details.InactivityDuration)),
-      cancellationToken);
+      details.Select(details => new MeterJobContext(
+        details.MeterId,
+        details.InactivityDuration
+      )),
+      cancellationToken
+    );
   }
 
   public Task UnscheduleInactivityMonitorJob(
     string id,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Unschedule(
       new MeterJobContext(id, TimeSpan.Zero),
-      cancellationToken);
+      cancellationToken
+    );
   }
 
   public Task UnscheduleInactivityMonitorJobs(
     IEnumerable<string> ids,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken
+  )
   {
     return Unschedule(
       ids.Select(id => new MeterJobContext(id, TimeSpan.Zero)),
-      cancellationToken);
+      cancellationToken
+    );
   }
 
   protected override IJobDetail CreateJob(MeterJobContext context)
   {
     var now = clock.Now();
 
-    return JobBuilder.Create<MeterInactivityMonitorJob>()
-      .UsingJobData(
-        nameof(MeterInactivityMonitorJob.Id),
-        context.MeterId)
+    return JobBuilder
+      .Create<MeterInactivityMonitorJob>()
+      .UsingJobData(nameof(MeterInactivityMonitorJob.Id), context.MeterId)
       .UsingJobData(
         nameof(MeterInactivityMonitorJob.ScheduledAt),
-        now.ToString("o", CultureInfo.InvariantCulture))
+        now.ToString("o", CultureInfo.InvariantCulture)
+      )
       .Build();
   }
 
   protected override ITrigger CreateTrigger(
     TriggerBuilder builder,
-    MeterJobContext context)
+    MeterJobContext context
+  )
   {
     var now = clock.Now();
     var startAt = now.Add(context.InactivityDuration);
 
     return builder
       .StartAt(startAt)
-      .WithSimpleSchedule(
-        x => x
-          .WithMisfireHandlingInstructionNextWithExistingCount())
+      .WithSimpleSchedule(x =>
+        x.WithMisfireHandlingInstructionNextWithExistingCount()
+      )
       .Build();
   }
 
@@ -111,12 +122,6 @@ public class MeterJobManager(
     MeterJobContext context
   )
   {
-    return
-    [
-      new TriggerKey(
-        context.MeterId,
-        nameof(MeterInactivityMonitorJob)
-      )
-    ];
+    return [new TriggerKey(context.MeterId, nameof(MeterInactivityMonitorJob))];
   }
 }

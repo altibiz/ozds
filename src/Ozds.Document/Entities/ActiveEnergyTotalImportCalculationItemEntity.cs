@@ -1,7 +1,7 @@
 namespace Ozds.Document.Entities;
 
-public abstract class
-  ActiveEnergyTotalImportCalculationItemEntity : CalculationItemEntity
+public abstract class ActiveEnergyTotalImportCalculationItemEntity
+  : CalculationItemEntity
 {
   public decimal Min_kWh { get; set; }
 
@@ -16,53 +16,31 @@ public abstract class
 }
 
 public abstract class ActiveEnergyTotalImportT0CalculationItemEntity
-  : ActiveEnergyTotalImportCalculationItemEntity
-{
-}
+  : ActiveEnergyTotalImportCalculationItemEntity { }
 
 public abstract class ActiveEnergyTotalImportT1CalculationItemEntity
-  : ActiveEnergyTotalImportCalculationItemEntity
-{
-}
+  : ActiveEnergyTotalImportCalculationItemEntity { }
 
 public abstract class ActiveEnergyTotalImportT2CalculationItemEntity
-  : ActiveEnergyTotalImportCalculationItemEntity
-{
-}
+  : ActiveEnergyTotalImportCalculationItemEntity { }
 
 public class UsageActiveEnergyTotalImportT0CalculationItemEntity
-  : ActiveEnergyTotalImportT0CalculationItemEntity
-{
-}
+  : ActiveEnergyTotalImportT0CalculationItemEntity { }
 
 public class UsageActiveEnergyTotalImportT1CalculationItemEntity
-  : ActiveEnergyTotalImportT1CalculationItemEntity
-{
-}
+  : ActiveEnergyTotalImportT1CalculationItemEntity { }
 
 public class UsageActiveEnergyTotalImportT2CalculationItemEntity
-  : ActiveEnergyTotalImportT2CalculationItemEntity
-{
-}
+  : ActiveEnergyTotalImportT2CalculationItemEntity { }
 
 public class SupplyActiveEnergyTotalImportT1CalculationItemEntity
-  : ActiveEnergyTotalImportT2CalculationItemEntity
-{
-}
+  : ActiveEnergyTotalImportT2CalculationItemEntity { }
 
 public class SupplyActiveEnergyTotalImportT2CalculationItemEntity
-  : ActiveEnergyTotalImportT2CalculationItemEntity
-{
-}
+  : ActiveEnergyTotalImportT2CalculationItemEntity { }
 
-public class
-  SupplyBusinessUsageCalculationItemEntity :
-  ActiveEnergyTotalImportT0CalculationItemEntity
-{
-}
+public class SupplyBusinessUsageCalculationItemEntity
+  : ActiveEnergyTotalImportT0CalculationItemEntity { }
 
-public class
-  SupplyRenewableEnergyCalculationItemEntity :
-  ActiveEnergyTotalImportT0CalculationItemEntity
-{
-}
+public class SupplyRenewableEnergyCalculationItemEntity
+  : ActiveEnergyTotalImportT0CalculationItemEntity { }

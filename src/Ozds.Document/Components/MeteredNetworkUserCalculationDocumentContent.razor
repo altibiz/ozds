@@ -80,7 +80,7 @@
       </td>
       <td style="text-align: right;">
         <strong>
-          @Number(Entity.UsageFeeTotal_EUR, 2) EUR
+          @Number(Entity.UsageFeeTotal_EUR) EUR
         </strong>
       </td>
     </tr>
@@ -145,7 +145,7 @@
       </td>
       <td style="text-align: right;">
         <strong>
-          @Number(Entity.SupplyFeeTotal_EUR, 2) EUR
+          @Number(Entity.SupplyFeeTotal_EUR) EUR
         </strong>
       </td>
     </tr>
@@ -208,7 +208,7 @@
                   @Translate("IND"):
                 </strong>
                 <span>
-                  @Number(reactiveItem.ReactiveImportMin_kVARh, 2)
+                  @Number(reactiveItem.ReactiveImportMin_kVARh)
                 </span>
               </p>
               <div class="inductive-capacitative-border"/>
@@ -217,7 +217,7 @@
                   @Translate("KAP"):
                 </strong>
                 <span>
-                  @Number(reactiveItem.ReactiveExportMin_kVARh, 2)
+                  @Number(reactiveItem.ReactiveExportMin_kVARh)
                 </span>
               </p>
             </div>
@@ -229,7 +229,7 @@
                   @Translate("IND"):
                 </strong>
                 <span>
-                  @Number(reactiveItem.ReactiveImportMax_kVARh, 2)
+                  @Number(reactiveItem.ReactiveImportMax_kVARh)
                 </span>
               </p>
               <div class="inductive-capacitative-border"/>
@@ -238,7 +238,7 @@
                   @Translate("KAP"):
                 </strong>
                 <span>
-                  @Number(reactiveItem.ReactiveExportMax_kVARh, 2)
+                  @Number(reactiveItem.ReactiveExportMax_kVARh)
                 </span>
               </p>
             </div>
@@ -251,7 +251,7 @@
             @Number(reactiveItem.Price_EUR, 6)
           </td>
           <td style="text-align: right;">
-            @Number(reactiveItem.Total_EUR, 2)
+            @Number(reactiveItem.Total_EUR)
           </td>
         </Fragment>
       : item is ActiveEnergyTotalImportCalculationItemEntity energyItem
@@ -262,10 +262,10 @@
               </strong>
             </td>
             <td style="text-align: right;">
-              @Number(energyItem.Min_kWh, 2)
+              @Number(energyItem.Min_kWh)
             </td>
             <td style="text-align: right;">
-              @Number(energyItem.Max_kWh, 2)
+              @Number(energyItem.Max_kWh)
             </td>
             <td style="text-align: center;">O</td>
             <td style="text-align: right;">
@@ -275,7 +275,7 @@
               @Number(energyItem.Price_EUR, 6)
             </td>
             <td style="text-align: right;">
-              @Number(energyItem.Total_EUR, 2)
+              @Number(energyItem.Total_EUR)
             </td>
           </Fragment>
         : item is ActivePowerTotalImportT1PeakCalculationItemEntity powerItem
@@ -295,7 +295,7 @@
                 @Number(powerItem.Price_EUR, 3)
               </td>
               <td style="text-align: right;">
-                @Number(powerItem.Total_EUR, 2)
+                @Number(powerItem.Total_EUR)
               </td>
             </Fragment>
           : item is FeeCalculationItemEntity feeItem
@@ -312,7 +312,7 @@
                   @Number(feeItem.Price_EUR, 3)
                 </td>
                 <td style="text-align: right;">
-                  @Number(feeItem.Total_EUR, 2)
+                  @Number(feeItem.Total_EUR)
                 </td>
               </Fragment>
             : throw new InvalidOperationException(

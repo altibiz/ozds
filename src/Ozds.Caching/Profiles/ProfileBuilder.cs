@@ -24,13 +24,11 @@ public class ProfileBuilder
 
   public ProfileRegistry Build(Type type)
   {
-    var profilers = type.Assembly
-      .GetTypes()
-      .Where(
-        type => type
-          .IsAssignableTo(
-            typeof(IProfiler<>)
-              .MakeGenericType(type)))
+    var profilers = type
+      .Assembly.GetTypes()
+      .Where(type =>
+        type.IsAssignableTo(typeof(IProfiler<>).MakeGenericType(type))
+      )
       .Select(Activator.CreateInstance)
       .OfType<IProfiler>()
       .ToList();

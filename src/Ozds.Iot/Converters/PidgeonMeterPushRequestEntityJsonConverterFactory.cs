@@ -4,13 +4,14 @@ using Ozds.Iot.Entities.Abstractions;
 
 namespace Ozds.Iot.Converters;
 
-public class
-  PidgeonMeterPushRequestEntityConverterFactory : JsonConverterFactory
+public class PidgeonMeterPushRequestEntityConverterFactory
+  : JsonConverterFactory
 {
   public override bool CanConvert(Type typeToConvert)
   {
     return typeof(IPidgeonMeterPushRequestEntity).IsAssignableFrom(
-      typeToConvert);
+      typeToConvert
+    );
   }
 
   public override JsonConverter? CreateConverter(
@@ -18,8 +19,11 @@ public class
     JsonSerializerOptions options
   )
   {
-    return (JsonConverter?)Activator.CreateInstance(
-      typeof(PidgeonMeterPushRequestEntityJsonConverter<>)
-        .MakeGenericType(typeToConvert));
+    return (JsonConverter?)
+      Activator.CreateInstance(
+        typeof(PidgeonMeterPushRequestEntityJsonConverter<>).MakeGenericType(
+          typeToConvert
+        )
+      );
   }
 }

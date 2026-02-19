@@ -26,7 +26,7 @@ public class CacheConfiguration
       {
         Policies = new List<IPolicy>(),
         JsonSerializerOptions = new JsonSerializerOptions(),
-        Entry = new CacheEntryConfiguration()
+        Entry = new CacheEntryConfiguration(),
       };
     }
   }

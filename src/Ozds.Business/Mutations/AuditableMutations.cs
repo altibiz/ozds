@@ -14,16 +14,14 @@ public class AuditableMutations(
   ModelEntityConverter modelEntityConverter,
   ModelValidator validator,
   RepresentativeQueries representativeQueries
-)
-  : IMutations
+) : IMutations
 {
   public async Task Create(
     IAuditable model,
     CancellationToken cancellationToken
   )
   {
-    var validationResults = await validator
-      .Validate(model, cancellationToken);
+    var validationResults = await validator.Validate(model, cancellationToken);
     if (validationResults.Count > 0)
     {
       var result = string.Join(Environment.NewLine, validationResults);
@@ -32,8 +30,10 @@ public class AuditableMutations(
       );
     }
 
-    var representativeId = await representativeQueries
-      .ReadAuthenticatedRepresentativeId(cancellationToken);
+    var representativeId =
+      await representativeQueries.ReadAuthenticatedRepresentativeId(
+        cancellationToken
+      );
 
     var entity = modelEntityConverter.ToEntity<IAuditableEntity>(model);
     entity.AuditingRepresentativeId = representativeId;
@@ -51,8 +51,7 @@ public class AuditableMutations(
     CancellationToken cancellationToken
   )
   {
-    var validationResults = await validator
-      .Validate(model, cancellationToken);
+    var validationResults = await validator.Validate(model, cancellationToken);
     if (validationResults.Count > 0)
     {
       var result = string.Join(Environment.NewLine, validationResults);
@@ -61,8 +60,10 @@ public class AuditableMutations(
       );
     }
 
-    var representativeId = await representativeQueries
-      .ReadAuthenticatedRepresentativeId(cancellationToken);
+    var representativeId =
+      await representativeQueries.ReadAuthenticatedRepresentativeId(
+        cancellationToken
+      );
 
     var entity = modelEntityConverter.ToEntity<IAuditableEntity>(model);
     entity.AuditingRepresentativeId = representativeId;

@@ -7,11 +7,13 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class FeeCalculationItemModelDocumentEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
-  FeeCalculationItemModel,
-  CalculationItemModel,
-  FeeCalculationItemEntity,
-  CalculationItemEntity>(serviceProvider)
+)
+  : InheritingModelDocumentEntityConverter<
+    FeeCalculationItemModel,
+    CalculationItemModel,
+    FeeCalculationItemEntity,
+    CalculationItemEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     FeeCalculationItemModel model,
@@ -25,10 +27,10 @@ public class FeeCalculationItemModelDocumentEntityConverter(
 
 public class UsageMeterFeeCalculationItemModelDocumentEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
-  UsageMeterFeeCalculationItemModel,
-  FeeCalculationItemModel,
-  UsageMeterFeeCalculationItemEntity,
-  FeeCalculationItemEntity>(serviceProvider)
-{
-}
+)
+  : InheritingModelDocumentEntityConverter<
+    UsageMeterFeeCalculationItemModel,
+    FeeCalculationItemModel,
+    UsageMeterFeeCalculationItemEntity,
+    FeeCalculationItemEntity
+  >(serviceProvider) { }

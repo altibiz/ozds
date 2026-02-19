@@ -18,7 +18,7 @@ public class DocumentRenderer(
       typeof(NetworkUserInvoiceDocument),
       new Dictionary<string, object?>
       {
-        [nameof(NetworkUserInvoiceDocument.Entity)] = entity
+        [nameof(NetworkUserInvoiceDocument.Entity)] = entity,
       },
       cancellationToken
     );
@@ -41,7 +41,7 @@ public class DocumentRenderer(
       typeof(NetworkUserInvoiceDocument),
       new Dictionary<string, object?>
       {
-        [nameof(NetworkUserInvoiceDocument.Entity)] = entity
+        [nameof(NetworkUserInvoiceDocument.Entity)] = entity,
       },
       cancellationToken
     );
@@ -50,10 +50,7 @@ public class DocumentRenderer(
       return null;
     }
 
-    var pdf = await documentRenderer.RenderHtmlToPdf(
-      html,
-      cancellationToken
-    );
+    var pdf = await documentRenderer.RenderHtmlToPdf(html, cancellationToken);
     if (pdf is null)
     {
       return null;
@@ -71,7 +68,7 @@ public class DocumentRenderer(
       typeof(NetworkUserCalculationDocument),
       new Dictionary<string, object?>
       {
-        [nameof(NetworkUserCalculationDocument.Entity)] = entity
+        [nameof(NetworkUserCalculationDocument.Entity)] = entity,
       },
       cancellationToken
     );
@@ -94,7 +91,7 @@ public class DocumentRenderer(
       typeof(NetworkUserCalculationDocument),
       new Dictionary<string, object?>
       {
-        [nameof(NetworkUserCalculationDocument.Entity)] = entity
+        [nameof(NetworkUserCalculationDocument.Entity)] = entity,
       },
       cancellationToken
     );
@@ -103,10 +100,7 @@ public class DocumentRenderer(
       return null;
     }
 
-    var pdf = await documentRenderer.RenderHtmlToPdf(
-      html,
-      cancellationToken
-    );
+    var pdf = await documentRenderer.RenderHtmlToPdf(html, cancellationToken);
     if (pdf is null)
     {
       return null;

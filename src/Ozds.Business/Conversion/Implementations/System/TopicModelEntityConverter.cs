@@ -19,7 +19,7 @@ public class TopicModelEntityConverter
       TopicModel.InvalidPush => TopicEntity.InvalidPush,
       TopicModel.Error => TopicEntity.Error,
       TopicModel.NetworkUserInvoiceState => TopicEntity.NetworkUserInvoiceState,
-      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(model), model, null),
     };
   }
 
@@ -35,7 +35,7 @@ public class TopicModelEntityConverter
       TopicEntity.InvalidPush => TopicModel.InvalidPush,
       TopicEntity.Error => TopicModel.Error,
       TopicEntity.NetworkUserInvoiceState => TopicModel.NetworkUserInvoiceState,
-      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null)
+      _ => throw new ArgumentOutOfRangeException(nameof(entity), entity, null),
     };
   }
 }

@@ -15,26 +15,24 @@ namespace Ozds.Data.Migrations
                 table: "network_users",
                 type: "boolean",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: false
+            );
 
             migrationBuilder.AddColumn<bool>(
                 name: "anu_automatically_approve_invoices",
                 table: "network_user_invoices",
                 type: "boolean",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: false
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "automatically_approve_invoices",
-                table: "network_users");
+            migrationBuilder.DropColumn(name: "automatically_approve_invoices", table: "network_users");
 
-            migrationBuilder.DropColumn(
-                name: "anu_automatically_approve_invoices",
-                table: "network_user_invoices");
+            migrationBuilder.DropColumn(name: "anu_automatically_approve_invoices", table: "network_user_invoices");
         }
     }
 }

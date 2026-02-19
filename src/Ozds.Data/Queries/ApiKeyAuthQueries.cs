@@ -7,9 +7,8 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class ApiKeyAuthQueries(
-  IDbContextFactory<DataDbContext> factory
-) : IQueries
+public class ApiKeyAuthQueries(IDbContextFactory<DataDbContext> factory)
+  : IQueries
 {
   public async Task<ApiKeyAuthEntity?> ReadByApiKeyIdAndScopeId(
     string? apiKeyId,
@@ -17,15 +16,17 @@ public class ApiKeyAuthQueries(
     CancellationToken cancellationToken
   )
   {
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
     var initialApiKeys = context.ApiKeys.AsQueryable();
 
     if (apiKeyId is not null)
     {
-      initialApiKeys = initialApiKeys
-        .Where(context.PrimaryKeyEquals<ApiKeyEntity>(apiKeyId));
+      initialApiKeys = initialApiKeys.Where(
+        context.PrimaryKeyEquals<ApiKeyEntity>(apiKeyId)
+      );
     }
 
     var apiKey = await initialApiKeys
@@ -38,17 +39,14 @@ public class ApiKeyAuthQueries(
     }
 
     var scopes = scopeId is null
-      ? apiKey.Scopes
-        .ToList()
-      : apiKey.Scopes
-        .Where(x => x.Id == scopeId)
-        .ToList();
+      ? apiKey.Scopes.ToList()
+      : apiKey.Scopes.Where(x => x.Id == scopeId).ToList();
 
-    var measurementScopes = await context.Scopes
-      .OfType<MeasurementScopeEntity>()
+    var measurementScopes = await context
+      .Scopes.OfType<MeasurementScopeEntity>()
       .Where(
-        context.PrimaryKeyIn<MeasurementScopeEntity>(
-          scopes.Select(x => x.Id)))
+        context.PrimaryKeyIn<MeasurementScopeEntity>(scopes.Select(x => x.Id))
+      )
       .Include(x => x.Registers)
       .AsSingleQuery()
       .ToListAsync(cancellationToken);
@@ -57,10 +55,10 @@ public class ApiKeyAuthQueries(
     {
       ApiKey = apiKey,
       Scopes = scopes,
-      Registers = measurementScopes
-        .ToDictionary(
-          x => x.Id,
-          x => x.Registers.ToList())
+      Registers = measurementScopes.ToDictionary(
+        x => x.Id,
+        x => x.Registers.ToList()
+      ),
     };
   }
 }

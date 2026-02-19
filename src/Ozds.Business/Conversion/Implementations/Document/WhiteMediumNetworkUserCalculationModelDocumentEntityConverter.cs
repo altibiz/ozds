@@ -7,11 +7,13 @@ namespace Ozds.Business.Conversion.Implementations.Document;
 
 public class WhiteMediumNetworkUserCalculationModelDocumentEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelDocumentEntityConverter<
-  WhiteMediumNetworkUserCalculationModel,
-  MeteredNetworkUserCalculationModel,
-  WhiteMediumNetworkUserCalculationEntity,
-  MeteredNetworkUserCalculationEntity>(serviceProvider)
+)
+  : InheritingModelDocumentEntityConverter<
+    WhiteMediumNetworkUserCalculationModel,
+    MeteredNetworkUserCalculationModel,
+    WhiteMediumNetworkUserCalculationEntity,
+    MeteredNetworkUserCalculationEntity
+  >(serviceProvider)
 {
   private readonly ModelDocumentEntityConverter modelDocumentEntityConverter =
     serviceProvider.GetRequiredService<ModelDocumentEntityConverter>();
@@ -22,20 +24,25 @@ public class WhiteMediumNetworkUserCalculationModelDocumentEntityConverter(
   )
   {
     base.InitializeEntity(model, entity);
-    entity.UsageActiveEnergyTotalImportT1 = modelDocumentEntityConverter
-      .ToEntity<UsageActiveEnergyTotalImportT1CalculationItemEntity>(
-        model.UsageActiveEnergyTotalImportT1);
-    entity.UsageActiveEnergyTotalImportT2 = modelDocumentEntityConverter
-      .ToEntity<UsageActiveEnergyTotalImportT2CalculationItemEntity>(
-        model.UsageActiveEnergyTotalImportT2);
-    entity.UsageActivePowerTotalImportT1Peak = modelDocumentEntityConverter
-      .ToEntity<UsageActivePowerTotalImportT1PeakCalculationItemEntity>(
-        model.UsageActivePowerTotalImportT1Peak);
-    entity.UsageReactiveEnergyTotalRampedT0 = modelDocumentEntityConverter
-      .ToEntity<UsageReactiveEnergyTotalRampedT0CalculationItemEntity>(
-        model.UsageReactiveEnergyTotalRampedT0);
-    entity.ConcreteUsageNetworkUserCatalogue = modelDocumentEntityConverter
-      .ToEntity<WhiteMediumNetworkUserCatalogueEntity>(
-        model.ConcreteArchivedUsageNetworkUserCatalogue);
+    entity.UsageActiveEnergyTotalImportT1 =
+      modelDocumentEntityConverter.ToEntity<UsageActiveEnergyTotalImportT1CalculationItemEntity>(
+        model.UsageActiveEnergyTotalImportT1
+      );
+    entity.UsageActiveEnergyTotalImportT2 =
+      modelDocumentEntityConverter.ToEntity<UsageActiveEnergyTotalImportT2CalculationItemEntity>(
+        model.UsageActiveEnergyTotalImportT2
+      );
+    entity.UsageActivePowerTotalImportT1Peak =
+      modelDocumentEntityConverter.ToEntity<UsageActivePowerTotalImportT1PeakCalculationItemEntity>(
+        model.UsageActivePowerTotalImportT1Peak
+      );
+    entity.UsageReactiveEnergyTotalRampedT0 =
+      modelDocumentEntityConverter.ToEntity<UsageReactiveEnergyTotalRampedT0CalculationItemEntity>(
+        model.UsageReactiveEnergyTotalRampedT0
+      );
+    entity.ConcreteUsageNetworkUserCatalogue =
+      modelDocumentEntityConverter.ToEntity<WhiteMediumNetworkUserCatalogueEntity>(
+        model.ConcreteArchivedUsageNetworkUserCatalogue
+      );
   }
 }

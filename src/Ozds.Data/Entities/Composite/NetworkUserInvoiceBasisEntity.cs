@@ -6,13 +6,12 @@ public class NetworkUserInvoiceBasisEntity
 
   public NetworkUserEntity NetworkUser { get; set; } = default!;
 
-  public RegulatoryCatalogueEntity RegulatoryCatalogue { get; set; } =
-    default!;
+  public RegulatoryCatalogueEntity RegulatoryCatalogue { get; set; } = default!;
 
   public DateTimeOffset FromDate { get; set; }
 
   public DateTimeOffset ToDate { get; set; }
 
-  public List<NetworkUserCalculationBasisEntity>
-    NetworkUserCalculationBases { get; set; } = default!;
+  public List<NetworkUserCalculationBasisEntity> NetworkUserCalculationBases { get; set; } =
+    default!;
 }

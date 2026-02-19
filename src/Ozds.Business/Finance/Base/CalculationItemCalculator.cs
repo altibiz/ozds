@@ -4,8 +4,8 @@ using Ozds.Business.Models.Composite;
 
 namespace Ozds.Business.Finance.Base;
 
-public abstract class
-  CalculationItemCalculator<TCalculationItem> : ICalculationItemCalculator
+public abstract class CalculationItemCalculator<TCalculationItem>
+  : ICalculationItemCalculator
   where TCalculationItem : ICalculationItem
 {
   public bool CanCalculate(Type calculationType)
@@ -19,5 +19,6 @@ public abstract class
   }
 
   protected abstract TCalculationItem CalculateConcrete(
-    CalculationItemBasisModel calculationBasis);
+    CalculationItemBasisModel calculationBasis
+  );
 }

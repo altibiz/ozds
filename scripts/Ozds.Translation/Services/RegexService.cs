@@ -13,9 +13,7 @@ public partial class RegexService(
   OzdsTranslationRegexArguments arguments,
   ICultureQueries cultureQueries,
   ILogger<RegexService> logger
-) : AsyncEnumeratedService<TranslationWorkerItem, TranslationWorker>(
-  services
-)
+) : AsyncEnumeratedService<TranslationWorkerItem, TranslationWorker>(services)
 {
   private static readonly string? AdditionalPrompt = null;
 
@@ -42,29 +40,29 @@ public partial class RegexService(
     await base.StopAsync(cancellationToken);
   }
 
-  protected override async IAsyncEnumerable<TranslationWorkerItem>
-    GetEnumerable(
-      [EnumeratorCancellation] CancellationToken cancellationToken
-    )
+  protected override async IAsyncEnumerable<TranslationWorkerItem> GetEnumerable(
+    [EnumeratorCancellation] CancellationToken cancellationToken
+  )
   {
     var items = await GroupTranslationWorkerItems(
-        GetTranslationWorkerItems(cancellationToken))
+        GetTranslationWorkerItems(cancellationToken)
+      )
       .ToListAsync(cancellationToken);
 
     if (arguments.RemoveUnused)
     {
       var managedItems = dictionary
         .ToList()
-        .Where(
-          item => item.Metadata is { } metadata
-            && metadata.StartsWith("From file"))
+        .Where(item =>
+          item.Metadata is { } metadata && metadata.StartsWith("From file")
+        )
         .ToList();
 
       // TODO: better way to detect managed translations
       var unusedManagedItems = managedItems
-        .Where(
-          dictionaryItem => !items
-            .Exists(item => item.Key == dictionaryItem.Key))
+        .Where(dictionaryItem =>
+          !items.Exists(item => item.Key == dictionaryItem.Key)
+        )
         .ToList();
 
       foreach (var key in unusedManagedItems.Select(x => x.Key))
@@ -92,49 +90,50 @@ public partial class RegexService(
     }
   }
 
-  private static async IAsyncEnumerable<TranslationWorkerItem>
-    GroupTranslationWorkerItems(
-      IAsyncEnumerable<TranslationWorkerItem> items
-    )
+  private static async IAsyncEnumerable<TranslationWorkerItem> GroupTranslationWorkerItems(
+    IAsyncEnumerable<TranslationWorkerItem> items
+  )
   {
-    await foreach (var item in items
-      .GroupBy(item => item.Key)
-      .SelectAwait(
-        async group =>
+    await foreach (
+      var item in items
+        .GroupBy(item => item.Key)
+        .Select(group =>
         {
-          var first = await group.FirstAsync();
+          var first = group.First();
 
-          var metadata = await group
+          var metadata = group
             .Select(item => item.Metadata)
-            .AggregateAsync((x, y) => $"{x}\n{y}");
+            .Aggregate((x, y) => $"{x}\n{y}");
 
           return first with
           {
-            Metadata = metadata
+            Metadata = metadata,
           };
-        }))
+        })
+    )
     {
       yield return item;
     }
   }
 
-  private async IAsyncEnumerable<TranslationWorkerItem>
-    GetTranslationWorkerItems(
-      [EnumeratorCancellation] CancellationToken cancellationToken
-    )
+  private async IAsyncEnumerable<TranslationWorkerItem> GetTranslationWorkerItems(
+    [EnumeratorCancellation] CancellationToken cancellationToken
+  )
   {
     var culture = cultureQueries.IdToCulture(arguments.Language);
     if (culture is null)
     {
       throw new InvalidOperationException(
-        $"Could not find culture '{arguments.Language}'");
+        $"Could not find culture '{arguments.Language}'"
+      );
     }
 
     var razorFiles = Directory
       .GetFiles(
         arguments.InputRazorFolderPath,
         "*.razor",
-        SearchOption.AllDirectories)
+        SearchOption.AllDirectories
+      )
       .OrderBy(file => file);
 
     var translateRegex = TranslateRegex();
@@ -144,8 +143,9 @@ public partial class RegexService(
     {
       var content = await File.ReadAllTextAsync(file, cancellationToken);
       var translateMatches = translateRegex.Matches(content);
-      var translateWithCultureMatches = translateWithCultureRegex
-        .Matches(content);
+      var translateWithCultureMatches = translateWithCultureRegex.Matches(
+        content
+      );
       var matches = translateMatches
         .Concat(translateWithCultureMatches)
         .OfType<Match>()
@@ -162,8 +162,8 @@ public partial class RegexService(
             file
           );
           var metadata = $"""
-            From file '{relativePath}' line {index.Line} column {index.Column}
-          """.Trim();
+              From file '{relativePath}' line {index.Line} column {index.Column}
+            """.Trim();
 
           yield return new TranslationWorkerItem(
             dictionary,

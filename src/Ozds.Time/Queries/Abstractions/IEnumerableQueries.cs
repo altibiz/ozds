@@ -20,12 +20,9 @@ public interface IEnumerableQueries : IQueries
   )
   {
     return Split(
-      new DateTimeOffsetRangeEntity
-      {
-        DateFrom = dateFrom,
-        DateTo = dateTo
-      },
-      interval);
+      new DateTimeOffsetRangeEntity { DateFrom = dateFrom, DateTo = dateTo },
+      interval
+    );
   }
 
   public IEnumerable<DateTimeOffsetRangeEntity> Split(

@@ -11,8 +11,8 @@ public class MeterNotificationEntity : ResolvableNotificationEntity
   public virtual MeterEntity Meter { get; set; } = default!;
 }
 
-public class MeterInactivityNotificationEntityConfiguration :
-  IEntityTypeConfiguration<MeterNotificationEntity>
+public class MeterInactivityNotificationEntityConfiguration
+  : IEntityTypeConfiguration<MeterNotificationEntity>
 {
   public void Configure(EntityTypeBuilder<MeterNotificationEntity> builder)
   {

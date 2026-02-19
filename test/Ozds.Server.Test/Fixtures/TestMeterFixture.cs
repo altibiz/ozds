@@ -9,9 +9,7 @@ public record MeterWithMeasurementValidator(
   MeterModel Meter
 );
 
-public class TestMeterFixture(
-  ServiceComposition composition
-)
+public class TestMeterFixture(ServiceComposition composition)
 {
   public async Task<MeterWithMeasurementValidator> Create(
     CancellationToken cancellationToken,
@@ -26,45 +24,43 @@ public class TestMeterFixture(
 
     var trackableFixture = new TestTrackableFixture(composition);
 
-    var measurementValidator = await trackableFixture
-        .Create(
-          configurator.MeasurementValidatorType,
-          cancellationToken,
-          measurementValidator =>
-          {
-            configurator.ConfigureMeasurementValidator(
-              (measurementValidator as MeasurementValidatorModel)!);
-          })
-      as MeasurementValidatorModel;
+    var measurementValidator =
+      await trackableFixture.Create(
+        configurator.MeasurementValidatorType,
+        cancellationToken,
+        measurementValidator =>
+        {
+          configurator.ConfigureMeasurementValidator(
+            (measurementValidator as MeasurementValidatorModel)!
+          );
+        }
+      ) as MeasurementValidatorModel;
     if (measurementValidator is null)
     {
       throw new InvalidOperationException(
         "Cannot create measurement validator of type"
-        + configurator.MeasurementValidatorType
+          + configurator.MeasurementValidatorType
       );
     }
 
-    var meter = await trackableFixture
-      .Create(
+    var meter =
+      await trackableFixture.Create(
         configurator.MeterType,
         cancellationToken,
         m =>
         {
           (m as MeterModel)!.MeasurementValidatorId = measurementValidator.Id;
           configurator.ConfigureMeter((m as MeterModel)!);
-        }) as MeterModel;
+        }
+      ) as MeterModel;
     if (meter is null)
     {
       throw new InvalidOperationException(
-        "Cannot create meter of type"
-        + configurator.MeterType
+        "Cannot create meter of type" + configurator.MeterType
       );
     }
 
-    return new MeterWithMeasurementValidator(
-      measurementValidator,
-      meter
-    );
+    return new MeterWithMeasurementValidator(measurementValidator, meter);
   }
 
   public class Configurator
@@ -89,8 +85,7 @@ public class TestMeterFixture(
       return this;
     }
 
-    public Configurator WithMeter(
-      Action<MeterModel> configure)
+    public Configurator WithMeter(Action<MeterModel> configure)
     {
       var prior = ConfigureMeter;
       ConfigureMeter = x =>
@@ -110,7 +105,8 @@ public class TestMeterFixture(
     }
 
     public Configurator WithMeasurementValidator(
-      Action<MeasurementValidatorModel> configure)
+      Action<MeasurementValidatorModel> configure
+    )
     {
       var prior = ConfigureMeasurementValidator;
       ConfigureMeasurementValidator = x =>

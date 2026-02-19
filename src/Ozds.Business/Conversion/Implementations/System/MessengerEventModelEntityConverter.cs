@@ -8,15 +8,18 @@ namespace Ozds.Business.Conversion.Implementations.System;
 
 public class MessengerEventModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  MessengerEventModel,
-  EventModel,
-  MessengerEventEntity,
-  EventEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    MessengerEventModel,
+    EventModel,
+    MessengerEventEntity,
+    EventEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     MessengerEventModel model,
-    MessengerEventEntity entity)
+    MessengerEventEntity entity
+  )
   {
     base.InitializeEntity(model, entity);
     entity.MessengerId = model.MessengerId;
@@ -24,7 +27,8 @@ public class MessengerEventModelEntityConverter(
 
   public override void InitializeModel(
     MessengerEventEntity entity,
-    MessengerEventModel model)
+    MessengerEventModel model
+  )
   {
     base.InitializeModel(entity, model);
     model.MessengerId = entity.MessengerId;

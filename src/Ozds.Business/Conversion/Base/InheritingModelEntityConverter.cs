@@ -6,7 +6,8 @@ public abstract class InheritingModelEntityConverter<
   TModel,
   TSuperModel,
   TEntity,
-  TSuperEntity>(IServiceProvider serviceProvider)
+  TSuperEntity
+>(IServiceProvider serviceProvider)
   : ConcreteModelEntityConverter<TModel, TEntity>
   where TModel : notnull, TSuperModel
   where TEntity : notnull, TSuperEntity
@@ -21,11 +22,12 @@ public abstract class InheritingModelEntityConverter<
   {
     _baseEntityConverter ??=
       serviceProvider
-          .GetServices<IModelEntityConverter>()
-          .FirstOrDefault(x => x.EntityType == typeof(TSuperEntity))
+        .GetServices<IModelEntityConverter>()
+        .FirstOrDefault(x => x.EntityType == typeof(TSuperEntity))
         as InitializingModelEntityConverter
       ?? throw new InvalidOperationException(
-        $"No model entity converter found for type {typeof(TSuperEntity)}");
+        $"No model entity converter found for type {typeof(TSuperEntity)}"
+      );
 
     base.InitializeEntity(model, entity);
     _baseEntityConverter.InitializeEntity(model, entity);
@@ -35,11 +37,12 @@ public abstract class InheritingModelEntityConverter<
   {
     _baseModelConverter ??=
       serviceProvider
-          .GetServices<IModelEntityConverter>()
-          .FirstOrDefault(x => x.ModelType == typeof(TSuperModel))
+        .GetServices<IModelEntityConverter>()
+        .FirstOrDefault(x => x.ModelType == typeof(TSuperModel))
         as InitializingModelEntityConverter
       ?? throw new InvalidOperationException(
-        $"No model entity converter found for type {typeof(TSuperModel)}");
+        $"No model entity converter found for type {typeof(TSuperModel)}"
+      );
 
     base.InitializeModel(entity, model);
     _baseModelConverter.InitializeModel(entity, model);

@@ -3,13 +3,10 @@ using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Caching.Entities.Base;
 using Ozds.Caching.Entities.Composite;
-using CachingCompositeMutations =
-  Ozds.Caching.Mutations.CompositeEntityMutations;
+using CachingCompositeMutations = Ozds.Caching.Mutations.CompositeEntityMutations;
 using CachingCompositeQueries = Ozds.Caching.Queries.CompositeEntityQueries;
-using CachingIdentifiableQueries =
-  Ozds.Caching.Queries.IdentifiableEntityQueries;
-using DataMeasurementLocationQueries =
-  Ozds.Data.Queries.MeasurementLocationQueries;
+using CachingIdentifiableQueries = Ozds.Caching.Queries.IdentifiableEntityQueries;
+using DataMeasurementLocationQueries = Ozds.Data.Queries.MeasurementLocationQueries;
 
 namespace Ozds.Business.Queries;
 
@@ -27,21 +24,23 @@ public class MeasurementLocationQueries(
     CancellationToken cancellationToken
   )
   {
-    var cachedEntity = await cachingCompositeQueries
-      .Read<MeterMeasurementLocationEntity>(meterId, cancellationToken);
+    var cachedEntity =
+      await cachingCompositeQueries.Read<MeterMeasurementLocationEntity>(
+        meterId,
+        cancellationToken
+      );
 
     if (cachedEntity is not null)
     {
-      var cachedModel = modelCachingEntityConverter
-        .ToModel<IMeasurementLocation>(cachedEntity.MeasurementLocation);
+      var cachedModel =
+        modelCachingEntityConverter.ToModel<IMeasurementLocation>(
+          cachedEntity.MeasurementLocation
+        );
 
       return cachedModel;
     }
 
-    var entity = await queries.ReadByMeterId(
-      meterId,
-      cancellationToken
-    );
+    var entity = await queries.ReadByMeterId(meterId, cancellationToken);
     if (entity is null)
     {
       return default;
@@ -50,20 +49,22 @@ public class MeasurementLocationQueries(
     var model = modelEntityConverter.ToModel<IMeasurementLocation>(entity);
     if (model is not null)
     {
-      var cachingMeter = await cachingIdentifiableQueries
-        .Read<MeterEntity>(meterId, cancellationToken);
+      var cachingMeter = await cachingIdentifiableQueries.Read<MeterEntity>(
+        meterId,
+        cancellationToken
+      );
       if (cachingMeter is null)
       {
         return model;
       }
 
-      var cachingMeasurementLocation = modelCachingEntityConverter
-        .ToEntity<MeasurementLocationEntity>(model);
+      var cachingMeasurementLocation =
+        modelCachingEntityConverter.ToEntity<MeasurementLocationEntity>(model);
 
       var cachingEntity = new MeterMeasurementLocationEntity
       {
         Meter = cachingMeter,
-        MeasurementLocation = cachingMeasurementLocation
+        MeasurementLocation = cachingMeasurementLocation,
       };
 
       await cachingCompositeMutations.Create(cachingEntity, cancellationToken);
@@ -72,9 +73,7 @@ public class MeasurementLocationQueries(
     return model;
   }
 
-  public async Task<
-    List<IMeasurementLocation>
-  > ReadByLocationId(
+  public async Task<List<IMeasurementLocation>> ReadByLocationId(
     string locationId,
     CancellationToken cancellationToken
   )
@@ -88,9 +87,7 @@ public class MeasurementLocationQueries(
       .ToList();
   }
 
-  public async Task<
-    List<IMeasurementLocation>
-  > ReadByNetworkUserId(
+  public async Task<List<IMeasurementLocation>> ReadByNetworkUserId(
     string networkUserId,
     CancellationToken cancellationToken
   )

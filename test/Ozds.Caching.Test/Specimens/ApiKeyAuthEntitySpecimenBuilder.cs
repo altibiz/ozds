@@ -18,7 +18,7 @@ public class ApiKeyAuthEntityBuilder : ISpecimenBuilder
     {
       context.Create<MeasurementScopeEntity>(),
       context.Create<MeasurementScopeEntity>(),
-      context.Create<ScopeEntity>()
+      context.Create<ScopeEntity>(),
     };
 
     var registers = new List<RegisterEntity>(2);
@@ -33,7 +33,7 @@ public class ApiKeyAuthEntityBuilder : ISpecimenBuilder
     {
       ApiKey = apiKey,
       Scopes = scopes,
-      Registers = registers
+      Registers = registers,
     };
   }
 }

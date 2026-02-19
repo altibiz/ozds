@@ -8,11 +8,13 @@ namespace Ozds.Business.Conversion.Implementations.Caching;
 
 public class NetworkUserMeasurementLocationModelCachingEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelCachingEntityConverter<
-  NetworkUserMeasurementLocationModel,
-  MeasurementLocationModel,
-  NetworkUserMeasurementLocationEntity,
-  MeasurementLocationEntity>(serviceProvider)
+)
+  : InheritingModelCachingEntityConverter<
+    NetworkUserMeasurementLocationModel,
+    MeasurementLocationModel,
+    NetworkUserMeasurementLocationEntity,
+    MeasurementLocationEntity
+  >(serviceProvider)
 {
   public override void InitializeEntity(
     NetworkUserMeasurementLocationModel model,

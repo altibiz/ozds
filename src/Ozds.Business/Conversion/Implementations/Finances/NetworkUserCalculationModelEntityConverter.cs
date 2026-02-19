@@ -8,11 +8,13 @@ namespace Ozds.Business.Conversion.Implementations.Finances;
 
 public class NetworkUserCalculationModelEntityConverter(
   IServiceProvider serviceProvider
-) : InheritingModelEntityConverter<
-  NetworkUserCalculationModel,
-  CalculationModel,
-  NetworkUserCalculationEntity,
-  CalculationEntity>(serviceProvider)
+)
+  : InheritingModelEntityConverter<
+    NetworkUserCalculationModel,
+    CalculationModel,
+    NetworkUserCalculationEntity,
+    CalculationEntity
+  >(serviceProvider)
 {
   private readonly ModelEntityConverter modelEntityConverter =
     serviceProvider.GetRequiredService<ModelEntityConverter>();
@@ -28,30 +30,30 @@ public class NetworkUserCalculationModelEntityConverter(
     entity.ArchivedNetworkUserMeasurementLocation =
       model.ArchivedNetworkUserMeasurementLocation is null
         ? null!
-        : modelEntityConverter.ToEntity<
-          NetworkUserMeasurementLocationEntity>(
-          model.ArchivedNetworkUserMeasurementLocation);
-    if (entity.ArchivedNetworkUserMeasurementLocation
-      is { } archivedNetworkUserMeasurementLocation)
+        : modelEntityConverter.ToEntity<NetworkUserMeasurementLocationEntity>(
+          model.ArchivedNetworkUserMeasurementLocation
+        );
+    if (
+      entity.ArchivedNetworkUserMeasurementLocation is
+      { } archivedNetworkUserMeasurementLocation
+    )
     {
       archivedNetworkUserMeasurementLocation.Kind =
         archivedNetworkUserMeasurementLocation.GetType().Name;
     }
 
-    entity.SupplyRegulatoryCatalogueId =
-      model.SupplyRegulatoryCatalogueId;
+    entity.SupplyRegulatoryCatalogueId = model.SupplyRegulatoryCatalogueId;
     entity.ArchivedSupplyRegulatoryCatalogue =
       model.ArchivedSupplyRegulatoryCatalogue is null
         ? null!
-        : modelEntityConverter.ToEntity<
-          RegulatoryCatalogueEntity>(
-          model.ArchivedSupplyRegulatoryCatalogue);
+        : modelEntityConverter.ToEntity<RegulatoryCatalogueEntity>(
+          model.ArchivedSupplyRegulatoryCatalogue
+        );
     entity.NetworkUserInvoiceId = model.NetworkUserInvoiceId;
     entity.MeterId = model.MeterId;
     entity.ArchivedMeter = model.ArchivedMeter is null
       ? null!
-      : modelEntityConverter.ToEntity<MeterEntity>(
-        model.ArchivedMeter);
+      : modelEntityConverter.ToEntity<MeterEntity>(model.ArchivedMeter);
     if (entity.ArchivedMeter is { } archivedMeter)
     {
       archivedMeter.Kind = archivedMeter.GetType().Name;
@@ -71,17 +73,16 @@ public class NetworkUserCalculationModelEntityConverter(
     model.ArchivedNetworkUserMeasurementLocation =
       entity.ArchivedNetworkUserMeasurementLocation is null
         ? null!
-        : modelEntityConverter
-          .ToModel<NetworkUserMeasurementLocationModel>(
-            entity.ArchivedNetworkUserMeasurementLocation);
-    model.SupplyRegulatoryCatalogueId =
-      entity.SupplyRegulatoryCatalogueId;
+        : modelEntityConverter.ToModel<NetworkUserMeasurementLocationModel>(
+          entity.ArchivedNetworkUserMeasurementLocation
+        );
+    model.SupplyRegulatoryCatalogueId = entity.SupplyRegulatoryCatalogueId;
     model.ArchivedSupplyRegulatoryCatalogue =
       entity.ArchivedSupplyRegulatoryCatalogue is null
         ? null!
-        : modelEntityConverter
-          .ToModel<RegulatoryCatalogueModel>(
-            entity.ArchivedSupplyRegulatoryCatalogue);
+        : modelEntityConverter.ToModel<RegulatoryCatalogueModel>(
+          entity.ArchivedSupplyRegulatoryCatalogue
+        );
     model.NetworkUserInvoiceId = entity.NetworkUserInvoiceId;
     model.MeterId = entity.MeterId;
     model.ArchivedMeter = entity.ArchivedMeter is null

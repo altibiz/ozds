@@ -5,9 +5,10 @@ namespace Ozds.Business.Activation.Implementations.System;
 
 public class ResolvableNotificationModelActivator(
   IServiceProvider serviceProvider
-) : InheritingModelActivator<ResolvableNotificationModel, NotificationModel>(
-  serviceProvider
 )
+  : InheritingModelActivator<ResolvableNotificationModel, NotificationModel>(
+    serviceProvider
+  )
 {
   public override void Initialize(ResolvableNotificationModel model)
   {

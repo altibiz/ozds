@@ -6,9 +6,8 @@ using Ozds.Data.Queries.Abstractions;
 
 namespace Ozds.Data.Queries;
 
-public class NotificationQueries(
-  IDbContextFactory<DataDbContext> factory
-) : IQueries
+public class NotificationQueries(IDbContextFactory<DataDbContext> factory)
+  : IQueries
 {
   public async Task<PaginatedList<T>> ReadForRecipient<T>(
     string representativeId,
@@ -69,11 +68,13 @@ public class NotificationQueries(
       );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var recipients = context.NotificationRecipients
-      .Where(recipient => recipient.RepresentativeId == representativeId);
+    var recipients = context.NotificationRecipients.Where(recipient =>
+      recipient.RepresentativeId == representativeId
+    );
 
     recipients = seen
       ? recipients.Where(x => x.SeenOn != null)
@@ -88,8 +89,7 @@ public class NotificationQueries(
       filtered = filtered.Where(x => x.Title.Contains(title));
     }
 
-    var ordered = filtered
-      .OrderByDescending(aggregate => aggregate.Timestamp);
+    var ordered = filtered.OrderByDescending(aggregate => aggregate.Timestamp);
 
     var count = await filtered.CountAsync(cancellationToken);
     var items = await ordered
@@ -115,11 +115,13 @@ public class NotificationQueries(
       );
     }
 
-    await using var context = await factory
-      .CreateDbContextAsync(cancellationToken);
+    await using var context = await factory.CreateDbContextAsync(
+      cancellationToken
+    );
 
-    var recipients = context.NotificationRecipients
-      .Where(recipient => recipient.RepresentativeId == representativeId);
+    var recipients = context.NotificationRecipients.Where(recipient =>
+      recipient.RepresentativeId == representativeId
+    );
 
     recipients = seen
       ? recipients.Where(x => x.SeenOn != null)
@@ -134,8 +136,7 @@ public class NotificationQueries(
       filtered = filtered.Where(x => x.Title.Contains(title));
     }
 
-    var ordered = filtered
-      .OrderByDescending(aggregate => aggregate.Timestamp);
+    var ordered = filtered.OrderByDescending(aggregate => aggregate.Timestamp);
 
     var items = await ordered.ToListAsync(cancellationToken);
 
@@ -143,47 +144,48 @@ public class NotificationQueries(
   }
 
   public async Task<List<NotificationRecipientEntity>> Recipients(
-    INotificationEntity notification)
+    INotificationEntity notification
+  )
   {
     await using var context = await factory.CreateDbContextAsync();
 
     var topics = notification.Topics;
-    var representatives = await context.Representatives
-      .Where(r => r.Topics.Any(t => topics.Contains(t)))
+    var representatives = await context
+      .Representatives.Where(r => r.Topics.Any(t => topics.Contains(t)))
       .ToListAsync();
 
     return representatives
-      .Select(
-        representative => new NotificationRecipientEntity
-        {
-          NotificationId = notification.Id,
-          RepresentativeId = representative.Id
-        })
+      .Select(representative => new NotificationRecipientEntity
+      {
+        NotificationId = notification.Id,
+        RepresentativeId = representative.Id,
+      })
       .ToList();
   }
 
   public async Task<List<NotificationRecipientEntity>> Recipients(
-    IEnumerable<INotificationEntity> notifications)
+    IEnumerable<INotificationEntity> notifications
+  )
   {
     await using var context = await factory.CreateDbContextAsync();
 
     var topics = notifications.SelectMany(x => x.Topics);
-    var representatives = await context.Representatives
-      .Where(r => r.Topics.Any(t => topics.Contains(t)))
+    var representatives = await context
+      .Representatives.Where(r => r.Topics.Any(t => topics.Contains(t)))
       .ToListAsync();
 
     return notifications
-      .SelectMany(
-        notification => representatives
-          .Where(
-            representative => representative.Topics
-              .Exists(t => notification.Topics.Contains(t)))
-          .Select(
-            representative => new NotificationRecipientEntity
-            {
-              NotificationId = notification.Id,
-              RepresentativeId = representative.Id
-            }))
+      .SelectMany(notification =>
+        representatives
+          .Where(representative =>
+            representative.Topics.Exists(t => notification.Topics.Contains(t))
+          )
+          .Select(representative => new NotificationRecipientEntity
+          {
+            NotificationId = notification.Id,
+            RepresentativeId = representative.Id,
+          })
+      )
       .ToList();
   }
 }

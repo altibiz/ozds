@@ -30,9 +30,9 @@ public static class HostExtensions
   )
   {
     builder.Services.AddSingleton<ClockWinder>();
-    builder.Services.AddHostedService(
-      services => services
-        .GetRequiredService<ClockWinder>());
+    builder.Services.AddHostedService(services =>
+      services.GetRequiredService<ClockWinder>()
+    );
     return builder;
   }
 

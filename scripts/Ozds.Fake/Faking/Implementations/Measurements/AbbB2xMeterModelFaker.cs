@@ -4,8 +4,5 @@ using Ozds.Fake.Faking.Base;
 
 namespace Ozds.Fake.Faking.Implementations.Measurements;
 
-public class AbbB2xMeterModelFaker(
-  IServiceProvider serviceProvider
-) : InheritingModelFaker<AbbB2xMeterModel, MeterModel>(serviceProvider)
-{
-}
+public class AbbB2xMeterModelFaker(IServiceProvider serviceProvider)
+  : InheritingModelFaker<AbbB2xMeterModel, MeterModel>(serviceProvider) { }

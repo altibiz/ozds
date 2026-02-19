@@ -14,20 +14,16 @@ public class OzdsSchedulerFactory : IHostedService, ILogProvider
 
   private IScheduler? inner;
 
-  public OzdsSchedulerFactory(
-    IServiceProvider serviceProvider
-  )
+  public OzdsSchedulerFactory(IServiceProvider serviceProvider)
   {
-    loggerFactory = serviceProvider
-      .GetRequiredService<ILoggerFactory>();
+    loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
 
     // NOTE: needs to be explicitly called before
     // injecting the scheduler factory because otherwise
     // it throws a ObjectDisposedException
     LogProvider.SetCurrentLogProvider(this);
 
-    schedulerFactory = serviceProvider
-      .GetRequiredService<ISchedulerFactory>();
+    schedulerFactory = serviceProvider.GetRequiredService<ISchedulerFactory>();
   }
 
   public Task StartAsync(CancellationToken cancellationToken)
@@ -56,25 +52,20 @@ public class OzdsSchedulerFactory : IHostedService, ILogProvider
         logger.Log(
           level switch
           {
-            LogLevel.Fatal =>
-              Microsoft.Extensions.Logging.LogLevel.Critical,
-            LogLevel.Error =>
-              Microsoft.Extensions.Logging.LogLevel.Error,
-            LogLevel.Warn =>
-              Microsoft.Extensions.Logging.LogLevel.Warning,
-            LogLevel.Info =>
-              Microsoft.Extensions.Logging.LogLevel.Information,
-            LogLevel.Debug =>
-              Microsoft.Extensions.Logging.LogLevel.Debug,
-            LogLevel.Trace =>
-              Microsoft.Extensions.Logging.LogLevel.Trace,
-            _ => Microsoft.Extensions.Logging.LogLevel.Information
+            LogLevel.Fatal => Microsoft.Extensions.Logging.LogLevel.Critical,
+            LogLevel.Error => Microsoft.Extensions.Logging.LogLevel.Error,
+            LogLevel.Warn => Microsoft.Extensions.Logging.LogLevel.Warning,
+            LogLevel.Info => Microsoft.Extensions.Logging.LogLevel.Information,
+            LogLevel.Debug => Microsoft.Extensions.Logging.LogLevel.Debug,
+            LogLevel.Trace => Microsoft.Extensions.Logging.LogLevel.Trace,
+            _ => Microsoft.Extensions.Logging.LogLevel.Information,
           },
           exception,
 #pragma warning disable CA2254 // Template should be a static expression
           func is { } f ? f() : null,
 #pragma warning restore CA2254 // Template should be a static expression
-          parameters);
+          parameters
+        );
       }
       catch (ObjectDisposedException)
       {
@@ -93,7 +84,8 @@ public class OzdsSchedulerFactory : IHostedService, ILogProvider
   public IDisposable OpenMappedContext(
     string key,
     object value,
-    bool destructure = false)
+    bool destructure = false
+  )
   {
     throw new NotImplementedException();
   }

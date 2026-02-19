@@ -12,11 +12,10 @@ public static class HostExtensions
   {
     if (builder is WebApplicationBuilder webBuilder)
     {
-      webBuilder.WebHost.ConfigureKestrel(
-        serverOptions =>
-        {
-          serverOptions.Limits.MinRequestBodyDataRate = null;
-        });
+      webBuilder.WebHost.ConfigureKestrel(serverOptions =>
+      {
+        serverOptions.Limits.MinRequestBodyDataRate = null;
+      });
     }
 
     builder.Services.AddRazorPages();
@@ -29,9 +28,7 @@ public static class HostExtensions
     return builder;
   }
 
-  public static WebApplication UseOzdsServer(
-    this WebApplication app
-  )
+  public static WebApplication UseOzdsServer(this WebApplication app)
   {
     if (app.Environment.IsDevelopment())
     {
@@ -47,6 +44,7 @@ public static class HostExtensions
     app.UseMiddleware<OzdsExceptionMiddleware>();
 
     app.UseStaticFiles();
+    app.MapStaticAssets();
     app.UseRouting();
 
     app.UseAuthentication();
@@ -65,21 +63,19 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    builder.Services
-      .AddApiVersioning(
-        options =>
-        {
-          options.DefaultApiVersion = new ApiVersion(1);
-          options.ReportApiVersions = true;
-          options.AssumeDefaultVersionWhenUnspecified = true;
-          options.ApiVersionReader = new UrlSegmentApiVersionReader();
-        })
-      .AddApiExplorer(
-        options =>
-        {
-          options.GroupNameFormat = "'v'V";
-          options.SubstituteApiVersionInUrl = true;
-        });
+    builder
+      .Services.AddApiVersioning(options =>
+      {
+        options.DefaultApiVersion = new ApiVersion(1);
+        options.ReportApiVersions = true;
+        options.AssumeDefaultVersionWhenUnspecified = true;
+        options.ApiVersionReader = new UrlSegmentApiVersionReader();
+      })
+      .AddApiExplorer(options =>
+      {
+        options.GroupNameFormat = "'v'V";
+        options.SubstituteApiVersionInUrl = true;
+      });
 
     return builder;
   }
@@ -88,79 +84,78 @@ public static class HostExtensions
     this IHostApplicationBuilder builder
   )
   {
-    builder.Services.AddSwaggerGen(
-      options =>
+    builder.Services.AddSwaggerGen(options =>
+    {
+      options.SwaggerDoc(
+        "v1",
+        new OpenApiInfo { Title = "OZDS API", Version = "v1" }
+      );
+      options.DocInclusionPredicate(
+        (docName, apiDesc) =>
+        {
+          var routeTemplate = apiDesc.RelativePath;
+          return routeTemplate?.StartsWith("api/") ?? false;
+        }
+      );
+      options.TagActionsBy(api =>
       {
-        options.SwaggerDoc(
-          "v1", new OpenApiInfo
-          {
-            Title = "OZDS API",
-            Version = "v1"
-          });
-        options.DocInclusionPredicate(
-          (docName, apiDesc) =>
-          {
-            var routeTemplate = apiDesc.RelativePath;
-            return routeTemplate?.StartsWith("api/") ?? false;
-          });
-        options.TagActionsBy(
-          api =>
-          {
-            var controllerName = api.ActionDescriptor.RouteValues["controller"];
-            return new[] { controllerName?.Replace("ApiV1", "") ?? "Unknown" };
-          });
-        options.AddSecurityDefinition(
-          "Bearer", new OpenApiSecurityScheme
-          {
-            Description =
-              "API Key Authorization header using the Bearer scheme."
-              + " Example: \"Bearer {apiKey}\"",
-            Name = "Authorization",
-            In = ParameterLocation.Header,
-            Type = SecuritySchemeType.Http,
-            Scheme = "Bearer"
-          });
-        options.AddSecurityRequirement(
-          new OpenApiSecurityRequirement
-          {
-            {
-              new OpenApiSecurityScheme
-              {
-                Reference = new OpenApiReference
-                {
-                  Type = ReferenceType.SecurityScheme,
-                  Id = "Bearer"
-                }
-              },
-              Array.Empty<string>()
-            }
-          });
+        var controllerName = api.ActionDescriptor.RouteValues["controller"];
+        return new[] { controllerName?.Replace("ApiV1", "") ?? "Unknown" };
       });
+      options.AddSecurityDefinition(
+        "Bearer",
+        new OpenApiSecurityScheme
+        {
+          Description =
+            "API Key Authorization header using the Bearer scheme."
+            + " Example: \"Bearer {apiKey}\"",
+          Name = "Authorization",
+          In = ParameterLocation.Header,
+          Type = SecuritySchemeType.Http,
+          Scheme = "Bearer",
+        }
+      );
+      options.AddSecurityRequirement(
+        new OpenApiSecurityRequirement
+        {
+          {
+            new OpenApiSecurityScheme
+            {
+              Reference = new OpenApiReference
+              {
+                Type = ReferenceType.SecurityScheme,
+                Id = "Bearer",
+              },
+            },
+            Array.Empty<string>()
+          },
+        }
+      );
+    });
 
     return builder;
   }
 
-  private static WebApplication UseOpenApi(
-    this WebApplication app
-  )
+  private static WebApplication UseOpenApi(this WebApplication app)
   {
     if (!app.Environment.IsDevelopment())
     {
       app.UseMiddleware<OzdsOpenApiAuthorizationMiddleware>();
     }
 
-    app.UseSwagger(
-      c => { c.RouteTemplate = "api/{documentName}/openapi.json"; });
-    app.UseSwaggerUI(
-      c =>
-      {
-        c.SwaggerEndpoint("/api/v1/openapi.json", "V1");
-        c.RoutePrefix = "api/v1/openapi";
+    app.UseSwagger(c =>
+    {
+      c.RouteTemplate = "api/{documentName}/openapi.json";
+    });
+    app.UseSwaggerUI(c =>
+    {
+      c.SwaggerEndpoint("/api/v1/openapi.json", "V1");
+      c.RoutePrefix = "api/v1/openapi";
 
-        if (app.Environment.IsDevelopment())
-        {
-          var apiKey = app.Configuration.GetValue<string>("Ozds:Sdk:ApiKey");
-          c.HeadContent = @"
+      if (app.Environment.IsDevelopment())
+      {
+        var apiKey = app.Configuration.GetValue<string>("Ozds:Sdk:ApiKey");
+        c.HeadContent = @"
           <script>
             console.log('Auth script loaded!');
             window.addEventListener('load', function() {
@@ -181,8 +176,8 @@ public static class HostExtensions
               }, 1000);
             });
           </script>".Replace("API_KEY_HERE", apiKey);
-        }
-      });
+      }
+    });
 
     return app;
   }

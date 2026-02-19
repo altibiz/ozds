@@ -3,11 +3,11 @@ namespace Ozds.Document.Entities;
 public class BlueLowNetworkUserCalculationEntity
   : MeteredNetworkUserCalculationEntity<BlueLowNetworkUserCatalogueEntity>
 {
-  public UsageActiveEnergyTotalImportT0CalculationItemEntity
-    UsageActiveEnergyTotalImportT0 { get; set; } = default!;
+  public UsageActiveEnergyTotalImportT0CalculationItemEntity UsageActiveEnergyTotalImportT0 { get; set; } =
+    default!;
 
-  public UsageReactiveEnergyTotalRampedT0CalculationItemEntity
-    UsageReactiveEnergyTotalRampedT0 { get; set; } = default!;
+  public UsageReactiveEnergyTotalRampedT0CalculationItemEntity UsageReactiveEnergyTotalRampedT0 { get; set; } =
+    default!;
 
   protected override IEnumerable<CalculationItemEntity> AdditionalUsageItems
   {
@@ -16,7 +16,7 @@ public class BlueLowNetworkUserCalculationEntity
       return new CalculationItemEntity[]
       {
         UsageActiveEnergyTotalImportT0,
-        UsageReactiveEnergyTotalRampedT0
+        UsageReactiveEnergyTotalRampedT0,
       };
     }
   }

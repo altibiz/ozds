@@ -5,19 +5,18 @@ using Microsoft.EntityFrameworkCore;
 namespace Ozds.Messaging.Context;
 
 public partial class MessagingDbContext(
-  DbContextOptions<MessagingDbContext> options)
-  : SagaDbContext(options)
+  DbContextOptions<MessagingDbContext> options
+) : SagaDbContext(options)
 {
   protected override IEnumerable<ISagaClassMap> Configurations
   {
     get
     {
-      return typeof(MessagingDbContext).Assembly.GetTypes()
-        .Where(
-          x =>
-            x.IsClass &&
-            !x.IsAbstract &&
-            x.IsAssignableTo(typeof(ISagaClassMap)))
+      return typeof(MessagingDbContext)
+        .Assembly.GetTypes()
+        .Where(x =>
+          x.IsClass && !x.IsAbstract && x.IsAssignableTo(typeof(ISagaClassMap))
+        )
         .Select(Activator.CreateInstance)
         .Cast<ISagaClassMap>();
     }

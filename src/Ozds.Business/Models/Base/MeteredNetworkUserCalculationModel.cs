@@ -5,31 +5,31 @@ using Ozds.Business.Models.Complex;
 
 namespace Ozds.Business.Models.Base;
 
-public abstract class MeteredNetworkUserCalculationModel :
-  NetworkUserCalculationModel,
-  IMeteredNetworkUserCalculation
+public abstract class MeteredNetworkUserCalculationModel
+  : NetworkUserCalculationModel,
+    IMeteredNetworkUserCalculation
 {
   protected abstract IEnumerable<ICalculationItem> AdditionalUsageItems { get; }
 
   [Required]
-  public required UsageMeterFeeCalculationItemModel
-    UsageMeterFee { get; set; } = default!;
+  public required UsageMeterFeeCalculationItemModel UsageMeterFee { get; set; } =
+    default!;
 
   [Required]
-  public required SupplyActiveEnergyTotalImportT1CalculationItemModel
-    SupplyActiveEnergyTotalImportT1 { get; set; } = default!;
+  public required SupplyActiveEnergyTotalImportT1CalculationItemModel SupplyActiveEnergyTotalImportT1 { get; set; } =
+    default!;
 
   [Required]
-  public required SupplyActiveEnergyTotalImportT2CalculationItemModel
-    SupplyActiveEnergyTotalImportT2 { get; set; } = default!;
+  public required SupplyActiveEnergyTotalImportT2CalculationItemModel SupplyActiveEnergyTotalImportT2 { get; set; } =
+    default!;
 
   [Required]
-  public required SupplyBusinessUsageCalculationItemModel
-    SupplyBusinessUsageFee { get; set; } = default!;
+  public required SupplyBusinessUsageCalculationItemModel SupplyBusinessUsageFee { get; set; } =
+    default!;
 
   [Required]
-  public required SupplyRenewableEnergyCalculationItemModel
-    SupplyRenewableEnergyFee { get; set; } = default!;
+  public required SupplyRenewableEnergyCalculationItemModel SupplyRenewableEnergyFee { get; set; } =
+    default!;
 
   [Required]
   public required decimal UsageFeeTotal_EUR { get; set; }
@@ -43,11 +43,7 @@ public abstract class MeteredNetworkUserCalculationModel :
     {
       return AdditionalUsageItems
         .AsEnumerable()
-        .Concat(
-          new ICalculationItem[]
-          {
-            UsageMeterFee
-          });
+        .Concat(new ICalculationItem[] { UsageMeterFee });
     }
   }
 
@@ -60,7 +56,7 @@ public abstract class MeteredNetworkUserCalculationModel :
         SupplyActiveEnergyTotalImportT1,
         SupplyActiveEnergyTotalImportT2,
         SupplyBusinessUsageFee,
-        SupplyRenewableEnergyFee
+        SupplyRenewableEnergyFee,
       };
     }
   }
@@ -77,22 +73,21 @@ public abstract class MeteredNetworkUserCalculationModel :
     {
       var result = ReactiveEnergyAmount_Wh
         .SpanDiff()
-        .Select(
-          duplex =>
-            new AnyDuplexMeasure<decimal>(duplex.DuplexAbs().DuplexSum()))
+        .Select(duplex => new AnyDuplexMeasure<decimal>(
+          duplex.DuplexAbs().DuplexSum()
+        ))
         .Subtract(
           ActiveEnergyAmount_Wh
             .SpanDiff()
-            .Select(
-              duplex =>
-                new AnyDuplexMeasure<decimal>(duplex.DuplexImport()))
-            .Multiply(0.33M));
+            .Select(duplex => new AnyDuplexMeasure<decimal>(
+              duplex.DuplexImport()
+            ))
+            .Multiply(0.33M)
+        );
 
-      return result
-        .Select(
-          duplex => duplex.DuplexAny().PhaseSum() < 0
-            ? DuplexMeasure<decimal>.Null
-            : duplex);
+      return result.Select(duplex =>
+        duplex.DuplexAny().PhaseSum() < 0 ? DuplexMeasure<decimal>.Null : duplex
+      );
     }
   }
 
@@ -107,38 +102,45 @@ public abstract class MeteredNetworkUserCalculationModel :
     get
     {
       return new DualExpenditureMeasure<decimal>(
-        ActiveEnergyAmount_Wh.SpanDiff()
+        ActiveEnergyAmount_Wh
+          .SpanDiff()
           .Multiply(ActiveEnergyPrice_EUR.ExpenditureUsage())
           .Add(
             ReactiveEnergyRampedAmount_Wh.Multiply(
-              ReactiveEnergyPrice_EUR
-                .ExpenditureUsage()))
+              ReactiveEnergyPrice_EUR.ExpenditureUsage()
+            )
+          )
           .Add(
-            ActivePowerAmount_W.SpanDiff().Multiply(
-              ActivePowerPrice_EUR
-                .ExpenditureUsage())),
-        ActiveEnergyAmount_Wh.SpanDiff()
+            ActivePowerAmount_W
+              .SpanDiff()
+              .Multiply(ActivePowerPrice_EUR.ExpenditureUsage())
+          ),
+        ActiveEnergyAmount_Wh
+          .SpanDiff()
           .Multiply(ActiveEnergyPrice_EUR.ExpenditureSupply())
           .Add(
             ReactiveEnergyRampedAmount_Wh.Multiply(
-              ReactiveEnergyPrice_EUR
-                .ExpenditureSupply()))
+              ReactiveEnergyPrice_EUR.ExpenditureSupply()
+            )
+          )
           .Add(
-            ActivePowerAmount_W.SpanDiff().Multiply(
-              ActivePowerPrice_EUR
-                .ExpenditureSupply()))
+            ActivePowerAmount_W
+              .SpanDiff()
+              .Multiply(ActivePowerPrice_EUR.ExpenditureSupply())
+          )
       );
     }
   }
 }
 
 public abstract class MeteredNetworkUserCalculationModel<TNetworkUserCatalogue>
-  : MeteredNetworkUserCalculationModel, IMeteredNetworkUserCalculation
+  : MeteredNetworkUserCalculationModel,
+    IMeteredNetworkUserCalculation
   where TNetworkUserCatalogue : NetworkUserCatalogueModel
 {
   [Required]
-  public required TNetworkUserCatalogue
-    ConcreteArchivedUsageNetworkUserCatalogue { get; set; } = default!;
+  public required TNetworkUserCatalogue ConcreteArchivedUsageNetworkUserCatalogue { get; set; } =
+    default!;
 
   public override NetworkUserCatalogueModel ArchivedUsageNetworkUserCatalogue
   {

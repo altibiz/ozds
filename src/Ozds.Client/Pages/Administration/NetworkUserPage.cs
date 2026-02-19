@@ -13,15 +13,15 @@ public partial class NetworkUserPage
 {
   private DateTime invoiceSelectedMonth =
     // NOTE: just so something is there
-    DateTimeOffset.Parse(
-      "2000-01-01T00:00:00Z",
-      CultureInfo.InvariantCulture).DateTime;
+    DateTimeOffset
+      .Parse("2000-01-01T00:00:00Z", CultureInfo.InvariantCulture)
+      .DateTime;
 
   private DateTime monthlyAggregatesSelectedMonth =
     // NOTE: just so something is there
-    DateTimeOffset.Parse(
-      "2000-01-01T00:00:00Z",
-      CultureInfo.InvariantCulture).DateTime;
+    DateTimeOffset
+      .Parse("2000-01-01T00:00:00Z", CultureInfo.InvariantCulture)
+      .DateTime;
 
   [Parameter]
   public string? Id { get; set; }
@@ -75,14 +75,9 @@ public partial class NetworkUserPage
       invoiceSelectedMonth.Month
     );
 
-    var issuer = ScopedServices
-      .GetRequiredService<NetworkUserInvoiceMutations>();
-    var invoice = await issuer.Create(
-      id,
-      dateFrom,
-      dateTo,
-      CancellationToken
-    );
+    var issuer =
+      ScopedServices.GetRequiredService<NetworkUserInvoiceMutations>();
+    var invoice = await issuer.Create(id, dateFrom, dateTo, CancellationToken);
 
     NavigateToPage<NetworkUserInvoicePage>(new { invoice.Invoice.Id });
   }

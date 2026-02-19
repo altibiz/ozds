@@ -17,30 +17,30 @@
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(Label(next)))">
-      <MudText>
-        @nextFunc(Model)
-      </MudText>
-    </DetailsField>;
+             <MudText>
+               @nextFunc(Model)
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment Field(Expression<Func<TModel, Enum?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(Label(next)))">
-      <MudText>
-        @nextFunc(Model)
-      </MudText>
-    </DetailsField>;
+             <MudText>
+               @nextFunc(Model)
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment Field(Expression<Func<TModel, decimal?>> next, int decimalPlaces = 2)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(Label(next)))">
-      <MudText>
-        @NumericString(nextFunc(Model), decimalPlaces)
-      </MudText>
-    </DetailsField>;
+             <MudText>
+               @NumericString(nextFunc(Model), decimalPlaces)
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment Field(Expression<Func<TModel, bool?>> next)
@@ -48,52 +48,52 @@
     var nextFunc = next.Compile();
     var value = nextFunc(Model);
     return @<DetailsField Title="@(Translate(Label(next)))">
-      <MudText>
-        @if (value is bool @bool)
-        {
-          @if (@bool)
-          {
-            <MudIcon
-              Color="@Color.Success"
-              Icon="@Icons.Material.Filled.Check"/>
-          }
-          else
-          {
-            <MudIcon
-              Color="@Color.Error"
-              Icon="@Icons.Material.Filled.Cancel"/>
-          }
-        }
-        else
-        {
-          <MudIcon
-            Color="@Color.Warning"
-            Icon="@Icons.Material.Filled.QuestionMark"/>
-        }
-      </MudText>
-    </DetailsField>;
+             <MudText>
+               @if (value is bool @bool)
+               {
+                 @if (@bool)
+                 {
+                   <MudIcon
+                     Color="@Color.Success"
+                     Icon="@Icons.Material.Filled.Check"/>
+                 }
+                 else
+                 {
+                   <MudIcon
+                     Color="@Color.Error"
+                     Icon="@Icons.Material.Filled.Cancel"/>
+                 }
+               }
+               else
+               {
+                 <MudIcon
+                   Color="@Color.Warning"
+                   Icon="@Icons.Material.Filled.QuestionMark"/>
+               }
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment Field(Expression<Func<TModel, DateTimeOffset?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(Label(next)))">
-      <MudText>
-        @DateTimeString(nextFunc(Model))
-      </MudText>
-    </DetailsField>;
+             <MudText>
+               @DateTimeString(nextFunc(Model))
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment Field(Expression<Func<TModel, JsonDocument?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(Label(next)))" LargeContent>
-      <MudText>
-        <pre>
+             <MudText>
+               <pre>
           @JsonString(nextFunc(Model))
         </pre>
-      </MudText>
-    </DetailsField>;
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment Field<T>(
@@ -102,63 +102,63 @@
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(Label(next)))">
-      <MudText>
-        @if (nextFunc(Model) is { } model)
-        {
-          if (model is IEnumerable<Enum> enums)
-          {
-            @(string.Join(
-              ", ", enums
-                .Select(x => Translate(x.ToString()))))
-          }
-          else
-          {
-            @string.Join(", ", model)
-          }
-        }
-        else
-        {
-          @Translate("None")
-        }
-      </MudText>
-    </DetailsField>;
+             <MudText>
+               @if (nextFunc(Model) is { } model)
+               {
+                 if (model is IEnumerable<Enum> enums)
+                 {
+                   @(string.Join(
+                     ", ", enums
+                       .Select(x => Translate(x.ToString()))))
+                 }
+                 else
+                 {
+                   @string.Join(", ", model)
+                 }
+               }
+               else
+               {
+                 @Translate("None")
+               }
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment TextField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(Label(next)))">
-      <MudText>
-        @nextFunc(Model)
-      </MudText>
-    </DetailsField>;
+             <MudText>
+               @nextFunc(Model)
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment HtmlField(Expression<Func<TModel, string?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(Label(next)))" LargeContent>
-      @if (nextFunc(Model) is { } html)
-      {
-        @(new MarkupString(html))
-      }
-      else
-      {
-        @Translate("None")
-      }
-    </DetailsField>;
+             @if (nextFunc(Model) is { } html)
+             {
+               @(new MarkupString(html))
+             }
+             else
+             {
+               @Translate("None")
+             }
+           </DetailsField>;
   }
 
   protected RenderFragment PreField<T>(Expression<Func<TModel, T?>> next)
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(Label(next)))" LargeContent>
-      <MudText>
-        <pre>
+             <MudText>
+               <pre>
           @nextFunc(Model)
         </pre>
-      </MudText>
-    </DetailsField>;
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment NumericField<T>(Expression<Func<TModel, T?>> next, int decimalPlaces = 2)
@@ -166,24 +166,24 @@
     var nextFunc = next.Compile();
     var value = nextFunc(Model);
     return @<DetailsField Title="@(Translate(Label(next)))">
-      <MudText>
-        @if (value is decimal @decimal)
-        {
-          @NumericString(@decimal, decimalPlaces)
-        }
-        else
-        {
-          if (value is not null)
-          {
-            @value
-          }
-          else
-          {
-            @Translate("None")
-          }
-        }
-      </MudText>
-    </DetailsField>;
+             <MudText>
+               @if (value is decimal @decimal)
+               {
+                 @NumericString(@decimal, decimalPlaces)
+               }
+               else
+               {
+                 if (value is not null)
+                 {
+                   @value
+                 }
+                 else
+                 {
+                   @Translate("None")
+                 }
+               }
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment BoolField<T>(Expression<Func<TModel, T?>> next)
@@ -191,30 +191,30 @@
     var nextFunc = next.Compile();
     var value = nextFunc(Model);
     return @<DetailsField Title="@(Translate(Label(next)))">
-      <MudText>
-        @if (value is bool @bool)
-        {
-          if (@bool)
-          {
-            <MudIcon
-              Color="@Color.Success"
-              Icon="@Icons.Material.Filled.Check"/>
-          }
-          else
-          {
-            <MudIcon
-              Color="@Color.Error"
-              Icon="@Icons.Material.Filled.Cancel"/>
-          }
-        }
-        else
-        {
-          <MudIcon
-            Color="@Color.Warning"
-            Icon="@Icons.Material.Filled.QuestionMark"/>
-        }
-      </MudText>
-    </DetailsField>;
+             <MudText>
+               @if (value is bool @bool)
+               {
+                 if (@bool)
+                 {
+                   <MudIcon
+                     Color="@Color.Success"
+                     Icon="@Icons.Material.Filled.Check"/>
+                 }
+                 else
+                 {
+                   <MudIcon
+                     Color="@Color.Error"
+                     Icon="@Icons.Material.Filled.Cancel"/>
+                 }
+               }
+               else
+               {
+                 <MudIcon
+                   Color="@Color.Warning"
+                   Icon="@Icons.Material.Filled.QuestionMark"/>
+               }
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment DateTimeField<T>(Expression<Func<TModel, T?>> next)
@@ -222,24 +222,24 @@
     var nextFunc = next.Compile();
     var value = nextFunc(Model);
     return @<DetailsField Title="@(Translate(Label(next)))">
-      <MudText>
-        @if (value is DateTimeOffset @decimal)
-        {
-          @DateTimeString(@decimal)
-        }
-        else
-        {
-          if (value is not null)
-          {
-            @value
-          }
-          else
-          {
-            @Translate("None")
-          }
-        }
-      </MudText>
-    </DetailsField>;
+             <MudText>
+               @if (value is DateTimeOffset @decimal)
+               {
+                 @DateTimeString(@decimal)
+               }
+               else
+               {
+                 if (value is not null)
+                 {
+                   @value
+                 }
+                 else
+                 {
+                   @Translate("None")
+                 }
+               }
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment DateField<T>(Expression<Func<TModel, T?>> next)
@@ -247,24 +247,24 @@
     var nextFunc = next.Compile();
     var value = nextFunc(Model);
     return @<DetailsField Title="@(Translate(Label(next)))">
-      <MudText>
-        @if (value is DateTimeOffset @decimal)
-        {
-          @DateString(@decimal)
-        }
-        else
-        {
-          if (value is not null)
-          {
-            @value
-          }
-          else
-          {
-            @Translate("None")
-          }
-        }
-      </MudText>
-    </DetailsField>;
+             <MudText>
+               @if (value is DateTimeOffset @decimal)
+               {
+                 @DateString(@decimal)
+               }
+               else
+               {
+                 if (value is not null)
+                 {
+                   @value
+                 }
+                 else
+                 {
+                   @Translate("None")
+                 }
+               }
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment JsonField<T>(Expression<Func<TModel, T?>> next)
@@ -272,8 +272,8 @@
     var nextFunc = next.Compile();
     var value = nextFunc(Model);
     return @<DetailsField Title="@(Translate(Label(next)))" LargeContent>
-      <MudText>
-        <pre>
+             <MudText>
+               <pre>
           @if (value is JsonDocument @decimal)
           {
             @JsonString(@decimal)
@@ -290,8 +290,8 @@
             }
           }
         </pre>
-      </MudText>
-    </DetailsField>;
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment EnumerableField<T>(
@@ -300,17 +300,17 @@
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(Label(next)))">
-      <MudText>
-        @if (nextFunc(Model) is IEnumerable model)
-        {
-          @string.Join(", ", model)
-        }
-        else
-        {
-          @Translate("None")
-        }
-      </MudText>
-    </DetailsField>;
+             <MudText>
+               @if (nextFunc(Model) is IEnumerable model)
+               {
+                 @string.Join(", ", model)
+               }
+               else
+               {
+                 @Translate("None")
+               }
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment EnumerableEnumField<T>(
@@ -319,19 +319,19 @@
   {
     var nextFunc = next.Compile();
     return @<DetailsField Title="@(Translate(Label(next)))">
-      <MudText>
-        @if (nextFunc(Model) is IEnumerable<Enum> model)
-        {
-          @(string.Join(
-            ", ", model
-              .Select(x => Translate(x.ToString()))))
-        }
-        else
-        {
-          @Translate("None")
-        }
-      </MudText>
-    </DetailsField>;
+             <MudText>
+               @if (nextFunc(Model) is IEnumerable<Enum> model)
+               {
+                 @(string.Join(
+                   ", ", model
+                     .Select(x => Translate(x.ToString()))))
+               }
+               else
+               {
+                 @Translate("None")
+               }
+             </MudText>
+           </DetailsField>;
   }
 
   protected RenderFragment LinkField<T>(
@@ -345,17 +345,17 @@
       ? null
       : PageHref(Provider.GetPageComponentType(typeof(T)), new { id });
     return @<DetailsField Title="@(Translate(Label(next)))">
-      @if (id is null || href is null)
-      {
-        @Translate("None")
-      }
-      else
-      {
-        <MudLink Href="@href">
-          @id
-        </MudLink>
-      }
-    </DetailsField>;
+             @if (id is null || href is null)
+             {
+               @Translate("None")
+             }
+             else
+             {
+               <MudLink Href="@href">
+                 @id
+               </MudLink>
+             }
+           </DetailsField>;
   }
 
   protected RenderFragment PolymorphicLinkField(
@@ -371,17 +371,17 @@
       ? null
       : PageHref(Provider.GetPageComponentType(ty), new { id });
     return @<DetailsField Title="@(Translate(Label(next)))">
-      @if (id is null || href is null || ty is null)
-      {
-        @Translate("None")
-      }
-      else
-      {
-        <MudLink Href="@href">
-          @Translate(ty) @id
-        </MudLink>
-      }
-    </DetailsField>;
+             @if (id is null || href is null || ty is null)
+             {
+               @Translate("None")
+             }
+             else
+             {
+               <MudLink Href="@href">
+                 @Translate(ty) @id
+               </MudLink>
+             }
+           </DetailsField>;
   }
 
   protected RenderFragment ArchivedField<T>(
@@ -391,8 +391,8 @@
     var nextFunc = next.Compile();
     var archived = nextFunc(Model);
     return @<CollapseField Title="@(Translate(Label(next)))">
-      <Details Model="@archived"/>
-    </CollapseField>;
+             <Details Model="@archived"/>
+           </CollapseField>;
   }
 
 }

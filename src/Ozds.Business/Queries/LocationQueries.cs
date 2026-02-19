@@ -11,15 +11,14 @@ public class LocationQueries(
   ModelEntityConverter modelEntityConverter
 ) : IQueries
 {
-  public async Task<PaginatedList<LocationModel>>
-    ReadByRepresentativeId(
-      string representativeId,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      int pageSize = QueryConstants.DefaultPageCount,
-      bool deleted = false,
-      string? title = null
-    )
+  public async Task<PaginatedList<LocationModel>> ReadByRepresentativeId(
+    string representativeId,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageSize = QueryConstants.DefaultPageCount,
+    bool deleted = false,
+    string? title = null
+  )
   {
     var entities = await dataLocationQueries.ReadByRepresentativeId(
       representativeId,
@@ -31,8 +30,7 @@ public class LocationQueries(
     );
 
     var models = entities
-      .Items
-      .Select(modelEntityConverter.ToModel<LocationModel>)
+      .Items.Select(modelEntityConverter.ToModel<LocationModel>)
       .ToPaginatedList(entities.TotalCount);
 
     return models;
@@ -61,16 +59,17 @@ public class LocationQueries(
     return model;
   }
 
-  public async Task<PaginatedList<LocationModel>>
-    ReadIndirectByRepresentativeId(
-      string representativeId,
-      RoleModel role,
-      int pageNumber,
-      CancellationToken cancellationToken,
-      int pageSize = QueryConstants.DefaultPageCount,
-      bool deleted = false,
-      string? title = null
-    )
+  public async Task<
+    PaginatedList<LocationModel>
+  > ReadIndirectByRepresentativeId(
+    string representativeId,
+    RoleModel role,
+    int pageNumber,
+    CancellationToken cancellationToken,
+    int pageSize = QueryConstants.DefaultPageCount,
+    bool deleted = false,
+    string? title = null
+  )
   {
     var entities = await dataLocationQueries.ReadIndirectByRepresentativeId(
       representativeId,
@@ -83,8 +82,7 @@ public class LocationQueries(
     );
 
     var models = entities
-      .Items
-      .Select(modelEntityConverter.ToModel<LocationModel>)
+      .Items.Select(modelEntityConverter.ToModel<LocationModel>)
       .ToPaginatedList(entities.TotalCount);
 
     return models;

@@ -5,5 +5,5 @@ public enum DuplexEntity
   Any,
   Net,
   Import,
-  Export
+  Export,
 }
