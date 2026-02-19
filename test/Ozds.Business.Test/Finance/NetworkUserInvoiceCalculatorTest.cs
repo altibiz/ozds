@@ -9,6 +9,8 @@ using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries;
 using Ozds.Time.Queries.Abstractions;
 
+using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
+
 // NITPICK: test issuer and date
 
 namespace Ozds.Business.Test.Finance;
@@ -101,80 +103,66 @@ public class NetworkUserInvoiceCalculatorTest
 
                 var faker = new Faker();
 
-                x.UsageActiveEnergyTotalImportT0.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.UsageActiveEnergyTotalImportT0.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
 
-                x.UsageReactiveEnergyTotalRampedT0.Total_EUR =
-                  System.Math.Round(
+                  x.UsageReactiveEnergyTotalRampedT0.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
+
+                  x.UsageMeterFee.Total_EUR = Round(
                     faker.Random.Decimal(
                       Constants.MinTotalValue,
-                      Constants.MaxTotalValue
-                    ),
-                    2
-                  );
+                      Constants.MaxTotalValue),
+                    2);
 
-                x.UsageMeterFee.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.SupplyActiveEnergyTotalImportT1.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
 
-                x.SupplyActiveEnergyTotalImportT1.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.SupplyActiveEnergyTotalImportT2.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
 
-                x.SupplyActiveEnergyTotalImportT2.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.SupplyBusinessUsageFee.Total_EUR = Round(
+                    faker.Random.Decimal(
+                      Constants.MinTotalValue,
+                      Constants.MaxTotalValue),
+                    2);
 
-                x.SupplyBusinessUsageFee.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.SupplyRenewableEnergyFee.Total_EUR = Round(
+                    faker.Random.Decimal(
+                      Constants.MinTotalValue,
+                      Constants.MaxTotalValue),
+                    2);
 
-                x.SupplyRenewableEnergyFee.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
-
-                x.UsageFeeTotal_EUR = System.Math.Round(
-                  x.UsageActiveEnergyTotalImportT0.Total
+                  x.UsageFeeTotal_EUR = Round(
+                    x.UsageActiveEnergyTotalImportT0.Total
                     + x.UsageReactiveEnergyTotalRampedT0.Total
                     + x.UsageMeterFee.Total,
-                  2
-                );
-                x.SupplyFeeTotal_EUR = System.Math.Round(
-                  x.SupplyActiveEnergyTotalImportT1.Total
+                    2);
+                  x.SupplyFeeTotal_EUR = Round(
+                    x.SupplyActiveEnergyTotalImportT1.Total
                     + x.SupplyActiveEnergyTotalImportT2.Total
                     + x.SupplyBusinessUsageFee.Total
                     + x.SupplyRenewableEnergyFee.Total,
-                  2
-                );
-                x.Total_EUR = System.Math.Round(
-                  x.SupplyFeeTotal_EUR + x.UsageFeeTotal_EUR,
-                  2
-                );
+                    2);
+                  x.Total_EUR = Round(
+                    x.SupplyFeeTotal_EUR + x.UsageFeeTotal_EUR,
+                    2);
 
                 return x;
               })
@@ -221,99 +209,82 @@ public class NetworkUserInvoiceCalculatorTest
 
                 var faker = new Faker();
 
-                x.UsageActiveEnergyTotalImportT1.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.UsageActiveEnergyTotalImportT1.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
 
-                x.UsageActiveEnergyTotalImportT2.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.UsageActiveEnergyTotalImportT2.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
 
-                x.UsageReactiveEnergyTotalRampedT0.Total_EUR =
-                  System.Math.Round(
+                  x.UsageReactiveEnergyTotalRampedT0.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
+
+                  x.UsageActivePowerTotalImportT1Peak.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
+
+                  x.UsageMeterFee.Total_EUR = Round(
                     faker.Random.Decimal(
                       Constants.MinTotalValue,
-                      Constants.MaxTotalValue
-                    ),
-                    2
-                  );
+                      Constants.MaxTotalValue),
+                    2);
 
-                x.UsageActivePowerTotalImportT1Peak.Total_EUR =
-                  System.Math.Round(
+                  x.SupplyActiveEnergyTotalImportT1.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
+
+                  x.SupplyActiveEnergyTotalImportT2.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
+
+                  x.SupplyBusinessUsageFee.Total_EUR = Round(
                     faker.Random.Decimal(
                       Constants.MinTotalValue,
-                      Constants.MaxTotalValue
-                    ),
-                    2
-                  );
+                      Constants.MaxTotalValue),
+                    2);
 
-                x.UsageMeterFee.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.SupplyRenewableEnergyFee.Total_EUR = Round(
+                    faker.Random.Decimal(
+                      Constants.MinTotalValue,
+                      Constants.MaxTotalValue),
+                    2);
 
-                x.SupplyActiveEnergyTotalImportT1.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
-
-                x.SupplyActiveEnergyTotalImportT2.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
-
-                x.SupplyBusinessUsageFee.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
-
-                x.SupplyRenewableEnergyFee.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
-
-                x.UsageFeeTotal_EUR = System.Math.Round(
-                  x.UsageActiveEnergyTotalImportT1.Total
+                  x.UsageFeeTotal_EUR = Round(
+                    x.UsageActiveEnergyTotalImportT1.Total
                     + x.UsageActiveEnergyTotalImportT2.Total
                     + x.UsageActivePowerTotalImportT1Peak.Total
                     + x.UsageReactiveEnergyTotalRampedT0.Total
                     + x.UsageMeterFee.Total,
-                  2
-                );
-                x.SupplyFeeTotal_EUR = System.Math.Round(
-                  x.SupplyActiveEnergyTotalImportT1.Total
+                    2);
+                  x.SupplyFeeTotal_EUR = Round(
+                    x.SupplyActiveEnergyTotalImportT1.Total
                     + x.SupplyActiveEnergyTotalImportT2.Total
                     + x.SupplyBusinessUsageFee.Total
                     + x.SupplyRenewableEnergyFee.Total,
-                  2
-                );
-                x.Total_EUR = System.Math.Round(
-                  x.SupplyFeeTotal_EUR + x.UsageFeeTotal_EUR,
-                  2
-                );
+                    2);
+                  x.Total_EUR = Round(
+                    x.SupplyFeeTotal_EUR + x.UsageFeeTotal_EUR,
+                    2);
 
                 return x;
               })
@@ -360,89 +331,74 @@ public class NetworkUserInvoiceCalculatorTest
 
                 var faker = new Faker();
 
-                x.UsageActiveEnergyTotalImportT1.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.UsageActiveEnergyTotalImportT1.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
 
-                x.UsageActiveEnergyTotalImportT2.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.UsageActiveEnergyTotalImportT2.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
 
-                x.UsageReactiveEnergyTotalRampedT0.Total_EUR =
-                  System.Math.Round(
+                  x.UsageReactiveEnergyTotalRampedT0.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
+
+                  x.UsageMeterFee.Total_EUR = Round(
                     faker.Random.Decimal(
                       Constants.MinTotalValue,
-                      Constants.MaxTotalValue
-                    ),
-                    2
-                  );
+                      Constants.MaxTotalValue),
+                    2);
 
-                x.UsageMeterFee.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.SupplyActiveEnergyTotalImportT1.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
 
-                x.SupplyActiveEnergyTotalImportT1.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.SupplyActiveEnergyTotalImportT2.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
 
-                x.SupplyActiveEnergyTotalImportT2.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.SupplyBusinessUsageFee.Total_EUR = Round(
+                    faker.Random.Decimal(
+                      Constants.MinTotalValue,
+                      Constants.MaxTotalValue),
+                    2);
 
-                x.SupplyBusinessUsageFee.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.SupplyRenewableEnergyFee.Total_EUR = Round(
+                    faker.Random.Decimal(
+                      Constants.MinTotalValue,
+                      Constants.MaxTotalValue),
+                    2);
 
-                x.SupplyRenewableEnergyFee.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
-
-                x.UsageFeeTotal_EUR = System.Math.Round(
-                  x.UsageActiveEnergyTotalImportT1.Total
+                  x.UsageFeeTotal_EUR = Round(
+                    x.UsageActiveEnergyTotalImportT1.Total
                     + x.UsageActiveEnergyTotalImportT2.Total
                     + x.UsageReactiveEnergyTotalRampedT0.Total
                     + x.UsageMeterFee.Total,
-                  2
-                );
-                x.SupplyFeeTotal_EUR = System.Math.Round(
-                  x.SupplyActiveEnergyTotalImportT1.Total
+                    2);
+                  x.SupplyFeeTotal_EUR = Round(
+                    x.SupplyActiveEnergyTotalImportT1.Total
                     + x.SupplyActiveEnergyTotalImportT2.Total
                     + x.SupplyBusinessUsageFee.Total
                     + x.SupplyRenewableEnergyFee.Total,
-                  2
-                );
-                x.Total_EUR = System.Math.Round(
-                  x.SupplyFeeTotal_EUR + x.UsageFeeTotal_EUR,
-                  2
-                );
+                    2);
+                  x.Total_EUR = Round(
+                    x.SupplyFeeTotal_EUR + x.UsageFeeTotal_EUR,
+                    2);
 
                 return x;
               })
@@ -489,99 +445,82 @@ public class NetworkUserInvoiceCalculatorTest
 
                 var faker = new Faker();
 
-                x.UsageActiveEnergyTotalImportT1.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.UsageActiveEnergyTotalImportT1.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
 
-                x.UsageActiveEnergyTotalImportT2.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.UsageActiveEnergyTotalImportT2.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
 
-                x.UsageReactiveEnergyTotalRampedT0.Total_EUR =
-                  System.Math.Round(
+                  x.UsageReactiveEnergyTotalRampedT0.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
+
+                  x.UsageActivePowerTotalImportT1Peak.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
+
+                  x.UsageMeterFee.Total_EUR = Round(
                     faker.Random.Decimal(
                       Constants.MinTotalValue,
-                      Constants.MaxTotalValue
-                    ),
-                    2
-                  );
+                      Constants.MaxTotalValue),
+                    2);
 
-                x.UsageActivePowerTotalImportT1Peak.Total_EUR =
-                  System.Math.Round(
+                  x.SupplyActiveEnergyTotalImportT1.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
+
+                  x.SupplyActiveEnergyTotalImportT2.Total_EUR =
+                    Round(
+                      faker.Random.Decimal(
+                        Constants.MinTotalValue,
+                        Constants.MaxTotalValue),
+                      2);
+
+                  x.SupplyBusinessUsageFee.Total_EUR = Round(
                     faker.Random.Decimal(
                       Constants.MinTotalValue,
-                      Constants.MaxTotalValue
-                    ),
-                    2
-                  );
+                      Constants.MaxTotalValue),
+                    2);
 
-                x.UsageMeterFee.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
+                  x.SupplyRenewableEnergyFee.Total_EUR = Round(
+                    faker.Random.Decimal(
+                      Constants.MinTotalValue,
+                      Constants.MaxTotalValue),
+                    2);
 
-                x.SupplyActiveEnergyTotalImportT1.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
-
-                x.SupplyActiveEnergyTotalImportT2.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
-
-                x.SupplyBusinessUsageFee.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
-
-                x.SupplyRenewableEnergyFee.Total_EUR = System.Math.Round(
-                  faker.Random.Decimal(
-                    Constants.MinTotalValue,
-                    Constants.MaxTotalValue
-                  ),
-                  2
-                );
-
-                x.UsageFeeTotal_EUR = System.Math.Round(
-                  x.UsageActiveEnergyTotalImportT1.Total
+                  x.UsageFeeTotal_EUR = Round(
+                    x.UsageActiveEnergyTotalImportT1.Total
                     + x.UsageActiveEnergyTotalImportT2.Total
                     + x.UsageActivePowerTotalImportT1Peak.Total
                     + x.UsageReactiveEnergyTotalRampedT0.Total
                     + x.UsageMeterFee.Total,
-                  2
-                );
-                x.SupplyFeeTotal_EUR = System.Math.Round(
-                  x.SupplyActiveEnergyTotalImportT1.Total
+                    2);
+                  x.SupplyFeeTotal_EUR = Round(
+                    x.SupplyActiveEnergyTotalImportT1.Total
                     + x.SupplyActiveEnergyTotalImportT2.Total
                     + x.SupplyBusinessUsageFee.Total
                     + x.SupplyRenewableEnergyFee.Total,
-                  2
-                );
-                x.Total_EUR = System.Math.Round(
-                  x.SupplyFeeTotal_EUR + x.UsageFeeTotal_EUR,
-                  2
-                );
+                    2);
+                  x.Total_EUR = Round(
+                    x.SupplyFeeTotal_EUR + x.UsageFeeTotal_EUR,
+                    2);
 
                 return x;
               })
@@ -647,62 +586,69 @@ public class NetworkUserInvoiceCalculatorTest
         x.Invoice.Remark = x.Invoice.ArchivedNetworkUser.InvoiceRemark;
         x.Invoice.BillId = null;
 
-        x.Invoice.UsageActiveEnergyTotalImportT0Fee_EUR = System.Math.Round(
-          x.Calculations.OfType<MeteredNetworkUserCalculationModel>()
-            .SelectMany(calculation =>
-              calculation.UsageItems.OfType<UsageActiveEnergyTotalImportT0CalculationItemModel>()
-            )
-            .Sum(item => item.Total),
-          2
-        );
+          x.Invoice.UsageActiveEnergyTotalImportT0Fee_EUR = Round(
+            x.Calculations
+              .OfType<MeteredNetworkUserCalculationModel>()
+              .SelectMany(
+                calculation => calculation.UsageItems
+                  .OfType<
+                    UsageActiveEnergyTotalImportT0CalculationItemModel>())
+              .Sum(item => item.Total),
+            2);
 
-        x.Invoice.UsageActiveEnergyTotalImportT1Fee_EUR = System.Math.Round(
-          x.Calculations.OfType<MeteredNetworkUserCalculationModel>()
-            .SelectMany(calculation =>
-              calculation.UsageItems.OfType<UsageActiveEnergyTotalImportT1CalculationItemModel>()
-            )
-            .Sum(item => item.Total),
-          2
-        );
+          x.Invoice.UsageActiveEnergyTotalImportT1Fee_EUR = Round(
+            x.Calculations
+              .OfType<MeteredNetworkUserCalculationModel>()
+              .SelectMany(
+                calculation => calculation.UsageItems
+                  .OfType<
+                    UsageActiveEnergyTotalImportT1CalculationItemModel>())
+              .Sum(item => item.Total),
+            2);
 
-        x.Invoice.UsageActiveEnergyTotalImportT2Fee_EUR = System.Math.Round(
-          x.Calculations.OfType<MeteredNetworkUserCalculationModel>()
-            .SelectMany(calculation =>
-              calculation.UsageItems.OfType<UsageActiveEnergyTotalImportT2CalculationItemModel>()
-            )
-            .Sum(item => item.Total),
-          2
-        );
+          x.Invoice.UsageActiveEnergyTotalImportT2Fee_EUR = Round(
+            x.Calculations
+              .OfType<MeteredNetworkUserCalculationModel>()
+              .SelectMany(
+                calculation => calculation.UsageItems
+                  .OfType<
+                    UsageActiveEnergyTotalImportT2CalculationItemModel>())
+              .Sum(item => item.Total),
+            2);
 
-        x.Invoice.UsageActivePowerTotalImportT1PeakFee_EUR = System.Math.Round(
-          x.Calculations.OfType<MeteredNetworkUserCalculationModel>()
-            .SelectMany(calculation =>
-              calculation.UsageItems.OfType<UsageActivePowerTotalImportT1PeakCalculationItemModel>()
-            )
-            .Sum(item => item.Total),
-          2
-        );
+          x.Invoice.UsageActivePowerTotalImportT1PeakFee_EUR =
+            Round(
+              x.Calculations
+                .OfType<MeteredNetworkUserCalculationModel>()
+                .SelectMany(
+                  calculation => calculation.UsageItems
+                    .OfType<
+                      UsageActivePowerTotalImportT1PeakCalculationItemModel>())
+                .Sum(item => item.Total),
+              2);
 
-        x.Invoice.UsageReactiveEnergyTotalRampedT0Fee_EUR = System.Math.Round(
-          x.Calculations.OfType<MeteredNetworkUserCalculationModel>()
-            .SelectMany(calculation =>
-              calculation.UsageItems.OfType<UsageReactiveEnergyTotalRampedT0CalculationItemModel>()
-            )
-            .Sum(item => item.Total),
-          2
-        );
+          x.Invoice.UsageReactiveEnergyTotalRampedT0Fee_EUR =
+            Round(
+              x.Calculations
+                .OfType<MeteredNetworkUserCalculationModel>()
+                .SelectMany(
+                  calculation => calculation.UsageItems
+                    .OfType<
+                      UsageReactiveEnergyTotalRampedT0CalculationItemModel>())
+                .Sum(item => item.Total),
+              2);
 
-        x.Invoice.UsageMeterFee_EUR = System.Math.Round(
-          x.Calculations.OfType<MeteredNetworkUserCalculationModel>()
-            .SelectMany(calculation =>
-              calculation.UsageItems.OfType<UsageMeterFeeCalculationItemModel>()
-            )
-            .Sum(item => item.Total),
-          2
-        );
+          x.Invoice.UsageMeterFee_EUR = Round(
+            x.Calculations
+              .OfType<MeteredNetworkUserCalculationModel>()
+              .SelectMany(
+                calculation => calculation.UsageItems
+                  .OfType<UsageMeterFeeCalculationItemModel>())
+              .Sum(item => item.Total),
+            2);
 
-        x.Invoice.UsageFeeTotal_EUR = System.Math.Round(
-          x.Invoice.UsageActiveEnergyTotalImportT0Fee_EUR
+          x.Invoice.UsageFeeTotal_EUR = Round(
+            x.Invoice.UsageActiveEnergyTotalImportT0Fee_EUR
             + x.Invoice.UsageActiveEnergyTotalImportT1Fee_EUR
             + x.Invoice.UsageActiveEnergyTotalImportT2Fee_EUR
             + x.Invoice.UsageActivePowerTotalImportT1PeakFee_EUR
@@ -711,66 +657,66 @@ public class NetworkUserInvoiceCalculatorTest
           2
         );
 
-        x.Invoice.SupplyActiveEnergyTotalImportT1Fee_EUR = System.Math.Round(
-          x.Calculations.OfType<MeteredNetworkUserCalculationModel>()
-            .SelectMany(calculation =>
-              calculation.SupplyItems.OfType<SupplyActiveEnergyTotalImportT1CalculationItemModel>()
-            )
-            .Sum(item => item.Total),
-          2
-        );
+          x.Invoice.SupplyActiveEnergyTotalImportT1Fee_EUR =
+            Round(
+              x.Calculations
+                .OfType<MeteredNetworkUserCalculationModel>()
+                .SelectMany(
+                  calculation => calculation.SupplyItems
+                    .OfType<
+                      SupplyActiveEnergyTotalImportT1CalculationItemModel>())
+                .Sum(item => item.Total),
+              2);
 
-        x.Invoice.SupplyActiveEnergyTotalImportT2Fee_EUR = System.Math.Round(
-          x.Calculations.OfType<MeteredNetworkUserCalculationModel>()
-            .SelectMany(calculation =>
-              calculation.SupplyItems.OfType<SupplyActiveEnergyTotalImportT2CalculationItemModel>()
-            )
-            .Sum(item => item.Total),
-          2
-        );
+          x.Invoice.SupplyActiveEnergyTotalImportT2Fee_EUR =
+            Round(
+              x.Calculations
+                .OfType<MeteredNetworkUserCalculationModel>()
+                .SelectMany(
+                  calculation => calculation.SupplyItems
+                    .OfType<
+                      SupplyActiveEnergyTotalImportT2CalculationItemModel>())
+                .Sum(item => item.Total),
+              2);
 
-        x.Invoice.SupplyBusinessUsageFee_EUR = System.Math.Round(
-          x.Calculations.OfType<MeteredNetworkUserCalculationModel>()
-            .SelectMany(calculation =>
-              calculation.SupplyItems.OfType<SupplyBusinessUsageCalculationItemModel>()
-            )
-            .Sum(item => item.Total),
-          2
-        );
+          x.Invoice.SupplyBusinessUsageFee_EUR = Round(
+            x.Calculations
+              .OfType<MeteredNetworkUserCalculationModel>()
+              .SelectMany(
+                calculation => calculation.SupplyItems
+                  .OfType<SupplyBusinessUsageCalculationItemModel>())
+              .Sum(item => item.Total),
+            2);
 
-        x.Invoice.SupplyRenewableEnergyFee_EUR = System.Math.Round(
-          x.Calculations.OfType<MeteredNetworkUserCalculationModel>()
-            .SelectMany(calculation =>
-              calculation.SupplyItems.OfType<SupplyRenewableEnergyCalculationItemModel>()
-            )
-            .Sum(item => item.Total),
-          2
-        );
+          x.Invoice.SupplyRenewableEnergyFee_EUR = Round(
+            x.Calculations
+              .OfType<MeteredNetworkUserCalculationModel>()
+              .SelectMany(
+                calculation => calculation.SupplyItems
+                  .OfType<SupplyRenewableEnergyCalculationItemModel>())
+              .Sum(item => item.Total),
+            2);
 
-        x.Invoice.SupplyFeeTotal_EUR = System.Math.Round(
-          x.Invoice.SupplyActiveEnergyTotalImportT1Fee_EUR
+          x.Invoice.SupplyFeeTotal_EUR = Round(
+            x.Invoice.SupplyActiveEnergyTotalImportT1Fee_EUR
             + x.Invoice.SupplyActiveEnergyTotalImportT2Fee_EUR
             + x.Invoice.SupplyBusinessUsageFee_EUR
             + x.Invoice.SupplyRenewableEnergyFee_EUR,
           2
         );
 
-        x.Invoice.Total_EUR = System.Math.Round(
-          x.Invoice.UsageFeeTotal_EUR + x.Invoice.SupplyFeeTotal_EUR,
-          2
-        );
-        x.Invoice.InvoiceTaxRate_Percent = System.Math.Round(
-          x.Invoice.ArchivedRegulatoryCatalogue.TaxRate_Percent,
-          2
-        );
-        x.Invoice.InvoiceTax_EUR = System.Math.Round(
-          x.Invoice.Total_EUR * x.Invoice.TaxRate_Percent / 100M,
-          2
-        );
-        x.Invoice.InvoiceTotalWithTax_EUR = System.Math.Round(
-          x.Invoice.Total_EUR + x.Invoice.Tax_EUR,
-          2
-        );
+          x.Invoice.Total_EUR = Round(
+            x.Invoice.UsageFeeTotal_EUR + x.Invoice.SupplyFeeTotal_EUR,
+            2);
+          x.Invoice.InvoiceTaxRate_Percent = Round(
+            x.Invoice.ArchivedRegulatoryCatalogue.TaxRate_Percent,
+            2);
+          x.Invoice.InvoiceTax_EUR = Round(
+            x.Invoice.Total_EUR * x.Invoice.TaxRate_Percent / 100M,
+            2);
+          x.Invoice.InvoiceTotalWithTax_EUR = Round(
+            x.Invoice.Total_EUR + x.Invoice.Tax_EUR,
+            2);
 
         return x;
       });

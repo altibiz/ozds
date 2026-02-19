@@ -11,6 +11,8 @@ using Ozds.Time.Queries.Abstractions;
 
 // NITPICK: test issuer and date
 
+using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
+
 namespace Ozds.Business.Test.Finance;
 
 public class BlueLowNetworkUserCalculationCalculatorTest
@@ -56,79 +58,62 @@ public class BlueLowNetworkUserCalculationCalculatorTest
 
         var faker = new Faker();
 
-        x.UsageActiveEnergyTotalImportT0.Total_EUR = System.Math.Round(
-          faker.Random.Decimal(
-            Constants.MinTotalValue,
-            Constants.MaxTotalValue
-          ),
-          2
-        );
+          x.UsageActiveEnergyTotalImportT0.Total_EUR = Round(
+            faker.Random.Decimal(
+              Constants.MinTotalValue,
+              Constants.MaxTotalValue),
+            2);
 
-        x.UsageReactiveEnergyTotalRampedT0.Total_EUR = System.Math.Round(
-          faker.Random.Decimal(
-            Constants.MinTotalValue,
-            Constants.MaxTotalValue
-          ),
-          2
-        );
+          x.UsageReactiveEnergyTotalRampedT0.Total_EUR = Round(
+            faker.Random.Decimal(
+              Constants.MinTotalValue,
+              Constants.MaxTotalValue),
+            2);
 
-        x.UsageMeterFee.Total_EUR = System.Math.Round(
-          faker.Random.Decimal(
-            Constants.MinTotalValue,
-            Constants.MaxTotalValue
-          ),
-          2
-        );
+          x.UsageMeterFee.Total_EUR = Round(
+            faker.Random.Decimal(
+              Constants.MinTotalValue,
+              Constants.MaxTotalValue),
+            2);
 
-        x.SupplyActiveEnergyTotalImportT1.Total_EUR = System.Math.Round(
-          faker.Random.Decimal(
-            Constants.MinTotalValue,
-            Constants.MaxTotalValue
-          ),
-          2
-        );
+          x.SupplyActiveEnergyTotalImportT1.Total_EUR = Round(
+            faker.Random.Decimal(
+              Constants.MinTotalValue,
+              Constants.MaxTotalValue),
+            2);
 
-        x.SupplyActiveEnergyTotalImportT2.Total_EUR = System.Math.Round(
-          faker.Random.Decimal(
-            Constants.MinTotalValue,
-            Constants.MaxTotalValue
-          ),
-          2
-        );
+          x.SupplyActiveEnergyTotalImportT2.Total_EUR = Round(
+            faker.Random.Decimal(
+              Constants.MinTotalValue,
+              Constants.MaxTotalValue),
+            2);
 
-        x.SupplyBusinessUsageFee.Total_EUR = System.Math.Round(
-          faker.Random.Decimal(
-            Constants.MinTotalValue,
-            Constants.MaxTotalValue
-          ),
-          2
-        );
+          x.SupplyBusinessUsageFee.Total_EUR = Round(
+            faker.Random.Decimal(
+              Constants.MinTotalValue,
+              Constants.MaxTotalValue),
+            2);
 
-        x.SupplyRenewableEnergyFee.Total_EUR = System.Math.Round(
-          faker.Random.Decimal(
-            Constants.MinTotalValue,
-            Constants.MaxTotalValue
-          ),
-          2
-        );
+          x.SupplyRenewableEnergyFee.Total_EUR = Round(
+            faker.Random.Decimal(
+              Constants.MinTotalValue,
+              Constants.MaxTotalValue),
+            2);
 
-        x.UsageFeeTotal_EUR = System.Math.Round(
-          x.UsageActiveEnergyTotalImportT0.Total
+          x.UsageFeeTotal_EUR = Round(
+            x.UsageActiveEnergyTotalImportT0.Total
             + x.UsageReactiveEnergyTotalRampedT0.Total
             + x.UsageMeterFee.Total,
-          2
-        );
-        x.SupplyFeeTotal_EUR = System.Math.Round(
-          x.SupplyActiveEnergyTotalImportT1.Total
+            2);
+          x.SupplyFeeTotal_EUR = Round(
+            x.SupplyActiveEnergyTotalImportT1.Total
             + x.SupplyActiveEnergyTotalImportT2.Total
             + x.SupplyBusinessUsageFee.Total
             + x.SupplyRenewableEnergyFee.Total,
-          2
-        );
-        x.Total_EUR = System.Math.Round(
-          x.SupplyFeeTotal_EUR + x.UsageFeeTotal_EUR,
-          2
-        );
+            2);
+          x.Total_EUR = Round(
+            x.SupplyFeeTotal_EUR + x.UsageFeeTotal_EUR,
+            2);
 
         return x;
       });
