@@ -7,6 +7,7 @@ using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries;
+using Ozds.Business.Test.Sentinel;
 using Ozds.Time.Queries.Abstractions;
 
 using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
@@ -584,7 +585,7 @@ public class NetworkUserInvoiceCalculatorTest
       {
         if (idx == 0)
         {
-          MidpointRoundingSentinel.InjectMidpointRoundingSentinel(x);
+          MidpointRoundingSentinel.InjectInvoiceSentinel(x);
         }
 
         x.Invoice.NetworkUserId = x.Invoice.ArchivedNetworkUser.Id;

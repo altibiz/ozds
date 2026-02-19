@@ -7,6 +7,7 @@ using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries;
+using Ozds.Business.Test.Sentinel;
 using Ozds.Time.Queries.Abstractions;
 
 // NITPICK: test issuer and date
@@ -60,7 +61,7 @@ public class BlueLowNetworkUserCalculationCalculatorTest
         if (i == 0)
         {
           MidpointRoundingSentinel
-            .InjectMidpointRoundingSentinel(x);
+            .InjectCalculationSentinel(x);
           return x;
         }
 

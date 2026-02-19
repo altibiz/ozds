@@ -7,6 +7,7 @@ using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Queries;
+using Ozds.Business.Test.Sentinel;
 using Ozds.Time.Queries.Abstractions;
 using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
 
@@ -58,7 +59,7 @@ public class WhiteMediumNetworkUserCalculationCalculatorTest
         if (i == 0)
         {
           MidpointRoundingSentinel
-            .InjectMidpointRoundingSentinel(x);
+            .InjectCalculationSentinel(x);
           return x;
         }
 

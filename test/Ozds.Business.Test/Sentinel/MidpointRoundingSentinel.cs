@@ -4,19 +4,20 @@ using Ozds.Business.Models.Composite;
 
 using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
 
-namespace Ozds.Business.Test.Finance;
+namespace Ozds.Business.Test.Sentinel;
 
 public static class MidpointRoundingSentinel
 {
 
-  public static void InjectMidpointRoundingSentinel(
+  public static void InjectInvoiceSentinel(
       CalculatedNetworkUserInvoiceModel model,
       decimal sentinel = 2.685M // NOTE: default sentinel value
                                 // that differs between bankers and away from zero rounding
     )
   {
 
-    model.Invoice.ArchivedRegulatoryCatalogue.TaxRate_Percent = 0M;
+    model.Invoice
+      .ArchivedRegulatoryCatalogue.TaxRate_Percent = 0M;
 
     var meteredCalculations = model
       .Calculations
@@ -30,7 +31,7 @@ public static class MidpointRoundingSentinel
 
     foreach (var calculation in meteredCalculations)
     {
-      InjectMidpointRoundingSentinelInternal(calculation);
+      InjectCalculationSentinelInternal(calculation);
     }
 
     var target = meteredCalculations[0];
@@ -41,7 +42,20 @@ public static class MidpointRoundingSentinel
     target.Total_EUR = target.UsageFeeTotal_EUR;
   }
 
-  private static void InjectMidpointRoundingSentinelInternal(
+  public static void InjectCalculationSentinel(
+    MeteredNetworkUserCalculationModel model,
+    decimal sentinel = 2.685M
+  )
+  {
+    InjectCalculationSentinelInternal(model);
+
+    model.UsageMeterFee.Total_EUR = sentinel;
+
+    model.UsageFeeTotal_EUR = Round(sentinel, 2);
+    model.SupplyFeeTotal_EUR = 0M;
+    model.Total_EUR = model.UsageFeeTotal_EUR;
+  }
+  private static void InjectCalculationSentinelInternal(
     MeteredNetworkUserCalculationModel model
   )
   {
@@ -83,19 +97,5 @@ public static class MidpointRoundingSentinel
     model.UsageFeeTotal_EUR = 0M;
     model.SupplyFeeTotal_EUR = 0M;
     model.Total_EUR = 0M;
-  }
-
-  public static void InjectMidpointRoundingSentinel(
-    MeteredNetworkUserCalculationModel model,
-    decimal sentinel = 2.685M
-  )
-  {
-    InjectMidpointRoundingSentinelInternal(model);
-
-    model.UsageMeterFee.Total_EUR = sentinel;
-
-    model.UsageFeeTotal_EUR = Round(sentinel, 2);
-    model.SupplyFeeTotal_EUR = 0M;
-    model.Total_EUR = model.UsageFeeTotal_EUR;
   }
 }
