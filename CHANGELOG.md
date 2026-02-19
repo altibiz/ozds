@@ -9,6 +9,22 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Removed
+
+- duplicated change log left from .NET 10 rebase
+
+### Added
+
+- add extensions in business now have `PrimitiveRoundingExtensions` which
+  contain methods `Round` which round and return double and decimal respectfully
+- add sentinel injector which is used to overload specific values of invoice
+  model or calculator to fail tests on use of wrong rounding method
+
+### Changed
+
+- change all calculators and calculator tests for business now use rounding type
+  `MidpointRounding.AwayFromZero` defined in `PrimitiveRoundingExtensions`
+
 ## [1.8.0] - 2025-02-19
 
 ### Added
@@ -26,12 +42,6 @@ and adheres to [Semantic Versioning](https://semver.org/).
   and params of chart control persist after reloading the page)
 - fix ReadLastByMeasurementLocationIds now returns latest measurement info for
   all meters that have measurements
-- updated .NET version from 8 to 10
-- updated Azure.Identity package
-- replaced deprecated implementation on ServiceCryptography
-- update System.Linq.Async package to version 7.0.0
-- fixed problem with removed async functions from package System.Linq.Async on
-  RegexService.cs and MeasurementMutations.cs
 - updated .NET version from 8 to 10
 - updated Azure.Identity package
 - replaced deprecated implementation on ServiceCryptography
