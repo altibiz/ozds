@@ -4,7 +4,6 @@ using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Models.Enums;
-
 using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
 
 namespace Ozds.Business.Test.Finance.Complex;
@@ -16,26 +15,28 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculatorTest
     return new Faker<UsageActivePowerTotalImportT1PeakCalculationItemModel>()
       .RuleFor(
         x => x.Peak_kW,
-        (f, m) => Round(
-          f.Random.Decimal(
-            Constants.MinEnergyValue, Constants.MaxEnergyValue),
-          2))
-      .RuleFor(
-        x => x.Amount_kW,
-        (_, m) => Round(
-          m.Peak_kW,
-          0))
+        (f, m) =>
+          Round(
+            f.Random.Decimal(
+              Constants.MinEnergyValue,
+              Constants.MaxEnergyValue
+            ),
+            2
+          )
+      )
+      .RuleFor(x => x.Amount_kW, (_, m) => Round(m.Peak_kW, 0))
       .RuleFor(
         x => x.Price_EUR,
-        (f, _) => Round(
-          f.Random.Decimal(
-            Constants.MinEnergyValue, Constants.MaxEnergyValue),
-          3))
-      .RuleFor(
-        x => x.Total_EUR,
-        (_, m) => Round(
-          m.Amount_kW * m.Price_EUR,
-          2))
+        (f, _) =>
+          Round(
+            f.Random.Decimal(
+              Constants.MinEnergyValue,
+              Constants.MaxEnergyValue
+            ),
+            3
+          )
+      )
+      .RuleFor(x => x.Total_EUR, (_, m) => Round(m.Amount_kW * m.Price_EUR, 2))
       .GenerateLazy(Constants.DefaultFuzzCount);
   }
 
