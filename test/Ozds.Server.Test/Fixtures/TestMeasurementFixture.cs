@@ -127,48 +127,39 @@ public class TestMeasurementFixture(ServiceComposition composition)
 
       var clonedIds = ids.Where(id => !generatedIds.Contains(id));
 
-      foreach (
-        var date in enumerable.Split(
+      var records = generator.BatchGenerateMeasurementRecords(
           dateFrom,
           dateTo,
-          Environment.ProcessorCount
-        )
-      )
-      {
-        var records = generator.BatchGenerateMeasurementRecords(
-          date.DateFrom,
-          date.DateTo,
           generatedIds,
           cancellationToken
-        );
+      );
 
-        var measurements = converter.ConvertToModels(
-          records,
+      var measurements = converter.ConvertToModels(
+        records,
+        cancellationToken
+      );
+
+      var aggregated = aggregatesOnly
+        ? aggregateUpserter.UpsertAggregates(
+          aggregateConverter.ToAggregates(measurements, cancellationToken),
+          cancellationToken
+        )
+        : aggregateUpserter.UpsertMeasurements(
+          aggregateConverter.WithAggregates(measurements, cancellationToken),
           cancellationToken
         );
 
-        var aggregated = aggregatesOnly
-          ? aggregateUpserter.UpsertAggregates(
-            aggregateConverter.ToAggregates(measurements, cancellationToken),
-            cancellationToken
-          )
-          : aggregateUpserter.UpsertMeasurements(
-            aggregateConverter.WithAggregates(measurements, cancellationToken),
-            cancellationToken
-          );
+      var cloned = cloner.CloneWith(aggregated, clonedIds, cancellationToken);
 
-        var cloned = cloner.CloneWith(aggregated, clonedIds, cancellationToken);
+      await foreach (
+        var batch in enumerable.Batch(cloned, BatchSize, cancellationToken)
+      )
+      {
+        var inserted = await insertClient.Insert(batch, cancellationToken);
 
-        await foreach (
-          var batch in enumerable.Batch(cloned, BatchSize, cancellationToken)
-        )
+        foreach (var measurement in inserted)
         {
-          var inserted = await insertClient.Insert(batch, cancellationToken);
-
-          foreach (var measurement in inserted)
-          {
-            yield return measurement;
-          }
+          yield return measurement;
         }
       }
     }
