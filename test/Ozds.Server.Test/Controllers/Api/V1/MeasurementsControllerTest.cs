@@ -51,7 +51,9 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
         ],
         dateFrom,
         dateTo,
-        cancellationToken
+        cancellationToken,
+        true,
+        false
       )
       .OfType<IAggregate>()
       .Where(aggregate => aggregate.Interval == IntervalModel.QuarterHour)
@@ -268,7 +270,9 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
         ],
         dateFrom,
         dateTo,
-        cancellationToken
+        cancellationToken,
+        true,
+        false
       )
       .OfType<IAggregate>()
       .Where(aggregate => aggregate.Interval == IntervalModel.QuarterHour)
@@ -368,7 +372,9 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
         ],
         dateFrom,
         dateTo,
-        cancellationToken
+        cancellationToken,
+        true,
+        false
       )
       .OfType<IAggregate>()
       .Where(aggregate => aggregate.Interval == IntervalModel.QuarterHour)

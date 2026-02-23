@@ -23,7 +23,8 @@ public class TestMeasurementFixture(ServiceComposition composition)
     DateTimeOffset dateFrom,
     DateTimeOffset dateTo,
     [EnumeratorCancellation] CancellationToken cancellationToken,
-    bool aggregatesOnly = true
+    bool aggregatesOnly = true,
+    bool returnAllCreated = true
   )
   {
     await using var scope = composition.Ozds.Services.CreateAsyncScope();
@@ -40,7 +41,12 @@ public class TestMeasurementFixture(ServiceComposition composition)
       )
     )
     {
-      yield return measurements;
+      if (returnAllCreated ||
+          measurements is not IAggregate ||
+          (measurements.Timestamp >= dateFrom && measurements.Timestamp <= dateTo))
+      {
+        yield return measurements;
+      }
     }
   }
 
