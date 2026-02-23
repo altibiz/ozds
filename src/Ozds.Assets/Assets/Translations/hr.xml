@@ -8593,6 +8593,8 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/MappedMutating.razor' line 129 column 20
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 100 column 24
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 221 column 26
         From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 100 column 47
         From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 218 column 49
       </Metadata>
@@ -10280,6 +10282,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/MappedMutating.razor' line 138 column 18
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 244 column 26
         From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 241 column 49
       </Metadata>
       <Value>

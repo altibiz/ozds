@@ -160,30 +160,33 @@
 
                                  <MudSpacer/>
 
-                                 @if (typeof(T).IsAssignableTo(typeof(IIdentifiable)) || typeof(T).IsAssignableTo(typeof(IAnalysis)))
-                                 {
-                                   <MudTextField
-                                     T="string"
-                                     Value="@searchString"
-                                     DebounceInterval="500"
-                                     OnDebounceIntervalElapsed="@OnDataGridSearch"
-                                     Placeholder="@Translate("Search")"
-                                     Adornment="Adornment.Start"
-                                     Immediate="true"
-                                     AdornmentIcon="@Icons.Material.Filled.Search"
-                                     IconSize="Size.Medium">
-                                   </MudTextField>
-                                 }
-                               </ToolBarContent>
-                               <Columns>
-                                 @if (Columns is null)
-                                 {
-                                   <Columns TPrefix="T" Models="@fetchedModel.Items"/>
-                                 }
-                                 else
-                                 {
-                                   @Columns(fetchedModel.Items)
-                                 }
+          @if (typeof(T).IsAssignableTo(typeof(IIdentifiable)) || typeof(T).IsAssignableTo(typeof(IAnalysis)))
+          {
+            <MudTextField
+              T="string"
+              Value="@searchString"
+              DebounceInterval="500"
+              OnDebounceIntervalElapsed="@OnDataGridSearch"
+              Placeholder="@Translate("Search")"
+              Adornment="Adornment.Start"
+              Immediate="true"
+              AdornmentIcon="@Icons.Material.Filled.Search"
+              IconSize="Size.Medium">
+            </MudTextField>
+          }
+        </ToolBarContent>
+        <Columns>
+          @if (Columns is null)
+          {
+            <Columns
+              TPrefix="T"
+              Models="@fetchedModel.Items"
+              SearchMappersChanged="OnColumnSearchMappersChanged"/>
+          }
+          else
+          {
+            @Columns(fetchedModel.Items)
+          }
 
                                  @if (Actions is { } actions
                                    || (WithMutations

@@ -1,3 +1,4 @@
+using System.Collections;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Ozds.Business.Models.Abstractions;
@@ -18,6 +19,9 @@ public class Table<T> : MappedTable<T, T>
 public partial class MappedTable<T, TMapped> : OzdsComponentBase
   where T : notnull
 {
+  private IEnumerable<Func<object, object?>> _columnSearchMappers =
+    new List<Func<object, object?>>();
+
   private bool checkedDeleted;
 
   private MudDataGrid<T>? dataGrid;
@@ -136,6 +140,13 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
   {
     await FetchPaging();
     await FetchDataGrid();
+  }
+
+  private void OnColumnSearchMappersChanged(
+    IEnumerable<Func<object, object?>> selectors
+  )
+  {
+    _columnSearchMappers = selectors ?? Array.Empty<Func<object, object?>>();
   }
 
   protected override void OnParametersSet()
@@ -641,8 +652,24 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
       return false;
     }
 
+    if (_columnSearchMappers is { } searchFields)
+    {
+      foreach (var mapper in searchFields)
+      {
+        if (
+          mapper(model) is { } mappedModel
+          && mappedModel.ToString() is { } stringTransform
+          && stringTransform.Contains(searchString)
+        )
+        {
+          return true;
+        }
+      }
+    }
+
+    // fallback just for older way of identifying
     if (
-      model is IIdentifiable { Title: { } title }
+      toFilter is IIdentifiable { Title: { } title }
       && title.Contains(searchString)
     )
     {
