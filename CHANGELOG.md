@@ -7,16 +7,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and adheres to [Semantic Versioning](https://semver.org/).
 
-## Unreleased - 2026-01-28
-
-### Changed
-
-- fix mapped tables did not use toFilter for searching leading to using non
-  mapped records without titles
-- add every type of column can now register it's value mapper
-- added parameter 'searchable' to define columns that can be searched on table
-
-## Unreleased - 2026-01-19
+## Unreleased
 
 ### Removed
 
@@ -28,11 +19,15 @@ and adheres to [Semantic Versioning](https://semver.org/).
   contain methods `Round` which round and return double and decimal respectfully
 - add sentinel injector which is used to overload specific values of invoice
   model or calculator to fail tests on use of wrong rounding method
+- add every type of column can now register it's value mapper
+- added parameter 'searchable' to define columns that can be searched on table
 
 ### Changed
 
 - change all calculators and calculator tests for business now use rounding type
   `MidpointRounding.AwayFromZero` defined in `PrimitiveRoundingExtensions`
+- fix mapped tables did not use toFilter for searching leading to using non
+  mapped records without titles
 
 ## [1.8.0] - 2025-02-19
 
