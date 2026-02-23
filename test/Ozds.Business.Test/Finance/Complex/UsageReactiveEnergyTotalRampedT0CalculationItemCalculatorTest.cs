@@ -4,6 +4,7 @@ using Ozds.Business.Models.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
 using Ozds.Business.Models.Enums;
+using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
 
 namespace Ozds.Business.Test.Finance.Complex;
 
@@ -15,7 +16,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
       .RuleFor(
         x => x.ReactiveImportMin_kVARh,
         (f, _) =>
-          System.Math.Round(
+          Round(
             f.Random.Decimal(
               Constants.MinEnergyValue,
               Constants.MaxEnergyValue
@@ -26,7 +27,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
       .RuleFor(
         x => x.ReactiveImportMax_kVARh,
         (f, m) =>
-          System.Math.Round(
+          Round(
             f.Random.Decimal(
               m.ReactiveImportMin_kVARh,
               Constants.MaxEnergyValue
@@ -37,15 +38,12 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
       .RuleFor(
         x => x.ReactiveImportAmount_kVARh,
         (_, m) =>
-          System.Math.Round(
-            m.ReactiveImportMax_kVARh - m.ReactiveImportMin_kVARh,
-            0
-          )
+          Round(m.ReactiveImportMax_kVARh - m.ReactiveImportMin_kVARh, 0)
       )
       .RuleFor(
         x => x.ReactiveExportMin_kVARh,
         (f, _) =>
-          System.Math.Round(
+          Round(
             f.Random.Decimal(
               Constants.MinEnergyValue,
               Constants.MaxEnergyValue
@@ -56,7 +54,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
       .RuleFor(
         x => x.ReactiveExportMax_kVARh,
         (f, m) =>
-          System.Math.Round(
+          Round(
             f.Random.Decimal(
               m.ReactiveExportMin_kVARh,
               Constants.MaxEnergyValue
@@ -67,15 +65,12 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
       .RuleFor(
         x => x.ReactiveExportAmount_kVARh,
         (_, m) =>
-          System.Math.Round(
-            m.ReactiveExportMax_kVARh - m.ReactiveExportMin_kVARh,
-            0
-          )
+          Round(m.ReactiveExportMax_kVARh - m.ReactiveExportMin_kVARh, 0)
       )
       .RuleFor(
         x => x.ActiveImportMin_kWh,
         (f, _) =>
-          System.Math.Round(
+          Round(
             f.Random.Decimal(
               Constants.MinEnergyValue,
               Constants.MaxEnergyValue
@@ -86,20 +81,19 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
       .RuleFor(
         x => x.ActiveImportMax_kWh,
         (f, m) =>
-          System.Math.Round(
+          Round(
             f.Random.Decimal(m.ActiveImportMin_kWh, Constants.MaxEnergyValue),
             2
           )
       )
       .RuleFor(
         x => x.ActiveImportAmount_kWh,
-        (_, m) =>
-          System.Math.Round(m.ActiveImportMax_kWh - m.ActiveImportMin_kWh, 0)
+        (_, m) => Round(m.ActiveImportMax_kWh - m.ActiveImportMin_kWh, 0)
       )
       .RuleFor(
         x => x.Amount_kVARh,
         (f, m) =>
-          System.Math.Round(
+          Round(
             System.Math.Max(
               System.Math.Abs(m.ReactiveImportAmount_kVARh)
                 + System.Math.Abs(m.ReactiveExportAmount_kVARh)
@@ -112,7 +106,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
       .RuleFor(
         x => x.Price_EUR,
         (f, _) =>
-          System.Math.Round(
+          Round(
             f.Random.Decimal(
               Constants.MinEnergyValue,
               Constants.MaxEnergyValue
@@ -122,7 +116,7 @@ public class UsageReactiveEnergyTotalRampedT0CalculationItemCalculatorTest
       )
       .RuleFor(
         x => x.Total_EUR,
-        (_, m) => System.Math.Round(m.Amount_kVARh * m.Price_EUR, 2)
+        (_, m) => Round(m.Amount_kVARh * m.Price_EUR, 2)
       )
       .GenerateLazy(Constants.DefaultFuzzCount);
   }

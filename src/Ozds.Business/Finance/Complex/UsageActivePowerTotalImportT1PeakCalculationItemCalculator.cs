@@ -1,6 +1,7 @@
 using Ozds.Business.Finance.Base;
 using Ozds.Business.Models.Complex;
 using Ozds.Business.Models.Composite;
+using static Ozds.Business.Extensions.PrimitiveRoundingExtensions;
 
 namespace Ozds.Business.Finance.Complex;
 
@@ -36,13 +37,13 @@ public class UsageActivePowerTotalImportT1PeakCalculationItemCalculator
       .DefaultIfEmpty()
       .Max();
 
-    var peakKilo = System.Math.Round(peak / 1000M, 2);
+    var peakKilo = Round(peak / 1000M, 2);
 
-    var amountKilo = System.Math.Round(peakKilo, 0);
+    var amountKilo = Round(peakKilo, 0);
 
-    var price = System.Math.Round(calculationBasis.Price_EUR, 3);
+    var price = Round(calculationBasis.Price_EUR, 3);
 
-    var total = System.Math.Round(amountKilo * price, 2);
+    var total = Round(amountKilo * price, 2);
 
     return new UsageActivePowerTotalImportT1PeakCalculationItemModel
     {
