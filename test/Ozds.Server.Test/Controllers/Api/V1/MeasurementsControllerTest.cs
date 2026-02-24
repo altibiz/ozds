@@ -56,11 +56,20 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
         cancellationToken
       )
       .OfType<IAggregate>()
-      .Where(aggregate => aggregate.Interval == IntervalModel.QuarterHour
+      .Where(aggregate =>
+        aggregate.Interval == IntervalModel.QuarterHour
         && aggregate.Timestamp >= dateFrom
         && aggregate.Timestamp <= dateTo
       )
-      .GroupBy(a => (a.GetType(), a.Interval, a.Timestamp, a.MeterId, a.MeasurementLocationId))
+      .GroupBy(a =>
+        (
+          a.GetType(),
+          a.Interval,
+          a.Timestamp,
+          a.MeterId,
+          a.MeasurementLocationId
+        )
+      )
       .Select(g => g.MaxBy(x => x.Count)!)
       .ToListAsync(cancellationToken);
 
@@ -183,7 +192,15 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
         cancellationToken
       )
       .OfType<IAggregate>()
-      .GroupBy(a => (a.GetType(), a.Interval, a.Timestamp, a.MeterId, a.MeasurementLocationId))
+      .GroupBy(a =>
+        (
+          a.GetType(),
+          a.Interval,
+          a.Timestamp,
+          a.MeterId,
+          a.MeasurementLocationId
+        )
+      )
       .Select(g => g.MaxBy(x => x.Count)!)
       .ToListAsync(cancellationToken);
 
@@ -279,11 +296,20 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
         cancellationToken
       )
       .OfType<IAggregate>()
-      .Where(aggregate => aggregate.Interval == IntervalModel.QuarterHour
+      .Where(aggregate =>
+        aggregate.Interval == IntervalModel.QuarterHour
         && aggregate.Timestamp >= dateFrom
         && aggregate.Timestamp <= dateTo
       )
-      .GroupBy(a => (a.GetType(), a.Interval, a.Timestamp, a.MeterId, a.MeasurementLocationId))
+      .GroupBy(a =>
+        (
+          a.GetType(),
+          a.Interval,
+          a.Timestamp,
+          a.MeterId,
+          a.MeasurementLocationId
+        )
+      )
       .Select(g => g.MaxBy(x => x.Count)!)
       .ToListAsync(cancellationToken);
 
@@ -384,11 +410,20 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
         cancellationToken
       )
       .OfType<IAggregate>()
-      .Where(aggregate => aggregate.Interval == IntervalModel.QuarterHour
+      .Where(aggregate =>
+        aggregate.Interval == IntervalModel.QuarterHour
         && aggregate.Timestamp >= dateFrom
         && aggregate.Timestamp <= dateTo
       )
-      .GroupBy(a => (a.GetType(), a.Interval, a.Timestamp, a.MeterId, a.MeasurementLocationId))
+      .GroupBy(a =>
+        (
+          a.GetType(),
+          a.Interval,
+          a.Timestamp,
+          a.MeterId,
+          a.MeasurementLocationId
+        )
+      )
       .Select(g => g.MaxBy(x => x.Count)!)
       .ToListAsync(cancellationToken);
 
