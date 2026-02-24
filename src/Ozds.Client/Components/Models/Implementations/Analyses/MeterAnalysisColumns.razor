@@ -4,9 +4,9 @@
 @typeparam TModel where TModel : Ozds.Business.Analysis.MeterAnalysis
 @inherits Ozds.Client.Components.Models.Base.OzdsColumnsComponentBase<TPrefix, TModel>
 
-@LinkColumn(x => x.NetworkUser)
+@LinkColumn(x => x.NetworkUser, true)
 
-@LinkColumn(x => x.Meter)
+@LinkColumn(x => x.Meter, true)
 
 @Column(x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh)
 

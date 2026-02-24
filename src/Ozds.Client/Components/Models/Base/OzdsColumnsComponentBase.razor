@@ -14,8 +14,13 @@
 
 @code {
 
-  protected RenderFragment Column(Expression<Func<TModel, string?>> next)
+  protected RenderFragment Column(Expression<Func<TModel, string?>> next, bool searchable = false)
   {
+    if (searchable)
+    {
+      RegisterSearchMapper(next, next.Compile());
+    }
+
     return Nest(
       @<PropertyColumn
          Filterable="false"
@@ -26,9 +31,20 @@
          Property="@Wrap(next)"/>);
   }
 
-  protected RenderFragment Column(Expression<Func<TModel, Enum?>> next)
+  protected RenderFragment Column(Expression<Func<TModel, Enum?>> next, bool searchable = false)
   {
     var nextFunc = next.Compile();
+    if (searchable)
+    {
+      RegisterSearchMapper(
+        next,
+        x =>
+          nextFunc(x) is { } val
+            ? Translate(val.ToString()!)
+            : null
+      );
+    }
+
     return Nest(
       @<PropertyColumn
          Filterable="false"
@@ -48,9 +64,24 @@
       </PropertyColumn>);
   }
 
-  protected RenderFragment Column(Expression<Func<TModel, decimal?>> next, int decimalPlaces = 2)
+  protected RenderFragment Column(
+    Expression<Func<TModel, decimal?>> next,
+    int decimalPlaces = 2,
+    bool searchable = false
+  )
   {
     var nextFunc = next.Compile();
+    if (searchable)
+    {
+      RegisterSearchMapper(
+        next,
+        x =>
+          nextFunc(x) is decimal d
+            ? NumericString(d, decimalPlaces)
+            : null
+      );
+    }
+
     return Nest(
       @<PropertyColumn
          Filterable="false"
@@ -71,10 +102,37 @@
   }
 
   protected RenderFragment Column<T>(
-    Expression<Func<TModel, IEnumerable<T>?>> next
+    Expression<Func<TModel, IEnumerable<T>?>> next,
+    bool searchable = false
   )
   {
     var nextFunc = next.Compile();
+    if (searchable)
+    {
+      RegisterSearchMapper(
+        next,
+        model =>
+        {
+          var value = nextFunc(model);
+          if (value is null)
+          {
+            return null;
+          }
+
+          return string.Join(
+            ", ",
+            value.Select(
+              v =>
+                v is null
+                  ? ""
+                  : v is Enum e
+                    ? Translate(e.ToString()!)
+                    : v.ToString()
+            )
+          );
+        });
+    }
+
     return Nest(
       @<PropertyColumn
          Filterable="false"
@@ -106,10 +164,16 @@
   }
 
   protected RenderFragment Column(
-    Expression<Func<TModel, DateTimeOffset?>> next
+    Expression<Func<TModel, DateTimeOffset?>> next,
+    bool searchable = false
   )
   {
     var nextFunc = next.Compile();
+    if (searchable)
+    {
+      RegisterSearchMapper(next, x => DateTimeString(nextFunc(x)));
+    }
+
     return Nest(
       @<PropertyColumn
          Filterable="false"
@@ -130,10 +194,28 @@
   }
 
   protected RenderFragment EnumerableColumn<T>(
-    Expression<Func<TModel, T?>> next
+    Expression<Func<TModel, T?>> next,
+    bool searchable = false
   )
   {
     var nextFunc = next.Compile();
+    if (searchable)
+    {
+      RegisterSearchMapper(
+        next,
+        model =>
+        {
+          if (nextFunc(model) is IEnumerable enumerable)
+          {
+            return enumerable != null
+              ? string.Join(", ", enumerable)
+              : null;
+          }
+
+          return null;
+        });
+    }
+
     return Nest(
       @<PropertyColumn
          Filterable="false"
@@ -154,10 +236,30 @@
   }
 
   protected RenderFragment EnumerableEnumColumn<T>(
-    Expression<Func<TModel, T?>> next
+    Expression<Func<TModel, T?>> next,
+    bool searchable = false
   )
   {
     var nextFunc = next.Compile();
+    if (searchable)
+    {
+      RegisterSearchMapper(
+        next,
+        model =>
+        {
+          if (nextFunc(model) is IEnumerable<Enum> enumerable)
+          {
+            return string.Join(
+              ", ",
+              enumerable
+                .Select(e => Translate(e.ToString()))
+            );
+          }
+
+          return null;
+        });
+    }
+
     return Nest(
       @<PropertyColumn
          Filterable="false"
@@ -179,8 +281,16 @@
       </PropertyColumn>);
   }
 
-  protected RenderFragment TextColumn<T>(Expression<Func<TModel, T?>> next)
+  protected RenderFragment TextColumn<T>(
+    Expression<Func<TModel, T?>> next,
+    bool searchable = false
+  )
   {
+    if (searchable)
+    {
+      RegisterSearchMapper(next, next.Compile());
+    }
+
     return Nest(
       @<PropertyColumn
          Filterable="false"
@@ -191,9 +301,23 @@
          Property="@Wrap(next)"/>);
   }
 
-  protected RenderFragment EnumColumn<T>(Expression<Func<TModel, T?>> next)
+  protected RenderFragment EnumColumn<T>(
+    Expression<Func<TModel, T?>> next,
+    bool searchable = false
+  )
   {
     var nextFunc = next.Compile();
+    if (searchable)
+    {
+      RegisterSearchMapper(
+        next,
+        x =>
+          nextFunc(x) is { } val
+            ? Translate(val.ToString()!)
+            : null
+      );
+    }
+
     return Nest(
       @<PropertyColumn
          Filterable="false"
@@ -214,9 +338,23 @@
       </PropertyColumn>);
   }
 
-  protected RenderFragment DateColumn<T>(Expression<Func<TModel, T?>> next)
+  protected RenderFragment DateColumn<T>(
+    Expression<Func<TModel, T?>> next,
+    bool searchable = false
+  )
   {
     var nextFunc = next.Compile();
+    if (searchable)
+    {
+      RegisterSearchMapper(
+        next,
+        x =>
+          nextFunc(x) is DateTimeOffset d
+            ? DateString(d)
+            : null
+      );
+    }
+
     return Nest(
       @<PropertyColumn
          Filterable="false"
@@ -236,9 +374,23 @@
       </PropertyColumn>);
   }
 
-  protected RenderFragment DateTimeColumn<T>(Expression<Func<TModel, T?>> next)
+  protected RenderFragment DateTimeColumn<T>(
+    Expression<Func<TModel, T?>> next,
+    bool searchable = false
+  )
   {
     var nextFunc = next.Compile();
+    if (searchable)
+    {
+      RegisterSearchMapper(
+        next,
+        x =>
+          nextFunc(x) is DateTimeOffset d
+            ? DateTimeString(d)
+            : null
+      );
+    }
+
     return Nest(
       @<PropertyColumn
          Filterable="false"
@@ -259,10 +411,22 @@
   }
 
   protected RenderFragment LinkColumn(
-    Expression<Func<TModel, IIdentifiable?>> next
+    Expression<Func<TModel, IIdentifiable?>> next,
+    bool searchable = false
   )
   {
     var nextFunc = next.Compile();
+    if (searchable)
+    {
+      RegisterSearchMapper(
+        next,
+        x =>
+          nextFunc(x) is { } model
+            ? model.Title
+            : null
+      );
+    }
+
     return Nest(
       @<TemplateColumn
          T="TPrefix"
@@ -279,11 +443,17 @@
   }
 
   protected RenderFragment LinkColumn<T>(
-    Expression<Func<TModel, string?>> next
+    Expression<Func<TModel, string?>> next,
+    bool searchable = false
   )
     where T : IIdentifiable
   {
     var nextFunc = next.Compile();
+    if (searchable)
+    {
+      RegisterSearchMapper(next, nextFunc);
+    }
+
     return Nest(
       @<TemplateColumn
          T="TPrefix"
@@ -304,11 +474,29 @@
 
   protected RenderFragment PolymorphicLinkColumn(
     Expression<Func<TModel, Type?>> type,
-    Expression<Func<TModel, string?>> next
+    Expression<Func<TModel, string?>> next,
+    bool searchable = false
   )
   {
     var typeFunc = type.Compile();
     var nextFunc = next.Compile();
+    if (searchable)
+    {
+      RegisterSearchMapper(
+        next,
+        model =>
+        {
+          var modelType = typeFunc(model);
+          var id = nextFunc(model);
+          if (modelType is null || id is null)
+          {
+            return null;
+          }
+
+          return $"{Translate(modelType.Name)} {id}";
+        });
+    }
+
     return Nest(
       @<TemplateColumn
          T="TPrefix"

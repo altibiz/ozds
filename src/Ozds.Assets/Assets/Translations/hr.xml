@@ -6818,7 +6818,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/MappedMutating.razor' line 186 column 14
-        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 265 column 33
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 268 column 33
         From file 'Ozds.Client/Pages/Administration/UserPage.razor' line 112 column 12
         From file 'Ozds.Client/Pages/Measurements/MessengerPage.razor' line 32 column 6
       </Metadata>
@@ -8594,7 +8594,7 @@
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/MappedMutating.razor' line 129 column 20
         From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 100 column 47
-        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 218 column 49
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 221 column 49
       </Metadata>
       <Value>
         Arhiviraj
@@ -10280,7 +10280,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/MappedMutating.razor' line 138 column 18
-        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 241 column 49
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 244 column 49
       </Metadata>
       <Value>
         Izbriši
@@ -20289,7 +20289,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/MappedMutating.razor' line 120 column 20
-        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 229 column 49
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 232 column 49
       </Metadata>
       <Value>
         Obnovi
@@ -20551,7 +20551,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 62 column 48
-        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 170 column 52
+        From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 170 column 29
       </Metadata>
       <Value>
         Pretraži

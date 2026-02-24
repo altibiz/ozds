@@ -19,11 +19,15 @@ and adheres to [Semantic Versioning](https://semver.org/).
   contain methods `Round` which round and return double and decimal respectfully
 - add sentinel injector which is used to overload specific values of invoice
   model or calculator to fail tests on use of wrong rounding method
+- add every type of column can now register it's value mapper
+- added parameter 'searchable' to define columns that can be searched on table
 
 ### Changed
 
 - change all calculators and calculator tests for business now use rounding type
   `MidpointRounding.AwayFromZero` defined in `PrimitiveRoundingExtensions`
+- fix mapped tables did not use toFilter for searching leading to using non
+  mapped records without titles
 
 ## [1.8.0] - 2025-02-19
 
