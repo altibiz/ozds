@@ -28,6 +28,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
   `MidpointRounding.AwayFromZero` defined in `PrimitiveRoundingExtensions`
 - fix mapped tables did not use toFilter for searching leading to using non
   mapped records without titles
+- update dotnet repl tool
 
 ## [1.8.0] - 2025-02-19
 
