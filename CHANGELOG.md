@@ -22,11 +22,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
-- `Insert` method in `TestMeasurementFixture` now contains boolean attribute
-  `returnAllCreated` which can limit return to be only in specified range
-- `Insert` method in `Worker` in `TestMeasurementFixture` does not split
-  measurement date range into smaller intervals - this causes problems with
-  `AggregateUpserter`
+- fix problem with duplicate inserts on tests in ApiV1
+  `MeasurementControllerTest`
+- fix filtering on API V1 test inserts by date so they match DB query result
 - change all calculators and calculator tests for business now use rounding type
   `MidpointRounding.AwayFromZero` defined in `PrimitiveRoundingExtensions`
 
