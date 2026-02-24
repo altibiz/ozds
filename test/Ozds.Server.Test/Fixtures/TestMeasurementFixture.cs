@@ -41,9 +41,13 @@ public class TestMeasurementFixture(ServiceComposition composition)
       )
     )
     {
-      if (returnAllCreated ||
-          measurements is not IAggregate ||
-          (measurements.Timestamp >= dateFrom && measurements.Timestamp <= dateTo))
+      if (
+        returnAllCreated
+        || measurements is not IAggregate
+        || (
+          measurements.Timestamp >= dateFrom && measurements.Timestamp <= dateTo
+        )
+      )
       {
         yield return measurements;
       }
@@ -134,16 +138,13 @@ public class TestMeasurementFixture(ServiceComposition composition)
       var clonedIds = ids.Where(id => !generatedIds.Contains(id));
 
       var records = generator.BatchGenerateMeasurementRecords(
-          dateFrom,
-          dateTo,
-          generatedIds,
-          cancellationToken
-      );
-
-      var measurements = converter.ConvertToModels(
-        records,
+        dateFrom,
+        dateTo,
+        generatedIds,
         cancellationToken
       );
+
+      var measurements = converter.ConvertToModels(records, cancellationToken);
 
       var aggregated = aggregatesOnly
         ? aggregateUpserter.UpsertAggregates(
