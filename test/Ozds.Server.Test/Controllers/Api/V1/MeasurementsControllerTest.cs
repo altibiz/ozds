@@ -1,4 +1,6 @@
 using System.Globalization;
+using FluentAssertions.Common;
+using Ozds.Business.Aggregation;
 using Ozds.Business.Authorization;
 using Ozds.Business.Models;
 using Ozds.Business.Models.Abstractions;
@@ -54,7 +56,21 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
         cancellationToken
       )
       .OfType<IAggregate>()
-      .Where(aggregate => aggregate.Interval == IntervalModel.QuarterHour)
+      .Where(aggregate =>
+        aggregate.Interval == IntervalModel.QuarterHour
+        && aggregate.Timestamp >= dateFrom
+        && aggregate.Timestamp <= dateTo
+      )
+      .GroupBy(a =>
+        (
+          a.GetType(),
+          a.Interval,
+          a.Timestamp,
+          a.MeterId,
+          a.MeasurementLocationId
+        )
+      )
+      .Select(g => g.MaxBy(x => x.Count)!)
       .ToListAsync(cancellationToken);
 
     var client = Services.GetRequiredService<IOzdsApiV1Client>();
@@ -176,7 +192,16 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
         cancellationToken
       )
       .OfType<IAggregate>()
-      .Where(aggregate => aggregate.Interval == IntervalModel.QuarterHour)
+      .GroupBy(a =>
+        (
+          a.GetType(),
+          a.Interval,
+          a.Timestamp,
+          a.MeterId,
+          a.MeasurementLocationId
+        )
+      )
+      .Select(g => g.MaxBy(x => x.Count)!)
       .ToListAsync(cancellationToken);
 
     var client = Services.GetRequiredService<IOzdsApiV1Client>();
@@ -271,7 +296,21 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
         cancellationToken
       )
       .OfType<IAggregate>()
-      .Where(aggregate => aggregate.Interval == IntervalModel.QuarterHour)
+      .Where(aggregate =>
+        aggregate.Interval == IntervalModel.QuarterHour
+        && aggregate.Timestamp >= dateFrom
+        && aggregate.Timestamp <= dateTo
+      )
+      .GroupBy(a =>
+        (
+          a.GetType(),
+          a.Interval,
+          a.Timestamp,
+          a.MeterId,
+          a.MeasurementLocationId
+        )
+      )
+      .Select(g => g.MaxBy(x => x.Count)!)
       .ToListAsync(cancellationToken);
 
     var client = Services.GetRequiredService<IOzdsApiV1Client>();
@@ -371,7 +410,21 @@ public class ApiV1MeasurementsControllerTest : OzdsServerTestBase
         cancellationToken
       )
       .OfType<IAggregate>()
-      .Where(aggregate => aggregate.Interval == IntervalModel.QuarterHour)
+      .Where(aggregate =>
+        aggregate.Interval == IntervalModel.QuarterHour
+        && aggregate.Timestamp >= dateFrom
+        && aggregate.Timestamp <= dateTo
+      )
+      .GroupBy(a =>
+        (
+          a.GetType(),
+          a.Interval,
+          a.Timestamp,
+          a.MeterId,
+          a.MeasurementLocationId
+        )
+      )
+      .Select(g => g.MaxBy(x => x.Count)!)
       .ToListAsync(cancellationToken);
 
     var client = Services.GetRequiredService<IOzdsApiV1Client>();

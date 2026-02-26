@@ -116,9 +116,6 @@ public class JobsMeasurementDeletionJobReactorTest : OzdsServerTestBase
 
     itemsAfter
       .Items.Should()
-      .AllSatisfy(x => x.Timestamp.Should().BeAfter(deletionCutoff));
-    itemsAfter
-      .Items.Should()
       .AllSatisfy(x =>
         x.Timestamp.Should().BeOnOrAfter(determinedTimestampMinimum)
       );

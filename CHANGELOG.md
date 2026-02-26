@@ -24,6 +24,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- fix problem with duplicate inserts on tests in ApiV1
+  `MeasurementControllerTest`
+- fix filtering on API V1 test inserts by date so they match DB query result
 - change all calculators and calculator tests for business now use rounding type
   `MidpointRounding.AwayFromZero` defined in `PrimitiveRoundingExtensions`
 - fix mapped tables did not use toFilter for searching leading to using non
