@@ -1,6 +1,6 @@
 @namespace Ozds.Client.Pages
 
-@page "/administration/user/{id}"
+@page "/administration/user/{id?}"
 @using Microsoft.AspNetCore.Components.Forms
 @using MudBlazor
 @using Ozds.Business.Models
@@ -19,6 +19,7 @@
   LoadAsync="OnUserLoadAsync"
   UpdateAsync="OnUserUpdateAsync"
   DeleteAsync="OnUserDeleteAsync"
+  CreateAsync="OnUserCreateAsync"
   Map="@(model => model.User)"
   WithHeading
   WithTitle
@@ -33,6 +34,8 @@
   </Details>
   <Edit>
     <PrefixedEdit Model="@context.Model" Prefix="@(x => x.User)"/>
+
+    <Edit Model="@password" />
 
     <PrefixedEdit Model="@context.Model" Prefix="@(x => x.Representative)"/>
   </Edit>

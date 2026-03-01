@@ -55,3 +55,15 @@ Allows = [RoleModel.OperatorRepresentative])]
       Prefix="@(x => x.User)"/>
   </Columns>
 </MappedTable>
+
+@*// This if can be removed since it will return not found for incorrect role model*@
+@if (RepresentativeState.Representative.Role == RoleModel.OperatorRepresentative)
+{
+  <MudButton
+    Class="mt-4"
+    Variant="Variant.Outlined"
+    Color="Color.Primary"
+    Href="/administration/user">
+      @Translate("Create user")
+    </MudButton>
+}

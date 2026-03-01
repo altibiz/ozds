@@ -49,6 +49,30 @@ public partial class UserPage
     }
   }
 
+  private async Task OnUserCreateAsync(MaybeRepresentingUserModel model)
+  {
+
+    var userMutations =
+      ScopedServices.GetRequiredService<UserMutations>();
+
+    var represenativeMutations =
+      ScopedServices.GetRequiredService<TrackableMutations>();
+
+    var newId = await userMutations.Create(
+      model.User,
+      CancellationToken
+    );
+
+    if (model.Representative is { } representative && newId is { })
+    {
+      representative.Id = newId;
+      await represenativeMutations.Create(
+       model.Representative,
+       CancellationToken
+      );
+    }
+  }
+
   private async Task<MaybeRepresentingUserModel?> OnUserLoadAsync()
   {
     if (Id is null)
