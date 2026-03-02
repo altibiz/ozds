@@ -19,4 +19,13 @@ public class PasswordMutations(
     var entity = modelEntityConverter.ToEntity<PasswordEntity>(model);
     await userPasswordMutations.Update(entity, cancellationToken);
   }
+
+  public async Task Create(
+    NewPasswordModel model,
+    CancellationToken cancellationToken
+  )
+  {
+    var entity = modelEntityConverter.ToEntity<NewPasswordEntity>(model);
+    await userPasswordMutations.Create(entity, cancellationToken);
+  }
 }

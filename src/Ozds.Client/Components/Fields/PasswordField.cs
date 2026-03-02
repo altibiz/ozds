@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -17,10 +18,13 @@ public partial class PasswordField
   public string Label { get; set; } = default!;
 
   [Parameter]
-  public string Value { get; set; } = default!;
+  public string? Value { get; set; }
 
   [Parameter]
-  public EventCallback<string> ValueChanged { get; set; }
+  public EventCallback<string?> ValueChanged { get; set; }
+
+  [Parameter]
+  public Expression<Func<string?>>? For { get; set; }
 
   private void OnVisibilityClick()
   {

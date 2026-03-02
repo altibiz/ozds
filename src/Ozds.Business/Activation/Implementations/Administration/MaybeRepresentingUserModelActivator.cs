@@ -15,6 +15,7 @@ public class MaybeRepresentingUserModelActivator
   override public void Initialize(MaybeRepresentingUserModel model)
   {
     model.User = modelActivator.Activate<UserModel>();
+    model.NewPassword = modelActivator.Activate<NewPasswordModel>();
     model.Representative = modelActivator.Activate<RepresentativeModel>();
   }
 }

@@ -63,7 +63,7 @@ Allows = [RoleModel.OperatorRepresentative])]
     Class="mt-4"
     Variant="Variant.Outlined"
     Color="Color.Primary"
-    Href="/administration/user">
-      @Translate("Create user")
-    </MudButton>
+    Href="@(PageHref<UserPage>())">
+    @Translate("Create user")
+   </MudButton>
 }

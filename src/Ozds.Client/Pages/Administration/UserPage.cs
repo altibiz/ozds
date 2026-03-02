@@ -38,9 +38,9 @@ public partial class UserPage
     base.OnInitialized();
 
     if (
-      Id is not null
-      && RepresentativeState.Representative.Role
-        is RoleModel.OperatorRepresentative
+      Id is not null &&
+      RepresentativeState.Representative.Role
+      is RoleModel.OperatorRepresentative
     )
     {
       var activator = ScopedServices.GetRequiredService<ModelActivator>();
@@ -51,7 +51,6 @@ public partial class UserPage
 
   private async Task OnUserCreateAsync(MaybeRepresentingUserModel model)
   {
-
     var userMutations =
       ScopedServices.GetRequiredService<UserMutations>();
 
@@ -62,6 +61,14 @@ public partial class UserPage
       model.User,
       CancellationToken
     );
+
+    if (model.NewPassword is { } newPwd && newId is { })
+    {
+      newPwd.UserId = newId;
+      var passwordMutations =
+        ScopedServices.GetRequiredService<PasswordMutations>();
+      await passwordMutations.Create(newPwd, CancellationToken);
+    }
 
     if (model.Representative is { } representative && newId is { })
     {

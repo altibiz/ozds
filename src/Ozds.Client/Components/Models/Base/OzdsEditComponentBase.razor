@@ -186,7 +186,8 @@
     return @<PasswordField
               Label="@(Translate(Label(next)))"
               Value="@Get(nextFunc)"
-              ValueChanged="@Set(next)"/>;
+              ValueChanged="@Set(next)"
+              For="@For(next)"/>;
   }
 
   protected RenderFragment HtmlField(Expression<Func<TModel, string?>> next)

@@ -35,7 +35,10 @@
   <Edit>
     <PrefixedEdit Model="@context.Model" Prefix="@(x => x.User)"/>
 
-    <Edit Model="@password" />
+    @if (context.Created && context.Model.NewPassword is { })
+    {
+      <PrefixedEdit Model="@context.Model" Prefix="@(x => x.NewPassword)"/>
+    }
 
     <PrefixedEdit Model="@context.Model" Prefix="@(x => x.Representative)"/>
   </Edit>
