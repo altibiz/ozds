@@ -3,7 +3,8 @@ using Ozds.Business.Models;
 
 namespace Ozds.Business.Activation.Implementations.Administration;
 
-public class NewPasswordModelActivator : ConcreteModelActivator<NewPasswordModel>
+public class NewPasswordModelActivator
+  : ConcreteModelActivator<NewPasswordModel>
 {
   public override void Initialize(NewPasswordModel model)
   {

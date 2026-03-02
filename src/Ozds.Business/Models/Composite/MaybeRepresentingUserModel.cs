@@ -12,7 +12,9 @@ public class MaybeRepresentingUserModel : IComposite, IValidatableObject
 
   public RepresentativeModel? Representative { get; set; } = default!;
 
-  public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+  public IEnumerable<ValidationResult> Validate(
+    ValidationContext validationContext
+  )
   {
     var userContext = new ValidationContext(
       User,

@@ -1260,6 +1260,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        ~NewPassword
+      </Key>
+      <Metadata>
+        Type 'Ozds.Business.Models.NewPasswordModel'
+      </Metadata>
+      <Value>
+        New password
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         ~Notification
       </Key>
       <Metadata>
@@ -6358,7 +6369,7 @@
         Change password
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/UserPage.razor' line 45 column 12
+        From file 'Ozds.Client/Pages/Administration/UserPage.razor' line 51 column 12
       </Metadata>
       <Value>
         Change password
@@ -6604,6 +6615,13 @@
         ConfirmNewPassword
       </Key>
       <Metadata>
+        Property 'ConfirmNewPassword' of type 'Ozds.Business.Models.NewPasswordModel' with overrides:
+        ~NewPasswordModel.ConfirmNewPassword
+        MaybeRepresentingUserModel.NewPassword.ConfirmNewPassword
+        ~MaybeRepresentingUserModel.NewPassword.ConfirmNewPassword
+        RepresentingUserModel.NewPassword.ConfirmNewPassword
+        ~RepresentingUserModel.NewPassword.ConfirmNewPassword
+
         Property 'ConfirmNewPassword' of type 'Ozds.Business.Models.PasswordModel' with overrides:
         ~PasswordModel.ConfirmNewPassword
       </Metadata>
@@ -6820,7 +6838,7 @@
       <Metadata>
         From file 'Ozds.Client/Components/Streaming/MappedMutating.razor' line 186 column 14
         From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 268 column 33
-        From file 'Ozds.Client/Pages/Administration/UserPage.razor' line 112 column 12
+        From file 'Ozds.Client/Pages/Administration/UserPage.razor' line 118 column 12
         From file 'Ozds.Client/Pages/Measurements/MessengerPage.razor' line 32 column 6
       </Metadata>
       <Value>
@@ -6836,6 +6854,17 @@
       </Metadata>
       <Value>
         Generate bill
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Create user
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/Administration/UsersPage.razor' line 67 column 6
+      </Metadata>
+      <Value>
+        Create user
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -17038,8 +17067,22 @@
         NewPassword
       </Key>
       <Metadata>
+        Type 'Ozds.Business.Models.NewPasswordModel'
+
+        Property 'NewPassword' of type 'Ozds.Business.Models.NewPasswordModel' with overrides:
+        ~NewPasswordModel.NewPassword
+        MaybeRepresentingUserModel.NewPassword.NewPassword
+        ~MaybeRepresentingUserModel.NewPassword.NewPassword
+        RepresentingUserModel.NewPassword.NewPassword
+        ~RepresentingUserModel.NewPassword.NewPassword
+
         Property 'NewPassword' of type 'Ozds.Business.Models.PasswordModel' with overrides:
         ~PasswordModel.NewPassword
+
+        Property 'NewPassword' of type 'Ozds.Business.Models.Composite.MaybeRepresentingUserModel' with overrides:
+        ~MaybeRepresentingUserModel.NewPassword
+        RepresentingUserModel.NewPassword
+        ~RepresentingUserModel.NewPassword
       </Metadata>
       <Value>
         New password
@@ -23266,7 +23309,7 @@
         Update password
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/UserPage.razor' line 65 column 14
+        From file 'Ozds.Client/Pages/Administration/UserPage.razor' line 71 column 14
       </Metadata>
       <Value>
         Update password
@@ -23837,6 +23880,13 @@
         UserId
       </Key>
       <Metadata>
+        Property 'UserId' of type 'Ozds.Business.Models.NewPasswordModel' with overrides:
+        ~NewPasswordModel.UserId
+        MaybeRepresentingUserModel.NewPassword.UserId
+        ~MaybeRepresentingUserModel.NewPassword.UserId
+        RepresentingUserModel.NewPassword.UserId
+        ~RepresentingUserModel.NewPassword.UserId
+
         Property 'UserId' of type 'Ozds.Business.Models.PasswordModel' with overrides:
         ~PasswordModel.UserId
       </Metadata>
