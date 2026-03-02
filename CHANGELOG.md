@@ -9,6 +9,22 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- Fix `MaybeRepresentingUserModel` now has validation which prevents calling
+  edit/create while validation is not satisfied
+
+### Added
+
+- Users page now has "Create user" button to the Users administration page,
+  visible only to operators
+- Added `NewPasswordModel` class with full validation which is used for user
+  creation
+- Added `NewPasswordEntity` in `Ozds.Users` tailored for creating new user
+  particularly
+- Added `PasswordMutations.Create()` method which sets initial password
+- Added `PasswordField` now contains `For` parameter for validation messaging
+
 ## [1.8.1] - 2025-02-26
 
 ### Removed
