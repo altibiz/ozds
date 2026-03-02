@@ -14,6 +14,13 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Fix, `ApiV1Href` property on `OzdsComponentBase` is now just a string that
   points from root of url to the swagger API
 
+### Added
+
+- Added small button onto `MappedTable` which toggles case sensitive search (on
+  by default)
+- In `Table.cs` added private property and logic to define case sensitivity on
+  table search
+
 ## [1.8.1] - 2025-02-26
 
 ### Removed
