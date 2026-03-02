@@ -175,12 +175,6 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
     await FetchDataGrid();
   }
 
-  private async Task OnCaseSensitiveToggle()
-  {
-    caseSensitive = !caseSensitive;
-    await Fetch();
-  }
-
   private async Task OnCaseSensitiveTogglePaging()
   {
     caseSensitive = !caseSensitive;
