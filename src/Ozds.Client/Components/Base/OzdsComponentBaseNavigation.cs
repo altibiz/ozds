@@ -68,7 +68,7 @@ public abstract partial class OzdsComponentBase : DisposableComponentBase
 
   protected string ApiV1Href
   {
-    get { return BasedHref("/api/v1/openapi"); }
+    get { return "/api/v1/openapi"; }
   }
 
   protected string PageHref<T>(

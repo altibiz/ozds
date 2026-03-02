@@ -9,6 +9,11 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- Fix, `ApiV1Href` property on `OzdsComponentBase` is now just a string that
+  points from root of url to the swagger API
+
 ## [1.8.1] - 2025-02-26
 
 ### Removed
