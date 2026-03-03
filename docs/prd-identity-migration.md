@@ -1,12 +1,12 @@
 # PRD: Identity Management Migration — Authelia/LDAP to ASP.NET Core Identity
 
-| Field          | Value                                      |
-| -------------- | ------------------------------------------ |
-| Author         | OZDS Engineering                           |
-| Status         | Draft                                      |
-| Created        | 2026-03-03                                 |
-| Target Release | TBD                                        |
-| Stakeholders   | Backend, DevOps, Security                  |
+| Field          | Value                     |
+| -------------- | ------------------------- |
+| Author         | OZDS Engineering          |
+| Status         | Draft                     |
+| Created        | 2026-03-03                |
+| Target Release | TBD                       |
+| Stakeholders   | Backend, DevOps, Security |
 
 ---
 
@@ -72,18 +72,18 @@ module bridges both via:
 
 ### 3.2 File Inventory
 
-| Layer                    | Technology                        | Files                                             |
-| ------------------------ | --------------------------------- | ------------------------------------------------- |
-| OIDC Authentication      | Authelia, OpenIdConnect middleware | `Ozds.Users/Extensions/HostExtensions.cs`          |
-| User CRUD                | lldap, Novell.Directory.Ldap      | `Ozds.Users/Queries/UserQueries.cs`                |
-| User Mutations           | lldap, Novell.Directory.Ldap      | `Ozds.Users/Mutations/UserMutations.cs`            |
-| Password Management      | lldap, LDAP Extended Operation    | `Ozds.Users/Mutations/PasswordMutations.cs`        |
-| Configuration            | OIDC + LDAP connection strings    | `Ozds.Users/Options/OzdsUsersOptions.cs`           |
-| App Settings             | OIDC + LDAP sections              | `Ozds.Server/appsettings.Development.json`         |
-| Docker                   | authelia:4.39.4 + lldap:2025-05-19| `docker-compose.yml`                               |
-| Authelia Config          | OIDC client, LDAP backend         | `scripts/auth/configuration.yml`                   |
-| User Entity (identity)   | Simple DTO: Id, Name, Email       | `Ozds.Users/Entities/UserEntity.cs`                |
-| User Entity (business)   | RepresentativeEntity, string ID   | `Ozds.Data/Entities/RepresentativeEntity.cs`       |
+| Layer                  | Technology                         | Files                                        |
+| ---------------------- | ---------------------------------- | -------------------------------------------- |
+| OIDC Authentication    | Authelia, OpenIdConnect middleware | `Ozds.Users/Extensions/HostExtensions.cs`    |
+| User CRUD              | lldap, Novell.Directory.Ldap       | `Ozds.Users/Queries/UserQueries.cs`          |
+| User Mutations         | lldap, Novell.Directory.Ldap       | `Ozds.Users/Mutations/UserMutations.cs`      |
+| Password Management    | lldap, LDAP Extended Operation     | `Ozds.Users/Mutations/PasswordMutations.cs`  |
+| Configuration          | OIDC + LDAP connection strings     | `Ozds.Users/Options/OzdsUsersOptions.cs`     |
+| App Settings           | OIDC + LDAP sections               | `Ozds.Server/appsettings.Development.json`   |
+| Docker                 | authelia:4.39.4 + lldap:2025-05-19 | `docker-compose.yml`                         |
+| Authelia Config        | OIDC client, LDAP backend          | `scripts/auth/configuration.yml`             |
+| User Entity (identity) | Simple DTO: Id, Name, Email        | `Ozds.Users/Entities/UserEntity.cs`          |
+| User Entity (business) | RepresentativeEntity, string ID    | `Ozds.Data/Entities/RepresentativeEntity.cs` |
 
 ### 3.3 Key Coupling Point
 
@@ -97,17 +97,17 @@ users through this ID. The migration strategy must preserve this mapping.
 
 ### 4.1 Options Considered
 
-| Criterion             | ASP.NET Core Identity | Keycloak          | Duende IdentityServer | OpenIddict          | Entra ID        |
-| --------------------- | --------------------- | ----------------- | --------------------- | ------------------- | --------------- |
-| Embedded in .NET      | **Yes**               | No (Java/Docker)  | Yes                   | Yes                 | No (Cloud)      |
-| Self-hosted           | **Yes**               | Yes               | Yes                   | Yes                 | **No**          |
-| Free / OSS            | **MIT**               | Apache 2.0        | **RPL (Paid)**        | Apache 2.0          | Consumption     |
-| User CRUD API         | **UserManager\<T\>**  | Admin REST API    | None (needs Identity) | None (needs Identity)| Graph API      |
-| PostgreSQL support    | **Native (Npgsql)**   | Own DB required   | Via EF Core           | Via EF Core         | N/A             |
-| External OAuth        | **Built-in**          | Identity Brokering| Via Identity          | Via .NET handlers   | External IDs    |
-| Password management   | **Built-in**          | Built-in          | Via Identity          | Via Identity        | Built-in        |
-| Admin UI              | Must build            | **Built-in**      | Must build            | Must build          | Azure Portal    |
-| Setup complexity      | **Low**               | Medium            | High                  | Medium              | Low             |
+| Criterion           | ASP.NET Core Identity | Keycloak           | Duende IdentityServer | OpenIddict            | Entra ID     |
+| ------------------- | --------------------- | ------------------ | --------------------- | --------------------- | ------------ |
+| Embedded in .NET    | **Yes**               | No (Java/Docker)   | Yes                   | Yes                   | No (Cloud)   |
+| Self-hosted         | **Yes**               | Yes                | Yes                   | Yes                   | **No**       |
+| Free / OSS          | **MIT**               | Apache 2.0         | **RPL (Paid)**        | Apache 2.0            | Consumption  |
+| User CRUD API       | **UserManager\<T\>**  | Admin REST API     | None (needs Identity) | None (needs Identity) | Graph API    |
+| PostgreSQL support  | **Native (Npgsql)**   | Own DB required    | Via EF Core           | Via EF Core           | N/A          |
+| External OAuth      | **Built-in**          | Identity Brokering | Via Identity          | Via .NET handlers     | External IDs |
+| Password management | **Built-in**          | Built-in           | Via Identity          | Via Identity          | Built-in     |
+| Admin UI            | Must build            | **Built-in**       | Must build            | Must build            | Azure Portal |
+| Setup complexity    | **Low**               | Medium             | High                  | Medium                | Low          |
 
 ### 4.2 Decision
 
@@ -122,7 +122,8 @@ users through this ID. The migration strategy must preserve this mapping.
 - Duende IdentityServer eliminated: commercial RPL license (contradicts
   "free/OSS" requirement)
 - OpenIddict: not needed for Blazor Server cookie auth. Can be added later as a
-  non-breaking enhancement if OIDC endpoints are ever needed for external clients
+  non-breaking enhancement if OIDC endpoints are ever needed for external
+  clients
 - Entra ID eliminated: cloud-only SaaS, not self-hostable
 
 ---
@@ -156,16 +157,16 @@ stack.
 
 ### 5.2 Operation Mapping
 
-| Current (LDAP)                          | New (ASP.NET Core Identity)                    |
-| --------------------------------------- | ---------------------------------------------- |
-| `LdapConnection.Search()` find user     | `UserManager<T>.FindByIdAsync()`               |
-| `LdapConnection.Add()` create user      | `UserManager<T>.CreateAsync()`                 |
-| `LdapConnection.Modify()` update user   | `UserManager<T>.UpdateAsync()`                 |
-| `LdapConnection.Delete()` delete user   | `UserManager<T>.DeleteAsync()`                 |
-| LDAP Extended Op, change password       | `UserManager<T>.ChangePasswordAsync()`         |
-| Authelia OIDC, cookie auth              | `SignInManager<T>.PasswordSignInAsync()` + Cookie |
-| Claims from OIDC token                  | `UserManager<T>.GetClaimsAsync()` + `ClaimsPrincipal` |
-| LDAP search with pagination             | EF Core LINQ queries on `AspNetUsers`          |
+| Current (LDAP)                        | New (ASP.NET Core Identity)                           |
+| ------------------------------------- | ----------------------------------------------------- |
+| `LdapConnection.Search()` find user   | `UserManager<T>.FindByIdAsync()`                      |
+| `LdapConnection.Add()` create user    | `UserManager<T>.CreateAsync()`                        |
+| `LdapConnection.Modify()` update user | `UserManager<T>.UpdateAsync()`                        |
+| `LdapConnection.Delete()` delete user | `UserManager<T>.DeleteAsync()`                        |
+| LDAP Extended Op, change password     | `UserManager<T>.ChangePasswordAsync()`                |
+| Authelia OIDC, cookie auth            | `SignInManager<T>.PasswordSignInAsync()` + Cookie     |
+| Claims from OIDC token                | `UserManager<T>.GetClaimsAsync()` + `ClaimsPrincipal` |
+| LDAP search with pagination           | EF Core LINQ queries on `AspNetUsers`                 |
 
 ### 5.3 Custom User Entity
 
@@ -212,15 +213,15 @@ Identity. Adding it is a non-breaking, additive change.
 
 ### 6.1 Data Migration (50-500 Users)
 
-**Source:** lldap (LDAP entries with `uid`, `cn`, `mail`)
-**Target:** ASP.NET Core Identity tables in PostgreSQL (`AspNetUsers`)
+**Source:** lldap (LDAP entries with `uid`, `cn`, `mail`) **Target:** ASP.NET
+Core Identity tables in PostgreSQL (`AspNetUsers`)
 
-| Step | Action                                                                                  |
-| ---- | --------------------------------------------------------------------------------------- |
-| 1    | Export all lldap users to JSON via LDAP search script                                   |
+| Step | Action                                                                                                          |
+| ---- | --------------------------------------------------------------------------------------------------------------- |
+| 1    | Export all lldap users to JSON via LDAP search script                                                           |
 | 2    | Create `OzdsUser` for each entry: `Id` = LDAP `uid`, `UserName` = `uid`, `Email` = `mail`, `DisplayName` = `cn` |
-| 3    | Set temporary passwords and flag for mandatory reset on first login                     |
-| 4    | Verify all `RepresentativeEntity.Id` values resolve to migrated `OzdsUser.Id`           |
+| 3    | Set temporary passwords and flag for mandatory reset on first login                                             |
+| 4    | Verify all `RepresentativeEntity.Id` values resolve to migrated `OzdsUser.Id`                                   |
 
 **Critical constraint:** By setting `IdentityUser.Id` to the existing LDAP
 `uid`, all `RepresentativeEntity` foreign key references are preserved without
@@ -231,30 +232,30 @@ migrated users must reset their passwords on first login after migration.
 
 ### 6.2 Code Migration Scope
 
-| Module                                        | Action                                              | Effort  |
-| --------------------------------------------- | --------------------------------------------------- | ------- |
-| `Ozds.Users/Extensions/HostExtensions.cs`     | Rewrite: replace LDAP + OIDC with Identity DI setup | Medium  |
-| `Ozds.Users/Queries/UserQueries.cs`           | Rewrite: `LdapConnection` to `UserManager<T>`       | Medium  |
-| `Ozds.Users/Mutations/UserMutations.cs`       | Rewrite: LDAP add/modify/delete to `UserManager<T>` | Medium  |
-| `Ozds.Users/Mutations/PasswordMutations.cs`   | Rewrite: LDAP extended op to `ChangePasswordAsync`   | Low     |
-| `Ozds.Users/Options/OzdsUsersOptions.cs`      | Simplify: remove LDAP/OIDC connection string models | Low     |
-| `Ozds.Users/Entities/`                        | Remove or adapt (Identity provides its own entities) | Low     |
-| `Ozds.Users.csproj`                           | Remove `Novell.Directory.Ldap`, add `Microsoft.AspNetCore.Identity.EntityFrameworkCore` | Trivial |
-| Blazor login pages                            | Replace OIDC redirect with Identity login form       | Medium  |
-| EF Migration                                  | Add Identity tables to PostgreSQL                    | Low     |
-| `docker-compose.yml`                          | Remove `auth` + `ldap` services                     | Trivial |
-| `scripts/auth/`, `scripts/ldap/`              | Delete Authelia and lldap config/data                | Trivial |
-| `appsettings.*.json`                          | Remove `Ozds:Users:Ldap` + `Ozds:Users:Oidc`        | Trivial |
+| Module                                      | Action                                                                                  | Effort  |
+| ------------------------------------------- | --------------------------------------------------------------------------------------- | ------- |
+| `Ozds.Users/Extensions/HostExtensions.cs`   | Rewrite: replace LDAP + OIDC with Identity DI setup                                     | Medium  |
+| `Ozds.Users/Queries/UserQueries.cs`         | Rewrite: `LdapConnection` to `UserManager<T>`                                           | Medium  |
+| `Ozds.Users/Mutations/UserMutations.cs`     | Rewrite: LDAP add/modify/delete to `UserManager<T>`                                     | Medium  |
+| `Ozds.Users/Mutations/PasswordMutations.cs` | Rewrite: LDAP extended op to `ChangePasswordAsync`                                      | Low     |
+| `Ozds.Users/Options/OzdsUsersOptions.cs`    | Simplify: remove LDAP/OIDC connection string models                                     | Low     |
+| `Ozds.Users/Entities/`                      | Remove or adapt (Identity provides its own entities)                                    | Low     |
+| `Ozds.Users.csproj`                         | Remove `Novell.Directory.Ldap`, add `Microsoft.AspNetCore.Identity.EntityFrameworkCore` | Trivial |
+| Blazor login pages                          | Replace OIDC redirect with Identity login form                                          | Medium  |
+| EF Migration                                | Add Identity tables to PostgreSQL                                                       | Low     |
+| `docker-compose.yml`                        | Remove `auth` + `ldap` services                                                         | Trivial |
+| `scripts/auth/`, `scripts/ldap/`            | Delete Authelia and lldap config/data                                                   | Trivial |
+| `appsettings.*.json`                        | Remove `Ozds:Users:Ldap` + `Ozds:Users:Oidc`                                            | Trivial |
 
 ### 6.3 Modules Not Affected
 
-| Module                          | Reason                                                       |
-| ------------------------------- | ------------------------------------------------------------ |
-| `Ozds.Business/Authorization/`  | HMAC-based IoT auth — completely independent                 |
-| `Ozds.Business/` (all)          | Consumes `ClaimsPrincipal` — source of claims is transparent |
-| `Ozds.Data/Entities/`           | `RepresentativeEntity.Id` unchanged (same string IDs)        |
-| `Ozds.Client/` (components)     | `OzdsComponentBase` reads `ClaimsPrincipal` — still works    |
-| `Ozds.Iot/`                     | No identity dependency                                       |
+| Module                         | Reason                                                       |
+| ------------------------------ | ------------------------------------------------------------ |
+| `Ozds.Business/Authorization/` | HMAC-based IoT auth — completely independent                 |
+| `Ozds.Business/` (all)         | Consumes `ClaimsPrincipal` — source of claims is transparent |
+| `Ozds.Data/Entities/`          | `RepresentativeEntity.Id` unchanged (same string IDs)        |
+| `Ozds.Client/` (components)    | `OzdsComponentBase` reads `ClaimsPrincipal` — still works    |
+| `Ozds.Iot/`                    | No identity dependency                                       |
 
 ---
 
@@ -271,34 +272,35 @@ migrated users must reset their passwords on first login after migration.
 
 ## 8. Risks
 
-| Risk                                                | Likelihood   | Impact | Mitigation                                                            |
-| --------------------------------------------------- | ------------ | ------ | --------------------------------------------------------------------- |
-| ID mismatch during migration breaks business data   | Medium       | High   | Use LDAP `uid` as `IdentityUser.Id` — zero FK changes needed         |
-| Users lose passwords (LDAP hashes not exportable)   | **Certain**  | Medium | Force password reset for all migrated users; communicate in advance   |
-| Missing OIDC capability if future apps need it      | Low          | Low    | Add OpenIddict later — non-breaking, additive change                  |
-| Identity table naming conflicts with existing schema| Low          | Low    | Use separate schema (`identity.`) or prefixed table names             |
-| Blazor login UX regression (form vs redirect)       | Medium       | Low    | Build login page matching current UX; test with users before cutover  |
+| Risk                                                 | Likelihood  | Impact | Mitigation                                                           |
+| ---------------------------------------------------- | ----------- | ------ | -------------------------------------------------------------------- |
+| ID mismatch during migration breaks business data    | Medium      | High   | Use LDAP `uid` as `IdentityUser.Id` — zero FK changes needed         |
+| Users lose passwords (LDAP hashes not exportable)    | **Certain** | Medium | Force password reset for all migrated users; communicate in advance  |
+| Missing OIDC capability if future apps need it       | Low         | Low    | Add OpenIddict later — non-breaking, additive change                 |
+| Identity table naming conflicts with existing schema | Low         | Low    | Use separate schema (`identity.`) or prefixed table names            |
+| Blazor login UX regression (form vs redirect)        | Medium      | Low    | Build login page matching current UX; test with users before cutover |
 
 ---
 
 ## 9. Effort Estimate
 
-| Phase                                       | Estimate   |
-| ------------------------------------------- | ---------- |
-| Identity + EF Core setup, DI registration   | 1-2 days   |
-| Rewrite `Ozds.Users` (queries, mutations)   | 2-3 days   |
-| User migration script                       | 1 day      |
-| Blazor login flow update                    | 1-2 days   |
-| External OAuth provider setup               | 0.5 day    |
-| Docker and config cleanup                   | 0.5 day    |
-| Testing and validation                      | 2-3 days   |
-| **Total**                                   | **8-12 days** |
+| Phase                                     | Estimate      |
+| ----------------------------------------- | ------------- |
+| Identity + EF Core setup, DI registration | 1-2 days      |
+| Rewrite `Ozds.Users` (queries, mutations) | 2-3 days      |
+| User migration script                     | 1 day         |
+| Blazor login flow update                  | 1-2 days      |
+| External OAuth provider setup             | 0.5 day       |
+| Docker and config cleanup                 | 0.5 day       |
+| Testing and validation                    | 2-3 days      |
+| **Total**                                 | **8-12 days** |
 
 ---
 
 ## 10. Success Criteria
 
-- [ ] All existing users accessible via `UserManager<OzdsUser>` with preserved IDs
+- [ ] All existing users accessible via `UserManager<OzdsUser>` with preserved
+      IDs
 - [ ] Login/logout works via ASP.NET Core Identity cookie authentication
 - [ ] User CRUD (create, read, update, delete) functional through `Ozds.Users`
 - [ ] Password change/reset functional
@@ -313,13 +315,13 @@ migrated users must reset their passwords on first login after migration.
 
 ## 11. Resolved Decisions
 
-| #  | Question                                           | Decision                        | Rationale                                                                                       |
-| -- | -------------------------------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------- |
-| 1  | DbContext strategy for Identity tables              | **Separate `IdentityDbContext`** | Follows existing multi-context pattern (`DataDbContext`, `MessagingDbContext`, `JobsDbContext`). Clean separation of identity schema from business entities. Own migration history. |
-| 2  | Migration script tooling                            | **One-time console app**        | Throwaway script kept in `scripts/` for reference. No ongoing maintenance burden. Not worth integrating into `Ozds.Migration` for a single-use operation. |
-| 3  | Password reset communication                        | **Manual communication**        | Admin sends announcement via existing channels (email blast, internal comms) before cutover. No automated email flow needed. |
-| 4  | Additional LDAP attributes to migrate               | **Id, Name, Email only**        | Current `UserEntity` already captures everything needed. No additional LDAP attributes in use. |
-| 5  | "Remember me" / persistent cookies                  | **Yes**                         | Users can opt in to stay logged in across browser sessions. `SignInManager.PasswordSignInAsync(isPersistent: true)` with configurable cookie expiration. |
+| #   | Question                               | Decision                         | Rationale                                                                                                                                                                           |
+| --- | -------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | DbContext strategy for Identity tables | **Separate `IdentityDbContext`** | Follows existing multi-context pattern (`DataDbContext`, `MessagingDbContext`, `JobsDbContext`). Clean separation of identity schema from business entities. Own migration history. |
+| 2   | Migration script tooling               | **One-time console app**         | Throwaway script kept in `scripts/` for reference. No ongoing maintenance burden. Not worth integrating into `Ozds.Migration` for a single-use operation.                           |
+| 3   | Password reset communication           | **Manual communication**         | Admin sends announcement via existing channels (email blast, internal comms) before cutover. No automated email flow needed.                                                        |
+| 4   | Additional LDAP attributes to migrate  | **Id, Name, Email only**         | Current `UserEntity` already captures everything needed. No additional LDAP attributes in use.                                                                                      |
+| 5   | "Remember me" / persistent cookies     | **Yes**                          | Users can opt in to stay logged in across browser sessions. `SignInManager.PasswordSignInAsync(isPersistent: true)` with configurable cookie expiration.                            |
 
 ### Implications of Decisions
 
