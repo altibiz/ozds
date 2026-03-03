@@ -21,7 +21,7 @@ public class OzdsOpenApiAuthorizationMiddleware
     )
     {
       await context.ChallengeAsync(
-        HostExtensions.ChallengeScheme,
+        HostExtensions.AuthenticationScheme,
         new AuthenticationProperties
         {
           RedirectUri = context.Request.Path.ToString(),

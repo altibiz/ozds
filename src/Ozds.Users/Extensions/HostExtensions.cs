@@ -1,9 +1,10 @@
 using Altibiz.DependencyInjection.Extensions;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Novell.Directory.Ldap;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Ozds.Users.Context;
+using Ozds.Users.Entities;
 using Ozds.Users.Mutations.Abstractions;
 using Ozds.Users.Options;
 using Ozds.Users.Queries.Abstractions;
@@ -15,9 +16,6 @@ public static class HostExtensions
   public const string AuthenticationScheme =
     CookieAuthenticationDefaults.AuthenticationScheme;
 
-  public const string ChallengeScheme =
-    OpenIdConnectDefaults.AuthenticationScheme;
-
   public static IHostApplicationBuilder AddOzdsUsers(
     this IHostApplicationBuilder builder
   )
@@ -26,10 +24,10 @@ public static class HostExtensions
     builder.AddQueries();
     builder.AddMutations();
     builder.AddHttp();
-    builder.AddLdap();
+    builder.AddDatabase();
     if (ConfigureOzdsUsersOptions.WithAuth(builder.Configuration))
     {
-      builder.AddOidc();
+      builder.AddIdentity();
     }
 
     return builder;
@@ -67,162 +65,135 @@ public static class HostExtensions
     return builder;
   }
 
-  private static IHostApplicationBuilder AddLdap(
-    this IHostApplicationBuilder builder
-  )
+  private static void AddDatabase(this IHostApplicationBuilder builder)
   {
-    builder.Services.AddScoped(serviceProvider =>
-    {
-      var connectionString = ConfigureOzdsUsersOptions.LdapConnectionString(
-        builder.Configuration
-      );
-
-      var options = new LdapConnectionOptions();
-      if (builder.Environment.IsDevelopment())
+    builder.Services.AddDbContext<UsersDbContext>(
+      (services, options) =>
       {
-        options.ConfigureRemoteCertificateValidationCallback(
-          (sender, certificate, chain, errors) =>
-          {
-            return true;
-          }
-        );
+        var usersOptions = services
+          .GetRequiredService<IOptions<OzdsUsersOptions>>()
+          .Value;
+
+        options
+          .UseNpgsql(
+            usersOptions.ConnectionString,
+            x =>
+            {
+              x.MigrationsAssembly(
+                typeof(UsersDbContext).Assembly.GetName().Name
+              );
+              x.MigrationsHistoryTable($"__Ozds{nameof(UsersDbContext)}");
+            }
+          )
+          .UseSnakeCaseNamingConvention();
       }
-
-      var connection = new LdapConnection(options);
-      if (connectionString.Ssl)
-      {
-        connection.SecureSocketLayer = true;
-      }
-
-      connection.Connect(connectionString.Host, connectionString.Port);
-      connection.Bind(connectionString.User, connectionString.Password);
-
-      return connection;
-    });
-
-    return builder;
+    );
   }
 
-  private static IHostApplicationBuilder AddOidc(
+  private static IHostApplicationBuilder AddIdentity(
     this IHostApplicationBuilder builder
   )
   {
     builder
-      .Services.AddAuthentication(options =>
+      .Services.AddIdentity<OzdsUser, IdentityRole>(options =>
       {
-        options.DefaultScheme =
-          CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme =
-          OpenIdConnectDefaults.AuthenticationScheme;
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequiredLength = 8;
+        options.Password.RequiredUniqueChars = 1;
+
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+        options.Lockout.MaxFailedAccessAttempts = 5;
+        options.Lockout.AllowedForNewUsers = true;
+
+        options.User.RequireUniqueEmail = true;
+
+        options.SignIn.RequireConfirmedEmail = false;
+        options.SignIn.RequireConfirmedAccount = false;
       })
-      .AddCookie()
-      .AddOpenIdConnect(options =>
+      .AddEntityFrameworkStores<UsersDbContext>()
+      .AddDefaultTokenProviders();
+
+    builder.Services.ConfigureApplicationCookie(options =>
+    {
+      options.Cookie.Name = ".Ozds.Auth";
+      options.Cookie.HttpOnly = true;
+      options.Cookie.SameSite = SameSiteMode.Lax;
+
+      options.ExpireTimeSpan = TimeSpan.FromDays(30);
+      options.SlidingExpiration = true;
+
+      options.LoginPath = "/app/auth/login";
+      options.LogoutPath = "/app/auth/logout";
+      options.AccessDeniedPath = "/app/auth/access-denied";
+
+      options.Events.OnRedirectToLogin = context =>
       {
-        var connectionString = ConfigureOzdsUsersOptions.OidcConnectionString(
-          builder.Configuration
-        );
-        var requireHttpsMetadata =
-          ConfigureOzdsUsersOptions.RequireHttpsMetadata(builder.Configuration);
-        var authLogoutSubpath = ConfigureOzdsUsersOptions.AuthLogoutSubpath(
-          builder.Configuration
-        );
-        var idKey = ConfigureOzdsUsersOptions.IdKey(builder.Configuration);
-        var idClaim = ConfigureOzdsUsersOptions.IdClaim(builder.Configuration);
-        var signInCallbackSubpath =
-          ConfigureOzdsUsersOptions.SignInCallbackSubpath(
-            builder.Configuration
-          );
-        var signOutCallbackSubpath =
-          ConfigureOzdsUsersOptions.SignOutCallbackSubpath(
-            builder.Configuration
-          );
-
-        options.Authority = connectionString.Authority;
-        options.RequireHttpsMetadata =
-          requireHttpsMetadata ?? !builder.Environment.IsDevelopment();
-        options.ClientId = connectionString.ClientId;
-        options.ClientSecret = connectionString.ClientSecret;
-        options.ResponseType = OpenIdConnectResponseType.Code;
-        options.Scope.Clear();
-        options.Scope.Add("openid");
-        options.Scope.Add("profile");
-        options.Scope.Add("email");
-        options.Scope.Add("offline_access");
-
-        options.CallbackPath = $"/{signInCallbackSubpath}";
-        options.SignedOutCallbackPath = $"/{signOutCallbackSubpath}";
-        var events = new OpenIdConnectEvents();
-        if (authLogoutSubpath is { } logoutSubpath)
+        if (context.Request.Path.StartsWithSegments("/api"))
         {
-          events.OnRedirectToIdentityProviderForSignOut = context =>
-          {
-            context.ProtocolMessage.IssuerAddress =
-              $"{connectionString.Authority}/{logoutSubpath}";
-            return Task.CompletedTask;
-          };
+          context.Response.StatusCode =
+            StatusCodes.Status401Unauthorized;
+          return Task.CompletedTask;
         }
 
-        if (builder.Environment.IsDevelopment())
-        {
-          events.OnUserInformationReceived = context =>
-          {
-            var logger = context.HttpContext.RequestServices.GetRequiredService<
-              ILogger<OpenIdConnectEvents>
-            >();
-            logger.LogDebug(
-              "User info received from user info endpoint: {User}",
-              context.User.ToString()
-            );
-            return Task.CompletedTask;
-          };
-          events.OnTokenValidated = context =>
-          {
-            var logger = context.HttpContext.RequestServices.GetRequiredService<
-              ILogger<OpenIdConnectEvents>
-            >();
-            logger.LogDebug("Token validated. Claims from ID token:");
-            foreach (var claim in context.Principal?.Claims ?? [])
-            {
-              logger.LogDebug(
-                "Type: {Type}, Value: {Value}",
-                claim.Type,
-                claim.Value
-              );
-            }
-
-            return Task.CompletedTask;
-          };
-          events.OnAuthenticationFailed = context =>
-          {
-            var logger = context.HttpContext.RequestServices.GetRequiredService<
-              ILogger<OpenIdConnectEvents>
-            >();
-            logger.LogDebug(context.Exception, "Authentication failed");
-            return Task.CompletedTask;
-          };
-        }
-
-        options.Events = events;
-
-        if (builder.Environment.IsDevelopment())
-        {
-          options.RequireHttpsMetadata = false;
-#pragma warning disable S4830 // Server certificates should be verified during SSL/TLS connections
-          options.BackchannelHttpHandler = new HttpClientHandler
-          {
-            ServerCertificateCustomValidationCallback =
-              HttpClientHandler.DangerousAcceptAnyServerCertificateValidator,
-          };
-#pragma warning restore S4830 // Server certificates should be verified during SSL/TLS connections
-        }
-
-        options.MapInboundClaims = true;
-        options.SaveTokens = true;
-        options.GetClaimsFromUserInfoEndpoint = true;
-        options.ClaimActions.MapJsonKey(idClaim, idKey);
-      });
+        context.Response.Redirect(context.RedirectUri);
+        return Task.CompletedTask;
+      };
+    });
 
     builder.Services.AddAuthorization();
+
+    var configuration = builder.Configuration;
+
+    if (
+      configuration["Ozds:Users:Authentication:Google:ClientId"]
+        is { Length: > 0 } googleId
+    )
+    {
+      builder
+        .Services.AddAuthentication()
+        .AddGoogle(options =>
+        {
+          options.ClientId = googleId;
+          options.ClientSecret = configuration.GetValue<string>(
+            "Ozds:Users:Authentication:Google:ClientSecret"
+          )!;
+        });
+    }
+
+    if (
+      configuration["Ozds:Users:Authentication:Facebook:AppId"]
+        is { Length: > 0 } facebookId
+    )
+    {
+      builder
+        .Services.AddAuthentication()
+        .AddFacebook(options =>
+        {
+          options.AppId = facebookId;
+          options.AppSecret = configuration.GetValue<string>(
+            "Ozds:Users:Authentication:Facebook:AppSecret"
+          )!;
+        });
+    }
+
+    if (
+      configuration["Ozds:Users:Authentication:Microsoft:ClientId"]
+        is { Length: > 0 } microsoftId
+    )
+    {
+      builder
+        .Services.AddAuthentication()
+        .AddMicrosoftAccount(options =>
+        {
+          options.ClientId = microsoftId;
+          options.ClientSecret = configuration.GetValue<string>(
+            "Ozds:Users:Authentication:Microsoft:ClientSecret"
+          )!;
+        });
+    }
 
     return builder;
   }

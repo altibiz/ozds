@@ -76,39 +76,39 @@ services:
       timeout: 10s
       retries: 5
 
-  auth:
-    image: authelia/authelia:4.39.4
-    restart: always
-    depends_on: [ldap]
-    ports:
-      - 9091:9091
-    volumes:
-      - ./scripts/auth/configuration.yml:/config/configuration.yml
-      - ./scripts/auth/users.yml:/config/users.yml
-    networks:
-      - ozds-network
-    healthcheck:
-      test: curl --fail http://localhost:9091 || exit 1
-      interval: 30s
-      timeout: 10s
-      retries: 5
+  # auth:
+  #   image: authelia/authelia:4.39.4
+  #   restart: always
+  #   depends_on: [ldap]
+  #   ports:
+  #     - 9091:9091
+  #   volumes:
+  #     - ./scripts/auth/configuration.yml:/config/configuration.yml
+  #     - ./scripts/auth/users.yml:/config/users.yml
+  #   networks:
+  #     - ozds-network
+  #   healthcheck:
+  #     test: curl --fail http://localhost:9091 || exit 1
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 5
 
-  ldap:
-    image: lldap/lldap:2025-05-19
-    restart: always
-    ports:
-      - 3890:3890
-      - 17170:17170
-    volumes:
-      - ./scripts/ldap/users.db:/data/users.db
-      - ./scripts/ldap/lldap_config.toml:/data/lldap_config.toml
-    networks:
-      - ozds-network
-    healthcheck:
-      test: curl --fail http://localhost:17170 || exit 1
-      interval: 30s
-      timeout: 10s
-      retries: 5
+  # ldap:
+  #   image: lldap/lldap:2025-05-19
+  #   restart: always
+  #   ports:
+  #     - 3890:3890
+  #     - 17170:17170
+  #   volumes:
+  #     - ./scripts/ldap/users.db:/data/users.db
+  #     - ./scripts/ldap/lldap_config.toml:/data/lldap_config.toml
+  #   networks:
+  #     - ozds-network
+  #   healthcheck:
+  #     test: curl --fail http://localhost:17170 || exit 1
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 5
 
   ollama-cpu:
     <<: *ollama-common
