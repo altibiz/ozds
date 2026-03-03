@@ -53,7 +53,7 @@ public partial class UserPage
   {
     var userMutations = ScopedServices.GetRequiredService<UserMutations>();
 
-    var represenativeMutations =
+    var representativeMutations =
       ScopedServices.GetRequiredService<TrackableMutations>();
 
     var newId = await userMutations.Create(model.User, CancellationToken);
@@ -69,7 +69,7 @@ public partial class UserPage
     if (model.Representative is { } representative && newId is { })
     {
       representative.Id = newId;
-      await represenativeMutations.Create(
+      await representativeMutations.Create(
         model.Representative,
         CancellationToken
       );
