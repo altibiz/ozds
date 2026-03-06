@@ -53,17 +53,22 @@
                              @if (typeof(T).IsAssignableTo(typeof(IIdentifiable))
                                || typeof(T).IsAssignableTo(typeof(IAnalysis)))
                              {
-                               <MudTextField
-                                 Class="my-4"
-                                 T="string"
-                                 Value="@searchString"
-                                 DebounceInterval="500"
-                                 OnDebounceIntervalElapsed="@OnPagingSearch"
-                                 Placeholder="@Translate("Search")"
-                                 Adornment="Adornment.Start"
-                                 Immediate="true"
-                                 AdornmentIcon="@Icons.Material.Filled.Search"
-                                 IconSize="Size.Medium"/>
+                               <div class="d-flex flex-row align-center my-4">
+                                 <MudIconButton Icon="@Icons.Material.Filled.TextFields"
+                                   Color="@(caseSensitive ? Color.Primary : Color.Default)"
+                                   OnClick="@OnCaseSensitiveToggleGrid"
+                                   Size="Size.Medium"/>
+                                 <MudTextField
+                                   T="string"
+                                   Value="@searchString"
+                                   DebounceInterval="500"
+                                   OnDebounceIntervalElapsed="@OnPagingSearch"
+                                   Placeholder="@Translate("Search")"
+                                   Adornment="Adornment.Start"
+                                   Immediate="true"
+                                   AdornmentIcon="@Icons.Material.Filled.Search"
+                                   IconSize="Size.Medium"/>
+                               </div>
                              }
                              <MappedPaging
                                T="T"
@@ -162,6 +167,11 @@
 
           @if (typeof(T).IsAssignableTo(typeof(IIdentifiable)) || typeof(T).IsAssignableTo(typeof(IAnalysis)))
           {
+            <MudIconButton
+              Icon="@Icons.Material.Filled.TextFields"
+              Color="@(caseSensitive ? Color.Primary : Color.Default)"
+              OnClick="@OnCaseSensitiveTogglePaging"
+              Size="Size.Medium"/>
             <MudTextField
               T="string"
               Value="@searchString"

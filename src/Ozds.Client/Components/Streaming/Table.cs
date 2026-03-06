@@ -32,6 +32,8 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
 
   private string? searchString;
 
+  private bool caseSensitive = true;
+
   [CascadingParameter]
   public RepresentativeState RepresentativeState { get; set; } = default!;
 
@@ -171,6 +173,18 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
   {
     searchString = newSearchString;
     await FetchDataGrid();
+  }
+
+  private async Task OnCaseSensitiveTogglePaging()
+  {
+    caseSensitive = !caseSensitive;
+    await FetchPaging();
+  }
+
+  private async Task OnCaseSensitiveToggleGrid()
+  {
+    caseSensitive = !caseSensitive;
+    await FetchPaging();
   }
 
   private async Task<GridData<T>> OnDataGridServerData(GridState<T> state)
@@ -652,6 +666,10 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
       return false;
     }
 
+    var comparison = caseSensitive
+      ? StringComparison.Ordinal
+      : StringComparison.OrdinalIgnoreCase;
+
     if (_columnSearchMappers is { } searchFields)
     {
       foreach (var mapper in searchFields)
@@ -659,7 +677,7 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
         if (
           mapper(model) is { } mappedModel
           && mappedModel.ToString() is { } stringTransform
-          && stringTransform.Contains(searchString)
+          && stringTransform.Contains(searchString, comparison)
         )
         {
           return true;
@@ -670,7 +688,7 @@ public partial class MappedTable<T, TMapped> : OzdsComponentBase
     // fallback just for older way of identifying
     if (
       toFilter is IIdentifiable { Title: { } title }
-      && title.Contains(searchString)
+      && title.Contains(searchString, comparison)
     )
     {
       return true;
