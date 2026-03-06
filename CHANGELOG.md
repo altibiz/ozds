@@ -13,6 +13,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - Fix, `ApiV1Href` property on `OzdsComponentBase` is now just a string that
   points from root of url to the swagger API
+- update mailkit
 
 ### Added
 

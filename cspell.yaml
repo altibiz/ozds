@@ -194,6 +194,7 @@ words:
   - "hmacsha"
   - "identifiables"
   - "direnv"
+  - "mailkit"
 
   # Croatian
   - "altibiz"
