@@ -25,6 +25,7 @@ isdatabaseready := absolute_path('scripts/database/isready.nu')
 isllmready := absolute_path('scripts/llm/isready.nu')
 rewind := absolute_path('scripts/database/rewind.nu')
 rollback := absolute_path('scripts/database/rollback.nu')
+migrategenerated := absolute_path('scripts/database/migrate-generated.nu')
 validate := absolute_path('scripts/database/validate.nu')
 measurements := absolute_path('scripts/database/measurements.nu')
 playwright := absolute_path('src/Ozds.Server/bin/Debug/net8.0/playwright.ps1')
@@ -489,6 +490,10 @@ rewind *args:
 [confirm("This will clean docker containers. Do you want to continue?")]
 rollback *args:
     {{ rollback }} {{ args }}
+
+[confirm("This will clean docker containers. Do you want to continue?")]
+migrate-generated *args:
+  {{ migrategenerated }} {{ args }}
 
 [confirm("This will clean docker containers. Do you want to continue?")]
 validate *args:
