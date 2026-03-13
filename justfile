@@ -493,7 +493,7 @@ rollback *args:
 
 [confirm("This will clean docker containers. Do you want to continue?")]
 migrate-generated *args:
-  {{ migrategenerated }} {{ args }}
+    {{ migrategenerated }} {{ args }}
 
 [confirm("This will clean docker containers. Do you want to continue?")]
 validate *args:
