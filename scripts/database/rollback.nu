@@ -20,7 +20,7 @@ def main [project_name: string, name: string] {
     | each { |x|
       let migrations = glob $"($x)/Migrations/*"
         | path basename | sort
-        | filter { |x| $x < $timestamp and $x =~ '\d{14}_[^\.]*\.cs' }
+        | where { |x| $x < $timestamp and $x =~ '\d{14}_[^\.]*\.cs' }
       if ($migrations | is-empty) {
         return null
       }
@@ -30,18 +30,22 @@ def main [project_name: string, name: string] {
         | split row "." | first
 
       let csproj = [$x $"($x | path basename).csproj"] | path join
-      { project: $x migration: $migration csproj: $csproj }
+      let context =   $"($x | path basename | split row '.' | last)DbContext"
+      { project: $x migration: $migration csproj: $csproj context: $context }
     }
-    | filter { |x| $x | is-not-empty }
+    | where { |x| $x | is-not-empty }
 
   for $project_migration in $project_migrations {
     let project = $project_migration.project
     let migration = $project_migration.migration
     let csproj = $project_migration.csproj
-    (dotnet ef
+    let context = $project_migration.context
+    print ($"Rolling back to migration '($migration)' for project '($project)'.")
+    (
+      dotnet ef database update $migration
       --startup-project $server_csproj
       --project $csproj
-      database update
-      $migration)
+      --context $context
+    )
   }
 }
