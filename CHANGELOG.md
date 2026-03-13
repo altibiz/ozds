@@ -17,7 +17,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - updated sonar analyzer package
 - updated azure identity package
 - suppressed specific warnings because either they are new or .razor warning
-  suppression does not work
+  package suppression does not work
+- added new script `./scripts/database/migrate-generated.nu` for creating
+  migration specific to generated SQL code (for procedures and non EF stuff)
 
 ### Added
 
