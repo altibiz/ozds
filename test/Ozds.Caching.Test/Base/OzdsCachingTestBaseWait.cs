@@ -49,6 +49,7 @@ public partial class OzdsCachingTestBase
     var now = start;
     while (predicate(result, now) && now - start < timeout)
     {
+      await Task.Delay(50, cancellationToken);
       result = await update();
       now = DateTimeOffset.UtcNow;
     }
