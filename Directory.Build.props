@@ -12,6 +12,9 @@
 
   <PropertyGroup>
     <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+    <!-- NOTE: .editorconfig suppression doesn't work for some reason on Razor files in SonarAnalyzer v10.x -->
+    <!-- https://github.com/SonarSource/sonar-dotnet/issues/8050 -->
+    <NoWarn>$(NoWarn);S3358;S4136;S1144;S2971;S1481;S3267</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
