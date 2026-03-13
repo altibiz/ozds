@@ -14,6 +14,12 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Fix, `ApiV1Href` property on `OzdsComponentBase` is now just a string that
   points from root of url to the swagger API
 - update mailkit
+- updated sonar analyzer package
+- updated azure identity package
+- suppressed specific warnings because either they are new or .razor warning
+  package suppression does not work
+- added new script `./scripts/database/migrate-generated.nu` for creating
+  migration specific to generated SQL code (for procedures and non EF stuff)
 
 ### Added
 

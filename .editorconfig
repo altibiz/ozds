@@ -207,6 +207,26 @@ dotnet_diagnostic.S3246.severity = none
 # Prefer indexing instead of "Enumerable" methods on types implementing "IList"
 dotnet_diagnostic.S6608.severity = none
 
+# NOTE: most of these warnings are newer optimization warnings and will be
+# looked at eventually
+
+# Make member a static method/property
+dotnet_diagnostic.S2325.severity = none
+# "password" detected here, make sure this is not a hard-coded credential
+dotnet_diagnostic.S2068.severity = none
+# Remove the unused local variable
+dotnet_diagnostic.S1481.severity = none
+# Remove the unused private property
+dotnet_diagnostic.S1144.severity = none
+# Use 'Count' property here instead
+dotnet_diagnostic.S2971.severity = none
+# Loop should be simplified by calling Select
+dotnet_diagnostic.S3267.severity = none
+# Loop should be simplified by calling Select
+dotnet_diagnostic.S3267.severity = none
+# Loop should be simplified by calling Select
+dotnet_diagnostic.S3267.severity = none
+
 # TODO: put issues on github
 # Complete TODO
 dotnet_diagnostic.S1135.severity = none
