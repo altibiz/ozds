@@ -1,15 +1,20 @@
 using Ozds.Caching.Entities.Abstractions;
+using Ozds.Caching.Test.Services;
 
 namespace Ozds.Caching.Test.Base;
 
 public partial class OzdsCachingTestBase
 {
-  protected async Task Wait(
-    CancellationToken cancellationToken,
-    TimeSpan? timeout = null
-  )
+  protected async Task Wait(CancellationToken cancellationToken)
   {
-    await Task.Delay(timeout ?? Constants.DefaultTimeout, cancellationToken);
+    await DrainReactor(cancellationToken);
+  }
+
+  protected Task DrainReactor(CancellationToken cancellationToken)
+  {
+    return Services
+      .GetRequiredService<TestReactorDrainService>()
+      .DrainAsync(cancellationToken);
   }
 
   protected bool NotNull<T>(T? value, DateTimeOffset _)
@@ -31,7 +36,6 @@ public partial class OzdsCachingTestBase
   )
     where T : IEntity
   {
-    timeout ??= Constants.DefaultTimeout;
 
     Func<Task<T?>> update =
       typeof(T).IsAssignableTo(typeof(IIdentifiableEntity))
@@ -44,15 +48,9 @@ public partial class OzdsCachingTestBase
         ? async () => (T?)await JoinQueries.Read(type, id, cancellationToken)
       : async () => (T?)await EntityQueries.Read(type, id, cancellationToken);
 
-    var result = await update();
     var start = DateTimeOffset.UtcNow;
-    var now = start;
-    while (predicate(result, now) && now - start < timeout)
-    {
-      await Task.Delay(50, cancellationToken);
-      result = await update();
-      now = DateTimeOffset.UtcNow;
-    }
+    await DrainReactor(cancellationToken);
+    var result = await update();
 
     return result;
   }
