@@ -26,6 +26,10 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - `rollback.nu` script uses new where instead of deprecated filter
 - Fix, missing mapping field in `EnergyCardModelReportEntityConverter` for field
   `ActiveEnergyTotalImportT0_kWh`
+- Ozds.Caching.Test tests now have Repeat attribute which is used to catch more
+  flaky non deterministic failures
+- Removed polling program parts since Ozds.Caching.Test should now be
+  deterministic
 
 ### Added
 
