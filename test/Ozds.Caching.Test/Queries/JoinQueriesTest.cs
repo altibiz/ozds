@@ -6,6 +6,7 @@ namespace Ozds.Caching.Test.Queries;
 
 // TODO: distinguish between slow/fast ones
 
+[Repeat(10)]
 public class JoinEntityQueriesTest : OzdsCachingTestBase
 {
   [Test]

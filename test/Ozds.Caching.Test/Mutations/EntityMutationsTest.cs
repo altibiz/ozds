@@ -4,6 +4,7 @@ using Ozds.Caching.Test.Extensions;
 
 namespace Ozds.Caching.Test.Mutations;
 
+[Repeat(10)]
 public class EntityMutationsTest : OzdsCachingTestBase
 {
   [Test]

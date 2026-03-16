@@ -4,6 +4,7 @@ using Ozds.Caching.Test.Extensions;
 
 namespace Ozds.Caching.Test.Consistency;
 
+[Repeat(10)]
 public class CompositeConsistencyTest : OzdsCachingTestBase
 {
   [Test]
