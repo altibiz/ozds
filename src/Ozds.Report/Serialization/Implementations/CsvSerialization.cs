@@ -16,7 +16,7 @@ public class CsvSerialization(IServiceProvider serviceProvider)
   : IExporter,
     IImporter
 {
-  private const char Separator = ';';
+  private const char Separator = ';'; // TODO: find if this can be safely replaced by ','
 
   private const char Newline = '\n';
 
