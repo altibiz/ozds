@@ -23,7 +23,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Fix, `rollback.nu` missing db context fix
 - `rollback.nu` script uses new where instead of deprecated filter
 - Fix, `CsvSerialization.cs` now has ',' separator instead of ';' which is used
-  by default in the importers
+  by default in the readers
 - Fix, missing mapping field in `EnergyCardModelReportEntityConverter` for field
   `ActiveEnergyTotalImportT0_kWh` in method `InitializeModel`
 
