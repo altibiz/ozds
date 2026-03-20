@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using Ozds.Caching.Observers.Abstractions;
 using Ozds.Caching.Observers.EventArgs;
 
@@ -5,8 +6,8 @@ namespace Ozds.Caching.Test.Services;
 
 public class TestReactorDrainService : IDisposable
 {
-  private readonly object lockObj = new();
-  private readonly List<TaskCompletionSource> waiters = new();
+  private readonly ConcurrentQueue<(TaskCompletionSource tcs, long target)> waiters =
+    new();
   private readonly ICacheSubscriber subscriber;
 
   private long published = 0;
@@ -36,41 +37,41 @@ public class TestReactorDrainService : IDisposable
       return;
     }
 
-    Interlocked.Increment(ref processed);
-    lock (lockObj)
+    var current = Interlocked.Increment(ref processed);
+    while (
+      waiters.TryPeek(out var entry)
+      && current >= entry.target
+      && waiters.TryDequeue(out var waiter))
     {
-      var current = Volatile.Read(ref processed);
-      var target = Volatile.Read(ref published);
-      if (current >= target)
-      {
-        foreach (var waiter in waiters)
-        {
-          waiter.TrySetResult();
-        }
-        waiters.Clear();
-      }
+      waiter.tcs.TrySetResult();
     }
   }
 
   public Task DrainAsync(CancellationToken cancellationToken)
   {
-    ObjectDisposedException.ThrowIf(Volatile.Read(ref disposed), nameof(TestReactorDrainService));
+    ObjectDisposedException.ThrowIf(
+      Volatile.Read(ref disposed),
+      nameof(TestReactorDrainService)
+    );
 
-    lock (lockObj)
+    var target = Volatile.Read(ref published);
+    if (Volatile.Read(ref processed) >= target)
     {
-
-      if (Volatile.Read(ref processed) >= Volatile.Read(ref published))
-      {
-        return Task.CompletedTask;
-      }
-
-      var tcs = new TaskCompletionSource(
-        TaskCreationOptions.RunContinuationsAsynchronously
-      );
-      waiters.Add(tcs);
-
-      return tcs.Task.WaitAsync(cancellationToken);
+      return Task.CompletedTask;
     }
+
+    var tcs = new TaskCompletionSource(
+      TaskCreationOptions.RunContinuationsAsynchronously
+    );
+    waiters.Enqueue((tcs, target));
+
+    if (Volatile.Read(ref processed) >= target
+      && waiters.TryDequeue(out var w))
+    {
+      w.tcs.TrySetResult();
+    }
+
+    return tcs.Task.WaitAsync(cancellationToken);
   }
 
   public void Dispose()
@@ -93,13 +94,9 @@ public class TestReactorDrainService : IDisposable
 
     subscriber.Unsubscribe(OnPublished);
 
-    lock (lockObj)
+    while (waiters.TryDequeue(out var waiter))
     {
-      foreach (var waiter in waiters)
-      {
-        waiter.TrySetCanceled();
-      }
-      waiters.Clear();
+      waiter.tcs.TrySetCanceled();
     }
   }
 }
