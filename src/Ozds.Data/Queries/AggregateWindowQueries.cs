@@ -9,6 +9,9 @@ using Ozds.Data.Reflection;
 
 namespace Ozds.Data.Queries;
 
+// NOTE: as explained in MeasurementQueries.cs
+// <= toDate because of invoice/report calculations
+
 public class AggregateWindowQueries(
   IDbContextFactory<DataDbContext> factory,
   EntityReflector reflector
@@ -74,7 +77,7 @@ public class AggregateWindowQueries(
         WHERE aggregates.interval
             = '{quarterHourIntervalValue}'::{intervalTypeName}
           AND aggregates.timestamp >= @from
-          AND aggregates.timestamp < @to
+          AND aggregates.timestamp <= @to
       ";
 
       var returnedAggregates = await context.DapperCommand<AggregateEntity>(
@@ -164,7 +167,7 @@ public class AggregateWindowQueries(
             AND aggregates.interval
                 = '{quarterHourIntervalValue}'::{intervalTypeName}
             AND aggregates.timestamp >= @from
-            AND aggregates.timestamp < @to
+            AND aggregates.timestamp <= @to
           ORDER BY aggregates.timestamp ASC
           LIMIT 1
         ) agg
@@ -178,7 +181,7 @@ public class AggregateWindowQueries(
             AND aggregates.interval
                 = '{quarterHourIntervalValue}'::{intervalTypeName}
             AND aggregates.timestamp >= @from
-            AND aggregates.timestamp < @to
+            AND aggregates.timestamp <= @to
           ORDER BY aggregates.timestamp DESC
           LIMIT 1
         ) agg
