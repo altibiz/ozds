@@ -300,7 +300,8 @@ public class ReportQueries(
     return bases
       .GroupBy(b =>
         reflector.ResolveMeterMeasurementType(
-          b.Meter.GetType(),
+          b.Meter.GetType().Assembly.FullName?.StartsWith("DynamicProxyGenAssembly2") != true // TODO: temp fix for proxy types until better solution is implemented
+          ? b.Meter.GetType() : b.Meter.GetType().BaseType!,
           aggregate: true
         )
       )
