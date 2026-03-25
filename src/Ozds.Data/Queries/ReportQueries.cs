@@ -97,7 +97,7 @@ public class ReportQueries(
 
     var aggregates = await measurementQueries.ReadByMeasurementLocationIds(
       measurementLocationIds,
-      IntervalEntity.Month,
+      IntervalEntity.QuarterHour,
       fromDate,
       toDate,
       0,

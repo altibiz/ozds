@@ -91,6 +91,56 @@ public class ReportQueries(
       .ToList();
   }
 
+  public async Task<List<ShortenedEnergyCardModel>?>
+    ReadShortenedEnergyCardsByLocation(
+      string locationId,
+      DateTimeOffset fromDate,
+      DateTimeOffset toDate,
+      CancellationToken cancellationToken
+    )
+  {
+    var entities =
+      await dataReportQueries.ReadEnergyCardReportBasisByLocation(
+        locationId,
+        fromDate,
+        toDate,
+        cancellationToken
+      );
+    if (entities is null)
+    {
+      return null;
+    }
+
+    return entities
+      .Select(MakeShortenedEnergyCard)
+      .ToList();
+  }
+
+  public async Task<List<ShortenedEnergyCardModel>?>
+    ReadShortenedEnergyCardsByNetworkUser(
+      string networkUserId,
+      DateTimeOffset fromDate,
+      DateTimeOffset toDate,
+      CancellationToken cancellationToken
+    )
+  {
+    var entities =
+      await dataReportQueries.ReadEnergyCardReportBasisByNetworkUser(
+        networkUserId,
+        fromDate,
+        toDate,
+        cancellationToken
+      );
+    if (entities is null)
+    {
+      return null;
+    }
+
+    return entities
+      .Select(MakeShortenedEnergyCard)
+      .ToList();
+  }
+
   public async Task<List<AccountingPeriodReportModel>?> ReadAccountingPeriodReports(
     CultureInfo culture,
     string measurementLocationId,
@@ -381,6 +431,60 @@ public class ReportQueries(
         Power_kx = obis.GetDerivedValue(aggregate),
       })
       .ToList();
+  }
+
+  private ShortenedEnergyCardModel MakeShortenedEnergyCard(
+    EnergyCardReportBasisEntity entity
+  )
+  {
+    var model = new EnergyCardReportBasisModel
+    {
+      Location = modelEntityConverter.ToModel<LocationModel>(
+        entity.Location
+      ),
+      NetworkUser = modelEntityConverter.ToModel<NetworkUserModel>(
+        entity.NetworkUser
+      ),
+      Catalogue = modelEntityConverter.ToModel<NetworkUserCatalogueModel>(
+        entity.Catalogue
+      ),
+      MeasurementLocation =
+        modelEntityConverter
+          .ToModel<NetworkUserMeasurementLocationModel>(
+            entity.MeasurementLocation
+          ),
+      Meter = modelEntityConverter.ToModel<MeterModel>(entity.Meter),
+      MinAggregate = modelEntityConverter.ToModel<AggregateModel>(
+        entity.MinAggregate
+      ),
+      MaxAggregate = modelEntityConverter.ToModel<AggregateModel>(
+        entity.MaxAggregate
+      ),
+    };
+
+    var obis = model.Catalogue.Obis.ToList();
+
+    return new ShortenedEnergyCardModel
+    {
+      MeasurementLocationTitle = model.MeasurementLocation.Title,
+      MeterId = model.Meter.Id,
+      ActiveEnergyTotalImportT1_kWh = obis.Contains(
+        ObisModel.ActiveEnergyTotalImportT1_kWh
+      )
+        ? ObisModel.ActiveEnergyTotalImportT1_kWh.GetValue(
+          model.MinAggregate,
+          model.MaxAggregate
+        )
+        : null,
+      ActiveEnergyTotalImportT2_kWh = obis.Contains(
+        ObisModel.ActiveEnergyTotalImportT2_kWh
+      )
+        ? ObisModel.ActiveEnergyTotalImportT2_kWh.GetValue(
+          model.MinAggregate,
+          model.MaxAggregate
+        )
+        : null,
+    };
   }
 
   private static string GetMeasurementLocationCode(ReportBasisModel basis)

@@ -29,8 +29,7 @@ public class AppReportController(
   {
     var (start, end) = time.GetMonthRange(year, month);
 
-    var energyCards = await reportQueries.ReadEnergyCardReportsByLocation(
-      culture,
+    var energyCards = await reportQueries.ReadShortenedEnergyCardsByLocation(
       locationId,
       start,
       end,
@@ -74,8 +73,7 @@ public class AppReportController(
   {
     var (start, end) = time.GetMonthRange(year, month);
 
-    var energyCards = await reportQueries.ReadEnergyCardReportsByNetworkUser(
-      culture,
+    var energyCards = await reportQueries.ReadShortenedEnergyCardsByNetworkUser(
       networkUserId,
       start,
       end,
