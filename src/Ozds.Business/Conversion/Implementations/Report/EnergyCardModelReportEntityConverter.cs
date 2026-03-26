@@ -53,6 +53,7 @@ public class EnergyCardModelReportEntityConverter
     model.LocationPostalCode = entity.LocationPostalCode;
     model.Year = entity.Year;
     model.BillingPeriod = entity.BillingPeriod;
+    model.ActiveEnergyTotalImportT0_kWh = entity.ActiveEnergyTotalImportT0_kWh;
     model.ActiveEnergyTotalImportT1_kWh = entity.ActiveEnergyTotalImportT1_kWh;
     model.ActiveEnergyTotalImportT2_kWh = entity.ActiveEnergyTotalImportT2_kWh;
     model.ReactiveEnergyTotalImportT0_kVARh =
