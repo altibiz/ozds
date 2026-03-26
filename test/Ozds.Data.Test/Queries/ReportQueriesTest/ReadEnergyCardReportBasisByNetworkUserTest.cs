@@ -64,22 +64,14 @@ public class ReadEnergyCardReportBasisByNetworkUserTest : OzdsDataTestBase
       ),
       new EnergyCardScenario(
         "6. Data in Oct and Jan but not in Nov and Dec - empty result for Nov",
-        new Dictionary<string, bool>
-        {
-          { Oct1, true },
-          { Jan1, true },
-        },
+        new Dictionary<string, bool> { { Oct1, true }, { Jan1, true } },
         Nov1,
         Dec1,
         false
       ),
       new EnergyCardScenario(
         "7. Data in Nov and Dec - query Nov only returns for Nov boundaries",
-        new Dictionary<string, bool>
-        {
-          { Nov1, true },
-          { Dec1, true },
-        },
+        new Dictionary<string, bool> { { Nov1, true }, { Dec1, true } },
         Nov1,
         Dec1,
         true
@@ -141,9 +133,7 @@ public class ReadEnergyCardReportBasisByNetworkUserTest : OzdsDataTestBase
 
     result
       .Should()
-      .NotBeNull(
-        $"Scenario '{scenario.Name}': query should not return null"
-      );
+      .NotBeNull($"Scenario '{scenario.Name}': query should not return null");
 
     if (!scenario.ExpectResult)
     {

@@ -20,16 +20,22 @@ public class AggregateWindowQueries(
   public async Task<
     List<AggregateWindowLoadCurveBasisEntity>
   > ReadAggregateWindowLoadCurveBasesByMeasurementLocation(
-    IEnumerable<KeyValuePair<Type, IReadOnlyList<string>>> measurementLocationsByAggregateType,
+    IEnumerable<
+      KeyValuePair<Type, IReadOnlyList<string>>
+    > measurementLocationsByAggregateType,
     DateTimeOffset fromDate,
     DateTimeOffset toDate,
     CancellationToken cancellationToken
   )
   {
-
     var totalWindowAggregates = new List<AggregateWindowLoadCurveBasisEntity>();
 
-    foreach (var (aggregateType, measurementLocationIds) in measurementLocationsByAggregateType)
+    foreach (
+      var (
+        aggregateType,
+        measurementLocationIds
+      ) in measurementLocationsByAggregateType
+    )
     {
       if (measurementLocationIds.Count == 0)
       {
@@ -66,7 +72,7 @@ public class AggregateWindowQueries(
       var valuesClause = string.Join(", ", locationValueRows);
 
       var sql =
-      $@"
+        $@"
         SELECT aggregates.*
         FROM {table} aggregates
         JOIN (
@@ -89,18 +95,19 @@ public class AggregateWindowQueries(
       );
 
       totalWindowAggregates.AddRange(
-        returnedAggregates.GroupBy(a => a.MeasurementLocationId)
-        .Select(group =>
-        {
-          var ordered = group.OrderBy(a => a.Timestamp).ToList();
-          return new AggregateWindowLoadCurveBasisEntity
+        returnedAggregates
+          .GroupBy(a => a.MeasurementLocationId)
+          .Select(group =>
           {
-            MeasurementLocationId = group.Key,
-            StartAggregate = ordered.FirstOrDefault(),
-            EndAggregate = ordered.LastOrDefault(),
-            InWindowAggregates = ordered,
-          };
-        })
+            var ordered = group.OrderBy(a => a.Timestamp).ToList();
+            return new AggregateWindowLoadCurveBasisEntity
+            {
+              MeasurementLocationId = group.Key,
+              StartAggregate = ordered.FirstOrDefault(),
+              EndAggregate = ordered.LastOrDefault(),
+              InWindowAggregates = ordered,
+            };
+          })
       );
     }
     return totalWindowAggregates;
@@ -109,7 +116,9 @@ public class AggregateWindowQueries(
   public async Task<
     List<AggregateWindowBoundaryBasisEntity>
   > ReadAggregateWindowBoundaryBasesByMeasurementLocation(
-    IEnumerable<KeyValuePair<Type, IReadOnlyList<string>>> measurementLocationsByAggregateType,
+    IEnumerable<
+      KeyValuePair<Type, IReadOnlyList<string>>
+    > measurementLocationsByAggregateType,
     DateTimeOffset fromDate,
     DateTimeOffset toDate,
     CancellationToken cancellationToken
@@ -117,7 +126,12 @@ public class AggregateWindowQueries(
   {
     var totalWindowAggregates = new List<AggregateWindowBoundaryBasisEntity>();
 
-    foreach (var (aggregateType, measurementLocationIds) in measurementLocationsByAggregateType)
+    foreach (
+      var (
+        aggregateType,
+        measurementLocationIds
+      ) in measurementLocationsByAggregateType
+    )
     {
       if (measurementLocationIds.Count == 0)
       {

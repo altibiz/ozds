@@ -33,8 +33,8 @@ public class ReportQueries(
       return null;
     }
 
-    var boundaries = await aggregateWindowQueries
-      .ReadAggregateWindowBoundaryBasesByMeasurementLocation(
+    var boundaries =
+      await aggregateWindowQueries.ReadAggregateWindowBoundaryBasesByMeasurementLocation(
         GroupByAggregateType(initial),
         fromDate,
         toDate,
@@ -60,8 +60,8 @@ public class ReportQueries(
       return null;
     }
 
-    var boundaries = await aggregateWindowQueries
-      .ReadAggregateWindowBoundaryBasesByMeasurementLocation(
+    var boundaries =
+      await aggregateWindowQueries.ReadAggregateWindowBoundaryBasesByMeasurementLocation(
         GroupByAggregateType(initial),
         fromDate,
         toDate,
@@ -87,8 +87,8 @@ public class ReportQueries(
       return null;
     }
 
-    var boundaries = await aggregateWindowQueries
-      .ReadAggregateWindowBoundaryBasesByMeasurementLocation(
+    var boundaries =
+      await aggregateWindowQueries.ReadAggregateWindowBoundaryBasesByMeasurementLocation(
         GroupByAggregateType(initial),
         fromDate,
         toDate,
@@ -218,8 +218,8 @@ public class ReportQueries(
       aggregate: true
     );
 
-    var curves = await aggregateWindowQueries
-      .ReadAggregateWindowLoadCurveBasesByMeasurementLocation(
+    var curves =
+      await aggregateWindowQueries.ReadAggregateWindowLoadCurveBasesByMeasurementLocation(
         [
           new KeyValuePair<Type, IReadOnlyList<string>>(
             aggregateType,
@@ -262,8 +262,8 @@ public class ReportQueries(
       return null;
     }
 
-    var curves = await aggregateWindowQueries
-      .ReadAggregateWindowLoadCurveBasesByMeasurementLocation(
+    var curves =
+      await aggregateWindowQueries.ReadAggregateWindowLoadCurveBasesByMeasurementLocation(
         [
           new KeyValuePair<Type, IReadOnlyList<string>>(
             aggregateEntityType,
@@ -292,16 +292,17 @@ public class ReportQueries(
     };
   }
 
-  private IEnumerable<KeyValuePair<Type, IReadOnlyList<string>>>
-    GroupByAggregateType(
-      List<ReportBasisEntity> bases
-    )
+  private IEnumerable<
+    KeyValuePair<Type, IReadOnlyList<string>>
+  > GroupByAggregateType(List<ReportBasisEntity> bases)
   {
     return bases
       .GroupBy(b =>
         reflector.ResolveMeterMeasurementType(
-          b.Meter.GetType().Assembly.FullName?.StartsWith("DynamicProxyGenAssembly2") != true // TODO: temp fix for proxy types until better solution is implemented
-          ? b.Meter.GetType() : b.Meter.GetType().BaseType!,
+          b.Meter.GetType()
+            .Assembly.FullName?.StartsWith("DynamicProxyGenAssembly2") != true // TODO: temp fix for proxy types until better solution is implemented
+            ? b.Meter.GetType()
+            : b.Meter.GetType().BaseType!,
           aggregate: true
         )
       )
@@ -319,8 +320,8 @@ public class ReportQueries(
     return bases
       .Select(basis =>
       {
-        var boundary = boundaries.FirstOrDefault(
-          b => b.MeasurementLocationId == basis.MeasurementLocation.Id
+        var boundary = boundaries.FirstOrDefault(b =>
+          b.MeasurementLocationId == basis.MeasurementLocation.Id
         );
         if (
           boundary?.StartAggregate is null

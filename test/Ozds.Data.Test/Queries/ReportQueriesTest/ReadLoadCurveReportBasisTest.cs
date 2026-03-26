@@ -39,11 +39,7 @@ public class ReadLoadCurveReportBasisTest : OzdsDataTestBase
       ),
       new LoadCurveScenario(
         "3. Data only in adjacent months - Dec1 boundary included in queried window",
-        new Dictionary<string, int>
-        {
-          { Oct1, 5 },
-          { Dec1, 5 },
-        },
+        new Dictionary<string, int> { { Oct1, 5 }, { Dec1, 5 } },
         Nov1,
         Dec1,
         true,
@@ -51,11 +47,7 @@ public class ReadLoadCurveReportBasisTest : OzdsDataTestBase
       ),
       new LoadCurveScenario(
         "4. Data in Oct and Nov - query Nov returns only Nov aggregates",
-        new Dictionary<string, int>
-        {
-          { Oct1, 5 },
-          { Nov1, 8 },
-        },
+        new Dictionary<string, int> { { Oct1, 5 }, { Nov1, 8 } },
         Nov1,
         Dec1,
         true,

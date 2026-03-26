@@ -8,7 +8,9 @@ public class AggregateWindowBoundaryBasisEntity
   public AggregateEntity? StartAggregate { get; init; }
   public AggregateEntity? EndAggregate { get; init; }
 }
-public class AggregateWindowLoadCurveBasisEntity : AggregateWindowBoundaryBasisEntity
+
+public class AggregateWindowLoadCurveBasisEntity
+  : AggregateWindowBoundaryBasisEntity
 {
   public List<AggregateEntity> InWindowAggregates { get; init; } = [];
 }
