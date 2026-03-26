@@ -24,6 +24,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
   migration specific to generated SQL code (for procedures and non EF stuff)
 - Fix, `rollback.nu` missing db context fix
 - `rollback.nu` script uses new where instead of deprecated filter
+- Fix, missing mapping field in `EnergyCardModelReportEntityConverter` for field
+  `ActiveEnergyTotalImportT0_kWh`
 
 ### Added
 
@@ -31,6 +33,10 @@ and adheres to [Semantic Versioning](https://semver.org/).
   by default)
 - In `Table.cs` added private property and logic to define case sensitivity on
   table search
+- add `ShortenedEnergyCardReportEntity` in Ozds.Report and
+  `ShortenedEnergyCardReportModel` in Ozds.Entity
+- energy report generator now uses shortened models for generating energy card
+  reports
 
 ## [1.8.1] - 2025-02-26
 
