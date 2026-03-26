@@ -30,6 +30,13 @@ and adheres to [Semantic Versioning](https://semver.org/).
   flaky non deterministic failures
 - Removed polling program parts since Ozds.Caching.Test should now be
   deterministic
+- Fix network energy card CSV/report queries to use proper aggregate window
+  boundaries instead of raw measurement queries, matching invoice calculation
+  behavior
+- Refactored ReportQueries to delegate aggregate fetching to
+  AggregateWindowQueries, eliminating duplicated mapping logic across
+  ReadEnergyCardReportBasis, ReadEnergyCardReportBasisByNetworkUser, and
+  ReadEnergyCardReportBasisByLocation
 
 ### Added
 
@@ -43,6 +50,11 @@ and adheres to [Semantic Versioning](https://semver.org/).
   reports
 - add another button `Shortened energy card report (CSV)` with specific use for
   generating requested shortened version
+- New AggregateWindowQueries class with optimized Dapper queries for fetching
+  aggregate window boundaries by measurement location - New
+  AggregateWindowBoundaryBasisEntity DTO for aggregate window query results
+- Tests for ReadEnergyCardReportBasisByNetworkUser and ReadLoadCurveReportBasis
+  aggregate window queries
 
 ## [1.8.1] - 2025-02-26
 
