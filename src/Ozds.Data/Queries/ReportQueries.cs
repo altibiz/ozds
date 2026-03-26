@@ -34,7 +34,7 @@ public class ReportQueries(
     }
 
     var boundaries = await aggregateWindowQueries
-      .ReadAggregateWindowBoundryBasesByMeasurementLocation(
+      .ReadAggregateWindowBoundaryBasesByMeasurementLocation(
         GroupByAggregateType(initial),
         fromDate,
         toDate,
@@ -61,7 +61,7 @@ public class ReportQueries(
     }
 
     var boundaries = await aggregateWindowQueries
-      .ReadAggregateWindowBoundryBasesByMeasurementLocation(
+      .ReadAggregateWindowBoundaryBasesByMeasurementLocation(
         GroupByAggregateType(initial),
         fromDate,
         toDate,
@@ -88,7 +88,7 @@ public class ReportQueries(
     }
 
     var boundaries = await aggregateWindowQueries
-      .ReadAggregateWindowBoundryBasesByMeasurementLocation(
+      .ReadAggregateWindowBoundaryBasesByMeasurementLocation(
         GroupByAggregateType(initial),
         fromDate,
         toDate,
