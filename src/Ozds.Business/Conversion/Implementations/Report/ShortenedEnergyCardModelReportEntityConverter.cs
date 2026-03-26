@@ -6,17 +6,19 @@ namespace Ozds.Business.Conversion.Implementations.Report;
 
 public class ShortenedEnergyCardModelReportEntityConverter
   : ConcreteModelReportEntityConverter<
-    ShortenedEnergyCardModel,
-    ShortenedEnergyCardEntity>
+    ShortenedEnergyCardReportModel,
+    ShortenedEnergyCardReportEntity>
 {
   public override void InitializeEntity(
-    ShortenedEnergyCardModel model,
-    ShortenedEnergyCardEntity entity
+    ShortenedEnergyCardReportModel model,
+    ShortenedEnergyCardReportEntity entity
   )
   {
     base.InitializeEntity(model, entity);
     entity.MeasurementLocationTitle = model.MeasurementLocationTitle;
-    entity.MeterId = model.MeterId;
+    entity.MeterId
+      = model.MeterId
+        .Substring(model.MeterId.LastIndexOf('-') + 1); // NOTE: requested by client to display only serial of meter
     entity.ActiveEnergyTotalImportT1_kWh =
       model.ActiveEnergyTotalImportT1_kWh;
     entity.ActiveEnergyTotalImportT2_kWh =
@@ -24,8 +26,8 @@ public class ShortenedEnergyCardModelReportEntityConverter
   }
 
   public override void InitializeModel(
-    ShortenedEnergyCardEntity entity,
-    ShortenedEnergyCardModel model
+    ShortenedEnergyCardReportEntity entity,
+    ShortenedEnergyCardReportModel model
   )
   {
     base.InitializeModel(entity, model);

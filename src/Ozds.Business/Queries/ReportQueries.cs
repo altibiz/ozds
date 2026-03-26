@@ -91,7 +91,7 @@ public class ReportQueries(
       .ToList();
   }
 
-  public async Task<List<ShortenedEnergyCardModel>?>
+  public async Task<List<ShortenedEnergyCardReportModel>?>
     ReadShortenedEnergyCardsByLocation(
       string locationId,
       DateTimeOffset fromDate,
@@ -116,7 +116,7 @@ public class ReportQueries(
       .ToList();
   }
 
-  public async Task<List<ShortenedEnergyCardModel>?>
+  public async Task<List<ShortenedEnergyCardReportModel>?>
     ReadShortenedEnergyCardsByNetworkUser(
       string networkUserId,
       DateTimeOffset fromDate,
@@ -433,7 +433,7 @@ public class ReportQueries(
       .ToList();
   }
 
-  private ShortenedEnergyCardModel MakeShortenedEnergyCard(
+  private ShortenedEnergyCardReportModel MakeShortenedEnergyCard(
     EnergyCardReportBasisEntity entity
   )
   {
@@ -464,7 +464,7 @@ public class ReportQueries(
 
     var obis = model.Catalogue.Obis.ToList();
 
-    return new ShortenedEnergyCardModel
+    return new ShortenedEnergyCardReportModel
     {
       MeasurementLocationTitle = model.MeasurementLocation.Title,
       MeterId = model.Meter.Id,

@@ -2,7 +2,7 @@ using Ozds.Business.Models.Base;
 
 namespace Ozds.Business.Models;
 
-public class ShortenedEnergyCardModel : ReportModel
+public class ShortenedEnergyCardReportModel : ReportModel
 {
   public string MeasurementLocationTitle { get; set; } = default!;
 

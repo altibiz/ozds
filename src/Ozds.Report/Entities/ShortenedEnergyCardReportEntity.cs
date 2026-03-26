@@ -1,6 +1,6 @@
 namespace Ozds.Report.Entities;
 
-public class ShortenedEnergyCardEntity
+public class ShortenedEnergyCardReportEntity
 {
   public string MeasurementLocationTitle { get; set; } = default!;
 
