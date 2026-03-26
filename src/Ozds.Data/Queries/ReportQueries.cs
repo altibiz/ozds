@@ -418,31 +418,32 @@ public class ReportQueries(
     // TODO: optimize - ??
 
     // NOTE: for now viable without split queries
-    var networkUsers =
-        await context.NetworkUsers.Where(
-          context.ForeignKeyEquals<NetworkUserEntity>(
+    var networkUsers = await context
+      .NetworkUsers.Where(
+        context.ForeignKeyEquals<NetworkUserEntity>(
           nameof(NetworkUserEntity.Location),
           locationId
-        ))
-        .Include(x => x.Location)
-        .Include(x => x.NetworkUserMeasurementLocations)
-          .ThenInclude(x => x.NetworkUserCatalogue)
-        .Include(x => x.NetworkUserMeasurementLocations)
-            .ThenInclude(x => x.Meter)
-        .ToListAsync(cancellationToken);
-
-    return networkUsers.SelectMany(
-      nu => nu.NetworkUserMeasurementLocations.Select(
-        ml => new ReportBasisEntity
-          {
-            Location = nu.Location,
-            NetworkUser = nu,
-            Catalogue = ml.NetworkUserCatalogue,
-            MeasurementLocation = ml,
-            Meter = ml.Meter,
-          }
         )
-    ).ToList();
+      )
+      .Include(x => x.Location)
+      .Include(x => x.NetworkUserMeasurementLocations)
+        .ThenInclude(x => x.NetworkUserCatalogue)
+      .Include(x => x.NetworkUserMeasurementLocations)
+        .ThenInclude(x => x.Meter)
+      .ToListAsync(cancellationToken);
+
+    return networkUsers
+      .SelectMany(nu =>
+        nu.NetworkUserMeasurementLocations.Select(ml => new ReportBasisEntity
+        {
+          Location = nu.Location,
+          NetworkUser = nu,
+          Catalogue = ml.NetworkUserCatalogue,
+          MeasurementLocation = ml,
+          Meter = ml.Meter,
+        })
+      )
+      .ToList();
   }
 
   private async Task<List<ReportBasisEntity>?> ReadReportBasesByNetworkUser(
