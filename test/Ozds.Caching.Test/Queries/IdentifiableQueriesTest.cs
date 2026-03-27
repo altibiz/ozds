@@ -4,6 +4,7 @@ using Ozds.Caching.Test.Extensions;
 
 namespace Ozds.Caching.Test.Queries;
 
+[Repeat(10)]
 public class IdentifiableEntityQueriesTest : OzdsCachingTestBase
 {
   [Test]

@@ -1,5 +1,8 @@
 using Ozds.Assets.Extensions;
 using Ozds.Caching.Extensions;
+using Ozds.Caching.Reactors.Implementations;
+using Ozds.Caching.Test.Reactors;
+using Ozds.Caching.Test.Services;
 using Ozds.Time.Extensions;
 
 namespace Ozds.Caching.Test.Base;
@@ -41,7 +44,12 @@ public partial class OzdsCachingTestBase
     builder.AddOzdsCaching();
     builder.AddOzdsAssets();
     builder.AddOzdsTime();
+
+    builder.Services.AddSingleton<TestReactorDrainService>();
+    builder.Services.AddScoped<CacheHandler, TrackingCacheHandler>();
+
     host = builder.Build();
+    host.Services.GetRequiredService<TestReactorDrainService>();
     await host.StartAsync(cancellationToken);
   }
 
