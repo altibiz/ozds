@@ -37,6 +37,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
   `ShortenedEnergyCardReportModel` in Ozds.Entity
 - energy report generator now uses shortened models for generating energy card
   reports
+- add another button `Shortened energy card report (CSV)` with specific use for
+  generating requested shortened version
 
 ## [1.8.1] - 2025-02-26
 
