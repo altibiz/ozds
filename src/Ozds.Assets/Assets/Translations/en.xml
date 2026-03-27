@@ -9910,6 +9910,26 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Shortened energy card report (CSV)
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/Administration/LocationPage.razor'
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor'
+      </Metadata>
+      <Value>
+        Shortened energy card report (CSV)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        -shortened-energy-card-for-
+      </Key>
+      <Value>
+        -shortened-energy-card-for-
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Energy_kx
       </Key>
       <Metadata>
