@@ -24,7 +24,6 @@ postgrescontainer := absolute_path('scripts/database/postgrescontainer.nu')
 isdatabaseready := absolute_path('scripts/database/isready.nu')
 isllmready := absolute_path('scripts/llm/isready.nu')
 rewind := absolute_path('scripts/database/rewind.nu')
-testproj := absolute_path('scripts/test/testproj.nu')
 rollback := absolute_path('scripts/database/rollback.nu')
 migrategenerated := absolute_path('scripts/database/migrate-generated.nu')
 validate := absolute_path('scripts/database/validate.nu')
@@ -250,9 +249,6 @@ lint-model:
 
 test-sln *args:
     dotnet test '{{ sln }}' {{ args }}
-
-test-proj *args:
-  {{ testproj }} '{{ args }}'
 
 test-ci *args:
     ls '{{ testdir }}' \
