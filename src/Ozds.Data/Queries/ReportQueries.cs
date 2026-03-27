@@ -415,45 +415,34 @@ public class ReportQueries(
       cancellationToken
     );
 
-    // TODO: optimize
+    // TODO: optimize - ??
 
-    var networkUserMeasurementLocations = (
-      await context
-        .Locations.Where(context.PrimaryKeyEquals<LocationEntity>(locationId))
-        .Include(x => x.NetworkUsers)
-          .ThenInclude(x => x.NetworkUserMeasurementLocations)
-        .AsSplitQuery()
-        .ToListAsync(cancellationToken)
-    ).SelectMany(x =>
-      x.NetworkUsers.SelectMany(x => x.NetworkUserMeasurementLocations)
-    );
-
-    var entities = await context
-      .MeasurementLocations.OfType<NetworkUserMeasurementLocationEntity>()
-      .Where(
-        context.PrimaryKeyIn<NetworkUserMeasurementLocationEntity>(
-          networkUserMeasurementLocations.Select(x => x.Id)
+    // NOTE: for now viable without split queries
+    var networkUsers = await context
+      .NetworkUsers.Where(
+        context.ForeignKeyEquals<NetworkUserEntity>(
+          nameof(NetworkUserEntity.Location),
+          locationId
         )
       )
-      .Include(x => x.Meter)
-      .Include(x => x.NetworkUserCatalogue)
-      .Include(x => x.NetworkUser)
-        .ThenInclude(x => x.Location)
+      .Include(x => x.Location)
+      .Include(x => x.NetworkUserMeasurementLocations)
+        .ThenInclude(x => x.NetworkUserCatalogue)
+      .Include(x => x.NetworkUserMeasurementLocations)
+        .ThenInclude(x => x.Meter)
       .ToListAsync(cancellationToken);
-    if (entities is null)
-    {
-      return null;
-    }
 
-    return entities
-      .Select(entity => new ReportBasisEntity
-      {
-        Location = entity.NetworkUser.Location,
-        NetworkUser = entity.NetworkUser,
-        Catalogue = entity.NetworkUserCatalogue,
-        MeasurementLocation = entity,
-        Meter = entity.Meter,
-      })
+    return networkUsers
+      .SelectMany(nu =>
+        nu.NetworkUserMeasurementLocations.Select(ml => new ReportBasisEntity
+        {
+          Location = nu.Location,
+          NetworkUser = nu,
+          Catalogue = ml.NetworkUserCatalogue,
+          MeasurementLocation = ml,
+          Meter = ml.Meter,
+        })
+      )
       .ToList();
   }
 
