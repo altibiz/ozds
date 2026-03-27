@@ -6,6 +6,14 @@
   <Translations>
     <TranslationDictionaryItem>
       <Key>
+        -shortened-energy-card-for-
+      </Key>
+      <Value>
+        -shortened-energy-card-for-
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         «InvoiceNumberForPayment»
       </Key>
       <Metadata>
@@ -1625,6 +1633,19 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        ~ShortenedEnergyCardReport
+      </Key>
+      <Metadata>
+        Type 'Ozds.Business.Models.ShortenedEnergyCardReportModel'
+
+        Type 'Ozds.Report.Entities.ShortenedEnergyCardReportEntity'
+      </Metadata>
+      <Value>
+        Skraćeno izvješće energetske kartice
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         ~State
       </Key>
       <Metadata>
@@ -2751,8 +2772,14 @@
         Property 'ActiveEnergyTotalImportT1_kWh' of type 'Ozds.Business.Models.EnergyCardReportModel' with overrides:
         ~EnergyCardReportModel.ActiveEnergyTotalImportT1_kWh
 
+        Property 'ActiveEnergyTotalImportT1_kWh' of type 'Ozds.Business.Models.ShortenedEnergyCardReportModel' with overrides:
+        ~ShortenedEnergyCardReportModel.ActiveEnergyTotalImportT1_kWh
+
         Property 'ActiveEnergyTotalImportT1_kWh' of type 'Ozds.Report.Entities.EnergyCardEntity' with overrides:
         ~EnergyCardEntity.ActiveEnergyTotalImportT1_kWh
+
+        Property 'ActiveEnergyTotalImportT1_kWh' of type 'Ozds.Report.Entities.ShortenedEnergyCardReportEntity' with overrides:
+        ~ShortenedEnergyCardReportEntity.ActiveEnergyTotalImportT1_kWh
       </Metadata>
       <Value>
         Radna energija uvoza na svim fazama u višoj tarifi (kWh)
@@ -3006,8 +3033,14 @@
         Property 'ActiveEnergyTotalImportT2_kWh' of type 'Ozds.Business.Models.EnergyCardReportModel' with overrides:
         ~EnergyCardReportModel.ActiveEnergyTotalImportT2_kWh
 
+        Property 'ActiveEnergyTotalImportT2_kWh' of type 'Ozds.Business.Models.ShortenedEnergyCardReportModel' with overrides:
+        ~ShortenedEnergyCardReportModel.ActiveEnergyTotalImportT2_kWh
+
         Property 'ActiveEnergyTotalImportT2_kWh' of type 'Ozds.Report.Entities.EnergyCardEntity' with overrides:
         ~EnergyCardEntity.ActiveEnergyTotalImportT2_kWh
+
+        Property 'ActiveEnergyTotalImportT2_kWh' of type 'Ozds.Report.Entities.ShortenedEnergyCardReportEntity' with overrides:
+        ~ShortenedEnergyCardReportEntity.ActiveEnergyTotalImportT2_kWh
       </Metadata>
       <Value>
         Radna energija uvoza na svim fazama u nižoj tarifi (kWh)
@@ -9900,31 +9933,11 @@
         Energy card report (CSV)
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/LocationPage.razor' line 51 column 10
-        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 100 column 10
+        From file 'Ozds.Client/Pages/Administration/LocationPage.razor' line 57 column 10
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 106 column 10
       </Metadata>
       <Value>
         Energetska kartica (CSV)
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        Shortened energy card report (CSV)
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Pages/Administration/LocationPage.razor'
-        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor'
-      </Metadata>
-      <Value>
-        Skraćena energetska kartica (CSV)
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        -shortened-energy-card-for-
-      </Key>
-      <Value>
-        -shortened-energy-card-for-
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
@@ -14279,6 +14292,9 @@
         Property 'MeasurementLocationTitle' of type 'Ozds.Business.Models.EnergyCardReportModel' with overrides:
         ~EnergyCardReportModel.MeasurementLocationTitle
 
+        Property 'MeasurementLocationTitle' of type 'Ozds.Business.Models.ShortenedEnergyCardReportModel' with overrides:
+        ~ShortenedEnergyCardReportModel.MeasurementLocationTitle
+
         Property 'MeasurementLocationTitle' of type 'Ozds.Document.Entities.NetworkUserCalculationEntity' with overrides:
         BlackoutNetworkUserCalculationEntity.MeasurementLocationTitle
         ~BlackoutNetworkUserCalculationEntity.MeasurementLocationTitle
@@ -14300,6 +14316,9 @@
 
         Property 'MeasurementLocationTitle' of type 'Ozds.Report.Entities.EnergyCardEntity' with overrides:
         ~EnergyCardEntity.MeasurementLocationTitle
+
+        Property 'MeasurementLocationTitle' of type 'Ozds.Report.Entities.ShortenedEnergyCardReportEntity' with overrides:
+        ~ShortenedEnergyCardReportEntity.MeasurementLocationTitle
       </Metadata>
       <Value>
         Naziv mjernog mjesta
@@ -15131,6 +15150,9 @@
         Property 'MeterId' of type 'Ozds.Business.Models.MeterNotificationModel' with overrides:
         ~MeterNotificationModel.MeterId
 
+        Property 'MeterId' of type 'Ozds.Business.Models.ShortenedEnergyCardReportModel' with overrides:
+        ~ShortenedEnergyCardReportModel.MeterId
+
         Property 'MeterId' of type 'Ozds.Document.Entities.NetworkUserCalculationEntity' with overrides:
         BlackoutNetworkUserCalculationEntity.MeterId
         ~BlackoutNetworkUserCalculationEntity.MeterId
@@ -15169,6 +15191,9 @@
 
         Property 'MeterId' of type 'Ozds.Report.Entities.NetworkUserMeasurementLocationEntity' with overrides:
         ~NetworkUserMeasurementLocationEntity.MeterId
+
+        Property 'MeterId' of type 'Ozds.Report.Entities.ShortenedEnergyCardReportEntity' with overrides:
+        ~ShortenedEnergyCardReportEntity.MeterId
       </Metadata>
       <Value>
         Oznaka brojila
@@ -20672,6 +20697,31 @@
       </Metadata>
       <Value>
         Kontrole poslužitelja
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        Shortened energy card report (CSV)
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Pages/Administration/LocationPage.razor' line 64 column 10
+        From file 'Ozds.Client/Pages/Administration/NetworkUserPage.razor' line 113 column 10
+      </Metadata>
+      <Value>
+        Skraćena energetska kartica (CSV)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        ShortenedEnergyCardReport
+      </Key>
+      <Metadata>
+        Type 'Ozds.Business.Models.ShortenedEnergyCardReportModel'
+
+        Type 'Ozds.Report.Entities.ShortenedEnergyCardReportEntity'
+      </Metadata>
+      <Value>
+        Skraćeni izvještaj energetske kartice
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>

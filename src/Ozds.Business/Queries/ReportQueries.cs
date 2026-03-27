@@ -91,38 +91,33 @@ public class ReportQueries(
       .ToList();
   }
 
-  public async Task<List<ShortenedEnergyCardReportModel>?>
-    ReadShortenedEnergyCardsByLocation(
-      string locationId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<List<ShortenedEnergyCardReportModel>?> ReadShortenedEnergyCardsByLocation(
+    string locationId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
-    var entities =
-      await dataReportQueries.ReadEnergyCardReportBasisByLocation(
-        locationId,
-        fromDate,
-        toDate,
-        cancellationToken
-      );
+    var entities = await dataReportQueries.ReadEnergyCardReportBasisByLocation(
+      locationId,
+      fromDate,
+      toDate,
+      cancellationToken
+    );
     if (entities is null)
     {
       return null;
     }
 
-    return entities
-      .Select(MakeShortenedEnergyCard)
-      .ToList();
+    return entities.Select(MakeShortenedEnergyCard).ToList();
   }
 
-  public async Task<List<ShortenedEnergyCardReportModel>?>
-    ReadShortenedEnergyCardsByNetworkUser(
-      string networkUserId,
-      DateTimeOffset fromDate,
-      DateTimeOffset toDate,
-      CancellationToken cancellationToken
-    )
+  public async Task<List<ShortenedEnergyCardReportModel>?> ReadShortenedEnergyCardsByNetworkUser(
+    string networkUserId,
+    DateTimeOffset fromDate,
+    DateTimeOffset toDate,
+    CancellationToken cancellationToken
+  )
   {
     var entities =
       await dataReportQueries.ReadEnergyCardReportBasisByNetworkUser(
@@ -136,9 +131,7 @@ public class ReportQueries(
       return null;
     }
 
-    return entities
-      .Select(MakeShortenedEnergyCard)
-      .ToList();
+    return entities.Select(MakeShortenedEnergyCard).ToList();
   }
 
   public async Task<List<AccountingPeriodReportModel>?> ReadAccountingPeriodReports(
@@ -439,9 +432,7 @@ public class ReportQueries(
   {
     var model = new EnergyCardReportBasisModel
     {
-      Location = modelEntityConverter.ToModel<LocationModel>(
-        entity.Location
-      ),
+      Location = modelEntityConverter.ToModel<LocationModel>(entity.Location),
       NetworkUser = modelEntityConverter.ToModel<NetworkUserModel>(
         entity.NetworkUser
       ),
@@ -449,10 +440,9 @@ public class ReportQueries(
         entity.Catalogue
       ),
       MeasurementLocation =
-        modelEntityConverter
-          .ToModel<NetworkUserMeasurementLocationModel>(
-            entity.MeasurementLocation
-          ),
+        modelEntityConverter.ToModel<NetworkUserMeasurementLocationModel>(
+          entity.MeasurementLocation
+        ),
       Meter = modelEntityConverter.ToModel<MeterModel>(entity.Meter),
       MinAggregate = modelEntityConverter.ToModel<AggregateModel>(
         entity.MinAggregate

@@ -61,7 +61,9 @@ public class AppReportController(
   }
 
   [HttpGet]
-  [Route("shortened-location-energy-card/{culture}/{locationId}/{year:int}/{month:int}")]
+  [Route(
+    "shortened-location-energy-card/{culture}/{locationId}/{year:int}/{month:int}"
+  )]
   public async Task<IActionResult> ShortenedLocationEnergyCard(
     CultureInfo culture,
     string locationId,
@@ -86,10 +88,7 @@ public class AppReportController(
     var fileName =
       localizationQueries.Translate(culture, "location-")
       + locationId
-      + localizationQueries.Translate(
-        culture,
-        "-shortened-energy-card-for-"
-      )
+      + localizationQueries.Translate(culture, "-shortened-energy-card-for-")
       + end.ToString("MM-yyyy")
       + ".csv";
 
@@ -177,10 +176,7 @@ public class AppReportController(
     var fileName =
       localizationQueries.Translate(culture, "network-user-")
       + networkUserId
-      + localizationQueries.Translate(
-        culture,
-        "-shortened-energy-card-for-"
-      )
+      + localizationQueries.Translate(culture, "-shortened-energy-card-for-")
       + end.ToString("MM-yyyy")
       + ".csv";
     var csv = await reportMutations.Export(
