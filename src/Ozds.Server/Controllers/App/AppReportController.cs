@@ -62,6 +62,50 @@ public class AppReportController(
 
   [HttpGet]
   [Route(
+    "shortened-location-energy-card/{culture}/{locationId}/{year:int}/{month:int}"
+  )]
+  public async Task<IActionResult> ShortenedLocationEnergyCard(
+    CultureInfo culture,
+    string locationId,
+    int year,
+    int month,
+    CancellationToken cancellationToken
+  )
+  {
+    var (start, end) = time.GetMonthRange(year, month);
+
+    var energyCards = await reportQueries.ReadShortenedEnergyCardsByLocation(
+      locationId,
+      start,
+      end,
+      cancellationToken
+    );
+    if (energyCards is null)
+    {
+      return NotFound();
+    }
+
+    var fileName =
+      localizationQueries.Translate(culture, "location-")
+      + locationId
+      + localizationQueries.Translate(culture, "-shortened-energy-card-for-")
+      + end.ToString("MM-yyyy")
+      + ".csv";
+
+    var csv = await reportMutations.Export(
+      fileName,
+      culture,
+      energyCards,
+      cancellationToken
+    );
+
+    var bytes = Encoding.UTF8.GetBytes(csv);
+
+    return File(bytes, "text/csv", fileName);
+  }
+
+  [HttpGet]
+  [Route(
     "network-user-energy-card/{culture}/{networkUserId}/{year:int}/{month:int}"
   )]
   public async Task<IActionResult> NetworkUserEnergyCard(
@@ -90,6 +134,49 @@ public class AppReportController(
       localizationQueries.Translate(culture, "network-user-")
       + networkUserId
       + localizationQueries.Translate(culture, "-energy-card-for-")
+      + end.ToString("MM-yyyy")
+      + ".csv";
+    var csv = await reportMutations.Export(
+      fileName,
+      culture,
+      energyCards,
+      cancellationToken
+    );
+
+    var bytes = Encoding.UTF8.GetBytes(csv);
+
+    return File(bytes, "text/csv", fileName);
+  }
+
+  [HttpGet]
+  [Route(
+    "shortened-network-user-energy-card/{culture}/{networkUserId}/{year:int}/{month:int}"
+  )]
+  public async Task<IActionResult> ShortenedNetworkUserEnergyCard(
+    CultureInfo culture,
+    string networkUserId,
+    int year,
+    int month,
+    CancellationToken cancellationToken
+  )
+  {
+    var (start, end) = time.GetMonthRange(year, month);
+
+    var energyCards = await reportQueries.ReadShortenedEnergyCardsByNetworkUser(
+      networkUserId,
+      start,
+      end,
+      cancellationToken
+    );
+    if (energyCards is null)
+    {
+      return NotFound();
+    }
+
+    var fileName =
+      localizationQueries.Translate(culture, "network-user-")
+      + networkUserId
+      + localizationQueries.Translate(culture, "-shortened-energy-card-for-")
       + end.ToString("MM-yyyy")
       + ".csv";
     var csv = await reportMutations.Export(

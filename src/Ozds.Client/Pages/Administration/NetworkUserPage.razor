@@ -91,6 +91,12 @@
           + "/" + context.Model.Id
           + "/" + monthlyAggregatesSelectedMonth.Year
           + "/" + monthlyAggregatesSelectedMonth.Month;
+        var shortenedEnergyCardHref =
+          "/app/report/shortened-network-user-energy-card"
+          + "/" + GetCultureString()
+          + "/" + context.Model.Id
+          + "/" + monthlyAggregatesSelectedMonth.Year
+          + "/" + monthlyAggregatesSelectedMonth.Month;
       }
       <MudButton
         Class="mt-4"
@@ -98,6 +104,13 @@
         Color="Color.Primary"
         Href="@energyCardHref">
         @Translate("Energy card report (CSV)")
+      </MudButton>
+      <MudButton
+        Class="ml-4 mt-4"
+        Variant="Variant.Outlined"
+        Color="Color.Primary"
+        Href="@shortenedEnergyCardHref">
+        @Translate("Shortened energy card report (CSV)")
       </MudButton>
     </div>
   </Details>
