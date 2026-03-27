@@ -6,8 +6,10 @@ namespace Ozds.Caching.Test.Services;
 
 public class TestReactorDrainService : IDisposable
 {
-  private readonly ConcurrentQueue<(TaskCompletionSource tcs, long target)> waiters =
-    new();
+  private readonly ConcurrentQueue<(
+    TaskCompletionSource tcs,
+    long target
+  )> waiters = new();
   private readonly ICacheSubscriber subscriber;
 
   private long published = 0;
@@ -41,7 +43,8 @@ public class TestReactorDrainService : IDisposable
     while (
       waiters.TryPeek(out var entry)
       && current >= entry.target
-      && waiters.TryDequeue(out var waiter))
+      && waiters.TryDequeue(out var waiter)
+    )
     {
       waiter.tcs.TrySetResult();
     }
@@ -65,8 +68,7 @@ public class TestReactorDrainService : IDisposable
     );
     waiters.Enqueue((tcs, target));
 
-    if (Volatile.Read(ref processed) >= target
-      && waiters.TryDequeue(out var w))
+    if (Volatile.Read(ref processed) >= target && waiters.TryDequeue(out var w))
     {
       w.tcs.TrySetResult();
     }

@@ -36,7 +36,6 @@ public partial class OzdsCachingTestBase
   )
     where T : IEntity
   {
-
     Func<Task<T?>> update =
       typeof(T).IsAssignableTo(typeof(IIdentifiableEntity))
         ? async () =>

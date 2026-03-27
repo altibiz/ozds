@@ -7,7 +7,7 @@ namespace Ozds.Caching.Test.Reactors;
 public class TrackingCacheHandler(
   IServiceProvider serviceProvider,
   TestReactorDrainService drain
-  ) : CacheHandler(serviceProvider)
+) : CacheHandler(serviceProvider)
 {
   public override async Task Handle(
     CacheEventArgs eventArgs,
