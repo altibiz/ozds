@@ -9,8 +9,6 @@ using Ozds.Data.Test.Base;
 
 namespace Ozds.Data.Test.Queries.ReportQueriesTest;
 
-// TODO: find out how I can bypass this warning
-[Skip("ManyServiceProvidersCreatedWarning - too many parallel test containers")]
 public class ReadEnergyCardReportBasisByNetworkUserTest : OzdsDataTestBase
 {
   private const string Oct1 = "2023-10-01T00:00:00+00:00";

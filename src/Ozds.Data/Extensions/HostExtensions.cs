@@ -141,7 +141,21 @@ public static class HostExtensions
         if (environment.IsDevelopment())
         {
           options.ConfigureWarnings(warnings =>
-            warnings.Throw(RelationalEventId.MultipleCollectionIncludeWarning)
+            {
+              warnings.Throw(RelationalEventId.MultipleCollectionIncludeWarning);
+            }
+          );
+        }
+
+        // TODO: updating issue for EF and its deps will be created
+        // after updating to npgsql to 9.0+ apply this patch in following resolved issue
+        // https://github.com/npgsql/efcore.pg/issues/3086
+        if (dataOptions.IsTesting)
+        {
+          options.ConfigureWarnings(warnings =>
+            {
+              warnings.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning);
+            }
           );
         }
 
