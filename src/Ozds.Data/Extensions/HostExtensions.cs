@@ -141,10 +141,9 @@ public static class HostExtensions
         if (environment.IsDevelopment())
         {
           options.ConfigureWarnings(warnings =>
-            {
-              warnings.Throw(RelationalEventId.MultipleCollectionIncludeWarning);
-            }
-          );
+          {
+            warnings.Throw(RelationalEventId.MultipleCollectionIncludeWarning);
+          });
         }
 
         // TODO: updating issue for EF and its deps will be created
@@ -153,10 +152,9 @@ public static class HostExtensions
         if (dataOptions.IsTesting)
         {
           options.ConfigureWarnings(warnings =>
-            {
-              warnings.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning);
-            }
-          );
+          {
+            warnings.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning);
+          });
         }
 
         if (dataOptions.UseProxies)
