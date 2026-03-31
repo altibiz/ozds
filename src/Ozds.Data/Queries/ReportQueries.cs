@@ -6,12 +6,15 @@ using Ozds.Data.Entities.Composite;
 using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 using Ozds.Data.Queries.Abstractions;
+using Ozds.Data.Reflection;
 
 namespace Ozds.Data.Queries;
 
 public class ReportQueries(
   IDbContextFactory<DataDbContext> factory,
-  MeasurementQueries measurementQueries
+  MeasurementQueries measurementQueries,
+  AggregateWindowQueries aggregateWindowQueries,
+  EntityReflector reflector
 ) : IQueries
 {
   public async Task<List<EnergyCardReportBasisEntity>?> ReadEnergyCardReportBasis(
@@ -30,51 +33,15 @@ public class ReportQueries(
       return null;
     }
 
-    measurementLocationIds = initial.Select(x => x.MeasurementLocation.Id);
+    var boundaries =
+      await aggregateWindowQueries.ReadAggregateWindowBoundaryBasesByMeasurementLocation(
+        GroupByAggregateType(initial),
+        fromDate,
+        toDate,
+        cancellationToken
+      );
 
-    var aggregates = await measurementQueries.ReadByMeasurementLocationIds(
-      measurementLocationIds,
-      IntervalEntity.Month,
-      fromDate,
-      toDate,
-      0,
-      cancellationToken
-    );
-
-    return initial
-      .Select(basis =>
-      {
-        var basisAggregates = aggregates.Items.Where(x =>
-          x.MeasurementLocationId == basis.MeasurementLocation.Id
-        );
-        var minAggregate = basisAggregates
-          .OfType<AggregateEntity>()
-          .FirstOrDefault();
-        var maxAggregate = basisAggregates
-          .OfType<AggregateEntity>()
-          .LastOrDefault();
-        if (
-          minAggregate is null
-          || maxAggregate is null
-          || minAggregate == maxAggregate
-        )
-        {
-          return null;
-        }
-
-        return new EnergyCardReportBasisEntity
-        {
-          Location = basis.Location,
-          NetworkUser = basis.NetworkUser,
-          Catalogue = basis.Catalogue,
-          MeasurementLocation = basis.MeasurementLocation,
-          Meter = basis.Meter,
-          MinAggregate = minAggregate,
-          MaxAggregate = maxAggregate,
-        };
-      })
-      .OfType<EnergyCardReportBasisEntity>()
-      .ToList();
+    return MapEnergyCardBases(initial, boundaries);
   }
 
   public async Task<List<EnergyCardReportBasisEntity>?> ReadEnergyCardReportBasisByNetworkUser(
@@ -93,47 +60,15 @@ public class ReportQueries(
       return null;
     }
 
-    var measurementLocationIds = initial.Select(x => x.MeasurementLocation.Id);
+    var boundaries =
+      await aggregateWindowQueries.ReadAggregateWindowBoundaryBasesByMeasurementLocation(
+        GroupByAggregateType(initial),
+        fromDate,
+        toDate,
+        cancellationToken
+      );
 
-    var aggregates = await measurementQueries.ReadByMeasurementLocationIds(
-      measurementLocationIds,
-      IntervalEntity.Month,
-      fromDate,
-      toDate,
-      0,
-      cancellationToken
-    );
-
-    return initial
-      .Select(basis =>
-      {
-        var basisAggregates = aggregates.Items.Where(x =>
-          x.MeasurementLocationId == basis.MeasurementLocation.Id
-        );
-        var minAggregate = basisAggregates
-          .OfType<AggregateEntity>()
-          .FirstOrDefault();
-        var maxAggregate = basisAggregates
-          .OfType<AggregateEntity>()
-          .LastOrDefault();
-        if (minAggregate is null || maxAggregate is null)
-        {
-          return null;
-        }
-
-        return new EnergyCardReportBasisEntity
-        {
-          Location = basis.Location,
-          NetworkUser = basis.NetworkUser,
-          Catalogue = basis.Catalogue,
-          MeasurementLocation = basis.MeasurementLocation,
-          Meter = basis.Meter,
-          MinAggregate = minAggregate,
-          MaxAggregate = maxAggregate,
-        };
-      })
-      .OfType<EnergyCardReportBasisEntity>()
-      .ToList();
+    return MapEnergyCardBases(initial, boundaries);
   }
 
   public async Task<List<EnergyCardReportBasisEntity>?> ReadEnergyCardReportBasisByLocation(
@@ -152,47 +87,15 @@ public class ReportQueries(
       return null;
     }
 
-    var measurementLocationIds = initial.Select(x => x.MeasurementLocation.Id);
+    var boundaries =
+      await aggregateWindowQueries.ReadAggregateWindowBoundaryBasesByMeasurementLocation(
+        GroupByAggregateType(initial),
+        fromDate,
+        toDate,
+        cancellationToken
+      );
 
-    var aggregates = await measurementQueries.ReadByMeasurementLocationIds(
-      measurementLocationIds,
-      IntervalEntity.Month,
-      fromDate,
-      toDate,
-      0,
-      cancellationToken
-    );
-
-    return initial
-      .Select(basis =>
-      {
-        var basisAggregates = aggregates.Items.Where(x =>
-          x.MeasurementLocationId == basis.MeasurementLocation.Id
-        );
-        var minAggregate = basisAggregates
-          .OfType<AggregateEntity>()
-          .FirstOrDefault();
-        var maxAggregate = basisAggregates
-          .OfType<AggregateEntity>()
-          .LastOrDefault();
-        if (minAggregate is null || maxAggregate is null)
-        {
-          return null;
-        }
-
-        return new EnergyCardReportBasisEntity
-        {
-          Location = basis.Location,
-          NetworkUser = basis.NetworkUser,
-          Catalogue = basis.Catalogue,
-          MeasurementLocation = basis.MeasurementLocation,
-          Meter = basis.Meter,
-          MinAggregate = minAggregate,
-          MaxAggregate = maxAggregate,
-        };
-      })
-      .OfType<EnergyCardReportBasisEntity>()
-      .ToList();
+    return MapEnergyCardBases(initial, boundaries);
   }
 
   public async Task<AccountingPeriodReportBasisEntity?> ReadAccountingPeriodReportBasis(
@@ -310,14 +213,29 @@ public class ReportQueries(
       return null;
     }
 
-    var aggregates = await measurementQueries.ReadByMeasurementLocationIds(
-      [measurementLocationId],
-      IntervalEntity.QuarterHour,
-      fromDate,
-      toDate,
-      0,
-      cancellationToken
+    var aggregateType = reflector.ResolveMeterMeasurementType(
+      initial.Meter.GetType(),
+      aggregate: true
     );
+
+    var curves =
+      await aggregateWindowQueries.ReadAggregateWindowLoadCurveBasesByMeasurementLocation(
+        [
+          new KeyValuePair<Type, IReadOnlyList<string>>(
+            aggregateType,
+            [measurementLocationId]
+          ),
+        ],
+        fromDate,
+        toDate,
+        cancellationToken
+      );
+
+    var curve = curves.FirstOrDefault();
+    if (curve is null)
+    {
+      return null;
+    }
 
     return new LoadCurveReportBasisEntity
     {
@@ -326,7 +244,7 @@ public class ReportQueries(
       Catalogue = initial.Catalogue,
       MeasurementLocation = initial.MeasurementLocation,
       Meter = initial.Meter,
-      Aggregates = aggregates.Items.OfType<AggregateEntity>().ToList(),
+      Aggregates = curve.InWindowAggregates,
     };
   }
 
@@ -344,19 +262,24 @@ public class ReportQueries(
       return null;
     }
 
-    var aggregates = await measurementQueries.ReadByMeterIds(
-      [
-        new KeyValuePair<Type, IEnumerable<string>>(
-          aggregateEntityType,
-          [meterId]
-        ),
-      ],
-      IntervalEntity.QuarterHour,
-      fromDate,
-      toDate,
-      0,
-      cancellationToken
-    );
+    var curves =
+      await aggregateWindowQueries.ReadAggregateWindowLoadCurveBasesByMeasurementLocation(
+        [
+          new KeyValuePair<Type, IReadOnlyList<string>>(
+            aggregateEntityType,
+            [initial.MeasurementLocation.Id]
+          ),
+        ],
+        fromDate,
+        toDate,
+        cancellationToken
+      );
+
+    var curve = curves.FirstOrDefault();
+    if (curve is null)
+    {
+      return null;
+    }
 
     return new LoadCurveReportBasisEntity
     {
@@ -365,8 +288,63 @@ public class ReportQueries(
       Catalogue = initial.Catalogue,
       MeasurementLocation = initial.MeasurementLocation,
       Meter = initial.Meter,
-      Aggregates = aggregates.Items.OfType<AggregateEntity>().ToList(),
+      Aggregates = curve.InWindowAggregates,
     };
+  }
+
+  private IEnumerable<
+    KeyValuePair<Type, IReadOnlyList<string>>
+  > GroupByAggregateType(List<ReportBasisEntity> bases)
+  {
+    return bases
+      .GroupBy(b =>
+        reflector.ResolveMeterMeasurementType(
+          b.Meter.GetType()
+            .Assembly.FullName?.StartsWith("DynamicProxyGenAssembly2") != true // TODO: temp fix for proxy types until better solution is implemented
+            ? b.Meter.GetType()
+            : b.Meter.GetType().BaseType!,
+          aggregate: true
+        )
+      )
+      .Select(g => new KeyValuePair<Type, IReadOnlyList<string>>(
+        g.Key,
+        g.Select(b => b.MeasurementLocation.Id).ToList()
+      ));
+  }
+
+  private static List<EnergyCardReportBasisEntity> MapEnergyCardBases(
+    List<ReportBasisEntity> bases,
+    List<AggregateWindowBoundaryBasisEntity> boundaries
+  )
+  {
+    return bases
+      .Select(basis =>
+      {
+        var boundary = boundaries.FirstOrDefault(b =>
+          b.MeasurementLocationId == basis.MeasurementLocation.Id
+        );
+        if (
+          boundary?.StartAggregate is null
+          || boundary?.EndAggregate is null
+          || boundary.StartAggregate == boundary.EndAggregate
+        )
+        {
+          return null;
+        }
+
+        return new EnergyCardReportBasisEntity
+        {
+          Location = basis.Location,
+          NetworkUser = basis.NetworkUser,
+          Catalogue = basis.Catalogue,
+          MeasurementLocation = basis.MeasurementLocation,
+          Meter = basis.Meter,
+          MinAggregate = boundary.StartAggregate,
+          MaxAggregate = boundary.EndAggregate,
+        };
+      })
+      .OfType<EnergyCardReportBasisEntity>()
+      .ToList();
   }
 
   private async Task<List<ReportBasisEntity>?> ReadReportBases(

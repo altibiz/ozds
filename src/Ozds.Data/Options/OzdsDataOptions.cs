@@ -15,6 +15,8 @@ public class OzdsDataOptions
   public bool WithServices { get; set; } = true;
 
   public bool SelfContainedReflection { get; set; } = false;
+
+  public bool IsTesting { get; set; } = false;
 }
 
 public class ConfigureOzdsDataOptions(IConfiguration configuration)

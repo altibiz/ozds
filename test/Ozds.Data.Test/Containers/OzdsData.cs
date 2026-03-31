@@ -55,6 +55,7 @@ public sealed class OzdsData : IAsyncDisposable
       options.UseProxies = false;
       options.WithServices = false;
       options.LogSql = false;
+      options.IsTesting = true;
     });
 
     builder.Services.AddSingleton<TestInfrastructureFixture>();
