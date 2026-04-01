@@ -7,6 +7,7 @@
 @using MudBlazor
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Client.Components.Fields
+@using Ozds.Client.Components.Streaming
 @inherits OzdsManagedModelComponentBase<TModel>
 
 @Base()
@@ -356,6 +357,34 @@
                </MudLink>
              }
            </DetailsField>;
+  }
+
+  protected RenderFragment TitleLinkField<T>(
+    Expression<Func<TModel, string?>> next
+  )
+    where T : IIdentifiable
+  {
+      var nextFunc = next.Compile();
+      var id = nextFunc(Model);
+      var href = id is null
+        ? null
+        : PageHref(Provider.GetPageComponentType(typeof(T)), new { id });
+      return @<DetailsField Title="@(Translate(Label(next)))">
+          @if (id is null || href is null)
+          {
+              @Translate("None")
+          }
+          else
+          {
+            <Loading T="T" Id="@id">
+              <Found Context="model">
+                <MudLink Href="@href">
+                  @model.Title
+                </MudLink>
+              </Found>
+            </Loading>
+          }
+      </DetailsField>;
   }
 
   protected RenderFragment PolymorphicLinkField(
