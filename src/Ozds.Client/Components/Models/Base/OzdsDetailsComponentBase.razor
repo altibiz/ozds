@@ -377,11 +377,19 @@
           else
           {
             <Loading T="T" Id="@id">
+
               <Found Context="model">
                 <MudLink Href="@href">
                   @model.Title
                 </MudLink>
               </Found>
+
+              <Progress>
+                <MudLink Href="@href">
+                  @id
+                </MudLink>
+              </Progress>
+
             </Loading>
           }
       </DetailsField>;
