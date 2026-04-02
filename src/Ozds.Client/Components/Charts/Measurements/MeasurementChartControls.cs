@@ -289,7 +289,6 @@ public partial class MeasurementChartControls : OzdsComponentBase
       _parameters.Meters.Select(x => x.Id).ToList(),
       _parameters.Resolution,
       _parameters.Multiplier,
-      0,
       CancellationToken,
       fromDate: fromDate,
       toDate: toDate
@@ -298,20 +297,19 @@ public partial class MeasurementChartControls : OzdsComponentBase
       _parameters.MeasurementLocations.Select(x => x.Id).ToList(),
       _parameters.Resolution,
       _parameters.Multiplier,
-      0,
       CancellationToken,
       fromDate,
       toDate
     );
     _parameters.Measurements = new PaginatedList<IMeasurement>(
       fromMeters
-        .Items.Concat(fromMeasurementLocations.Items)
+        .Concat(fromMeasurementLocations)
         .DistinctBy(x =>
           (x.MeterId, x.MeasurementLocationId, x.Timestamp, x.GetType())
         )
         .OrderBy(x => x.Timestamp)
         .ToList(),
-      fromMeters.TotalCount + fromMeasurementLocations.TotalCount
+      fromMeters.Count + fromMeasurementLocations.Count
     );
   }
 

@@ -17,16 +17,14 @@ public class MeasurementQueries(
   TimeQueries time
 ) : IQueries
 {
-  public async Task<PaginatedList<IMeasurement>> ReadByMeterIds(
+  public async Task<List<IMeasurement>> ReadByMeterIds(
     IEnumerable<string> meterIds,
     ResolutionModel resolution,
     int multiplier,
-    int pageNumber,
     CancellationToken cancellationToken,
     IntervalModel? interval = default,
     DateTimeOffset fromDate = default,
-    DateTimeOffset toDate = default,
-    int pageCount = QueryConstants.DefaultMeasurementPageCount
+    DateTimeOffset toDate = default
   )
   {
     var now = clock.Timestamp();
@@ -39,11 +37,9 @@ public class MeasurementQueries(
     return await ReadByMeterIds(
       meterIds,
       appropriateIntervalModel,
-      fromDate,
-      toDate,
-      pageNumber,
       cancellationToken,
-      pageCount
+      fromDate,
+      toDate
     );
   }
 
@@ -161,15 +157,13 @@ public class MeasurementQueries(
     return last;
   }
 
-  public async Task<PaginatedList<IMeasurement>> ReadByMeasurementLocationIds(
+  public async Task<List<IMeasurement>> ReadByMeasurementLocationIds(
     IEnumerable<string> measurementLocationIds,
     ResolutionModel resolution,
     int multiplier,
-    int pageNumber,
     CancellationToken cancellationToken,
     DateTimeOffset fromDate = default,
-    DateTimeOffset toDate = default,
-    int pageCount = QueryConstants.DefaultMeasurementPageCount
+    DateTimeOffset toDate = default
   )
   {
     var now = clock.Timestamp();
@@ -182,11 +176,9 @@ public class MeasurementQueries(
     return await ReadByMeasurementLocationIds(
       measurementLocationIds,
       appropriateIntervalModel,
-      fromDate,
-      toDate,
-      pageNumber,
       cancellationToken,
-      pageCount
+      fromDate,
+      toDate
     );
   }
 
@@ -271,5 +263,98 @@ public class MeasurementQueries(
       .ToList();
 
     return last;
+  }
+
+  public async Task<List<IMeasurement>> ReadByMeterIds(
+    IEnumerable<string> meterIds,
+    IntervalModel? appropriateIntervalModel,
+    CancellationToken cancellationToken,
+    DateTimeOffset fromDate = default,
+    DateTimeOffset toDate = default
+  )
+  {
+    var appropriateInterval = appropriateIntervalModel?.ToDataEntity();
+    var isAggregate = appropriateInterval is not null;
+
+    var modelIdsByEntityType = meterIds
+      .GroupBy(id =>
+        isAggregate
+          ? modelEntityConverter.EntityType(
+            meterNamingConvention.AggregateTypeForMeterId(id)
+          )
+          : modelEntityConverter.EntityType(
+            meterNamingConvention.MeasurementTypeForMeterId(id)
+          )
+      )
+      .Select(group => new KeyValuePair<Type, IEnumerable<string>>(
+        group.Key,
+        group
+      ))
+      .ToList();
+
+    var entities = await queries.ReadByMeterIds(
+      modelIdsByEntityType,
+      appropriateInterval,
+      fromDate,
+      toDate,
+      cancellationToken
+    );
+
+    var buffered = measurementBuffer
+      .Peek()
+      .Where(x =>
+        (
+          appropriateIntervalModel is not null
+            ? x is IAggregate aggregate
+              && aggregate.Interval == appropriateIntervalModel
+            : x is not IAggregate
+        )
+        && meterIds.Any(y => y == x.MeterId)
+        && x.Timestamp >= fromDate
+        && x.Timestamp < toDate
+      )
+      .ToList();
+
+    return entities
+      .Select(modelEntityConverter.ToModel<IMeasurement>)
+      .Concat(buffered)
+      .ToList();
+  }
+
+  public async Task<List<IMeasurement>> ReadByMeasurementLocationIds(
+    IEnumerable<string> measurementLocationIds,
+    IntervalModel? appropriateIntervalModel,
+    CancellationToken cancellationToken,
+    DateTimeOffset fromDate = default,
+    DateTimeOffset toDate = default
+  )
+  {
+    var entities = await queries.ReadByMeasurementLocationIds(
+      measurementLocationIds,
+      appropriateIntervalModel?.ToDataEntity(),
+      fromDate,
+      toDate,
+      cancellationToken
+    );
+
+    var buffered = measurementBuffer
+      .Peek()
+      .Where(x =>
+        (
+          appropriateIntervalModel is not null
+            ? x is IAggregate aggregate
+              && aggregate.Interval == appropriateIntervalModel
+            : x is not IAggregate
+        )
+        && measurementLocationIds.Any(y => y == x.MeasurementLocationId)
+        && x.Timestamp >= fromDate
+        && x.Timestamp < toDate
+      )
+      .ToList();
+
+    return entities
+      .Select(modelEntityConverter.ToModel<IMeasurement>)
+      .Concat(buffered)
+      .ToList();
   }
 }
