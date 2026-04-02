@@ -37,6 +37,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
   AggregateWindowQueries, eliminating duplicated mapping logic across
   ReadEnergyCardReportBasis, ReadEnergyCardReportBasisByNetworkUser, and
   ReadEnergyCardReportBasisByLocation
+- In `MeasurementChartControls.cs` changed `Fetch` method to use new overloads
+  which do not cut measurements with pagination
 
 ### Added
 
@@ -55,6 +57,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
   AggregateWindowBoundaryBasisEntity DTO for aggregate window query results
 - Tests for ReadEnergyCardReportBasisByNetworkUser and ReadLoadCurveReportBasis
   aggregate window queries
+- Add new unpaginated query methods in `MeasurementQueries` which are overloads
+  of methods `ReadByMeterIds` and `ReadByMeasurementLocationIds`, they do not
+  paginate and return back normal List
 
 ## [1.8.1] - 2025-02-26
 
