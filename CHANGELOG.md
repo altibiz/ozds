@@ -9,6 +9,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+## [1.8.2] - 2026-04-03
+
 ### Changed
 
 - Optimized `ReadReportBasesByLocation` EF query in `ReportQueries` to fetch
@@ -70,7 +72,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
   its raw identifier, with a loading fallback that shows the ID while the title
   loads
 
-## [1.8.1] - 2025-02-26
+## [1.8.1] - 2026-02-26
 
 ### Removed
 
@@ -699,6 +701,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.8.2]: https://github.com/altibiz/ozds/compare/1.8.1...1.8.2
 [1.8.1]: https://github.com/altibiz/ozds/compare/1.8.0...1.8.1
 [1.8.0]: https://github.com/altibiz/ozds/compare/1.7.1...1.8.0
 [1.7.1]: https://github.com/altibiz/ozds/compare/1.7.0...1.7.1
