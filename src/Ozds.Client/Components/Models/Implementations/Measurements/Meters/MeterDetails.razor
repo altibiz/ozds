@@ -8,7 +8,7 @@
 
 @(LinkField<IMessenger>(x => x.MessengerId))
 
-@(LinkField<IMeasurementValidator>(x => x.MeasurementValidatorId))
+@(TitleLinkField<IMeasurementValidator>(x => x.MeasurementValidatorId))
 
 @Field(x => x.ConnectionPower_W)
 
