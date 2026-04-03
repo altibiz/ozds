@@ -47,7 +47,11 @@ public class ModelValidator(IServiceProvider serviceProvider)
     var current = enumerator.Current;
     var validator = GetValidator(current.GetType());
 
-    var validationContext = new ValidationContext(current, serviceProvider, null);
+    var validationContext = new ValidationContext(
+      current,
+      serviceProvider,
+      null
+    );
     validationResults.AddRange(current.Validate(validationContext));
 
     if (validator is not null)
