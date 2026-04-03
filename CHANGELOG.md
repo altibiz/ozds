@@ -37,6 +37,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
   AggregateWindowQueries, eliminating duplicated mapping logic across
   ReadEnergyCardReportBasis, ReadEnergyCardReportBasisByNetworkUser, and
   ReadEnergyCardReportBasisByLocation
+- In `MeasurementChartControls.cs` changed `Fetch` method to use new overloads
+  which do not cut measurements with pagination
 - Changed Meter details to show the measurement validator by its title/name
   instead of its identifier number
 - Fix `ModelIValidator` method `Validate` for `IEnumerable` pass skips first
@@ -61,6 +63,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
   AggregateWindowBoundaryBasisEntity DTO for aggregate window query results
 - Tests for ReadEnergyCardReportBasisByNetworkUser and ReadLoadCurveReportBasis
   aggregate window queries
+- Add new unpaginated query methods in `MeasurementQueries` which are overloads
+  of methods `ReadByMeterIds` and `ReadByMeasurementLocationIds`, they do not
+  paginate and return back normal List
 - Add `TitleLinkField` method component that displays a model's title instead of
   its raw identifier, with a loading fallback that shows the ID while the title
   loads
