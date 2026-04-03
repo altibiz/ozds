@@ -37,6 +37,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
   AggregateWindowQueries, eliminating duplicated mapping logic across
   ReadEnergyCardReportBasis, ReadEnergyCardReportBasisByNetworkUser, and
   ReadEnergyCardReportBasisByLocation
+- Changed Meter details to show the measurement validator by its title/name
+  instead of its identifier number
 - Fix `ModelIValidator` method `Validate` for `IEnumerable` pass skips first
   element for validation
 - Fix `ModelIValidator` omits default model check with `Validate` method and
@@ -59,6 +61,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
   AggregateWindowBoundaryBasisEntity DTO for aggregate window query results
 - Tests for ReadEnergyCardReportBasisByNetworkUser and ReadLoadCurveReportBasis
   aggregate window queries
+- Add `TitleLinkField` method component that displays a model's title instead of
+  its raw identifier, with a loading fallback that shows the ID while the title
+  loads
 
 ## [1.8.1] - 2025-02-26
 
