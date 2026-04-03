@@ -39,6 +39,10 @@ and adheres to [Semantic Versioning](https://semver.org/).
   ReadEnergyCardReportBasisByLocation
 - Changed Meter details to show the measurement validator by its title/name
   instead of its identifier number
+- Fix `ModelIValidator` method `Validate` for `IEnumerable` pass skips first
+  element for validation
+- Fix `ModelIValidator` omits default model check with `Validate` method and
+  `ValidationContext`
 
 ### Added
 
