@@ -37,6 +37,10 @@ and adheres to [Semantic Versioning](https://semver.org/).
   AggregateWindowQueries, eliminating duplicated mapping logic across
   ReadEnergyCardReportBasis, ReadEnergyCardReportBasisByNetworkUser, and
   ReadEnergyCardReportBasisByLocation
+- Fix `ModelIValidator` method `Validate` for `IEnumerable` pass skips first
+  element for validation
+- Fix `ModelIValidator` omits default model check with `Validate` method and
+  `ValidationContext`
 
 ### Added
 
