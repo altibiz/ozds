@@ -244,10 +244,10 @@ public partial class MeasurementChartControls : OzdsComponentBase
     {
       fromDate = _parameters.FromDate;
       toDate = fromDate.Add(
-      TimeQueries.ResolutionTimeSpan(
-        _parameters.Resolution,
-        fromDate,
-        _parameters.Multiplier
+        TimeQueries.ResolutionTimeSpan(
+          _parameters.Resolution,
+          fromDate,
+          _parameters.Multiplier
         )
       );
     }
