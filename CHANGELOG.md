@@ -9,6 +9,16 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- Fix, centralized `fromDate` recalculation into `Fetch` method with a
+  `forcedRefresh` parameter, removing duplicated date calculation logic from
+  `OnMeasurementLocationsChanged`,
+  `OnMetersChanged`,`OnRefreshChanged`,`OnResolutionChanged`, and
+  `OnMultiplierChanged`
+
+### Added
+
 ## [1.8.2] - 2026-04-03
 
 ### Changed
