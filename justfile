@@ -297,10 +297,10 @@ publish *args:
     cp '{{ ozdsserver }}' '{{ artifacts }}/ozds-server'
     cp '{{ ozdsserverdev }}' '{{ artifacts }}/ozds-server-dev'
 
-    mkdir ("{{ artifacts }}/playwright/package/.local-browsers" \
+    mkdir ("{{ artifacts }}/playwright/package/local-browsers" \
       + "/chromium_headless_shell-1155/chrome-linux")
 
-    cd ("{{ artifacts }}/playwright/package/.local-browsers" \
+    cd ("{{ artifacts }}/playwright/package/local-browsers" \
       + "/chromium_headless_shell-1155/chrome-linux"); \
       nix-bundle \
         '(builtins.getFlake "git+file:{{ root }}").packages.${builtins.currentSystem}.playwrightBrowsers' \

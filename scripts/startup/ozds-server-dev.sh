@@ -3,6 +3,7 @@
 root="$(dirname "${BASH_SOURCE[0]}")"
 if [ -d "$root/playwright" ]; then
   mv "$root/playwright" "$root/.playwright"
+  mv "$root/.playwright/package/local-browsers" "$root/.playwright/package/.local-browsers"
 fi
 
 if [ -n "$DIRENV_DIR" ]; then
