@@ -9,6 +9,14 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- Refactored `AggregateWindowQueries` report fetching to be more like
+  `BillingQueries` by fetching next-boundary and blackout-location aggregates
+  separately for more accurate energy card report calculations
+- Fix Playwright `.local-browsers` folder missing from GitHub Actions artifact
+  by creating it without the dot prefix during publish and renaming on startup
+
 ## [1.8.2] - 2026-04-03
 
 ### Changed
