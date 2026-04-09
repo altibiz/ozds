@@ -212,7 +212,7 @@ public class AggregateWindowQueries(
       );
 
       var nextBoundariesSql =
-      $@"
+        $@"
         SELECT picked.*
         FROM (
           VALUES {string.Join(", ", locationValueRows)}
@@ -239,9 +239,9 @@ public class AggregateWindowQueries(
       );
 
       var locationsWithData = inWindowAggregates
-      .Select(x => x.MeasurementLocationId)
-      .Distinct()
-      .ToHashSet();
+        .Select(x => x.MeasurementLocationId)
+        .Distinct()
+        .ToHashSet();
 
       var blackoutLocationIds = measurementLocationIds
         .Where(id => !locationsWithData.Contains(id))
@@ -292,12 +292,12 @@ public class AggregateWindowQueries(
         if (lastReadingsBeforeBlackout.Count != 0)
         {
           var targetParameters = new Dictionary<string, object?>
-        {
           {
-            "interval",
-            StringExtensions.ToSnakeCase(nameof(IntervalEntity.QuarterHour))
-          },
-        };
+            {
+              "interval",
+              StringExtensions.ToSnakeCase(nameof(IntervalEntity.QuarterHour))
+            },
+          };
 
           var targetRows = new List<string>();
           var targetIndex = 0;
@@ -338,13 +338,14 @@ public class AggregateWindowQueries(
                 ) AS picked
               ";
 
-            actualStartBoundaries = await context.DapperCommand<AggregateEntity>(
-              aggregateType,
-              actualStartBoundariesSql,
-              cancellationToken,
-              targetParameters,
-              300
-            );
+            actualStartBoundaries =
+              await context.DapperCommand<AggregateEntity>(
+                aggregateType,
+                actualStartBoundariesSql,
+                cancellationToken,
+                targetParameters,
+                300
+              );
           }
         }
       }
@@ -354,7 +355,9 @@ public class AggregateWindowQueries(
           .GroupBy(a => a.MeasurementLocationId)
           .Select(group =>
           {
-            var orderedLocationAggregates = group.OrderBy(a => a.Timestamp).ToList();
+            var orderedLocationAggregates = group
+              .OrderBy(a => a.Timestamp)
+              .ToList();
 
             var next = nextBoundaries.FirstOrDefault(x =>
               x.MeasurementLocationId == group.Key

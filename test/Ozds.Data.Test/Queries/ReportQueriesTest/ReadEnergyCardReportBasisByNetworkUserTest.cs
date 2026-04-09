@@ -22,7 +22,7 @@ public class ReadEnergyCardReportBasisByNetworkUserTest : OzdsDataTestBase
     {
       new EnergyCardScenario(
         "1. Normal month - data in queried window returns result",
-        new Dictionary<string, bool> { { Nov1, true }, { Dec1, true} },
+        new Dictionary<string, bool> { { Nov1, true }, { Dec1, true } },
         Nov1,
         Dec1,
         true
@@ -80,7 +80,7 @@ public class ReadEnergyCardReportBasisByNetworkUserTest : OzdsDataTestBase
         Nov1,
         Dec1,
         false
-      )
+      ),
     };
   }
 
