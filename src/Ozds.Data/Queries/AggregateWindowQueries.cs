@@ -6,6 +6,7 @@ using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 using Ozds.Data.Queries.Abstractions;
 using Ozds.Data.Reflection;
+using ITimeQueries = Ozds.Time.Queries.Abstractions.ITimeQueries;
 
 namespace Ozds.Data.Queries;
 
@@ -14,7 +15,8 @@ namespace Ozds.Data.Queries;
 
 public class AggregateWindowQueries(
   IDbContextFactory<DataDbContext> factory,
-  EntityReflector reflector
+  EntityReflector reflector,
+  ITimeQueries timeQueries
 ) : IQueries
 {
   public async Task<
@@ -181,7 +183,7 @@ public class AggregateWindowQueries(
             AND aggregates.interval
                 = '{quarterHourIntervalValue}'::{intervalTypeName}
             AND aggregates.timestamp >= @from
-            AND aggregates.timestamp <= @to
+            AND aggregates.timestamp < @to
           ORDER BY aggregates.timestamp ASC
           LIMIT 1
         ) agg
@@ -195,13 +197,13 @@ public class AggregateWindowQueries(
             AND aggregates.interval
                 = '{quarterHourIntervalValue}'::{intervalTypeName}
             AND aggregates.timestamp >= @from
-            AND aggregates.timestamp <= @to
+            AND aggregates.timestamp < @to
           ORDER BY aggregates.timestamp DESC
           LIMIT 1
         ) agg
       ";
 
-      var returnedAggregates = await context.DapperCommand<AggregateEntity>(
+      var inWindowAggregates = await context.DapperCommand<AggregateEntity>(
         aggregateType,
         sql,
         cancellationToken,
@@ -209,17 +211,178 @@ public class AggregateWindowQueries(
         300
       );
 
+      var nextBoundariesSql =
+      $@"
+        SELECT picked.*
+        FROM (
+          VALUES {string.Join(", ", locationValueRows)}
+        ) AS selected_locations(location_id)
+        CROSS JOIN LATERAL (
+          SELECT aggregates.*
+          FROM {table} aggregates
+          WHERE aggregates.measurement_location_id
+              = selected_locations.location_id
+            AND aggregates.interval
+              = '{quarterHourIntervalValue}'::{intervalTypeName}
+            AND aggregates.timestamp >= @to
+          ORDER BY aggregates.timestamp ASC
+          LIMIT 1
+        ) AS picked
+      ";
+
+      var nextBoundaries = await context.DapperCommand<AggregateEntity>(
+        aggregateType,
+        nextBoundariesSql,
+        cancellationToken,
+        parameters,
+        300
+      );
+
+      var locationsWithData = inWindowAggregates
+      .Select(x => x.MeasurementLocationId)
+      .Distinct()
+      .ToHashSet();
+
+      var blackoutLocationIds = measurementLocationIds
+        .Where(id => !locationsWithData.Contains(id))
+        .ToList();
+
+      var actualStartBoundaries = new List<AggregateEntity>();
+
+      if (blackoutLocationIds.Count != 0)
+      {
+        var blackoutParameters = new Dictionary<string, object?>(parameters);
+        var blackoutRows = new List<string>();
+        var blackoutIndex = 0;
+        foreach (var id in blackoutLocationIds)
+        {
+          var parameterName = $"blackout_location{blackoutIndex++}";
+          blackoutParameters[parameterName] = long.Parse(id);
+          blackoutRows.Add($"(@{parameterName})");
+        }
+
+        var lastReadingsBeforeBlackoutSql =
+          $@"
+            SELECT picked.*
+            FROM (
+              VALUES {string.Join(", ", blackoutRows)}
+            ) AS selected_locations(location_id)
+            CROSS JOIN LATERAL (
+              SELECT aggregates.*
+              FROM {table} aggregates
+              WHERE aggregates.measurement_location_id
+                  = selected_locations.location_id
+                AND aggregates.interval
+                  = '{quarterHourIntervalValue}'::{intervalTypeName}
+                AND aggregates.timestamp < @from
+              ORDER BY aggregates.timestamp DESC
+              LIMIT 1
+            ) AS picked
+          ";
+
+        var lastReadingsBeforeBlackout =
+          await context.DapperCommand<AggregateEntity>(
+            aggregateType,
+            lastReadingsBeforeBlackoutSql,
+            cancellationToken,
+            blackoutParameters,
+            300
+          );
+
+        if (lastReadingsBeforeBlackout.Count != 0)
+        {
+          var targetParameters = new Dictionary<string, object?>
+        {
+          {
+            "interval",
+            StringExtensions.ToSnakeCase(nameof(IntervalEntity.QuarterHour))
+          },
+        };
+
+          var targetRows = new List<string>();
+          var targetIndex = 0;
+
+          foreach (var reading in lastReadingsBeforeBlackout)
+          {
+            var monthStart = timeQueries.GetStartOfMonth(reading.Timestamp);
+
+            var locationParameter = $"target_location{targetIndex}";
+            var dateParameter = $"target_date{targetIndex}";
+
+            targetParameters[locationParameter] = long.Parse(
+              reading.MeasurementLocationId
+            );
+            targetParameters[dateParameter] = monthStart;
+
+            targetRows.Add($"(@{locationParameter}, @{dateParameter})");
+
+            targetIndex++;
+          }
+
+          if (targetRows.Count != 0)
+          {
+            var actualStartBoundariesSql =
+              $@"
+                SELECT picked.*
+                FROM (
+                  VALUES {string.Join(", ", targetRows)}
+                ) AS targets(location_id, target_start)
+                CROSS JOIN LATERAL (
+                  SELECT aggregates.*
+                  FROM {table} aggregates
+                  WHERE aggregates.measurement_location_id = targets.location_id
+                    AND aggregates.interval = '{quarterHourIntervalValue}'::{intervalTypeName}
+                    AND aggregates.timestamp >= targets.target_start
+                  ORDER BY aggregates.timestamp ASC
+                  LIMIT 1
+                ) AS picked
+              ";
+
+            actualStartBoundaries = await context.DapperCommand<AggregateEntity>(
+              aggregateType,
+              actualStartBoundariesSql,
+              cancellationToken,
+              targetParameters,
+              300
+            );
+          }
+        }
+      }
+
       totalWindowAggregates.AddRange(
-        returnedAggregates
+        inWindowAggregates
           .GroupBy(a => a.MeasurementLocationId)
           .Select(group =>
           {
-            var ordered = group.OrderBy(a => a.Timestamp).ToList();
+            var orderedLocationAggregates = group.OrderBy(a => a.Timestamp).ToList();
+
+            var next = nextBoundaries.FirstOrDefault(x =>
+              x.MeasurementLocationId == group.Key
+            );
+
+            var previous = actualStartBoundaries.FirstOrDefault(x =>
+              x.MeasurementLocationId == group.Key
+            );
+
+            AggregateEntity? startAggregate = null;
+            AggregateEntity? endAggregate = null;
+
+            if (orderedLocationAggregates.Count != 0)
+            {
+              startAggregate = orderedLocationAggregates.First();
+              endAggregate = next;
+            }
+            else
+            {
+              startAggregate = previous;
+              endAggregate = next;
+            }
+
             return new AggregateWindowBoundaryBasisEntity
             {
               MeasurementLocationId = group.Key,
-              StartAggregate = ordered.FirstOrDefault(),
-              EndAggregate = ordered.LastOrDefault(),
+              StartAggregate = startAggregate,
+              EndAggregate = endAggregate,
             };
           })
       );
