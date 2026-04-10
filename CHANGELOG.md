@@ -9,6 +9,11 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- Optimized `BillingQueries` to group aggregates by measurement location ID
+  upfront using a dictionary instead of filtering per-location in a loop
+
 ## [1.8.2] - 2026-04-03
 
 ### Changed
