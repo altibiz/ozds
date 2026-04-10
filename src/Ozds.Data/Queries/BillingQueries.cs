@@ -406,8 +406,11 @@ public class BillingQueries(
       {
         var locationId = basis.MeasurementLocation.Id;
 
-        var locationAggregates = groupedByMeasurementLocationIds
-        .TryGetValue(locationId, out var v) ? new List<AggregateEntity>(v)
+        var locationAggregates = groupedByMeasurementLocationIds.TryGetValue(
+          locationId,
+          out var v
+        )
+          ? new List<AggregateEntity>(v)
           : new List<AggregateEntity>();
 
         var next = nextBoundaries.FirstOrDefault(x =>
@@ -436,8 +439,8 @@ public class BillingQueries(
 
         if (
           startAggregate != null
-          && !resultAggregates.Exists(
-            x => x.Timestamp == startAggregate.Timestamp
+          && !resultAggregates.Exists(x =>
+            x.Timestamp == startAggregate.Timestamp
           )
         )
         {
@@ -446,8 +449,8 @@ public class BillingQueries(
 
         if (
           endAggregate != null
-          && !resultAggregates.Exists(
-            x => x.Timestamp == endAggregate.Timestamp
+          && !resultAggregates.Exists(x =>
+            x.Timestamp == endAggregate.Timestamp
           )
         )
         {
