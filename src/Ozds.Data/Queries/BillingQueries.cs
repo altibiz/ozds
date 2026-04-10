@@ -436,7 +436,9 @@ public class BillingQueries(
 
         if (
           startAggregate != null
-          && resultAggregates.FirstOrDefault() != startAggregate
+          && !resultAggregates.Exists(
+            x => x.Timestamp == startAggregate.Timestamp
+          )
         )
         {
           resultAggregates.Insert(0, startAggregate);
@@ -444,7 +446,9 @@ public class BillingQueries(
 
         if (
           endAggregate != null
-          && (resultAggregates.Count > 0 ? resultAggregates[^1] : null) != endAggregate
+          && !resultAggregates.Exists(
+            x => x.Timestamp == endAggregate.Timestamp
+          )
         )
         {
           resultAggregates.Add(endAggregate);
