@@ -397,15 +397,18 @@ public class BillingQueries(
       }
     }
 
+    var groupedByMeasurementLocationIds = inWindowAggregates
+      .GroupBy(x => x.MeasurementLocationId)
+      .ToDictionary(g => g.Key, g => g.OrderBy(x => x.Timestamp).ToList());
+
     return bases
       .Select(basis =>
       {
         var locationId = basis.MeasurementLocation.Id;
 
-        var locationAggregates = inWindowAggregates
-          .Where(x => x.MeasurementLocationId == locationId)
-          .OrderBy(x => x.Timestamp)
-          .ToList();
+        var locationAggregates = groupedByMeasurementLocationIds
+        .TryGetValue(locationId, out var v) ? new List<AggregateEntity>(v)
+          : new List<AggregateEntity>();
 
         var next = nextBoundaries.FirstOrDefault(x =>
           x.MeasurementLocationId == locationId
@@ -433,9 +436,7 @@ public class BillingQueries(
 
         if (
           startAggregate != null
-          && !resultAggregates.Exists(x =>
-            x.Timestamp == startAggregate.Timestamp
-          )
+          && resultAggregates.FirstOrDefault() != startAggregate
         )
         {
           resultAggregates.Insert(0, startAggregate);
@@ -443,9 +444,7 @@ public class BillingQueries(
 
         if (
           endAggregate != null
-          && !resultAggregates.Exists(x =>
-            x.Timestamp == endAggregate.Timestamp
-          )
+          && (resultAggregates.Count > 0 ? resultAggregates[^1] : null) != endAggregate
         )
         {
           resultAggregates.Add(endAggregate);
