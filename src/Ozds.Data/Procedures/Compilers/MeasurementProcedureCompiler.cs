@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
@@ -7,6 +8,8 @@ namespace Ozds.Data.Procedures.Compilers;
 
 public static class MeasurementProcedureCompiler
 {
+  private const float FloatEpsilon = 1e-12f;
+
   public static IMeasurementProcedureParts Find(Type aggregateType)
   {
     var parts =
@@ -209,6 +212,21 @@ public static class MeasurementProcedureCompiler
     };
   }
 
+  private static string RealResultSafeGuard(string valueToSafeGuard, float epsilonValue = FloatEpsilon)
+  {
+    var eps = epsilonValue.ToString("G17", CultureInfo.InvariantCulture);
+
+    return $@"
+      (
+        SELECT CASE
+          WHEN ABS((v)::double precision) < {eps}
+          ELSE COALESCE(v, 0)
+        END
+        FROM (VALUES (({valueToSafeGuard}))) AS _safeguard(v)
+      )
+   ";
+  }
+
   private static string UpsertAverage(
     DbContext context,
     Type aggregateType,
@@ -221,11 +239,15 @@ public static class MeasurementProcedureCompiler
       aggregateType,
       [nameof(IAggregateEntity.Count)]
     );
-    return $@"
-      {columnName} = ({tableName}.{columnName} * {tableName}.{countColumn}
-        + EXCLUDED.{columnName} * EXCLUDED.{countColumn})
+
+    var ret_value = $@"
+      {columnName} = ({RealResultSafeGuard($@"({tableName}.{columnName} * {tableName}.{countColumn}
+        + EXCLUDED.{columnName} * EXCLUDED.{countColumn})")})
         / ({tableName}.{countColumn} + EXCLUDED.{countColumn})
     ";
+
+    var guarded_value = RealResultSafeGuard(ret_value);
+    return guarded_value;
   }
 
   private static string UpsertMin(
@@ -236,9 +258,10 @@ public static class MeasurementProcedureCompiler
   {
     var columnName = context.GetColumnName(aggregateType, propertyName);
     var tableName = context.GetTableName(aggregateType);
-    return $@"
+
+    return RealResultSafeGuard($@"
       {columnName} = LEAST({tableName}.{columnName}, EXCLUDED.{columnName})
-    ";
+    ");
   }
 
   private static string UpsertMinTimestamp(
@@ -271,9 +294,9 @@ public static class MeasurementProcedureCompiler
   {
     var columnName = context.GetColumnName(aggregateType, propertyName);
     var tableName = context.GetTableName(aggregateType);
-    return $@"
+    return RealResultSafeGuard($@"
       {columnName} = GREATEST({tableName}.{columnName}, EXCLUDED.{columnName})
-    ";
+    ");
   }
 
   private static string UpsertMaxTimestamp(
@@ -316,7 +339,7 @@ public static class MeasurementProcedureCompiler
       maxEnergyPropertyName
     );
     var tableName = context.GetTableName(aggregateType);
-    return $@"
+    return RealResultSafeGuard($@"
       {columnName} = (GREATEST(
         {tableName}.{maxEnergyColumnName},
         EXCLUDED.{maxEnergyColumnName})
@@ -324,7 +347,7 @@ public static class MeasurementProcedureCompiler
         {tableName}.{minEnergyColumnName},
         EXCLUDED.{minEnergyColumnName}))
         * 4
-    ";
+    ");
   }
 
   private static string DerivativePowerTimestamp(
@@ -365,14 +388,17 @@ public static class MeasurementProcedureCompiler
       [nameof(IAggregateEntity.QuarterHourCount)]
     );
     var tableName = context.GetTableName(aggregateType);
-    return $@"
+    var ret_value = $@"
       {columnName} =
-        ({tableName}.{columnName} * {tableName}.{quarterHourCountColumn}
-        + {deltaTable}.{columnName})
+        {RealResultSafeGuard(@$"({tableName}.{columnName} * {tableName}.{quarterHourCountColumn}
+        + {deltaTable}.{columnName})")}
         / GREATEST(1,
           {tableName}.{quarterHourCountColumn}
           + {deltaTable}.{newCountColumn})
     ";
+
+    var guarded_value = RealResultSafeGuard(ret_value);
+    return guarded_value;
   }
 
   private static string DeriveMin(
@@ -384,9 +410,9 @@ public static class MeasurementProcedureCompiler
   {
     var columnName = context.GetColumnName(aggregateType, propertyName);
     var tableName = context.GetTableName(aggregateType);
-    return $@"
+    return RealResultSafeGuard($@"
       {columnName} = LEAST({tableName}.{columnName}, {deltaTable}.{columnName})
-    ";
+    ");
   }
 
   private static string DeriveMinTimestamp(
@@ -460,10 +486,10 @@ public static class MeasurementProcedureCompiler
   )
   {
     var columnName = context.GetColumnName(aggregateType, propertyName);
-    return $@"
+    return RealResultSafeGuard($@"
       SUM({newTable}.{columnName} - COALESCE({oldTable}.{columnName}, 0))
         AS {columnName}
-    ";
+    ");
   }
 
   private static string DeltaMin(
@@ -475,12 +501,12 @@ public static class MeasurementProcedureCompiler
   )
   {
     var columnName = context.GetColumnName(aggregateType, propertyName);
-    return $@"
+    return RealResultSafeGuard($@"
       MIN(LEAST(
         {newTable}.{columnName},
         COALESCE({oldTable}.{columnName}, {newTable}.{columnName})))
         AS {columnName}
-    ";
+    ");
   }
 
   private static string DeltaMinTimestamp(
@@ -526,12 +552,12 @@ public static class MeasurementProcedureCompiler
       aggregateType,
       propertyName.ToArray()
     );
-    return $@"
+    return RealResultSafeGuard($@"
       MAX(GREATEST(
         {newTable}.{columnName},
         COALESCE({oldTable}.{columnName}, {newTable}.{columnName})))
         AS {columnName}
-    ";
+    ");
   }
 
   private static string DeltaMaxTimestamp(
