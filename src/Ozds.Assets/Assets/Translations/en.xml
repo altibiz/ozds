@@ -2207,6 +2207,28 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        ActiveEnergy_Tariff1_kWh
+      </Key>
+      <Metadata>
+        Property 'ActiveEnergy_Tariff1_kWh' of type 'Ozds.Business.Analysis.Consumption'
+      </Metadata>
+      <Value>
+        Higher tariff (kWh)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        ActiveEnergy_Tariff2_kWh
+      </Key>
+      <Metadata>
+        Property 'ActiveEnergy_Tariff2_kWh' of type 'Ozds.Business.Analysis.Consumption'
+      </Metadata>
+      <Value>
+        Lower tariff (kWh)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         ActiveEnergy_Wh
       </Key>
       <Metadata>
@@ -2431,6 +2453,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        ActiveEnergyLastMonth
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Analyses/MeterAnalysisColumns.razor' line 14 column 3
+      </Metadata>
+      <Value>
+        Active energy for the previous month
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         ActiveEnergyPrice_EUR
       </Key>
       <Metadata>
@@ -2451,6 +2484,17 @@
       </Metadata>
       <Value>
         Active energy price (EUR)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        ActiveEnergyThisMonth
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Analyses/MeterAnalysisColumns.razor' line 20 column 3
+      </Metadata>
+      <Value>
+        Active energy for the current month
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>

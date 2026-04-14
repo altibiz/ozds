@@ -2208,6 +2208,28 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        ActiveEnergy_Tariff1_kWh
+      </Key>
+      <Metadata>
+        Property 'ActiveEnergy_Tariff1_kWh' of type 'Ozds.Business.Analysis.Consumption'
+      </Metadata>
+      <Value>
+        Viša tarifa (kWh)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        ActiveEnergy_Tariff2_kWh
+      </Key>
+      <Metadata>
+        Property 'ActiveEnergy_Tariff2_kWh' of type 'Ozds.Business.Analysis.Consumption'
+      </Metadata>
+      <Value>
+        Niža tarifa (kWh)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         ActiveEnergy_Wh
       </Key>
       <Metadata>
@@ -2432,6 +2454,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        ActiveEnergyLastMonth
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Analyses/MeterAnalysisColumns.razor' line 14 column 3
+      </Metadata>
+      <Value>
+        Radna energija za prethodni mjesec
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         ActiveEnergyPrice_EUR
       </Key>
       <Metadata>
@@ -2452,6 +2485,17 @@
       </Metadata>
       <Value>
         Cijena radne energije (EUR)
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        ActiveEnergyThisMonth
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/Analyses/MeterAnalysisColumns.razor' line 20 column 3
+      </Metadata>
+      <Value>
+        Radna energija za tekući mjesec
       </Value>
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
