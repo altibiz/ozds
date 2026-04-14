@@ -11,8 +11,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
-- Split single total active energy column in analysis views into two
-  sub-columns showing higher tariff (T1) and lower tariff (T2) separately
+- Split single total active energy column in analysis views into two sub-columns
+  showing higher tariff (T1) and lower tariff (T2) separately
 - `MeterAnalysisColumns` and `MeasurementLocationAnalysisColumns` now use
   `GroupedColumn` with T1/T2 instead of single `ActiveEnergy_kWh` column
 - `MeterAnalysisDetails` and `MeasurementLocationAnalysisDetails` now use
@@ -27,8 +27,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
   `Consumption` record, computed via `.TariffBinary().T1` / `.T2`
 - `GroupedColumn<T>` method on `OzdsColumnsComponentBase` that renders multiple
   sub-columns under a shared header title using CSS grid layout
-- Translations for grouped column headers and tariff sub-columns in both
-  English and Croatian (`ActiveEnergyLastMonth`, `ActiveEnergyThisMonth`,
+- Translations for grouped column headers and tariff sub-columns in both English
+  and Croatian (`ActiveEnergyLastMonth`, `ActiveEnergyThisMonth`,
   `ActiveEnergy_Tariff1_kWh`, `ActiveEnergy_Tariff2_kWh`)
 
 ## [1.8.2] - 2026-04-03

@@ -2210,7 +2210,40 @@
         ActiveEnergy_Tariff1_kWh
       </Key>
       <Metadata>
-        Property 'ActiveEnergy_Tariff1_kWh' of type 'Ozds.Business.Analysis.Consumption'
+        Property 'ActiveEnergy_Tariff1_kWh' of type 'Ozds.Business.Analysis.Consumption' with overrides:
+        MonthlyAnalysis.Consumption.ActiveEnergy_Tariff1_kWh
+        ~MonthlyAnalysis.Consumption.ActiveEnergy_Tariff1_kWh
+        Analysis.LastMonthConsumption.ActiveEnergy_Tariff1_kWh
+        Analysis.ThisMonthConsumption.ActiveEnergy_Tariff1_kWh
+        Analysis.Monthly.Consumption.ActiveEnergy_Tariff1_kWh
+        ~Analysis.LastMonthConsumption.ActiveEnergy_Tariff1_kWh
+        ~Analysis.ThisMonthConsumption.ActiveEnergy_Tariff1_kWh
+        ~Analysis.Monthly.Consumption.ActiveEnergy_Tariff1_kWh
+        LocationAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff1_kWh
+        LocationAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff1_kWh
+        LocationAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff1_kWh
+        ~LocationAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff1_kWh
+        ~LocationAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff1_kWh
+        ~LocationAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff1_kWh
+        NetworkUserAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff1_kWh
+        NetworkUserAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff1_kWh
+        NetworkUserAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff1_kWh
+        ~NetworkUserAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff1_kWh
+        ~NetworkUserAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff1_kWh
+        ~NetworkUserAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff1_kWh
+        MeasurementLocationAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff1_kWh
+        MeasurementLocationAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff1_kWh
+        MeasurementLocationAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff1_kWh
+        ~MeasurementLocationAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff1_kWh
+        ~MeasurementLocationAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff1_kWh
+        ~MeasurementLocationAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff1_kWh
+        MeterAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff1_kWh
+        MeterAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff1_kWh
+        MeterAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff1_kWh
+        ~MeterAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff1_kWh
+        ~MeterAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff1_kWh
+        ~MeterAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff1_kWh
+        ~Consumption.ActiveEnergy_Tariff1_kWh
       </Metadata>
       <Value>
         Higher tariff (kWh)
@@ -2221,7 +2254,40 @@
         ActiveEnergy_Tariff2_kWh
       </Key>
       <Metadata>
-        Property 'ActiveEnergy_Tariff2_kWh' of type 'Ozds.Business.Analysis.Consumption'
+        Property 'ActiveEnergy_Tariff2_kWh' of type 'Ozds.Business.Analysis.Consumption' with overrides:
+        MonthlyAnalysis.Consumption.ActiveEnergy_Tariff2_kWh
+        ~MonthlyAnalysis.Consumption.ActiveEnergy_Tariff2_kWh
+        Analysis.LastMonthConsumption.ActiveEnergy_Tariff2_kWh
+        Analysis.ThisMonthConsumption.ActiveEnergy_Tariff2_kWh
+        Analysis.Monthly.Consumption.ActiveEnergy_Tariff2_kWh
+        ~Analysis.LastMonthConsumption.ActiveEnergy_Tariff2_kWh
+        ~Analysis.ThisMonthConsumption.ActiveEnergy_Tariff2_kWh
+        ~Analysis.Monthly.Consumption.ActiveEnergy_Tariff2_kWh
+        LocationAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff2_kWh
+        LocationAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff2_kWh
+        LocationAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff2_kWh
+        ~LocationAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff2_kWh
+        ~LocationAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff2_kWh
+        ~LocationAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff2_kWh
+        NetworkUserAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff2_kWh
+        NetworkUserAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff2_kWh
+        NetworkUserAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff2_kWh
+        ~NetworkUserAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff2_kWh
+        ~NetworkUserAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff2_kWh
+        ~NetworkUserAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff2_kWh
+        MeasurementLocationAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff2_kWh
+        MeasurementLocationAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff2_kWh
+        MeasurementLocationAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff2_kWh
+        ~MeasurementLocationAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff2_kWh
+        ~MeasurementLocationAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff2_kWh
+        ~MeasurementLocationAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff2_kWh
+        MeterAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff2_kWh
+        MeterAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff2_kWh
+        MeterAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff2_kWh
+        ~MeterAnalysis.Analysis.LastMonthConsumption.ActiveEnergy_Tariff2_kWh
+        ~MeterAnalysis.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff2_kWh
+        ~MeterAnalysis.Analysis.Monthly.Consumption.ActiveEnergy_Tariff2_kWh
+        ~Consumption.ActiveEnergy_Tariff2_kWh
       </Metadata>
       <Value>
         Lower tariff (kWh)
@@ -2456,7 +2522,8 @@
         ActiveEnergyLastMonth
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Analyses/MeterAnalysisColumns.razor' line 14 column 3
+        From file 'Ozds.Client/Components/Models/Implementations/Analyses/MeasurementLocationAnalysisDetails.razor' line 8 column 23
+        From file 'Ozds.Client/Components/Models/Implementations/Analyses/MeterAnalysisDetails.razor' line 8 column 23
       </Metadata>
       <Value>
         Active energy for the previous month
@@ -2491,7 +2558,8 @@
         ActiveEnergyThisMonth
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Models/Implementations/Analyses/MeterAnalysisColumns.razor' line 20 column 3
+        From file 'Ozds.Client/Components/Models/Implementations/Analyses/MeasurementLocationAnalysisDetails.razor' line 13 column 23
+        From file 'Ozds.Client/Components/Models/Implementations/Analyses/MeterAnalysisDetails.razor' line 13 column 23
       </Metadata>
       <Value>
         Active energy for the current month
