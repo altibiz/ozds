@@ -523,17 +523,18 @@
     params Expression<Func<TModel, T?>>[] nextExpressions
   )
   {
-    var compiledFuncs = nextExpressions.Select(e => e.Compile()).ToArray();
-
+    var compiledFunctions
+        = nextExpressions.Select(e => e.Compile()).ToArray();
+    
     if (searchable)
     {
-      foreach (var (expr, func) in nextExpressions.Zip(compiledFuncs))
+      foreach (var (expr, func) in nextExpressions.Zip(compiledFunctions))
       {
         RegisterSearchMapper(expr, x => func(x)?.ToString());
       }
     }
 
-    var gridStlye
+    var gridStyle
       = @"display:grid;
           grid-template-columns:1fr 1fr;
           gap:.5rem;
@@ -550,7 +551,7 @@
                 @Translate(groupKey)
               </b>
             </MudText>
-            <div style="@gridStlye">
+            <div style="@gridStyle">
               @foreach (var expr in nextExpressions)
               {
                 <MudText Typo="Typo.caption">
@@ -561,8 +562,8 @@
           </div>
         </HeaderTemplate>
         <CellTemplate>
-          <div style="@gridStlye">
-            @foreach (var func in compiledFuncs)
+          <div style="@gridStyle">
+            @foreach (var func in compiledFunctions)
             {
               <MudText>
                 @Get(func)(context.Item)
