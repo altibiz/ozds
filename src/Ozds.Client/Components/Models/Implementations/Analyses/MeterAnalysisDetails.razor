@@ -1,11 +1,18 @@
 @namespace Ozds.Client.Components.Models.Implementations.Analyses
+@using Ozds.Client.Components.Fields
 
 @inherits Ozds.Client.Components.Models.Base.OzdsDetailsComponentBase<Ozds.Business.Analysis.MeterAnalysis>
 
 @Field(x => x.Meter.Title)
 
-@Field(x => x.Analysis.ThisMonthConsumption.ActiveEnergy_kWh)
+<FieldSection Title="@Translate("ActiveEnergyLastMonth")" TitleTypo="MudBlazor.Typo.body1">
+    @Field(x => x.Analysis.LastMonthConsumption.ActiveEnergy_Tariff1_kWh)
+    @Field(x => x.Analysis.LastMonthConsumption.ActiveEnergy_Tariff2_kWh)
+</FieldSection>
 
-@Field(x => x.Analysis.LastMonthConsumption.ActiveEnergy_kWh)
+<FieldSection Title="@Translate("ActiveEnergyThisMonth")" TitleTypo="MudBlazor.Typo.body1">
+    @Field(x => x.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff1_kWh)
+    @Field(x => x.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff2_kWh)
+</FieldSection>
 
 @Field(x => x.Analysis.LastMonthExpenses.Total_EUR)

@@ -5,8 +5,10 @@
   class="@("mt-4 " + Class)"
   style="@("max-width: 36rem; " + Style)">
   <div class="d-flex flex-row justify-space-between">
-    <MudText Typo="Typo.h5">
-      @Title
+    <MudText Typo="@TitleTypo">
+      <b>
+        @Title
+      </b>
     </MudText>
     <MudText Typo="Typo.subtitle1">
       @Unit
@@ -18,6 +20,9 @@
 </div>
 
 @code {
+
+  [Parameter]
+  public Typo TitleTypo {get; set;} = Typo.h5;
 
   [Parameter]
   public string? Title { get; set; } = string.Empty;
