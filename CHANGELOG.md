@@ -9,6 +9,14 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- bumped MudBlazor version from 8.1.0 to 8.6.0
+- moved MudBlazor, Tizzani HtmlEditor, Quill and Google Fonts Roboto
+  `<link>`/`<script>` tags from `ThemeStateProvider.razor` into
+  `_AppLayout.cshtml` so they load at the server layout level rather than inside
+  the client theme provider
+
 ## [1.8.2] - 2026-04-03
 
 ### Changed
