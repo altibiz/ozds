@@ -10,10 +10,7 @@
     <MassTransitVersion>8.2.2</MassTransitVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion
-      Include="Altibiz.DependencyInjection.Extensions"
-      Version="1.0.10"
-    />
+    <PackageVersion Include="Altibiz.DependencyInjection.Extensions" Version="1.0.10" />
     <PackageVersion Include="Azure.Identity" Version="1.19.0" />
     <PackageVersion Include="CsvHelper" Version="31.0.3" />
     <PackageVersion Include="Tomlyn" Version="0.19.0" />
@@ -25,74 +22,26 @@
     <PackageVersion Include="Microsoft.Playwright" Version="1.50.0" />
     <PackageVersion Include="Npgsql" Version="8.0.3" />
     <PackageVersion Include="Dapper" Version="2.1.35" />
-    <PackageVersion
-      Include="Microsoft.EntityFrameworkCore.Design"
-      Version="$(EntityFrameworkCoreVersion)"
-    />
-    <PackageVersion
-      Include="Microsoft.EntityFrameworkCore.Proxies"
-      Version="$(EntityFrameworkCoreVersion)"
-    />
-    <PackageVersion
-      Include="Microsoft.EntityFrameworkCore.InMemory"
-      Version="$(EntityFrameworkCoreVersion)"
-    />
-    <PackageVersion
-      Include="EFCore.NamingConventions"
-      Version="$(EntityFrameworkCoreVersion)"
-    />
-    <PackageVersion
-      Include="EFCore.BulkExtensions"
-      Version="$(EntityFrameworkCoreVersion)"
-    />
-    <PackageVersion
-      Include="Npgsql.EntityFrameworkCore.PostgreSQL"
-      Version="8.0.4"
-    />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkCoreVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Proxies" Version="$(EntityFrameworkCoreVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(EntityFrameworkCoreVersion)" />
+    <PackageVersion Include="EFCore.NamingConventions" Version="$(EntityFrameworkCoreVersion)" />
+    <PackageVersion Include="EFCore.BulkExtensions" Version="$(EntityFrameworkCoreVersion)" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
     <PackageVersion Include="Z.EntityFramework.Plus.EFCore" Version="8.101.2" />
     <PackageVersion Include="Quartz" Version="$(QuartzVersion)" />
-    <PackageVersion
-      Include="Quartz.Serialization.SystemTextJson"
-      Version="$(QuartzVersion)"
-    />
-    <PackageVersion
-      Include="Quartz.Extensions.DependencyInjection"
-      Version="$(QuartzVersion)"
-    />
-    <PackageVersion
-      Include="Quartz.Extensions.Hosting"
-      Version="$(QuartzVersion)"
-    />
-    <PackageVersion
-      Include="AppAny.Quartz.EntityFrameworkCore.Migrations.PostgreSQL"
-      Version="0.5.1"
-    />
+    <PackageVersion Include="Quartz.Serialization.SystemTextJson" Version="$(QuartzVersion)" />
+    <PackageVersion Include="Quartz.Extensions.DependencyInjection" Version="$(QuartzVersion)" />
+    <PackageVersion Include="Quartz.Extensions.Hosting" Version="$(QuartzVersion)" />
+    <PackageVersion Include="AppAny.Quartz.EntityFrameworkCore.Migrations.PostgreSQL" Version="0.5.1" />
     <PackageVersion Include="MassTransit" Version="$(MassTransitVersion)" />
-    <PackageVersion
-      Include="MassTransit.RabbitMQ"
-      Version="$(MassTransitVersion)"
-    />
-    <PackageVersion
-      Include="MassTransit.Azure.ServiceBus.Core"
-      Version="$(MassTransitVersion)"
-    />
-    <PackageVersion
-      Include="MassTransit.EntityFrameworkCore"
-      Version="$(MassTransitVersion)"
-    />
-    <PackageVersion
-      Include="Microsoft.AspNetCore.Authentication.OpenIdConnect"
-      Version="8.0.17"
-    />
-    <PackageVersion
-      Include="Microsoft.AspNetCore.Authentication.Cookies"
-      Version="2.3.0"
-    />
-    <PackageVersion
-      Include="Novell.Directory.Ldap.NETStandard"
-      Version="3.6.0"
-    />
-    <PackageVersion Include="MudBlazor" Version="8.1.0" />
+    <PackageVersion Include="MassTransit.RabbitMQ" Version="$(MassTransitVersion)" />
+    <PackageVersion Include="MassTransit.Azure.ServiceBus.Core" Version="$(MassTransitVersion)" />
+    <PackageVersion Include="MassTransit.EntityFrameworkCore" Version="$(MassTransitVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.17" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.3.0" />
+    <PackageVersion Include="Novell.Directory.Ldap.NETStandard" Version="3.6.0" />
+    <PackageVersion Include="MudBlazor" Version="8.6.0" />
     <PackageVersion Include="MudBlazor.ThemeManager" Version="3.0.0" />
     <PackageVersion Include="Blazor-ApexCharts" Version="5.0.1" />
     <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
@@ -104,10 +53,7 @@
     <PackageVersion Include="AutoFixture" Version="4.18.1" />
     <PackageVersion Include="AutoFixture.AutoMoq" Version="4.18.1" />
     <PackageVersion Include="Testcontainers" Version="4.5.0" />
-    <PackageVersion
-      Include="Microsoft.AspNetCore.Mvc.Testing"
-      Version="8.0.17"
-    />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.17" />
     <PackageVersion Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="9.0.6" />
     <PackageVersion Include="Asp.Versioning.Mvc" Version="8.1.0" />
