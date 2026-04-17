@@ -11,6 +11,11 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Refactored `AggregateWindowQueries` report fetching to be more like
+  `BillingQueries` by fetching next-boundary and blackout-location aggregates
+  separately for more accurate energy card report calculations
+- Fix Playwright `.local-browsers` folder missing from GitHub Actions artifact
+  by creating it without the dot prefix during publish and renaming on startup
 - Fix, Playwright `.local-browsers` folder missing from GitHub Actions artifact
   creating it without the dot prefix during publish and renaming it on startup
 - Changed so that both `ozds-server.sh` and `ozds-server-dev.sh` scripts change
