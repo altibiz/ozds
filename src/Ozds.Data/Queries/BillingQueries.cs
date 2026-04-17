@@ -397,15 +397,21 @@ public class BillingQueries(
       }
     }
 
+    var groupedByMeasurementLocationIds = inWindowAggregates
+      .GroupBy(x => x.MeasurementLocationId)
+      .ToDictionary(g => g.Key, g => g.OrderBy(x => x.Timestamp).ToList());
+
     return bases
       .Select(basis =>
       {
         var locationId = basis.MeasurementLocation.Id;
 
-        var locationAggregates = inWindowAggregates
-          .Where(x => x.MeasurementLocationId == locationId)
-          .OrderBy(x => x.Timestamp)
-          .ToList();
+        var locationAggregates = groupedByMeasurementLocationIds.TryGetValue(
+          locationId,
+          out var v
+        )
+          ? v
+          : new List<AggregateEntity>();
 
         var next = nextBoundaries.FirstOrDefault(x =>
           x.MeasurementLocationId == locationId

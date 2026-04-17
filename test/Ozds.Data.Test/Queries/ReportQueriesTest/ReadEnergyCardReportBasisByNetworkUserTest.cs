@@ -21,11 +21,13 @@ public class ReadEnergyCardReportBasisByNetworkUserTest : OzdsDataTestBase
     return new[]
     {
       new EnergyCardScenario(
-        "1. Normal month - data in queried window returns result",
-        new Dictionary<string, bool> { { Nov1, true } },
+        "1. Normal month - data in queried window and next month returns result",
+        new Dictionary<string, bool> { { Nov1, true }, { Dec1, true } },
         Nov1,
         Dec1,
-        true
+        true,
+        Nov1,
+        Dec1
       ),
       new EnergyCardScenario(
         "2. No data anywhere - empty result",
@@ -35,21 +37,21 @@ public class ReadEnergyCardReportBasisByNetworkUserTest : OzdsDataTestBase
         false
       ),
       new EnergyCardScenario(
-        "3. Data only in previous month - empty result for queried window",
+        "3. Data only in previous month - no next boundary, empty result",
         new Dictionary<string, bool> { { Oct1, true } },
         Nov1,
         Dec1,
         false
       ),
       new EnergyCardScenario(
-        "4. Data not in selected range - empty result for queried window",
+        "4. Data not in selected range - no start boundary, empty result",
         new Dictionary<string, bool> { { Jan1, true } },
         Nov1,
         Dec1,
         false
       ),
       new EnergyCardScenario(
-        "5. Data in Oct, Nov, Dec - query Nov returns result bounded to Nov",
+        "5. Data in Oct, Nov, Dec - query Nov returns result bounded to Nov-Dec",
         new Dictionary<string, bool>
         {
           { Oct1, true },
@@ -58,21 +60,34 @@ public class ReadEnergyCardReportBasisByNetworkUserTest : OzdsDataTestBase
         },
         Nov1,
         Dec1,
-        true
+        true,
+        Nov1,
+        Dec1
       ),
       new EnergyCardScenario(
-        "6. Data in Oct and Jan but not in Nov and Dec - empty result for Nov",
+        "6. Data in Oct and Jan - blackout bridged with previous start and next boundary",
         new Dictionary<string, bool> { { Oct1, true }, { Jan1, true } },
         Nov1,
         Dec1,
-        false
+        true,
+        Oct1,
+        Jan1
       ),
       new EnergyCardScenario(
-        "7. Data in Nov and Dec - query Nov only returns for Nov boundaries",
+        "7. Data in Nov and Dec - query Nov only returns for Nov-Dec boundaries",
         new Dictionary<string, bool> { { Nov1, true }, { Dec1, true } },
         Nov1,
         Dec1,
-        true
+        true,
+        Nov1,
+        Dec1
+      ),
+      new EnergyCardScenario(
+        "8. Data in Nov only - no next boundary, empty result",
+        new Dictionary<string, bool> { { Nov1, true } },
+        Nov1,
+        Dec1,
+        false
       ),
     };
   }
@@ -152,36 +167,23 @@ public class ReadEnergyCardReportBasisByNetworkUserTest : OzdsDataTestBase
 
     var basis = result!.First();
 
-    var inWindowAggregates = allMeasurements
-      .OfType<AggregateEntity>()
-      .Where(x => x.Interval == IntervalEntity.QuarterHour)
-      .Where(x => x.Timestamp >= fromDate && x.Timestamp <= toDate)
-      .OrderBy(x => x.Timestamp)
-      .ToList();
-
-    inWindowAggregates
-      .Should()
-      .NotBeEmpty(
-        $"Scenario '{scenario.Name}': test data must have in-window aggregates"
-      );
-
-    var expectedMinTimestamp = inWindowAggregates.First().Timestamp;
-    var expectedMaxTimestamp = inWindowAggregates.Last().Timestamp;
+    var expectedMinTimestamp = ParseDate(scenario.ExpectedMin!);
+    var expectedMaxTimestamp = ParseDate(scenario.ExpectedMax!);
 
     basis
       .MinAggregate.Timestamp.Should()
       .Be(
         expectedMinTimestamp,
-        $"Scenario '{scenario.Name}': MinAggregate should be the first "
-          + "aggregate in the queried window"
+        $"Scenario '{scenario.Name}': MinAggregate should match "
+          + "expected start boundary"
       );
 
     basis
       .MaxAggregate.Timestamp.Should()
       .Be(
         expectedMaxTimestamp,
-        $"Scenario '{scenario.Name}': MaxAggregate should be the last "
-          + "aggregate in the queried window"
+        $"Scenario '{scenario.Name}': MaxAggregate should match "
+          + "expected next boundary"
       );
 
     basis
@@ -209,17 +211,11 @@ public class ReadEnergyCardReportBasisByNetworkUserTest : OzdsDataTestBase
       );
 
     basis
-      .MinAggregate.Timestamp.Should()
-      .BeOnOrAfter(
-        fromDate,
-        $"Scenario '{scenario.Name}': MinAggregate must not precede fromDate"
-      );
-
-    basis
       .MaxAggregate.Timestamp.Should()
-      .BeOnOrBefore(
+      .BeOnOrAfter(
         toDate,
-        $"Scenario '{scenario.Name}': MaxAggregate must be on or before toDate"
+        $"Scenario '{scenario.Name}': MaxAggregate must be at or after "
+          + "toDate as it is a next boundary"
       );
   }
 
@@ -241,6 +237,8 @@ public class ReadEnergyCardReportBasisByNetworkUserTest : OzdsDataTestBase
     Dictionary<string, bool> MeasurementsMap,
     string QueryFrom,
     string QueryTo,
-    bool ExpectResult
+    bool ExpectResult,
+    string? ExpectedMin = null,
+    string? ExpectedMax = null
   );
 }
