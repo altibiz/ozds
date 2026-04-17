@@ -9,6 +9,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+## [1.8.3] - 2026-04-17
+
 ### Changed
 
 - bumped MudBlazor version from 8.1.0 to 8.6.0
@@ -742,6 +744,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.8.3]: https://github.com/altibiz/ozds/compare/1.8.2...1.8.3
 [1.8.2]: https://github.com/altibiz/ozds/compare/1.8.1...1.8.2
 [1.8.1]: https://github.com/altibiz/ozds/compare/1.8.0...1.8.1
 [1.8.0]: https://github.com/altibiz/ozds/compare/1.7.1...1.8.0
