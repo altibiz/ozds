@@ -410,7 +410,7 @@ public class BillingQueries(
           locationId,
           out var v
         )
-          ? new List<AggregateEntity>(v)
+          ? v
           : new List<AggregateEntity>();
 
         var next = nextBoundaries.FirstOrDefault(x =>
