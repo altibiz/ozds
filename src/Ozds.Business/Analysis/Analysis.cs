@@ -50,6 +50,8 @@ public record Consumption(
   decimal MinActiveEnergy_kWh,
   decimal MaxActiveEnergy_kWh,
   decimal ActiveEnergy_kWh,
+  decimal ActiveEnergy_Tariff1_kWh,
+  decimal ActiveEnergy_Tariff2_kWh,
   decimal MinReactiveEnergy_kVARh,
   decimal MaxReactiveEnergy_kVARh,
   decimal ReactiveEnergy_kVARh,
@@ -59,16 +61,18 @@ public record Consumption(
 )
 {
   public static readonly Consumption Null = new(
-    DateTimeOffset.MinValue,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0
+    Timestamp: DateTimeOffset.MinValue,
+    MinActiveEnergy_kWh: 0,
+    MaxActiveEnergy_kWh: 0,
+    ActiveEnergy_kWh: 0,
+    ActiveEnergy_Tariff1_kWh: 0,
+    ActiveEnergy_Tariff2_kWh: 0,
+    MinReactiveEnergy_kVARh: 0,
+    MaxReactiveEnergy_kVARh: 0,
+    ReactiveEnergy_kVARh: 0,
+    MinApparentEnergy_kVAh: 0,
+    MaxApparentEnergy_kVAh: 0,
+    ApparentEnergy_kVAh: 0
   );
 }
 

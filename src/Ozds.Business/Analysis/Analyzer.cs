@@ -173,8 +173,8 @@ public class Analyzer(ClockQueries clockQueries, TimeQueries timeQueries)
     return models
       .GroupBy(x => x.Timestamp)
       .Select(x => new Consumption(
-        x.Key,
-        x.Select(x =>
+        Timestamp: x.Key,
+        MinActiveEnergy_kWh: x.Select(x =>
             x.ActiveEnergy_Wh.TariffUnary()
               .DuplexImport()
               .AggregateMin()
@@ -182,7 +182,7 @@ public class Analyzer(ClockQueries clockQueries, TimeQueries timeQueries)
           )
           .DefaultIfEmpty(0M)
           .Min() / 1000M,
-        x.Select(x =>
+        MaxActiveEnergy_kWh: x.Select(x =>
             x.ActiveEnergy_Wh.TariffUnary()
               .DuplexImport()
               .AggregateMax()
@@ -190,10 +190,22 @@ public class Analyzer(ClockQueries clockQueries, TimeQueries timeQueries)
           )
           .DefaultIfEmpty(0M)
           .Max() / 1000M,
-        x.Select(x => x.ActiveEnergy_Wh.TariffUnary().DuplexImport().PhaseSum())
+        ActiveEnergy_kWh: x.Select(x =>
+            x.ActiveEnergy_Wh.TariffUnary().DuplexImport().PhaseSum()
+          )
           .DefaultIfEmpty(0M)
           .Sum() / 1000M,
-        x.Select(x =>
+        ActiveEnergy_Tariff1_kWh: x.Select(x =>
+            x.ActiveEnergy_Wh.TariffBinary().T1.DuplexImport().PhaseSum()
+          )
+          .DefaultIfEmpty(0M)
+          .Sum() / 1000M,
+        ActiveEnergy_Tariff2_kWh: x.Select(x =>
+            x.ActiveEnergy_Wh.TariffBinary().T2.DuplexImport().PhaseSum()
+          )
+          .DefaultIfEmpty(0M)
+          .Sum() / 1000M,
+        MinReactiveEnergy_kVARh: x.Select(x =>
             x.ReactiveEnergy_VARh.TariffUnary()
               .DuplexImport()
               .AggregateMin()
@@ -201,7 +213,7 @@ public class Analyzer(ClockQueries clockQueries, TimeQueries timeQueries)
           )
           .DefaultIfEmpty(0M)
           .Min() / 1000M,
-        x.Select(x =>
+        MaxReactiveEnergy_kVARh: x.Select(x =>
             x.ReactiveEnergy_VARh.TariffUnary()
               .DuplexImport()
               .AggregateMax()
@@ -209,12 +221,12 @@ public class Analyzer(ClockQueries clockQueries, TimeQueries timeQueries)
           )
           .DefaultIfEmpty(0M)
           .Max() / 1000M,
-        x.Select(x =>
+        ReactiveEnergy_kVARh: x.Select(x =>
             x.ReactiveEnergy_VARh.TariffUnary().DuplexImport().PhaseSum()
           )
           .DefaultIfEmpty(0M)
           .Sum() / 1000M,
-        x.Select(x =>
+        MinApparentEnergy_kVAh: x.Select(x =>
             x.ApparentEnergy_VAh.TariffUnary()
               .DuplexImport()
               .AggregateMin()
@@ -222,7 +234,7 @@ public class Analyzer(ClockQueries clockQueries, TimeQueries timeQueries)
           )
           .DefaultIfEmpty(0M)
           .Min() / 1000M,
-        x.Select(x =>
+        MaxApparentEnergy_kVAh: x.Select(x =>
             x.ApparentEnergy_VAh.TariffUnary()
               .DuplexImport()
               .AggregateMax()
@@ -230,7 +242,7 @@ public class Analyzer(ClockQueries clockQueries, TimeQueries timeQueries)
           )
           .DefaultIfEmpty(0M)
           .Max() / 1000M,
-        x.Select(x =>
+        ApparentEnergy_kVAh: x.Select(x =>
             x.ApparentEnergy_VAh.TariffUnary().DuplexImport().PhaseSum()
           )
           .DefaultIfEmpty(0M)

@@ -16,6 +16,39 @@ and adheres to [Semantic Versioning](https://semver.org/).
   `<link>`/`<script>` tags from `ThemeStateProvider.razor` into
   `_AppLayout.cshtml` so they load at the server layout level rather than inside
   the client theme provider
+- Split single total active energy column in analysis views into two sub-columns
+  showing higher tariff (T1) and lower tariff (T2) separately
+- `MeterAnalysisColumns` and `MeasurementLocationAnalysisColumns` now use
+  `GroupedColumn` with T1/T2 instead of single `ActiveEnergy_kWh` column
+- `MeterAnalysisDetails` and `MeasurementLocationAnalysisDetails` now use
+  `FieldSection` groups with T1/T2 fields instead of single energy field
+- `FieldSection` title typography is now configurable via `TitleTypo` parameter
+  (defaults to `Typo.h5`), title text wrapped in bold
+- `Analyzer.AnalyzeConsumption` uses named parameters for readability
+- Fix, Playwright `.local-browsers` folder missing from GitHub Actions artifact
+  creating it without the dot prefix during publish and renaming it on startup
+- Changed so that both `ozds-server.sh` and `ozds-server-dev.sh` scripts change
+  `local-browsers` back to `.local-browsers`
+- Fix, centralized `fromDate` recalculation into `Fetch` method with a
+  `forcedRefresh` parameter, removing duplicated date calculation logic from
+  `OnMeasurementLocationsChanged`,
+  `OnMetersChanged`,`OnRefreshChanged`,`OnResolutionChanged`, and
+  `OnMultiplierChanged`
+- Optimized `BillingQueries` to group aggregates by measurement location ID
+  upfront using a dictionary instead of filtering per-location in a loop
+- Refactored `AggregateWindowQueries` report fetching to be more like
+  `BillingQueries` by fetching next-boundary and blackout-location aggregates
+  separately for more accurate energy card report calculations
+
+### Added
+
+- `ActiveEnergy_Tariff1_kWh` and `ActiveEnergy_Tariff2_kWh` fields on
+  `Consumption` record, computed via `.TariffBinary().T1` / `.T2`
+- `GroupedColumn<T>` method on `OzdsColumnsComponentBase` that renders multiple
+  sub-columns under a shared header title using CSS grid layout
+- Translations for grouped column headers and tariff sub-columns in both English
+  and Croatian (`ActiveEnergyLastMonth`, `ActiveEnergyThisMonth`,
+  `ActiveEnergy_Tariff1_kWh`, `ActiveEnergy_Tariff2_kWh`)
 
 ## [1.8.2] - 2026-04-03
 

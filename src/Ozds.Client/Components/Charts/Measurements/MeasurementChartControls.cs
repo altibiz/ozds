@@ -162,16 +162,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
         measurementLocationIds.Contains(measurementLocation.Id)
       )
       .ToHashSet();
-    var now = ClockQueries.Now();
-    var fromDate = now.Subtract(
-      TimeQueries.ResolutionTimeSpan(
-        _parameters.Resolution,
-        now,
-        _parameters.Multiplier
-      )
-    );
-    _parameters.FromDate = fromDate;
-    await Fetch();
+    await Fetch(forcedRefresh: true);
   }
 
   private async Task OnMetersChanged(IEnumerable<string> meterIds)
@@ -179,15 +170,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
     _parameters.Meters = Meters
       .Where(meter => meterIds.Contains(meter.Id))
       .ToHashSet();
-    var now = ClockQueries.Now();
-    _parameters.FromDate = now.Subtract(
-      TimeQueries.ResolutionTimeSpan(
-        _parameters.Resolution,
-        now,
-        _parameters.Multiplier
-      )
-    );
-    await Fetch();
+    await Fetch(forcedRefresh: true);
   }
 
   private async Task OnRefreshChanged(bool refresh)
@@ -195,15 +178,6 @@ public partial class MeasurementChartControls : OzdsComponentBase
     _parameters.Refresh = refresh;
     if (_parameters.Refresh)
     {
-      var now = ClockQueries.Now();
-      var fromDate = now.Subtract(
-        TimeQueries.ResolutionTimeSpan(
-          _parameters.Resolution,
-          now,
-          _parameters.Multiplier
-        )
-      );
-      _parameters.FromDate = fromDate;
       await Fetch();
     }
   }
@@ -211,38 +185,12 @@ public partial class MeasurementChartControls : OzdsComponentBase
   private async Task OnResolutionChanged(ResolutionModel resolution)
   {
     _parameters.Resolution = resolution;
-    if (_parameters.Refresh)
-    {
-      var now = ClockQueries.Now();
-      var fromDate = now.Subtract(
-        TimeQueries.ResolutionTimeSpan(
-          _parameters.Resolution,
-          now,
-          _parameters.Multiplier
-        )
-      );
-      _parameters.FromDate = fromDate;
-    }
-
     await Fetch();
   }
 
   private async Task OnMultiplierChanged(int multiplier)
   {
     _parameters.Multiplier = multiplier;
-    if (_parameters.Refresh)
-    {
-      var now = ClockQueries.Now();
-      var fromDate = now.Subtract(
-        TimeQueries.ResolutionTimeSpan(
-          _parameters.Resolution,
-          now,
-          _parameters.Multiplier
-        )
-      );
-      _parameters.FromDate = fromDate;
-    }
-
     await Fetch();
   }
 
@@ -274,17 +222,36 @@ public partial class MeasurementChartControls : OzdsComponentBase
     Refresh(args.Measurements.ToList(), new List<IAggregate>());
   }
 
-  private async Task Fetch()
+  private async Task Fetch(bool forcedRefresh = false)
   {
     var queries = ScopedServices.GetRequiredService<MeasurementQueries>();
-    var fromDate = _parameters.FromDate;
-    var toDate = fromDate.Add(
-      TimeQueries.ResolutionTimeSpan(
-        _parameters.Resolution,
-        fromDate,
-        _parameters.Multiplier
-      )
-    );
+    DateTimeOffset fromDate;
+    DateTimeOffset toDate;
+
+    if (forcedRefresh || _parameters.Refresh)
+    {
+      toDate = ClockQueries.Now();
+      fromDate = toDate.Subtract(
+        TimeQueries.ResolutionTimeSpan(
+          _parameters.Resolution,
+          toDate,
+          _parameters.Multiplier
+        )
+      );
+      _parameters.FromDate = fromDate;
+    }
+    else
+    {
+      fromDate = _parameters.FromDate;
+      toDate = fromDate.Add(
+        TimeQueries.ResolutionTimeSpan(
+          _parameters.Resolution,
+          fromDate,
+          _parameters.Multiplier
+        )
+      );
+    }
+
     var fromMeters = await queries.ReadByMeterIds(
       _parameters.Meters.Select(x => x.Id).ToList(),
       _parameters.Resolution,
