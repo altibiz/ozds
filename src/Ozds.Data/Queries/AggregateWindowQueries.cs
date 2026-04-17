@@ -360,7 +360,7 @@ public class AggregateWindowQueries(
           var orderedLocationAggregates =
           inWindowAggregatesByLocation
            .TryGetValue(locationId, out var v)
-           ? new List<AggregateEntity>(v) : new List<AggregateEntity>();
+           ? v : new List<AggregateEntity>();
 
           var next = nextBoundaries.FirstOrDefault(x =>
              x.MeasurementLocationId == locationId
