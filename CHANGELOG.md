@@ -11,6 +11,11 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- bumped MudBlazor version from 8.1.0 to 8.6.0
+- moved MudBlazor, Tizzani HtmlEditor, Quill and Google Fonts Roboto
+  `<link>`/`<script>` tags from `ThemeStateProvider.razor` into
+  `_AppLayout.cshtml` so they load at the server layout level rather than inside
+  the client theme provider
 - Split single total active energy column in analysis views into two sub-columns
   showing higher tariff (T1) and lower tariff (T2) separately
 - `MeterAnalysisColumns` and `MeasurementLocationAnalysisColumns` now use
@@ -20,6 +25,20 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - `FieldSection` title typography is now configurable via `TitleTypo` parameter
   (defaults to `Typo.h5`), title text wrapped in bold
 - `Analyzer.AnalyzeConsumption` uses named parameters for readability
+- Fix, Playwright `.local-browsers` folder missing from GitHub Actions artifact
+  creating it without the dot prefix during publish and renaming it on startup
+- Changed so that both `ozds-server.sh` and `ozds-server-dev.sh` scripts change
+  `local-browsers` back to `.local-browsers`
+- Fix, centralized `fromDate` recalculation into `Fetch` method with a
+  `forcedRefresh` parameter, removing duplicated date calculation logic from
+  `OnMeasurementLocationsChanged`,
+  `OnMetersChanged`,`OnRefreshChanged`,`OnResolutionChanged`, and
+  `OnMultiplierChanged`
+- Optimized `BillingQueries` to group aggregates by measurement location ID
+  upfront using a dictionary instead of filtering per-location in a loop
+- Refactored `AggregateWindowQueries` report fetching to be more like
+  `BillingQueries` by fetching next-boundary and blackout-location aggregates
+  separately for more accurate energy card report calculations
 
 ### Added
 
@@ -30,20 +49,6 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - Translations for grouped column headers and tariff sub-columns in both English
   and Croatian (`ActiveEnergyLastMonth`, `ActiveEnergyThisMonth`,
   `ActiveEnergy_Tariff1_kWh`, `ActiveEnergy_Tariff2_kWh`)
-- Optimized `BillingQueries` to group aggregates by measurement location ID
-  upfront using a dictionary instead of filtering per-location in a loop
-- Refactored `AggregateWindowQueries` report fetching to be more like
-  `BillingQueries` by fetching next-boundary and blackout-location aggregates
-  separately for more accurate energy card report calculations
-- Fix, Playwright `.local-browsers` folder missing from GitHub Actions artifact
-  creating it without the dot prefix during publish and renaming it on startup
-- Changed so that both `ozds-server.sh` and `ozds-server-dev.sh` scripts change
-  `local-browsers` back to `.local-browsers`
-- Fix, centralized `fromDate` recalculation into `Fetch` method with a
-  `forcedRefresh` parameter, removing duplicated date calculation logic from
-  `OnMeasurementLocationsChanged`,
-  `OnMetersChanged`,`OnRefreshChanged`,`OnResolutionChanged`, and
-  `OnMultiplierChanged`
 
 ## [1.8.2] - 2026-04-03
 

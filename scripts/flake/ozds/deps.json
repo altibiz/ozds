@@ -476,8 +476,8 @@
   },
   {
     "pname": "MudBlazor",
-    "version": "8.1.0",
-    "hash": "sha256-y7facnCuqvNfyGAmR47RowFQCJnbHGEENWFZGkdOFoo="
+    "version": "8.6.0",
+    "hash": "sha256-lQohRfV7DR3uwpz7MpuYIenJ+AE4a/DsWb1JrYCa8P8="
   },
   {
     "pname": "MudBlazor.ThemeManager",
