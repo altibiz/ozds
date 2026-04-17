@@ -350,44 +350,47 @@ public class AggregateWindowQueries(
         }
       }
 
+      var inWindowAggregatesByLocation = inWindowAggregates
+        .GroupBy(a => a.MeasurementLocationId)
+        .ToDictionary(g => g.Key, g => g.OrderBy(x => x.Timestamp).ToList());
+
       totalWindowAggregates.AddRange(
-        inWindowAggregates
-          .GroupBy(a => a.MeasurementLocationId)
-          .Select(group =>
+        measurementLocationIds.Select(locationId =>
+        {
+          var orderedLocationAggregates =
+          inWindowAggregatesByLocation
+           .TryGetValue(locationId, out var v)
+           ? new List<AggregateEntity>(v) : new List<AggregateEntity>();
+
+          var next = nextBoundaries.FirstOrDefault(x =>
+             x.MeasurementLocationId == locationId
+           );
+
+          var previous = actualStartBoundaries.FirstOrDefault(x =>
+            x.MeasurementLocationId == locationId
+          );
+
+          AggregateEntity? startAggregate = null;
+          AggregateEntity? endAggregate = null;
+
+          if (orderedLocationAggregates.Count != 0)
           {
-            var orderedLocationAggregates = group
-              .OrderBy(a => a.Timestamp)
-              .ToList();
+            startAggregate = orderedLocationAggregates.First();
+            endAggregate = next;
+          }
+          else
+          {
+            startAggregate = previous;
+            endAggregate = next;
+          }
 
-            var next = nextBoundaries.FirstOrDefault(x =>
-              x.MeasurementLocationId == group.Key
-            );
-
-            var previous = actualStartBoundaries.FirstOrDefault(x =>
-              x.MeasurementLocationId == group.Key
-            );
-
-            AggregateEntity? startAggregate = null;
-            AggregateEntity? endAggregate = null;
-
-            if (orderedLocationAggregates.Count != 0)
-            {
-              startAggregate = orderedLocationAggregates.First();
-              endAggregate = next;
-            }
-            else
-            {
-              startAggregate = previous;
-              endAggregate = next;
-            }
-
-            return new AggregateWindowBoundaryBasisEntity
-            {
-              MeasurementLocationId = group.Key,
-              StartAggregate = startAggregate,
-              EndAggregate = endAggregate,
-            };
-          })
+          return new AggregateWindowBoundaryBasisEntity
+          {
+            MeasurementLocationId = locationId,
+            StartAggregate = startAggregate,
+            EndAggregate = endAggregate,
+          };
+        })
       );
     }
 
