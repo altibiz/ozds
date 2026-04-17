@@ -11,6 +11,10 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Fix, Playwright `.local-browsers` folder missing from GitHub Actions artifact
+  creating it without the dot prefix during publish and renaming it on startup
+- Changed so that both `ozds-server.sh` and `ozds-server-dev.sh` scripts change
+  `local-browsers` back to `.local-browsers`
 - Fix, centralized `fromDate` recalculation into `Fetch` method with a
   `forcedRefresh` parameter, removing duplicated date calculation logic from
   `OnMeasurementLocationsChanged`,
