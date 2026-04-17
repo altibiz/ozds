@@ -358,13 +358,13 @@ public class AggregateWindowQueries(
         measurementLocationIds.Select(locationId =>
         {
           var orderedLocationAggregates =
-          inWindowAggregatesByLocation
-           .TryGetValue(locationId, out var v)
-           ? v : new List<AggregateEntity>();
+            inWindowAggregatesByLocation.TryGetValue(locationId, out var v)
+              ? v
+              : new List<AggregateEntity>();
 
           var next = nextBoundaries.FirstOrDefault(x =>
-             x.MeasurementLocationId == locationId
-           );
+            x.MeasurementLocationId == locationId
+          );
 
           var previous = actualStartBoundaries.FirstOrDefault(x =>
             x.MeasurementLocationId == locationId
