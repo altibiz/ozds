@@ -28,7 +28,7 @@ rollback := absolute_path('scripts/database/rollback.nu')
 migrategenerated := absolute_path('scripts/database/migrate-generated.nu')
 validate := absolute_path('scripts/database/validate.nu')
 measurements := absolute_path('scripts/database/measurements.nu')
-playwright := absolute_path('src/Ozds.Server/bin/Debug/net8.0/playwright.ps1')
+playwright := absolute_path('src/Ozds.Server/bin/Debug/net10.0/playwright.ps1')
 ozdsserver := absolute_path('scripts/startup/ozds-server.sh')
 ozdsserverdev := absolute_path('scripts/startup/ozds-server-dev.sh')
 raspberryPi4 := absolute_path('scripts/flake/raspberryPi4.nu')
@@ -297,10 +297,10 @@ publish *args:
     cp '{{ ozdsserver }}' '{{ artifacts }}/ozds-server'
     cp '{{ ozdsserverdev }}' '{{ artifacts }}/ozds-server-dev'
 
-    mkdir ("{{ artifacts }}/playwright/package/.local-browsers" \
+    mkdir ("{{ artifacts }}/playwright/package/local-browsers" \
       + "/chromium_headless_shell-1155/chrome-linux")
 
-    cd ("{{ artifacts }}/playwright/package/.local-browsers" \
+    cd ("{{ artifacts }}/playwright/package/local-browsers" \
       + "/chromium_headless_shell-1155/chrome-linux"); \
       nix-bundle \
         '(builtins.getFlake "git+file:{{ root }}").packages.${builtins.currentSystem}.playwrightBrowsers' \

@@ -4,6 +4,9 @@ root="$(dirname "${BASH_SOURCE[0]}")"
 if [ -d "$root/playwright" ]; then
   mv "$root/playwright" "$root/.playwright"
 fi
+if [ -d "$root/.playwright/package/local-browsers" ]; then
+  mv "$root/.playwright/package/local-browsers" "$root/.playwright/package/.local-browsers"
+fi
 
 export PLAYWRIGHT_BROWSERS_PATH="$root/.playwright/package/.local-browsers"
 export PLAYWRIGHT_NODEJS_PATH="$root/.playwright/node/linux-x64/node"
