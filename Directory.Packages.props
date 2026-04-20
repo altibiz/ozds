@@ -19,7 +19,7 @@
     <PackageVersion Include="Tomlyn" Version="0.19.0" />
     <PackageVersion Include="HtmlSanitizer" Version="9.0.892" />
     <PackageVersion Include="System.Linq.Async" Version="7.0.0" />
-    <PackageVersion Include="MailKit" Version="4.15.1" />
+    <PackageVersion Include="MailKit" Version="4.16.0" />
     <PackageVersion Include="CommandLineParser" Version="2.9.1" />
     <PackageVersion Include="OpenAI" Version="2.1.0" />
     <PackageVersion Include="Microsoft.Playwright" Version="1.50.0" />

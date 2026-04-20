@@ -9,6 +9,12 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- Update, MailKit to newer version 4.16.0, all tests pass
+
+### Added
+
 ## [1.8.3] - 2026-04-17
 
 ### Changed

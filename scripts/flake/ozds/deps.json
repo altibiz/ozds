@@ -156,8 +156,8 @@
   },
   {
     "pname": "MailKit",
-    "version": "4.15.1",
-    "hash": "sha256-ZI2ASxX1dY53YxWRii0Dow4aojR8VCEWzCWZLrH7wPw="
+    "version": "4.16.0",
+    "hash": "sha256-4yyFxq8pJVTIgAJkyAYcuV2+/ZirENgUSk1OSD/gKIo="
   },
   {
     "pname": "MassTransit",
@@ -466,8 +466,8 @@
   },
   {
     "pname": "MimeKit",
-    "version": "4.15.1",
-    "hash": "sha256-MI4Wr+JWoxR9wsYhKmW8j1EdJ59W/O4jv5D9Zb8mEUw="
+    "version": "4.16.0",
+    "hash": "sha256-yWGXVm+EHvBSsZlVHdWdD+rVwdf/5hHxsUfJMSd2Afo="
   },
   {
     "pname": "Mono.TextTemplating",
