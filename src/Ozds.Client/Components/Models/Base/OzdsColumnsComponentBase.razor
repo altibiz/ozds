@@ -517,41 +517,56 @@
         );
     }
 
+  protected sealed record GroupedColumnItem<T>(
+    Expression<Func<TModel, T?>> Value,
+    Expression<Func<TModel, object?>> Label
+  );
+
+  protected GroupedColumnItem<T> Group<T>(
+    Expression<Func<TModel, T?>> value,
+    Expression<Func<TModel, object?>> label
+  )
+  {
+    return new GroupedColumnItem<T>(value, label);
+  }
+
   protected RenderFragment GroupedColumn<T>(
     string groupKey,
     bool searchable = false,
-    params Expression<Func<TModel, T?>>[] nextExpressions
+    params GroupedColumnItem<T>[] columns
   )
   {
-    var compiledFunctions
-        = nextExpressions.Select(e => e.Compile()).ToArray();
+    var compiledValues = columns.Select(x => x.Value.Compile()).ToArray();
+    var labels = columns.Select(x => Label(x.Label)).ToArray();
 
     if (searchable)
     {
-      foreach (var (expr, func) in nextExpressions.Zip(compiledFunctions))
+      foreach (var column in columns)
       {
-        RegisterSearchMapper(expr, x => func(x)?.ToString());
+        var valueFunc = column.Value.Compile();
+        RegisterSearchMapper(
+          column.Value,
+          x => valueFunc(x)?.ToString()
+        );
       }
     }
 
-    var cols = nextExpressions.Length;
-    var gridStyle = $"display:grid;grid-template-columns:repeat({cols},1fr);gap:.5rem;text-align:left;width:100%";
+    var cols = columns.Length;
+    var gridStyle =
+      $"display:grid;grid-template-columns:repeat({cols},1fr);gap:.5rem;text-align:left;width:100%";
 
     return Nest(
-      @<TemplateColumn
-         T="TPrefix">
+      @<TemplateColumn T="TPrefix">
         <HeaderTemplate>
           <div style="display:flex;flex-direction:column;align-items:start;width:100%;">
             <MudText Typo="Typo.body1" Align="Align.Center" Style="width:100%;">
-              <b>
-                @Translate(groupKey)
-              </b>
+              <b>@Translate(groupKey)</b>
             </MudText>
             <div style="@gridStyle">
-              @foreach (var expr in nextExpressions)
+              @foreach (var label in labels)
               {
                 <MudText Typo="Typo.caption">
-                  @Translate(Label(expr))
+                  @Translate(label)
                 </MudText>
               }
             </div>
@@ -559,11 +574,9 @@
         </HeaderTemplate>
         <CellTemplate>
           <div style="@gridStyle">
-            @foreach (var func in compiledFunctions)
+            @foreach (var func in compiledValues)
             {
-              <MudText>
-                @Get(func)(context.Item)
-              </MudText>
+              <MudText>@Get(func)(context.Item)</MudText>
             }
           </div>
         </CellTemplate>
