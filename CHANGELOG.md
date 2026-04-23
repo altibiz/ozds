@@ -25,8 +25,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
   aggregate values with absolute magnitude below `1e-6` to `0` to prevent
   underflow accumulation across upserts
 - `AssignValue` and `SelectValue` helpers in `MeasurementProcedureCompiler` that
-  wrap aggregate column expressions with optional clamping for cleaner
-  procedure SQL generation
+  wrap aggregate column expressions with optional clamping for cleaner procedure
+  SQL generation
 - `GetPropertyClrType` and `ShouldClamp` helpers in
   `MeasurementProcedureCompiler` that resolve a property's CLR type (including
   nested complex properties and nullables) and skip clamping for integer types
