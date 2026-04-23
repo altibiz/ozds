@@ -297,14 +297,14 @@ publish *args:
     cp '{{ ozdsserver }}' '{{ artifacts }}/ozds-server'
     cp '{{ ozdsserverdev }}' '{{ artifacts }}/ozds-server-dev'
 
-    mkdir ("{{ artifacts }}/playwright/package/local-browsers" \
-      + "/chromium_headless_shell-1155/chrome-linux")
+    #mkdir ("{{ artifacts }}/playwright/package/local-browsers" \
+    #  + "/chromium_headless_shell-1155/chrome-linux")
 
-    cd ("{{ artifacts }}/playwright/package/local-browsers" \
-      + "/chromium_headless_shell-1155/chrome-linux"); \
-      nix-bundle \
-        '(builtins.getFlake "git+file:{{ root }}").packages.${builtins.currentSystem}.playwrightBrowsers' \
-        "/chromium_headless_shell-1155/chrome-linux/headless_shell"
+    #cd ("{{ artifacts }}/playwright/package/local-browsers" \
+    #  + "/chromium_headless_shell-1155/chrome-linux"); \
+    #  nix-bundle \
+    #    '(builtins.getFlake "git+file:{{ root }}").packages.${builtins.currentSystem}.playwrightBrowsers' \
+    #   "/chromium_headless_shell-1155/chrome-linux/headless_shell"
 
     # NOTE: leaving it here for future reference if linus decies nested namespaces are cool
     # mkdir "{{ artifacts }}/.playwright/node/linux-x64"
