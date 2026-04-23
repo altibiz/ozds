@@ -12,8 +12,30 @@ and adheres to [Semantic Versioning](https://semver.org/).
 ### Changed
 
 - Update, MailKit to newer version 4.16.0, all tests pass
+- `MeasurementProcedureCompiler` upsert/derive/delta SQL builders
+  (`UpsertAverage`, `UpsertMin`, `UpsertMax`, `DerivativePower`,
+  `DeriveAverage`, `DeriveMin`, `DeriveMax`, `DeltaSum`, `DeltaMin`) now route
+  through the new assignment helpers and apply near-zero clamping for
+  floating-point columns only, leaving integer/long columns untouched
 
 ### Added
+
+- Float/double underflow guards on measurement upsert procedures via a new
+  `ClampNearZeroValues` helper in `MeasurementProcedureCompiler` that clamps
+  aggregate values with absolute magnitude below `1e-6` to `0` to prevent
+  underflow accumulation across upserts
+- `AssignValue` and `SelectValue` helpers in `MeasurementProcedureCompiler` that
+  wrap aggregate column expressions with optional clamping for cleaner
+  procedure SQL generation
+- `GetPropertyClrType` and `ShouldClamp` helpers in
+  `MeasurementProcedureCompiler` that resolve a property's CLR type (including
+  nested complex properties and nullables) and skip clamping for integer types
+  (`byte`, `sbyte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`) so
+  cumulative integer values are not clamped
+- `UpsertUnderflowTest` in `Ozds.Data.Test` covering float/double underflow
+  scenarios for measurement upsert procedures
+- EF migration `AddedFloatUnderflowGuardsOnUpsertProcedures` regenerating
+  measurement upsert procedures with the new clamping logic
 
 ## [1.8.3] - 2026-04-17
 
