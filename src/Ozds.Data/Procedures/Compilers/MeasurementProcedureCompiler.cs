@@ -212,7 +212,8 @@ public static class MeasurementProcedureCompiler
     };
   }
 
-  // NOTE: used SELECT switch statement since I don't want to recalculate expression multiple times
+  // NOTE: used SELECT switch statement since I don't
+  // want to recalculate expression multiple times
   private static string ClampNearZeroValues(
     string valueToSafeGuard,
     float epsilonValue = FloatEpsilon
@@ -224,11 +225,11 @@ public static class MeasurementProcedureCompiler
       (
         SELECT CASE
           WHEN ABS((v)::double precision) < {eps} THEN 0
-          ELSE COALESCE(v, 0)
+          ELSE v
         END
         FROM (VALUES (({valueToSafeGuard}))) AS _safeguard(v)
       )
-   ";
+    ";
   }
 
   private static string AssignClamped(
