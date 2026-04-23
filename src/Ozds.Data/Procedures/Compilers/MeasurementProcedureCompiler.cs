@@ -1,5 +1,6 @@
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Ozds.Data.Entities.Abstractions;
 using Ozds.Data.Extensions;
 using Ozds.Data.Procedures.Parts;
@@ -8,7 +9,7 @@ namespace Ozds.Data.Procedures.Compilers;
 
 public static class MeasurementProcedureCompiler
 {
-  private const float FloatEpsilon = 1e-6f;
+  private const string FloatEpsilon = "1e-6";
 
   public static IMeasurementProcedureParts Find(Type aggregateType)
   {
@@ -216,15 +217,13 @@ public static class MeasurementProcedureCompiler
   // want to recalculate expression multiple times
   private static string ClampNearZeroValues(
     string valueToSafeGuard,
-    float epsilonValue = FloatEpsilon
+    string epsilonValue = FloatEpsilon
     )
   {
-    var eps = epsilonValue.ToString("G17", CultureInfo.InvariantCulture);
-
     return $@"
       (
         SELECT CASE
-          WHEN ABS((v)::double precision) < {eps} THEN 0
+          WHEN ABS((v)::double precision) < {epsilonValue} THEN 0
           ELSE v
         END
         FROM (VALUES (({valueToSafeGuard}))) AS _safeguard(v)
@@ -232,15 +231,88 @@ public static class MeasurementProcedureCompiler
     ";
   }
 
-  private static string AssignClamped(
-    string? columnName,
+  private static string AssignValue(
+    string columnName,
     string expression,
-    float epsilonValue = FloatEpsilon
-    )
+    bool clamp,
+    string epsilonValue = FloatEpsilon
+  )
   {
+    var value = clamp ? ClampNearZeroValues(expression, epsilonValue) : expression;
     return $@"
-      {columnName} = {ClampNearZeroValues(expression, epsilonValue)}
+      {columnName} = {value}
     ";
+  }
+
+  private static string SelectValue(
+    string columnName,
+    string expression,
+    bool clamp,
+    string epsilonValue = FloatEpsilon
+  )
+  {
+    var value = clamp ? ClampNearZeroValues(expression, epsilonValue) : expression;
+    return $@"
+      {value} AS {columnName}
+    ";
+  }
+
+  private static Type GetPropertyClrType(
+    DbContext context,
+    Type aggregateType,
+    IEnumerable<string> propertyName
+  )
+  {
+    static Type Recursive(ITypeBase type, string[] propertyNames)
+    {
+      if (propertyNames.Length == 0)
+      {
+        throw new ArgumentException("Property name is required.");
+      }
+
+      if (propertyNames.Length == 1)
+      {
+        var property = type.FindProperty(propertyNames[0])
+          ?? throw new InvalidOperationException(
+            $"No property {propertyNames[0]} on type {type.Name}."
+          );
+
+        return property.ClrType;
+      }
+
+      var complexType = type.GetComplexProperties()
+        .FirstOrDefault(x => x.Name == propertyNames[0])
+        ?? throw new InvalidOperationException(
+          $"No property {propertyNames[0]} on type {type.Name} while resolving {string.Join(".", propertyNames)}."
+        );
+
+      return Recursive(complexType.ComplexType, propertyNames.Skip(1).ToArray());
+    }
+
+    var entityType = context.Model.FindEntityType(aggregateType)
+      ?? throw new InvalidOperationException($"Entity type {aggregateType.Name} not found.");
+
+    return Recursive(entityType, propertyName.ToArray());
+  }
+
+  private static bool ShouldClamp(
+    DbContext context,
+    Type aggregateType,
+    IEnumerable<string> propertyName
+  )
+  {
+    var clrType = Nullable.GetUnderlyingType(
+      GetPropertyClrType(context, aggregateType, propertyName)
+    ) ?? GetPropertyClrType(context, aggregateType, propertyName);
+
+    return clrType != typeof(byte)
+      && clrType != typeof(sbyte)
+      && clrType != typeof(short)
+      && clrType != typeof(ushort)
+      && clrType != typeof(int)
+      && clrType != typeof(uint)
+      && clrType != typeof(long)
+      && clrType != typeof(ulong);
   }
 
   private static string UpsertAverage(
@@ -256,13 +328,14 @@ public static class MeasurementProcedureCompiler
       [nameof(IAggregateEntity.Count)]
     );
 
-    return AssignClamped(
-      columnName,
+    return AssignValue(
+      columnName!,
       $@"
       ({ClampNearZeroValues($@"({tableName}.{columnName} * {tableName}.{countColumn}
         + EXCLUDED.{columnName} * EXCLUDED.{countColumn})")})
         / ({tableName}.{countColumn} + EXCLUDED.{countColumn})
-      "
+      ",
+      true
     );
   }
 
@@ -275,9 +348,10 @@ public static class MeasurementProcedureCompiler
     var columnName = context.GetColumnName(aggregateType, propertyName);
     var tableName = context.GetTableName(aggregateType);
 
-    return AssignClamped(
-        columnName,
-        $@"LEAST({tableName}.{columnName}, EXCLUDED.{columnName})"
+    return AssignValue(
+        columnName!,
+        $@"LEAST({tableName}.{columnName}, EXCLUDED.{columnName})",
+        ShouldClamp(context, aggregateType, propertyName)
       );
   }
 
@@ -312,9 +386,10 @@ public static class MeasurementProcedureCompiler
     var columnName = context.GetColumnName(aggregateType, propertyName);
     var tableName = context.GetTableName(aggregateType);
 
-    return AssignClamped(
-      columnName,
-      $@"GREATEST({tableName}.{columnName}, EXCLUDED.{columnName})"
+    return AssignValue(
+      columnName!,
+      $@"GREATEST({tableName}.{columnName}, EXCLUDED.{columnName})",
+      ShouldClamp(context, aggregateType, propertyName)
     );
   }
 
@@ -359,15 +434,16 @@ public static class MeasurementProcedureCompiler
     );
     var tableName = context.GetTableName(aggregateType);
 
-    return AssignClamped(
-        columnName,
-        @$"(GREATEST(
+    return AssignValue(
+        columnName!,
+        @$"((GREATEST(
         {tableName}.{maxEnergyColumnName},
         EXCLUDED.{maxEnergyColumnName})
         - LEAST(
         {tableName}.{minEnergyColumnName},
         EXCLUDED.{minEnergyColumnName}))
-        * 4)"
+        * 4)",
+        ShouldClamp(context, aggregateType, propertyName)
       );
   }
 
@@ -419,7 +495,11 @@ public static class MeasurementProcedureCompiler
       )
     ";
 
-    return AssignClamped(columnName, expression);
+    return AssignValue(
+      columnName!,
+      expression,
+      true
+    );
   }
 
   private static string DeriveMin(
@@ -432,9 +512,10 @@ public static class MeasurementProcedureCompiler
     var columnName = context.GetColumnName(aggregateType, propertyName);
     var tableName = context.GetTableName(aggregateType);
 
-    return AssignClamped(
-      columnName,
-      $@"LEAST({tableName}.{columnName}, {deltaTable}.{columnName})"
+    return AssignValue(
+      columnName!,
+      $@"LEAST({tableName}.{columnName}, {deltaTable}.{columnName})",
+      ShouldClamp(context, aggregateType, propertyName)
     );
   }
 
@@ -470,9 +551,10 @@ public static class MeasurementProcedureCompiler
   {
     var columnName = context.GetColumnName(aggregateType, propertyName);
     var tableName = context.GetTableName(aggregateType);
-    return AssignClamped(
-      columnName,
-      $@"GREATEST({tableName}.{columnName}, {deltaTable}.{columnName})"
+    return AssignValue(
+      columnName!,
+      $@"GREATEST({tableName}.{columnName}, {deltaTable}.{columnName})",
+      ShouldClamp(context, aggregateType, propertyName)
     );
   }
 
@@ -510,7 +592,11 @@ public static class MeasurementProcedureCompiler
   {
     var columnName = context.GetColumnName(aggregateType, propertyName);
 
-    return AssignClamped(columnName, $@"SUM({newTable}.{columnName} - COALESCE({oldTable}.{columnName}, 0))");
+    return SelectValue(
+      columnName!,
+      $@"SUM({newTable}.{columnName} - COALESCE({oldTable}.{columnName}, 0))",
+      ShouldClamp(context, aggregateType, propertyName)
+    );
   }
 
   private static string DeltaMin(
@@ -522,11 +608,13 @@ public static class MeasurementProcedureCompiler
   )
   {
     var columnName = context.GetColumnName(aggregateType, propertyName);
-    return AssignClamped(
-      columnName,
-      $@"LEAST(
-        {newTable}.{columnName}, COALESCE({oldTable}.{columnName}, {newTable}.{columnName})
-      )"
+    return SelectValue(
+      columnName!,
+      $@"MIN(LEAST(
+      {newTable}.{columnName},
+      COALESCE({oldTable}.{columnName}, {newTable}.{columnName})
+    ))",
+      ShouldClamp(context, aggregateType, propertyName)
     );
   }
 
@@ -573,14 +661,16 @@ public static class MeasurementProcedureCompiler
       aggregateType,
       propertyName.ToArray()
     );
-    return AssignClamped(
-     columnName,
+
+    return SelectValue(
+     columnName!,
      $@"MAX(
         GREATEST(
           {newTable}.{columnName},
           COALESCE({oldTable}.{columnName}, {newTable}.{columnName})
         )
-     )"
+     )",
+     ShouldClamp(context, aggregateType, propertyName)
     );
   }
 
