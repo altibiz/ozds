@@ -203,3 +203,5 @@ words:
   - yaxis
   - zoomin
   - zoomout
+  - isexec
+  - sbyte

@@ -78,6 +78,7 @@
             git
             dvc-with-remotes
             delta
+            lazygit
 
             # Nix
             nil

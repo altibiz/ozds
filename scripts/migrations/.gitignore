@@ -214,3 +214,5 @@
 /20251204143643-Ozds.Data-BlackoutNetworkUserInvoiceCalculation.sql
 /20251205020328-Ozds.Data-ReverseMeasurementAggregateIndices-hypertables.sql
 /20251205020328-Ozds.Data-ReverseMeasurementAggregateIndices.sql
+/20260423101429-Ozds.Data-AddedFloatUnderflowGuardsOnUpsertProcedures-hypertables.sql
+/20260423101429-Ozds.Data-AddedFloatUnderflowGuardsOnUpsertProcedures.sql
