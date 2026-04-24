@@ -19,10 +19,9 @@ public class UpsertUnderflowTest : OzdsDataTestBase
   private const double DoubleZeroSentinel = 0.0d;
 
   [Test]
-  public async Task
-    SchneideriEM3xxxAggregateUpsertWithNearUnderflowValues_Succeeds(
-      CancellationToken cancellationToken
-    )
+  public async Task SchneideriEM3xxxAggregateUpsertWithNearUnderflowValues_Succeeds(
+    CancellationToken cancellationToken
+  )
   {
     var infrastructure = await Infrastructure.Create(
       cancellationToken,
@@ -39,13 +38,9 @@ public class UpsertUnderflowTest : OzdsDataTestBase
       derivedAvgValue: DoubleNearUnderflowSentinel
     );
 
-    var mutations = ServiceProvider
-      .GetRequiredService<MeasurementMutations>();
+    var mutations = ServiceProvider.GetRequiredService<MeasurementMutations>();
 
-    await mutations.Create(
-      new[] { initial },
-      cancellationToken
-    );
+    await mutations.Create(new[] { initial }, cancellationToken);
 
     var conflicting = CreateSchneideriEM3xxxAggregate(
       infrastructure.Meter.Id,
@@ -57,17 +52,13 @@ public class UpsertUnderflowTest : OzdsDataTestBase
       derivedAvgValue: DoubleZeroSentinel
     );
 
-    await mutations.Create(
-      new[] { conflicting },
-      cancellationToken
-    );
+    await mutations.Create(new[] { conflicting }, cancellationToken);
   }
 
   [Test]
-  public async Task
-    AbbB2xAggregateUpsertWithNearUnderflowValues_Succeeds(
-      CancellationToken cancellationToken
-    )
+  public async Task AbbB2xAggregateUpsertWithNearUnderflowValues_Succeeds(
+    CancellationToken cancellationToken
+  )
   {
     var infrastructure = await Infrastructure.Create(
       cancellationToken,
@@ -84,13 +75,9 @@ public class UpsertUnderflowTest : OzdsDataTestBase
       derivedAvgValue: DoubleNearUnderflowSentinel
     );
 
-    var mutations = ServiceProvider
-      .GetRequiredService<MeasurementMutations>();
+    var mutations = ServiceProvider.GetRequiredService<MeasurementMutations>();
 
-    await mutations.Create(
-      new[] { initial },
-      cancellationToken
-    );
+    await mutations.Create(new[] { initial }, cancellationToken);
 
     var conflicting = CreateAbbB2xAggregate(
       infrastructure.Meter.Id,
@@ -102,17 +89,13 @@ public class UpsertUnderflowTest : OzdsDataTestBase
       derivedAvgValue: DoubleZeroSentinel
     );
 
-    await mutations.Create(
-      new[] { conflicting },
-      cancellationToken
-    );
+    await mutations.Create(new[] { conflicting }, cancellationToken);
   }
 
   [Test]
-  public async Task
-    SchneideriEM3xxxDailyDeriveAverageWithNearUnderflowValues_Succeeds(
-      CancellationToken cancellationToken
-    )
+  public async Task SchneideriEM3xxxDailyDeriveAverageWithNearUnderflowValues_Succeeds(
+    CancellationToken cancellationToken
+  )
   {
     var infrastructure = await Infrastructure.Create(
       cancellationToken,
@@ -121,8 +104,7 @@ public class UpsertUnderflowTest : OzdsDataTestBase
     var meterId = infrastructure.Meter.Id;
     var measurementLocationId = infrastructure.MeasurementLocation.Id;
 
-    var mutations = ServiceProvider
-      .GetRequiredService<MeasurementMutations>();
+    var mutations = ServiceProvider.GetRequiredService<MeasurementMutations>();
 
     var dailySeed = CreateSchneideriEM3xxxAggregate(
       meterId,
@@ -135,10 +117,7 @@ public class UpsertUnderflowTest : OzdsDataTestBase
     );
     dailySeed.QuarterHourCount = 95;
 
-    await mutations.Create(
-      new[] { dailySeed },
-      cancellationToken
-    );
+    await mutations.Create(new[] { dailySeed }, cancellationToken);
 
     var qhAggregate = CreateSchneideriEM3xxxAggregate(
       meterId,
@@ -150,17 +129,13 @@ public class UpsertUnderflowTest : OzdsDataTestBase
       derivedAvgValue: DoubleNearUnderflowSentinel
     );
 
-    await mutations.Create(
-      new[] { qhAggregate },
-      cancellationToken
-    );
+    await mutations.Create(new[] { qhAggregate }, cancellationToken);
   }
 
   [Test]
-  public async Task
-    SchneideriEM3xxxMonthlyDeriveAverageWithNearUnderflowValues_Succeeds(
-      CancellationToken cancellationToken
-    )
+  public async Task SchneideriEM3xxxMonthlyDeriveAverageWithNearUnderflowValues_Succeeds(
+    CancellationToken cancellationToken
+  )
   {
     var infrastructure = await Infrastructure.Create(
       cancellationToken,
@@ -169,8 +144,7 @@ public class UpsertUnderflowTest : OzdsDataTestBase
     var meterId = infrastructure.Meter.Id;
     var measurementLocationId = infrastructure.MeasurementLocation.Id;
 
-    var mutations = ServiceProvider
-      .GetRequiredService<MeasurementMutations>();
+    var mutations = ServiceProvider.GetRequiredService<MeasurementMutations>();
 
     var monthlySeed = CreateSchneideriEM3xxxAggregate(
       meterId,
@@ -183,10 +157,7 @@ public class UpsertUnderflowTest : OzdsDataTestBase
     );
     monthlySeed.QuarterHourCount = 2879;
 
-    await mutations.Create(
-      new[] { monthlySeed },
-      cancellationToken
-    );
+    await mutations.Create(new[] { monthlySeed }, cancellationToken);
 
     var dailySeed = CreateSchneideriEM3xxxAggregate(
       meterId,
@@ -199,10 +170,7 @@ public class UpsertUnderflowTest : OzdsDataTestBase
     );
     dailySeed.QuarterHourCount = 0;
 
-    await mutations.Create(
-      new[] { dailySeed },
-      cancellationToken
-    );
+    await mutations.Create(new[] { dailySeed }, cancellationToken);
 
     var qhAggregate = CreateSchneideriEM3xxxAggregate(
       meterId,
@@ -214,17 +182,13 @@ public class UpsertUnderflowTest : OzdsDataTestBase
       derivedAvgValue: DoubleNearUnderflowSentinel
     );
 
-    await mutations.Create(
-      new[] { qhAggregate },
-      cancellationToken
-    );
+    await mutations.Create(new[] { qhAggregate }, cancellationToken);
   }
 
   [Test]
-  public async Task
-    AbbB2xDailyDeriveAverageWithNearUnderflowValues_Succeeds(
-      CancellationToken cancellationToken
-    )
+  public async Task AbbB2xDailyDeriveAverageWithNearUnderflowValues_Succeeds(
+    CancellationToken cancellationToken
+  )
   {
     var infrastructure = await Infrastructure.Create(
       cancellationToken,
@@ -233,8 +197,7 @@ public class UpsertUnderflowTest : OzdsDataTestBase
     var meterId = infrastructure.Meter.Id;
     var measurementLocationId = infrastructure.MeasurementLocation.Id;
 
-    var mutations = ServiceProvider
-      .GetRequiredService<MeasurementMutations>();
+    var mutations = ServiceProvider.GetRequiredService<MeasurementMutations>();
 
     var dailySeed = CreateAbbB2xAggregate(
       meterId,
@@ -247,10 +210,7 @@ public class UpsertUnderflowTest : OzdsDataTestBase
     );
     dailySeed.QuarterHourCount = 95;
 
-    await mutations.Create(
-      new[] { dailySeed },
-      cancellationToken
-    );
+    await mutations.Create(new[] { dailySeed }, cancellationToken);
 
     var qhAggregate = CreateAbbB2xAggregate(
       meterId,
@@ -262,17 +222,13 @@ public class UpsertUnderflowTest : OzdsDataTestBase
       derivedAvgValue: DoubleNearUnderflowSentinel
     );
 
-    await mutations.Create(
-      new[] { qhAggregate },
-      cancellationToken
-    );
+    await mutations.Create(new[] { qhAggregate }, cancellationToken);
   }
 
   [Test]
-  public async Task
-    AbbB2xMonthlyDeriveAverageWithNearUnderflowValues_Succeeds(
-      CancellationToken cancellationToken
-    )
+  public async Task AbbB2xMonthlyDeriveAverageWithNearUnderflowValues_Succeeds(
+    CancellationToken cancellationToken
+  )
   {
     var infrastructure = await Infrastructure.Create(
       cancellationToken,
@@ -281,8 +237,7 @@ public class UpsertUnderflowTest : OzdsDataTestBase
     var meterId = infrastructure.Meter.Id;
     var measurementLocationId = infrastructure.MeasurementLocation.Id;
 
-    var mutations = ServiceProvider
-      .GetRequiredService<MeasurementMutations>();
+    var mutations = ServiceProvider.GetRequiredService<MeasurementMutations>();
 
     var monthlySeed = CreateAbbB2xAggregate(
       meterId,
@@ -295,10 +250,7 @@ public class UpsertUnderflowTest : OzdsDataTestBase
     );
     monthlySeed.QuarterHourCount = 2879;
 
-    await mutations.Create(
-      new[] { monthlySeed },
-      cancellationToken
-    );
+    await mutations.Create(new[] { monthlySeed }, cancellationToken);
 
     var dailySeed = CreateAbbB2xAggregate(
       meterId,
@@ -311,10 +263,7 @@ public class UpsertUnderflowTest : OzdsDataTestBase
     );
     dailySeed.QuarterHourCount = 0;
 
-    await mutations.Create(
-      new[] { dailySeed },
-      cancellationToken
-    );
+    await mutations.Create(new[] { dailySeed }, cancellationToken);
 
     var qhAggregate = CreateAbbB2xAggregate(
       meterId,
@@ -326,22 +275,18 @@ public class UpsertUnderflowTest : OzdsDataTestBase
       derivedAvgValue: DoubleNearUnderflowSentinel
     );
 
-    await mutations.Create(
-      new[] { qhAggregate },
-      cancellationToken
-    );
+    await mutations.Create(new[] { qhAggregate }, cancellationToken);
   }
 
-  private static SchneideriEM3xxxAggregateEntity
-    CreateSchneideriEM3xxxAggregate(
-      string meterId,
-      string measurementLocationId,
-      DateTimeOffset timestamp,
-      IntervalEntity interval,
-      long count,
-      float instantaneousAvgValue,
-      double derivedAvgValue
-    )
+  private static SchneideriEM3xxxAggregateEntity CreateSchneideriEM3xxxAggregate(
+    string meterId,
+    string measurementLocationId,
+    DateTimeOffset timestamp,
+    IntervalEntity interval,
+    long count,
+    float instantaneousAvgValue,
+    double derivedAvgValue
+  )
   {
     return new SchneideriEM3xxxAggregateEntity
     {
@@ -357,11 +302,26 @@ public class UpsertUnderflowTest : OzdsDataTestBase
       CurrentL1AnyT0_A = CreateInstantaneous(instantaneousAvgValue, timestamp),
       CurrentL2AnyT0_A = CreateInstantaneous(instantaneousAvgValue, timestamp),
       CurrentL3AnyT0_A = CreateInstantaneous(instantaneousAvgValue, timestamp),
-      ActivePowerL1NetT0_W = CreateInstantaneous(instantaneousAvgValue, timestamp),
-      ActivePowerL2NetT0_W = CreateInstantaneous(instantaneousAvgValue, timestamp),
-      ActivePowerL3NetT0_W = CreateInstantaneous(instantaneousAvgValue, timestamp),
-      ReactivePowerTotalNetT0_VAR = CreateInstantaneous(instantaneousAvgValue, timestamp),
-      ApparentPowerTotalNetT0_VA = CreateInstantaneous(instantaneousAvgValue, timestamp),
+      ActivePowerL1NetT0_W = CreateInstantaneous(
+        instantaneousAvgValue,
+        timestamp
+      ),
+      ActivePowerL2NetT0_W = CreateInstantaneous(
+        instantaneousAvgValue,
+        timestamp
+      ),
+      ActivePowerL3NetT0_W = CreateInstantaneous(
+        instantaneousAvgValue,
+        timestamp
+      ),
+      ReactivePowerTotalNetT0_VAR = CreateInstantaneous(
+        instantaneousAvgValue,
+        timestamp
+      ),
+      ApparentPowerTotalNetT0_VA = CreateInstantaneous(
+        instantaneousAvgValue,
+        timestamp
+      ),
       ActiveEnergyL1ImportT0_Wh = CreateCumulative(),
       ActiveEnergyL2ImportT0_Wh = CreateCumulative(),
       ActiveEnergyL3ImportT0_Wh = CreateCumulative(),
@@ -371,15 +331,42 @@ public class UpsertUnderflowTest : OzdsDataTestBase
       ReactiveEnergyTotalExportT0_VARh = CreateCumulative(),
       ActiveEnergyTotalImportT1_Wh = CreateCumulative(),
       ActiveEnergyTotalImportT2_Wh = CreateCumulative(),
-      DerivedActivePowerL1ImportT0_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerL2ImportT0_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerL3ImportT0_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerTotalImportT0_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerTotalExportT0_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedReactivePowerTotalImportT0_VAR = CreateDerived(derivedAvgValue, timestamp),
-      DerivedReactivePowerTotalExportT0_VAR = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerTotalImportT1_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerTotalImportT2_W = CreateDerived(derivedAvgValue, timestamp),
+      DerivedActivePowerL1ImportT0_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerL2ImportT0_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerL3ImportT0_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerTotalImportT0_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerTotalExportT0_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedReactivePowerTotalImportT0_VAR = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedReactivePowerTotalExportT0_VAR = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerTotalImportT1_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerTotalImportT2_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
     };
   }
 
@@ -407,12 +394,30 @@ public class UpsertUnderflowTest : OzdsDataTestBase
       CurrentL1AnyT0_A = CreateInstantaneous(instantaneousAvgValue, timestamp),
       CurrentL2AnyT0_A = CreateInstantaneous(instantaneousAvgValue, timestamp),
       CurrentL3AnyT0_A = CreateInstantaneous(instantaneousAvgValue, timestamp),
-      ActivePowerL1NetT0_W = CreateInstantaneous(instantaneousAvgValue, timestamp),
-      ActivePowerL2NetT0_W = CreateInstantaneous(instantaneousAvgValue, timestamp),
-      ActivePowerL3NetT0_W = CreateInstantaneous(instantaneousAvgValue, timestamp),
-      ReactivePowerL1NetT0_VAR = CreateInstantaneous(instantaneousAvgValue, timestamp),
-      ReactivePowerL2NetT0_VAR = CreateInstantaneous(instantaneousAvgValue, timestamp),
-      ReactivePowerL3NetT0_VAR = CreateInstantaneous(instantaneousAvgValue, timestamp),
+      ActivePowerL1NetT0_W = CreateInstantaneous(
+        instantaneousAvgValue,
+        timestamp
+      ),
+      ActivePowerL2NetT0_W = CreateInstantaneous(
+        instantaneousAvgValue,
+        timestamp
+      ),
+      ActivePowerL3NetT0_W = CreateInstantaneous(
+        instantaneousAvgValue,
+        timestamp
+      ),
+      ReactivePowerL1NetT0_VAR = CreateInstantaneous(
+        instantaneousAvgValue,
+        timestamp
+      ),
+      ReactivePowerL2NetT0_VAR = CreateInstantaneous(
+        instantaneousAvgValue,
+        timestamp
+      ),
+      ReactivePowerL3NetT0_VAR = CreateInstantaneous(
+        instantaneousAvgValue,
+        timestamp
+      ),
       ActiveEnergyL1ImportT0_Wh = CreateCumulative(),
       ActiveEnergyL2ImportT0_Wh = CreateCumulative(),
       ActiveEnergyL3ImportT0_Wh = CreateCumulative(),
@@ -431,24 +436,78 @@ public class UpsertUnderflowTest : OzdsDataTestBase
       ReactiveEnergyTotalExportT0_VARh = CreateCumulative(),
       ActiveEnergyTotalImportT1_Wh = CreateCumulative(),
       ActiveEnergyTotalImportT2_Wh = CreateCumulative(),
-      DerivedActivePowerL1ImportT0_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerL2ImportT0_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerL3ImportT0_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedReactivePowerL1ImportT0_VAR = CreateDerived(derivedAvgValue, timestamp),
-      DerivedReactivePowerL2ImportT0_VAR = CreateDerived(derivedAvgValue, timestamp),
-      DerivedReactivePowerL3ImportT0_VAR = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerL1ExportT0_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerL2ExportT0_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerL3ExportT0_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedReactivePowerL1ExportT0_VAR = CreateDerived(derivedAvgValue, timestamp),
-      DerivedReactivePowerL2ExportT0_VAR = CreateDerived(derivedAvgValue, timestamp),
-      DerivedReactivePowerL3ExportT0_VAR = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerTotalImportT0_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerTotalExportT0_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedReactivePowerTotalImportT0_VAR = CreateDerived(derivedAvgValue, timestamp),
-      DerivedReactivePowerTotalExportT0_VAR = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerTotalImportT1_W = CreateDerived(derivedAvgValue, timestamp),
-      DerivedActivePowerTotalImportT2_W = CreateDerived(derivedAvgValue, timestamp),
+      DerivedActivePowerL1ImportT0_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerL2ImportT0_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerL3ImportT0_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedReactivePowerL1ImportT0_VAR = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedReactivePowerL2ImportT0_VAR = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedReactivePowerL3ImportT0_VAR = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerL1ExportT0_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerL2ExportT0_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerL3ExportT0_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedReactivePowerL1ExportT0_VAR = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedReactivePowerL2ExportT0_VAR = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedReactivePowerL3ExportT0_VAR = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerTotalImportT0_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerTotalExportT0_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedReactivePowerTotalImportT0_VAR = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedReactivePowerTotalExportT0_VAR = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerTotalImportT1_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
+      DerivedActivePowerTotalImportT2_W = CreateDerived(
+        derivedAvgValue,
+        timestamp
+      ),
     };
   }
 
@@ -469,11 +528,7 @@ public class UpsertUnderflowTest : OzdsDataTestBase
 
   private static CumulativeAggregateMeasureEntity CreateCumulative()
   {
-    return new CumulativeAggregateMeasureEntity
-    {
-      Min = 100,
-      Max = 200,
-    };
+    return new CumulativeAggregateMeasureEntity { Min = 100, Max = 200 };
   }
 
   private static DerivedAggregateMeasureEntity CreateDerived(

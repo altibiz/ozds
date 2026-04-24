@@ -218,7 +218,7 @@ public static class MeasurementProcedureCompiler
   private static string ClampNearZeroValues(
     string valueToSafeGuard,
     string epsilonValue = FloatEpsilon
-    )
+  )
   {
     return $@"
       (
@@ -238,7 +238,9 @@ public static class MeasurementProcedureCompiler
     string epsilonValue = FloatEpsilon
   )
   {
-    var value = clamp ? ClampNearZeroValues(expression, epsilonValue) : expression;
+    var value = clamp
+      ? ClampNearZeroValues(expression, epsilonValue)
+      : expression;
     return $@"
       {columnName} = {value}
     ";
@@ -251,7 +253,9 @@ public static class MeasurementProcedureCompiler
     string epsilonValue = FloatEpsilon
   )
   {
-    var value = clamp ? ClampNearZeroValues(expression, epsilonValue) : expression;
+    var value = clamp
+      ? ClampNearZeroValues(expression, epsilonValue)
+      : expression;
     return $@"
       {value} AS {columnName}
     ";
@@ -272,7 +276,8 @@ public static class MeasurementProcedureCompiler
 
       if (propertyNames.Length == 1)
       {
-        var property = type.FindProperty(propertyNames[0])
+        var property =
+          type.FindProperty(propertyNames[0])
           ?? throw new InvalidOperationException(
             $"No property {propertyNames[0]} on type {type.Name}."
           );
@@ -280,17 +285,24 @@ public static class MeasurementProcedureCompiler
         return property.ClrType;
       }
 
-      var complexType = type.GetComplexProperties()
-        .FirstOrDefault(x => x.Name == propertyNames[0])
+      var complexType =
+        type.GetComplexProperties()
+          .FirstOrDefault(x => x.Name == propertyNames[0])
         ?? throw new InvalidOperationException(
           $"No property {propertyNames[0]} on type {type.Name} while resolving {string.Join(".", propertyNames)}."
         );
 
-      return Recursive(complexType.ComplexType, propertyNames.Skip(1).ToArray());
+      return Recursive(
+        complexType.ComplexType,
+        propertyNames.Skip(1).ToArray()
+      );
     }
 
-    var entityType = context.Model.FindEntityType(aggregateType)
-      ?? throw new InvalidOperationException($"Entity type {aggregateType.Name} not found.");
+    var entityType =
+      context.Model.FindEntityType(aggregateType)
+      ?? throw new InvalidOperationException(
+        $"Entity type {aggregateType.Name} not found."
+      );
 
     return Recursive(entityType, propertyName.ToArray());
   }
@@ -301,9 +313,10 @@ public static class MeasurementProcedureCompiler
     IEnumerable<string> propertyName
   )
   {
-    var clrType = Nullable.GetUnderlyingType(
-      GetPropertyClrType(context, aggregateType, propertyName)
-    ) ?? GetPropertyClrType(context, aggregateType, propertyName);
+    var clrType =
+      Nullable.GetUnderlyingType(
+        GetPropertyClrType(context, aggregateType, propertyName)
+      ) ?? GetPropertyClrType(context, aggregateType, propertyName);
 
     return clrType != typeof(byte)
       && clrType != typeof(sbyte)
@@ -349,10 +362,10 @@ public static class MeasurementProcedureCompiler
     var tableName = context.GetTableName(aggregateType);
 
     return AssignValue(
-        columnName!,
-        $@"LEAST({tableName}.{columnName}, EXCLUDED.{columnName})",
-        ShouldClamp(context, aggregateType, propertyName)
-      );
+      columnName!,
+      $@"LEAST({tableName}.{columnName}, EXCLUDED.{columnName})",
+      ShouldClamp(context, aggregateType, propertyName)
+    );
   }
 
   private static string UpsertMinTimestamp(
@@ -435,16 +448,16 @@ public static class MeasurementProcedureCompiler
     var tableName = context.GetTableName(aggregateType);
 
     return AssignValue(
-        columnName!,
-        @$"((GREATEST(
+      columnName!,
+      @$"((GREATEST(
         {tableName}.{maxEnergyColumnName},
         EXCLUDED.{maxEnergyColumnName})
         - LEAST(
         {tableName}.{minEnergyColumnName},
         EXCLUDED.{minEnergyColumnName}))
         * 4)",
-        ShouldClamp(context, aggregateType, propertyName)
-      );
+      ShouldClamp(context, aggregateType, propertyName)
+    );
   }
 
   private static string DerivativePowerTimestamp(
@@ -485,7 +498,8 @@ public static class MeasurementProcedureCompiler
       [nameof(IAggregateEntity.QuarterHourCount)]
     );
     var tableName = context.GetTableName(aggregateType);
-    var expression = $@"
+    var expression =
+      $@"
       (
         {ClampNearZeroValues(@$"({tableName}.{columnName} * {tableName}.{quarterHourCountColumn}
         + {deltaTable}.{columnName})")}
@@ -495,11 +509,7 @@ public static class MeasurementProcedureCompiler
       )
     ";
 
-    return AssignValue(
-      columnName!,
-      expression,
-      true
-    );
+    return AssignValue(columnName!, expression, true);
   }
 
   private static string DeriveMin(
@@ -663,14 +673,14 @@ public static class MeasurementProcedureCompiler
     );
 
     return SelectValue(
-     columnName!,
-     $@"MAX(
+      columnName!,
+      $@"MAX(
         GREATEST(
           {newTable}.{columnName},
           COALESCE({oldTable}.{columnName}, {newTable}.{columnName})
         )
      )",
-     ShouldClamp(context, aggregateType, propertyName)
+      ShouldClamp(context, aggregateType, propertyName)
     );
   }
 

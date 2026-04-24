@@ -11,7 +11,7 @@ namespace Ozds.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(
-              @"
+                @"
                 CREATE OR REPLACE FUNCTION batch_upsert_abb_b2x_measurements(entities jsonb)
                 RETURNS SETOF abb_b2x_measurements
                 AS $$
@@ -31,7 +31,7 @@ namespace Ozds.Data.Migrations
               "
             );
             migrationBuilder.Sql(
-              @"
+                @"
                 CREATE OR REPLACE FUNCTION batch_upsert_schneider_iem3xxx_measurements(entities jsonb)
                 RETURNS SETOF schneider_iem3xxx_measurements
                 AS $$
@@ -51,7 +51,7 @@ namespace Ozds.Data.Migrations
               "
             );
             migrationBuilder.Sql(
-              @"
+                @"
                 CREATE OR REPLACE FUNCTION batch_upsert_quarter_hour_abb_b2x_aggregates(entities jsonb)
                 RETURNS SETOF abb_b2x_aggregates
                 AS $$
@@ -4913,7 +4913,7 @@ namespace Ozds.Data.Migrations
               "
             );
             migrationBuilder.Sql(
-              @"
+                @"
                 CREATE OR REPLACE FUNCTION batch_upsert_day_abb_b2x_aggregates(entities jsonb)
                 RETURNS SETOF abb_b2x_aggregates
                 AS $$
@@ -5657,7 +5657,7 @@ namespace Ozds.Data.Migrations
               "
             );
             migrationBuilder.Sql(
-              @"
+                @"
                 CREATE OR REPLACE FUNCTION batch_upsert_month_abb_b2x_aggregates(entities jsonb)
                 RETURNS SETOF abb_b2x_aggregates
                 AS $$
@@ -6401,7 +6401,7 @@ namespace Ozds.Data.Migrations
               "
             );
             migrationBuilder.Sql(
-              @"
+                @"
                 CREATE OR REPLACE FUNCTION batch_upsert_quarter_hour_schneider_iem3xxx_aggregates(entities jsonb)
                 RETURNS SETOF schneider_iem3xxx_aggregates
                 AS $$
@@ -9157,7 +9157,7 @@ namespace Ozds.Data.Migrations
               "
             );
             migrationBuilder.Sql(
-              @"
+                @"
                 CREATE OR REPLACE FUNCTION batch_upsert_day_schneider_iem3xxx_aggregates(entities jsonb)
                 RETURNS SETOF schneider_iem3xxx_aggregates
                 AS $$
@@ -9811,7 +9811,7 @@ namespace Ozds.Data.Migrations
               "
             );
             migrationBuilder.Sql(
-              @"
+                @"
                 CREATE OR REPLACE FUNCTION batch_upsert_month_schneider_iem3xxx_aggregates(entities jsonb)
                 RETURNS SETOF schneider_iem3xxx_aggregates
                 AS $$
@@ -10470,42 +10470,42 @@ namespace Ozds.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(
-              @"
+                @"
                 DROP FUNCTION IF EXISTS batch_upsert_abb_b2x_measurements(entities jsonb);
               "
             );
             migrationBuilder.Sql(
-              @"
+                @"
                 DROP FUNCTION IF EXISTS batch_upsert_schneider_iem3xxx_measurements(entities jsonb);
               "
             );
             migrationBuilder.Sql(
-              @"
+                @"
                 DROP FUNCTION IF EXISTS batch_upsert_quarter_hour_abb_b2x_aggregates(entities jsonb);
               "
             );
             migrationBuilder.Sql(
-              @"
+                @"
                 DROP FUNCTION IF EXISTS batch_upsert_day_abb_b2x_aggregates(entities jsonb);
               "
             );
             migrationBuilder.Sql(
-              @"
+                @"
                 DROP FUNCTION IF EXISTS batch_upsert_month_abb_b2x_aggregates(entities jsonb);
               "
             );
             migrationBuilder.Sql(
-              @"
+                @"
                 DROP FUNCTION IF EXISTS batch_upsert_quarter_hour_schneider_iem3xxx_aggregates(entities jsonb);
               "
             );
             migrationBuilder.Sql(
-              @"
+                @"
                 DROP FUNCTION IF EXISTS batch_upsert_day_schneider_iem3xxx_aggregates(entities jsonb);
               "
             );
             migrationBuilder.Sql(
-              @"
+                @"
                 DROP FUNCTION IF EXISTS batch_upsert_month_schneider_iem3xxx_aggregates(entities jsonb);
               "
             );
