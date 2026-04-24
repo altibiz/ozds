@@ -9,6 +9,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+## [1.8.4] - 2026-04-24
+
 ### Changed
 
 - Update, MailKit to newer version 4.16.0, all tests pass
@@ -772,6 +774,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.8.4]: https://github.com/altibiz/ozds/compare/1.8.3...1.8.4
 [1.8.3]: https://github.com/altibiz/ozds/compare/1.8.2...1.8.3
 [1.8.2]: https://github.com/altibiz/ozds/compare/1.8.1...1.8.2
 [1.8.1]: https://github.com/altibiz/ozds/compare/1.8.0...1.8.1
