@@ -11,11 +11,11 @@
 @GroupedColumn(
   "ActiveEnergyLastMonth",
   false,
-  Group(
+  SubColumn(
     x => NumericString(x.Analysis.LastMonthConsumption.ActiveEnergy_Tariff1_kWh, 2),
     x => x.Analysis.LastMonthConsumption.ActiveEnergy_Tariff1_kWh
   ),
-  Group(
+  SubColumn(
     x => NumericString(x.Analysis.LastMonthConsumption.ActiveEnergy_Tariff2_kWh, 2),
     x => x.Analysis.LastMonthConsumption.ActiveEnergy_Tariff2_kWh
   )
@@ -24,11 +24,11 @@
 @GroupedColumn(
   "ActiveEnergyThisMonth",
   false,
-  Group(
+  SubColumn(
     x => NumericString(x.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff1_kWh, 2),
     x => x.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff1_kWh
   ),
-  Group(
+  SubColumn(
     x => NumericString(x.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff2_kWh, 2),
     x => x.Analysis.ThisMonthConsumption.ActiveEnergy_Tariff2_kWh
   )

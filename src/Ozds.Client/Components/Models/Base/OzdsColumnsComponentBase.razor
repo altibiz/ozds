@@ -517,36 +517,55 @@
         );
     }
 
-  protected sealed record GroupedColumnItem<T>(
-    Expression<Func<TModel, T?>> Value,
+  protected sealed record GroupedSubColumn
+  (
+    Expression<Func<TModel, object?>> Value,
     Expression<Func<TModel, object?>> Label
-  );
+  )
+  {
+    public GroupedSubColumn(
+      Expression<Func<TModel, object?>> expression
+    ) : this(expression, expression)
+    {
+    }
+  }
 
-  protected GroupedColumnItem<T> Group<T>(
-    Expression<Func<TModel, T?>> value,
+  protected GroupedSubColumn SubColumn(
+    Expression<Func<TModel, object?>> value,
     Expression<Func<TModel, object?>> label
   )
   {
-    return new GroupedColumnItem<T>(value, label);
+    return new GroupedSubColumn(value, label);
   }
 
-  protected RenderFragment GroupedColumn<T>(
-    string groupKey,
-    bool searchable = false,
-    params GroupedColumnItem<T>[] columns
+  protected GroupedSubColumn SubColumn(
+    Expression<Func<TModel, object?>> expression
   )
   {
-    var compiledValues = columns.Select(x => x.Value.Compile()).ToArray();
-    var labels = columns.Select(x => Label(x.Label)).ToArray();
+    return new GroupedSubColumn(expression);
+  }
+
+  protected RenderFragment GroupedColumn(
+    string groupKey,
+    bool searchable = false,
+    params GroupedSubColumn[] columns
+  )
+  {
+    var columnDefinitions =
+      columns.Select(x =>
+        (
+          next: x.Value,
+          compiled: x.Value.Compile(),
+          label: Label(x.Label)
+        )).ToArray();
 
     if (searchable)
     {
-      foreach (var column in columns)
+      foreach (var (next, compiled, _) in columnDefinitions)
       {
-        var valueFunc = column.Value.Compile();
         RegisterSearchMapper(
-          column.Value,
-          x => valueFunc(x)?.ToString()
+          next,
+          x => compiled(x)?.ToString()
         );
       }
     }
@@ -563,7 +582,7 @@
               <b>@Translate(groupKey)</b>
             </MudText>
             <div style="@gridStyle">
-              @foreach (var label in labels)
+              @foreach (var (_, _, label) in columnDefinitions)
               {
                 <MudText Typo="Typo.caption">
                   @Translate(label)
@@ -574,9 +593,9 @@
         </HeaderTemplate>
         <CellTemplate>
           <div style="@gridStyle">
-            @foreach (var func in compiledValues)
+            @foreach (var (_, compiled, _) in columnDefinitions)
             {
-              <MudText>@Get(func)(context.Item)</MudText>
+              <MudText>@Get(compiled)(context.Item)</MudText>
             }
           </div>
         </CellTemplate>
