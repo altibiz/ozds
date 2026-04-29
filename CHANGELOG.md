@@ -9,6 +9,13 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- Refactored `ShouldClamp` helper in `MeasurementProcedureCompiler` to check
+  positively for floating-point CLR types (`decimal`, `float`, `double`) instead
+  of negatively excluding the eight integer types (`byte`, `sbyte`, `short`,
+  `ushort`, `int`, `uint`, `long`, `ulong`) for improved readability
+
 ## [1.8.4] - 2026-04-24
 
 ### Changed
