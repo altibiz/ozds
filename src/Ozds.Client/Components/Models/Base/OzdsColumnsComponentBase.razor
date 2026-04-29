@@ -521,7 +521,7 @@
   (
     Expression<Func<TModel, object?>> Value,
     Expression<Func<TModel, object?>> Label,
-    bool searchable = false
+    bool Searchable = false
   )
   {
     public GroupedSubColumn(
@@ -532,7 +532,7 @@
     }
   }
 
-  protected GroupedSubColumn SubColumn(
+  protected static GroupedSubColumn SubColumn(
     Expression<Func<TModel, object?>> value,
     Expression<Func<TModel, object?>> label,
     bool searchable = false
@@ -541,7 +541,7 @@
     return new GroupedSubColumn(value, label, searchable);
   }
 
-  protected GroupedSubColumn SubColumn(
+  protected static GroupedSubColumn SubColumn(
     Expression<Func<TModel, object?>> expression,
     bool searchable = false
   )
@@ -554,7 +554,7 @@
     params GroupedSubColumn[] columns
   )
   {
-    // TODO: this over here has a lot of recalculations of expressions,
+    // NOTE: this over here has a lot of recalculations of expressions,
     // check out if this entire builder class can cache it's function compilations
     // it could prove efficient
     var columnDefinitions =
@@ -563,7 +563,7 @@
           next: x.Value,
           compiled: x.Value.Compile(),
           label: Label(x.Label),
-          searchable: x.searchable
+          searchable: x.Searchable
         )).ToArray();
 
     foreach (var (next, compiled, _, searchable) in columnDefinitions)
