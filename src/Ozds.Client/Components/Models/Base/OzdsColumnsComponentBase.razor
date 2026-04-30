@@ -517,41 +517,82 @@
         );
     }
 
-  protected RenderFragment GroupedColumn<T>(
-    string groupKey,
-    bool searchable = false,
-    params Expression<Func<TModel, T?>>[] nextExpressions
+  protected sealed record GroupedSubColumn
+  (
+    Expression<Func<TModel, object?>> Value,
+    Expression<Func<TModel, object?>> Label,
+    bool Searchable = false
   )
   {
-    var compiledFunctions
-        = nextExpressions.Select(e => e.Compile()).ToArray();
-
-    if (searchable)
+    public GroupedSubColumn(
+      Expression<Func<TModel, object?>> expression,
+      bool searchable = false
+    ) : this(expression, expression, searchable)
     {
-      foreach (var (expr, func) in nextExpressions.Zip(compiledFunctions))
+    }
+  }
+
+  protected static GroupedSubColumn SubColumn(
+    Expression<Func<TModel, object?>> value,
+    Expression<Func<TModel, object?>> label,
+    bool searchable = false
+  )
+  {
+    return new GroupedSubColumn(value, label, searchable);
+  }
+
+  protected static GroupedSubColumn SubColumn(
+    Expression<Func<TModel, object?>> expression,
+    bool searchable = false
+  )
+  {
+    return new GroupedSubColumn(expression, searchable);
+  }
+
+  protected RenderFragment GroupedColumn(
+    string groupKey,
+    params GroupedSubColumn[] columns
+  )
+  {
+    // NOTE: this over here has a lot of recalculations of expressions,
+    // check out if this entire builder class can cache it's function compilations
+    // it could prove efficient
+    var columnDefinitions =
+      columns.Select(x =>
+        (
+          next: x.Value,
+          compiled: x.Value.Compile(),
+          label: Label(x.Label),
+          searchable: x.Searchable
+        )).ToArray();
+
+    foreach (var (next, compiled, _, searchable) in columnDefinitions)
+    {
+      if (searchable)
       {
-        RegisterSearchMapper(expr, x => func(x)?.ToString());
+        RegisterSearchMapper(
+          next,
+          x => compiled(x)?.ToString()
+        );
       }
     }
 
-    var cols = nextExpressions.Length;
-    var gridStyle = $"display:grid;grid-template-columns:repeat({cols},1fr);gap:.5rem;text-align:left;width:100%";
+    var cols = columns.Length;
+    var gridStyle =
+      $"display:grid;grid-template-columns:repeat({cols},1fr);gap:.5rem;text-align:left;width:100%";
 
     return Nest(
-      @<TemplateColumn
-         T="TPrefix">
+      @<TemplateColumn T="TPrefix">
         <HeaderTemplate>
           <div style="display:flex;flex-direction:column;align-items:start;width:100%;">
             <MudText Typo="Typo.body1" Align="Align.Center" Style="width:100%;">
-              <b>
-                @Translate(groupKey)
-              </b>
+              <b>@Translate(groupKey)</b>
             </MudText>
             <div style="@gridStyle">
-              @foreach (var expr in nextExpressions)
+              @foreach (var (_, _, label, _) in columnDefinitions)
               {
                 <MudText Typo="Typo.caption">
-                  @Translate(Label(expr))
+                  @Translate(label)
                 </MudText>
               }
             </div>
@@ -559,11 +600,9 @@
         </HeaderTemplate>
         <CellTemplate>
           <div style="@gridStyle">
-            @foreach (var func in compiledFunctions)
+            @foreach (var (_, compiled, _, _) in columnDefinitions)
             {
-              <MudText>
-                @Get(func)(context.Item)
-              </MudText>
+              <MudText>@Get(compiled)(context.Item)</MudText>
             }
           </div>
         </CellTemplate>

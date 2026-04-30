@@ -15,6 +15,22 @@ and adheres to [Semantic Versioning](https://semver.org/).
   positively for floating-point CLR types (`decimal`, `float`, `double`) instead
   of negatively excluding the eight integer types (`byte`, `sbyte`, `short`,
   `ushort`, `int`, `uint`, `long`, `ulong`) for improved readability
+- `GroupedColumn` on `OzdsColumnsComponentBase` no longer takes a top-level
+  `searchable` flag and is no longer generic; sub-columns are now passed as
+  `GroupedSubColumn` items via the new `SubColumn(...)` helpers, each with its
+  own optional `searchable` flag and an optional separate label expression
+- `MeterAnalysisColumns` and `MeasurementLocationAnalysisColumns` now render
+  T1/T2 active energy sub-columns through `SubColumn(...)` with 2-decimal
+  formatting via `NumericString(..., 2)` for display while keeping the raw
+  decimal expression as the label source
+
+### Added
+
+- `GroupedSubColumn` record on `OzdsColumnsComponentBase` carrying separate
+  value and label expressions plus a per-sub-column `searchable` flag
+- `SubColumn(...)` helper overloads on `OzdsColumnsComponentBase` for building
+  `GroupedSubColumn` items either from a single expression or from a separate
+  value/label expression pair
 
 ## [1.8.4] - 2026-04-24
 
