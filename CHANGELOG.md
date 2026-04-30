@@ -11,6 +11,10 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Refactored `ShouldClamp` helper in `MeasurementProcedureCompiler` to check
+  positively for floating-point CLR types (`decimal`, `float`, `double`) instead
+  of negatively excluding the eight integer types (`byte`, `sbyte`, `short`,
+  `ushort`, `int`, `uint`, `long`, `ulong`) for improved readability
 - `GroupedColumn` on `OzdsColumnsComponentBase` no longer takes a top-level
   `searchable` flag and is no longer generic; sub-columns are now passed as
   `GroupedSubColumn` items via the new `SubColumn(...)` helpers, each with its

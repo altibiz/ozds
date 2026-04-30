@@ -318,14 +318,9 @@ public static class MeasurementProcedureCompiler
         GetPropertyClrType(context, aggregateType, propertyName)
       ) ?? GetPropertyClrType(context, aggregateType, propertyName);
 
-    return clrType != typeof(byte)
-      && clrType != typeof(sbyte)
-      && clrType != typeof(short)
-      && clrType != typeof(ushort)
-      && clrType != typeof(int)
-      && clrType != typeof(uint)
-      && clrType != typeof(long)
-      && clrType != typeof(ulong);
+    return clrType == typeof(decimal)
+      || clrType == typeof(float)
+      || clrType == typeof(double);
   }
 
   private static string UpsertAverage(
