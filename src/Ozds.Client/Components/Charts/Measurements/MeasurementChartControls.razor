@@ -2,6 +2,7 @@
 
 @namespace Ozds.Client.Components.Charts
 @using MudBlazor
+@using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @using Ozds.Client.Components.Fields
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
@@ -16,46 +17,37 @@
   <MudGrid Spacing="2" Justify="Justify.Center">
     @if (MeasurementLocations.Count > 1)
     {
-      <MudItem
-        xs="12"
-        @onpointerup="() => _select.OpenMenu()"
-        md="4">
+      <MudItem xs="12" md="4">
         <MudTooltip RootClass="wide-tooltip"
                     Text="@(_parameters.MeasurementLocations.Count > 1 ? string.Join(", ", _parameters.MeasurementLocations.Select(m => m.Title)) : "")">
-          <MudSelect
-            @ref="_select"
-            Text="@UpdateSelectDisplay()"
-            T="string"
+          <SearchableSelectField
+            T="IMeasurementLocation"
+            Text="@UpdateSelectDisplayMeasurementLocations()"
             Label="@Translate("Measurement locations")"
-            SelectedValues="@(_parameters.MeasurementLocations.Select(measurementLocation => measurementLocation.Id))"
+            SelectedValues="@_parameters.MeasurementLocations"
+            Items="@MeasurementLocations"
             SelectedValuesChanged="@OnMeasurementLocationsChanged"
-            MultiSelection>
-            @foreach (var measurementLocation in MeasurementLocations)
-            {
-              <MudSelectItem Value="@measurementLocation.Id">
-                @measurementLocation.Title
-              </MudSelectItem>
-            }
-          </MudSelect>
+            ToStringFunc="@(i => i?.Title ?? string.Empty)"
+            MultiSelection
+            Clearable
+            />
         </MudTooltip>
       </MudItem>
     }
     else if (Meters.Count > 1)
     {
       <MudItem xs="12" md="4">
-        <MudSelect
-          T="string"
-          Label="@Translate("Meters")"
-          SelectedValues="@(_parameters.Meters.Select(meter => meter.Id))"
-          SelectedValuesChanged="@OnMetersChanged"
-          MultiSelection>
-          @foreach (var meter in Meters)
-          {
-            <MudSelectItem Value="@meter.Id">
-              @meter.Id
-            </MudSelectItem>
-          }
-        </MudSelect>
+        <MudTooltip RootClass="wide-tooltip"
+                    Text="@(_parameters.Meters.Count > 1 ? string.Join(", ", _parameters.Meters.Select(m => m.Id)) : "")">
+          <SearchableSelectField
+            T="IMeter"
+            Label="@Translate("Meters")"
+            SelectedValues="@_parameters.Meters"
+            Items="@Meters"
+            SelectedValuesChanged="@OnMetersChanged"
+            ToStringFunc="@(m => m?.Id ?? string.Empty)"
+            MultiSelection/>
+          </MudTooltip>
       </MudItem>
     }
     @{
@@ -63,7 +55,7 @@
         && _parameters.Meters.Count == 0;
     }
     <MudItem xs="12" sm="6" md="4">
-      <MudTooltip RootClass="wide-tooltip" Text="Select type of measure">
+      <MudTooltip RootClass="wide-tooltip" ShowOnFocus="false" Text="Select type of measure">
         <EnumPicker
           T="MeasureModel"
           @bind-Value="@_parameters.Measure"
@@ -75,7 +67,7 @@
       </MudTooltip>
     </MudItem>
     <MudItem xs="12" sm="6" md="4">
-      <MudTooltip RootClass="wide-tooltip" Text="@Translate("Phase(s) for given measure, if empty, display sum of all phases")">
+       <MudTooltip RootClass="wide-tooltip" ShowOnFocus="false" Text="@Translate("Phase(s) for given measure, if empty, display sum of all phases")">
         <MultiEnumPicker
           T="PhaseModel"
           Value="@_parameters.Phases"
@@ -86,7 +78,7 @@
       </MudTooltip>
     </MudItem>
     <MudItem xs="12" sm="6" md="1">
-      <MudTooltip RootClass="wide-tooltip" Text="@Translate("Multiply the selected time unit to get wanted span of time")">
+      <MudTooltip RootClass="wide-tooltip" ShowOnFocus="false" Text="@Translate("Multiply the selected time unit to get wanted span of time")">
         <MudNumericField
           T="int"
           Value="@_parameters.Multiplier"
@@ -137,5 +129,8 @@
 <style>
   .wide-tooltip {
     width: 100%;
+  }
+  .mud-tooltip {
+     pointer-events: none;
   }
 </style>

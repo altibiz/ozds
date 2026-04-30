@@ -1,0 +1,123 @@
+@namespace Ozds.Client.Components.Fields
+@using MudBlazor
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+@typeparam T
+
+<div class="@($"ozds-searchable-select {Class}".Trim())" style="@Style">
+  <div class="ozds-searchable-select__trigger" @onclick="ToggleOpen">
+    <MudField Label="@Label"
+              Variant="@Variant"
+              Margin="@Margin"
+              InnerPadding="true"
+              Adornment="Adornment.End"
+              AdornmentIcon="@Icons.Material.Filled.ArrowDropDown"
+              Class="@($"ozds-searchable-select__field {(_open ? "ozds-searchable-select__field--open" : string.Empty)}".Trim())"
+              Style="cursor:pointer;width:100%;">
+      <div class="ozds-searchable-select__content">
+        @if (!HasSelection)
+        {
+          <span class="ozds-searchable-select__placeholder">
+            @Placeholder
+          </span>
+        }
+        else if (MultiSelection)
+        {
+          <span class="ozds-searchable-select__value">@Text</span>
+        }
+        else
+        {
+          <span class="ozds-searchable-select__value">@GetDisplayText(Value)</span>
+        }
+      </div>
+    </MudField>
+  </div>
+
+  @if (Clearable && HasSelection)
+  {
+    <div class="ozds-searchable-select__clear"
+         @onpointerup="ClearAll"
+         @onpointerup:stopPropagation="true">
+      <MudIconButton Icon="@Icons.Material.Filled.Clear"
+                     Size="Size.Small"
+                     Variant="Variant.Text"
+                     />
+    </div>
+  }
+
+  <MudPopover Open="_open"
+              AnchorOrigin="@AnchorOrigin"
+              TransformOrigin="@TransformOrigin"
+              RelativeWidth="DropdownWidth.Relative"
+              Paper="false"
+              Class="@($"ozds-searchable-select__popover {PopoverClass}".Trim())">
+    <MudPaper Class="ozds-searchable-select__paper"
+              Elevation="8"
+              Style="@($"max-height:{MaxPopoverHeight};")">
+      <div class="d-flex flex-row align-center ozds-searchable-select__search-wrap pa-2">
+        <MudIconButton Icon="@Icons.Material.Filled.TextFields"
+                       Color="@(_caseSensitive ? Color.Primary : Color.Default)"
+                       OnClick="@OnCaseSensitiveToggle"
+                       Size="Size.Medium"/>
+        <MudTextField @bind-Value="_search"
+                      Placeholder="@Translate("Search")"
+                      Immediate="true"
+                      Variant="Variant.Text"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      Margin="Margin.Dense"
+                      AutoFocus="true"
+                      Class="ozds-searchable-select__search"/>
+      </div>
+      <div class="ozds-searchable-select__list-wrap">
+        @{
+          var cachedFilteredItems = GetFilteredItems();
+        }
+        @if (cachedFilteredItems.Any())
+        {
+          <MudList T="T" Dense="@Dense" Class="ozds-searchable-select__list">
+            @foreach (var item in cachedFilteredItems)
+            {
+              var selected = IsSelected(item);
+              <MudListItem T="T"
+                           Value="item"
+                           OnClick="@(() => ToggleItem(item))"
+                           Class="@GetItemClass(selected)">
+                <div class="d-flex align-center ozds-searchable-select__item-content">
+                  @if (MultiSelection)
+                  {
+                    <MudCheckBox T="bool"
+                                 Value="selected"
+                                 ReadOnly="true"
+                                 Dense="true"
+                                 Class="mr-2 ozds-searchable-select__item-check"/>
+                  }
+                  @if (ItemTemplate is not null)
+                  {
+                    @ItemTemplate(item)
+                  }
+                  else
+                  {
+                    <span class="ozds-searchable-select__item-text">@GetDisplayText(item)</span>
+                  }
+                </div>
+              </MudListItem>
+            }
+          </MudList>
+        }
+        else
+        {
+          <div class="pa-3 ozds-searchable-select__empty">
+            <MudText Color="Color.Secondary" Typo="Typo.body2">
+              @Translate("No results")
+            </MudText>
+          </div>
+        }
+      </div>
+    </MudPaper>
+  </MudPopover>
+
+  <MudOverlay Visible="_open"
+              OnClick="Close"
+              LockScroll="false"
+              Class="ozds-searchable-select__overlay"/>
+</div>

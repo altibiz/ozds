@@ -36,6 +36,15 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - `MeasurementChartControls` disables the Measure, Phase, Multiplier,
   Resolution, and Refresh fields when no measurement location or meter is
   selected via a local `isNothingSelected` flag
+- `MeasurementChartControls` now uses the new `SearchableSelectField` instead of
+  plain `MudSelect` for both meters and measurement locations, with consistent
+  `MudTooltip` wrappers showing the full list of current selections; the
+  `OnMeasurementLocationsChanged` and `OnMetersChanged` callbacks now receive
+  `IMeasurementLocation`/`IMeter` instances directly instead of resolving them
+  from string ids
+- `MeasurementLineChart` wraps the chart and its empty-state placeholder in a
+  fixed-height container so chart re-renders no longer shift the chart-control
+  selection fields above it
 
 ### Added
 

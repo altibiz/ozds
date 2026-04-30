@@ -22,24 +22,27 @@ else
     {
       if (Parameters.Phases.Count == 0)
       {
-        @(
-        Series(
-          PhaseModel.L1.ToColor(i),
-          meter,
-          measurementLocation
-        ))
-      }
-      else
-      {
-        foreach (var phase in Parameters.Phases.OrderBy(x => x))
+        if (Parameters.Phases.Count == 0)
         {
           @(
           Series(
-            phase.ToColor(i),
+            PhaseModel.L1.ToColor(i),
             meter,
-            measurementLocation,
-            phase
+            measurementLocation
           ))
+        }
+        else
+        {
+          foreach (var phase in Parameters.Phases.OrderBy(x => x))
+          {
+            @(
+            Series(
+              phase.ToColor(i),
+              meter,
+              measurementLocation,
+              phase
+            ))
+          }
         }
       }
     }

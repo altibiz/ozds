@@ -6,8 +6,6 @@ namespace Ozds.Client.Components.Fields;
 
 public partial class SelectField<T>
 {
-  private MudSelect<T> _inner = default!;
-
   [Parameter]
   public string Label { get; set; } = default!;
 

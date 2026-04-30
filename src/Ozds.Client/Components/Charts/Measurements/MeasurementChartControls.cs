@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 using Ozds.Business.Aggregation;
 using Ozds.Business.Models.Abstractions;
 using Ozds.Business.Models.Enums;
@@ -16,8 +15,6 @@ public partial class MeasurementChartControls : OzdsComponentBase
 {
   private readonly MeasurementChartParameters _parameters = new();
   private bool _initParamsSet = false;
-
-  private MudSelect<string> _select = default!;
 
   [Parameter]
   public List<IMeter> Meters { get; set; } = new();
@@ -154,22 +151,16 @@ public partial class MeasurementChartControls : OzdsComponentBase
   }
 
   private async Task OnMeasurementLocationsChanged(
-    IEnumerable<string> measurementLocationIds
+    IEnumerable<IMeasurementLocation> measurementLocations
   )
   {
-    _parameters.MeasurementLocations = MeasurementLocations
-      .Where(measurementLocation =>
-        measurementLocationIds.Contains(measurementLocation.Id)
-      )
-      .ToHashSet();
+    _parameters.MeasurementLocations = measurementLocations.ToHashSet();
     await Fetch(forcedRefresh: true);
   }
 
-  private async Task OnMetersChanged(IEnumerable<string> meterIds)
+  private async Task OnMetersChanged(IEnumerable<IMeter> meters)
   {
-    _parameters.Meters = Meters
-      .Where(meter => meterIds.Contains(meter.Id))
-      .ToHashSet();
+    _parameters.Meters = meters.ToHashSet();
     await Fetch(forcedRefresh: true);
   }
 
@@ -363,7 +354,7 @@ public partial class MeasurementChartControls : OzdsComponentBase
     InvokeAsync(StateHasChanged);
   }
 
-  private string UpdateSelectDisplay()
+  private string UpdateSelectDisplayMeasurementLocations()
   {
     var ids = _parameters.MeasurementLocations.Select(x => x.Id).ToList();
     return ids.Count == 1
