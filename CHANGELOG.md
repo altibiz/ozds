@@ -30,8 +30,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
   in `GetItems()` and the `Series` fallback to `Parameters.Measurements.Items`
   when no meter/location is supplied have been removed
 - `MeasurementChartHeader` now displays a translated empty-state message in
-  place of the measure/unit/time-span text when no measurement location or
-  meter is selected
+  place of the measure/unit/time-span text when no measurement location or meter
+  is selected
 - `MeasurementChartControls` disables the Measure, Phase, Multiplier,
   Resolution, and Refresh fields when no measurement location or meter is
   selected via a local `isNothingSelected` flag
