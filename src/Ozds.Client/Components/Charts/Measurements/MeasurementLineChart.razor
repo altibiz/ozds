@@ -3,9 +3,15 @@
 @using Ozds.Business.Models.Abstractions
 @using Ozds.Business.Models.Enums
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
-@if (Parameters.MeasurementLocations.Count > 0
-  || Parameters.Meters.Count > 0
-  || Parameters.Measurements.Items.Count > 0)
+
+@if (Parameters.MeasurementLocations.Count == 0
+  && Parameters.Meters.Count == 0)
+{
+  <div style="height:300px; display: grid; align-items: center;">
+    <h2 style="text-align: center;">@Translate("No measurement locations/meters are selected for display")</h2>
+  </div>
+}
+else
 {
   <ApexChart
     XAxisType="@XAxisType.Datetime"
@@ -39,12 +45,6 @@
     }
   </ApexChart>
 }
-else
-{
-  <div style="height:300px; display: grid; align-items: center;">
-    <h2 style="text-align: center;">@Translate("No measurements found with given graph settings")</h2>
-  </div>
-}
 
 @code {
 
@@ -64,7 +64,8 @@ else
           .Where(x =>
             x.MeasurementLocationId == measurementMeasurementLocation?.Id)
           .ToList()
-        : Parameters.Measurements.Items;
+        : new List<IMeasurement>();
+
     var phaseName = phase is { } selectedPhase
       ? Translate(selectedPhase.ToString())
       : Translate("Phase sum");
@@ -94,11 +95,6 @@ else
           .OrderBy(x => x.Id)
           .Select((x, i) => ((IMeter?)null, (IMeasurementLocation?)x, i)))
       .ToList();
-
-    if (items.Count == 0)
-    {
-      items.Add((null, null, 0));
-    }
 
     return items;
   }

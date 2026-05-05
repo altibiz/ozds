@@ -24,4 +24,7 @@ public partial class MultiEnumPicker<T> : OzdsComponentBase
 
   [Parameter]
   public IEnumerable Values { get; set; } = Enum.GetValues(typeof(T));
+
+  [Parameter]
+  public bool Disabled { get; set; }
 }

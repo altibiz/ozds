@@ -6,34 +6,44 @@
 
 <div class="d-flex justify-center">
   <MudText>
-    @if (Parameters.Meters.Count() == 1)
+    @if (Parameters.Meters.Count == 0
+      && Parameters.MeasurementLocations.Count == 0)
     {
-      @Translate(Parameters.Meters.FirstOrDefault()!.Title)
-      <Fragment>
-        &nbsp;
-      </Fragment>
+      @Translate("No measurement location or meter selected")
     }
-    @if (Parameters.MeasurementLocations.Count() == 1)
-    {
-      @Translate(Parameters.MeasurementLocations.FirstOrDefault()!.Title)
-      <Fragment>
-        &nbsp;
-      </Fragment>
-    }
-    @Translate(Parameters.Measure.ToString())
-    &nbsp;
-    &lbrack;
-    @Translate(Parameters.Measure.ToUnit())
-    &rbrack;
-    &nbsp;
-    @if (Parameters.Operator != OperatorModel.Last)
+    else
     {
       <Fragment>
-        @Translate("over the last")
+        @if (Parameters.Meters.Count() == 1)
+        {
+          @Translate(Parameters.Meters.FirstOrDefault()!.Title)
+          <Fragment>
+            &nbsp;
+          </Fragment>
+        }
+        @if (Parameters.MeasurementLocations.Count() == 1)
+        {
+          @Translate(Parameters.MeasurementLocations.FirstOrDefault()!.Title)
+          <Fragment>
+            &nbsp;
+          </Fragment>
+        }
+        @Translate(Parameters.Measure.ToString())
         &nbsp;
-        @(Parameters.Multiplier == 1 ? "" : Parameters.Multiplier.ToString())
+        &lbrack;
+        @Translate(Parameters.Measure.ToUnit())
+        &rbrack;
         &nbsp;
-        @Translate(Parameters.Resolution.ToString())
+        @if (Parameters.Operator != OperatorModel.Last)
+        {
+          <Fragment>
+            @Translate("over the last")
+            &nbsp;
+            @(Parameters.Multiplier == 1 ? "" : Parameters.Multiplier.ToString())
+            &nbsp;
+            @Translate(Parameters.Resolution.ToString())
+          </Fragment>
+        }
       </Fragment>
     }
   </MudText>

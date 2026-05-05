@@ -25,4 +25,7 @@ public partial class EnumPicker<T> : OzdsComponentBase
 
   [Parameter]
   public IEnumerable Values { get; set; } = typeof(T).GetNullableEnumValues();
+
+  [Parameter]
+  public bool Disabled { get; set; }
 }
