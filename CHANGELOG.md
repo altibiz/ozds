@@ -27,8 +27,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
   empty selection (no measurement locations and no meters) first and otherwise
   renders the `ApexChart`, relying on ApexCharts' built-in no-data state when
   `Measurements.Items` is empty; the previous `if (items.Count == 0)` fallback
-  in `GetItems()` and the `Series` fallback to `Parameters.Measurements.Items`
-  when no meter/location is supplied have been removed
+  in `GetItems()` has been removed, and the `Series` fallback to
+  `Parameters.Measurements.Items` when no meter/location is supplied has been
+  dropped (the empty-selection branch makes that case unreachable)
 - `MeasurementChartHeader` now displays a translated empty-state message in
   place of the measure/unit/time-span text when no measurement location or meter
   is selected
