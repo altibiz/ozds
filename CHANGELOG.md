@@ -23,6 +23,19 @@ and adheres to [Semantic Versioning](https://semver.org/).
   T1/T2 active energy sub-columns through `SubColumn(...)` with 2-decimal
   formatting via `NumericString(..., 2)` for display while keeping the raw
   decimal expression as the label source
+- `MeasurementLineChart` reorders its conditional rendering to check for an
+  empty selection (no measurement locations and no meters) first and otherwise
+  renders the `ApexChart`, relying on ApexCharts' built-in no-data state when
+  `Measurements.Items` is empty; the previous `if (items.Count == 0)` fallback
+  in `GetItems()` has been removed, and the `Series` fallback to
+  `Parameters.Measurements.Items` when no meter/location is supplied has been
+  dropped (the empty-selection branch makes that case unreachable)
+- `MeasurementChartHeader` now displays a translated empty-state message in
+  place of the measure/unit/time-span text when no measurement location or meter
+  is selected
+- `MeasurementChartControls` disables the Measure, Phase, Multiplier,
+  Resolution, and Refresh fields when no measurement location or meter is
+  selected via a local `isNothingSelected` flag
 
 ### Added
 
@@ -31,6 +44,11 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - `SubColumn(...)` helper overloads on `OzdsColumnsComponentBase` for building
   `GroupedSubColumn` items either from a single expression or from a separate
   value/label expression pair
+- `Disabled` parameter on `EnumPicker` and `MultiEnumPicker`, forwarded to the
+  inner `SelectField` and propagated to MudBlazor's `MudSelect` via captured
+  attributes
+- Translations `No measurement locations/meters are selected for display` and
+  `No measurement location or meter selected` in `en.xml` and `hr.xml`
 
 ## [1.8.4] - 2026-04-24
 

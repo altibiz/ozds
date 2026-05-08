@@ -58,6 +58,10 @@
         </MudSelect>
       </MudItem>
     }
+    @{
+      var isNothingSelected = _parameters.MeasurementLocations.Count == 0
+        && _parameters.Meters.Count == 0;
+    }
     <MudItem xs="12" sm="6" md="4">
       <MudTooltip RootClass="wide-tooltip" Text="Select type of measure">
         <EnumPicker
@@ -65,7 +69,9 @@
           @bind-Value="@_parameters.Measure"
           Title="@Translate("Measure")"
           Values="@Measures()"
-          Label="@(x => Translate(x.ToString()))"/>
+          Label="@(x => Translate(x.ToString()))"
+          Disabled="@isNothingSelected"
+          />
       </MudTooltip>
     </MudItem>
     <MudItem xs="12" sm="6" md="4">
@@ -75,7 +81,8 @@
           Value="@_parameters.Phases"
           ValueChanged="@(e => _parameters.Phases = e.ToHashSet())"
           Title="@Translate("Phase")"
-          Label="@(x => Translate(x.ToString()))"/>
+          Label="@(x => Translate(x.ToString()))"
+          Disabled="@isNothingSelected"/>
       </MudTooltip>
     </MudItem>
     <MudItem xs="12" sm="6" md="1">
@@ -87,7 +94,8 @@
           Label="@Translate("Multiplier")"
           Min="1"
           Max="@_parameters.Resolution.MaxMultiplier()"
-          Step="1"/>
+          Step="1"
+          Disabled="@isNothingSelected"/>
       </MudTooltip>
     </MudItem>
     <MudItem xs="12" sm="6" md="1">
@@ -97,7 +105,8 @@
           Value="@_parameters.Resolution"
           ValueChanged="@OnResolutionChanged"
           Title="@Translate("Resolution")"
-          Label="@(x => Translate(x.ToString()))"/>
+          Label="@(x => Translate(x.ToString()))"
+          Disabled="@isNothingSelected"/>
       </MudTooltip>
     </MudItem>
     <MudItem xs="12" md="10">
@@ -107,7 +116,8 @@
             T="bool"
             Value="@_parameters.Refresh"
             ValueChanged="@OnRefreshChanged"
-            Label="@Translate("Refresh")"/>
+            Label="@Translate("Refresh")"
+            Disabled="@isNothingSelected"/>
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.SmAndDown">
           <div class="d-flex justify-end pe-4">
@@ -115,7 +125,8 @@
               T="bool"
               Value="@_parameters.Refresh"
               ValueChanged="@OnRefreshChanged"
-              Label="@Translate("Refresh")"/>
+              Label="@Translate("Refresh")"
+              Disabled="@isNothingSelected"/>
           </div>
         </MudHidden>
       </MudTooltip>

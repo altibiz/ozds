@@ -9,7 +9,8 @@
   SelectedValues="@Value"
   SelectedValuesChanged="@ValueChanged"
   MultiSelection
-  For="For">
+  For="For"
+  Disabled="@Disabled">
   @foreach (var item in Values)
   {
     var typed = (T)item;
