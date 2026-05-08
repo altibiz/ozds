@@ -14,14 +14,14 @@
     else
     {
       <Fragment>
-        @if (Parameters.Meters.Count() == 1)
+        @if (Parameters.Meters.Count == 1)
         {
           @Translate(Parameters.Meters.FirstOrDefault()!.Title)
           <Fragment>
             &nbsp;
           </Fragment>
         }
-        @if (Parameters.MeasurementLocations.Count() == 1)
+        @if (Parameters.MeasurementLocations.Count == 1)
         {
           @Translate(Parameters.MeasurementLocations.FirstOrDefault()!.Title)
           <Fragment>

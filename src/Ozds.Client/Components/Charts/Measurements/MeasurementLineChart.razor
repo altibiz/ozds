@@ -47,7 +47,6 @@ else
 }
 
 @code {
-
   private RenderFragment Series(
     string color,
     IMeter? meter = null,
@@ -55,16 +54,17 @@ else
     PhaseModel? phase = null
   )
   {
+    // NOTE: If both are null then this method even won't run,
+    // so no need to make a ternary check
+    // for reference check upper chart if statement
     var measurements = meter is { } measurementMeter
       ? Parameters.Measurements.Items
         .Where(x => x.MeterId == measurementMeter.Id)
         .ToList()
-      : measurementLocation is { } measurementMeasurementLocation
-        ? Parameters.Measurements.Items
-          .Where(x =>
-            x.MeasurementLocationId == measurementMeasurementLocation?.Id)
-          .ToList()
-        : new List<IMeasurement>();
+      : Parameters.Measurements.Items
+        .Where(x =>
+          x.MeasurementLocationId == measurementLocation?.Id)
+        .ToList();
 
     var phaseName = phase is { } selectedPhase
       ? Translate(selectedPhase.ToString())
@@ -98,5 +98,4 @@ else
 
     return items;
   }
-
 }
