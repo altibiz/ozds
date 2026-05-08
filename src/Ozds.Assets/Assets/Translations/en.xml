@@ -14146,7 +14146,7 @@
         Measure
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 66 column 19
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 70 column 19
       </Metadata>
       <Value>
         Measure
@@ -16467,7 +16467,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 64 column 17
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 87 column 19
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 94 column 19
       </Metadata>
       <Value>
         Multiplier
@@ -16478,7 +16478,7 @@
         Multiply the selected time unit to get wanted span of time
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 82 column 51
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 89 column 51
       </Metadata>
       <Value>
         Multiply the selected time unit to get the desired time span
@@ -17229,7 +17229,7 @@
         No measurement location or meter selected
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartHeader.razor' line 12 column 18
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartHeader.razor' line 12 column 8
       </Metadata>
       <Value>
         No measurement location or meter selected
@@ -17248,22 +17248,11 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        No measurements found with given graph settings
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 16 column 38
-      </Metadata>
-      <Value>
-        No measurements found with the selected graph settings
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         None
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Fields/EnumPicker.razor' line 25 column 12
-        From file 'Ozds.Client/Components/Fields/MultiEnumPicker.razor' line 26 column 12
+        From file 'Ozds.Client/Components/Fields/EnumPicker.razor' line 26 column 12
+        From file 'Ozds.Client/Components/Fields/MultiEnumPicker.razor' line 27 column 12
         From file 'Ozds.Client/Components/Fields/PolymorphicIdField.razor' line 29 column 10
         From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 122 column 19
         From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 148 column 17
@@ -17625,7 +17614,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Charts/Financial/FinancialChartHeader.razor' line 26 column 10
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartHeader.razor' line 32 column 10
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartHeader.razor' line 40 column 14
       </Metadata>
       <Value>
         over the last
@@ -17696,7 +17685,7 @@
         Phase
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 77 column 19
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 83 column 19
       </Metadata>
       <Value>
         Phase
@@ -17709,8 +17698,8 @@
       <Metadata>
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementDonutChart.razor' line 65 column 9
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementGaugeChart.razor' line 63 column 9
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 70 column 9
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 45 column 38
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 71 column 9
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 11 column 38
       </Metadata>
       <Value>
         Phase total
@@ -17721,7 +17710,7 @@
         Phase(s) for given measure, if empty, display sum of all phases
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 72 column 51
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 78 column 51
       </Metadata>
       <Value>
         Phase(s) for given measurement; if empty, display sum of all phases
@@ -19856,8 +19845,8 @@
         Refresh
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 110 column 21
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 118 column 23
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 119 column 21
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 128 column 23
       </Metadata>
       <Value>
         Refresh
@@ -20344,7 +20333,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 57 column 17
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 99 column 19
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 107 column 19
       </Metadata>
       <Value>
         Resolution
@@ -22753,7 +22742,7 @@
         or new measurement comes in
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 104 column 51
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 113 column 51
       </Metadata>
       <Value>
         Toggle auto-refresh, updates display when parameters change or new
@@ -23438,7 +23427,7 @@
         Unit of time used in defining the span of time for the display
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 94 column 51
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 102 column 51
       </Metadata>
       <Value>
         Time unit for display span
