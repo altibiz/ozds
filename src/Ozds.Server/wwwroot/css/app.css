@@ -14,7 +14,7 @@
    SearchableSelectField
    src/Ozds.Client/Components/Fields/SearchableSelectField.razor
    A searchable single/multi-select dropdown built on
-   MudField + MudPopover. Mimics MudSelect, fully templatable.
+   MudField + MudPopover. Mimics MudSelect.
    Component style section START
    ------------------------------------------------------------ */
 
