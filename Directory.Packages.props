@@ -43,7 +43,6 @@
     <PackageVersion Include="Novell.Directory.Ldap.NETStandard" Version="3.6.0" />
     <PackageVersion Include="MudBlazor" Version="8.6.0" />
     <PackageVersion Include="MudBlazor.ThemeManager" Version="3.0.0" />
-    <PackageVersion Include="CodeBeam.MudBlazor.Extensions" Version="8.3.0" />
     <PackageVersion Include="Blazor-ApexCharts" Version="5.0.1" />
     <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageVersion Include="Tizzani.MudBlazor.HtmlEditor" Version="2.3.0" />
