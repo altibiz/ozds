@@ -65,6 +65,11 @@
   background-color: var(--mud-palette-action-default-hover);
 }
 
+.mud-list-item-clickable.ozds-searchable-select__item--highlighted {
+  background-color: var(--mud-palette-primary-hover);
+  color: var(--mud-palette-primary);
+}
+
 /* Clear button overlays the field so toggling it doesn't change
    the field's height — sits just to the left of the chevron. */
 .ozds-searchable-select__clear {

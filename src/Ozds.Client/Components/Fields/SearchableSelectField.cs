@@ -1,11 +1,18 @@
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using MudBlazor;
 
 namespace Ozds.Client.Components.Fields;
 
-public partial class SearchableSelectField<T>
+public partial class SearchableSelectField<T> : IAsyncDisposable
 {
+  private const string ModulePath =
+    "/js/components/searchable-select-field/searchable-select-field.js";
+
+  private readonly string _instanceId = Guid.NewGuid().ToString("N");
+
   [Parameter]
   public string? Label { get; set; }
 
@@ -81,13 +88,119 @@ public partial class SearchableSelectField<T>
   [Parameter(CaptureUnmatchedValues = true)]
   public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
+  [Inject]
+  private IJSRuntime JS { get; set; } = default!;
+
+  private IJSObjectReference? _module;
+
   private bool _open;
   private string _search = string.Empty;
   private bool _caseSensitive = true;
+  private int _highlightedIndex = 0;
+
+  private MudTextField<string> _searchField = default!;
+  private ElementReference _elementsField = default!;
+
+  private IReadOnlyList<T>? _filteredItemsCache;
+  private ICollection<T>? _previousItems;
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender)
+    {
+      _module = await JS.InvokeAsync<IJSObjectReference>("import", ModulePath);
+    }
+  }
+
+  protected override void OnParametersSet()
+  {
+    base.OnParametersSet();
+    // NOTE: this should be further addressed
+    // in future useMemo clone implementation
+    if (!ReferenceEquals(_previousItems, Items))
+    {
+      _previousItems = Items;
+      InvalidateFilteredCache();
+    }
+  }
+
+  private string GetItemId(int index) =>
+    $"ozds-ss-item-{_instanceId}-{index}";
+
+  private async Task SetHighlightedIndexAsync(int index)
+  {
+    var count = GetFilteredItems().Count;
+    _highlightedIndex = Math.Clamp(index, 0, count - 1);
+
+    if (_module is not null)
+    {
+      await _module.InvokeVoidAsync(
+        "scrollItemIntoView",
+        GetItemId(_highlightedIndex));
+    }
+  }
+
+  private void OnSearchChanged(string value)
+  {
+    _highlightedIndex = 0;
+    _search = value;
+    InvalidateFilteredCache();
+  }
+
+  private async Task HandleKeyDownSearch(KeyboardEventArgs e)
+  {
+    switch (e.Key)
+    {
+      case "Tab":
+      case "ArrowDown":
+        await SetHighlightedIndexAsync(0);
+        await _elementsField.FocusAsync();
+        break;
+      case "Escape":
+        Close();
+        break;
+    }
+  }
+
+  private async Task HandleKeyDownPopover(KeyboardEventArgs e)
+  {
+    switch (e.Key)
+    {
+      case "Tab":
+        await _searchField.FocusAsync();
+        break;
+      case "Escape":
+        Close();
+        break;
+      case "ArrowDown":
+        await SetHighlightedIndexAsync(_highlightedIndex + 1);
+        break;
+      case "ArrowUp":
+        await SetHighlightedIndexAsync(_highlightedIndex - 1);
+        break;
+      case "Home":
+        await SetHighlightedIndexAsync(0);
+        break;
+      case "End":
+        await SetHighlightedIndexAsync(int.MaxValue);
+        break;
+      case "Enter":
+        var filtered = GetFilteredItems();
+        if (filtered.Count > 0
+          && _highlightedIndex >= 0
+          && _highlightedIndex < filtered.Count)
+        {
+          await ToggleItem(filtered[_highlightedIndex]);
+        }
+        break;
+    }
+  }
 
   private void OnCaseSensitiveToggle()
   {
+    _highlightedIndex = 0;
     _caseSensitive = !_caseSensitive;
+    InvalidateFilteredCache();
   }
 
   private IReadOnlyList<T> GetSelectedValuesList()
@@ -99,6 +212,16 @@ public partial class SearchableSelectField<T>
     MultiSelection ? SelectedValues?.Any() == true : Value is not null;
 
   private IReadOnlyList<T> GetFilteredItems()
+  {
+    return _filteredItemsCache ??= ComputeFilteredItems();
+  }
+
+  private void InvalidateFilteredCache()
+  {
+    _filteredItemsCache = null;
+  }
+
+  private IReadOnlyList<T> ComputeFilteredItems()
   {
     if (string.IsNullOrWhiteSpace(_search))
     {
@@ -145,9 +268,11 @@ public partial class SearchableSelectField<T>
   private void ToggleOpen()
   {
     _open = !_open;
+    _highlightedIndex = 0;
     if (_open)
     {
       _search = string.Empty;
+      InvalidateFilteredCache();
     }
   }
 
@@ -206,7 +331,7 @@ public partial class SearchableSelectField<T>
     }
   }
 
-  private string GetItemClass(bool selected)
+  private string GetItemClass(bool selected, bool highlighted)
   {
     var classes = new List<string>
     {
@@ -226,6 +351,18 @@ public partial class SearchableSelectField<T>
       }
     }
 
+    if (highlighted)
+    {
+      classes.Add("ozds-searchable-select__item--highlighted");
+    }
+
     return string.Join(" ", classes);
+  }
+  public async ValueTask DisposeAsync()
+  {
+    if (_module is not null)
+    {
+      await _module.DisposeAsync();
+    }
   }
 }

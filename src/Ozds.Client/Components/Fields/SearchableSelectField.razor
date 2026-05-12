@@ -51,6 +51,7 @@
               Paper="false"
               Class="@($"ozds-searchable-select__popover {PopoverClass}".Trim())">
     <MudPaper Class="ozds-searchable-select__paper"
+              tabindex="-1"
               Elevation="8"
               Style="@($"max-height:{MaxPopoverHeight};")">
       <div class="d-flex flex-row align-center ozds-searchable-select__search-wrap pa-2">
@@ -58,7 +59,13 @@
                        Color="@(_caseSensitive ? Color.Primary : Color.Default)"
                        OnClick="@OnCaseSensitiveToggle"
                        Size="Size.Medium"/>
-        <MudTextField @bind-Value="_search"
+        <MudTextField
+                      @ref="_searchField"
+                      T="string"
+                      Value="_search"
+                      DebounceInterval="150"
+                      OnKeyDown="HandleKeyDownSearch"
+                      ValueChanged="OnSearchChanged"
                       Placeholder="@Translate("Search")"
                       Immediate="true"
                       Variant="Variant.Text"
@@ -68,20 +75,35 @@
                       AutoFocus="true"
                       Class="ozds-searchable-select__search"/>
       </div>
-      <div class="ozds-searchable-select__list-wrap">
+       <div
+         @ref="_elementsField"
+         @onkeydown="HandleKeyDownPopover"
+         @onkeydown:preventDefault="true"
+         class="ozds-searchable-select__list-wrap">
         @{
           var cachedFilteredItems = GetFilteredItems();
+          var selectedSet = MultiSelection
+            ? SelectedValues switch
+              {
+                null => new HashSet<T>(),
+                HashSet<T> set => set,
+                _ => new HashSet<T>(SelectedValues)
+              }
+            : null;
         }
         @if (cachedFilteredItems.Any())
         {
-          <MudList T="T" Dense="@Dense" Class="ozds-searchable-select__list">
-            @foreach (var item in cachedFilteredItems)
+          <MudList T="T" Dense="@Dense" Class="ozds-searchable-select__list" >
+            @foreach (var (idx, item) in cachedFilteredItems.Index())
             {
-              var selected = IsSelected(item);
+              var selected = MultiSelection ? selectedSet!.Contains(item) : IsSelected(item);
+              var highlighted = idx == _highlightedIndex;
+
               <MudListItem T="T"
                            Value="item"
+                           id="@GetItemId(idx)"
                            OnClick="@(() => ToggleItem(item))"
-                           Class="@GetItemClass(selected)">
+                           Class="@GetItemClass(selected, highlighted)">
                 <div class="d-flex align-center ozds-searchable-select__item-content">
                   @if (MultiSelection)
                   {
