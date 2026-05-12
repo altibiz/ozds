@@ -124,8 +124,7 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
     }
   }
 
-  private string GetItemId(int index) =>
-    $"ozds-ss-item-{_instanceId}-{index}";
+  private string GetItemId(int index) => $"ozds-ss-item-{_instanceId}-{index}";
 
   private async Task SetHighlightedIndexAsync(int index)
   {
@@ -136,7 +135,8 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
     {
       await _module.InvokeVoidAsync(
         "scrollItemIntoView",
-        GetItemId(_highlightedIndex));
+        GetItemId(_highlightedIndex)
+      );
     }
   }
 
@@ -186,9 +186,11 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
         break;
       case "Enter":
         var filtered = GetFilteredItems();
-        if (filtered.Count > 0
+        if (
+          filtered.Count > 0
           && _highlightedIndex >= 0
-          && _highlightedIndex < filtered.Count)
+          && _highlightedIndex < filtered.Count
+        )
         {
           await ToggleItem(filtered[_highlightedIndex]);
         }
@@ -232,11 +234,13 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
       ? StringComparison.Ordinal
       : StringComparison.OrdinalIgnoreCase;
 
-    return Items.Where(item =>
-    {
-      var text = GetDisplayText(item);
-      return text.Contains(_search, comparison);
-    }).ToList();
+    return Items
+      .Where(item =>
+      {
+        var text = GetDisplayText(item);
+        return text.Contains(_search, comparison);
+      })
+      .ToList();
   }
 
   private string GetDisplayText(T? item)
@@ -258,8 +262,8 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
   {
     if (MultiSelection)
     {
-      return GetSelectedValuesList().Any(v =>
-        EqualityComparer<T>.Default.Equals(v, item));
+      return GetSelectedValuesList()
+        .Any(v => EqualityComparer<T>.Default.Equals(v, item));
     }
 
     return EqualityComparer<T?>.Default.Equals(Value, item);
@@ -287,7 +291,8 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
     {
       var list = GetSelectedValuesList().ToList();
       var index = list.FindIndex(v =>
-        EqualityComparer<T>.Default.Equals(v, item));
+        EqualityComparer<T>.Default.Equals(v, item)
+      );
       if (index >= 0)
       {
         list.RemoveAt(index);
@@ -333,10 +338,7 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
 
   private string GetItemClass(bool selected, bool highlighted)
   {
-    var classes = new List<string>
-    {
-      "ozds-searchable-select__item",
-    };
+    var classes = new List<string> { "ozds-searchable-select__item" };
     if (!string.IsNullOrEmpty(ItemClass))
     {
       classes.Add(ItemClass);
@@ -358,6 +360,7 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
 
     return string.Join(" ", classes);
   }
+
   public async ValueTask DisposeAsync()
   {
     if (_module is not null)

@@ -6514,7 +6514,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 15 column 10
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 15 column 10
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 16 column 10
       </Metadata>
       <Value>
         Postavke grafa
@@ -14145,7 +14145,7 @@
         Measure
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 70 column 19
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 62 column 19
       </Metadata>
       <Value>
         Mjera
@@ -14208,7 +14208,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 22 column 19
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 29 column 21
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 26 column 21
       </Metadata>
       <Value>
         Obračunska mjerna mjesta
@@ -15377,7 +15377,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 40 column 19
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 48 column 19
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 44 column 21
       </Metadata>
       <Value>
         Brojila
@@ -16466,7 +16466,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 64 column 17
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 94 column 19
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 86 column 19
       </Metadata>
       <Value>
         Množitelj
@@ -16477,7 +16477,7 @@
         Multiply the selected time unit to get wanted span of time
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 89 column 51
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 81 column 71
       </Metadata>
       <Value>
         Pomnožite odabranu vremensku jedinicu da dobijete željeni vremenski
@@ -17248,6 +17248,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        No results
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Fields/SearchableSelectField.razor' line 133 column 16
+      </Metadata>
+      <Value>
+        Nema rezultata
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         None
       </Key>
       <Metadata>
@@ -17733,7 +17744,7 @@
         Phase
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 83 column 19
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 75 column 19
       </Metadata>
       <Value>
         Faza
@@ -17746,7 +17757,7 @@
       <Metadata>
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementDonutChart.razor' line 65 column 9
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementGaugeChart.razor' line 63 column 9
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 71 column 9
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 74 column 9
         From file 'Ozds.Client/Components/Charts/Measurements/MeasurementLineChart.razor' line 11 column 38
       </Metadata>
       <Value>
@@ -17758,7 +17769,7 @@
         Phase(s) for given measure, if empty, display sum of all phases
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 78 column 51
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 70 column 72
       </Metadata>
       <Value>
         Faza(e) za određeno mjerenje, ako je prazno, prikazuje zbroj svih faza
@@ -19889,8 +19900,8 @@
         Refresh
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 119 column 21
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 128 column 23
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 111 column 21
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 120 column 23
       </Metadata>
       <Value>
         Osvježi
@@ -20377,7 +20388,7 @@
       </Key>
       <Metadata>
         From file 'Ozds.Client/Components/Charts/Financial/FinancialChartControls.razor' line 57 column 17
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 107 column 19
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 99 column 19
       </Metadata>
       <Value>
         Rezolucija
@@ -20719,6 +20730,7 @@
         Search
       </Key>
       <Metadata>
+        From file 'Ozds.Client/Components/Fields/SearchableSelectField.razor' line 69 column 37
         From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 66 column 50
         From file 'Ozds.Client/Components/Streaming/MappedTable.razor' line 180 column 29
       </Metadata>
@@ -22788,7 +22800,7 @@
         or new measurement comes in
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 113 column 51
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 105 column 51
       </Metadata>
       <Value>
         Dinamičko osvježavanje, osvježava prikaz nakon promjene parametra ili
@@ -23473,7 +23485,7 @@
         Unit of time used in defining the span of time for the display
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 102 column 51
+        From file 'Ozds.Client/Components/Charts/Measurements/MeasurementChartControls.razor' line 94 column 51
       </Metadata>
       <Value>
         Jedinica vremena korištena za definiranje vremenskog raspona prikaza

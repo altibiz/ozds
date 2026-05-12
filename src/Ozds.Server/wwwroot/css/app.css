@@ -89,12 +89,9 @@
 }
 
 /* Rotate MudField's end adornment (the chevron) when open. */
-.ozds-searchable-select__field--open
-  .mud-input-adornment-end
-  .mud-icon-root {
+.ozds-searchable-select__field--open .mud-input-adornment-end .mud-icon-root {
   transform: rotate(180deg);
 }
-
 
 /* ------------------------------------------------------------
    SearchableSelectField
