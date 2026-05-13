@@ -387,7 +387,7 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
   {
     if (_module is null)
     {
-        return;
+      return;
     }
 
     // NOTE: this catch is here because the disconnected exception
