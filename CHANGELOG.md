@@ -36,6 +36,24 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - `MeasurementChartControls` disables the Measure, Phase, Multiplier,
   Resolution, and Refresh fields when no measurement location or meter is
   selected via a local `isNothingSelected` flag
+- `MeasurementChartControls` now uses the new `SearchableSelectField` instead of
+  plain `MudSelect` for both meters and measurement locations, with consistent
+  `MudTooltip` wrappers showing the full list of current selections; the
+  `OnMeasurementLocationsChanged` and `OnMetersChanged` callbacks now receive
+  `IMeasurementLocation`/`IMeter` instances directly instead of resolving them
+  from string ids
+- `MeasurementLineChart` wraps the chart and its empty-state placeholder in a
+  fixed-height container so chart re-renders no longer shift the chart-control
+  selection fields above it
+- `MudTooltip` overlays in `MeasurementChartControls` no longer block pointer
+  events on the underlying fields; added a global
+  `.mud-tooltip { pointer-events: none; }` rule and set `ShowOnFocus="false"` on
+  the measure, phase, and multiplier tooltips so they no longer intercept clicks
+  or steal focus
+- `SelectField` dropdown no longer opens and immediately closes when clicked;
+  removed the wrapper `<div @onpointerup="() => _inner.OpenMenu()">` and the
+  `MudSelect _inner` ref that double-toggled the menu against `MudSelect`'s own
+  click handling
 
 ### Added
 
@@ -49,6 +67,25 @@ and adheres to [Semantic Versioning](https://semver.org/).
   attributes
 - Translations `No measurement locations/meters are selected for display` and
   `No measurement location or meter selected` in `en.xml` and `hr.xml`
+- `SearchableSelectField<T>` component in `Ozds.Client.Components.Fields`, a
+  custom dropdown built on `MudPopover`, `MudList`, and `MudTextField`,
+  providing search-as-you-type filtering with a case-sensitivity toggle, single-
+  and multi-selection over arbitrary `ICollection<T>` collections, optional
+  `ItemTemplate`, full keyboard navigation (ArrowUp/Down/Home/End to move the
+  highlight, Enter to select, Escape to close, Tab to swap focus between search
+  and list), a highlighted-row state with primary-tinted background and
+  auto-scroll-into-view, plus per-render caching of the filtered list
+  (invalidated on search/case/`Items` changes) and a `HashSet`-backed
+  selected-value lookup for O(n) multi-selection rendering
+- Collocated `searchable-select-field.js` ES module loaded on first render via
+  `IJSRuntime.InvokeAsync<IJSObjectReference>("import", ...)` and released on
+  `IAsyncDisposable.DisposeAsync`, exposing a single `scrollItemIntoView(id)`
+  helper that calls `scrollIntoView({ block: 'nearest', behavior: 'instant' })`
+- `ozds-searchable-select__item--highlighted` style in `app.css` using
+  `--mud-palette-primary-hover` background and `--mud-palette-primary` text to
+  match MudBlazor's primary-selected visual treatment, with selector specificity
+  bumped via `.mud-list-item-clickable` so it wins over the default hover
+  background
 
 ## [1.8.4] - 2026-04-24
 

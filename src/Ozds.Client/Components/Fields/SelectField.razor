@@ -2,11 +2,10 @@
 @using MudBlazor
 @typeparam T
 
-<div @onpointerup="() => _inner.OpenMenu()">
+<div>
   @if (MultiSelection)
   {
     <MudSelect T="T"
-               @ref="_inner"
                Label="@Label"
                SelectedValues="@SelectedValues"
                SelectedValuesChanged="@SelectedValuesChanged"
@@ -20,7 +19,6 @@
   else
   {
     <MudSelect T="T"
-               @ref="_inner"
                Label="@Label"
                Value="@Value"
                ValueChanged="@ValueChanged"
