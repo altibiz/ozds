@@ -4,50 +4,52 @@
 @using Ozds.Business.Models.Enums
 @inherits Ozds.Client.Components.Base.OzdsComponentBase
 
-@if (Parameters.MeasurementLocations.Count == 0
-  && Parameters.Meters.Count == 0)
-{
-  <div style="height:300px; display: grid; align-items: center;">
-    <h2 style="text-align: center;">@Translate("No measurement locations/meters are selected for display")</h2>
-  </div>
-}
-else
-{
-  <ApexChart
-    XAxisType="@XAxisType.Datetime"
-    Options="@_options"
-    Height="@Height"
-    @ref="@_chart">
-    @foreach (var (meter, measurementLocation, i) in GetItems())
-    {
-      if (Parameters.Phases.Count == 0)
+<div style="height:@(Height)px">
+  @if (Parameters.MeasurementLocations.Count == 0
+    && Parameters.Meters.Count == 0)
+  {
+    <div style="height:100%; display: grid; align-items: center;">
+      <h2 style="text-align: center;">@Translate("No measurement locations/meters are selected for display")</h2>
+    </div>
+  }
+  else
+  {
+    <ApexChart
+      XAxisType="@XAxisType.Datetime"
+      Options="@_options"
+      Height="@Height"
+      @ref="@_chart">
+      @foreach (var (meter, measurementLocation, i) in GetItems())
       {
         if (Parameters.Phases.Count == 0)
         {
-          @(
-          Series(
-            PhaseModel.L1.ToColor(i),
-            meter,
-            measurementLocation
-          ))
-        }
-        else
-        {
-          foreach (var phase in Parameters.Phases.OrderBy(x => x))
+          if (Parameters.Phases.Count == 0)
           {
             @(
             Series(
-              phase.ToColor(i),
+              PhaseModel.L1.ToColor(i),
               meter,
-              measurementLocation,
-              phase
+              measurementLocation
             ))
+          }
+          else
+          {
+            foreach (var phase in Parameters.Phases.OrderBy(x => x))
+            {
+              @(
+              Series(
+                phase.ToColor(i),
+                meter,
+                measurementLocation,
+                phase
+              ))
+            }
           }
         }
       }
-    }
-  </ApexChart>
-}
+    </ApexChart>
+  }
+</div>
 
 @code {
   private RenderFragment Series(
