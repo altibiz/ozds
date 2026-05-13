@@ -126,12 +126,23 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
 
   private string GetItemId(int index) => $"ozds-ss-item-{_instanceId}-{index}";
 
-  private async Task SetHighlightedIndexAsync(int index)
+  private void SetHighlightedIndex(int index)
   {
     var count = GetFilteredItems().Count;
-    _highlightedIndex = Math.Clamp(index, 0, count - 1);
+    if (count == 0)
+    {
+      _highlightedIndex = 0;
+      return;
+    }
 
-    if (_module is not null)
+    _highlightedIndex = Math.Clamp(index, 0, count - 1);
+  }
+
+  private async Task SetHighlightedIndexWithScrollAlignment(int index)
+  {
+    SetHighlightedIndex(index);
+
+    if (_module is not null && _highlightedIndex >= 0)
     {
       await _module.InvokeVoidAsync(
         "scrollItemIntoView",
@@ -153,7 +164,7 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
     {
       case "Tab":
       case "ArrowDown":
-        await SetHighlightedIndexAsync(0);
+        await SetHighlightedIndexWithScrollAlignment(0);
         await _elementsField.FocusAsync();
         break;
       case "Escape":
@@ -173,16 +184,16 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
         Close();
         break;
       case "ArrowDown":
-        await SetHighlightedIndexAsync(_highlightedIndex + 1);
+        await SetHighlightedIndexWithScrollAlignment(_highlightedIndex + 1);
         break;
       case "ArrowUp":
-        await SetHighlightedIndexAsync(_highlightedIndex - 1);
+        await SetHighlightedIndexWithScrollAlignment(_highlightedIndex - 1);
         break;
       case "Home":
-        await SetHighlightedIndexAsync(0);
+        await SetHighlightedIndexWithScrollAlignment(0);
         break;
       case "End":
-        await SetHighlightedIndexAsync(int.MaxValue);
+        await SetHighlightedIndexWithScrollAlignment(int.MaxValue);
         break;
       case "Enter":
         var filtered = GetFilteredItems();
@@ -285,11 +296,22 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
     _open = false;
   }
 
+  // NOTE: for current select sizes this closure callback style
+  // should be acceptable
+  // in future if need be, reconstruct this to use event.target
+  // so it does not need to save closure per item
+  private Task ToggleItem(T item, int elementIndex)
+  {
+    SetHighlightedIndex(elementIndex);
+    return ToggleItem(item);
+  }
+
   private async Task ToggleItem(T item)
   {
     if (MultiSelection)
     {
       var list = GetSelectedValuesList().ToList();
+
       var index = list.FindIndex(v =>
         EqualityComparer<T>.Default.Equals(v, item)
       );
@@ -355,7 +377,7 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
 
     if (highlighted)
     {
-      classes.Add("ozds-searchable-select__item--highlighted");
+      classes.Add("mud-primary-text mud-primary-hover");
     }
 
     return string.Join(" ", classes);
@@ -363,9 +385,20 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
 
   public async ValueTask DisposeAsync()
   {
-    if (_module is not null)
+    if (_module is null)
+    {
+        return;
+    }
+
+    // NOTE: this catch is here because the disconnected exception
+    // does not signify an actual error in this case and can be safely ignored
+    try
     {
       await _module.DisposeAsync();
+    }
+    catch (JSDisconnectedException)
+    {
+      // Ignore: Blazor circuit/browser already disconnected.
     }
   }
 }

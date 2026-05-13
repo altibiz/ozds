@@ -100,9 +100,8 @@
               var highlighted = idx == _highlightedIndex;
 
               <MudListItem T="T"
-                           Value="item"
                            id="@GetItemId(idx)"
-                           OnClick="@(() => ToggleItem(item))"
+                           OnClick="@(() => ToggleItem(item, idx))"
                            Class="@GetItemClass(selected, highlighted)">
                 <div class="d-flex align-center ozds-searchable-select__item-content">
                   @if (MultiSelection)
