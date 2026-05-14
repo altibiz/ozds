@@ -9,6 +9,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+## [1.8.5] - 2026-05-13
+
 ### Changed
 
 - Refactored `ShouldClamp` helper in `MeasurementProcedureCompiler` to check
@@ -81,11 +83,6 @@ and adheres to [Semantic Versioning](https://semver.org/).
   `IJSRuntime.InvokeAsync<IJSObjectReference>("import", ...)` and released on
   `IAsyncDisposable.DisposeAsync`, exposing a single `scrollItemIntoView(id)`
   helper that calls `scrollIntoView({ block: 'nearest', behavior: 'instant' })`
-- `ozds-searchable-select__item--highlighted` style in `app.css` using
-  `--mud-palette-primary-hover` background and `--mud-palette-primary` text to
-  match MudBlazor's primary-selected visual treatment, with selector specificity
-  bumped via `.mud-list-item-clickable` so it wins over the default hover
-  background
 
 ## [1.8.4] - 2026-04-24
 
@@ -852,6 +849,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 - init
 
+[1.8.5]: https://github.com/altibiz/ozds/compare/1.8.4...1.8.5
 [1.8.4]: https://github.com/altibiz/ozds/compare/1.8.3...1.8.4
 [1.8.3]: https://github.com/altibiz/ozds/compare/1.8.2...1.8.3
 [1.8.2]: https://github.com/altibiz/ozds/compare/1.8.1...1.8.2
