@@ -40,6 +40,7 @@
   * {
     font-family: 'Roboto';
     font-size: 11pt;
+    box-sizing: border-box;
   }
 
   p, a, strong, span, td, th {
@@ -117,6 +118,10 @@
   @@media print {
     .page-break {
       display: none;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
     }
   }
 
