@@ -27,6 +27,11 @@ and adheres to [Semantic Versioning](https://semver.org/).
   now it uses fixed list item heights times index of the next highlighted item
 - `SearchableSelectField<T>` now inherits `OzdsComponentBase` instead of
   implementing `IAsyncDisposable` directly
+- Fix, PDF document layout misalignment in `DocumentLayout.razor`: added
+  `box-sizing: border-box`
+- Fix, body offset on PDF export in `DocumentLayout.razor`: added
+  `html, body { margin: 0; padding: 0 }` inside `@@media print` to neutralize
+  Chromium's default 8px user-agent body margin during Playwright PDF rendering
 
 ## [1.8.5] - 2026-05-13
 
