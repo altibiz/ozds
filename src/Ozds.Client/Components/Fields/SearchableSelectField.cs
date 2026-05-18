@@ -241,9 +241,7 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
   {
     if (string.IsNullOrWhiteSpace(_search))
     {
-      return Items
-        .Select((value, index) => (index, value))
-        .ToList();
+      return Items.Select((value, index) => (index, value)).ToList();
     }
 
     var comparison = _caseSensitive
