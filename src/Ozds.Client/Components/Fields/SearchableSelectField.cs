@@ -13,8 +13,6 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
   private const string ModulePath =
     "/js/components/searchable-select-field/searchable-select-field.js";
 
-  private readonly string _instanceId = Guid.NewGuid().ToString("N");
-
   [Parameter]
   public string? Label { get; set; }
 
@@ -88,7 +86,7 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
   public string MaxPopoverHeight { get; set; } = "320px";
 
   [Parameter]
-  public float ItemSize { get; set; } = 36f;
+  public float ItemSize { get; set; } = 56f;
 
   [Parameter(CaptureUnmatchedValues = true)]
   public IDictionary<string, object>? AdditionalAttributes { get; set; }
@@ -129,8 +127,6 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
     }
   }
 
-  private string GetItemId(int index) => $"ozds-ss-item-{_instanceId}-{index}";
-
   private void SetHighlightedIndex(int index)
   {
     var count = GetFilteredItems().Count;
@@ -150,8 +146,10 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
     if (_module is not null && _highlightedIndex >= 0)
     {
       await _module.InvokeVoidAsync(
-        "scrollItemIntoView",
-        GetItemId(_highlightedIndex)
+        "scrollIndexIntoView",
+        _elementsField,
+        _highlightedIndex,
+        ItemSize
       );
     }
   }

@@ -106,7 +106,6 @@
               var highlighted = entry.Index == _highlightedIndex;
             }
             <MudListItem T="T"
-                         id="@GetItemId(entry.Index)"
                          OnClick="@(() => ToggleItem(entry.Value, entry.Index))"
                          Class="@GetItemClass(selected, highlighted)">
               <div class="d-flex align-center ozds-searchable-select__item-content">
