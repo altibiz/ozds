@@ -72,6 +72,7 @@
                       Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Filled.Search"
                       Margin="Margin.Dense"
+                      AutoFocus
                       Class="ozds-searchable-select__search"/>
       </div>
        <div
@@ -90,39 +91,44 @@
               }
             : null;
         }
-        @if (cachedFilteredItems.Any())
+        @if (cachedFilteredItems.Count > 0)
         {
-          <MudList T="T" Dense="@Dense" Class="ozds-searchable-select__list" >
-            @foreach (var (idx, item) in cachedFilteredItems.Index())
-            {
-              var selected = MultiSelection ? selectedSet!.Contains(item) : IsSelected(item);
-              var highlighted = idx == _highlightedIndex;
-
-              <MudListItem T="T"
-                           id="@GetItemId(idx)"
-                           OnClick="@(() => ToggleItem(item, idx))"
-                           Class="@GetItemClass(selected, highlighted)">
-                <div class="d-flex align-center ozds-searchable-select__item-content">
-                  @if (MultiSelection)
-                  {
-                    <MudCheckBox T="bool"
-                                 Value="selected"
-                                 ReadOnly="true"
-                                 Dense="true"
-                                 Class="mr-2 ozds-searchable-select__item-check"/>
-                  }
-                  @if (ItemTemplate is not null)
-                  {
-                    @ItemTemplate(item)
-                  }
-                  else
-                  {
-                    <span class="ozds-searchable-select__item-text">@GetDisplayText(item)</span>
-                  }
-                </div>
-              </MudListItem>
+          <MudVirtualize T="(int Index, T Value)"
+                         Items="@cachedFilteredItems"
+                         ItemSize="@ItemSize"
+                         OverscanCount="6"
+                         Context="entry"
+                         Enabled="true">
+            @{
+              var selected = MultiSelection
+                ? selectedSet!.Contains(entry.Value)
+                : IsSelected(entry.Value);
+              var highlighted = entry.Index == _highlightedIndex;
             }
-          </MudList>
+            <MudListItem T="T"
+                         id="@GetItemId(entry.Index)"
+                         OnClick="@(() => ToggleItem(entry.Value, entry.Index))"
+                         Class="@GetItemClass(selected, highlighted)">
+              <div class="d-flex align-center ozds-searchable-select__item-content">
+                @if (MultiSelection)
+                {
+                  <MudCheckBox T="bool"
+                               Value="selected"
+                               ReadOnly="true"
+                               Dense="true"
+                               Class="mr-2 ozds-searchable-select__item-check"/>
+                }
+                @if (ItemTemplate is not null)
+                {
+                  @ItemTemplate(entry.Value)
+                }
+                else
+                {
+                  <span class="ozds-searchable-select__item-text">@GetDisplayText(entry.Value)</span>
+                }
+              </div>
+            </MudListItem>
+          </MudVirtualize>
         }
         else
         {
