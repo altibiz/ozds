@@ -8,6 +8,7 @@ using Ozds.Business.Observers.EventArgs;
 using Ozds.Business.Queries;
 using Ozds.Business.Queries.Abstractions;
 using Ozds.Client.Components.Base;
+using Ozds.Client.Services;
 
 namespace Ozds.Client.Components.Charts;
 
@@ -48,6 +49,9 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   [Inject]
   private TimeQueries TimeQueries { get; set; } = default!;
+
+  [Inject]
+  private StateGuard StateGuard { get; set; } = default!;
 
   protected override void OnInitialized()
   {
@@ -147,6 +151,20 @@ public partial class MeasurementChartControls : OzdsComponentBase
 
   protected override async Task OnParametersSetAsync()
   {
+    if (
+      !StateGuard.Changed(
+        [
+        Dep.SetEquality(_parameters.Meters),
+        Dep.SetEquality(_parameters.MeasurementLocations),
+        Dep.Of(_parameters.Resolution),
+        Dep.Of(_parameters.Multiplier),
+        ]
+      )
+    )
+    {
+      return;
+    }
+
     await Fetch();
   }
 
