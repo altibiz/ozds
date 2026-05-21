@@ -71,7 +71,6 @@ public sealed class StateGuard : IDisposable
 
 public readonly struct Dep
 {
-
   internal static readonly Func<object?, object?, bool> DefaultComparer =
     static (a, b) => Equals(a, b);
 

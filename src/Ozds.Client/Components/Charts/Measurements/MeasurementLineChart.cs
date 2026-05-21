@@ -54,15 +54,10 @@ public partial class MeasurementLineChart : OzdsComponentBase
 
   protected override async Task OnParametersSetAsync()
   {
-
     if (
-      StateGuard.Changed(
-        [
-          Dep.Of(Parameters.Measurements),
-        ]
-      )
+      StateGuard.Changed([Dep.Of(Parameters.Measurements)])
       && _chart is { } chart
-      )
+    )
     {
       _options = CreateGraphOptions();
       await chart.UpdateSeriesAsync();

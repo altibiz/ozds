@@ -152,14 +152,12 @@ public partial class MeasurementChartControls : OzdsComponentBase
   protected override async Task OnParametersSetAsync()
   {
     if (
-      !StateGuard.Changed(
-        [
+      !StateGuard.Changed([
         Dep.SetEquality(_parameters.Meters),
         Dep.SetEquality(_parameters.MeasurementLocations),
         Dep.Of(_parameters.Resolution),
         Dep.Of(_parameters.Multiplier),
-        ]
-      )
+      ])
     )
     {
       return;
