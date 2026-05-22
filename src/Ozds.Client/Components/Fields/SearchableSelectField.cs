@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor;
+using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Components.Fields;
 
 // TODO: current toggle will not refresh internal list of selected items
 // in the future enable default behavior that will update the internal list
-public partial class SearchableSelectField<T> : IAsyncDisposable
+public partial class SearchableSelectField<T> : OzdsComponentBase
 {
   private const string ModulePath =
     "/js/components/searchable-select-field/searchable-select-field.js";
@@ -111,7 +112,11 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
   {
     if (firstRender)
     {
-      _module = await JS.InvokeAsync<IJSObjectReference>("import", ModulePath);
+      _module = await JS.InvokeAsync<IJSObjectReference>(
+        "import",
+        CancellationToken,
+        ModulePath
+      );
     }
   }
 
@@ -147,6 +152,7 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
     {
       await _module.InvokeVoidAsync(
         "scrollIndexIntoView",
+        CancellationToken,
         _elementsField,
         _highlightedIndex,
         ItemSize
@@ -391,18 +397,27 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
     return string.Join(" ", classes);
   }
 
-  public async ValueTask DisposeAsync()
+  protected override void Dispose(bool disposing)
   {
-    if (_module is null)
+    if (IsDisposed)
     {
       return;
     }
 
-    // NOTE: this catch is here because the disconnected exception
-    // does not signify an actual error in this case and can be safely ignored
+    if (disposing && _module is { } module)
+    {
+      _module = null;
+      _ = DisposeModuleAsync(module);
+    }
+
+    base.Dispose(disposing);
+  }
+
+  private static async Task DisposeModuleAsync(IJSObjectReference module)
+  {
     try
     {
-      await _module.DisposeAsync();
+      await module.DisposeAsync();
     }
     catch (JSDisconnectedException)
     {
