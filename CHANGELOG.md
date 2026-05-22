@@ -25,6 +25,8 @@ and adheres to [Semantic Versioning](https://semver.org/).
 - `SearchableSelectField<T>` keyboard scroll alignment no longer relies on
   `document.getElementById` against per-item ids, since `MudVirtualize` is used,
   now it uses fixed list item heights times index of the next highlighted item
+- `SearchableSelectField<T>` now inherits `OzdsComponentBase` instead of
+  implementing `IAsyncDisposable` directly
 
 ## [1.8.5] - 2026-05-13
 
