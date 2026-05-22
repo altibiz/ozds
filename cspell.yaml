@@ -206,3 +206,5 @@ words:
   - isexec
   - sbyte
   - compgen
+  - overscroll
+  - overscan

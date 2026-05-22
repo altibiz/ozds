@@ -9,6 +9,25 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Changed
+
+- `SearchableSelectField<T>` now combines its dropdown list with `MudVirtualize`
+  instead of a `MudList` + `@foreach`, so dropdowns with thousands of items
+  render only the visible window plus an additional buffer of 6 rows for more
+  smooth transitions without loading
+- `SearchableSelectField<T>` filtered-items cache now stores
+  `List<(int Index, T Value)>` tuples directly, removing the per-render list
+  projection in the razor
+- internal text field now adds `AutoFocus` parameter so the user can start
+  typing as soon as the dropdown opens
+- `.ozds-searchable-select__list-wrap` now sets `overscroll-behavior: none` so
+  wheel scrolling inside the dropdown no longer chains to the page beneath
+- `SearchableSelectField<T>` keyboard scroll alignment no longer relies on
+  `document.getElementById` against per-item ids, since `MudVirtualize` is used,
+  now it uses fixed list item heights times index of the next highlighted item
+- `SearchableSelectField<T>` now inherits `OzdsComponentBase` instead of
+  implementing `IAsyncDisposable` directly
+
 ## [1.8.5] - 2026-05-13
 
 ### Changed

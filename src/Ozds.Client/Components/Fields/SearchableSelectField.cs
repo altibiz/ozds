@@ -3,15 +3,16 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor;
+using Ozds.Client.Components.Base;
 
 namespace Ozds.Client.Components.Fields;
 
-public partial class SearchableSelectField<T> : IAsyncDisposable
+// TODO: current toggle will not refresh internal list of selected items
+// in the future enable default behavior that will update the internal list
+public partial class SearchableSelectField<T> : OzdsComponentBase
 {
   private const string ModulePath =
     "/js/components/searchable-select-field/searchable-select-field.js";
-
-  private readonly string _instanceId = Guid.NewGuid().ToString("N");
 
   [Parameter]
   public string? Label { get; set; }
@@ -85,6 +86,9 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
   [Parameter]
   public string MaxPopoverHeight { get; set; } = "320px";
 
+  [Parameter]
+  public float ItemSize { get; set; } = 56f;
+
   [Parameter(CaptureUnmatchedValues = true)]
   public IDictionary<string, object>? AdditionalAttributes { get; set; }
 
@@ -101,14 +105,18 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
   private MudTextField<string> _searchField = default!;
   private ElementReference _elementsField = default!;
 
-  private IReadOnlyList<T>? _filteredItemsCache;
+  private List<(int Index, T Value)>? _filteredItemsCache;
   private ICollection<T>? _previousItems;
 
   protected override async Task OnAfterRenderAsync(bool firstRender)
   {
     if (firstRender)
     {
-      _module = await JS.InvokeAsync<IJSObjectReference>("import", ModulePath);
+      _module = await JS.InvokeAsync<IJSObjectReference>(
+        "import",
+        CancellationToken,
+        ModulePath
+      );
     }
   }
 
@@ -123,8 +131,6 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
       InvalidateFilteredCache();
     }
   }
-
-  private string GetItemId(int index) => $"ozds-ss-item-{_instanceId}-{index}";
 
   private void SetHighlightedIndex(int index)
   {
@@ -145,8 +151,11 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
     if (_module is not null && _highlightedIndex >= 0)
     {
       await _module.InvokeVoidAsync(
-        "scrollItemIntoView",
-        GetItemId(_highlightedIndex)
+        "scrollIndexIntoView",
+        CancellationToken,
+        _elementsField,
+        _highlightedIndex,
+        ItemSize
       );
     }
   }
@@ -203,7 +212,7 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
           && _highlightedIndex < filtered.Count
         )
         {
-          await ToggleItem(filtered[_highlightedIndex]);
+          await ToggleItem(filtered[_highlightedIndex].Value);
         }
         break;
     }
@@ -224,7 +233,7 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
   private bool HasSelection =>
     MultiSelection ? SelectedValues?.Any() == true : Value is not null;
 
-  private IReadOnlyList<T> GetFilteredItems()
+  private List<(int Index, T Value)> GetFilteredItems()
   {
     return _filteredItemsCache ??= ComputeFilteredItems();
   }
@@ -234,11 +243,11 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
     _filteredItemsCache = null;
   }
 
-  private IReadOnlyList<T> ComputeFilteredItems()
+  private List<(int Index, T Value)> ComputeFilteredItems()
   {
     if (string.IsNullOrWhiteSpace(_search))
     {
-      return Items is IReadOnlyList<T> list ? list : Items.ToList();
+      return Items.Select((value, index) => (index, value)).ToList();
     }
 
     var comparison = _caseSensitive
@@ -251,6 +260,7 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
         var text = GetDisplayText(item);
         return text.Contains(_search, comparison);
       })
+      .Select((value, index) => (index, value))
       .ToList();
   }
 
@@ -310,6 +320,9 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
   {
     if (MultiSelection)
     {
+      // TODO: this may pull some overhead due to cloning the list
+      // both on method and then casting it into list again
+      // in future if need be, create optimization patch for this component
       var list = GetSelectedValuesList().ToList();
 
       var index = list.FindIndex(v =>
@@ -360,6 +373,7 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
 
   private string GetItemClass(bool selected, bool highlighted)
   {
+    // TODO: this could use string builder in the future
     var classes = new List<string> { "ozds-searchable-select__item" };
     if (!string.IsNullOrEmpty(ItemClass))
     {
@@ -383,18 +397,27 @@ public partial class SearchableSelectField<T> : IAsyncDisposable
     return string.Join(" ", classes);
   }
 
-  public async ValueTask DisposeAsync()
+  protected override void Dispose(bool disposing)
   {
-    if (_module is null)
+    if (IsDisposed)
     {
       return;
     }
 
-    // NOTE: this catch is here because the disconnected exception
-    // does not signify an actual error in this case and can be safely ignored
+    if (disposing && _module is { } module)
+    {
+      _module = null;
+      _ = DisposeModuleAsync(module);
+    }
+
+    base.Dispose(disposing);
+  }
+
+  private static async Task DisposeModuleAsync(IJSObjectReference module)
+  {
     try
     {
-      await _module.DisposeAsync();
+      await module.DisposeAsync();
     }
     catch (JSDisconnectedException)
     {
