@@ -17267,16 +17267,17 @@
         From file 'Ozds.Client/Components/Fields/PolymorphicIdField.razor' line 29 column 10
         From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 122 column 19
         From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 148 column 17
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 183 column 21
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 239 column 21
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 264 column 21
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 290 column 16
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 311 column 19
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 332 column 19
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 351 column 17
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 375 column 16
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 413 column 17
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 169 column 36
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 176 column 26
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 211 column 21
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 267 column 21
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 292 column 21
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 318 column 16
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 339 column 19
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 360 column 19
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 379 column 17
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 403 column 16
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 441 column 17
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 197 column 36
       </Metadata>
       <Value>
         Nema
