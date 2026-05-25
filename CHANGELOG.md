@@ -9,8 +9,19 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Added
+
+- `ScrollablePreField<T>` helper on `OzdsDetailsComponentBase`, a wrapper around
+  `DetailsField` + `MudPaper` that renders preformatted content (notification
+  bodies, event JSON payloads) inside a fixed-height, vertically-scrollable,
+  horizontally-resizable card
+- `MaxWidth` parameter on `DetailsField` (defaults to `36rem`) so callers can
+  opt into a wider layout
+
 ### Changed
 
+- `NotificationDetails` now renders `Content` via the new `ScrollablePreField`
+- `EventDetails` now renders `Content` via `ScrollablePreField`
 - `SearchableSelectField<T>` now combines its dropdown list with `MudVirtualize`
   instead of a `MudList` + `@foreach`, so dropdowns with thousands of items
   render only the visible window plus an additional buffer of 6 rows for more
