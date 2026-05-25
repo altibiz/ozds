@@ -4,7 +4,7 @@
 @{
   RenderFragment innerBig = @<div
                                class="@("mt-2 d-flex flex-column " + Class)"
-                               style="@("max-width: 36rem; " + Style)">
+                               style="@($"max-width: {MaxWidth}; " + Style)">
                               <MudText Typo="Typo.body1">
                                 <b>@(Title)</b>:
                               </MudText>
@@ -15,7 +15,7 @@
 
   RenderFragment innerSmall = @<div
                                  class="@("mt-2 d-flex flex-row justify-space-between align-items-end " + Class)"
-                                 style="@("max-width: 36rem; " + Style)">
+                                 style="@($"max-width: {MaxWidth}; " + Style)">
                                 <MudText Typo="Typo.body1">
                                   <b>@(Title)</b>:
                                 </MudText>
@@ -58,5 +58,8 @@ else
 
   [Parameter]
   public bool LargeContent { get; set; }
+
+  [Parameter]
+  public string MaxWidth {get; set;} = "36rem";
 
 }
