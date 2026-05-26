@@ -165,28 +165,31 @@
 
   protected RenderFragment ScrollablePreField<T>(
     Expression<Func<TModel, T?>> next,
-    int maxHeight = 600
+    int maxHeight = 600,
+    bool showLineNumbers = false
   )
   {
     var nextFunc = next.Compile();
     var value = nextFunc(Model);
     return @<DetailsField Title="@(Translate(Label(next)))" MaxWidth="100%" LargeContent>
-            @if (value is null)
-             {
-               <MudText>@Translate("None")</MudText>
-             }
-             else
-             {
-               <MudPaper Elevation="1"
-                         Class="pa-2"
-                         Style="@($"max-height:{maxHeight}px; overflow-y:auto; overscroll-behavior: none;")">
-                 <pre
-                 class="ma-0"
-                 style="white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere;">
-                  @value
-                 </pre>
-               </MudPaper>
-             }
+             <ScrollablePreField Content="@value?.ToString()"
+                                 MaxHeight="@maxHeight"
+                                 ShowLineNumbers="@showLineNumbers"/>
+           </DetailsField>;
+  }
+
+  protected RenderFragment ScrollablePreField(
+    Expression<Func<TModel, JsonDocument?>> next,
+    int maxHeight = 600,
+    bool showLineNumbers = false
+  )
+  {
+    var nextFunc = next.Compile();
+    var value = nextFunc(Model);
+    return @<DetailsField Title="@(Translate(Label(next)))" MaxWidth="100%" LargeContent>
+             <ScrollablePreField Content="@JsonString(value)"
+                                 MaxHeight="@maxHeight"
+                                 ShowLineNumbers="@showLineNumbers"/>
            </DetailsField>;
   }
 

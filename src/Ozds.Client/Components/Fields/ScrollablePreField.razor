@@ -1,0 +1,37 @@
+@namespace Ozds.Client.Components.Fields
+@using MudBlazor
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+
+@if (Content is null)
+{
+  <MudText>@Translate("None")</MudText>
+}
+else
+{
+  <MudPaper Elevation="1"
+            Class="pa-2"
+            Style="@PaperStyle">
+    <div style="position: sticky; top: 0; height: 0; z-index: 2; pointer-events: none;">
+      <div style="position: absolute; top: 0; right: 0; pointer-events: auto;">
+        <MudIconButton Size="Size.Small"
+                       Icon="@ExpandIcon"
+                       OnClick="@ToggleExpanded"
+                       title="@ExpandTitle"/>
+      </div>
+    </div>
+    @if (ShowLineNumbers)
+    {
+      <div class="d-flex">
+        <pre class="ma-0 mr-3 text-right"
+             style="color: var(--mud-palette-text-secondary); white-space: pre; user-select: none;">@LineNumbers</pre>
+        <pre class="ma-0 flex-grow-1"
+             style="white-space: pre; overflow-x: auto;">@Content</pre>
+      </div>
+    }
+    else
+    {
+      <pre class="ma-0"
+           style="white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere;">@Content</pre>
+    }
+  </MudPaper>
+}
