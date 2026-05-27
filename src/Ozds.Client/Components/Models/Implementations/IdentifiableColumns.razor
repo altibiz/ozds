@@ -12,7 +12,7 @@
     @if (Raw(context.Item) is { } model)
     {
       <MudLink Href="@(Provider.CreateLink(model))">
-        @model.Title
+        @(string.IsNullOrEmpty(model.Title) ? $"[{Translate("No title exists")}]" : model.Title)
       </MudLink>
     }
   </CellTemplate>

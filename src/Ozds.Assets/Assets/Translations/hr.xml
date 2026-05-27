@@ -17259,6 +17259,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        No title exists
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Models/Implementations/IdentifiableColumns.razor' line 15 column 51
+      </Metadata>
+      <Value>
+        Naslov ne postoji
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         None
       </Key>
       <Metadata>
