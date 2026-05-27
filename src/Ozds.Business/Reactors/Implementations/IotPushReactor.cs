@@ -184,6 +184,7 @@ public class IotPushHandler(
     }
 
     var notification = activator.Activate<MessengerNotificationModel>();
+    notification.Title = "Messenger push failed";
     notification.MessengerId = messenger.Id;
     notification.Timestamp = now;
     notification.Topics = [TopicModel.All, TopicModel.InvalidPush];
