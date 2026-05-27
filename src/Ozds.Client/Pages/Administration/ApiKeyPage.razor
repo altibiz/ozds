@@ -6,6 +6,7 @@
 @using Ozds.Business.Models
 @using Ozds.Business.Models.Enums
 @using Ozds.Business.Models.Joins
+@using Ozds.Client.Components.Buttons
 @using Ozds.Client.Components.Streaming
 @inherits Ozds.Client.Components.Models.Base.OzdsIdentifiableModelPageComponentBase<Ozds.Business.Models.ApiKeyModel>
 
@@ -48,14 +49,17 @@
     }
 
     var apiKeyManager = ScopedServices.GetRequiredService<ApiKeyManager>();
+    var token = apiKeyManager.Tokenize(model);
 
     return @<MudText Class="mt-4">
              <p class="mb-2">
                @Translate("Please copy this key (it won't be shown again):")
              </p>
-             <pre>
-        @($"{apiKeyManager.Tokenize(model)}")
-      </pre>
+             <div class="d-flex align-center">
+               <pre class="ma-0 mr-2"
+                    style="flex: 1; min-width: 0; white-space: pre; overflow-x: auto;">@token</pre>
+               <CopyButton Text="@token"/>
+             </div>
            </MudText>;
   }
 
