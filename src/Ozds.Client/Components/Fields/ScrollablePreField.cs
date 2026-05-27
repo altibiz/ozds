@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using MudBlazor;
 using Ozds.Client.Components.Base;
 
@@ -15,12 +16,12 @@ public partial class ScrollablePreField : OzdsComponentBase
   public int MaxHeight { get; set; } = 600;
 
   [Parameter]
-  public bool ShowLineNumbers { get; set; }
+  public bool WrapText { get; set; }
 
   [Parameter]
   public EventCallback<bool> ExpandedChanged { get; set; }
 
-  private string PaperStyle
+  private string ScrollStyle
   {
     get
     {
@@ -29,6 +30,11 @@ public partial class ScrollablePreField : OzdsComponentBase
         : $"max-height: {MaxHeight}px; overflow-y: auto; overscroll-behavior: none;";
     }
   }
+
+  private static string HeaderStyle =>
+    "min-height: 48px;"
+    + " background-color: var(--mud-palette-background-gray);"
+    + " border-bottom: 1px solid var(--mud-palette-lines-default);";
 
   private string ExpandIcon
   {
@@ -45,28 +51,6 @@ public partial class ScrollablePreField : OzdsComponentBase
     get
     {
       return _expanded ? Translate("Collapse") : Translate("Expand");
-    }
-  }
-
-  private string LineNumbers
-  {
-    get
-    {
-      if (string.IsNullOrEmpty(Content))
-      {
-        return string.Empty;
-      }
-
-      var count = 1;
-      foreach (var c in Content)
-      {
-        if (c == '\n')
-        {
-          count++;
-        }
-      }
-
-      return string.Join('\n', Enumerable.Range(1, count));
     }
   }
 
