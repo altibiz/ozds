@@ -7,7 +7,6 @@ namespace Ozds.Client.Components.Buttons;
 
 public partial class CopyButton : OzdsComponentBase
 {
-
   [Parameter]
   public string? Text { get; set; }
 

@@ -2,9 +2,7 @@ using Microsoft.JSInterop;
 
 namespace Ozds.Client.Services;
 
-public class ClipboardService(
-  IJSRuntime _jsRuntime
-)
+public class ClipboardService(IJSRuntime _jsRuntime)
 {
   public ValueTask<string> ReadTextAsync()
   {

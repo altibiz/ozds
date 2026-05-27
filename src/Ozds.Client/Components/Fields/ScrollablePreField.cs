@@ -48,10 +48,7 @@ public partial class ScrollablePreField : OzdsComponentBase
 
   private string ExpandTitle
   {
-    get
-    {
-      return _expanded ? Translate("Collapse") : Translate("Expand");
-    }
+    get { return _expanded ? Translate("Collapse") : Translate("Expand"); }
   }
 
   private async Task ToggleExpanded()

@@ -6916,6 +6916,17 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        Copy
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Buttons/CopyButton.razor' line 8 column 24
+      </Metadata>
+      <Value>
+        Kopiraj
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         Count
       </Key>
       <Metadata>
@@ -17265,19 +17276,19 @@
         From file 'Ozds.Client/Components/Fields/EnumPicker.razor' line 26 column 12
         From file 'Ozds.Client/Components/Fields/MultiEnumPicker.razor' line 27 column 12
         From file 'Ozds.Client/Components/Fields/PolymorphicIdField.razor' line 29 column 10
+        From file 'Ozds.Client/Components/Fields/ScrollablePreField.razor' line 8 column 13
         From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 122 column 19
         From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 148 column 17
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 176 column 26
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 211 column 21
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 267 column 21
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 292 column 21
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 318 column 16
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 339 column 19
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 360 column 19
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 379 column 17
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 403 column 16
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 441 column 17
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 197 column 36
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 214 column 21
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 270 column 21
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 295 column 21
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 321 column 16
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 342 column 19
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 363 column 19
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 382 column 17
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 406 column 16
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 444 column 17
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 200 column 36
       </Metadata>
       <Value>
         Nema
@@ -18025,7 +18036,7 @@
         Please copy this key (it won't be shown again):
       </Key>
       <Metadata>
-        From file 'Ozds.Client/Pages/Administration/ApiKeyPage.razor' line 54 column 17
+        From file 'Ozds.Client/Pages/Administration/ApiKeyPage.razor' line 56 column 17
       </Metadata>
       <Value>
         Molimo kopirajte ovaj ključ (neće biti prikazan ponovno):

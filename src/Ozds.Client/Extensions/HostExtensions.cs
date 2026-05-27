@@ -79,8 +79,8 @@ public static class HostExtensions
   }
 
   private static IHostApplicationBuilder AddLocalServices(
-     this IHostApplicationBuilder builder
-    )
+    this IHostApplicationBuilder builder
+  )
   {
     builder.Services.AddScoped<ClipboardService>();
     return builder;
