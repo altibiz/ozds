@@ -36,6 +36,10 @@ and adheres to [Semantic Versioning](https://semver.org/).
   in `NavigationDrawer.razor`
 - Removed `MudDrawerContainer` from `MudDrawer` since it's supposed to be a
   parent container for `MudDrawer` component
+- `IdentifiableColumns` now renders a localized `[No title exists]` placeholder
+  for items without a title instead
+- Fix, messenger push-failure notifications now set a `Title`
+  (`Messenger push failed`) in `IotPushHandler`
 
 ## [1.8.5] - 2026-05-13
 
