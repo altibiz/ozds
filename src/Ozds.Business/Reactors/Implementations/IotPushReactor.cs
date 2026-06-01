@@ -146,12 +146,7 @@ public class IotPushHandler(
       CategoryModel.MessengerPush,
     ];
     var error = validationResults is not null
-      ? string.Join(
-        "\n",
-        validationResults.Select(x =>
-          $"{x.MemberNames.First()}: {x.ErrorMessage}"
-        )
-      )
+      ? FormatValidationResults(validationResults)
       : null;
     @event.Content = CreateEventContent(eventArgs, messenger, error);
     @event.Level = validationResults is null
@@ -189,14 +184,56 @@ public class IotPushHandler(
     notification.Topics = [TopicModel.All, TopicModel.InvalidPush];
     notification.Summary = $"Messenger \"{messenger.Title}\" push failed";
     // NOTE: \n is ok here because we're storing it in the database
-    notification.Content = string.Join(
-      "\n",
-      validationResults.Select(x =>
-        $"{x.MemberNames.First()}: {x.ErrorMessage}"
-      )
-    );
+    notification.Content = FormatValidationResults(validationResults);
     notification.EventId = eventId;
     await modelMutations.Create(notification, cancellationToken);
+  }
+
+  private static string FormatValidationResults(
+    IEnumerable<ValidationResult> results
+  )
+  {
+    var lines = new List<string>();
+
+    var measurementValidationResults = new List<MeasurementValidationResult>();
+    var otherValidationResults = new List<ValidationResult>();
+
+    foreach (var result in results)
+    {
+      if (result is MeasurementValidationResult measurementResult)
+      {
+        measurementValidationResults.Add(measurementResult);
+      }
+      else
+      {
+        otherValidationResults.Add(result);
+      }
+    }
+
+    var grouped =
+      measurementValidationResults
+      .GroupBy(r => (r.Meter.Id, r.MeasurementLocation?.Title));
+
+    foreach (var group in grouped)
+    {
+      var location = string.IsNullOrWhiteSpace(group.Key.Title)
+        ? "<unknown location>"
+        : group.Key.Title;
+      lines.Add($"[meter: {group.Key.Id} | measurement location: {location}]");
+      foreach (var result in group)
+      {
+        var member = result.MemberNames.FirstOrDefault() ?? "?";
+        lines.Add($"  {member}: {result.ErrorMessage}");
+      }
+    }
+
+    foreach (var result in otherValidationResults)
+    {
+      var member = result.MemberNames.FirstOrDefault() ?? "?";
+      lines.Add($"{member}: {result.ErrorMessage}");
+    }
+
+    return string.Join("\n", lines);
   }
 
   private static JsonDocument CreateEventContent(
