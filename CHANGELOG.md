@@ -11,6 +11,17 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- New `MeasurementValidationResult` (sealed, extends `ValidationResult`)
+  attaches the source `IMeter` and nullable `IMeasurementLocation` to each
+  validation error so downstream consumers can attribute the error to its meter
+  and location
+- `MeasurementValidator` now wraps every underlying `ValidationResult` in a
+  `MeasurementValidationResult` carrying the meter and its resolved measurement
+  location
+- `IotPushHandler.FormatValidationResults` replaces the previous flat
+  `member: message` join used for both `MessengerEventModel.Content.Error` and
+  `MessengerNotificationModel.Content` - it groups `MeasurementValidationResult`
+  items by `(meter.Id, measurementLocation?.Title)`
 - `SearchableSelectField<T>` now combines its dropdown list with `MudVirtualize`
   instead of a `MudList` + `@foreach`, so dropdowns with thousands of items
   render only the visible window plus an additional buffer of 6 rows for more
