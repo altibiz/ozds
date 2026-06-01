@@ -8,7 +8,6 @@ namespace Ozds.Business.Validation.Implementations;
 public class MeasurementValidator(IServiceProvider serviceProvider)
   : ConcreteModelValidator<IMeasurement>(serviceProvider)
 {
-
   public override async Task<List<ValidationResult>> ValidateAsync(
     IMeasurement model,
     CancellationToken cancellationToken
@@ -43,9 +42,7 @@ public class MeasurementValidator(IServiceProvider serviceProvider)
 
     var validationContext = new ValidationContext(model, serviceProvider, null);
 
-    var validationResults = validator
-      .Validate(validationContext)
-      .ToList();
+    var validationResults = validator.Validate(validationContext).ToList();
 
     if (validationResults.Count == 0)
     {
@@ -53,21 +50,18 @@ public class MeasurementValidator(IServiceProvider serviceProvider)
     }
 
     var measurementLocationQueries =
-        scope.ServiceProvider.GetRequiredService<MeasurementLocationQueries>();
+      scope.ServiceProvider.GetRequiredService<MeasurementLocationQueries>();
 
-    var measurementLocation = await measurementLocationQueries
-      .ReadByMeterId(
-        model.MeterId,
-        cancellationToken
-      );
+    var measurementLocation = await measurementLocationQueries.ReadByMeterId(
+      model.MeterId,
+      cancellationToken
+    );
 
     return validationResults
-      .Select(result => (ValidationResult)
-        new MeasurementValidationResult(
-          result,
-          meter,
-          measurementLocation
-        )
-      ).ToList();
+      .Select(result =>
+        (ValidationResult)
+          new MeasurementValidationResult(result, meter, measurementLocation)
+      )
+      .ToList();
   }
 }

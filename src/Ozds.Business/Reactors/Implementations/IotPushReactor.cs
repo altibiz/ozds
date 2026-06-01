@@ -210,9 +210,9 @@ public class IotPushHandler(
       }
     }
 
-    var grouped =
-      measurementValidationResults
-      .GroupBy(r => (r.Meter.Id, r.MeasurementLocation?.Title));
+    var grouped = measurementValidationResults.GroupBy(r =>
+      (r.Meter.Id, r.MeasurementLocation?.Title)
+    );
 
     foreach (var group in grouped)
     {
