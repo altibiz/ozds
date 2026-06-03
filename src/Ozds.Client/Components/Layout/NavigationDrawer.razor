@@ -11,7 +11,7 @@
   Anchor="@LayoutState.DrawerAnchor"
   Variant="DrawerVariant.Temporary"
   ClipMode="DrawerClipMode.Never"
-  Style="height: 100vh;">
+  Style="height: 100dvh; --mud-drawer-content-height: 100dvh !important;">
   <MudDrawerHeader Style="padding-inline: 0;">
     <MudContainer
       MaxWidth="@MaxWidth"
@@ -32,7 +32,6 @@
       </MudButton>
     </MudContainer>
   </MudDrawerHeader>
-  <MudDrawerContainer>
     <MudNavMenu>
       <MudContainer
         MaxWidth="@MaxWidth"
@@ -44,7 +43,6 @@
         }
       </MudContainer>
     </MudNavMenu>
-  </MudDrawerContainer>
 </MudDrawer>
 
 @code {
