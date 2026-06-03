@@ -12975,6 +12975,28 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
+        line
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Fields/ScrollablePreField.cs' line 51 column 36
+      </Metadata>
+      <Value>
+        line
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
+        lines
+      </Key>
+      <Metadata>
+        From file 'Ozds.Client/Components/Fields/ScrollablePreField.cs' line 51 column 55
+      </Metadata>
+      <Value>
+        lines
+      </Value>
+    </TranslationDictionaryItem>
+    <TranslationDictionaryItem>
+      <Key>
         List
       </Key>
       <Metadata>
