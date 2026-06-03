@@ -9,31 +9,51 @@
 }
 else
 {
-  <MudPaper Elevation="1"
-            Class="d-flex flex-column"
-            Style="overflow: hidden;">
+  <MudPaper Elevation="1" Style="@ContainerVars">
     <MudToolBar Dense="true"
                 Gutters="false"
-                Class="px-1"
-                Style="@HeaderStyle">
+                Class="px-2"
+                Style="background-color: var(--mud-palette-background-gray);">
+      <MudIcon Icon="@Icons.Material.Outlined.Code"
+               Size="Size.Small"
+               Class="mr-2"
+               Style="color: var(--mud-palette-text-secondary);"/>
+      <MudText Typo="Typo.caption"
+               Style="color: var(--mud-palette-text-secondary);">
+        @LineCountLabel
+      </MudText>
+      <MudSpacer/>
       <MudTooltip Text="@ExpandTitle">
-        <MudIconButton Size="Size.Medium"
+        <MudIconButton Size="Size.Small"
                        Icon="@ExpandIcon"
                        OnClick="@ToggleExpanded"/>
       </MudTooltip>
-      <CopyButton Text="@Content"/>
+      <CopyButton Text="@Content"
+                  Size="Size.Small"/>
     </MudToolBar>
-    <div style="@ScrollStyle">
-      @if (WrapText)
-      {
-        <pre class="ma-0 pa-2"
-             style="white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere;">@Content</pre>
-      }
-      else
-      {
-        <pre class="ma-0 pa-2"
-             style="white-space: pre; overflow-x: auto;">@Content</pre>
-      }
+    <div class="spf-scroll @(_expanded ? "spf-scroll--expanded" : null)"
+          style="overscroll-behavior: @(_expanded ? "auto" : "none");">
+      <div class="spf-code @(WrapText ? "spf-code--wrap" : "spf-code--nowrap")">
+        @if (ShowLineNumbers)
+        {
+          @for (var index = 0; index < Lines.Length; index++)
+          {
+            <div class="spf-line">
+              <span class="spf-num">@(index + 1)</span>
+              <pre class="spf-text">@Lines[index]</pre>
+            </div>
+          }
+        }
+        else
+        {
+          @foreach (var line in Lines)
+          {
+            <div class="spf-line">
+              <pre class="spf-text">@line</pre>
+            </div>
+          }
+        }
+      </div>
     </div>
   </MudPaper>
 }

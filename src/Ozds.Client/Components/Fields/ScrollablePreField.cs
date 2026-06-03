@@ -18,22 +18,41 @@ public partial class ScrollablePreField : OzdsComponentBase
   public bool WrapText { get; set; }
 
   [Parameter]
+  public bool ShowLineNumbers { get; set; } = true;
+
+  [Parameter]
   public EventCallback<bool> ExpandedChanged { get; set; }
 
-  private string ScrollStyle
+  private string[] _lines = [];
+
+  private string[] Lines => _lines;
+
+  protected override void OnParametersSet()
+  {
+    _lines = Content is null
+      ? []
+      : Content.ReplaceLineEndings("\n").Split('\n');
+  }
+
+  private string ContainerVars
   {
     get
     {
-      return _expanded
-        ? "overflow-y: auto; overscroll-behavior: none;"
-        : $"max-height: {MaxHeight}px; overflow-y: auto; overscroll-behavior: none;";
+      var digits = Lines.Length.ToString().Length;
+      return $"overflow: hidden; --spf-max-height: {MaxHeight}px;"
+        + $" --spf-gutter: {digits}ch;";
     }
   }
 
-  private static string HeaderStyle =>
-    "min-height: 48px;"
-    + " background-color: var(--mud-palette-background-gray);"
-    + " border-bottom: 1px solid var(--mud-palette-lines-default);";
+  private string LineCountLabel
+  {
+    get
+    {
+      var count = Lines.Length;
+      var unit = count == 1 ? Translate("line") : Translate("lines");
+      return $"{count} {unit}";
+    }
+  }
 
   private string ExpandIcon
   {
