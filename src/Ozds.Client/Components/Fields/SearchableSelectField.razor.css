@@ -1,0 +1,52 @@
+/* SearchableSelectField scoped styles.
+   Only the trigger/field markup lives in this component's DOM subtree,
+   so only those rules can be scoped here. The popover content
+   (__paper, __list-wrap, __item--selected, ...) is teleported out by
+   MudPopoverProvider, beyond the reach of scoped CSS / ::deep, so those
+   rules remain global in app.css. */
+
+.ozds-searchable-select {
+  position: relative;
+  width: 100%;
+}
+
+.ozds-searchable-select__trigger {
+  cursor: pointer;
+}
+
+.ozds-searchable-select__content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 19px;
+}
+
+.ozds-searchable-select__placeholder {
+  color: var(--mud-palette-text-secondary);
+}
+
+.ozds-searchable-select__value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.ozds-searchable-select__clear {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-20%);
+  margin-left: auto;
+  z-index: 1;
+}
+
+.ozds-searchable-select__trigger ::deep .mud-input-control,
+.ozds-searchable-select__trigger ::deep .mud-input,
+.ozds-searchable-select__trigger ::deep .mud-input-slot {
+  cursor: pointer;
+}
+
+.ozds-searchable-select__trigger ::deep .ozds-searchable-select__field--open .mud-input-adornment-end .mud-icon-root {
+  transform: rotate(180deg);
+}
