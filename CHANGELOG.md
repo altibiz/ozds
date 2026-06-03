@@ -11,31 +11,25 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
-- `ClipboardService` (scoped) wrapping the browser `navigator.clipboard`
-  read/write over JS interop
-- `CopyButton` component (a `MudIconButton`) that copies its `Text` to the
-  clipboard via `ClipboardService`, with a `Size` parameter (defaults to
-  `Medium`) and `OnCopied` / `OnCopyFailed` callbacks
-- `ScrollablePreField<T>` helper on `OzdsDetailsComponentBase`, a wrapper around
-  `DetailsField` + `MudPaper` that renders preformatted content (notification
-  bodies, event JSON payloads) inside a fixed-height, vertically-scrollable,
-  horizontally-resizable card topped by a slightly darker `MudToolBar` header
-  that holds left-aligned expand/collapse and `CopyButton` triggers
-- `MaxWidth` parameter on `DetailsField` (defaults to `36rem`) so callers can
-  opt into a wider layout
-- `WrapText` bool parameter on `ScrollablePreField` (forwarded by both
-  `ScrollablePreField` helper overloads via `wrapText`, default `false`) that
-  switches the content `<pre>` from horizontal scroll to soft-wrap
+- `ClipboardService` (scoped) wrapping `navigator.clipboard` over JS interop
+- `CopyButton` component (a `MudIconButton`) that copies its `Text` via
+  `ClipboardService`, with `Size`, `OnCopied`, and `OnCopyFailed` parameters
+- `ScrollablePreField<T>` helper on `OzdsDetailsComponentBase` that renders
+  preformatted content in a `MudPaper` card with a `MudToolBar` header (line
+  count, expand/collapse, copy) over a scrollable, line-numbered code block
+- `ScrollablePreField.razor.css` scoped stylesheet (first Blazor CSS isolation
+  file in the project; wired up via `Ozds.Client.styles.css` in `_AppLayout`)
+- `line` / `lines` translations for the line count
+- `MaxWidth` parameter on `DetailsField` (defaults to `36rem`)
+- `WrapText` parameter on `ScrollablePreField` (default `false`) to soft-wrap
+  content instead of scrolling horizontally
 
 ### Changed
 
-- `NotificationDetails` now renders `Content` via the new `ScrollablePreField`,
-  with `maxHeight: 400` and `wrapText: true`
-- `EventDetails` now renders `Content` via `ScrollablePreField` with
-  `wrapText: true`
-- `ApiKeyPage` now shows a `CopyButton` next to the freshly created API key
-  token (the token keeps horizontal overflow) so it can be copied in one click
-  instead of being selected by hand
+- `NotificationDetails` renders `Content` via `ScrollablePreField`
+  (`maxHeight: 400`, `wrapText: true`)
+- `EventDetails` renders `Content` via `ScrollablePreField` (`wrapText: true`)
+- `ApiKeyPage` shows a `CopyButton` next to a freshly created API key token
 - `SearchableSelectField<T>` now combines its dropdown list with `MudVirtualize`
   instead of a `MudList` + `@foreach`, so dropdowns with thousands of items
   render only the visible window plus an additional buffer of 6 rows for more
