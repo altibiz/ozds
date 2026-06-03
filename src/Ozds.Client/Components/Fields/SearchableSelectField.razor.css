@@ -47,6 +47,10 @@
   cursor: pointer;
 }
 
-.ozds-searchable-select__trigger ::deep .ozds-searchable-select__field--open .mud-input-adornment-end .mud-icon-root {
+.ozds-searchable-select__trigger
+  ::deep
+  .ozds-searchable-select__field--open
+  .mud-input-adornment-end
+  .mud-icon-root {
   transform: rotate(180deg);
 }

@@ -12975,28 +12975,6 @@
     </TranslationDictionaryItem>
     <TranslationDictionaryItem>
       <Key>
-        line
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Components/Fields/ScrollablePreField.cs' line 51 column 36
-      </Metadata>
-      <Value>
-        line
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
-        lines
-      </Key>
-      <Metadata>
-        From file 'Ozds.Client/Components/Fields/ScrollablePreField.cs' line 51 column 55
-      </Metadata>
-      <Value>
-        lines
-      </Value>
-    </TranslationDictionaryItem>
-    <TranslationDictionaryItem>
-      <Key>
         List
       </Key>
       <Metadata>
@@ -17301,16 +17279,16 @@
         From file 'Ozds.Client/Components/Fields/ScrollablePreField.razor' line 8 column 13
         From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 122 column 19
         From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 148 column 17
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 214 column 21
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 270 column 21
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 295 column 21
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 321 column 16
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 342 column 19
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 363 column 19
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 382 column 17
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 406 column 16
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 444 column 17
-        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 200 column 36
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 218 column 21
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 274 column 21
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 299 column 21
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 325 column 16
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 346 column 19
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 367 column 19
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 386 column 17
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 410 column 16
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 448 column 17
+        From file 'Ozds.Client/Components/Models/Base/OzdsDetailsComponentBase.razor' line 204 column 36
       </Metadata>
       <Value>
         None
