@@ -15,39 +15,13 @@
    src/Ozds.Client/Components/Fields/SearchableSelectField.razor
    A searchable single/multi-select dropdown built on
    MudField + MudPopover. Mimics MudSelect.
+
+   The trigger/field rules live in the component's scoped
+   SearchableSelectField.razor.css. Only the popover content rules
+   remain here: MudPopoverProvider teleports the popover out of the
+   component's DOM subtree, beyond the reach of scoped CSS / ::deep.
    Component style section START
    ------------------------------------------------------------ */
-
-.ozds-searchable-select {
-  position: relative;
-  width: 100%;
-}
-
-.ozds-searchable-select__trigger {
-  cursor: pointer;
-}
-
-.ozds-searchable-select__content {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  min-height: 19px;
-}
-
-.ozds-searchable-select__placeholder {
-  color: var(--mud-palette-text-secondary);
-}
-
-.ozds-searchable-select__value {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
-}
-
-.ozds-searchable-select__clear {
-  margin-left: auto;
-}
 
 .ozds-searchable-select__paper {
   display: flex;
@@ -64,29 +38,6 @@
 
 .ozds-searchable-select__item--selected {
   background-color: var(--mud-palette-action-default-hover);
-}
-
-/* Clear button overlays the field so toggling it doesn't change
-   the field's height — sits just to the left of the chevron. */
-.ozds-searchable-select__clear {
-  position: absolute;
-  top: 50%;
-  right: 20px;
-  transform: translateY(-20%);
-  z-index: 1;
-}
-
-/* Force pointer so the whole trigger feels
-   clickable */
-.ozds-searchable-select__field .mud-input-control,
-.ozds-searchable-select__field .mud-input,
-.ozds-searchable-select__field .mud-input-slot {
-  cursor: pointer;
-}
-
-/* Rotate MudField's end adornment (the chevron) when open. */
-.ozds-searchable-select__field--open .mud-input-adornment-end .mud-icon-root {
-  transform: rotate(180deg);
 }
 
 /* ------------------------------------------------------------

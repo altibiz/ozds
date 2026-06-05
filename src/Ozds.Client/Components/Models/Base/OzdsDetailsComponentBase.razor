@@ -159,6 +159,41 @@
           @nextFunc(Model)
         </pre>
              </MudText>
+           </DetailsField>
+        ;
+    }
+
+  protected RenderFragment ScrollablePreField<T>(
+    Expression<Func<TModel, T?>> next,
+    int maxHeight = 600,
+    bool wrapText = false,
+    bool showLineNumbers = true
+  )
+  {
+    var nextFunc = next.Compile();
+    var value = nextFunc(Model);
+    return @<DetailsField Title="@(Translate(Label(next)))" MaxWidth="100%" LargeContent>
+             <ScrollablePreField Content="@value?.ToString()"
+                                 MaxHeight="@maxHeight"
+                                 WrapText="@wrapText"
+                                 ShowLineNumbers="@showLineNumbers"/>
+           </DetailsField>;
+  }
+
+  protected RenderFragment ScrollablePreField(
+    Expression<Func<TModel, JsonDocument?>> next,
+    int maxHeight = 600,
+    bool wrapText = false,
+    bool showLineNumbers = true
+  )
+  {
+    var nextFunc = next.Compile();
+    var value = nextFunc(Model);
+    return @<DetailsField Title="@(Translate(Label(next)))" MaxWidth="100%" LargeContent>
+             <ScrollablePreField Content="@JsonString(value)"
+                                 MaxHeight="@maxHeight"
+                                 WrapText="@wrapText"
+                                 ShowLineNumbers="@showLineNumbers"/>
            </DetailsField>;
   }
 

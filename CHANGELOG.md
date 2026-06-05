@@ -9,8 +9,27 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ## Unreleased
 
+### Added
+
+- `ClipboardService` (scoped) wrapping `navigator.clipboard` over JS interop
+- `CopyButton` component (a `MudIconButton`) that copies its `Text` via
+  `ClipboardService`, with `Size`, `OnCopied`, and `OnCopyFailed` parameters
+- `ScrollablePreField<T>` helper on `OzdsDetailsComponentBase` that renders
+  preformatted content in a `MudPaper` card with a `MudToolBar` header (line
+  count, expand/collapse, copy) over a scrollable, line-numbered code block
+- `ScrollablePreField.razor.css` scoped stylesheet (first Blazor CSS isolation
+  file in the project; wired up via `Ozds.Client.styles.css` in `_AppLayout`)
+- `line` / `lines` translations for the line count
+- `MaxWidth` parameter on `DetailsField` (defaults to `36rem`)
+- `WrapText` parameter on `ScrollablePreField` (default `false`) to soft-wrap
+  content instead of scrolling horizontally
+
 ### Changed
 
+- `NotificationDetails` renders `Content` via `ScrollablePreField`
+  (`maxHeight: 400`, `wrapText: true`)
+- `EventDetails` renders `Content` via `ScrollablePreField` (`wrapText: true`)
+- `ApiKeyPage` shows a `CopyButton` next to a freshly created API key token
 - `SearchableSelectField<T>` now combines its dropdown list with `MudVirtualize`
   instead of a `MudList` + `@foreach`, so dropdowns with thousands of items
   render only the visible window plus an additional buffer of 6 rows for more
