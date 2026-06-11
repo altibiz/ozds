@@ -7,6 +7,7 @@ using Ozds.Data.Entities.Enums;
 using Ozds.Data.Extensions;
 using Ozds.Data.Queries.Abstractions;
 using Ozds.Data.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ozds.Data.Queries;
 
@@ -42,7 +43,9 @@ public class EventQueries(
     int pageNumber,
     CancellationToken cancellationToken,
     int pageCount = QueryConstants.DefaultPageCount,
-    string? title = null
+    string? title = null,
+    DateTimeOffset? fromDate = null,
+    DateTimeOffset? toDate = null
   )
   {
     if (!entityType.IsAssignableTo(typeof(IEventEntity)))
@@ -61,6 +64,16 @@ public class EventQueries(
     if (!string.IsNullOrWhiteSpace(title))
     {
       filtered = filtered.Where(x => x.Title.Contains(title));
+    }
+
+    if (fromDate is { } from)
+    {
+      filtered = filtered.Where(x => x.Timestamp >= from);
+    }
+
+    if (toDate is { } to)
+    {
+      filtered = filtered.Where(x => x.Timestamp < to);
     }
 
     var ordered = filtered.OrderBy(context.PrimaryKeyOf(entityType));

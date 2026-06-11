@@ -18,7 +18,9 @@ public class EventQueries(
     int pageNumber,
     CancellationToken cancellationToken,
     int pageCount = QueryConstants.DefaultPageCount,
-    string? title = null
+    string? title = null,
+    DateTimeOffset? fromDate = null,
+    DateTimeOffset? toDate = null
   )
     where T : class, IEvent
   {
@@ -32,7 +34,9 @@ public class EventQueries(
       pageNumber,
       cancellationToken,
       pageCount,
-      title
+      title,
+      fromDate,
+      toDate
     );
 
     return models
@@ -46,7 +50,9 @@ public class EventQueries(
     int pageNumber,
     CancellationToken cancellationToken,
     int pageCount = QueryConstants.DefaultPageCount,
-    string? title = null
+    string? title = null,
+    DateTimeOffset? fromDate = null,
+    DateTimeOffset? toDate = null
   )
   {
     if (!modelType.IsAssignableTo(typeof(IEvent)))
@@ -66,7 +72,9 @@ public class EventQueries(
       pageNumber,
       cancellationToken,
       pageCount,
-      title
+      title,
+      fromDate,
+      toDate
     );
 
     return entities
