@@ -1,0 +1,143 @@
+@namespace Ozds.Client.Components.Fields
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+@using MudBlazor
+
+<div class="@($"ozds-datetime-picker {Class}".Trim())" style="@Style">
+  <div class="ozds-datetime-picker__trigger" @onclick="ToggleOpen">
+    <MudField Label="@Label"
+              Variant="@Variant"
+              Margin="@Margin"
+              InnerPadding="true"
+              Disabled="@Disabled"
+              Adornment="Adornment.End"
+              AdornmentIcon="@Icons.Material.Filled.ArrowDropDown"
+              Class="@FieldClass"
+              Style="cursor:pointer;width:100%;">
+      <div class="ozds-datetime-picker__content">
+        @if (!HasValue)
+        {
+          <span class="ozds-datetime-picker__placeholder">
+            @PlaceholderText
+          </span>
+        }
+        else
+        {
+          <span class="ozds-datetime-picker__value">@DisplayText</span>
+        }
+      </div>
+    </MudField>
+  </div>
+
+  @if (Clearable && HasValue && !Disabled)
+  {
+    <div class="ozds-datetime-picker__clear"
+         @onpointerup="Clear"
+         @onpointerup:stopPropagation="true">
+      <MudIconButton Icon="@Icons.Material.Filled.Clear"
+                     Size="Size.Small"
+                     Variant="Variant.Text"/>
+    </div>
+  }
+
+  <MudPopover Open="open"
+              AnchorOrigin="Origin.BottomLeft"
+              TransformOrigin="Origin.TopLeft"
+              Paper="false"
+              Class="ozds-datetime-picker__popover">
+    <MudPaper Class="ozds-datetime-picker__paper" Elevation="8">
+      <MudDatePicker PickerVariant="PickerVariant.Static"
+                     Date="@date"
+                     DateChanged="@OnDateChanged"
+                     DateFormat="@DateFormat()"
+                     MinDate="@ToLocalDate(MinDate)"
+                     MaxDate="@ToLocalDate(MaxDate)"
+                     Disabled="@Disabled"
+                     ShowToolbar="false"
+                     Elevation="0"
+                     Class="ozds-datetime-picker__calendar"/>
+
+      <div class="ozds-datetime-picker__time">
+        <MudText Typo="Typo.caption"
+                 Class="ozds-datetime-picker__time-label">
+          @(TimeLabel ?? Translate("Time"))
+        </MudText>
+        <div class="ozds-datetime-picker__time-inputs">
+          <MudNumericField T="int"
+                           Value="@Hour"
+                           ValueChanged="@OnHourChanged"
+                           Min="0"
+                           Max="23"
+                           Format="00"
+                           HideSpinButtons="true"
+                           Variant="Variant.Outlined"
+                           Margin="Margin.Dense"
+                           Disabled="@Disabled"
+                           Class="ozds-datetime-picker__time-input"
+                           onfocus="this.select()"
+                           onmousedown="this.focus(); this.select(); return false;"
+                           />
+          <span class="ozds-datetime-picker__time-sep">:</span>
+          <MudNumericField T="int"
+                           Value="@Minute"
+                           ValueChanged="@OnMinuteChanged"
+                           Min="0"
+                           Max="59"
+                           Format="00"
+                           HideSpinButtons="true"
+                           Variant="Variant.Outlined"
+                           Margin="Margin.Dense"
+                           Disabled="@Disabled"
+                           Class="ozds-datetime-picker__time-input"
+                           onfocus="this.select()"
+                           onmousedown="this.focus(); this.select(); return false;"
+                           />
+          <span class="ozds-datetime-picker__time-sep">:</span>
+          <MudNumericField T="int"
+                           Value="@Second"
+                           ValueChanged="@OnSecondChanged"
+                           Min="0"
+                           Max="59"
+                           Format="00"
+                           HideSpinButtons="true"
+                           Variant="Variant.Outlined"
+                           Margin="Margin.Dense"
+                           Disabled="@Disabled"
+                           Class="ozds-datetime-picker__time-input"
+                           onfocus="this.select()"
+                           onmousedown="this.focus(); this.select(); return false;"
+                           />
+        </div>
+      </div>
+
+      <div class="ozds-datetime-picker__actions">
+        @if (Clearable)
+        {
+          <MudButton Size="Size.Small"
+                     StartIcon="@Icons.Material.Filled.Clear"
+                     OnClick="@Clear"
+                     Disabled="@Disabled">
+            @Translate("Clear")
+          </MudButton>
+        }
+        <MudSpacer/>
+        <MudButton Size="Size.Small"
+                   StartIcon="@Icons.Material.Filled.Schedule"
+                   OnClick="@SetNow"
+                   Disabled="@Disabled">
+          @Translate("Now")
+        </MudButton>
+        <MudButton Size="Size.Small"
+                   Color="Color.Primary"
+                   Variant="Variant.Filled"
+                   OnClick="@Close">
+          @Translate("Done")
+        </MudButton>
+      </div>
+    </MudPaper>
+  </MudPopover>
+
+  <MudOverlay Visible="open"
+              OnClick="Close"
+              LockScroll="false"
+              Class="ozds-datetime-picker__overlay"/>
+</div>

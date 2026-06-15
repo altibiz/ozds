@@ -93,3 +93,122 @@
    SearchableSelectField
    Component style section END
    ------------------------------------------------------------ */
+
+/* ------------------------------------------------------------
+   DateTimePickerField
+   src/Ozds.Client/Components/Fields/DateTimePickerField.razor
+   A single field showing a date/time pattern placeholder with a
+   dropdown (MudField + MudPopover) holding a calendar and a
+   numeric H:M:S time entry. Mimics MudSelect's trigger.
+   Component style section START
+   ------------------------------------------------------------ */
+
+.ozds-datetime-picker {
+  position: relative;
+  width: 100%;
+}
+
+.ozds-datetime-picker__trigger {
+  cursor: pointer;
+}
+
+.ozds-datetime-picker__content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 19px;
+}
+
+.ozds-datetime-picker__placeholder {
+  color: var(--mud-palette-text-secondary);
+}
+
+.ozds-datetime-picker__value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+/* Clear button overlays the field so toggling it doesn't change
+   the field's height — sits just to the left of the chevron. */
+.ozds-datetime-picker__clear {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-20%);
+  z-index: 1;
+}
+
+/* Force pointer so the whole trigger feels clickable. */
+.ozds-datetime-picker__field .mud-input-control,
+.ozds-datetime-picker__field .mud-input,
+.ozds-datetime-picker__field .mud-input-slot {
+  cursor: pointer;
+}
+
+/* Rotate MudField's end adornment (the chevron) when open. */
+.ozds-datetime-picker__field--open .mud-input-adornment-end .mud-icon-root {
+  transform: rotate(180deg);
+}
+
+.ozds-datetime-picker__paper {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 8px 12px 12px;
+}
+
+/* The static calendar already brings its own paper; strip the inner
+   shadow/background so it sits flush inside our popover paper. */
+.ozds-datetime-picker__calendar.mud-picker-static,
+.ozds-datetime-picker__calendar .mud-picker-container {
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.ozds-datetime-picker__time {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 8px;
+}
+
+.ozds-datetime-picker__time-label {
+  color: var(--mud-palette-text-secondary);
+}
+
+.ozds-datetime-picker__time-inputs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.ozds-datetime-picker__time-input {
+  width: 56px;
+}
+
+/* Center the digits so the H:M:S row reads as a clock value. */
+.ozds-datetime-picker__time-input input {
+  text-align: center;
+}
+
+.ozds-datetime-picker__time-sep {
+  font-weight: 600;
+  color: var(--mud-palette-text-secondary);
+}
+
+.ozds-datetime-picker__actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 0 4px;
+}
+
+/* ------------------------------------------------------------
+   DateTimePickerField
+   Component style section END
+   ------------------------------------------------------------ */

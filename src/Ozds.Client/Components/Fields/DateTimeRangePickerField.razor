@@ -1,0 +1,46 @@
+@namespace Ozds.Client.Components.Fields
+@inherits Ozds.Client.Components.Base.OzdsComponentBase
+@using MudBlazor
+
+<MudStack Spacing="2" Class="@Class" Style="@Style">
+  @if (!string.IsNullOrEmpty(Label))
+  {
+    <MudText Typo="Typo.subtitle2">@Label</MudText>
+  }
+
+  <div class="d-flex flex-row flex-wrap align-start" style="gap: 24px;">
+    <DateTimePickerField Label="@(StartLabel ?? Translate("From"))"
+                         TimeLabel="@TimeLabel"
+                         Value="@Start"
+                         ValueChanged="@OnStartChanged"
+                         MinDate="@MinDate"
+                         MaxDate="@MaxDate"
+                         Clearable="@Clearable"
+                         Disabled="@Disabled"
+                         Variant="@Variant"
+                         Margin="@Margin"
+                         Style="min-width: 200px;"/>
+    <DateTimePickerField Label="@(EndLabel ?? Translate("To"))"
+                         TimeLabel="@TimeLabel"
+                         Value="@End"
+                         ValueChanged="@OnEndChanged"
+                         MinDate="@MinDate"
+                         MaxDate="@MaxDate"
+                         Clearable="@Clearable"
+                         Disabled="@Disabled"
+                         Variant="@Variant"
+                         Margin="@Margin"
+                         Style="min-width: 200px;"/>
+  </div>
+
+  @if (Clearable && (Start is not null || End is not null))
+  {
+    <div>
+      <MudButton Size="Size.Small"
+                 StartIcon="@Icons.Material.Filled.Clear"
+                 OnClick="@Clear">
+        @Translate("Clear")
+      </MudButton>
+    </div>
+  }
+</MudStack>
