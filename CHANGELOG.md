@@ -11,6 +11,7 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Commented out translation step in `generate` workflow
 - New `MeasurementValidationResult` (sealed, extends `ValidationResult`)
   attaches the source `IMeter` and nullable `IMeasurementLocation` to each
   validation error so downstream consumers can attribute the error to its meter
