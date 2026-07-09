@@ -28,13 +28,14 @@ jobs:
       - name: deps
         run: nix develop .#check -c just deps
 
-      - name: translate
-        run: nix develop .#check -c just translate
-        env:
-          # prettier-ignore
-          OZDS__TRANSLATION__OPENAIAPI__BASEURL: ${{ secrets.OZDS__TRANSLATION__OPENAIAPI__BASEURL }}
-          # prettier-ignore
-          OZDS__TRANSLATION__OPENAIAPI__APIKEY: ${{ secrets.OZDS__TRANSLATION__OPENAIAPI__APIKEY }}
+      # TODO: either add new token key for the translation or remove the translation step in entirety
+      #      - name: translate
+      #       run: nix develop .#check -c just translate
+      #       env:
+      # prettier-ignore
+      #        OZDS__TRANSLATION__OPENAIAPI__BASEURL: ${{ secrets.OZDS__TRANSLATION__OPENAIAPI__BASEURL }}
+      # prettier-ignore
+      #        OZDS__TRANSLATION__OPENAIAPI__APIKEY: ${{ secrets.OZDS__TRANSLATION__OPENAIAPI__APIKEY }}
 
       - name: format
         run: nix develop .#check -c just format
