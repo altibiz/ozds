@@ -6,18 +6,18 @@
   },
   {
     "pname": "AngleSharp",
-    "version": "0.17.0",
-    "hash": "sha256-cQvLOL296TROZkL2nVLoLEuRaN5UfjFFJIzG0/JgYrg="
+    "version": "1.5.0",
+    "hash": "sha256-290+oGXJRDf3q06rRrcQmg3XbKYhgIa6xjn5vUJWRJ4="
   },
   {
     "pname": "AngleSharp",
-    "version": "0.17.1",
-    "hash": "sha256-8DLs4SGXeG4ilbAJ8H6KLjaK/GmaXizMEMc3P8ZrEQ0="
+    "version": "1.6.0",
+    "hash": "sha256-3T57sDeONAjzhGR/EcH2+626/CHsp5MrXSb802UREKc="
   },
   {
     "pname": "AngleSharp.Css",
-    "version": "0.17.0",
-    "hash": "sha256-sXzp9kY/rp3KauGNDpITkpjdgNoO0BdlC38SQYl0u2A="
+    "version": "1.0.0",
+    "hash": "sha256-hCsSNsEzIkmZf8TtFSLYqaRQbazsACrVQLCCLA4/mJs="
   },
   {
     "pname": "AppAny.Quartz.EntityFrameworkCore.Migrations",
@@ -141,8 +141,8 @@
   },
   {
     "pname": "HtmlSanitizer",
-    "version": "9.0.892",
-    "hash": "sha256-8ZVGH6RJ3QjgmwSGdVadS2pd3Tgq9IHXW7VHOX0slH0="
+    "version": "9.1.974",
+    "hash": "sha256-HPojw6iuMsc2G155X/gzkkb0PQLPB77rsIZLBiRyH0k="
   },
   {
     "pname": "Humanizer.Core",
