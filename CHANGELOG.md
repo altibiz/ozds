@@ -11,6 +11,9 @@ and adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- Updated `AngleSharp` from version `0.17.0` to version `1.5.0` | `1.6.0`
+  (transitive dep within `HtmlSanitizer` lib)
+- Updated `HtmlSanitizer` from version `9.0.892` to `9.1.974`
 - Commented out translation step in `generate` workflow
 - New `MeasurementValidationResult` (sealed, extends `ValidationResult`)
   attaches the source `IMeter` and nullable `IMeasurementLocation` to each
