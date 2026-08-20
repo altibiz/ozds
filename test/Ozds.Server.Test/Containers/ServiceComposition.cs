@@ -7,8 +7,6 @@ public sealed class ServiceComposition : IAsyncDisposable
     PostgresContainer postgres,
     RabbitMqContainer rabbitMq,
     MailpitContainer mailpit,
-    AutheliaContainer authelia,
-    LldapContainer lldap,
     AltibizFake altibiz,
     OzdsServer ozds,
     PlaywrightBrowser playwright
@@ -18,8 +16,6 @@ public sealed class ServiceComposition : IAsyncDisposable
     Postgres = postgres;
     RabbitMq = rabbitMq;
     Mailpit = mailpit;
-    Authelia = authelia;
-    Lldap = lldap;
     Altibiz = altibiz;
     Ozds = ozds;
     Playwright = playwright;
@@ -32,10 +28,6 @@ public sealed class ServiceComposition : IAsyncDisposable
   public RabbitMqContainer RabbitMq { get; private set; }
 
   public MailpitContainer Mailpit { get; private set; }
-
-  public AutheliaContainer Authelia { get; private set; }
-
-  public LldapContainer Lldap { get; private set; }
 
   public AltibizFake Altibiz { get; private set; }
 
@@ -51,10 +43,6 @@ public sealed class ServiceComposition : IAsyncDisposable
     Ozds = default!;
     await Altibiz.DisposeAsync();
     Altibiz = default!;
-    await Authelia.DisposeAsync();
-    Authelia = default!;
-    await Lldap.DisposeAsync();
-    Lldap = default!;
     await Mailpit.DisposeAsync();
     Mailpit = default!;
     await RabbitMq.DisposeAsync();
@@ -77,8 +65,6 @@ public sealed class ServiceComposition : IAsyncDisposable
     var postgres = await PostgresContainer.Create(network, cancellationToken);
     var rabbitMq = await RabbitMqContainer.Create(network, cancellationToken);
     var mailpit = await MailpitContainer.Create(network, cancellationToken);
-    var lldap = await LldapContainer.Create(network, cancellationToken);
-    var authelia = await AutheliaContainer.Create(network, cancellationToken);
     var altibiz = await AltibizFake.Create(network, cancellationToken);
     var ozds = await OzdsServer.Create(network, cancellationToken);
     var playwright = await PlaywrightBrowser.Create(network, cancellationToken);
@@ -88,8 +74,6 @@ public sealed class ServiceComposition : IAsyncDisposable
       postgres,
       rabbitMq,
       mailpit,
-      authelia,
-      lldap,
       altibiz,
       ozds,
       playwright
@@ -103,8 +87,6 @@ public sealed class ServiceComposition : IAsyncDisposable
     await composition.Postgres.Configure(composition, cancellationToken);
     await composition.RabbitMq.Configure(composition, cancellationToken);
     await composition.Mailpit.Configure(composition, cancellationToken);
-    await composition.Lldap.Configure(composition, cancellationToken);
-    await composition.Authelia.Configure(composition, cancellationToken);
     await composition.Altibiz.Configure(composition, cancellationToken);
     await composition.Ozds.Configure(composition, cancellationToken);
     await composition.Playwright.Configure(composition, cancellationToken);
@@ -117,8 +99,6 @@ public sealed class ServiceComposition : IAsyncDisposable
     await Postgres.Start(cancellationToken);
     await RabbitMq.Start(cancellationToken);
     await Mailpit.Start(cancellationToken);
-    await Lldap.Start(cancellationToken);
-    await Authelia.Start(cancellationToken);
     await Altibiz.Start(cancellationToken);
     await Ozds.Start(cancellationToken);
     await Playwright.Start(cancellationToken);
@@ -129,8 +109,6 @@ public sealed class ServiceComposition : IAsyncDisposable
     await Playwright.Stop(cancellationToken);
     await Ozds.Stop(cancellationToken);
     await Altibiz.Stop(cancellationToken);
-    await Authelia.Stop(cancellationToken);
-    await Lldap.Stop(cancellationToken);
     await Mailpit.Stop(cancellationToken);
     await RabbitMq.Stop(cancellationToken);
     await Postgres.Stop(cancellationToken);

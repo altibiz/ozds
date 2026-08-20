@@ -7,9 +7,6 @@ namespace Ozds.Server.Test.Containers;
 
 public sealed class OzdsServer : IComposableService<OzdsServer>
 {
-  private const string OzdsSignInCallbackSubpath = "signin-oidc";
-
-  private const string OzdsSignOutCallbackSubpath = "signout-oidc";
 
   private const string OzdsNetworkUserInvoiceStateQueue =
     "ozds-network-user-invoice-state";
@@ -38,16 +35,6 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
   public int HttpsPort { get; }
 
   public int HttpPort { get; }
-
-  public string SignInCallbackSubpath
-  {
-    get { return OzdsSignInCallbackSubpath; }
-  }
-
-  public string SignOutCallbackSubpath
-  {
-    get { return OzdsSignOutCallbackSubpath; }
-  }
 
   public string NetworkUserInvoiceStateQueue
   {
@@ -104,20 +91,6 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
   )
   {
     var urls = $"{HttpsBaseUrl};{HttpBaseUrl}";
-
-    if (
-      (Domain == "127.0.0.1" || Domain == "localhost")
-      && composition.Authelia.CookieDomain != "127.0.0.1"
-      && composition.Authelia.CookieDomain != "localhost"
-    )
-    {
-      var autheliaHttpsUrl =
-        $"https://{composition.Authelia.CookieDomain}:{HttpsPort}";
-      var autheliaHttpUrl =
-        $"http://{composition.Authelia.CookieDomain}:{HttpPort}";
-
-      urls = $"{autheliaHttpsUrl};{autheliaHttpUrl};{urls}";
-    }
 
     var testBinDir = Directory.GetCurrentDirectory();
     var serverDir = Path.GetFullPath(
@@ -185,58 +158,13 @@ public sealed class OzdsServer : IComposableService<OzdsServer>
           },
           { "Ozds:Jobs:MigrateOnStartup", "true" },
           {
-            "Ozds:Users:Oidc:ConnectionString",
-            composition.Authelia.HostConnectionString
+            "Ozds:Users:ConnectionString",
+            composition.Postgres.HostConnectionString
           },
-          {
-            "Ozds:Users:Oidc:AuthLogoutSubpath",
-            composition.Authelia.LogoutSubpath
-          },
-          { "Ozds:Users:Oidc:UserIdKey", composition.Authelia.UserIdKey },
-          { "Ozds:Users:Oidc:UserIdClaim", composition.Authelia.UserIdClaim },
-          { "Ozds:Users:Oidc:SignInCallbackSubpath", SignInCallbackSubpath },
-          { "Ozds:Users:Oidc:SignOutCallbackSubpath", SignOutCallbackSubpath },
-          {
-            "Ozds:Users:Ldap:ConnectionString",
-            composition.Lldap.HostConnectionString
-          },
-          {
-            "Ozds:Users:Ldap:UserFilterObjectClass",
-            composition.Lldap.UserFilterObjectClass
-          },
-          {
-            "Ozds:Users:Ldap:UserOrganizationalUnit",
-            composition.Lldap.UserOrganizationalUnit
-          },
-          { "Ozds:Users:Ldap:BaseDn", composition.Lldap.BaseDn },
-          {
-            "Ozds:Users:Ldap:UserIdAttribute",
-            composition.Lldap.UserIdAttribute
-          },
-          {
-            "Ozds:Users:Ldap:UserNameAttribute",
-            composition.Lldap.UserNameAttribute
-          },
-          {
-            "Ozds:Users:Ldap:UserEmailAttribute",
-            composition.Lldap.UserEmailAttribute
-          },
+          { "Ozds:Users:MigrateOnStartup", "true" },
           { "Ozds:Fake:Client:BaseUrl", HttpBaseUrl },
           { "Ozds:Sdk:BaseUrl", HttpBaseUrl },
         };
-
-        foreach (
-          var (
-            userObjectClass,
-            index
-          ) in composition.Lldap.UserObjectClasses.Select((x, i) => (x, i))
-        )
-        {
-          dictionary.Add(
-            $"Ozds:Users:Ldap:UserObjectClasses:{index}",
-            userObjectClass
-          );
-        }
 
         appBuilder.Configuration.AddInMemoryCollection(dictionary);
 

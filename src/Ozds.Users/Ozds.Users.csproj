@@ -5,8 +5,11 @@
 
   <ItemGroup>
     <PackageReference Include="Altibiz.DependencyInjection.Extensions" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
-    <!-- <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" /> -->
-    <PackageReference Include="Novell.Directory.Ldap.NETStandard" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="EFCore.NamingConventions" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" />
   </ItemGroup>
 </Project>

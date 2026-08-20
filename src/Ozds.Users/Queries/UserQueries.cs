@@ -1,10 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.Options;
-using Novell.Directory.Ldap;
+using Microsoft.AspNetCore.Identity;
 using Ozds.Users.Entities;
-using Ozds.Users.Extensions;
-using Ozds.Users.Options;
 using Ozds.Users.Queries.Abstractions;
 
 namespace Ozds.Users.Queries;
@@ -12,16 +9,12 @@ namespace Ozds.Users.Queries;
 public class UserQueries(
   IServiceProvider serviceProvider,
   ILogger<UserQueries> logger,
-  IOptions<OzdsUsersOptions> options
+  UserManager<OzdsUser> userManager
 ) : IQueries
 {
-  private readonly OzdsUsersParsedOidcConnectionString connectionString = new(
-    options.Value.Oidc.ConnectionString
-  );
-
   public string LoginHref
   {
-    get { return connectionString.Authority; }
+    get { return "/app/auth/login"; }
   }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -35,7 +28,7 @@ public class UserQueries(
       return null;
     }
 
-    return CreateUserEntityFromClaims(principal.Claims);
+    return CreateUserEntityFromClaims(principal);
   }
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 
@@ -44,46 +37,19 @@ public class UserQueries(
     CancellationToken cancellationToken
   )
   {
-    using var scope = serviceProvider.CreateAsyncScope();
-    var ldapConnection =
-      scope.ServiceProvider.GetRequiredService<LdapConnection>();
-
     try
     {
-      var idFilter = $"{options.Value.Ldap.UserIdAttribute}={id}";
-      var ouFilter = $"objectClass={options.Value.Ldap.UserFilterObjectClass}";
-      var filter = $"(&({ouFilter})({idFilter}))";
-
-      string[] attributes =
-      {
-        options.Value.Ldap.UserIdAttribute,
-        options.Value.Ldap.UserNameAttribute,
-        options.Value.Ldap.UserEmailAttribute,
-      };
-
-      var searchResults = await Task.Run(
-        () =>
-          ldapConnection.Search(
-            options.Value.Ldap.BaseDn,
-            LdapConnection.ScopeSub,
-            filter,
-            attributes,
-            false
-          ),
-        cancellationToken
-      );
-
-      if (!searchResults.HasMore())
+      var user = await userManager.FindByIdAsync(id);
+      if (user is null)
       {
         return null;
       }
 
-      var entry = searchResults.Next();
-      return CreateUserEntityFromLdapEntry(entry);
+      return CreateUserEntityFromOzdsUser(user);
     }
     catch (Exception ex)
     {
-      logger.LogError(ex, "LDAP error");
+      logger.LogError(ex, "Error reading user by id");
       return null;
     }
   }
@@ -95,59 +61,42 @@ public class UserQueries(
     string? search = null
   )
   {
-    using var scope = serviceProvider.CreateAsyncScope();
-    var ldapConnection =
-      scope.ServiceProvider.GetRequiredService<LdapConnection>();
-
     try
     {
-      var filter = $"(objectClass={options.Value.Ldap.UserFilterObjectClass})";
+      var query = userManager.Users;
+
       if (!string.IsNullOrWhiteSpace(search))
       {
-        search = search.EscapeLdap();
-        filter =
-          $"(&{filter}({options.Value.Ldap.UserNameAttribute}=*{search}*))";
+        var searchLower = search.ToLowerInvariant();
+        query = query.Where(u =>
+          (u.UserName != null
+            && u.UserName.ToLower().Contains(searchLower))
+          || (u.Email != null && u.Email.ToLower().Contains(searchLower))
+          || u.DisplayName.ToLower().Contains(searchLower)
+        );
       }
 
-      string[] attributes =
-      {
-        options.Value.Ldap.UserIdAttribute,
-        options.Value.Ldap.UserNameAttribute,
-        options.Value.Ldap.UserEmailAttribute,
-      };
+      var totalCount = query.Count();
 
-      var searchResults = await Task.Run(
-        () =>
-          ldapConnection.Search(
-            options.Value.Ldap.BaseDn,
-            LdapConnection.ScopeSub,
-            filter,
-            attributes,
-            false
-          ),
-        cancellationToken
-      );
-
-      var allEntries = new List<LdapEntry>();
-      while (
-        searchResults.HasMore() && !cancellationToken.IsCancellationRequested
-      )
-      {
-        allEntries.Add(searchResults.Next());
-      }
-
-      var totalCount = allEntries.Count;
-
-      var startIndex = pageNumber * pageSize;
-      var pagedEntries = allEntries.Skip(startIndex).Take(pageSize).ToList();
-
-      var users = pagedEntries.Select(CreateUserEntityFromLdapEntry).ToList();
+      var users = query
+        .OrderBy(u => u.UserName)
+        .Skip(pageNumber * pageSize)
+        .Take(pageSize)
+        .Select(u => new UserEntity
+        {
+          Id = u.Id,
+          Email = u.Email ?? string.Empty,
+          Name = u.DisplayName.Length > 0
+            ? u.DisplayName
+            : u.UserName ?? u.Email ?? u.Id,
+        })
+        .ToList();
 
       return (users, totalCount);
     }
     catch (Exception ex)
     {
-      logger.LogError(ex, "LDAP error");
+      logger.LogError(ex, "Error reading users");
       return (new List<UserEntity>(), 0);
     }
   }
@@ -179,9 +128,12 @@ public class UserQueries(
 
     if (
       user is not null
+      && user.Identity?.IsAuthenticated == true
       && user
-        .Claims.FirstOrDefault(x => x.Type == options.Value.Oidc.UserIdClaim)
-        ?.Value
+          .Claims.FirstOrDefault(x =>
+            x.Type == ClaimTypes.NameIdentifier
+          )
+          ?.Value
         is { } id
     )
     {
@@ -191,16 +143,20 @@ public class UserQueries(
     return null;
   }
 
-  private UserEntity CreateUserEntityFromClaims(IEnumerable<Claim> claims)
+  private static UserEntity CreateUserEntityFromClaims(
+    ClaimsPrincipal principal
+  )
   {
-    var id = claims
-      .FirstOrDefault(claim => claim.Type == options.Value.Oidc.UserIdClaim)
+    var id = principal
+      .Claims.FirstOrDefault(claim =>
+        claim.Type == ClaimTypes.NameIdentifier
+      )
       ?.Value;
-    var email = claims
-      .FirstOrDefault(claim => claim.Type == ClaimTypes.Email)
+    var email = principal
+      .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email)
       ?.Value;
-    var name = claims
-      .FirstOrDefault(claim => claim.Type == ClaimTypes.Name)
+    var name = principal
+      .Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)
       ?.Value;
 
     return new UserEntity
@@ -211,40 +167,15 @@ public class UserQueries(
     };
   }
 
-  private UserEntity CreateUserEntityFromLdapEntry(LdapEntry entry)
+  private static UserEntity CreateUserEntityFromOzdsUser(OzdsUser user)
   {
     return new UserEntity
     {
-      Id =
-        GetAttributeValue(entry, options.Value.Ldap.UserIdAttribute)
-        ?? string.Empty,
-      Email =
-        GetAttributeValue(entry, options.Value.Ldap.UserEmailAttribute)
-        ?? string.Empty,
-      Name =
-        GetAttributeValue(entry, options.Value.Ldap.UserNameAttribute)
-        ?? string.Empty,
+      Id = user.Id,
+      Email = user.Email ?? string.Empty,
+      Name = user.DisplayName.Length > 0
+        ? user.DisplayName
+        : user.UserName ?? user.Email ?? user.Id,
     };
-  }
-
-  private static string? GetAttributeValue(
-    LdapEntry entry,
-    string attributeName
-  )
-  {
-    try
-    {
-      var attribute = entry.GetAttribute(attributeName);
-      if (attribute != null && attribute.Size() > 0)
-      {
-        return attribute.StringValue;
-      }
-    }
-    catch (Exception)
-    {
-      // Attribute doesn't exist
-    }
-
-    return null;
   }
 }
