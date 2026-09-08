@@ -6,6 +6,7 @@ using Ozds.Business.Models.Enums;
 using Ozds.Business.Queries;
 using Ozds.Client.Components.Base;
 using Ozds.Client.Extensions;
+using Ozds.Client.Services;
 using Ozds.Client.State;
 
 namespace Ozds.Client.Components.Charts;
@@ -31,6 +32,9 @@ public partial class MeasurementLineChart : OzdsComponentBase
   [Inject]
   private TimeQueries TimeQueries { get; set; } = default!;
 
+  [Inject]
+  private StateGuard StateGuard { get; set; } = default!;
+
   [Parameter]
   public MeasurementChartParameters Parameters { get; set; } = default!;
 
@@ -50,9 +54,12 @@ public partial class MeasurementLineChart : OzdsComponentBase
 
   protected override async Task OnParametersSetAsync()
   {
-    _options = CreateGraphOptions();
-    if (_chart is { } chart)
+    if (
+      StateGuard.Changed([Dep.Of(Parameters.Measurements)])
+      && _chart is { } chart
+    )
     {
+      _options = CreateGraphOptions();
       await chart.UpdateSeriesAsync();
       await chart.UpdateOptionsAsync(false, true, false);
     }

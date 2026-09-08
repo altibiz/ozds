@@ -3,6 +3,7 @@ using Blazored.LocalStorage;
 using MudBlazor.Services;
 using Ozds.Client.Components.Models;
 using Ozds.Client.Components.Models.Abstractions;
+using Ozds.Client.Services;
 
 namespace Ozds.Client.Extensions;
 
@@ -16,6 +17,7 @@ public static class HostExtensions
     builder.AddBlazor();
     builder.AddLocalStorage();
     builder.AddUi();
+    builder.AddStateChangeGuard();
     return builder;
   }
 
@@ -73,6 +75,14 @@ public static class HostExtensions
   {
     builder.Services.AddBlazoredLocalStorage();
 
+    return builder;
+  }
+
+  private static IHostApplicationBuilder AddStateChangeGuard(
+    this IHostApplicationBuilder builder
+  )
+  {
+    builder.Services.AddTransient<StateGuard>();
     return builder;
   }
 }
