@@ -77,15 +77,11 @@ public sealed class PostgresContainer : IComposableService<PostgresContainer>
     CancellationToken cancellationToken
   )
   {
-    var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-    var wait = isWindows
-      ? Wait.ForWindowsContainer().UntilMessageIsLogged(PostgresReady)
-      : Wait.ForUnixContainer().UntilMessageIsLogged(PostgresReady);
+    var wait = Wait.ForUnixContainer().UntilMessageIsLogged(PostgresReady);
 
     var host = network.Host<PostgresContainer>();
     var hostPort = network.Port<PostgresContainer>();
-    var container = new ContainerBuilder()
-      .WithImage("timescale/timescaledb-ha:pg14-latest")
+    var container = new ContainerBuilder("timescale/timescaledb-ha:pg14-latest")
       .WithNetwork(network.Name)
       .WithHostname(host)
       .WithPortBinding(hostPort, PostgresPort)

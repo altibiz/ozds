@@ -84,16 +84,12 @@ public sealed class MailpitContainer : IComposableService<MailpitContainer>
     CancellationToken cancellationToken
   )
   {
-    var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-    var wait = isWindows
-      ? Wait.ForWindowsContainer().UntilMessageIsLogged(MailpitReady)
-      : Wait.ForUnixContainer().UntilMessageIsLogged(MailpitReady);
+    var wait = Wait.ForUnixContainer().UntilMessageIsLogged(MailpitReady);
 
     var host = network.Host<MailpitContainer>();
     var hostSmtpPort = network.Port<MailpitContainer>("smtp");
     var hostHttpPort = network.Port<MailpitContainer>("http");
-    var container = new ContainerBuilder()
-      .WithImage("axllent/mailpit:v1.26")
+    var container = new ContainerBuilder("axllent/mailpit:v1.26")
       .WithNetwork(network.Name)
       .WithHostname(host)
       .WithPortBinding(hostSmtpPort, MailpitSmtpPort)

@@ -84,16 +84,12 @@ public sealed class RabbitMqContainer : IComposableService<RabbitMqContainer>
     CancellationToken cancellationToken
   )
   {
-    var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-    var wait = isWindows
-      ? Wait.ForWindowsContainer().UntilMessageIsLogged(RabbitMqReady)
-      : Wait.ForUnixContainer().UntilMessageIsLogged(RabbitMqReady);
+    var wait = Wait.ForUnixContainer().UntilMessageIsLogged(RabbitMqReady);
 
     var host = network.Host<RabbitMqContainer>();
     var hostAmqpPort = network.Port<RabbitMqContainer>();
     var hostHttpPort = network.Port<RabbitMqContainer>("http");
-    var container = new ContainerBuilder()
-      .WithImage("rabbitmq:3.13-management")
+    var container = new ContainerBuilder("rabbitmq:3.13-management")
       .WithNetwork(network.Name)
       .WithHostname(host)
       .WithPortBinding(hostAmqpPort, RabbitMqAmqpPort)
