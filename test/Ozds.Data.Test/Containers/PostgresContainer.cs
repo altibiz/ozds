@@ -47,13 +47,9 @@ public sealed class PostgresContainer : IAsyncDisposable
     CancellationToken cancellationToken
   )
   {
-    var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-    var wait = isWindows
-      ? Wait.ForWindowsContainer().UntilMessageIsLogged(PostgresReady)
-      : Wait.ForUnixContainer().UntilMessageIsLogged(PostgresReady);
+    var wait = Wait.ForUnixContainer().UntilMessageIsLogged(PostgresReady);
 
-    var container = new ContainerBuilder()
-      .WithImage("timescale/timescaledb-ha:pg14-latest")
+    var container = new ContainerBuilder("timescale/timescaledb-ha:pg14-latest")
       .WithPortBinding(PostgresPort, true)
       .WithEnvironment("POSTGRES_DB", PostgresDb)
       .WithEnvironment("POSTGRES_USER", PostgresUser)

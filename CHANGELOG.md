@@ -55,6 +55,13 @@ and adheres to [Semantic Versioning](https://semver.org/).
   for items without a title instead
 - Fix, messenger push-failure notifications now set a `Title`
   (`Messenger push failed`) in `IotPushHandler`
+- Updated `Testcontainers` from version `4.5.0` to version `4.15.0`
+- Replaced the deprecated `new ContainerBuilder().WithImage(...)` chain with
+  `new ContainerBuilder("repository:tag")` in every test container wrapper
+- Removed the Windows wait-strategy branches from the same wrappers, leaving an
+  unconditional `Wait.ForUnixContainer()`, since every image used is Linux
+- Fix, dropped `LldapContainer`'s effectively infinite
+  `TimeSpan.FromSeconds(30_000)` readiness timeout with its Windows branch
 
 ## [1.8.5] - 2026-05-13
 

@@ -172,14 +172,7 @@ public sealed class LldapContainer : IComposableService<LldapContainer>
     CancellationToken cancellationToken
   )
   {
-    var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-    var wait = isWindows
-      ? Wait.ForWindowsContainer()
-        .UntilMessageIsLogged(
-          LldapReady,
-          wait => wait.WithTimeout(TimeSpan.FromSeconds(30_000))
-        )
-      : Wait.ForUnixContainer().UntilMessageIsLogged(LldapReady);
+    var wait = Wait.ForUnixContainer().UntilMessageIsLogged(LldapReady);
 
     var tmpDir = Path.Combine(
       Path.GetTempPath(),
@@ -192,8 +185,7 @@ public sealed class LldapContainer : IComposableService<LldapContainer>
     var host = network.Host<LldapContainer>();
     var hostLdapPort = network.Port<LldapContainer>("ldap");
     var hostHttpPort = network.Port<LldapContainer>("http");
-    var container = new ContainerBuilder()
-      .WithImage("lldap/lldap:2025-05-19")
+    var container = new ContainerBuilder("lldap/lldap:2025-05-19")
       .WithNetwork(network.Name)
       .WithHostname(host)
       .WithPortBinding(hostLdapPort, LldapLdapPort)

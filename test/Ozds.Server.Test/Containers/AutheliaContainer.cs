@@ -118,10 +118,7 @@ public sealed class AutheliaContainer : IComposableService<AutheliaContainer>
     CancellationToken cancellationToken
   )
   {
-    var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-    var wait = isWindows
-      ? Wait.ForWindowsContainer().UntilMessageIsLogged(AutheliaReady)
-      : Wait.ForUnixContainer().UntilMessageIsLogged(AutheliaReady);
+    var wait = Wait.ForUnixContainer().UntilMessageIsLogged(AutheliaReady);
 
     var tmpDir = Path.Combine(
       Path.GetTempPath(),
@@ -137,8 +134,7 @@ public sealed class AutheliaContainer : IComposableService<AutheliaContainer>
     var host = network.Host<AutheliaContainer>();
     var hostPort = network.Port<AutheliaContainer>();
 
-    var container = new ContainerBuilder()
-      .WithImage("authelia/authelia:4.39.4")
+    var container = new ContainerBuilder("authelia/authelia:4.39.4")
       .WithNetwork(network.Name)
       .WithHostname(host)
       .WithPortBinding(hostPort, AutheliaPort)
